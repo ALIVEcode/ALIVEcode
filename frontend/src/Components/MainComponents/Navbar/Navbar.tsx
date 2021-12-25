@@ -74,12 +74,6 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 					>
 						{t('home.navbar.section.about')}
 					</Nav.Link>
-					<Nav.Link
-						className="nav-link"
-						onClick={() => history.push(routes.auth.chat.path)}
-					>
-						<p>Chat</p>
-					</Nav.Link>
 				</Nav>
 				{user ? (
 					<label style={{ marginBottom: '0' }} className="nav-link">

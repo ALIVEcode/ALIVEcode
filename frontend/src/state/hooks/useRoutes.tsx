@@ -189,24 +189,29 @@ const useRoutes = () => {
 		forum: {
 			path: '/forum',
 			component: Forum,
+			adminOnly: true,
 		},
 		categoriesForum: {
 			path: '/categoriesForum',
 			component: CategoriesForum,
+			adminOnly: true,
 		},
 		quiz: {
 			path: '/quiz',
 			exact: true,
 			component: QuizHome,
+			adminOnly: true,
 		},
 		quiz_category: {
 			path: '/quiz/category/:id',
 			component: QuizCategory,
+			adminOnly: true,
 		},
 		// Only for testing, place in auth Professor in production.
 		quiz_create: {
 			path: '/quiz/create',
 			component: QuizCreate,
+			adminOnly: true,
 		},
 	});
 
@@ -245,6 +250,7 @@ const useRoutes = () => {
 			path: '/chat',
 			exact: true,
 			component: Chat,
+			adminOnly: true,
 		},
 		iot_dashboard: {
 			path: '/iot/dashboard',

@@ -31,8 +31,9 @@ public class ModuleIoT {
                     public ASObjet<?> executer() {
                         Texte projectId = (Texte) this.getValeurParam("projectId");
                         Texte id = (Texte) this.getValeurParam("id");
-                        ASObjet<?> value = (ASObjet<?>) this.getValeurParam("value");
-                        executeurInstance.addData(new Data(Data.Id.UPDATE_COMPONENT).addParam(projectId).addParam(id).addParam(value.toString()));
+                        ASObjet<?> valueAs = (ASObjet<?>) this.getValeurParam("value");
+
+                        executeurInstance.addData(new Data(Data.Id.UPDATE_COMPONENT).addParam(projectId).addParam(id).addParam(valueAs.getValue()));
                         return new Nul();
                     }
                 },
@@ -63,6 +64,27 @@ public class ModuleIoT {
                         if(obj instanceof Number) {
                             return Nombre.cast((Number) obj);
                         }
+                        if(obj instanceof Boolean) {
+                            return new Booleen((Boolean) obj);
+                        }
+                        return new Nul();
+                    }
+                },
+                new ASObjet.Fonction("getComponentValue",
+                        new ASObjet.Fonction.Parametre[] {
+                                new ASObjet.Fonction.Parametre(
+                                        ASObjet.TypeBuiltin.texte.asType(),
+                                        "projectId",
+                                        null
+                                ),
+                                new ASObjet.Fonction.Parametre(
+                                        ASObjet.TypeBuiltin.texte.asType(),
+                                        "id",
+                                        null
+                                )
+                        }, ASObjet.TypeBuiltin.nombre.asType()) {
+                    @Override
+                    public ASObjet<?> executer() {
                         return new Nul();
                     }
                 }

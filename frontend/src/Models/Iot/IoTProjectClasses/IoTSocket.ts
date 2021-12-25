@@ -87,13 +87,20 @@ export class IoTSocket {
 
 	public sendData(targetId: string, actionId: number, data: string) {
 		if (this.socket.OPEN) {
+			let value = {};
+
+			// Try to get JSON, if invalid set empty object
+			try {
+				value = JSON.parse(data);
+			} catch {}
+
 			this.socket.send(
 				JSON.stringify({
 					event: 'send_object',
 					data: {
 						targetId,
 						actionId: Number(actionId),
-						value: JSON.parse(data),
+						value,
 					},
 				}),
 			);

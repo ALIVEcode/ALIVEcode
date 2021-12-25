@@ -34,14 +34,16 @@ export class UserService {
     @Inject(REQUEST) private req: MyRequest,
   ) {}
   async createStudent(createStudentDto: UserEntity) {
-    // TODO: random salt
     const hashedPassword = await hash(createStudentDto.password, 12);
     createStudentDto.password = hashedPassword;
 
     try {
       const student = await this.studentRepository.save(this.studentRepository.create(createStudentDto));
       return student;
-    } catch {
+    } catch (err) {
+      if ((err as any).detail.includes('Key (name)='))
+        throw new HttpException('This username is already in use', HttpStatus.CONFLICT);
+
       throw new HttpException('This email is already in use', HttpStatus.CONFLICT);
     }
   }
@@ -88,7 +90,13 @@ export class UserService {
     const refreshToken = req.cookies.wif;
     if (!refreshToken) throw new HttpException('No credentials were provided', HttpStatus.UNAUTHORIZED);
 
-    const payload = verify(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY) as AuthPayload;
+    let payload: AuthPayload;
+
+    try {
+      payload = verify(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY) as AuthPayload;
+    } catch {
+      throw new HttpException('Invalid Credentials', HttpStatus.UNAUTHORIZED);
+    }
     if (!payload) throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
 
     const user = await this.findById(payload.id);

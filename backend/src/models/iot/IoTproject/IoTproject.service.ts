@@ -108,31 +108,34 @@ export class IoTProjectService {
     return newScript;
   }
 
+  async getProjectOrProgression(id: string): Promise<IoTProjectEntity | LevelProgressionEntity> {
+    if (id.includes('/')) {
+      const split = id.split('/');
+      if (split.length < 2) throw new HttpException('Bad Id', HttpStatus.BAD_REQUEST);
+      try {
+        return await this.levelService.getIoTProgressionById(split[0], split[1]);
+      } catch {
+        throw new HttpException('Project id not found', HttpStatus.NOT_FOUND);
+      }
+    } else {
+      return await this.findOne(id);
+    }
+  }
+
   async sendRoute(route: IoTRouteEntity, data: any) {
-    console.log('SENDING ROUTE');
     await this.asScriptService.compileBackend({ lines: route.asScript.content }, data);
   }
 
   async updateComponent(id: string, componentId: string, value: any, sendUpdate = false): Promise<void> {
-    if (id.includes('/')) {
-      const split = id.split('/');
-      if (split.length < 2) throw new HttpException('Bad Id', HttpStatus.BAD_REQUEST);
-      let progression;
-      try {
-        progression = await this.levelService.getIoTProgressionById(split[0], split[1]);
-      } catch (err) {
-        console.log(err);
-      }
-      const layoutManager = new IoTLayoutManager((progression.data as LevelIoTProgressionData).layout);
-      layoutManager.updateComponent(componentId, value);
-      await this.progressionRepo.save(progression);
+    const projectOrProgression = await this.getProjectOrProgression(id);
 
-      //progression.level
+    const layoutManager = projectOrProgression.getLayoutManager();
+    layoutManager.updateComponent(componentId, value);
+
+    if (projectOrProgression instanceof IoTProjectEntity) {
+      await this.projectRepository.save(projectOrProgression);
     } else {
-      const project = await this.findOne(id);
-      const layoutManager = project.getLayoutManager();
-      layoutManager.updateComponent(componentId, value);
-      await this.projectRepository.save(project);
+      await this.progressionRepo.save(projectOrProgression);
     }
 
     if (sendUpdate) {
@@ -145,5 +148,12 @@ export class IoTProjectService {
 
       watchers.forEach(w => w.sendCustom('update', data));
     }
+  }
+
+  async getComponentValue(id: string, componentId: string) {
+    const projectOrProgression = await this.getProjectOrProgression(id);
+
+    const layoutManager = projectOrProgression.getLayoutManager();
+    return layoutManager.getComponentValue(componentId);
   }
 }

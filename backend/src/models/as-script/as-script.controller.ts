@@ -54,7 +54,6 @@ export class AsScriptController {
   }
 
   @Get('lintinfo')
-  @Auth()
   async getLintInfo() {
     const lintInfo: LinterFormatType = await (
       await axios({

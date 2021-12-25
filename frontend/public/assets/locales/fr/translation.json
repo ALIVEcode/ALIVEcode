@@ -1,14 +1,18 @@
 {
 	"error": {
 		"sorry": "Désolé.",
+		"unknown": "Une erreur inconnue est survenue, veuillez réessayer.",
+		"custom": "Erreur: {{error}}.",
 		"back": "Retour en arrière",
 		"home": "Retour à la page d'accueil",
-		"logout": "Une erreur est survenue lors de la déconnexion, veuillez réesayer.",
-		"500": "Une erreur est survenue, veuillez réessayer",
+		"signout": "Une erreur est survenue lors de la déconnexion, veuillez réesayer.",
+		"signin": "Informations erronées, veuillez réessayer.",
+		"signin_first_time": "une erreur est survenue lors de votre connexion automatique à votre nouveau compte.",
+		"500": "Une erreur est survenue, veuillez réessayer.",
 		"page404": "Cette page n'existe pas.",
 		"maintenance": {
 			"ongoing": "Une maintenance est en cours du {{startDate}} et prend fin le {{finishDate}}, cette page n'a pas pu être affichée.",
-			"short": "La requête n'a pas pu être faite, le site est présentement en maintenance"
+			"short": "La requête n'a pas pu être faite, le site est présentement en maintenance."
 		}
 	},
 	"form": {
@@ -54,18 +58,22 @@
 		"pwd": {
 			"label": "Mot de passe",
 			"placeholder": "*****",
-			"required": "Un mot de passe est requis"
+			"required": "Un mot de passe est requis",
+			"pattern": "Le mot de passe doit uniquement contenir des lettres, des chiffres et: !@#\\$&*~"
 		},
 		"email": {
 			"label": "Adresse courriel",
 			"placeholder": "MonAdresse@alivecode.ca",
 			"required": "Une adresse courriel est requise",
+			"taken": "Cette addresse courriel est déjà prise",
 			"info": "Nous ne partagerons pas votre adresse courriel"
 		},
 		"name": {
 			"label": "Nom",
 			"placeholder": "Enric",
-			"required": "Un pseudonyme est requis"
+			"required": "Un pseudonyme est requis",
+			"taken": "Ce pseudonyme est déjà pris",
+			"pattern": "Le pseudonyme doit contenir uniquement des lettres, des chiffres et des _"
 		},
 		"firstName": {
 			"label": "Prénom",
@@ -130,8 +138,10 @@
 		},
 		"auth": {
 			"signin": "Se connecter",
+			"signin_success": "Connexion réussie",
 			"signup": "S'inscrire",
-			"signup_professor": "Compte professor",
+			"signup_success": "Vous êtes connecté avec votre nouveau compte",
+			"signup_professor": "Compte professeur",
 			"signup_student": "Compte étudiant",
 			"signout": "Se déconnecter",
 			"already_registered": "Tu as déjà un compte?",
@@ -228,7 +238,8 @@
 		"level": {
 			"alive": "Niveau avec voiture ALIVE",
 			"code": "Niveau avec console",
-			"ai": "Niveau avec intelligence artificielle"
+			"ai": "Niveau avec intelligence artificielle",
+			"iot": "Niveau avec Internet des Objets"
 		}
 	},
 	"home": {
@@ -314,6 +325,14 @@
 				"point3": "Finalement, il recommence tout le processus jusqu’à obtenir des résultats qui minimisent le plus possible l’erreur afin de pouvoir produire les meilleures prédictions possibles!",
 				"paragraph4": "Évidemment, les réseaux de neurones sont bien plus complexes que cela, et c’est pourquoi un cours à ce sujet sera bientôt disponible. Reste à l’affût!"
 			}
+		}
+	},
+	"iot": {
+		"project": {
+			"name": "Projet IoT"
+		},
+		"object": {
+			"name": "Objet IoT"
 		}
 	},
 	"simulation": {

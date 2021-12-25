@@ -30,7 +30,7 @@ export class UserEntity extends BaseEntity {
   @Exclude({ toPlainOnly: true })
   @Length(6, 32)
   @IsNotEmpty()
-  @Matches(/^[A-Za-z0-9!@#\$&*~]*$/)
+  @Matches(/^[A-Za-z0-9!@#\\$&*~]*$/)
   password: string;
 
   @Column({ unique: true, nullable: false })

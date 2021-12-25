@@ -1,7 +1,7 @@
 import { CompileStatus, typeAction } from "./ASModels";
 import { AsScriptService } from './as-script.service';
 
-export class LevelExecutor {
+export class BackendLevelExecutor {
   private timeouts: Array<NodeJS.Timeout> = [];
   public execution = false;
   public onToggleExecution?: (exec: any) => void;

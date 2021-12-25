@@ -5,12 +5,15 @@ export enum IOT_COMPONENT_TYPE {
 	BUTTON,
 	PROGRESS_BAR,
 	LOGS,
+	LED,
+	LABEL,
+	BUZZER,
 }
 
 @Exclude()
 export abstract class IoTComponent {
 	@Expose()
-	public id: string;
+	public id: string = '';
 
 	@Expose()
 	public name: string;

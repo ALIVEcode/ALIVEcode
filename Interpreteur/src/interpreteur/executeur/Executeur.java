@@ -138,16 +138,12 @@ public class Executeur {
     public static void main(String[] args) {
 
 
-        String[] lines = """   
-                var nb = "12"
-                var nb2 = "74"
-                                
-                afficher((decimal(nb) + decimal(nb2)) / 2)
-                                
-                utiliser Math
-                                
-                afficher Math.sin(Math.PI)
-                                
+        String[] lines = """
+                var a = {
+                "salut": "hey!",
+                "bonjour": 122
+                }
+                afficher a
                 """.split("\n");
 
 

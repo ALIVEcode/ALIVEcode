@@ -82,7 +82,16 @@ const IoTDashboard = (props: iotDashboardProps) => {
 				>
 					{objects && objects.length > 0 ? (
 						objects.map((obj, idx) => (
-							<IoTObjectLargeCard key={idx} object={obj} />
+							<IoTObjectLargeCard
+								onUpdate={(iotObject: IoTObject) => {
+									setObjects(
+										objects.map(o => (o.id === iotObject.id ? iotObject : o)),
+									);
+									//forceUpdate();
+								}}
+								key={idx}
+								object={obj}
+							/>
 						))
 					) : (
 						<div>Aucun objet connecté</div>

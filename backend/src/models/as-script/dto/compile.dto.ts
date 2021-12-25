@@ -1,4 +1,4 @@
-import { IsArray, IsEnum, IsNotEmpty, IsObject, IsOptional } from 'class-validator';
+import { IsArray, IsEnum, IsObject, IsOptional } from 'class-validator';
 
 enum CompileStatus {
   INTERRUPT = 'interrupted',

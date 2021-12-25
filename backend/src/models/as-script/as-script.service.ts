@@ -25,7 +25,8 @@ export class AsScriptService {
         baseURL: process.env.AS_URL,
         data,
       });
-    } catch {
+    } catch (err) {
+      console.error(err);
       throw new HttpException('AliveScript service crashed', HttpStatus.INTERNAL_SERVER_ERROR);
     }
     return res.data;

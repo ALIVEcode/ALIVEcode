@@ -208,7 +208,7 @@ public class AstGenerator {
                         //    } else if (exp.equals(ferm)) {
                         //        cptr--;
                         //    }
-                        //    idx++;
+                        //    idxOrKey++;
                         //    if (cptr == 0) {
                         //        break;
                         //    }

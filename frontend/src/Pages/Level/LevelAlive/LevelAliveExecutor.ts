@@ -37,6 +37,12 @@ class LevelAliveExecutor extends LevelCodeExecutor {
 	) {
 		super(levelName, askForUserInput);
 
+		this.doBeforeRun(() => {
+			// Set focus
+			if (this.s.canvasCamera && this.s.car)
+				this.s.canvasCamera.setTarget(this.s.car);
+		});
+
 		this.registerActions([
 			{
 				actionId: 100,
@@ -305,7 +311,7 @@ class LevelAliveExecutor extends LevelCodeExecutor {
 			if (this.execution) {
 				//this.playButton.trigger('click');
 			}
-			s.toggleEditMode();
+			this.s.toggleEditMode();
 		});
 	}
 

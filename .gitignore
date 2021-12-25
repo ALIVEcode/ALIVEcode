@@ -221,4 +221,6 @@ out/META-INF
 backend/uploads/
 
 node_modules
+frontend/package-lock.json
 backend/images/uploads/
+package-lock.json

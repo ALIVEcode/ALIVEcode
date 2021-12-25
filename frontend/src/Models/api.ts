@@ -237,7 +237,9 @@ const api = {
 		},
 		iot: {
 			projects: {
+				delete: apiDelete('iot/projects/:id'),
 				get: apiGet('iot/projects/:id', IoTProject, false),
+				deleteRoute: apiDelete('iot/routes/projects/:projectId/:id'),
 				getRoutes: apiGet('iot/projects/:id/routes', IotRoute, true),
 				getObjects: apiGet('iot/projects/:id/objects', IoTObject, true),
 				async updateLayout(id: string, layout: IoTProjectLayout) {
@@ -255,6 +257,9 @@ const api = {
 						})
 					).data;
 				},
+			},
+			objects: {
+				delete: apiDelete('iot/objects/:id'),
 			},
 		},
 		asScript: {
@@ -306,10 +311,7 @@ const api = {
 		},
 		async getLintInfo() {
 			return (
-				await axios({
-					method: 'GET',
-					url: `${process.env.REACT_APP_BACKEND_URL}/as/lintinfo`,
-				})
+				await axios.get(`${process.env.REACT_APP_BACKEND_URL}/as/lintinfo`)
 			).data;
 		},
 	},

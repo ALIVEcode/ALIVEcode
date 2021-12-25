@@ -10,6 +10,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { IoTButton } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTButton';
 import { useAlert } from 'react-alert';
+import { IoTLed } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTLed';
+import IoTLedComponent from '../IoTLedComponent/IoTLedComponent';
+import { IoTLabel } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTLabel';
+import IoTLabelComponent from '../IoTLabelComponent/IoTLabelComponent';
+import IoTBuzzerComponent from '../IoTBuzzerComponent/IoTBuzzerComponent';
+import { IoTBuzzer } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTBuzzer';
 
 const IoTGenericComponent = ({
 	component,
@@ -30,6 +36,12 @@ const IoTGenericComponent = ({
 				);
 			case IOT_COMPONENT_TYPE.LOGS:
 				return <IoTLogsComponent component={component as IoTLogs} />;
+			case IOT_COMPONENT_TYPE.LED:
+				return <IoTLedComponent component={component as IoTLed} />;
+			case IOT_COMPONENT_TYPE.LABEL:
+				return <IoTLabelComponent component={component as IoTLabel} />;
+			case IOT_COMPONENT_TYPE.BUZZER:
+				return <IoTBuzzerComponent component={component as IoTBuzzer} />;
 		}
 	};
 

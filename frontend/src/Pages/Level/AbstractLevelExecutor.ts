@@ -10,7 +10,7 @@ export class LevelExecutor {
 	public execution: boolean = false;
 	public onToggleExecution?: (exec: any) => void;
 	private idToken: string;
-	private backendCompiling = false;
+	private backendContext: CompileDTO;
 	private registeredActions: { [actionId: number]: typeAction } = {
 		0: {
 			label: 'Stop Execution',
@@ -59,7 +59,7 @@ export class LevelExecutor {
 		try {
 			return await api.as.compile({
 				...data,
-				backendCompiling: this.backendCompiling,
+				...this.backendContext,
 			});
 		} catch {
 			this.cmd?.error(
@@ -231,8 +231,8 @@ export class LevelExecutor {
 		this.current_execution.next();
 	}
 
-	public setBackendCompiling(state: boolean) {
-		this.backendCompiling = state;
+	public setBackendContext(compileDTO: CompileDTO) {
+		this.backendContext = compileDTO;
 	}
 
 	public wait(callback: () => void, duration: number) {

@@ -14,6 +14,9 @@ import { IoTComponent } from './IoTProjectClasses/IoTComponent';
 import { IoTProgressBar } from './IoTProjectClasses/Components/IoTProgressBar';
 import { IoTLogs } from './IoTProjectClasses/Components/IoTLogs';
 import { IoTObject } from './IoTobject.entity';
+import { IoTLed } from './IoTProjectClasses/Components/IoTLed';
+import { IoTLabel } from './IoTProjectClasses/Components/IoTLabel';
+import { IoTBuzzer } from './IoTProjectClasses/Components/IoTBuzzer';
 
 export enum IOTPROJECT_INTERACT_RIGHTS {
 	ANYONE = 'AN',
@@ -40,6 +43,12 @@ export class IoTProjectLayout {
 				return plainToClass(IoTProgressBar, comp);
 			if (comp.type === IOT_COMPONENT_TYPE.LOGS)
 				return plainToClass(IoTLogs, comp);
+			if (comp.type === IOT_COMPONENT_TYPE.LED)
+				return plainToClass(IoTLed, comp);
+			if (comp.type === IOT_COMPONENT_TYPE.LABEL)
+				return plainToClass(IoTLabel, comp);
+			if (comp.type === IOT_COMPONENT_TYPE.BUZZER)
+				return plainToClass(IoTBuzzer, comp);
 
 			return undefined;
 		});

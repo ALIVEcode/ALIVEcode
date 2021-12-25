@@ -164,6 +164,18 @@ public interface ASErreur {
         }
     }
 
+    class ErreurClef extends ErreurAliveScript {
+        public ErreurClef(String clef) {
+            super("La clef " + clef + " n'est pas pr\u00E9sente dans le dict ou la liste", "ErreurClef");
+        }
+    }
+
+    class ErreurClefDupliquee extends ErreurAliveScript {
+        public ErreurClefDupliquee(String msg) {
+            super(msg, "ErreurClef");
+        }
+    }
+
     class ErreurIndex extends ErreurAliveScript {
         public ErreurIndex(String message) {
             super(message, "ErreurIndex");

@@ -16,6 +16,8 @@ export enum IOT_COMPONENT_TYPE {
   BUTTON,
   PROGRESS_BAR,
   LOGS,
+  LED,
+  LABEL,
 }
 
 export enum IOTPROJECT_ACCESS {

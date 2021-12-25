@@ -125,7 +125,7 @@ const IoTProjectBody = ({ noTopRow }: { noTopRow?: boolean }) => {
 						}}
 						icon={faClipboard}
 					>
-						Copy Reference Id
+						Copy Project Id
 					</IconButton>
 				</Row>
 				{getComponentsMatrix().map((row, idx) => (
@@ -156,7 +156,7 @@ const IoTProjectBody = ({ noTopRow }: { noTopRow?: boolean }) => {
 			</Modal>
 			<Modal
 				size="xl"
-				title="Edit component"
+				title="Add a component"
 				centered
 				open={openComponentCreator}
 				onClose={() => setOpenComponentCreator(false)}

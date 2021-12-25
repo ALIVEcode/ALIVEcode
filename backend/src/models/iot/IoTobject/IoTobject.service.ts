@@ -37,7 +37,7 @@ export class IoTObjectService {
   }
 
   async update(id: string, updateIoTobjectDto: IoTObjectEntity) {
-    return await this.objectRepository.update(id, updateIoTobjectDto);
+    return await this.objectRepository.save({ ...updateIoTobjectDto, id });
   }
 
   async remove(id: string) {

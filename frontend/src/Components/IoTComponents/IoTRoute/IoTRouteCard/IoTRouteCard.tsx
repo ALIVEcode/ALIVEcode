@@ -1,6 +1,6 @@
 import { IoTRouteCardProps, StyledRouteCard } from './iotRouteCardTypes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import {
 	faLevelUpAlt,
 	faTrash,
@@ -9,6 +9,7 @@ import {
 import AlertConfirm from '../../../UtilsComponents/Alert/AlertConfirm/AlertConfirm';
 import Modal from '../../../UtilsComponents/Modal/Modal';
 import IoTRouteSettings from '../IoTRouteSettings/IoTRouteSettings';
+import { IoTProjectContext } from '../../../../state/contexts/IoTProjectContext';
 
 /**
  * Component that shows an IoTRoute with its information
@@ -21,6 +22,8 @@ import IoTRouteSettings from '../IoTRouteSettings/IoTRouteSettings';
 const IoTRouteCard = ({ route }: IoTRouteCardProps) => {
 	const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 	const [settingsOpen, setSettingsOpen] = useState(false);
+
+	const { deleteRoute } = useContext(IoTProjectContext);
 
 	return (
 		<>
@@ -62,8 +65,7 @@ const IoTRouteCard = ({ route }: IoTRouteCardProps) => {
 				title="Are you sure you want to delete this route"
 				open={deleteConfirmOpen}
 				onClose={() => setDeleteConfirmOpen(false)}
-				onConfirm={() => console.log('DELETE!')}
-				onCancel={() => console.log('CANCEL!')}
+				onConfirm={() => deleteRoute(route)}
 			/>
 		</>
 	);

@@ -7,17 +7,21 @@ export class IoTButton extends IoTComponent {
 	public type = IOT_COMPONENT_TYPE.BUTTON;
 
 	@Expose()
-	public targetId?: string | null = null;
+	private targetId?: string | null = null;
 
 	@Expose()
-	public actionId: number = 0;
+	private actionId: number = 0;
 
 	@Expose()
-	public actionData: string = '';
+	private actionData: string = '{}';
 
 	public setTargetId(id: string) {
 		this.targetId = id;
 		this.getComponentManager()?.render();
+	}
+
+	public getTargetId() {
+		return this.targetId;
 	}
 
 	public setActionId(id: number) {
@@ -25,9 +29,17 @@ export class IoTButton extends IoTComponent {
 		this.getComponentManager()?.render();
 	}
 
+	public getActionId() {
+		return this.actionId;
+	}
+
 	public setActionData(data: string) {
 		this.actionData = data;
 		this.getComponentManager()?.render();
+	}
+
+	public getActionData() {
+		return this.actionData;
 	}
 
 	public onClick() {

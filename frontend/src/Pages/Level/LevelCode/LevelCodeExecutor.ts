@@ -8,8 +8,6 @@ export default class LevelCodeExecutor extends LevelExecutor {
 	) {
 		super(levelName);
 
-		this.setBackendCompiling(true);
-
 		this.registerActions([
 			{
 				actionId: 300,

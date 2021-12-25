@@ -1,11 +1,6 @@
-import {
-	ButtonProps,
-	ButtonVariants,
-	StyledSecondaryButton,
-	StyledDangerButton,
-	StyledPrimaryButton,
-} from './buttonTypes';
+import { ButtonProps, StyledButton } from './buttonTypes';
 import { useHistory } from 'react-router';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 /**
  * Styled button with different premade variants
@@ -14,6 +9,7 @@ import { useHistory } from 'react-router';
  * @param {React.ReactNode} children react children
  * @param {string} type button type: button, submit or reset
  * @param {() => void} onClick callback called when the button is clicked
+ * @param {FontAwesomeIcon} icon FontAwesomeIcon to d
  * @param {string} to url to redirect on click
  * @param {string} padding css padding
  * @param {string} className css classes applied to the button
@@ -29,6 +25,7 @@ const Button = ({
 	padding,
 	className,
 	disabled,
+	icon,
 }: ButtonProps) => {
 	const history = useHistory();
 
@@ -36,38 +33,27 @@ const Button = ({
 		onClick ? onClick() : to && history.push(to);
 	};
 
-	const renderSwitch = (param: ButtonVariants) => {
-		const defaultInputOptions = {
-			className: 'btn ' + className,
-			padding,
-			type,
-			disabled,
-			onClick: customOnClick,
-		};
-
-		switch (param) {
-			case 'secondary':
-				return (
-					<StyledSecondaryButton {...defaultInputOptions}>
-						{children}
-					</StyledSecondaryButton>
-				);
-			case 'danger':
-				return (
-					<StyledDangerButton {...defaultInputOptions}>
-						{children}
-					</StyledDangerButton>
-				);
-			default:
-				return (
-					<StyledPrimaryButton {...defaultInputOptions}>
-						{children}
-					</StyledPrimaryButton>
-				);
-		}
+	const defaultInputOptions = {
+		className: 'btn ' + className,
+		padding,
+		variant,
+		type,
+		disabled,
+		onClick: customOnClick,
 	};
 
-	return <>{renderSwitch(variant)}</>;
+	if (icon) {
+		return (
+			<StyledButton {...defaultInputOptions}>
+				<>
+					{children}
+					<FontAwesomeIcon className="ml-2" icon={icon}></FontAwesomeIcon>
+				</>
+			</StyledButton>
+		);
+	}
+
+	return <StyledButton {...defaultInputOptions}>{children}</StyledButton>;
 };
 
 export default Button;

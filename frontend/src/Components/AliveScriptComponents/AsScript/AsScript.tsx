@@ -1,13 +1,19 @@
-import { AsScript as AsScriptModel } from "../../../Models/AsScript/as-script.entity";
 import LineInterface from '../../LevelComponents/LineInterface/LineInterface';
 import { Col, Row } from 'react-bootstrap';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import api from '../../../Models/api';
+import { AsScriptProps } from './asScriptTypes';
 
-export const AsScript = ({ asScript }: { asScript: AsScriptModel }) => {
+export const AsScript = ({ asScript, onSave }: AsScriptProps) => {
 	const [saving, setSaving] = useState(false);
 	const content = useRef<string>(asScript.content);
 	const saveTimeout = useRef<any>(null);
+
+	useEffect(() => {
+		return () => {
+			saveTimeout.current && clearTimeout(saveTimeout.current);
+		};
+	}, []);
 
 	const handleChange = async (newContent: string) => {
 		setSaving(true);
@@ -18,6 +24,8 @@ export const AsScript = ({ asScript }: { asScript: AsScriptModel }) => {
 
 	const save = async () => {
 		await api.db.asScript.updateContent(asScript, content.current);
+		asScript.content = content.current;
+		onSave && onSave(asScript);
 		setSaving(false);
 	};
 

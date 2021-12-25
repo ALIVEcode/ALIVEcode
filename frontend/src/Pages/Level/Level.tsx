@@ -271,6 +271,7 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 
 	if (!level || !progression) return <LoadingScreen />;
 
+	console.log('PASSED');
 	return (
 		<StyledLevel editMode={editMode}>
 			<LevelContext.Provider value={levelContextValues}>

@@ -1,8 +1,8 @@
-import { LevelExecutor } from "./AbstractLevelExecutor";
+import { BackendLevelExecutor } from "./BackendLevelExecutor";
 import { AsScriptService } from './as-script.service';
 import { IoTProjectService } from '../iot/IoTproject/IoTproject.service';
 
-export default class LevelIoTBackendExecutor extends LevelExecutor {
+export default class LevelIoTBackendExecutor extends BackendLevelExecutor {
   constructor(asScriptService: AsScriptService, iotProjectService: IoTProjectService, actions: any) {
     super(asScriptService, actions);
 
@@ -10,7 +10,7 @@ export default class LevelIoTBackendExecutor extends LevelExecutor {
       {
         actionId: 900,
         action: {
-          label: 'afficher',
+          label: 'update',
           type: 'NORMAL',
           apply: async params => {
             if (params.length >= 3 && typeof params[0] === 'string' && typeof params[1] === 'string') {

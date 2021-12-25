@@ -4,6 +4,7 @@ import { GenericCardProps } from '../../../UtilsComponents/Cards/GenericCard/gen
 
 export interface IoTObjectLargeCardProps extends GenericCardProps {
 	object: IoTObject;
+	onUpdate: (iotObject: IoTObject) => void;
 }
 
 export const StyledIoTObjectCard = styled.div``;

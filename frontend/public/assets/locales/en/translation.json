@@ -1,14 +1,18 @@
 {
 	"error": {
 		"sorry": "Sorry.",
+		"unknown": "An unknow error occured, please try again.",
+		"custom": "Error: {{error}}.",
 		"back": "Go back",
 		"home": "Back to the main page",
 		"logout": "Something went wrong when logging out, please try again.",
-		"500": "Something went wrong, please try again",
+		"signin": "Invalid credentials, please verify them again.",
+		"signin_first_time": "Something went wrong when automatically logging into your new account",
+		"500": "Something went wrong, please try again.",
 		"page404": "This page does not exist.",
 		"maintenance": {
 			"ongoing": "The website is under maintenance since {{startDate}} and will finish at {{finishDate}}, this page could not be loaded.",
-			"short": "The request could not be made, the website is currently under maintenance"
+			"short": "The request could not be made, the website is currently under maintenance."
 		}
 	},
 	"form": {
@@ -54,18 +58,22 @@
 		"pwd": {
 			"label": "Password",
 			"placeholder": "*****",
-			"required": "The password is required"
+			"required": "The password is required",
+			"pattern": "Password should only contain alphanumeric characters and special characters: !@#\\$&*~"
 		},
 		"email": {
 			"label": "Email address",
 			"placeholder": "MyEmailAdress@alivecode.ca",
 			"required": "An email address is required",
+			"taken": "This email address is already taken",
 			"info": "We will not share your email address with anyone"
 		},
 		"name": {
 			"label": "Name",
 			"placeholder": "Enric",
-			"required": "A username is required"
+			"required": "A username is required",
+			"taken": "This username is already taken",
+			"pattern": "The username should only be letters, numbers and underscores"
 		},
 		"firstName": {
 			"label": "First name",
@@ -130,7 +138,9 @@
 		},
 		"auth": {
 			"signin": "Connect",
+			"signin_success": "You are successfully logged in",
 			"signup": "Sign up",
+			"signup_success": "You are successfully logged into your new account",
 			"signup_professor": "Professor account",
 			"signup_student": "Student account",
 			"signout": "Sign out",
@@ -228,7 +238,8 @@
 		"level": {
 			"alive": "Level with ALIVE car",
 			"code": "Level with console",
-			"ai": "Level with artificial intelligence"
+			"ai": "Level with artificial intelligence",
+			"iot": "Level with Internet of Things"
 		}
 	},
 	"home": {
@@ -314,6 +325,14 @@
 				"point3": "Finally, it starts the whole process again until it obtains results that minimize the error as much as possible in order to be able to produce the best possible predictions!",
 				"paragraph4": "Obviously, neural networks are much more complex than that, and that's why a course on this will be available soon. Stay tuned!"
 			}
+		}
+	},
+	"iot": {
+		"project": {
+			"name": "IoT Project"
+		},
+		"object": {
+			"name": "IoT Object"
 		}
 	},
 	"simulation": {

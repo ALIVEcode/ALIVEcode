@@ -19,7 +19,7 @@ export class IoTObjectEntity extends CreatedByUser {
   @IsNotEmpty()
   label: IoTObjectLabel;
 
-  @ManyToMany(() => IoTProjectEntity, project => project.iotObjects)
+  @ManyToMany(() => IoTProjectEntity, project => project.iotObjects, { onDelete: 'CASCADE' })
   @IsEmpty()
   iotProjects: IoTProjectEntity[];
 }

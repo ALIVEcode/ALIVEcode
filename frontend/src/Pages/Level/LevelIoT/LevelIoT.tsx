@@ -9,12 +9,12 @@ import FillContainer from '../../../Components/UtilsComponents/FillContainer/Fil
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import useCmd from '../../../state/hooks/useCmd';
 import { LevelContext } from '../../../state/contexts/LevelContext';
-import LevelCodeExecutor from '../LevelCode/LevelCodeExecutor';
 import { UserContext } from '../../../state/contexts/UserContext';
 import { LevelIoT as LevelIoTModel } from '../../../Models/Level/levelIoT.entity';
 import LevelToolsBar from '../../../Components/LevelComponents/LevelToolsBar/LevelToolsBar';
 import LineInterface from '../../../Components/LevelComponents/LineInterface/LineInterface';
 import Cmd from '../../../Components/LevelComponents/Cmd/Cmd';
+import LevelIoTExecutor from './LevelIoTExecutor';
 
 /**
  * IoTProject. On this page are all the components essential in the functionning of an IoTProject.
@@ -40,14 +40,14 @@ const IoTLevel = ({ initialCode }: { initialCode: string }) => {
 
 	const level = levelUntyped as LevelIoTModel;
 	const executor =
-		executorUntyped as React.MutableRefObject<LevelCodeExecutor | null>;
+		executorUntyped as React.MutableRefObject<LevelIoTExecutor | null>;
 
 	const forceUpdate = useForceUpdate();
 	const [cmdRef, cmd] = useCmd();
 
 	executor.current = useMemo(
 		() =>
-			(executor.current = new LevelCodeExecutor(level.name, askForUserInput)),
+			(executor.current = new LevelIoTExecutor(level.name, askForUserInput)),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[level?.id, user],
 	);

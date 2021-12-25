@@ -355,5 +355,35 @@
 	},
 	"cmd": {
 		"clear": "Effacer les lignes"
+	},
+	"user":{
+		"quiz": "Quiz : ",
+		"status": "Status : ",
+		"posts": "Posts : ",
+		"reward": "Récompenses : ",
+		"rank": "Rank : ",
+		"rewardTitle": "Récompenses"
+
+	},
+	"simulation": {
+		"modal": {
+			"retry": "Réessayer?",
+			"continue": "Continuer",
+			"lose": "Meilleure chance la prochaine fois!",
+			"win": "La victoire t'appartient! 🎉",
+			"water": "La voiture est tombée dans l'eau",
+			"lava": "La voiture est tombée dans la lave",
+			"hole": "La voiture est tombée dans un trou",
+			"wall": "La voiture a foncée dans un mur",
+			"connect_car": {
+				"title": "Connecter un vrai ALIVEcar",
+				"label": "Identifiant du ALIVEcar",
+				"id": "123",
+				"button": "Se connecter avec le vrai ALIVEcar"
+			}
+		}
+	},
+	"cmd": {
+		"clear": "Effacer les lignes"
 	}
 }

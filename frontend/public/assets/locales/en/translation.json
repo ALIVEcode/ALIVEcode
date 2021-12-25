@@ -355,5 +355,34 @@
 	},
 	"cmd": {
 		"clear": "Clear lines"
+	},
+	"user":{
+		"quiz": "Quiz :",
+		"status": "Status :",
+		"posts": "Posts :",
+		"reward": "Reward :",
+		"rank": "Rank :",
+		"rewardTitle": "Reward"
+	},
+	"simulation": {
+		"modal": {
+			"retry": "Retry?",
+			"continue": "Continue",
+			"lose": "Better luck next time!",
+			"win": "Nicely done! 🎉",
+			"water": "The car fell in water",
+			"lava": "The car fell in lava",
+			"hole": "The car fell in a hole",
+			"wall": "The car smashed in a wall",
+			"connect_car": {
+				"title": "Connect a real ALIVEcar",
+				"label": "Identifier of the ALIVEcar",
+				"id": "123",
+				"button": "Connect with the real ALIVEcar"
+			}
+		}
+	},
+	"cmd": {
+		"clear": "Clear lines"
 	}
 }

@@ -34,6 +34,12 @@ import ASBuiltinsDocs from '../../Components/AliveScriptComponents/ASDocs/ASBuil
 import MDEditor from '../../Components/CourseComponents/MDEditor/MDEditor';
 import { LEVEL_TYPE } from '../../Models/Level/level.entity';
 import ActivityEditor from '../../Components/CourseComponents/MDEditor/ActivityEditor';
+import Forum from '../../Pages/Forum/Forum';
+import QuizHome from '../../Pages/Quiz/QuizHome/QuizHome';
+import QuizCategory from '../../Pages/Quiz/QuizCategory/QuizCategory';
+import QuizCreate from '../../Pages/Quiz/QuizCreate/QuizCreate';
+import CategoriesForum from '../../Pages/Forum/CategoriesForum';
+import Chat from '../../Pages/Chat/Chat';
 
 type component =
 	| React.ComponentType<RouteComponentProps<any>>
@@ -187,6 +193,33 @@ const useRoutes = () => {
 			exact: true,
 			component: ActivityEditor,
 		},
+		forum: {
+			path: '/forum',
+			component: Forum,
+			adminOnly: true,
+		},
+		categoriesForum: {
+			path: '/categoriesForum',
+			component: CategoriesForum,
+			adminOnly: true,
+		},
+		quiz: {
+			path: '/quiz',
+			exact: true,
+			component: QuizHome,
+			adminOnly: true,
+		},
+		quiz_category: {
+			path: '/quiz/category/:id',
+			component: QuizCategory,
+			adminOnly: true,
+		},
+		// Only for testing, place in auth Professor in production.
+		quiz_create: {
+			path: '/quiz/create',
+			component: QuizCreate,
+			adminOnly: true,
+		},
 	});
 
 	const auth_routes = asAuthRoutes(SignIn, {
@@ -219,6 +252,12 @@ const useRoutes = () => {
 		account: {
 			path: '/account',
 			component: AccountPage,
+		},
+		chat: {
+			path: '/chat',
+			exact: true,
+			component: Chat,
+			adminOnly: true,
 		},
 		iot_dashboard: {
 			path: '/iot/dashboard',

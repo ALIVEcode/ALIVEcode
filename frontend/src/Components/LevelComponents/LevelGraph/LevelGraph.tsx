@@ -14,8 +14,8 @@ import React from 'react';
  * @returns the graph itself.
  */
 const LevelGraph = React.memo((props: LevelGraphProps) => {
-	Chart.defaults.font.size = 12;
-	Chart.defaults.font.weight = 'bold';
+	// Chart.defaults.font.size = 12;
+	// Chart.defaults.font.weight = 'bold';
 	Chart.defaults.color = 'black';
 
 	return (

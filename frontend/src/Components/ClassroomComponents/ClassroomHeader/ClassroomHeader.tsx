@@ -47,7 +47,7 @@ const ClassroomHeader = ({ classroom }: ClassroomHeaderProps) => {
 				<Col lg id="classroom-title">
 					<h2>{classroom.name}</h2>
 					<h5>
-						<Badge variant="primary">{prettyField(t('msg.professor'))}</Badge>{' '}
+						<Badge>{prettyField(t('msg.professor'))}</Badge>{' '}
 						{classroom.creator.getDisplayName()}
 					</h5>
 				</Col>

@@ -30,6 +30,16 @@ import { LoggerModule } from './admin/loger/loger.module';
 import { MyLogger } from './admin/loger/logger';
 import { CarModule } from './socket/carSocket/carSocket.module';
 import { IoTModule } from './socket/iotSocket/iotSocket.module';
+import { QuizzesModule } from './models/social/quizzes/quizzes.module';
+import { PostModule } from './models/social/post/post.module';
+import { MulterModule } from '@nestjs/platform-express';
+import { CategoriesSubjectsModule } from './models/social/categories-subjects/categories-subjects.module';
+import { ServeStaticModule } from '@nestjs/serve-static/dist/serve-static.module';
+import { join } from 'path';
+import { ResultsModule } from './models/social/results/results.module';
+import { MessagesModule } from './models/social/messages/messages.module';
+import { ChatModule } from './socket/chatSocket/chatSocket.module';
+import { TopicsModule } from './models/social/topics/topics.module';
 
 adminjs.registerAdapter({ Database, Resource });
 
@@ -57,6 +67,13 @@ adminjs.registerAdapter({ Database, Resource });
         },
       }),
     }),
+    MulterModule.register({
+        dest: 'images/uploads',
+      }), 
+      ServeStaticModule.forRoot({
+        rootPath: join(__dirname, '../../images'),
+    }),
+
     UserModule,
     ClassroomModule,
     LevelModule,
@@ -68,6 +85,14 @@ adminjs.registerAdapter({ Database, Resource });
     MaintenanceModule,
     AsScriptModule,
     CarModule,
+    QuizzesModule,
+    PostModule,
+    CategoriesSubjectsModule,
+    ResultsModule,
+    MessagesModule, 
+    ChatModule,
+    CarModule,
+    TopicsModule
   ],
   controllers: [AppController],
   providers: [AppService, MaintenanceService, UserService],

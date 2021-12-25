@@ -19,6 +19,7 @@ code {
   word-wrap: break-word !important;
 }
 
+/*
 .card {
   border-radius: 15px;
 }
@@ -66,4 +67,4 @@ code {
 
 .card:hover .card-body span {
   background-color: var(--third-color);
-}
+}*/

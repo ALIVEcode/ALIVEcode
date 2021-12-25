@@ -17,9 +17,13 @@ import { IoTObject } from './Iot/IoTobject.entity';
 import { QueryDTO } from '../../../backend/src/models/level/dto/query.dto';
 import { Activity } from './Course/activity.entity';
 import { Maintenance } from './Maintenance/maintenance.entity';
+import { Quiz } from './Social/quiz.entity';
+import { Result } from './Social/result.entity';
 import { CompileDTO } from './ASModels';
 import { AsScript } from './AsScript/as-script.entity';
 import { LevelIoT } from './Level/levelIoT.entity';
+import { Post } from './Social/post.entity';
+import {Topics} from './Social/topics.entity'
 
 type urlArgType<S extends string> = S extends `${infer _}:${infer A}/${infer B}`
 	? A | urlArgType<B>
@@ -127,6 +131,9 @@ const api = {
 			iot: {
 				getProjects: apiGet('users/iot/projects', IoTProject, true),
 				getObjects: apiGet('users/iot/objects', IoTObject, true),
+			},
+			social:{
+				getResults: apiGet('users/quizzes/results', Result, true)
 			},
 			//get: apiGetter('users', User),
 			getClassrooms: apiGet('users/:id/classrooms', Classroom, true),
@@ -270,6 +277,38 @@ const api = {
 				});
 			},
 		},
+
+		posts:{
+			all: apiGet('posts', Post, true),
+			get: apiGet('posts/:id/', Post, false),
+			findandcount: apiCreate('posts/findandcount', Post),
+			create: apiCreate('posts', Post),
+			delete: apiDelete('posts/:id'),
+		
+		},
+		topics:{
+			all: apiGet('topics', Topics, true),
+			get: apiGet('topics/:id/', Topics, false),
+			create: apiCreate('topics', Topics),
+			delete: apiDelete('topics/:id'),
+		
+		},
+		quiz:{
+			all: apiGet('quizzes', Quiz, true),
+			get: apiGet('quizzes/:id/', Quiz, false),
+			create: apiCreate('quizzes', Quiz),
+			delete: apiDelete('quizzes/:id'),
+
+		},
+		results:{
+			all: apiGet('results', Result, true),
+			get: apiGet('results/:id/', Result, false),
+			findandcount: apiCreate('results/findandcount', Result),
+			create: apiCreate('results', Result),
+			delete: apiDelete('results/:id'),
+			getresultuser : apiGet('results/user', Result, true),
+		
+		}
 	},
 	as: {
 		async compile(data: CompileDTO) {

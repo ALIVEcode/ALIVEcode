@@ -11,6 +11,8 @@ import { IoTProjectEntity } from '../iot/IoTproject/entities/IoTproject.entity';
 import { IoTObjectEntity } from '../iot/IoTobject/entities/IoTobject.entity';
 import { LevelEntity } from '../level/entities/level.entity';
 import { LevelProgressionEntity } from '../level/entities/levelProgression.entity';
+import { Quiz } from '../social/quizzes/entities/quiz.entity';
+import { Result } from '../social/results/entities/result.entity';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import { LevelProgressionEntity } from '../level/entities/levelProgression.entit
       IoTObjectEntity,
       LevelEntity,
       LevelProgressionEntity,
+      Quiz,
+      Result
     ]),
   ],
   exports: [TypeOrmModule],

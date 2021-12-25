@@ -935,19 +935,19 @@ export const sketch = s => {
 				s.selectedCar = (s.selectedCar + 1) % s.cars.length;
 			}
 			// W
-			else if (s.keyCode === 87) {
+			else if (s.keyCode === 83) {
 				s.cars[s.selectedCar].dir.y = 1;
 			}
 			// S
-			else if (s.keyCode === 83) {
+			else if (s.keyCode === 88) {
 				s.cars[s.selectedCar].dir.y = -1;
 			}
 			// A
-			else if (s.keyCode === 65) {
+			else if (s.keyCode === 90) {
 				s.cars[s.selectedCar].dir.x = -1;
 			}
 			// D
-			else if (s.keyCode === 68) {
+			else if (s.keyCode === 67) {
 				s.cars[s.selectedCar].dir.x = 1;
 			}
 		}
@@ -993,19 +993,19 @@ export const sketch = s => {
 
 		if (s.carController) {
 			// W
-			if (s.keyCode === 87 && s.cars[s.selectedCar].dir.y > 0) {
+			if (s.keyCode === 83 && s.cars[s.selectedCar].dir.y > 0) {
 				s.cars[s.selectedCar].dir.y = 0;
 			}
 			// S
-			else if (s.keyCode === 83 && s.cars[s.selectedCar].dir.y < 0) {
+			else if (s.keyCode === 88 && s.cars[s.selectedCar].dir.y < 0) {
 				s.cars[s.selectedCar].dir.y = 0;
 			}
 			// A
-			else if (s.keyCode === 65 && s.cars[s.selectedCar].dir.x < 0) {
+			else if (s.keyCode === 90 && s.cars[s.selectedCar].dir.x < 0) {
 				s.cars[s.selectedCar].dir.x = 0;
 			}
 			// D
-			else if (s.keyCode === 68 && s.cars[s.selectedCar].dir.x > 0) {
+			else if (s.keyCode === 67 && s.cars[s.selectedCar].dir.x > 0) {
 				s.cars[s.selectedCar].dir.x = 0;
 			}
 		}

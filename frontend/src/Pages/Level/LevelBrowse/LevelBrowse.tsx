@@ -15,6 +15,9 @@ import api from '../../../Models/api';
 const LevelBrowse = (props: LevelBrowseProps) => {
 	const [browsingResult, setBrowsingResult] =
 		useState<BrowsingResults<Level>>();
+	console.log(browsingResult);
+	console.log('coucou2' + setBrowsingResult);
+
 	const levels = browsingResult?.results;
 
 	return (

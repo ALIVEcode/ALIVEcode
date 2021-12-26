@@ -1,6 +1,5 @@
 import { LevelGraphProps, StyledLevelGraph } from './LevelGraphTypes';
 import { Scatter } from 'react-chartjs-2';
-import { Chart } from 'react-chartjs-2';
 import React from 'react';
 
 /**
@@ -16,11 +15,11 @@ import React from 'react';
 const LevelGraph = React.memo((props: LevelGraphProps) => {
 	// Chart.defaults.font.size = 12;
 	// Chart.defaults.font.weight = 'bold';
-	Chart.defaults.color = 'black';
 
 	return (
 		<StyledLevelGraph className="graph-holder ">
 			<Scatter
+				color="black"
 				className="graph"
 				data={props.data}
 				options={{

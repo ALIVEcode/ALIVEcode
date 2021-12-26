@@ -7,22 +7,16 @@ import api from '../../../Models/api';
 import { Category } from '../../../Models/Quiz/categories-quiz.entity';
 import { Quiz } from '../../../Models/Quiz/quiz.entity';
 import { QuizForm } from '../../../Models/Quiz/quizForm.entity';
-import { QuizCategoryProps } from '../QuizCategory/Category';
-import { useHistory } from 'react-router';
+import useRoutes from '../../../state/hooks/useRoutes';
+import { useNavigate } from 'react-router-dom';
 
-const QuizCreate = (props: QuizCategoryProps) => {
-	const history = useHistory();
-
-	async function postQuiz(data: QuizForm) {
-		const response = await api.db.quiz.create(data);
-		console.log(response);
-		history.push(`/quiz/category/${data.category.id}`);
-	}
-
+const QuizCreate = () => {
+	const navigate = useNavigate();
+	const { routes } = useRoutes();
 	const [categories, setCategories] = useState<Category[]>([]);
-
 	const { register, handleSubmit } = useForm<QuizForm>();
 	const onSubmit: SubmitHandler<Quiz> = data => postQuiz(data);
+
 	useEffect(() => {
 		const getCategories = async () => {
 			const data = await api.db.quiz.categories.all({});
@@ -30,6 +24,16 @@ const QuizCreate = (props: QuizCategoryProps) => {
 		};
 		getCategories();
 	}, []);
+
+	const postQuiz = async (data: QuizForm) => {
+		await api.db.quiz.create(data);
+		navigate(
+			routes.public.quiz_category.path.replace(
+				':id',
+				data.category.id.toString(),
+			),
+		);
+	};
 
 	return (
 		<div>

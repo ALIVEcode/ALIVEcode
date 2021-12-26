@@ -2,13 +2,13 @@ import Link from '../../../Components/UtilsComponents/Link/Link';
 
 import VoitureGIF from '../../../assets/images/Voiture.gif';
 import FillContainer from '../../../Components/UtilsComponents/FillContainer/FillContainer';
-import { useHistory } from 'react-router';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { useTranslation } from 'react-i18next';
 import { useContext } from 'react';
 import { UserContext } from '../../../state/contexts/UserContext';
 import { formatDate } from '../../../Types/formatting';
 import { NotFound } from '../NotFound/NotFound';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Page that is displayed when the requested url cannot be reach due to maintenance
@@ -16,7 +16,7 @@ import { NotFound } from '../NotFound/NotFound';
  * @author MoSk3
  */
 export const MaintenanceError = () => {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const { routes } = useRoutes();
 	const { t } = useTranslation();
 	const { maintenance } = useContext(UserContext);
@@ -35,7 +35,7 @@ export const MaintenanceError = () => {
 				</h2>
 				<img src={VoitureGIF} alt="Voiture ALIVE" />
 				<div>
-					<Link onClick={() => history.goBack()} dark bold>
+					<Link onClick={() => navigate(-1)} dark bold>
 						{t('error.back')}
 					</Link>
 					<br />

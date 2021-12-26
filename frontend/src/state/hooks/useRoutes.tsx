@@ -1,4 +1,4 @@
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteProps, useNavigate } from 'react-router-dom';
 import { Professor, Student } from '../../Models/User/user.entity';
 import Classroom from '../../Pages/Classroom/Classroom';
 import Course from '../../Pages/Course/Course';
@@ -26,29 +26,26 @@ import LevelBrowse from '../../Pages/Level/LevelBrowse/LevelBrowse';
 import LevelList from '../../Pages/Level/LevelList/LevelList';
 import LevelFormMenu from '../../Pages/Level/LevelFormMenu/LevelFormMenu';
 import Test from '../../Pages/Test/Test';
-import { useHistory } from 'react-router';
 import ASDocs from '../../Components/AliveScriptComponents/ASDocs/ASDocs';
 import { MaintenanceError } from '../../Pages/Errors/MaintenanceError/MaintenanceError';
 import MaintenanceMenu from '../../Pages/SiteStatus/MaintenanceMenu/MaintenanceMenu';
 import ASBuiltinsDocs from '../../Components/AliveScriptComponents/ASDocs/ASBuiltinsDocs';
 import ActivityEditor from '../../Components/CourseComponents/MDEditor/ActivityEditor';
-import Forum from '../../Pages/Forum/Forum';
+import ForumHome from '../../Pages/Forum/ForumHome/ForumHome';
 import QuizHome from '../../Pages/Quiz/QuizHome/QuizHome';
 import QuizCategory from '../../Pages/Quiz/QuizCategory/QuizCategory';
 import QuizCreate from '../../Pages/Quiz/QuizCreate/QuizCreate';
 import QuizEdit from '../../Pages/Quiz/QuizEdit/QuizEdit';
-import QuizPlay from '../../Pages/Quiz/PlayQuiz/PlayQuiz';
-import CategoriesForum from '../../Pages/Forum/CategoriesForum';
-import SubjectList from '../../Pages/Forum/SubjectList';
-import FormQuestion from '../../Pages/Forum/FormQuestion';
-import DetailsQuestion from '../../Pages/Forum/DetailsQuestion';
-import SearchForum from '../../Pages/Forum/SearchForum';
+import QuizPlay from '../../Pages/Quiz/QuizPlay/QuizPlay';
+import ForumCategories from '../../Pages/Forum/ForumCategories/ForumCategories';
+import ForumSubjectList from '../../Pages/Forum/ForumSubjectList/ForumSubjectList';
+import ForumFormQuestion from '../../Pages/Forum/ForumFormQuestion/ForumFormQuestion';
+import ForumPost from '../../Pages/Forum/ForumPost/ForumPost';
+import ForumSearch from '../../Pages/Forum/ForumSearch/ForumSearch';
 import Chat from '../../Pages/Chat/Chat';
 import { LEVEL_TYPE } from '../../Models/Level/level.entity';
 
-type component =
-	| React.ComponentType<RouteComponentProps<any>>
-	| React.ComponentType<any>;
+type component = React.ComponentType<RouteProps> | React.ComponentType<any>;
 
 export interface Route {
 	path: string;
@@ -72,7 +69,7 @@ export interface RoutesGroup<T extends Route> {
 
 const useRoutes = () => {
 	const { user, maintenance } = useContext(UserContext);
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	const asRoutes = <T extends RoutesGroup<Route>>(routeGroup: T): T => {
 		Object.values(routeGroup).forEach(route => {
@@ -195,15 +192,11 @@ const useRoutes = () => {
 		},
 		question: {
 			path: '/forum/post/:id',
-			component: DetailsQuestion,
+			component: ForumPost,
 		},
-		subjectList: {
+		subject_list: {
 			path: '/forum/subjectList/:id',
-			component: SubjectList,
-		},
-		searchForum: {
-			path: '/forum/searchForum/:id',
-			component: SearchForum,
+			component: ForumSubjectList,
 		},
 		album: {
 			path: '/album-test',
@@ -213,12 +206,18 @@ const useRoutes = () => {
 		},
 		forum: {
 			path: '/forum',
-			component: Forum,
+			component: ForumHome,
+			exact: true,
 			adminOnly: true,
 		},
-		categoriesForum: {
-			path: '/categoriesForum',
-			component: CategoriesForum,
+		forum_search: {
+			path: '/forum/search',
+			component: ForumSearch,
+			adminOnly: true,
+		},
+		forum_categories: {
+			path: '/forum/categories',
+			component: ForumCategories,
 			adminOnly: true,
 		},
 		quiz: {
@@ -341,9 +340,9 @@ const useRoutes = () => {
 			component: QuizEdit,
 			adminOnly: true,
 		},
-		formQuestion: {
+		form_question: {
 			path: '/formQuestion/forum',
-			component: FormQuestion,
+			component: ForumFormQuestion,
 		},
 	});
 
@@ -384,9 +383,9 @@ const useRoutes = () => {
 
 	return {
 		routes,
-		goTo: (path: string) => history.push(path),
+		goTo: (path: string) => navigate(path),
 		goToNewTab: (path: string) => window.open(path, '_blank'),
-		goBack: () => history.goBack(),
+		goBack: () => navigate(-1),
 	};
 };
 

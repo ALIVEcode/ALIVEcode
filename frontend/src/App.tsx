@@ -1,6 +1,6 @@
 import './App.css';
 import { RouterSwitch } from './Router/RouterSwitch/RouterSwitch';
-import { BrowserRouter as Router, useHistory } from 'react-router-dom';
+import { BrowserRouter as Router, useNavigate } from 'react-router-dom';
 import ALIVENavbar from './Components/MainComponents/Navbar/Navbar';
 import { UserContext } from './state/contexts/UserContext';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -23,7 +23,6 @@ import MaintenanceBar from './Components/SiteStatusComponents/MaintenanceBar/Mai
 import { Maintenance } from './Models/Maintenance/maintenance.entity';
 import openPlaySocket from './Pages/Level/PlaySocket';
 import { PlaySocket } from './Pages/Level/PlaySocket';
-
 type GlobalStyleProps = {
 	theme: Theme;
 };
@@ -88,7 +87,7 @@ const App = () => {
 	const { t } = useTranslation();
 	const alert = useAlert();
 
-	const history = useHistory();
+	const navigate = useNavigate();
 	const providerValue = useMemo(
 		() => ({ user, setUser, maintenance, playSocket }),
 		[user, setUser, maintenance, playSocket],
@@ -122,7 +121,7 @@ const App = () => {
 				if (!loadedUser) {
 					const loadedTheme = loadThemeFromCookies();
 					if (loadedTheme && loadedTheme !== theme) setTheme(loadedTheme);
-					return history.push(routes.non_auth.signin.path);
+					return navigate(routes.non_auth.signin.path);
 				}
 				const loadedTheme = loadThemeFromCookies();
 				if (loadedTheme && loadedTheme !== theme) setTheme(loadedTheme);

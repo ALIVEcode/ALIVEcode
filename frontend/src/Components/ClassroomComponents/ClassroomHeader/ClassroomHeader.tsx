@@ -5,7 +5,7 @@ import { useContext, useState } from 'react';
 import { UserContext } from '../../../state/contexts/UserContext';
 import { Professor } from '../../../Models/User/user.entity';
 import api from '../../../Models/api';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { useTranslation } from 'react-i18next';
 import { useAlert } from 'react-alert';
@@ -24,7 +24,7 @@ const ClassroomHeader = ({ classroom }: ClassroomHeaderProps) => {
 	const { user } = useContext(UserContext);
 	const { routes } = useRoutes();
 	const { t } = useTranslation();
-	const history = useHistory();
+	const navigate = useNavigate();
 	const alert = useAlert();
 	const [codeModalOpen, setCodeModalOpen] = useState(false);
 
@@ -35,7 +35,7 @@ const ClassroomHeader = ({ classroom }: ClassroomHeaderProps) => {
 				classroomId: classroom.id,
 				studentId: user.id,
 			});
-			history.push(routes.auth.dashboard.path);
+			navigate(routes.auth.dashboard.path);
 		} catch {
 			return alert.error(t('error.505'));
 		}

@@ -1,5 +1,4 @@
 import { LevelCardProps, StyledLevelCard } from './levelCardTypes';
-import { useHistory } from 'react-router';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { Badge } from 'react-bootstrap';
 import {
@@ -11,6 +10,7 @@ import LevelButton from './LevelButton/LevelButton';
 import { useContext } from 'react';
 import { UserContext } from '../../../state/contexts/UserContext';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Display of a level that contains all its informations
@@ -22,7 +22,7 @@ import { useTranslation } from 'react-i18next';
  * @author MoSk3
  */
 const LevelCard = ({ level, enterEdit }: LevelCardProps) => {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const { routes } = useRoutes();
 	const { user } = useContext(UserContext);
 	const { t } = useTranslation();
@@ -33,9 +33,9 @@ const LevelCard = ({ level, enterEdit }: LevelCardProps) => {
 				<div className="details-section">
 					<div className="level-name">{level.name}</div>
 					<div className="level-tags">
-						Tags: <Badge variant="success">{level.getTypeDisplay()}</Badge>
+						Tags: <Badge bg="success">{level.getTypeDisplay()}</Badge>
 						{level.tags.map((t, idx) => (
-							<Badge key={idx} variant="success">
+							<Badge key={idx} bg="success">
 								{t}
 							</Badge>
 						))}
@@ -49,7 +49,7 @@ const LevelCard = ({ level, enterEdit }: LevelCardProps) => {
 						{level.creator && level.creator.id === user?.id && (
 							<LevelButton
 								onClick={() =>
-									history.push(
+									navigate(
 										routes.auth.level_edit.path.replace(':levelId', level.id),
 									)
 								}
@@ -68,10 +68,10 @@ const LevelCard = ({ level, enterEdit }: LevelCardProps) => {
 						<LevelButton
 							onClick={() =>
 								enterEdit
-									? history.push(
+									? navigate(
 											routes.auth.level_edit.path.replace(':levelId', level.id),
 									  )
-									: history.push(
+									: navigate(
 											routes.auth.level_play.path.replace(':levelId', level.id),
 									  )
 							}

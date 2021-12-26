@@ -3,7 +3,6 @@ import axios, { AxiosError } from 'axios';
 import { useContext } from 'react';
 import { useAlert } from 'react-alert';
 import { FormSignInValues, SignInProps } from './signInTypes';
-import { useHistory } from 'react-router';
 import { UserContext } from '../../../state/contexts/UserContext';
 import FormContainer from '../../../Components/UtilsComponents/FormContainer/FormContainer';
 import { Form, InputGroup } from 'react-bootstrap';
@@ -14,6 +13,8 @@ import { User } from '../../../Models/User/user.entity';
 import { setAccessToken } from '../../../Types/accessToken';
 import useRoutes from '../../../state/hooks/useRoutes';
 import HttpStatusCode from '../../../Types/http-errors';
+import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router';
 
 /** 
  * Signin page that allows the user to connect to its account
@@ -26,7 +27,8 @@ const SignIn = (props: SignInProps) => {
 	const { setUser } = useContext(UserContext);
 	const { t } = useTranslation();
 	const { routes } = useRoutes();
-	const history = useHistory();
+	const navigate = useNavigate();
+	const location = useLocation();
 	const alert = useAlert();
 
 	const onSignIn = async (formValues: FormSignInValues) => {
@@ -41,7 +43,7 @@ const SignIn = (props: SignInProps) => {
 
 			setUser(user);
 
-			if(history.location.pathname === '/signin') history.push(routes.auth.dashboard.path);
+			if(location.pathname === '/signin') navigate(routes.auth.dashboard.path);
 			return alert.success(t('msg.auth.signin_success'));
 
 		} catch (e) {

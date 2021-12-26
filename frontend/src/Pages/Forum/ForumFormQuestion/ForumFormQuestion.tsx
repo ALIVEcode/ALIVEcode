@@ -1,24 +1,23 @@
-import CardContainer from "../../Components/UtilsComponents/CardContainer/CardContainer";
-import CenteredContainer from '../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
-import { Post } from '../../Models/Forum/post.entity';
+import CardContainer from "../../../Components/UtilsComponents/CardContainer/CardContainer";
+import CenteredContainer from '../../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
+import { Post } from '../../../Models/Forum/post.entity';
 import Form from 'react-bootstrap/esm/Form';
 import { Button } from 'react-bootstrap';
 import { SetStateAction, useContext, useEffect, useState } from 'react';
 import { plainToClass } from 'class-transformer';
-import api from '../../Models/api';
-import { CategorySubject } from '../../Models/Forum/categorySubject.entity';
-import { Subject } from '../../Models/Forum/subjects.entity';
+import api from '../../../Models/api';
+import { CategorySubject } from '../../../Models/Forum/categorySubject.entity';
+import { Subject } from '../../../Models/Forum/subjects.entity';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { formQuestionProps } from './forumFormQuestionTypes';
-import { UserContext } from '../../state/contexts/UserContext';
-import { useHistory } from 'react-router-dom';
+import { UserContext } from '../../../state/contexts/UserContext';
+import { useNavigate } from 'react-router-dom';
 
-const FormQuestion = (props: formQuestionProps) => {
+const ForumFormQuestion = () => {
 	const [category, setCategory] = useState<CategorySubject[]>([]);
 	const [subject, setSubject] = useState<Subject[]>([]);
 	const [categoryForm, setCategoryForm] = useState('');
 	const { user } = useContext(UserContext);
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	//get tous les champs du forum
 	const { register, handleSubmit } = useForm();
@@ -63,7 +62,7 @@ const FormQuestion = (props: formQuestionProps) => {
 
 		const response = await api.db.forum.createQuestion(data);
 		if (response) {
-			history.push('/forum');
+			navigate('/forum');
 		}
 	}
 
@@ -141,4 +140,4 @@ const FormQuestion = (props: formQuestionProps) => {
 	);
 };
 
-export default FormQuestion;
+export default ForumFormQuestion;

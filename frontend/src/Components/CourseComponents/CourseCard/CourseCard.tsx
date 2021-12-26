@@ -31,13 +31,11 @@ const CourseCard = ({ course }: CourseCardProps) => {
 					<div>
 						<h3>{course.name}</h3>
 						<h4>
-							<Badge variant="primary">{t('course.subject')}</Badge>
+							<Badge bg="primary">{t('course.subject')}</Badge>
 						</h4>
 						{course.getSubjectDisplay()}
 						<h4>
-							<Badge variant="primary">
-								{prettyField(t('msg.description'))}
-							</Badge>
+							<Badge bg="primary">{prettyField(t('msg.description'))}</Badge>
 						</h4>
 						<p className="mb-2">
 							{course.description

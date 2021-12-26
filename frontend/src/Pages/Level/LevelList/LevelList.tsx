@@ -6,7 +6,7 @@ import BrowsingMenu from '../../../Components/MainComponents/BrowsingMenu/Browsi
 import { BrowsingResults } from '../../../Components/MainComponents/BrowsingMenu/browsingMenuTypes';
 import api from '../../../Models/api';
 import { UserContext } from '../../../state/contexts/UserContext';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
 	LevelBrowseProps,
 	StyledLevelBrowse,
@@ -22,10 +22,10 @@ const LevelList = (props: LevelBrowseProps) => {
 		useState<BrowsingResults<Level>>();
 	const levels = browsingResult?.results;
 	const { user } = useContext(UserContext);
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	if (!user) {
-		history.push('/');
+		navigate('/');
 		return <></>;
 	}
 

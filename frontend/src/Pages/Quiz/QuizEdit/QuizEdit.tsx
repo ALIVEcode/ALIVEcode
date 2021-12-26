@@ -7,41 +7,47 @@ import api from '../../../Models/api';
 import { Category } from '../../../Models/Quiz/categories-quiz.entity';
 import { Quiz } from '../../../Models/Quiz/quiz.entity';
 import { QuizForm } from '../../../Models/Quiz/quizForm.entity';
-import { QuizCategoryProps } from '../QuizCategory/Category';
-import { useHistory } from 'react-router';
+import { useParams } from 'react-router';
 import { QuestionForm } from '../../../Models/Quiz/questionForm.entity';
 import { Answer } from '../../../Models/Quiz/answer.entity';
+import useRoutes from '../../../state/hooks/useRoutes';
+import { useNavigate } from 'react-router-dom';
 
-const QuizEdit = (props: QuizCategoryProps) => {
-	const history = useHistory();
+const QuizEdit = () => {
+	const navigate = useNavigate();
+	const { id } = useParams<{ id: string }>();
+	const { routes } = useRoutes();
 
-	async function updateQuiz(data: QuizForm) {
-		const response = await api.db.quiz.update(
+	const updateQuiz = async (data: QuizForm) => {
+		if (!id) return;
+		await api.db.quiz.update(
 			{
-				id: props.match.params.id,
+				id,
 			},
 			data,
 		);
-		console.log(response);
-		history.push(`/quiz/category/${data.category.id}`);
-	}
+		navigate(
+			routes.public.quiz_category.path.replace(
+				':id',
+				data.category.id.toString(),
+			),
+		);
+	};
 
-	async function createQuestion(data: QuestionForm) {
-		console.log('Create Question!');
+	const createQuestion = async (data: QuestionForm) => {
+		if (!id) return;
 		const quizObj = {
-			id: props.match.params.id,
+			id,
 		};
 		data.quiz = quizObj;
 		await api.db.question.create(data);
 		window.location.reload();
-	}
+	};
 
-	async function createAnswer(data: Answer) {
-		console.log('New Answer!');
-		const response = await api.db.answer.create(data);
-		console.log(response);
+	const createAnswer = async (data: Answer) => {
+		await api.db.answer.create(data);
 		window.location.reload();
-	}
+	};
 
 	const [categories, setCategories] = useState<Category[]>([]);
 	const [quiz, setQuiz] = useState<Quiz>();
@@ -56,25 +62,25 @@ const QuizEdit = (props: QuizCategoryProps) => {
 	const onSubmitNewQuestion: SubmitHandler<QuestionForm> = data =>
 		createQuestion(data);
 	const onSubmitNewAnswer: SubmitHandler<Answer> = data => createAnswer(data);
+
 	useEffect(() => {
+		if (!id) return;
 		const getCategories = async () => {
 			const data = await api.db.quiz.categories.all({});
 			setCategories(data.map((d: any) => plainToClass(Category, d)));
 		};
 		const getQuiz = async () => {
-			const response = await api.db.quiz.one({ id: props.match.params.id });
-			console.log(response);
+			const response = await api.db.quiz.one({ id });
 			setQuiz(plainToClass(Quiz, response));
 		};
 		getCategories();
 		getQuiz();
-	}, [props.match.params.id]);
+	}, [id]);
 
 	async function handleDeleteQuestion(id: any) {
 		const response = await api.db.question.delete({
 			id,
 		});
-		console.log(response);
 		if (response.status === 200) {
 			window.location.reload();
 		}
@@ -116,11 +122,6 @@ const QuizEdit = (props: QuizCategoryProps) => {
 									{...register('description')}
 								></Form.Control>
 							</Form.Group>
-							{
-								// Questions will follow
-								console.log(quiz?.questions)
-							}
-
 							<Button variant="primary" type="submit">
 								Update!
 							</Button>
@@ -139,7 +140,7 @@ const QuizEdit = (props: QuizCategoryProps) => {
 									{...registerQuestion('name')}
 								></Form.Control>
 							</Form.Group>
-							<Button type="alternative">Ajouter une Question!</Button>
+							<Button type="button">Ajouter une Question!</Button>
 						</Form>
 						<Form onSubmit={handleSubmitAnswer(onSubmitNewAnswer)}>
 							<br />
@@ -187,15 +188,12 @@ const QuizEdit = (props: QuizCategoryProps) => {
 									</Button>
 									<Table>
 										<tbody>
-											{question.answers.map(answer => {
-												console.log(answer);
-												return (
-													<tr>
-														<td>{answer.value}</td>
-														<td>{String(answer.is_good)}</td>
-													</tr>
-												);
-											})}
+											{question.answers.map((answer, idx) => (
+												<tr key={idx}>
+													<td>{answer.value}</td>
+													<td>{String(answer.is_good)}</td>
+												</tr>
+											))}
 										</tbody>
 									</Table>
 								</Card.Body>

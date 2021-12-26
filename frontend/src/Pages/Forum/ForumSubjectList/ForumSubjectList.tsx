@@ -1,30 +1,32 @@
 import { plainToClass } from "class-transformer";
 import { useEffect, useState } from "react";
 import { Card, Col, ListGroup, Row } from 'react-bootstrap';
-import CardContainer from '../../Components/UtilsComponents/CardContainer/CardContainer';
-import CenteredContainer from '../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
-import api from '../../Models/api';
-import { CategorySubject } from '../../Models/Forum/categorySubject.entity';
-import { Subject } from '../../Models/Forum/subjects.entity';
-import NavBarSocial from './NavbarSocial';
-import { SubjectProps } from './subjectTypes';
+import CardContainer from '../../../Components/UtilsComponents/CardContainer/CardContainer';
+import CenteredContainer from '../../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
+import api from '../../../Models/api';
+import { CategorySubject } from '../../../Models/Forum/categorySubject.entity';
+import { Subject } from '../../../Models/Forum/subjects.entity';
+import ForumNavbar from '../ForumNavbar/ForumNavbar';
 import { Link } from 'react-router-dom';
+import { useParams } from 'react-router';
 
-const SubjectList = (props: SubjectProps) => {
+const ForumSubjectList = () => {
 	const [category, setCategory] = useState<CategorySubject>();
 	const [subject, setSubject] = useState<Subject[]>([]);
+	const { id } = useParams<{ id: string }>();
 
 	useEffect(() => {
+		if (!id) return;
 		const getSubject = async () => {
 			const data = await api.db.forum.categories.getById({
-				id: props.match.params.id,
+				id,
 			});
 			const subjectdata = data.subjects;
 			setSubject(subjectdata.map((d: any) => plainToClass(Subject, d)));
 			setCategory(data);
 		};
 		getSubject();
-	}, [props.match.params.id]);
+	}, [id]);
 
 	return (
 		<div>
@@ -33,7 +35,7 @@ const SubjectList = (props: SubjectProps) => {
 				textAlign="center"
 				style={{ paddingLeft: '100px', paddingRight: '100px' }}
 			>
-				<NavBarSocial />
+				<ForumNavbar />
 				<CardContainer asRow title={'Liste des sujets de : ' + category?.name}>
 					<Row>
 						{subject.map((s, idx) => (
@@ -68,4 +70,4 @@ const SubjectList = (props: SubjectProps) => {
 	);
 };
 
-export default SubjectList;
+export default ForumSubjectList;

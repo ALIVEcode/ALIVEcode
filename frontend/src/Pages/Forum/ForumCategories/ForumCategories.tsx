@@ -1,12 +1,12 @@
 import { plainToClass } from "class-transformer";
 import { useEffect, useState } from "react";
-import CardContainer from '../../Components/UtilsComponents/CardContainer/CardContainer';
-import SmallCard from '../../Components/UtilsComponents/Cards/SmallCard/SmallCard';
-import CenteredContainer from '../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
-import api from '../../Models/api';
-import { CategorySubject } from '../../Models/Forum/categorySubject.entity';
+import CardContainer from '../../../Components/UtilsComponents/CardContainer/CardContainer';
+import SmallCard from '../../../Components/UtilsComponents/Cards/SmallCard/SmallCard';
+import CenteredContainer from '../../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
+import api from '../../../Models/api';
+import { CategorySubject } from '../../../Models/Forum/categorySubject.entity';
 
-const CategoriesForum = () => {
+const ForumCategories = () => {
 	const [category, setCategory] = useState<CategorySubject[]>([]);
 
 	useEffect(() => {
@@ -40,4 +40,4 @@ const CategoriesForum = () => {
 	);
 };
 
-export default CategoriesForum;
+export default ForumCategories;

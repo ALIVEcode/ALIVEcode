@@ -1,4 +1,3 @@
-import "dotenv/config";
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
@@ -17,7 +16,7 @@ import LoadingScreen from './Components/UtilsComponents/LoadingScreen/LoadingScr
 axios.defaults.baseURL = process.env.REACT_APP_BACKEND_URL;
 axios.defaults.withCredentials = true;
 axios.defaults.timeout = 5000;
-axios.defaults.headers = {
+axios.defaults.headers.common = {
 	'Content-Type': 'application/json',
 	accept: 'application/json',
 };

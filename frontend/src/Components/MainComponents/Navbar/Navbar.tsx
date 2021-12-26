@@ -1,8 +1,7 @@
 import { useContext } from 'react';
 import { NavbarProps } from './NavbarTypes';
 import { UserContext } from '../../../state/contexts/UserContext';
-import { useHistory } from 'react-router';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import './navbar.css';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
@@ -25,8 +24,7 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 	const { t } = useTranslation();
 	const { routes } = useRoutes();
 	const { theme, setTheme } = useContext(ThemeContext);
-
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	return (
 		<Navbar id="navbar" expand="lg">
@@ -46,31 +44,31 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 				<Nav className="mr-auto">
 					<Nav.Link
 						className="nav-link"
-						onClick={() => history.push(routes.auth.dashboard.path)}
+						onClick={() => navigate(routes.auth.dashboard.path)}
 					>
 						{t('home.navbar.section.dashboard')}
 					</Nav.Link>
 					<Nav.Link
 						className="nav-link"
-						onClick={() => history.push(routes.public.ai.path)}
+						onClick={() => navigate(routes.public.ai.path)}
 					>
 						{t('home.navbar.section.ai')}
 					</Nav.Link>
 					<Nav.Link
 						className="nav-link"
-						onClick={() => history.push(routes.public.iot.path)}
+						onClick={() => navigate(routes.public.iot.path)}
 					>
 						{t('home.navbar.section.iot')}
 					</Nav.Link>
 					<Nav.Link
 						className="nav-link"
-						onClick={() => history.push(routes.public.amc.path)}
+						onClick={() => navigate(routes.public.amc.path)}
 					>
 						{t('home.navbar.section.amc')}
 					</Nav.Link>
 					<Nav.Link
 						className="nav-link"
-						onClick={() => history.push(routes.public.about.path)}
+						onClick={() => navigate(routes.public.about.path)}
 					>
 						{t('home.navbar.section.about')}
 					</Nav.Link>
@@ -90,7 +88,7 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 						<li className="nav-item">
 							<div id="user" className="dropdown">
 								<NavDropdown
-									alignRight
+									align="end"
 									title={
 										<svg
 											version="1.1"
@@ -116,7 +114,7 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 									{user ? (
 										<>
 											<NavDropdown.Item
-												onClick={() => history.push(routes.auth.account.path)}
+												onClick={() => navigate(routes.auth.account.path)}
 											>
 												{t('msg.section.account')}
 											</NavDropdown.Item>
@@ -137,16 +135,12 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 									) : (
 										<>
 											<NavDropdown.Item
-												onClick={() =>
-													history.push(routes.non_auth.signin.path)
-												}
+												onClick={() => navigate(routes.non_auth.signin.path)}
 											>
 												{t('msg.auth.signin')}
 											</NavDropdown.Item>
 											<NavDropdown.Item
-												onClick={() =>
-													history.push(routes.non_auth.signup.path)
-												}
+												onClick={() => navigate(routes.non_auth.signup.path)}
 											>
 												{t('msg.auth.signup')}
 											</NavDropdown.Item>
@@ -167,7 +161,7 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 						<li className="nav-item">
 							<div id="user" className="dropdown">
 								<NavDropdown
-									alignRight
+									align="end"
 									title={
 										<svg
 											xmlns="http://www.w3.org/2000/svg"

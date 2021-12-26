@@ -5,28 +5,32 @@ import { Link } from 'react-router-dom';
 import CenteredContainer from '../../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
 import api from '../../../Models/api';
 import { Category } from '../../../Models/Quiz/categories-quiz.entity';
-import { QuizCategoryProps } from './Category';
+import { useParams } from 'react-router';
 
-const QuizCategory = (props: QuizCategoryProps) => {
+const QuizCategory = () => {
 	const [category, setCategory] = useState<Category>();
+	const { id } = useParams<{ id: string }>();
+
 	useEffect(() => {
+		if (!id) return;
 		const getCategory = async () => {
 			const data = await api.db.quiz.categories.one({
-				id: props.match.params.id,
+				id,
 			});
 			setCategory(plainToClass(Category, data));
 		};
 		getCategory();
-	}, [props.match.params.id]);
+	}, [id]);
 
-	async function handleDelete(id: any) {
+	const handleDelete = async (id: any) => {
+		if (!id) return;
 		const response = await api.db.quiz.delete({
 			id,
 		});
 		if (response.status === 200) {
 			window.location.reload();
 		}
-	}
+	};
 
 	return (
 		<div>
@@ -37,9 +41,6 @@ const QuizCategory = (props: QuizCategoryProps) => {
 			>
 				<Card>
 					<Card.Body>
-						{/*
-                            Hardcoded text will be replaced once backend is ready 
-                         */}
 						<Card.Title>{category?.name}</Card.Title>
 					</Card.Body>
 				</Card>

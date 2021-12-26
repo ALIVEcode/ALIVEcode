@@ -18,7 +18,7 @@ import LoadingScreen from '../../Components/UtilsComponents/LoadingScreen/Loadin
 import { LevelCode as LevelCodeModel } from '../../Models/Level/levelCode.entity';
 import LevelCode from './LevelCode/LevelCode';
 import api from '../../Models/api';
-import { useHistory, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import { UserContext } from '../../state/contexts/UserContext';
 import { LevelProgression } from '../../Models/Level/levelProgression';
 import { plainToClass } from 'class-transformer';
@@ -42,6 +42,7 @@ import { useForceUpdate } from '../../state/hooks/useForceUpdate';
 import { FORM_ACTION } from '../../Components/UtilsComponents/Form/formTypes';
 import { LevelIoT as LevelIoTModel } from '../../Models/Level/levelIoT.entity';
 import IoTProject from '../../Pages/IoT/IoTProject/IoTProject';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * This component is used to load any type of Level with an id or passed as a prop.
@@ -62,7 +63,7 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 	const [initialProgressionCode, setInitialProgressionCode] =
 		useState<string>('');
 	const alert = useAlert();
-	const history = useHistory();
+	const navigate = useNavigate();
 	const { routes } = useRoutes();
 	const { t } = useTranslation();
 	const userInputRef = useRef<any>();
@@ -101,7 +102,7 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 					fetchedLevel = await api.db.levels.get({ id: levelId });
 				} catch (err) {
 					alert.error('Niveau introuvable');
-					history.push('/');
+					navigate('/');
 					return;
 				}
 			}

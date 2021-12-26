@@ -51,15 +51,15 @@ const AccountPage = () => {
 											/>
 										</Row>
 										<Form onSubmit={handleSubmit(onSubmit)}>
-											<Form.Row>
+											<Row>
 												<input
 													type="file"
 													{...register('file', { required: true })}
 												/>
-											</Form.Row>
-											<Form.Row>
+											</Row>
+											<Row>
 												<button type="submit">upload</button>
-											</Form.Row>
+											</Row>
 										</Form>
 									</>
 								)}

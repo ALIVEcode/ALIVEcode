@@ -1,4 +1,4 @@
-import { Switch, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import useRoutes from '../../state/hooks/useRoutes';
 
 export const RouterSwitch = () => {
@@ -6,19 +6,18 @@ export const RouterSwitch = () => {
 	const { routes } = useRoutes();
 
 	return (
-		<Switch>
+		<Routes>
 			{Object.values(routes).map(route_group =>
 				Object.values(route_group).map(
 					({ path, component, exact }: any, idx) => (
 						<Route
-							exact={exact ?? false}
-							path={path}
-							component={component}
+							path={path + (path.endsWith('/') ? '' : '/') + (exact ? '' : '*')}
+							element={component}
 							key={idx}
 						/>
 					),
 				),
 			)}
-		</Switch>
+		</Routes>
 	);
 };

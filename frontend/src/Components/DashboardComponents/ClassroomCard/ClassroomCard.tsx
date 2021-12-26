@@ -31,13 +31,11 @@ const ClassroomCard = ({ classroom }: ClassRoomCardProps) => {
 					<div>
 						<h3>{classroom.name}</h3>
 						<h4>
-							<Badge variant="primary">{t('classroom.subject')}</Badge>
+							<Badge bg="primary">{t('classroom.subject')}</Badge>
 						</h4>
 						{classroom.getSubjectDisplay()}
 						<h4>
-							<Badge variant="primary">
-								{prettyField(t('msg.description'))}
-							</Badge>
+							<Badge bg="primary">{prettyField(t('msg.description'))}</Badge>
 						</h4>
 						<p className="mb-2">
 							{classroom.description

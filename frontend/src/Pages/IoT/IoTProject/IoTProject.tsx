@@ -6,7 +6,6 @@ import {
 	IOTPROJECT_INTERACT_RIGHTS,
 } from '../../../Models/Iot/IoTproject.entity';
 import api from '../../../Models/api';
-import { useHistory } from 'react-router-dom';
 import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
 import { UserContext } from '../../../state/contexts/UserContext';
@@ -22,6 +21,7 @@ import { useParams } from 'react-router';
 import IoTProjectPage from '../IoTProjectPage/IoTProjectPage';
 import IoTLevel from '../../Level/LevelIoT/LevelIoT';
 import { AsScript } from '../../../Models/AsScript/as-script.entity';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * IoTProject. On this page are all the components essential in the functionning of an IoTProject.
@@ -35,7 +35,7 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 	const projectRef = useRef<ProjectModel | null>(level?.project ?? null);
 	const project = projectRef.current;
 
-	const history = useHistory();
+	const navigate = useNavigate();
 	const alert = useAlert();
 	const { t } = useTranslation();
 	const { user } = useContext(UserContext);
@@ -58,7 +58,7 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 				projectRef.current = project;
 				forceUpdate();
 			} catch (err) {
-				history.push('/');
+				navigate('/');
 				return alert.error(t('error.not_found', { obj: t('msg.course') }));
 			}
 		};

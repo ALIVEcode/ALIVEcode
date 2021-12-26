@@ -1,6 +1,5 @@
 import ClassroomHeader from "../../Components/ClassroomComponents/ClassroomHeader/ClassroomHeader"
 import CardContainer from '../../Components/UtilsComponents/CardContainer/CardContainer';
-import { ClassroomProps } from './classroomTypes';
 import { Row, Container, Badge } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Col } from 'react-bootstrap';
@@ -15,8 +14,9 @@ import { UserContext } from '../../state/contexts/UserContext';
 import { prettyField } from '../../Types/formatting';
 import useRoutes from '../../state/hooks/useRoutes';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { useHistory } from 'react-router-dom';
 import CourseCard from '../../Components/CourseComponents/CourseCard/CourseCard';
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 const StyledDiv = styled.div`
 	.classroom-content {
@@ -32,19 +32,21 @@ const StyledDiv = styled.div`
  * @param id (as a url parameter)
  * @returns tsx element
  */
-const Classroom = (props: ClassroomProps) => {
+const Classroom = () => {
 	const { t } = useTranslation();
 	const { user } = useContext(UserContext);
 	const [classroom, setClassroom] = useState<ClassroomModel>();
 	const { goBack, routes } = useRoutes();
-	const history = useHistory();
+	const navigate = useNavigate();
 	const alert = useAlert();
+	const { id } = useParams<{ id: string }>();
 
 	useEffect(() => {
+		if (!id) return;
 		const getClassroom = async () => {
 			try {
 				const classroom = await api.db.classrooms.get({
-					id: props.match.params.id,
+					id,
 				});
 				await classroom.getStudents();
 				await classroom.getCourses();
@@ -56,7 +58,7 @@ const Classroom = (props: ClassroomProps) => {
 		};
 		getClassroom();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [props.match.params.id]);
+	}, [id]);
 
 	if (!classroom || !user) {
 		return <LoadingScreen />;
@@ -73,10 +75,7 @@ const Classroom = (props: ClassroomProps) => {
 					height="60px"
 					icon={classroom.creator.id === user.id ? faPlus : undefined}
 					onIconClick={() =>
-						history.push({
-							pathname: routes.auth.create_course.path,
-							state: { classroom },
-						})
+						navigate(routes.auth.create_course.path, { state: { classroom } })
 					}
 				>
 					{classroom.courses && classroom.courses.length > 0 ? (
@@ -92,11 +91,11 @@ const Classroom = (props: ClassroomProps) => {
 						<CardContainer title={t('classroom.container.details.title')}>
 							<div>
 								<h4>
-									<Badge variant="primary">{t('classroom.subject')}</Badge>
+									<Badge bg="primary">{t('classroom.subject')}</Badge>
 								</h4>
 								{classroom.getSubjectDisplay()}
 								<h4>
-									<Badge variant="primary">
+									<Badge bg="primary">
 										{prettyField(t('msg.description'))}
 									</Badge>
 								</h4>

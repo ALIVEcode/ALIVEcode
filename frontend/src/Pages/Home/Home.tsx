@@ -1,6 +1,5 @@
 import { HomeProps } from './homeTypes';
 import Footer from '../../Components/MainComponents/Footer/Footer';
-import { useHistory } from 'react-router';
 import { Container } from 'react-bootstrap';
 import HomeCard from '../../Components/MainComponents/HomeCard/HomeCard';
 
@@ -13,6 +12,7 @@ import LRIMA from '../../assets/images/LRIMA.png';
 import TypeWriter from '../../Components/UtilsComponents/TypeWriter/TypeWriter';
 import useRoutes from '../../state/hooks/useRoutes';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Home page of ALIVEcode
@@ -20,7 +20,7 @@ import { useTranslation } from 'react-i18next';
  * @author MoSk3
  */
 const Home = (props: HomeProps) => {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const { t } = useTranslation();
 	const { routes } = useRoutes();
 
@@ -37,7 +37,7 @@ const Home = (props: HomeProps) => {
 
 				<div id="arrow">
 					<svg
-						onClick={() => history.push(routes.auth.dashboard.path)}
+						onClick={() => navigate(routes.auth.dashboard.path)}
 						data-name="arrow"
 						xmlns="http://www.w3.org/2000/svg"
 						viewBox="0 0 24 24"

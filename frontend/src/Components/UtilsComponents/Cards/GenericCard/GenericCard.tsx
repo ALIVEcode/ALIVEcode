@@ -1,6 +1,6 @@
 import { CardStyles, GenericCardProps } from './genericCardTypes';
 import styled from 'styled-components';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Generic card that can be styled as pleased
@@ -21,7 +21,7 @@ const GenericCard = ({
 	className,
 	onClick,
 }: GenericCardProps) => {
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	return (
 		<div
@@ -29,7 +29,7 @@ const GenericCard = ({
 			style={style}
 			onClick={() => {
 				if (onClick) onClick();
-				else if (to) history.push(to);
+				else if (to) navigate(to);
 			}}
 		>
 			<div className="padded-button">

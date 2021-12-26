@@ -13,11 +13,14 @@
 		"moduleResolution": "node",
 		"resolveJsonModule": true,
 		"isolatedModules": true,
-		"noEmit": true,
 		"jsx": "react-jsx",
 		"experimentalDecorators": true,
 		"strictPropertyInitialization": false,
-		"downlevelIteration": true
+		"downlevelIteration": true,
+		// Ensure that .d.ts files are created by tsc, but not .js files
+		"declaration": true,
+		"emitDeclarationOnly": true
+		// Ensure that Babel can safely transpile files in the TypeScript project
 	},
 	"include": [
 		"src",

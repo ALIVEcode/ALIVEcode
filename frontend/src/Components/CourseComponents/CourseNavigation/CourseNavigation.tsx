@@ -15,7 +15,6 @@ import { Section } from '../../../Models/Course/section.entity';
 import { plainToClass } from 'class-transformer';
 import { useTranslation } from 'react-i18next';
 import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
-import Button from '../../UtilsComponents/Button/Button';
 import IconButton from '../../DashboardComponents/IconButton/IconButton';
 import { faCheckCircle, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 

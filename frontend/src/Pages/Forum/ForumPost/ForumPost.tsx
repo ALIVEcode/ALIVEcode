@@ -1,32 +1,35 @@
 import { useContext, useEffect, useState } from "react";
 import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import CardContainer from '../../Components/UtilsComponents/CardContainer/CardContainer';
-import CenteredContainer from '../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
-import api from '../../Models/api';
-import { Comment } from '../../Models/Forum/comment.entity';
-import { Post } from '../../Models/Forum/post.entity';
-import { UserContext } from '../../state/contexts/UserContext';
-import { QuestionProps } from './questionTypes';
+import CardContainer from '../../../Components/UtilsComponents/CardContainer/CardContainer';
+import CenteredContainer from '../../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
+import api from '../../../Models/api';
+import { Comment } from '../../../Models/Forum/comment.entity';
+import { Post } from '../../../Models/Forum/post.entity';
+import { UserContext } from '../../../state/contexts/UserContext';
+import { useParams } from 'react-router';
 
-const DetailsQuestion = (props: QuestionProps) => {
+const ForumPost = () => {
 	const [post, setPost] = useState<Post>();
 	const [comments, setComments] = useState<Comment[]>([]);
 	const { user } = useContext(UserContext);
+	const { id } = useParams<{ id: string }>();
 
 	const { register, handleSubmit } = useForm();
 	const onSubmit: SubmitHandler<any> = data => sendForm(data);
 
 	useEffect(() => {
+		if (!id) return;
 		const getPost = async () => {
-			const data = await api.db.forum.getById({ id: props.match.params.id });
+			const data = await api.db.forum.getById({ id });
 			setPost(data);
 			setComments(data.comments);
 		};
 		getPost();
-	}, [props.match.params.id]);
+	}, [id]);
 
-	async function sendForm(data: Comment) {
+	const sendForm = async (data: Comment) => {
+		if (!id) return;
 		const date = new Date();
 		let string = date.toString();
 		string = string.substring(0, 24);
@@ -41,11 +44,11 @@ const DetailsQuestion = (props: QuestionProps) => {
 		const response = await api.db.forum.commentaires.createComment(data);
 
 		if (response) {
-			const data = await api.db.forum.getById({ id: props.match.params.id });
+			const data = await api.db.forum.getById({ id });
 			setPost(data);
 			setComments(data.comments);
 		}
-	}
+	};
 
 	return (
 		<div>
@@ -112,4 +115,4 @@ const DetailsQuestion = (props: QuestionProps) => {
 	);
 };
 
-export default DetailsQuestion;
+export default ForumPost;

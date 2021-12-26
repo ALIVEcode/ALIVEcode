@@ -2,7 +2,7 @@ import { IconButtonProps } from './iconButtonTypes';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 const StyledButton = styled.button`
 	background-color: var(--third-color);
@@ -29,23 +29,23 @@ const StyledButton = styled.button`
 const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
 	(props, ref) => {
 		const { onClick, to, ...other } = props;
-		const history = useHistory();
+		const navigate = useNavigate();
 		return (
 			<StyledButton
 				onClick={() => {
 					onClick && onClick();
-					to && history.push(to);
+					to && navigate(to);
 				}}
 				className="icon-button"
 				ref={ref}
 			>
 				{props.children && (
-					<a
-						href={to}
+					<label
+						onClick={() => to && navigate(to)}
 						style={{ margin: '2px', marginRight: '5px', cursor: 'pointer' }}
 					>
 						{props.children}
-					</a>
+					</label>
 				)}
 				<FontAwesomeIcon fixedWidth {...other} />
 			</StyledButton>

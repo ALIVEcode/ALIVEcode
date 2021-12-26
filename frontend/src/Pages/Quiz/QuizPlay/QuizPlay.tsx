@@ -2,20 +2,21 @@ import { useEffect, useState } from "react";
 import { Button, Card } from "react-bootstrap";
 import api from '../../../Models/api';
 import { Quiz } from '../../../Models/Quiz/quiz.entity';
-import { QuizCategoryProps } from '../QuizCategory/Category';
+import { useParams } from 'react-router';
 
-const PlayQuiz = (props: QuizCategoryProps) => {
+const QuizPlay = () => {
 	const [quiz, setQuiz] = useState<Quiz>();
 	const [score, setScore] = useState(0);
+	const { id } = useParams<{ id: string }>();
 
 	useEffect(() => {
-		async function getQuiz() {
-			const quiz = await api.db.quiz.one({ id: props.match.params.id });
-			console.log(quiz);
+		const getQuiz = async () => {
+			if (!id) return;
+			const quiz = await api.db.quiz.one({ id });
 			setQuiz(quiz);
-		}
+		};
 		getQuiz();
-	}, [props.match.params.id]);
+	}, [id]);
 
 	return (
 		<div className="container centered">
@@ -58,4 +59,4 @@ const PlayQuiz = (props: QuizCategoryProps) => {
 		</div>
 	);
 };
-export default PlayQuiz;
+export default QuizPlay;

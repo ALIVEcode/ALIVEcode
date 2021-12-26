@@ -1,8 +1,8 @@
 import { HomeCardProps, StyledHomeCard } from './homeCardTypes';
-import { useHistory } from 'react-router';
 import { Card, Row, Col } from 'react-bootstrap';
 import { useContext } from 'react';
 import { ThemeContext } from '../../../state/contexts/ThemeContext';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Cards in the home page that shows the different part of the site.
@@ -16,16 +16,16 @@ import { ThemeContext } from '../../../state/contexts/ThemeContext';
  * @author MoSk3
  */
 const HomeCard = ({ title, content, to, img, onClick }: HomeCardProps) => {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const { theme } = useContext(ThemeContext);
 
 	return (
 		<StyledHomeCard
 			onClick={() => {
-				onClick ? onClick() : to && history.push(to);
+				onClick ? onClick() : to && navigate(to);
 			}}
 		>
-			<Row noGutters>
+			<Row className="g-0">
 				<Col md={4}>
 					<img src={img} className="card-img" alt="..."></img>
 				</Col>

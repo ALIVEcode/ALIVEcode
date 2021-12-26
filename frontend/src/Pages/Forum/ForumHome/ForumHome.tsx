@@ -1,15 +1,15 @@
-import Button from '../../Components/UtilsComponents/Button/Button';
-import CenteredContainer from '../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
-import CardContainer from '../../Components/UtilsComponents/CardContainer/CardContainer';
+import Button from '../../../Components/UtilsComponents/Button/Button';
+import CenteredContainer from '../../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
+import CardContainer from '../../../Components/UtilsComponents/CardContainer/CardContainer';
 import { Card, Col, Row } from 'react-bootstrap';
-import NavBarSocial from './NavbarSocial';
-import { Post as PostModel } from '../../Models/Forum/post.entity';
+import ForumNavbar from '../ForumNavbar/ForumNavbar';
+import { Post as PostModel } from '../../../Models/Forum/post.entity';
 import { useEffect, useState } from 'react';
-import api from '../../Models/api';
+import api from '../../../Models/api';
 import { plainToClass } from 'class-transformer';
 import { Link } from 'react-router-dom';
 
-const Forum = () => {
+const ForumHome = () => {
 	const [post, setPost] = useState<PostModel[]>([]);
 
 	useEffect(() => {
@@ -28,7 +28,7 @@ const Forum = () => {
 				style={{ paddingLeft: '100px', paddingRight: '100px' }}
 			>
 				<div>
-					<NavBarSocial />
+					<ForumNavbar />
 				</div>
 
 				<Row>
@@ -155,4 +155,4 @@ const Forum = () => {
 	);
 };
 
-export default Forum;
+export default ForumHome;

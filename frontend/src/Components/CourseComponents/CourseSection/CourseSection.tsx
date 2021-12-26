@@ -1,6 +1,6 @@
 import { CourseSectionProps } from './courseSectionTypes';
 import { useState, useContext, useRef } from 'react';
-import { Collapse, Dropdown } from 'react-bootstrap';
+import { Collapse } from 'react-bootstrap';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import Link from '../../UtilsComponents/Link/Link';
 import { Activity } from '../../../Models/Course/activity.entity';
@@ -8,15 +8,9 @@ import { plainToClass } from 'class-transformer';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import { useTranslation } from 'react-i18next';
 import AlertConfirm from '../../UtilsComponents/Alert/AlertConfirm/AlertConfirm';
-import MoreOptionsButton from '../../UtilsComponents/Icon/MoreOptionsButton';
 import { Option, TDOption } from '../../UtilsComponents/Option/TDOption';
-import {
-	faBezierCurve,
-	faPenFancy,
-	faTrash,
-} from '@fortawesome/free-solid-svg-icons';
+import { faPenFancy, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faDropbox } from '@fortawesome/free-brands-svg-icons';
-import { useHistory } from 'react-router';
 /**
  * Component that shows the section in the navigation and handles different actions like adding in an activity onto the section
  *
@@ -41,7 +35,6 @@ const CourseSection = ({ section, editMode }: CourseSectionProps) => {
 	const [confirmSectionDelete, setConfirmSectionDelete] = useState(false);
 	const [confirmActivityDelete, setConfirmActivityDelete] = useState(false);
 	const currentActivity = useRef<Activity>();
-	const history = useHistory();
 
 	const toggleOpenSection = async () => {
 		if (!course) return;

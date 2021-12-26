@@ -8,7 +8,7 @@ import Cmd from '../../../Components/LevelComponents/Cmd/Cmd';
 import LevelAliveExecutor from './LevelAliveExecutor';
 import useCmd from '../../../state/hooks/useCmd';
 import { LevelAlive as LevelAliveModel } from '../../../Models/Level/levelAlive.entity';
-import GamepadAlive from '../../../Components/Gamepad/GamepadAlive';
+import GamepadAlive from '../../../Components/LevelComponents/Gamepad/GamepadAlive';
 import { useAlert } from 'react-alert';
 import LoadingScreen from '../../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
 import { LevelContext } from '../../../state/contexts/LevelContext';

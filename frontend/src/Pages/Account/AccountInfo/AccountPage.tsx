@@ -1,18 +1,14 @@
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { useContext, useEffect, useState } from 'react';
+import { useContext} from 'react';
 import { UserContext } from '../../../state/contexts/UserContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CenteredContainer from '../../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
-import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
 import CardContainer from '../../../Components/UtilsComponents/CardContainer/CardContainer';
 import { Form, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 import AboutCard from '../../../Components/UtilsComponents/Cards/AboutCard/AboutCard';
-import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
-import { Result } from '../../../Models/Social/result.entity';
-import api from '../../../Models/api';
 
 const StyledCenteredContainer = styled(CenteredContainer)`
 	padding: 0 10% 0 10%;
@@ -24,7 +20,6 @@ const StyledCenteredContainer = styled(CenteredContainer)`
 `;
 
 const AccountPage = () => {
-	const { t } = useTranslation();
 	const { user } = useContext(UserContext);
 	const { register, handleSubmit } = useForm();
 

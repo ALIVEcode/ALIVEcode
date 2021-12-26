@@ -1,6 +1,6 @@
-export type MessagesProp  = {
-    	username: string;
+export type MessagesProp = {
+	username: string;
 	text: string;
 	time: string;
 	image: string;
-}
+};

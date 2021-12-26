@@ -1,5 +1,4 @@
 import { Col, Row } from 'react-bootstrap';
-import CardContainer from '../../UtilsComponents/CardContainer/CardContainer';
 import Card from '../../UtilsComponents/Cards/Card/Card';
 import { useTranslation } from 'react-i18next';
 const NewActivityContentModal = () => {

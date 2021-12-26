@@ -1,9 +1,10 @@
-import controller from '../../assets/images/controller.png';
-import './gamepad.css';
+import controller from '../../../assets/images/controller.png';
 import { Col } from 'react-bootstrap';
 import styled from 'styled-components';
-import CenteredContainer from '../UtilsComponents/CenteredContainer/CenteredContainer';
+import CenteredContainer from '../../UtilsComponents/CenteredContainer/CenteredContainer';
 import React, { useEffect } from 'react';
+import { StyledGamepad } from './gamepadTypes';
+import { useState } from 'react';
 
 const StyledDiv = styled(Col)`
 	background-color: var(--primary-color);
@@ -26,7 +27,7 @@ const StyledCenteredContainer = styled(CenteredContainer)`
 // Hook
 const useKeyPress = (targetKey: any) => {
 	// State for keeping track of whether key is pressed
-	const [keyPressed, setKeyPressed] = React.useState(false);
+	const [keyPressed, setKeyPressed] = useState(false);
 	console.log(keyPressed);
 	// If pressed key is our target key then set to true
 	const downHandler = ({ key }: { key: any }) => {
@@ -63,7 +64,7 @@ const GamepadAlive = () => {
 	const isYPressed = useKeyPress('c');
 
 	return (
-		<>
+		<StyledGamepad>
 			<StyledCenteredContainer className="container">
 				<StyledDiv>
 					<img src={controller} alt="" />
@@ -106,7 +107,7 @@ const GamepadAlive = () => {
 					</button>
 				</StyledDiv>
 			</StyledCenteredContainer>
-		</>
+		</StyledGamepad>
 	);
 };
 

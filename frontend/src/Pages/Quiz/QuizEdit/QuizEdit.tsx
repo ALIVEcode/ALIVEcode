@@ -32,7 +32,7 @@ const QuizEdit = (props: QuizCategoryProps) => {
 			id: props.match.params.id,
 		};
 		data.quiz = quizObj;
-		const response = await api.db.question.create(data);
+		await api.db.question.create(data);
 		window.location.reload();
 	}
 

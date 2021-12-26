@@ -1,15 +1,13 @@
 import { useCallback, useMemo, useState } from 'react';
-import { DropdownButton, Form, ListGroup } from 'react-bootstrap';
+import { DropdownButton } from 'react-bootstrap';
 import {
-	BaseEditor,
 	createEditor,
 	Descendant,
 	Editor,
 	Transforms,
 	Element as SlateElement,
 } from 'slate';
-import { Slate, Editable, withReact, ReactEditor, useSlate } from 'slate-react';
-import Button from '../../UtilsComponents/Button/Button';
+import { Slate, Editable, withReact, useSlate } from 'slate-react';
 import {
 	Toolbar,
 	Button as EditorButton,

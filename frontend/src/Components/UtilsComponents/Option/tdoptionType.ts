@@ -1,9 +1,5 @@
 import { IconDefinition, SizeProp } from "@fortawesome/fontawesome-svg-core"
-import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome';
-import { JsxElement } from 'typescript';
-import { Dropdown } from 'react-bootstrap';
 import styled from 'styled-components';
-import { Popup } from 'reactjs-popup';
 
 export type TDOptionProps = {
 	children: JSX.Element | JSX.Element[];

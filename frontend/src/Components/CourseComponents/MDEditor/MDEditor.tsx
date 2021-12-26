@@ -7,11 +7,8 @@ import Button from '../../UtilsComponents/Button/Button';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
-import remarkBreaks from 'remark-breaks';
 
 import 'katex/dist/katex.min.css';
-import { remarkAlbum } from './remark-album';
-import { rehypeAlbum } from './rehype-album';
 
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';

@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 import { UserContext } from '../../../state/contexts/UserContext';
 import Messages from '../Messages/messages';
 import Picker, { IEmojiData } from 'emoji-picker-react';
-import './messageForm.css';
 type Users = {
 	name: string;
 };

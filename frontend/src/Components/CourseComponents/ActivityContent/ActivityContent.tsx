@@ -20,9 +20,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useTranslation } from 'react-i18next';
 import Modal from '../../UtilsComponents/Modal/Modal';
 import NewActivityContentModal from './NewActivityContentModal';
-import ActivityEditor from '../MDEditor/ActivityEditor';
-import { plainToClass } from 'class-transformer';
-import { Activity } from '../../../Models/Course/activity.entity';
 import ReactMarkdown from 'react-markdown';
 
 /**
@@ -58,6 +55,7 @@ const ActivityContent = (props: ActivityContentProps) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [activity?.content?.data]);
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const addContent = (content: any) => {
 		setContentLayout(layout =>
 			contentLayout.concat(

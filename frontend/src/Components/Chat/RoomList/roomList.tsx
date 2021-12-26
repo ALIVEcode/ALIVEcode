@@ -1,7 +1,6 @@
 import {RoomListProp} from './roomlistType' 
 import { useContext, useEffect, useState } from 'react';
 import { Card, Row } from 'react-bootstrap';
-import './roomlist.css';
 import { UserContext } from '../../../state/contexts/UserContext';
 import api from '../../../Models/api';
 import { Topics } from '../../../Models/Social/topics.entity';

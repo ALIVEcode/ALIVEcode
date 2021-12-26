@@ -35,6 +35,16 @@ const StyledButton = styled.div`
 	}
 `;
 
+/**
+ * Styled LevelButton
+ *
+ * @param {string} bgColor css background color
+ * @param {string} hoverBg css background color on hover
+ * @param {string} left css left spacing
+ * @param {() => void} onClick callback called when button is clicked
+ *
+ * @author MoSk3
+ */
 const LevelButton = (props: LevelButtonProps) => {
 	const ref = useRef<HTMLDivElement>(null);
 	const { left, bgColor, hoverBg, onClick, ...others } = props;

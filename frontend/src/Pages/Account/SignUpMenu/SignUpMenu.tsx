@@ -8,6 +8,11 @@ import ProfessorImg from '../../../assets/images/icons/teacher.png';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { useTranslation } from 'react-i18next';
 
+/**
+ * Page that gives the option to signup as a student or as a professor
+ *
+ * @author MoSk3
+ */
 const SignUpMenu = (props: SignUpMenuProps) => {
 	const { routes } = useRoutes();
 	const { t } = useTranslation();

@@ -6,6 +6,14 @@ import Link from '../../UtilsComponents/Link/Link';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { formatDate } from '../../../Types/formatting';
 
+/**
+ * Maintenance alert box at the bottom of the screen that appears when a maintenance is coming soon or ongoing.
+ *
+ * @param {Mainteannce} maintenance maintenance object;
+ * @param {() => void} onClose callback called when the maintenance box is closed
+ *
+ * @author MoSk3
+ */
 const MaintenanceBar = ({ maintenance, onClose }: MaintenanceBarProps) => {
 	const { t } = useTranslation();
 	const { routes } = useRoutes();

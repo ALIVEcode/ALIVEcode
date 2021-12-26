@@ -8,6 +8,18 @@ const StyledContainer = styled.div`
 	position: absolute;
 `;
 
+/**
+ * Container that auto adapts to a div or the whole page to fill it up
+ *
+ * @param {boolean} centered if the content should be centered
+ * @param {boolean} startAtTop if the component ignores the navbar and start at the top of the window
+ * @param {boolean} relative if the component should be relative
+ * @param {string} id id of the component
+ * @param {string} className react classNames of the component
+ * @param {any} style react styling
+ *
+ * @author MoSk3
+ */
 const FillContainer = ({
 	centered,
 	startAtTop,
@@ -33,6 +45,7 @@ const FillContainer = ({
 					top: '0',
 			  }
 			: {}),
+		...(relative ? { position: 'relative' } : {}),
 	};
 
 	useLayoutEffect(() => {
@@ -49,7 +62,7 @@ const FillContainer = ({
 						const navbar = document.getElementById('navbar');
 						if (navbar)
 							styledContainerRef.current.style.height =
-								window.innerHeight - navbar.clientHeight + 'px';
+								window.innerHeight - navbar.clientHeight - 2 + 'px';
 					}
 				}
 			}

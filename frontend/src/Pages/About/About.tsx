@@ -30,6 +30,11 @@ const StyledCenteredContainer = styled(CenteredContainer)`
 	}
 `;
 
+/**
+ * About page that shows all the members that contributed on the ALIVE project
+ *
+ * @author MoSk3
+ */
 const About = (props: AboutProps) => {
 	const { t } = useTranslation();
 

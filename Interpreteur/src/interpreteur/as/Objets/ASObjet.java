@@ -1,19 +1,20 @@
 package interpreteur.as.Objets;
 
 
+import interpreteur.as.erreurs.ASErreur;
+import interpreteur.as.erreurs.ASErreur.*;
+import interpreteur.ast.buildingBlocs.expressions.Type;
+import interpreteur.executeur.Coordonnee;
+import interpreteur.tokens.Token;
+
+import javax.lang.model.type.NullType;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import javax.lang.model.type.NullType;
-
-import interpreteur.as.erreurs.ASErreur;
 //import interpreteur.ast.buildingBlocs.expressions.Type;
-import interpreteur.ast.buildingBlocs.expressions.Type;
-import interpreteur.executeur.Coordonnee;
-import interpreteur.tokens.Token;
-import interpreteur.as.erreurs.ASErreur.*;
 
 
 /**
@@ -38,9 +39,12 @@ public interface ASObjet<T> {
         nombre(TypeBuiltin.entier, TypeBuiltin.decimal),
         texte,
         liste,
-        iterable(TypeBuiltin.texte, TypeBuiltin.liste),
+        dict,
+        iterable(TypeBuiltin.texte, TypeBuiltin.liste, TypeBuiltin.dict),
         booleen,
         nulType,
+        rien,
+        paire,
         fonctionType;
 
         private final TypeBuiltin[] aliases;
@@ -69,28 +73,10 @@ public interface ASObjet<T> {
         */
     }
 
-    interface Nombre extends ASObjet<Number> {
-        static boolean estNumerique(String txt) {
-            try {
-                var estDecimal = txt.contains(".");
-                if (estDecimal) Double.parseDouble(txt);
-                else Integer.parseInt(txt);
-                return true;
-            } catch (NumberFormatException err) {
-                return false;
-            }
-        }
-
-        @Override
-        default String obtenirNomType() {
-            return "nombre";
-        }
-    }
-
-    interface Iterable extends ASObjet<Object> {
+    interface Iterable<T> extends ASObjet<T> {
         boolean contient(ASObjet<?> element);
 
-        Iterable sousSection(int debut, int fin);
+        Iterable<T> sousSection(int debut, int fin);
 
         ASObjet<?> get(int index);
 
@@ -142,6 +128,11 @@ public interface ASObjet<T> {
             return true;
         }
 
+        /**
+         * applique le setter
+         *
+         * @param valeur
+         */
         public void changerValeur(ASObjet<?> valeur) {
             if (nouvelleValeurValide(valeur)) {
                 if (this.setter != null) {
@@ -202,10 +193,19 @@ public interface ASObjet<T> {
                     '}';
         }
 
-
         /* différentes manières de get la valeur stockée dans la variable */
         public ASObjet<?> getValeur() {
             return this.valeur;
+        }
+
+        /**
+         * by pass the setter
+         *
+         * @param valeur
+         */
+        public void setValeur(ASObjet<?> valeur) {
+            if (nouvelleValeurValide(valeur))
+                this.valeur = valeur;
         }
 
         public ASObjet<?> getValeurApresGetter() {
@@ -290,6 +290,7 @@ public interface ASObjet<T> {
         }
 
         public static void ajouterStructure(String nomStruct) {
+            if (nomStruct == null) return;
             structure += (structure.isBlank() ? "" : ".") + nomStruct;
         }
 
@@ -781,7 +782,7 @@ public interface ASObjet<T> {
         }
     }
 
-    class Texte implements Iterable {
+    class Texte implements Iterable<String> {
         private final String valeur;
 
         public Texte(Token valeur) {
@@ -827,7 +828,7 @@ public interface ASObjet<T> {
         }
 
         @Override
-        public Iterable sousSection(int debut, int fin) {
+        public Iterable<String> sousSection(int debut, int fin) {
             return new Texte(this.valeur.substring(debut, idxRelatif(Arrays.asList(this.arrayDeLettres()), fin)));
         }
 
@@ -864,41 +865,62 @@ public interface ASObjet<T> {
         }
     }
 
-    class Liste implements Iterable {
+    class Liste implements Iterable<Object> {
         private ArrayList<ASObjet<?>> valeur = new ArrayList<>();
 
         public Liste() {
         }
 
-        public Liste(ASObjet<?>[] valeurs) {
+        public Liste(ASObjet<?>... valeurs) {
             this.valeur = new ArrayList<>(Arrays.asList(valeurs));
-        }
-
-        public Liste(Liste liste) {
-            this.valeur = new ArrayList<>(liste.getValue());
+            aucuneClefDuplique();
         }
 
         public void ajouterElement(ASObjet<?> element) {
+            clefValideOrThrow(element);
             this.valeur.add(element);
         }
 
         public Liste ajouterTout(Liste elements) {
+            elements.getValue().forEach(this::clefValideOrThrow);
             this.valeur.addAll(elements.getValue());
             return this;
         }
 
-        public void retirerElement(int idx) {
-            this.valeur.remove(idxRelatif(this.valeur, idx));
+        public boolean estDict() {
+            return valeur.stream().allMatch(ASPaire.class::isInstance);
         }
 
+        public void clefValideOrThrow(ASObjet<?> nouvelElement) {
+            if (!(nouvelElement instanceof ASPaire nouvellePaire))
+                return;
+            if (valeur.stream().anyMatch(val -> val instanceof ASPaire paire && paire.clef().equals(nouvellePaire.clef()))) {
+                throw new ErreurClefDupliquee("La clef " + nouvellePaire.clef() + " existe d\u00E9j\u00e0 dans le dictionnaire ou la liste");
+            }
+        }
+
+        public void aucuneClefDuplique() {
+            var clefs = valeur.stream()
+                    .map(val -> val instanceof ASPaire paire ? paire.clef().getValue() : null)
+                    .filter(Objects::nonNull).toList();
+            if (clefs.stream().distinct().count() != clefs.size()) {
+                throw new ErreurClefDupliquee("Il y a au moins une clef dupliqu\u00E9e dans le dictionnaire ou la liste");
+            }
+        }
+
+        public void retirerElement(int idx) {
+            ASObjet<?> element = this.valeur.remove(idxRelatif(this.valeur, idx));
+        }
 
         public Liste remplacer(int idx, ASObjet<?> valeur) {
             this.valeur.set(idxRelatif(this.valeur, idx), valeur);
+            aucuneClefDuplique();
             return this;
         }
 
         public Liste remplacer(ASObjet<?> valeur, ASObjet<?> remplacement) {
             this.valeur.replaceAll(v -> v.equals(valeur) ? remplacement : v);
+            aucuneClefDuplique();
             return this;
         }
 
@@ -906,11 +928,21 @@ public interface ASObjet<T> {
             debut = idxRelatif(valeur, debut);
             fin = idxRelatif(valeur, fin);
             this.valeur = this.sousSection(0, debut).ajouterTout(remplacement).ajouterTout(this.sousSection(fin, this.taille())).getValue();
+            aucuneClefDuplique();
             return this;
         }
 
         public ArrayList<?> map(Function<ASObjet<?>, ?> mappingFunction) {
-            return this.valeur.stream().map(mappingFunction).collect(Collectors.toCollection(ArrayList::new));
+            var result = this.valeur.stream().map(mappingFunction).collect(Collectors.toCollection(ArrayList::new));
+            aucuneClefDuplique();
+            return result;
+        }
+
+        public ASObjet<?> get(Texte texte) {
+            return valeur.stream()
+                    .filter(val -> val instanceof ASPaire pair && pair.clef().equals(texte))
+                    .findFirst()
+                    .orElse(new Nul());
         }
 
         @Override
@@ -930,7 +962,9 @@ public interface ASObjet<T> {
 
         @Override
         public boolean contient(ASObjet<?> element) {
-            return this.valeur.contains(element);
+            return this.valeur.contains(element)
+                    ||
+                    (element instanceof Texte texte && this.valeur.stream().anyMatch(val -> val instanceof ASPaire pair && pair.clef().equals(texte)));
         }
 
         @Override
@@ -940,15 +974,21 @@ public interface ASObjet<T> {
 
         @Override
         public String toString() {
-            final char openingSymbol = '[';
-            final char closingSymbol = ']';
+            AtomicInteger nbPair = new AtomicInteger(0);
 
-            return openingSymbol +
-                    String.join(", ", this.valeur
-                            .stream()
-                            .map(e -> e instanceof Texte ? "\"" + e + "\"" : e.toString())
-                            .toArray(String[]::new))
-                    + closingSymbol;
+            String toString = String.join(", ", this.valeur
+                    .stream()
+                    .map(e -> {
+                        if (e instanceof Texte) return "\"" + e + "\"";
+                        else if (e instanceof ASPaire) nbPair.set(nbPair.get() + 1);
+                        return e.toString();
+                    })
+                    .toArray(String[]::new));
+
+            final char openingSymbol = nbPair.get() != taille() ? '[' : '{';
+            final char closingSymbol = nbPair.get() != taille() ? ']' : '}';
+
+            return openingSymbol + toString + closingSymbol;
         }
 
         @Override
@@ -963,7 +1003,7 @@ public interface ASObjet<T> {
 
         @Override
         public String obtenirNomType() {
-            return "liste";
+            return estDict() ? "dict" : "liste";
         }
 
         @Override

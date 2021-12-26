@@ -17,6 +17,7 @@ import { Post as Post_Table } from "src/models/social/post/entities/post.entity"
 import { Quiz } from 'src/models/social/quizzes/entities/quiz.entity';
 import { Result } from 'src/models/social/results/entities/result.entity';
 import { AsScriptEntity } from 'src/models/as-script/entities/as-script.entity';
+import Messages from 'src/models/social/messages/entities/messages.entity';
 
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
@@ -29,7 +30,7 @@ export class UserEntity extends BaseEntity {
   @Exclude({ toPlainOnly: true })
   @Length(6, 32)
   @IsNotEmpty()
-  @Matches(/^[A-Za-z0-9!@#\$&*~]*$/)
+  @Matches(/^[A-Za-z0-9!@#\\$&*~]*$/)
   password: string;
 
   @Column({ unique: true, nullable: false })
@@ -83,8 +84,12 @@ export class UserEntity extends BaseEntity {
   @OneToMany(() => Quiz, quiz => quiz.user)
   quiz: Quiz[];
 
-  @OneToMany(() => Result, result => result.user_id)
+  @OneToMany(() => Result, result => result.user, { cascade: true })
   result: Result[];
+
+  @OneToMany(() => Messages, message => message.creator, { cascade: true })
+  message: Messages[];
+  
   @Column({type:'varchar', default: ""})
-  avatar : string;
+  image : string;
 } 

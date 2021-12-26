@@ -1,6 +1,7 @@
 package interpreteur.ast.buildingBlocs.expressions;
 
 import interpreteur.as.Objets.ASObjet;
+import interpreteur.as.Objets.Nombre;
 import interpreteur.as.erreurs.ASErreur;
 import interpreteur.ast.buildingBlocs.Expression;
 import interpreteur.ast.buildingBlocs.programmes.Assigner;
@@ -40,17 +41,18 @@ public record UnaryOp(Expression<?> expression,
         ),
 
         PLUS(expr -> {
-            if (expr instanceof ASObjet.Nombre) {
+            if (expr instanceof Nombre) {
                 return expr;
             } else {
                 String nb = expr.getValue().toString();
-                try {
-                    boolean estDecimal = nb.contains(".");
-                    if (estDecimal) return new ASObjet.Decimal(Double.parseDouble(nb));
-                    else return new ASObjet.Entier(Integer.parseInt(nb));
-                } catch (NumberFormatException ignored) {
-                    throw new ASErreur.ErreurType("Il est impossible de convertir '" + nb + "' en nombre decimal");
-                }
+                return Nombre.parse(expr);
+                // obsolete try {
+                //     boolean estDecimal = nb.contains(".");
+                //     if (estDecimal) return new ASObjet.Decimal(Double.parseDouble(nb));
+                //     else return new ASObjet.Entier(Integer.parseInt(nb));
+                // } catch (NumberFormatException ignored) {
+                //     throw new ASErreur.ErreurType("Il est impossible de convertir '" + nb + "' en nombre decimal");
+                // }
             }
         }),
 

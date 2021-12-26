@@ -2,7 +2,13 @@ import Form from "../../../UtilsComponents/Form/Form"
 import { IOTOBJECT_LABEL } from '../../../../Models/Iot/IoTobject.entity';
 import { useAlert } from 'react-alert';
 import { IoTObjectCreateProps } from './iotObjectCreateProps';
+import { FORM_ACTION } from '../../../UtilsComponents/Form/formTypes';
 
+/**
+ * Form that creates in the database an IoTObject and returns it
+ *
+ * @author MoSk3
+ */
 const IoTObjectCreate = ({ onSubmit }: IoTObjectCreateProps) => {
 	const alert = useAlert();
 
@@ -14,20 +20,20 @@ const IoTObjectCreate = ({ onSubmit }: IoTObjectCreateProps) => {
 			}}
 			name="iot_object"
 			url="iot/objects"
-			action="POST"
+			action={FORM_ACTION.POST}
 			inputGroups={[
 				{
 					name: 'name',
 					required: true,
 					inputType: 'text',
 					minLength: 3,
-					maxLength: 25,
+					maxLength: 100,
 				},
 				{
 					name: 'description',
 					required: false,
 					inputType: 'text',
-					maxLength: 200,
+					maxLength: 500,
 				},
 				{
 					name: 'label',

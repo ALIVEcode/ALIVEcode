@@ -2,15 +2,11 @@ package interpreteur.as.modules;
 
 import interpreteur.as.Objets.ASObjet;
 import interpreteur.ast.buildingBlocs.expressions.Type;
+import interpreteur.executeur.Executeur;
 
-public class ModuleAst extends ASModule {
-
-    public ModuleAst(ASModuleManager moduleManager) {
-        super(moduleManager);
-    }
-
-    public void charger() {
-        moduleManager.ajouterModule("Ast", new ASObjet.Fonction[]{
+public class ModuleAst {
+    static ASModule charger(Executeur executeurInstance) {
+        return new ASModule(new ASObjet.Fonction[]{
             new ASObjet.Fonction("genererArbre", new ASObjet.Fonction.Parametre[] {
                     new ASObjet.Fonction.Parametre(new Type("texte"), "param", null)
             }, new Type("texte")) {

@@ -1,20 +1,13 @@
 package interpreteur.as;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-
-import interpreteur.as.erreurs.ASErreur.*;
-import interpreteur.as.Objets.ASObjet.Booleen;
-import interpreteur.as.Objets.ASObjet.Decimal;
-import interpreteur.as.Objets.ASObjet.Entier;
-import interpreteur.as.Objets.ASObjet.Nul;
-import interpreteur.as.Objets.ASObjet.Texte;
-import interpreteur.as.experimental.ASAstExperimental;
+import interpreteur.as.Objets.ASObjet.*;
+import interpreteur.as.erreurs.ASErreur.ErreurAssignement;
+import interpreteur.as.erreurs.ASErreur.ErreurInputOutput;
+import interpreteur.as.erreurs.ASErreur.ErreurSyntaxe;
+import interpreteur.as.erreurs.ASErreur.ErreurType;
 import interpreteur.ast.Ast;
-import interpreteur.ast.buildingBlocs.Programme;
-import interpreteur.ast.buildingBlocs.expressions.Argument;
 import interpreteur.ast.buildingBlocs.Expression;
+import interpreteur.ast.buildingBlocs.Programme;
 import interpreteur.ast.buildingBlocs.expressions.*;
 import interpreteur.ast.buildingBlocs.programmes.*;
 import interpreteur.executeur.Coordonnee;
@@ -23,6 +16,9 @@ import interpreteur.generateurs.ast.AstGenerator;
 import interpreteur.tokens.Token;
 
 import javax.lang.model.type.NullType;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
 
 
 /**
@@ -36,6 +32,7 @@ public class ASAst extends AstGenerator {
     private final Executeur executeurInstance;
 
     public ASAst(Executeur executeurInstance) {
+        reset();
         ajouterProgrammes();
         ajouterExpressions();
         this.executeurInstance = executeurInstance;
@@ -58,7 +55,7 @@ public class ASAst extends AstGenerator {
                         if (p.get(1) instanceof ValeurConstante valeurConstante && valeurConstante.eval() instanceof Texte texte) {
                             String msg = texte.getValue();
                             if (msg.equalsIgnoreCase("experimental")) {
-                                executeurInstance.setAst(new ASAstExperimental(executeurInstance));
+                                //executeurInstance.setAst(new ASAstExperimental(executeurInstance));
                                 return new Utiliser(new Var("experimental"), executeurInstance);
                             } else {
                                 throw new ErreurSyntaxe("Les noms de modules ne doivent pas \u00EAtre \u00E9crits avec des \" \" ou des ' '");
@@ -128,9 +125,9 @@ public class ASAst extends AstGenerator {
         ajouterProgramme("CONSTANTE expression {assignements} expression~"
                         + "CONSTANTE expression DEUX_POINTS expression {assignements} expression~"
                         + "VAR expression~"
-                        + "VAR expression DEUX_POINTS expression~"
-                        + "VAR expression DEUX_POINTS expression {assignements} expression~"
                         + "VAR expression {assignements} expression~"
+                        + "VAR expression DEUX_POINTS expression {assignements} expression~"
+                        + "VAR expression DEUX_POINTS expression~"
                         + "expression {assignements} expression",
                 new Ast<Programme>() {
                     @Override
@@ -189,7 +186,7 @@ public class ASAst extends AstGenerator {
                             // si la valeur de l'expression est une énumération d'éléments ex: 3, "salut", 4
                             // on forme une liste avec la suite d'éléments
                             if (p.get(idxValeur) instanceof CreerListe.Enumeration enumeration)
-                                p.set(idxValeur, enumeration.build());
+                                p.set(idxValeur, enumeration.buildCreerListe());
 
                             // on retourne l'objet Assigner
                             return new Declarer((Expression<?>) p.get(1), (Expression<?>) p.get(idxValeur), type, estConst);
@@ -214,7 +211,7 @@ public class ASAst extends AstGenerator {
                             // si la valeur de l'expression est une énumération d'éléments ex: var = 3, "salut", 4
                             // on forme une liste avec la suite d'éléments
                             if (p.get(idxValeur) instanceof CreerListe.Enumeration enumeration)
-                                p.set(idxValeur, enumeration.build());
+                                p.set(idxValeur, enumeration.buildCreerListe());
                             return new Assigner((Expression<?>) p.get(0), (Expression<?>) p.get(idxValeur), op);
                         }
                     }
@@ -222,7 +219,7 @@ public class ASAst extends AstGenerator {
 
         ajouterProgramme("{methode_moteur} expression~"
                         + "{methode_moteur}",
-                new Ast<MethodeMoteur>(0) {
+                new Ast<MethodeMoteur>() {
                     @Override
                     public MethodeMoteur apply(List<Object> p) {
                         String nom = ((Token) p.get(0)).obtenirNom();
@@ -380,13 +377,13 @@ public class ASAst extends AstGenerator {
                     @Override
                     public Retourner apply(List<Object> p) {
                         if (p.size() > 1 && p.get(1) instanceof CreerListe.Enumeration enumeration)
-                            p.set(1, enumeration.build());
+                            p.set(1, enumeration.buildCreerListe());
                         return new Retourner(p.size() > 1 ? (Expression<?>) p.get(1) : new ValeurConstante(new Nul()));
                     }
                 });
 
 
-        ajouterProgramme("FIN FONCTION", new Ast<FinFonction>(0) {
+        ajouterProgramme("FIN FONCTION", new Ast<FinFonction>() {
             @Override
             public FinFonction apply(List<Object> p) {
                 return new FinFonction(executeurInstance);
@@ -415,7 +412,7 @@ public class ASAst extends AstGenerator {
 
 
         ajouterProgramme("SINON",
-                new Ast<Sinon>(0) {
+                new Ast<Sinon>() {
                     @Override
                     public Sinon apply(List<Object> p) {
                         return new Sinon(executeurInstance);
@@ -455,7 +452,7 @@ public class ASAst extends AstGenerator {
                 });
 
         ajouterProgramme("TANT_QUE expression",
-                new Ast<BoucleTantQue>(0) {
+                new Ast<BoucleTantQue>() {
                     @Override
                     public BoucleTantQue apply(List<Object> p) {
                         return new BoucleTantQue((Expression<?>) p.get(1), executeurInstance);
@@ -472,7 +469,7 @@ public class ASAst extends AstGenerator {
         ajouterProgramme("POUR expression DANS expression~"
                         + "POUR VAR expression DANS expression~"
                         + "POUR CONSTANTE expression DANS expression",
-                new Ast<BouclePour>(0) {
+                new Ast<BouclePour>() {
                     @Override
                     public BouclePour apply(List<Object> p) {
                         // boucle pour sans déclaration
@@ -515,7 +512,7 @@ public class ASAst extends AstGenerator {
                 return Programme.evalExpression((Expression<?>) p.get(0), p.get(0).toString());
             }
         });
-        setOrdreProgramme();
+        //setOrdreProgramme();
     }
 
 
@@ -578,7 +575,7 @@ public class ASAst extends AstGenerator {
                         Expression<?> contenu = evalOneExpr(new ArrayList<>(p.subList(2, p.size() - 1)), astParams);
 
                         CreerListe args = contenu instanceof CreerListe.Enumeration enumeration ?
-                                enumeration.build() :
+                                enumeration.buildCreerListe() :
                                 new CreerListe(contenu);
 
 
@@ -667,7 +664,7 @@ public class ASAst extends AstGenerator {
                                 .findFirst()
                                 .orElse(null);
 
-                        // pas de deux points, forme val[idx]
+                        // pas de deux points, forme val[idxOrKey]
                         if (deux_pointsToken == null) {
                             Expression<?> idx = evalOneExpr(new ArrayList<>(p.subList(2, p.size() - 1)), null);
                             return new CreerListe.SousSection.IndexSection((Expression<?>) p.get(0), idx);
@@ -690,6 +687,7 @@ public class ASAst extends AstGenerator {
                 });
         ajouterExpression("BRACES_OUV BRACES_FERM~"
                         + "BRACES_OUV #expression BRACES_FERM~"
+                        + "CROCHET_OUV CROCHET_FERM~"
                         + "!expression CROCHET_OUV CROCHET_FERM~"
                         + "!expression CROCHET_OUV #expression CROCHET_FERM",
                 new Ast<CreerListe>() {
@@ -698,7 +696,7 @@ public class ASAst extends AstGenerator {
                         if (p.size() < 3) return new CreerListe();
                         Expression<?> contenu = evalOneExpr(new ArrayList<>(p.subList(1, p.size() - 1)), null);
                         if (contenu instanceof CreerListe.Enumeration enumeration)
-                            return enumeration.build();
+                            return enumeration.buildCreerListe();
                         return new CreerListe(contenu);
                     }
                 });
@@ -861,6 +859,13 @@ public class ASAst extends AstGenerator {
                     }
                 });
 
+        ajouterExpression("expression DEUX_POINTS expression",
+                new Ast<Paire>() {
+                    @Override
+                    public Paire apply(List<Object> p) {
+                        return new Paire((Expression<?>) p.get(0), (Expression<?>) p.get(2));
+                    }
+                });
 
         ajouterExpression("expression VIRGULE expression~",
                 new Ast<CreerListe.Enumeration>() {
@@ -875,7 +880,7 @@ public class ASAst extends AstGenerator {
 
                         Expression<?> valeur = (Expression<?>) p.get(2);
                         if (p.get(2) instanceof CreerListe.Enumeration enumeration) {
-                            valeur = enumeration.build();
+                            valeur = enumeration.buildCreerListe();
                         }
                         if (p.get(0) instanceof CreerListe.Enumeration enumeration) {
                             enumeration.add(valeur);
@@ -906,7 +911,7 @@ public class ASAst extends AstGenerator {
                             contenu = (Expression<?>) p.get(1);
 
                             args = contenu instanceof CreerListe.Enumeration enumeration ?
-                                    enumeration.build() :
+                                    enumeration.buildCreerListe() :
                                     new CreerListe(contenu);
                         } else {
                             args = new CreerListe();
@@ -915,7 +920,7 @@ public class ASAst extends AstGenerator {
                         return new AppelFonc((Expression<?>) p.get(0), args);
                     }
                 });
-        setOrdreExpression();
+        //setOrdreExpression();
     }
 }
 

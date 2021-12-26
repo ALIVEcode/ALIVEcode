@@ -34,10 +34,11 @@ const StyledDiv = styled.div`
   padding-top: var(--padding-top-bottom-titles);
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
-  color: var(--foreground-color);
+  color: white;
   
   border-width: 4px;
-  background-color: var(--secondary-color);
+  background: rgb(255,255,255);
+  background: var(--headerAIBack-color);
 }
 
 .section-open {

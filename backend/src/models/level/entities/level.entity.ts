@@ -1,8 +1,9 @@
 import { Exclude } from 'class-transformer';
-import { Entity, ManyToOne, TableInheritance, Column } from 'typeorm';
+import { Entity, ManyToOne, TableInheritance, Column, OneToMany } from 'typeorm';
 import { UserEntity } from '../../user/entities/user.entity';
 import { CreatedByUser } from '../../../generics/entities/createdByUser.entity';
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsEmpty, IsNotEmpty, IsOptional } from 'class-validator';
+import { ActivityLevelEntity } from '../../course/entities/activity_level.entity';
 
 export enum LEVEL_TAG {}
 export enum LEVEL_ACCESS {
@@ -21,12 +22,23 @@ export enum LEVEL_DIFFICULTY {
   EXPERT = 'EX',
 }
 
+export enum LEVEL_TYPE {
+  CODE = 'LevelCodeEntity',
+  ALIVE = 'LevelAliveEntity',
+  AI = 'LevelAIEntity',
+  IOT = 'LevelIoTEntity',
+}
+
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
 export class LevelEntity extends CreatedByUser {
   @Exclude({ toClassOnly: true })
   @ManyToOne(() => UserEntity, user => user.levels, { eager: true, onDelete: 'SET NULL' })
   creator: UserEntity;
+
+  @Column({ type: 'varchar', name: 'type' })
+  @IsEmpty()
+  type: LEVEL_TYPE;
 
   @Column({ enum: LEVEL_ACCESS })
   @IsNotEmpty()
@@ -43,4 +55,7 @@ export class LevelEntity extends CreatedByUser {
   @Column({ enum: LEVEL_TAG, type: 'jsonb', default: () => "'[]'" })
   @IsOptional()
   tags: LEVEL_TAG[] = [];
+
+  @OneToMany(() => ActivityLevelEntity, actLevel => actLevel.level)
+  activities: ActivityLevelEntity[];
 }

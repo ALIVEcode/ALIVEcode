@@ -4,18 +4,27 @@ interface PlaySocketDeclaration extends WebSocket {
 	robot_callback: (data: any) => void;
 }
 
+export type CallbackData = {
+	event: string;
+	data?: any;
+	error?: any;
+};
+
 export interface PlaySocket {
-	compile: (lines: Array<string>, callback?: (data: any) => void) => void;
+	compile: (
+		lines: Array<string>,
+		callback?: (data: CallbackData) => void,
+	) => void;
 	stopCompile: () => void;
 	response: (resp?: Array<any>) => void;
-	robotConnect: (id: string, callback: (data: any) => void) => void;
-	onRobotReceive: (callback: (data: any) => void) => void;
+	robotConnect: (id: string, callback: (data: CallbackData) => void) => void;
+	onRobotReceive: (callback: (data: CallbackData) => void) => void;
 }
 
 const openPlaySocket = (): PlaySocket => {
-	let wsStart = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
-	let endpoint = wsStart + window.location.hostname + ':8003/playground';
-	let socket: WebSocket = new WebSocket(endpoint);
+	if (!process.env.REACT_APP_CAR_URL)
+		throw new Error('REACT_APP_CAR_URL .env variable not set');
+	let socket: WebSocket = new WebSocket(process.env.REACT_APP_CAR_URL);
 
 	const playSocketConstructor = (socket: PlaySocketDeclaration) => {
 		socket.compile_callback = () => {};
@@ -34,10 +43,10 @@ const openPlaySocket = (): PlaySocket => {
 			} catch (exception) {
 				return;
 			}
-			if ('status' in parsed && 'data' in parsed) {
-				let status = parsed['status'];
+			if ('event' in parsed && 'data' in parsed) {
+				let event = parsed['event'];
 				let data = parsed['data'];
-				switch (status) {
+				switch (event) {
 					case 'compiled':
 						console.log(data);
 						socket.compile_callback(data);
@@ -47,13 +56,13 @@ const openPlaySocket = (): PlaySocket => {
 						break;
 					case 'connect-success':
 						socket.robot_connect_callback({
-							status: 'success',
+							event: 'success',
 						});
 						break;
 					case 'connect-error':
 						if (typeof data === 'string') {
 							socket.robot_connect_callback({
-								status: 'error',
+								event: 'error',
 								error: data,
 							});
 						}
@@ -68,25 +77,22 @@ const openPlaySocket = (): PlaySocket => {
 		};
 
 		const compile = (
-			lines: Array<string>,
+			executionResult: any,
 			callback: (data: any) => void = () => {},
 		) => {
-			if (lines != null && Array.isArray(lines)) {
-				// Check si tous les éléments sont des strings
-				if (!lines.some(line => typeof line !== 'string')) {
-					let data = {
-						status: 'start',
-						data: lines,
-					};
-					socket.compile_callback = callback;
-					socket.send(JSON.stringify(data));
-				}
-			}
+			executionResult = executionResult.filter((act: any) => act.id !== 0);
+			let data = {
+				event: 'execute',
+				data: { executionResult },
+			};
+			socket.compile_callback = callback;
+			socket.send(JSON.stringify(data));
 		};
 
 		const stopCompile = () => {
 			let data = {
-				status: 'stop',
+				event: 'execute',
+				data: { executionResult: [{ id: 0, d: 0, p: [] }] },
 			};
 			socket.send(JSON.stringify(data));
 		};
@@ -94,7 +100,7 @@ const openPlaySocket = (): PlaySocket => {
 		const response = (resp: Array<any> = []) => {
 			if (Array.isArray(resp)) {
 				let data = {
-					status: 'response',
+					event: 'response',
 					data: resp,
 				};
 				socket.send(JSON.stringify(data));
@@ -105,8 +111,8 @@ const openPlaySocket = (): PlaySocket => {
 		const robotConnect = (id: string, callback: (data: any) => void) => {
 			if (id != null && typeof id === 'string') {
 				let data = {
-					status: 'connect',
-					data: id,
+					event: 'connect_watcher',
+					data: { targets: [{ id }] },
 				};
 				socket.send(JSON.stringify(data));
 			}

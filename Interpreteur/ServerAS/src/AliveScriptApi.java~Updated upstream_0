@@ -54,8 +54,8 @@ public class AliveScriptApi implements HttpHandler {
                 ? AliveScriptService.get(UUID.fromString(data.getString("idToken")))
                 : AliveScriptService.create();
 
-        if (data.has("response-data")) {
-            aliveScriptService.pushDataToExecuteur(data.getJSONArray("response-data"));
+        if (data.has("responseData")) {
+            aliveScriptService.pushDataToExecuteur(data.getJSONArray("responseData"));
             return aliveScriptService.execute();
 
         } else if (data.has("lines")) {

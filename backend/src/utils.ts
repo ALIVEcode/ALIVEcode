@@ -6,11 +6,7 @@ export const hasValidFields: isValidFieldsType = (prototype, fields) => {
   return Object.keys(fields).every(field => field in prototype);
 };
 
-type isValidFieldOrThrow = (
-  prototype: any,
-  fields: any,
-  error: HttpException,
-) => boolean;
+type isValidFieldOrThrow = (prototype: any, fields: any, error: HttpException) => boolean;
 
 export const hasValidFieldsOrThrow: isValidFieldOrThrow = (
   prototype,

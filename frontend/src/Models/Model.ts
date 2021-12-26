@@ -136,5 +136,6 @@ export const Database = {
 			},
 		},
 		levels: {},
+		results: {},
 	},
 };

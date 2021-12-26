@@ -6,22 +6,28 @@ import { Course } from './Course/course.entity';
 import { Section } from './Course/section.entity';
 import { Classroom } from './Classroom/classroom.entity';
 import { Professor, Student, User } from './User/user.entity';
-import { IoTProject } from './Iot/IoTproject.entity';
+import { IoTProject, IoTProjectLayout } from './Iot/IoTproject.entity';
 import { IotRoute } from './Iot/IoTroute.entity';
-import { Level } from './Level/level.entity';
+import { Level, LEVEL_TYPE } from './Level/level.entity';
 import { LevelAlive } from './Level/levelAlive.entity';
 import { LevelCode } from './Level/levelCode.entity';
 import { LevelProgression } from './Level/levelProgression';
-import { BrowsingQuery } from '../Components/MainComponents/BrowsingMenu/browsingMenuTypes';
 import { LevelAI } from './Level/levelAI.entity';
 import { IoTObject } from './Iot/IoTobject.entity';
-import { Maintenance } from './Maintenance/maintenance.entity';
 import { QueryDTO } from '../../../backend/src/models/level/dto/query.dto';
-import { Quiz } from './Quiz/quiz.entity';
 import { Category } from './Quiz/categories-quiz.entity';
 import { QuizForm } from './Quiz/quizForm.entity';
 import { QuestionForm } from './Quiz/questionForm.entity';
 import { Answer } from './Quiz/answer.entity';
+import { Activity } from './Course/activity.entity';
+import { Maintenance } from './Maintenance/maintenance.entity';
+import { Result } from './Social/result.entity';
+import { CompileDTO } from './ASModels';
+import { AsScript } from './AsScript/as-script.entity';
+import { LevelIoT } from './Level/levelIoT.entity';
+import { Post } from './Social/post.entity';
+import { Topics } from './Social/topics.entity';
+import { Quiz } from './Quiz/quiz.entity';
 
 type urlArgType<S extends string> = S extends `${infer _}:${infer A}/${infer B}`
 	? A | urlArgType<B>
@@ -118,7 +124,7 @@ const api = {
 					plainToClass(Maintenance, d),
 				);
 			},
-			async getUpcoming() {
+			async getUpcoming(): Promise<Maintenance> {
 				return plainToClass(
 					Maintenance,
 					(await axios.get('maintenances/upcoming')).data,
@@ -130,13 +136,20 @@ const api = {
 				getProjects: apiGet('users/iot/projects', IoTProject, true),
 				getObjects: apiGet('users/iot/objects', IoTObject, true),
 			},
+			social: {
+				getResults: apiGet('users/quizzes/results', Result, true),
+			},
 			//get: apiGetter('users', User),
 			getClassrooms: apiGet('users/:id/classrooms', Classroom, true),
 			getCourses: apiGet('users/:id/courses', Course, true),
 			getLevels: apiGet('users/:id/levels', Level, true, level => {
-				if (level.layout) return plainToClass(LevelAlive, level);
-				else if (level.testCases) return plainToClass(LevelCode, level);
-				return plainToClass(Level, level);
+				if (level.type === LEVEL_TYPE.ALIVE)
+					return plainToClass(LevelAlive, level);
+				if (level.type === LEVEL_TYPE.CODE)
+					return plainToClass(LevelCode, level);
+				if (level.type === LEVEL_TYPE.AI) return plainToClass(LevelAI, level);
+				if (level.type === LEVEL_TYPE.IOT) return plainToClass(LevelIoT, level);
+				return plainToClass(LevelCode, level);
 			}),
 			createProfessor: apiCreate('users/professors', Professor),
 			createStudent: apiCreate('users/students', Student),
@@ -154,8 +167,53 @@ const api = {
 		},
 		courses: {
 			get: apiGet('courses/:id', Course, false),
+			update: apiUpdate('courses/:id', Course),
 			getSections: apiGet('courses/:id/sections', Section, true),
+			deleteSection: apiDelete('courses/:courseId/sections/:sectionId'),
+			deleteActivity: apiDelete(
+				'courses/:courseId/sections/:sectionId/activities/:activityId',
+			),
 			delete: apiDelete('courses/:id'),
+			async getActivities(courseId: string, sectionId: number) {
+				return (
+					await axios.get(
+						`courses/${courseId}/sections/${sectionId}/activities`,
+					)
+				).data.map((c: any) => plainToClass(Activity, c));
+			},
+			async getActivityContent(
+				courseId: string,
+				sectionId: number,
+				activityId: number,
+			) {
+				return plainToClass(
+					Activity,
+					(
+						await axios.get(
+							`courses/${courseId}/sections/${sectionId}/activities/${activityId}/content`,
+						)
+					).data,
+				);
+			},
+			addActivity: async (
+				courseId: string,
+				sectionId: number,
+				activity: Activity,
+			) => {
+				return plainToClass(
+					Activity,
+					(
+						await axios.post(
+							`courses/${courseId}/sections/${sectionId}/activities`,
+							activity,
+						)
+					).data,
+				);
+			},
+			updateActivity: apiUpdate(
+				'courses/:courseId/sections/:sectionId/activities/:activityId/content',
+				Activity,
+			),
 		},
 		levels: {
 			progressions: {
@@ -163,14 +221,22 @@ const api = {
 				save: apiUpdate('levels/:id/progressions/:userId', LevelProgression),
 			},
 			get: apiGet('levels/:id', Level, false, level => {
-				if (level.layout) return plainToClass(LevelAlive, level);
-				else if (level.testCases) return plainToClass(LevelCode, level);
-				return plainToClass(Level, level);
+				if (level.type === LEVEL_TYPE.ALIVE)
+					return plainToClass(LevelAlive, level);
+				if (level.type === LEVEL_TYPE.CODE)
+					return plainToClass(LevelCode, level);
+				if (level.type === LEVEL_TYPE.AI) return plainToClass(LevelAI, level);
+				if (level.type === LEVEL_TYPE.IOT) return plainToClass(LevelIoT, level);
+				return plainToClass(LevelCode, level);
 			}),
 			update: apiUpdate('levels/:id', Level, level => {
-				if (level.layout) return plainToClass(LevelAlive, level);
-				else if (level.testCases) return plainToClass(LevelCode, level);
-				return plainToClass(Level, level);
+				if (level.type === LEVEL_TYPE.ALIVE)
+					return plainToClass(LevelAlive, level);
+				if (level.type === LEVEL_TYPE.CODE)
+					return plainToClass(LevelCode, level);
+				if (level.type === LEVEL_TYPE.AI) return plainToClass(LevelAI, level);
+				if (level.type === LEVEL_TYPE.IOT) return plainToClass(LevelIoT, level);
+				return plainToClass(LevelCode, level);
 			}),
 			async query(body: QueryDTO) {
 				return (await axios.post('levels/query', body)).data.map((d: any) =>
@@ -180,8 +246,39 @@ const api = {
 		},
 		iot: {
 			projects: {
+				delete: apiDelete('iot/projects/:id'),
 				get: apiGet('iot/projects/:id', IoTProject, false),
+				deleteRoute: apiDelete('iot/routes/projects/:projectId/:id'),
 				getRoutes: apiGet('iot/projects/:id/routes', IotRoute, true),
+				getObjects: apiGet('iot/projects/:id/objects', IoTObject, true),
+				async updateLayout(id: string, layout: IoTProjectLayout) {
+					await axios.patch(`iot/projects/${id}/layout`, layout);
+				},
+				async createScriptRoute(
+					projectId: string,
+					routeId: string,
+					asScript: AsScript,
+				) {
+					return (
+						await axios.post(`iot/projects/${projectId}/as/create`, {
+							routeId,
+							script: asScript,
+						})
+					).data;
+				},
+			},
+			objects: {
+				delete: apiDelete('iot/objects/:id'),
+			},
+		},
+		asScript: {
+			async create(asScript: AsScript) {
+				return (await axios.post(`as`, asScript)).data;
+			},
+			async updateContent(asScript: AsScript, newContent: string) {
+				return await axios.patch(`as/${asScript.id}/content`, {
+					content: newContent,
+				});
 			},
 		},
 		quiz: {
@@ -193,7 +290,7 @@ const api = {
 			categories: {
 				all: apiGet('/categories-quiz', Category, true),
 				one: apiGet('/categories-quiz/:id', Category, false),
-			}
+			},
 		},
 		question: {
 			delete: apiDelete('/questions/:id'),
@@ -201,7 +298,38 @@ const api = {
 		},
 		answer: {
 			create: apiCreate('/answers', Answer),
-		}
+		},
+		posts: {
+			all: apiGet('posts', Post, true),
+			get: apiGet('posts/:id/', Post, false),
+			findandcount: apiCreate('posts/findandcount', Post),
+			create: apiCreate('posts', Post),
+			delete: apiDelete('posts/:id'),
+		},
+		topics: {
+			all: apiGet('topics', Topics, true),
+			get: apiGet('topics/:id/', Topics, false),
+			create: apiCreate('topics', Topics),
+			delete: apiDelete('topics/:id'),
+		},
+		results: {
+			all: apiGet('results', Result, true),
+			get: apiGet('results/:id/', Result, false),
+			findandcount: apiCreate('results/findandcount', Result),
+			create: apiCreate('results', Result),
+			delete: apiDelete('results/:id'),
+			getresultuser: apiGet('results/user', Result, true),
+		},
+	},
+	as: {
+		async compile(data: CompileDTO) {
+			return (await axios.post('as/compile', data)).data;
+		},
+		async getLintInfo() {
+			return (
+				await axios.get(`${process.env.REACT_APP_BACKEND_URL}/as/lintinfo`)
+			).data;
+		},
 	},
 };
 

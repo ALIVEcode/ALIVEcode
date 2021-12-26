@@ -7,9 +7,17 @@ import BrowsingMenu from '../../../Components/MainComponents/BrowsingMenu/Browsi
 import { BrowsingResults } from '../../../Components/MainComponents/BrowsingMenu/browsingMenuTypes';
 import api from '../../../Models/api';
 
+/**
+ * Browsing menu that shows all the levels sorted with a query
+ *
+ * @author MoSk3
+ */
 const LevelBrowse = (props: LevelBrowseProps) => {
 	const [browsingResult, setBrowsingResult] =
 		useState<BrowsingResults<Level>>();
+	console.log(browsingResult);
+	console.log('coucou2' + setBrowsingResult);
+
 	const levels = browsingResult?.results;
 
 	return (

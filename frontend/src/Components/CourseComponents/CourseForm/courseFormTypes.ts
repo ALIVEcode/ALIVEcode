@@ -1,3 +1,4 @@
+import { Classroom } from '../../../Models/Classroom/classroom.entity';
 import {
 	COURSE_ACCESS,
 	COURSE_DIFFICULTY,
@@ -12,4 +13,6 @@ export type CourseFormValues = {
 	subject: COURSE_SUBJECT;
 };
 
-export type CourseFormProps = {};
+export interface CourseFormLocation {
+	classroom?: Classroom;
+};

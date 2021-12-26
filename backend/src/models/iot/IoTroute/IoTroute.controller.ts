@@ -49,7 +49,7 @@ export class IoTRouteController {
     return await this.IoTRouteService.findOne(id);
   }
 
-  @Patch('projects/:projectId/routes/:id')
+  @Patch('projects/:projectId/:id')
   @Auth()
   async update(
     @User() user: UserEntity,
@@ -59,18 +59,18 @@ export class IoTRouteController {
   ) {
     if (!id) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     const project = await this.IoTProjectService.findOne(projectId);
-    if (project.creator.id !== id && !hasRole(user, Role.STAFF))
+    if (project.creator.id !== user.id && !hasRole(user, Role.STAFF))
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
 
-    return await this.IoTRouteService.update(project.id, updateIoTobjectDto);
+    return await this.IoTRouteService.update(id, updateIoTobjectDto);
   }
 
-  @Delete('projects/:id/routes')
+  @Delete('projects/:projectId/:id')
   @Auth()
   async remove(@User() user: UserEntity, @Param('projectId') projectId: string, @Param('id') id: string) {
     if (!id) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     const project = await this.IoTProjectService.findOne(projectId);
-    if (project.creator.id !== id && !hasRole(user, Role.STAFF))
+    if (project.creator.id !== user.id && !hasRole(user, Role.STAFF))
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
 
     return await this.IoTRouteService.remove(id);

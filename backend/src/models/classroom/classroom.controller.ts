@@ -40,7 +40,6 @@ export class ClassroomController {
   @Post()
   @Auth(Role.PROFESSOR)
   async create(@User() professor: ProfessorEntity, @Body() createClassroomDto: ClassroomEntity) {
-    professor = await this.professorRepository.findOne(professor);
     return await this.classroomService.create(createClassroomDto, professor);
   }
 

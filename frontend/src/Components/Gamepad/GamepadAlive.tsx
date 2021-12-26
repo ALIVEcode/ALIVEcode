@@ -3,15 +3,12 @@ import './gamepad.css';
 import { Col } from 'react-bootstrap';
 import styled from 'styled-components';
 import CenteredContainer from '../UtilsComponents/CenteredContainer/CenteredContainer';
-import React from 'react';
-import { Car } from '../LevelComponents/Simulation/Sketch/simulation/Car.js';
+import React, { useEffect } from 'react';
 
 const StyledDiv = styled(Col)`
 	background-color: var(--primary-color);
-
 	width: 500px;
 	height: 300px;
-
 	img {
 		border-radius: 20px;
 		width: 500px;
@@ -21,7 +18,6 @@ const StyledDiv = styled(Col)`
 
 const StyledCenteredContainer = styled(CenteredContainer)`
 	padding: 0 0 0 22%;
-
 	.row-prof {
 		margin-top: 10px;
 		margin-bottom: 10px;
@@ -38,16 +34,14 @@ const useKeyPress = (targetKey: any) => {
 			setKeyPressed(true);
 		}
 	};
-
 	// If released key is our target key then set to false
 	const upHandler = ({ key }: { key: any }) => {
 		if (key === targetKey) {
 			setKeyPressed(false);
 		}
 	};
-
 	// Add event listeners
-	React.useEffect(() => {
+	useEffect(() => {
 		window.addEventListener('keydown', downHandler);
 		window.addEventListener('keyup', upHandler);
 		// Remove event listeners on cleanup
@@ -55,6 +49,7 @@ const useKeyPress = (targetKey: any) => {
 			window.removeEventListener('keydown', downHandler);
 			window.removeEventListener('keyup', upHandler);
 		};
+		// eslint-disable-next-line
 	}, []); // Empty array ensures that effect is only run on mount and unmount
 
 	return keyPressed;
@@ -74,25 +69,39 @@ const GamepadAlive = () => {
 					<img src={controller} alt="" />
 
 					<button
-						className={'button btnStart ' + (isStartPressed && 'push')}
+						className={
+							'button buttonGamepad btnStart ' + (isStartPressed && 'push')
+						}
 						id="btnStart"
 					>
 						Start
 					</button>
 
-					<button className={'button btnA ' + (isAPressed && 'push')} id="btnA">
+					<button
+						className={'button buttonGamepad  btnA ' + (isAPressed && 'push')}
+						id="btnA"
+					>
 						A
 					</button>
 
-					<button className={'button btnB ' + (isBPressed && 'push')} id="btnB">
+					<button
+						className={'button buttonGamepad btnB ' + (isBPressed && 'push')}
+						id="btnB"
+					>
 						B
 					</button>
 
-					<button className={'button btnX ' + (isXPressed && 'push')} id="btnX">
+					<button
+						className={'button buttonGamepad btnX ' + (isXPressed && 'push')}
+						id="btnX"
+					>
 						X
 					</button>
 
-					<button className={'button btnY ' + (isYPressed && 'push')} id="btnY">
+					<button
+						className={'button buttonGamepad btnY ' + (isYPressed && 'push')}
+						id="btnY"
+					>
 						Y
 					</button>
 				</StyledDiv>

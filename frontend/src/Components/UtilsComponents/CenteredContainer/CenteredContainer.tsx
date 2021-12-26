@@ -12,6 +12,19 @@ const StyledContainer = styled.div`
 		props.textAlign || 'inherit'};
 `;
 
+/**
+ * Component that centers all its content passed as children
+ *
+ * @param {boolean} vertically if it should be vertically centered
+ * @param {boolean} horizontally if it should be horizontally centered
+ * @param {boolean} startAtTop if the component ignores the navbar and start at the top of the window
+ * @param {string} textAlign aligment of the text
+ * @param {React.ReactNode} children react children to be centered inside the component
+ * @param {string} className react classNames of the component
+ * @param {any} style react styling
+ *
+ * @author MoSk3
+ */
 const CenteredContainer = ({
 	vertically,
 	horizontally,

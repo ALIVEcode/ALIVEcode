@@ -23,6 +23,15 @@ const StyledDiv = styled(Col)`
 	}
 `;
 
+/**
+ * Card that shows an image of a contributor of the platform with its name
+ *
+ * @param {string} img source of the image
+ * @param {string} name of the contributor
+ * @param {string} className classNames of the card
+ *
+ * @author MoSk3
+ */
 const AboutCard = ({ img, name, className }: AboutCardProps) => {
 	return (
 		<StyledDiv lg className={className}>

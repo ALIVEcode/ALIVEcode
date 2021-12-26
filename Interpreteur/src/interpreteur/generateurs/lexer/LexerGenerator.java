@@ -26,6 +26,9 @@ public class LexerGenerator {
     static private ArrayList<Regle> reglesAjoutees = new ArrayList<>();
 
     public LexerGenerator() {
+        reglesAjoutees.clear();
+        reglesIgnorees.clear();
+        Regle.reset();
     }
     /*
     protected void chargerRegles(File configGrammaire){
@@ -174,7 +177,7 @@ public class LexerGenerator {
          */
         idx = this.prochainIndexValide(idx, s);
         Matcher match = Pattern.compile("\\S+").matcher(s);
-        //System.out.println("idx : " + idx);
+        //System.out.println("idxOrKey : " + idxOrKey);
 
         if (idx < s.length()) {
             match.find(idx);

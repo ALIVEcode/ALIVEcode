@@ -2,12 +2,14 @@ package server;
 
 import com.sun.net.httpserver.*;
 import io.github.cdimascio.dotenv.Dotenv;
+import server.executionApi.AliveScriptApi;
+import server.executionApi.AliveScriptService;
+import server.lintingApi.ASLinterApi;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.security.NoSuchAlgorithmException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
@@ -38,15 +40,19 @@ public class Server {
         setupLogger(env.get("LOG_FILE_NAME"));
 
         AliveScriptApi aliveScriptApi = new AliveScriptApi(CORS_ORIGIN);
-        HttpContext context = server.createContext("/" + env.get("COMPILE_PATH"));
+        HttpContext contextExecution = server.createContext("/" + env.get("COMPILE_PATH"));
+        contextExecution.setHandler(aliveScriptApi);
 
-        context.setHandler(aliveScriptApi);
+        ASLinterApi asLinterApi = new ASLinterApi(CORS_ORIGIN);
+        HttpContext contextLintInfo = server.createContext("/" + env.get("LINT_INFO_PATH"));
+        contextLintInfo.setHandler(asLinterApi);
+
 
         System.out.println("Server listening on port " + PORT);
         System.out.println("Compile alivescript programs by sending a POST request to " + AS_URL + ":" + PORT + "/" + env.get("COMPILE_PATH") + "/"
                 + " from " + env.get("CORS_ORIGIN") + ":" + env.get("HOST_PORT"));
 
-        ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
+        ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(Integer.parseInt(env.get("THREAD_POOLS")));
         server.setExecutor(threadPoolExecutor);
         server.start();
     }
@@ -59,7 +65,8 @@ public class Server {
         FileHandler fileHandler = new FileHandler("./log/" + fileName, true);
         logger.addHandler(fileHandler);
         fileHandler.setFormatter(new SimpleFormatter());
-        AliveScriptService.setLogger(logger);
+        AliveScriptApi.setLogger(logger);
+        ASLinterApi.setLogger(logger);
     }
 
     public static void setupCleanUp(final double maxServiceLifeSpan) {

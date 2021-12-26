@@ -6,6 +6,11 @@ import useRoutes from '../../../state/hooks/useRoutes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 
+/**
+ * Footer of ALIVEcode home page
+ *
+ * @author MoSk3
+ */
 const Footer = (props: FooterProps) => {
 	const { t } = useTranslation();
 	const { routes } = useRoutes();

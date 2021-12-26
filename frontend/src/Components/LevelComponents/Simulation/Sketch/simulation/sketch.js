@@ -2,23 +2,25 @@
 import { Shape } from './Shape';
 import { FixedObject } from './FixedObject';
 import { FixedTextObject } from './FixedTextObject';
-import { Obstacle } from './Obstacle';
-import { Road } from './Road';
-import { Terrain } from './Terrain';
-import { InteractiveObject } from './InteractiveObject';
-import { TextObject } from './TextObject';
+import { Obstacle } from './ts/Obstacle';
+import { Road } from './ts/Road';
+import { Terrain } from './ts/Terrain';
+import { Interactive as InteractiveObject } from './ts/Interactive';
+import { TextObject } from './ts/TextObject';
 import { Car } from './Car';
 import { CanvasCamera } from './Camera';
 import { Vector } from './Vector';
-import { loadImages, loadSounds, images } from './assets';
+import { loadAllImages, loadSounds, images } from './assets';
 import { editModeSection } from './editMode';
-import { overlap } from './functions';
+import { floatEquals, overlap } from './functions';
 import $ from 'jquery';
 import { PhysicEngine } from '../physicEngine/physicEngine';
+import { Serializer } from './ts/Serializer';
+import { Decoration } from './ts/Decoration';
+import { Figure } from './ts/Figure';
 
 export const sketch = s => {
 	// #region Setup
-
 	let width;
 	let height;
 	let canvas;
@@ -26,65 +28,46 @@ export const sketch = s => {
 	let canvasDiv;
 	let previousParent;
 
-	s.myCustomRedrawAccordingToNewPropsHandler = props => {
+	s.updateWithProps = props => {
 		if (props.init) s.init = props.init;
 		if (props.fullscreenDiv)
 			s.fullscreenDiv = $(`.${props.fullscreenDiv}`).first();
-		if (props.canvasDiv) canvasDiv = $(`.${props.canvasDiv}`).first();
+		if (props.canvasDiv) {
+			canvasDiv = props.canvasDiv;
+			if (!s.canvasLoaded) s.setup();
+			s.canvasLoaded = true;
+		}
+		if (props.onChange) s.onChange = props.onChange;
+		if (props.onWin) s.onWin = props.onWin;
+		if (props.onLose) s.onLose = props.onLose;
+		if (props.onConnectCar) s.onConnectCar = props.onConnectCar;
+	};
+
+	// Used when simulation unmount
+	s.cleanup = () => {
+		s.noLoop();
+		s.canvasLoaded = false;
+		s.remove();
 	};
 
 	s.preload = () => {
 		//********************************* Images *********************************
 		// Load des images
-		loadImages(s);
+		loadAllImages(s);
 
 		//********************************* Audio **********************************
 		loadSounds(s);
 	};
 
 	s.setup = () => {
+		if (canvasDiv == null) return;
+		s.canvasLoaded = true;
+		s.loading = true;
+
+		editModeSection(s);
 		//************************** Setup Canvas **********************************
 
 		s.zoomButton = $('.zoom-button').first();
-
-		// Fonction pour zoomer/dezoomer
-		const zoom = () => {
-			if (s.fullscreenDiv.css('display') === 'none') {
-				previousParent = canvasDiv.parent();
-				s.fullscreenDiv.css('display', 'block');
-				canvasDiv.css('height', '100%');
-				canvasDiv.appendTo(s.fullscreenDiv);
-
-				if (s.isMobile) {
-					var elem = document.documentElement;
-					if (elem.requestFullscreen) {
-						elem.requestFullscreen();
-					}
-					s.fullscreen = true;
-				}
-
-				s.zoomButton.attr('src', '/static/images/fullscreen-off.png');
-			} else if (!s.editorButton?.hovering) {
-				s.fullscreenDiv.css('display', 'none');
-				canvasDiv.appendTo(previousParent);
-
-				if (s.isMobile) {
-					if (document.exitFullscreen) {
-						document.exitFullscreen();
-						s.fullscreen = false;
-					}
-				}
-
-				s.zoomButton.attr('src', '/static/images/fullscreen-on.png');
-				if (s.editMode) {
-					s.exitEditMode();
-					if (s.execution) s.playButton.click();
-				}
-				setTimeout(s.resize, 1000);
-			}
-		};
-
-		if (s.zoomButton) s.zoomButton.click(zoom);
 
 		width = canvasDiv.width();
 		height = canvasDiv.height();
@@ -104,7 +87,7 @@ export const sketch = s => {
 				navigator.userAgent,
 			) ||
 			/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw-(n|u)|c55\/|capi|ccwa|cdm-|cell|chtm|cldc|cmd-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc-s|devi|dica|dmob|do(c|p)o|ds(12|-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(-|_)|g1 u|g560|gene|gf-5|g-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd-(m|p|t)|hei-|hi(pt|ta)|hp( i|ip)|hs-c|ht(c(-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i-(20|go|ma)|i230|iac( |-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|-[a-w])|libw|lynx|m1-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|-([1-8]|c))|phil|pire|pl(ay|uc)|pn-2|po(ck|rt|se)|prox|psio|pt-g|qa-a|qc(07|12|21|32|60|-[2-7]|i-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h-|oo|p-)|sdk\/|se(c(-|0|1)|47|mc|nd|ri)|sgh-|shar|sie(-|m)|sk-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h-|v-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl-|tdg-|tel(i|m)|tim-|t-mo|to(pl|sh)|ts(70|m-|m3|m5)|tx-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas-|your|zeto|zte-/i.test(
-				navigator.userAgent.substr(0, 4),
+				navigator.userAgent.substring(0, 4),
 			)
 		) {
 			s.isMobile = true;
@@ -186,11 +169,45 @@ export const sketch = s => {
 		//******************************** Autres **********************************
 		// Call la fonction init si elle à été initialisée
 		// (sert à modifier les propriétés de la simulation pour créer divers jeux/expérimentations)
-		if (typeof editModeSection === 'function') {
-			s.editModeSection = editModeSection;
-			s.editModeSection(s);
-		}
-		if (s.init) s.init(s);
+
+		// Fonction pour zoomer/dezoomer
+		const zoom = () => {
+			if (s.fullscreenDiv.css('display') === 'none') {
+				previousParent = canvasDiv.parent();
+				s.fullscreenDiv.css('display', 'block');
+				canvasDiv.css('height', '100%');
+				canvasDiv.appendTo(s.fullscreenDiv);
+
+				if (s.isMobile) {
+					var elem = document.documentElement;
+					if (elem.requestFullscreen) {
+						elem.requestFullscreen();
+					}
+					s.fullscreen = true;
+				}
+
+				s.zoomButton.attr('src', '/static/images/fullscreen-off.png');
+			} else if (!s.editorButton?.hovering) {
+				s.fullscreenDiv.css('display', 'none');
+				canvasDiv.css('height', '60vh');
+				canvasDiv.appendTo(previousParent);
+
+				if (s.isMobile) {
+					if (document.exitFullscreen) {
+						document.exitFullscreen();
+						s.fullscreen = false;
+					}
+				}
+
+				s.zoomButton.attr('src', '/static/images/fullscreen-on.png');
+				if (s.editMode) {
+					s.exitEditMode();
+				}
+				setTimeout(s.resize, 1000);
+			}
+		};
+
+		if (s.zoomButton) s.zoomButton.click(zoom);
 
 		s.maxFPS = 30;
 		s.frameRate(60);
@@ -202,14 +219,23 @@ export const sketch = s => {
 		// set the physic engine sketch canvas for reference
 		PhysicEngine.s = s;
 
-		s.draw();
+		//setInterval(() => {
+		//	if (!s.execution && s.creator && s.levelHasChanged) {
+		//		s.onChange();
+		//		s.levelHasChanged = false;
+		//	}
+		//}, 5000);
 	};
 
 	// #endregion
 
 	// #region Draw
 	s.draw = () => {
-		if (!s.pause) {
+		if (s.loading) {
+			s.loading = false;
+			if (s.init) s.init(s);
+		}
+		if (!s.pause && s.canvasLoaded) {
 			//******************************** Debut ***********************************
 			// Resize automatique du canvas
 			s.canvasAutoResize();
@@ -286,7 +312,12 @@ export const sketch = s => {
 
 			// TODO: save
 			//Save
-			//s.saveConditions();
+			if (s.levelHasChanged) {
+				if (process.env.REACT_APP_DEBUG)
+					console.log('level changed, it will be saved automatically soon...');
+				s.onChange(s);
+				s.levelHasChanged = false;
+			}
 
 			// TOUJOURS EN DERNIER DANS DRAW (si pas pause)
 			s.pdt = Date.now();
@@ -295,7 +326,10 @@ export const sketch = s => {
 
 	// #region Draw Methods
 	s.canvasAutoResize = () => {
-		if (canvasDiv.width() !== s.width || canvasDiv.height() !== s.height) {
+		if (
+			!floatEquals(canvasDiv.width(), s.width) ||
+			!floatEquals(canvasDiv.height(), s.height)
+		) {
 			s.resize(canvasDiv.width(), canvasDiv.height());
 			if (s.editMode) {
 				s.exitEditMode();
@@ -425,7 +459,7 @@ export const sketch = s => {
 			}
 		}
 
-		if (s.mouseButton === s.RIGHT) s.contextMenuClick();
+		//if (s.mouseButton === s.RIGHT) s.contextMenuClick();
 	};
 
 	s.mousePressedActions = () => {
@@ -582,14 +616,15 @@ export const sketch = s => {
 		// Change l'icone de la souris par rapport au dernier objet movable sélectionné / bougé
 		s.changeCursorOnMovement();
 
-		s.pressedObject.click();
+		if (s.mouseButton === s.RIGHT) s.pressedObject.rightClick();
+		else s.pressedObject.click();
 		s.pressedObject = null;
 		s.mobileClickDown = true;
 		s.levelHasChanged = true;
 	};
 
 	s.clickGeneral = () => {
-		s.adjustSelection();
+		if (s.editMode) s.adjustSelection();
 		s.touche1 = null;
 		s.touche2 = null;
 	};
@@ -643,7 +678,6 @@ export const sketch = s => {
 			for (let shape of shapes) {
 				if (shape instanceof FixedObject) continue;
 				if (shape instanceof FixedTextObject) continue;
-
 				// Collisions avac la voiture
 				for (let car of s.cars) {
 					if (shape.isHelp) continue;
@@ -795,31 +829,11 @@ export const sketch = s => {
 	};
 
 	// TODO: Move save conditions
-	/*s.saveConditions = () => {
-        if (s.creator) {
-            if (s.editorText !== editor.getValue()) {
-                s.levelHasChanged = true;
-                s.editorText = editor.getValue();
-            }
-
-            if (s.levelName !== $("#input-level-name").val()) {
-                s.levelHasChanged = true;
-                s.levelName = $("#input-level-name").val();
-            }
-
-            if (s.levelAccess !== $('#liste-acces').val()) {
-                s.levelHasChanged = true;
-                s.levelAccess = $('#liste-acces').val();
-            }
-
-            if (s.levelHasChanged) {
-                $('#saving-status').text('Enregistrement...⏳');
-            }
-
-            if (!s.saving)
-                s.automaticSave();
-        }
-    };*/
+	s.saveConditions = () => {
+		if (s.levelHasChanged) {
+			s.onChange();
+		}
+	};
 	// #endregion
 
 	// #endregion
@@ -921,19 +935,19 @@ export const sketch = s => {
 				s.selectedCar = (s.selectedCar + 1) % s.cars.length;
 			}
 			// W
-			else if (s.keyCode === 87) {
+			else if (s.keyCode === 83) {
 				s.cars[s.selectedCar].dir.y = 1;
 			}
 			// S
-			else if (s.keyCode === 83) {
+			else if (s.keyCode === 88) {
 				s.cars[s.selectedCar].dir.y = -1;
 			}
 			// A
-			else if (s.keyCode === 65) {
+			else if (s.keyCode === 90) {
 				s.cars[s.selectedCar].dir.x = -1;
 			}
 			// D
-			else if (s.keyCode === 68) {
+			else if (s.keyCode === 67) {
 				s.cars[s.selectedCar].dir.x = 1;
 			}
 		}
@@ -962,6 +976,15 @@ export const sketch = s => {
 			if (s.keyIsDown(17) && s.keyCode === 86) {
 				s.pasteShape();
 			}
+
+			// change de z index (+ -> + 1), (- -> -1)
+			// 187 == "+" et 189 == "-"
+			if (s.keyCode === 189 && s.pressedObject?.zIndex > 0) {
+				s.pressedObject.setZIndex(Number(s.pressedObject.zIndex) - 1);
+			} else if (s.keyCode === 187 && s.pressedObject?.zIndex < 400) {
+				s.pressedObject.setZIndex(Number(s.pressedObject.zIndex) + 1);
+			}
+			return false; // prevent any default behavior
 		}
 	};
 
@@ -970,19 +993,19 @@ export const sketch = s => {
 
 		if (s.carController) {
 			// W
-			if (s.keyCode === 87 && s.cars[s.selectedCar].dir.y > 0) {
+			if (s.keyCode === 83 && s.cars[s.selectedCar].dir.y > 0) {
 				s.cars[s.selectedCar].dir.y = 0;
 			}
 			// S
-			else if (s.keyCode === 83 && s.cars[s.selectedCar].dir.y < 0) {
+			else if (s.keyCode === 88 && s.cars[s.selectedCar].dir.y < 0) {
 				s.cars[s.selectedCar].dir.y = 0;
 			}
 			// A
-			else if (s.keyCode === 65 && s.cars[s.selectedCar].dir.x < 0) {
+			else if (s.keyCode === 90 && s.cars[s.selectedCar].dir.x < 0) {
 				s.cars[s.selectedCar].dir.x = 0;
 			}
 			// D
-			else if (s.keyCode === 68 && s.cars[s.selectedCar].dir.x > 0) {
+			else if (s.keyCode === 67 && s.cars[s.selectedCar].dir.x > 0) {
 				s.cars[s.selectedCar].dir.x = 0;
 			}
 		}
@@ -996,7 +1019,26 @@ export const sketch = s => {
 	// #endregion
 
 	// #region Spawn Shapes and Delete Shapes
-	s.addObjectToScene = (obj, z_index = 0) => {
+
+	// Méthode qui sert à garder dans une seule variable la forme originale, le clone de la forme, et d'autres caractéristiques
+	s.storeShapeData = (
+		shape,
+		wasDeletedViaUndo = false,
+		wasRedo = false,
+		wasDeletedViaTrash = false,
+	) => {
+		let shapeData = {
+			originalShape: shape,
+			clonedShape: shape.cloneShape(),
+			wasDeletedViaUndo: wasDeletedViaUndo,
+			wasRedo: wasRedo,
+			wasDeletedViaTrash: wasDeletedViaTrash,
+		};
+		return shapeData;
+	};
+
+	s.addObjectToScene = (obj, z_index = undefined) => {
+		if (z_index === undefined) z_index = Object.keys(s.shapes).length;
 		if (!(z_index in s.shapes)) s.shapes[z_index] = [];
 		s.shapes[z_index].push(obj);
 		obj.zIndex = z_index;
@@ -1052,10 +1094,31 @@ export const sketch = s => {
 		return shape;
 	};
 
-	s.spawnTerrain = (w, h, frictionCoef = 1, z_index = 0) => {
+	s.spawnDecoration = (x, y, w, h, z_index = undefined) => {
+		let decoration = new Decoration(
+			s,
+			'base',
+			[-w / 2, h / 2],
+			[w / 2, h / 2],
+			[w / 2, -h / 2],
+			[-w / 2, -h / 2],
+		);
+		s.addObjectToScene(decoration, z_index);
+		return decoration;
+	};
+
+	/**
+	 *
+	 * @param {number} w
+	 * @param {number} h
+	 * @param {import('./ts/Terrain').TemplateNamesTerrain} templateName
+	 * @param {number} z_index
+	 * @returns
+	 */
+	s.spawnTerrain = (w, h, templateName, z_index = undefined) => {
 		let terrain = new Terrain(
 			s,
-			frictionCoef,
+			templateName,
 			[-w / 2, h / 2],
 			[w / 2, h / 2],
 			[w / 2, -h / 2],
@@ -1065,7 +1128,7 @@ export const sketch = s => {
 		return terrain;
 	};
 
-	s.spawnRoad = (w, h, minimumSize, z_index = 0) => {
+	s.spawnRoad = (w, h, minimumSize, z_index = undefined) => {
 		let road = new Road(
 			s,
 			minimumSize,
@@ -1078,7 +1141,7 @@ export const sketch = s => {
 		return road;
 	};
 
-	s.spawnObstacle = (w, h, isGameOver, z_index = 0) => {
+	s.spawnObstacle = (w, h, isGameOver, z_index = undefined) => {
 		let obstacle = new Obstacle(
 			s,
 			isGameOver,
@@ -1097,13 +1160,17 @@ export const sketch = s => {
 		isCoin,
 		isObjectif,
 		isButton,
-		z_index = 0,
+		z_index = undefined,
 	) => {
 		let interaction = new InteractiveObject(
 			s,
-			isCoin,
-			isObjectif,
-			isButton,
+			isCoin
+				? 'collectable'
+				: isObjectif
+				? 'objective'
+				: isButton
+				? 'button'
+				: 'spring',
 			[-w / 2, h / 2],
 			[w / 2, h / 2],
 			[w / 2, -h / 2],
@@ -1121,6 +1188,12 @@ export const sketch = s => {
 		return shape;
 	};
 
+	s.spawnFigure = (z_index, templateName, ...points) => {
+		let shape = new Figure(s, templateName, ...points);
+		s.addObjectToScene(shape);
+		return shape;
+	};
+
 	s.spawnFixedRect = (x, y, w, h, z_index = 500) => {
 		return s.spawnFixedObject(
 			z_index,
@@ -1131,14 +1204,22 @@ export const sketch = s => {
 		);
 	};
 
-	s.spawnTextObject = (text, size, x, y, z_index = 500) => {
-		let shape = new TextObject(s, text, size, x, y);
+	s.spawnTextObject = (text, size, x, y, z_index = undefined) => {
+		let shape = new TextObject(
+			s,
+			'base',
+			[x - size / 2, y + size / 2],
+			[x + size / 2, y + size / 2],
+			[x + size / 2, y - size / 2],
+			[x - size / 2, y - size / 2],
+		);
+		shape.text = text;
 		s.addObjectToScene(shape, z_index);
 		return shape;
 	};
 
-	s.spawnFixedTextObject = (text, size, x, y, z_index = 500) => {
-		let shape = new FixedTextObject(s, text, size, x, y);
+	s.spawnFixedTextObject = (text, size, x, y, z_index = undefined) => {
+		let shape = new FixedTextObject(s, text, size, x, y, 'white');
 		s.addObjectToScene(shape, z_index);
 		return shape;
 	};
@@ -1150,10 +1231,11 @@ export const sketch = s => {
 		let shape = s.spawnRect(x, y, w, h, z_index);
 
 		let car = new Car(s, shape);
-		car.shapeId = shape.id;
+		//car.shapeId = shape.id;
 		car.shape.setImg(images.carTop);
 		s.cars.push(car);
 		s.selectedCar = s.cars.length - 1;
+		s.car = car;
 		return car;
 	};
 
@@ -1245,32 +1327,9 @@ export const sketch = s => {
 	};
 
 	s.saveLevel = () => {
-		/*if (!s.execution && s.creator) {
-            if (s.levelHasChanged) {
-                let stringified = s.stringify(editor.getValue().split("\n"));
-                s.save = stringified;
-
-                const data = {
-                    'csrfmiddlewaretoken': csrftoken,
-                    'level_data': s.save,
-                    'levelName': s.levelName,
-                    'levelAccess': s.levelAccess
-                };
-                $.ajax({
-                    type: "POST",
-                    url,
-                    data,
-                    success: function (data) {
-                        // console.log(data)
-                    }
-                });
-
-                s.levelHasChanged = false;
-                $('#saving-status').text('Niveau sauvegardé ✔');
-            }
-        }*/
+		return Serializer.serialize(Object.values(s.shapes).flat(1));
 	};
-
+	/*
 	s.load = data => {
 		s.clear();
 		let json = JSON.parse(data, (key, value) => {
@@ -1393,10 +1452,11 @@ export const sketch = s => {
 
 		// TODO: change this thing
 		/*if (!s.progression)
-            editor.setValue(json["initial_code"].join("\n"));*/
+            editor.setValue(json["initial_code"].join("\n"));
 
 		return json;
 	};
+	*/
 
 	s.clear = () => {
 		s.shapes = {};
@@ -1421,25 +1481,23 @@ export const sketch = s => {
 	};
 
 	s.resize = (w = null, h = null) => {
-		if (w != null && h != null) {
-			if (w !== s.width || h !== s.height) {
-				s.resizeCanvas(w, h);
-				/*for (const [z_index, shapes] of Object.entries(s.shapes)) {
+		if (w != null && h != null && (w !== s.width || h !== s.height)) {
+			s.resizeCanvas(w, h);
+			/*for (const [z_index, shapes] of Object.entries(s.shapes)) {
                     for (let shape of shapes) {
                         if (shape instanceof FixedObject) shape.resize(oldWidth, oldHeight)
                     }
                 }*/
-				if (s.editorButton != null)
-					s.editorButton.setPos(
-						new Vector(s.width / 2 - 35, -s.height / 2 + 95),
-						false,
-					);
-				if (s.robotConnectButton != null)
-					s.robotConnectButton.setPos(
-						new Vector(s.width / 2 - 35, -s.height / 2 + 35),
-						false,
-					);
-			}
+			if (s.editMode)
+				s.editorButton?.setPos(
+					new Vector(s.width / 2 - 35, -s.height / 2 + 95),
+					false,
+				);
+			if (s.robotConnectButton != null)
+				s.robotConnectButton.setPos(
+					new Vector(s.width / 2 - 35, -s.height / 2 + 35),
+					false,
+				);
 		}
 		if (canvasDiv.height() * (s.width / s.height) < canvasDiv.width()) {
 			jCanvas.css('height', '100%');

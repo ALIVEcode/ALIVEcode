@@ -11,15 +11,26 @@ export class PostController {
   create(@Body() createPostDto: CreatePostDto) {
     return this.postService.create(createPostDto);
   }
+  @Post('findandcount')
+  async findAndCount() {
+    let [data,count] = await this.postService.findAndCount()
+    return count
+  }
+
 
   @Get()
-  findAll() {
-    return this.postService.findAll();
+  async findAll() {
+    return await this.postService.findAll();
+  }
+
+  @Get('lastPost')
+  getLastPost() {
+    return this.postService.getLastPost();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.postService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.postService.findOne(+id);
   }
 
   @Patch(':id')

@@ -41,10 +41,15 @@ export class Course extends CreatedByUser {
 
 	subject: COURSE_SUBJECT;
 
+	@Type(() => Section)
 	sections: Section[];
 
 	async getSections() {
 		this.sections = await api.db.courses.getSections({ id: this.id });
 		return api.db.courses.getSections({ id: this.id });
+	}
+
+	getSubjectDisplay() {
+		return this.subject[0].toUpperCase() + this.subject.slice(1);
 	}
 }

@@ -8,6 +8,8 @@ import useRoutes from '../../../state/hooks/useRoutes';
 
 /**
  * Component used to join a classroom with a provided classroom code
+ *
+ * @author MoSk3
  */
 const JoinClassroomForm = () => {
 	const { t } = useTranslation();
@@ -43,11 +45,11 @@ const JoinClassroomForm = () => {
 	return (
 		<Form onSubmit={handleSubmit(SubmitForm)}>
 			<Form.Group>
-				<Form.Label>{t('form.classroom.code')}</Form.Label>
+				<Form.Label>{t('form.join_classroom.code')}</Form.Label>
 				<InputGroup hasValidation>
 					<Form.Control
 						isInvalid={notFound || errors.code?.type}
-						placeholder={t('form.classroom.code')}
+						placeholder={t('form.join_classroom.code')}
 						{...register('code', {
 							required: true,
 							minLength: 6,
@@ -55,7 +57,7 @@ const JoinClassroomForm = () => {
 						})}
 					/>
 					<Form.Control.Feedback type="invalid">
-						{notFound && !errors.code && t('form.classroom.invalidCode')}
+						{notFound && !errors.code && t('form.join_classroom.invalid_code')}
 						{errors.code?.type === 'required' && t('form.error.required')}
 						{errors.code?.type === 'minLength' &&
 							t('form.error.minLength', { min: 6 })}
@@ -66,7 +68,7 @@ const JoinClassroomForm = () => {
 			</Form.Group>
 			{console.log(errors)}
 			<Button type="submit" variant="primary">
-				{t('form.classroom.join')}
+				{t('form.join_classroom.submit')}
 			</Button>
 		</Form>
 	);

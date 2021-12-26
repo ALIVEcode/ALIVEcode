@@ -1,14 +1,13 @@
-import { RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 import FillContainer from '../../../Components/UtilsComponents/FillContainer/FillContainer';
+import { LevelIoT } from '../../../Models/Level/levelIoT.entity';
 
 export type IoTProjectTabs = 'settings' | 'routes' | 'access';
-
-type RouteProps = {
-	id: string;
-};
-
-export interface IoTProjectProps extends RouteComponentProps<RouteProps> {}
+export interface IoTProjectProps {
+	level?: LevelIoT;
+	initialCode?: string;
+	updateId?: string;
+}
 
 export const StyledIoTProject = styled(FillContainer)`
 	overflow-y: hidden;
@@ -16,7 +15,7 @@ export const StyledIoTProject = styled(FillContainer)`
 	#project-details {
 		height: 100%;
 		background-color: var(--background-color);
-		border-right: 1px solid rgba(var(--foreground-color-rgb), 0.4);
+		border-right: var(--bg-shade-four-color) 1px solid;
 		position: relative;
 	}
 
@@ -28,14 +27,14 @@ export const StyledIoTProject = styled(FillContainer)`
 	.project-top-row {
 		height: 50px;
 		padding: 10px !important;
-		border-bottom: 1px solid rgba(var(--foreground-color-rgb), 0.4);
+		border-bottom: var(--bg-shade-four-color) 1px solid;
 	}
 
 	.project-name {
 		font-size: 1.2em;
 		height: 50px;
 		padding: 10px !important;
-		border-bottom: 1px solid rgba(var(--foreground-color-rgb), 0.4);
+		border-bottom: var(--bg-shade-four-color) 1px solid;
 	}
 
 	.project-details-body {
@@ -62,20 +61,20 @@ export const StyledIoTProject = styled(FillContainer)`
 	}
 
 	.project-details-tab-selected {
-		background-color: rgba(var(--secondary-color-rgb), 0.7);
+		background-color: var(--bg-shade-three-color);
 	}
 
 	.project-details-tab:hover {
-		background-color: var(--secondary-color);
+		background-color: var(--bg-shade-one-color);
 	}
 
 	.project-details-content {
-		border-left: 1px solid rgba(var(--foreground-color-rgb), 0.4);
+		border-left: var(--bg-shade-four-color) 1px solid;
 		padding: 10px !important;
 	}
 
 	.project-details-content-header {
-		border-bottom: 1px solid rgba(var(--foreground-color-rgb), 0.4);
+		border-bottom: var(--bg-shade-four-color) 1px solid;
 		font-size: 1.2em;
 		height: 40px;
 		margin-bottom: 20px;
@@ -83,40 +82,6 @@ export const StyledIoTProject = styled(FillContainer)`
 
 	.disabled-text {
 		color: rgba(var(--foreground-color-rgb), 0.5);
-	}
-
-	.my-progress {
-		position: relative;
-		margin: 4px;
-		float: left;
-		text-align: center;
-	}
-	.barOverflow {
-		/* Wraps the rotating .bar */
-		position: relative;
-		overflow: hidden; /* Comment this line to understand the trick */
-		width: 180px;
-		height: 90px; /* Half circle (overflow) */
-		margin-bottom: -14px; /* bring the numbers up */
-	}
-	.bar {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 180px;
-		height: 180px; /* full circle! */
-		border-radius: 50%;
-		box-sizing: border-box;
-		border: 15px solid #bbb; /* half gray, */
-		border-bottom-color: #fbff00; /* half azure */
-		border-right-color: #fbff00;
-		transform: rotate(45deg);
-	}
-
-	.my-progress-span {
-		position: relative;
-		font-size: 1.2em;
-		bottom: 20px;
 	}
 
 	.row,

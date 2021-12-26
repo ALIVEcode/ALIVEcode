@@ -1,6 +1,18 @@
 import { TypeWriterProps } from './typeWriterTypes';
 import { useState, useEffect } from 'react';
 
+/**
+ * Component to simply do a typewriting effect
+ * 
+ * @param {string[]} lines lines to be written
+ * @param {number} typeSpeed typeSpeed (interval delay in ms)
+ * @param {boolean} noErase if the line should be erased after it was written
+ * @param {number} delayAfterWrite pause time before erasing the word (timeout delay in ms)
+ * @param {number} delayAfterErase pause time before writing the new word (timeout delay in ms)
+ * @param {boolean} shadow if it should have a shadow effect
+ * 
+ * @author MoSk3
+ */
 const TypeWriter = ({ lines, typeSpeed, noErase, eraseSpeed, delayAfterWrite, delayAfterErase, shadow }: TypeWriterProps) => {
   const [lineIndex, setLineIndex] = useState(0);
   const [letterIndex, setLetterIndex] = useState(0);
@@ -51,63 +63,3 @@ const TypeWriter = ({ lines, typeSpeed, noErase, eraseSpeed, delayAfterWrite, de
 }
 
 export default TypeWriter;
-
-/*
-navbar.css('position', 'fixed')
-var typer = $('#typer')
-var cursor = $('#cursor')
-let i = 0
-function cursorUpdate() {
-    if (i % 2 == 0) cursor.show()
-    else cursor.hide()
-    i++
-}
-
-setInterval(cursorUpdate, 700)
-
-function nextAnimationFrame() {
-    let removeIndex = 0
-    let interval = setInterval(() => {
-        if (typer.text().length >= 1) {
-            if (typer.text().length == 1) {
-                typer.html('&zwnj;')
-                clearInterval(interval)
-                setTimeout(writeWord, 1000)
-            }
-            else {
-                typer.text(typer.text().substring(0, typer.text().length - 1))
-            }
-            removeIndex++
-        }
-    }, 30);
-}
-
-function writeWord() {
-    phraseIndex = (phraseIndex + 1) % phrases.length
-    let newPhrase = phrases[phraseIndex]
-
-    let letterIndex = 0
-    let interval = setInterval(() => {
-        if (letterIndex < newPhrase.length) {
-            typer.text(typer.text() + newPhrase[letterIndex])
-        } else {
-            clearInterval(interval)
-            setTimeout(nextAnimationFrame, 5000)
-        }
-        letterIndex++
-    }, 50)
-}
-
-phrases = [
-    "Apprendre la programmation",
-    "Apprendre les concepts de l'IA",
-    "Apprendre en jouant",
-]
-
-let phraseIndex = 0
-
-typer.text(phrases[0])
-
-setTimeout(nextAnimationFrame, 5000)
-
-*/

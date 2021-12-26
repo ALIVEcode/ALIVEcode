@@ -1,14 +1,18 @@
 {
 	"error": {
 		"sorry": "Sorry.",
+		"unknown": "An unknow error occured, please try again.",
+		"custom": "Error: {{error}}.",
 		"back": "Go back",
 		"home": "Back to the main page",
 		"logout": "Something went wrong when logging out, please try again.",
-		"500": "Something went wrong, please try again",
+		"signin": "Invalid credentials, please verify them again.",
+		"signin_first_time": "Something went wrong when automatically logging into your new account",
+		"500": "Something went wrong, please try again.",
 		"page404": "This page does not exist.",
 		"maintenance": {
 			"ongoing": "The website is under maintenance since {{startDate}} and will finish at {{finishDate}}, this page could not be loaded.",
-			"short": "The request could not be made, the website is currently under maintenance"
+			"short": "The request could not be made, the website is currently under maintenance."
 		}
 	},
 	"form": {
@@ -22,6 +26,12 @@
 			"maxLength": "This field exceeds {{max}} characters",
 			"minLength": "This field should be at least {{min}} characters",
 			"match": {
+				"alphabetic": "This field should only contains alphabetic characters",
+				"alphabetic_lower": "This field should only contains lowercase alphabetic characters",
+				"alphabetic_upper": "This field should only contains uppercase alphabetic characters",
+				"alphanumeric": "This field should only contains alphanumeric characters",
+				"alphanumeric_underscore": "This field should only contains alphanumeric characters and underscores _",
+				"numbers": "This field should only contains numbers",
 				"name": "This field should only contains alphanumeric characters"
 			}
 		},
@@ -32,23 +42,38 @@
 		},
 		"title": {
 			"signin": "Sign in",
-			"signup": "Sign up"
+			"signup": "Sign up",
+			"create_classroom": "Creation of a classroom",
+			"create_course": "Creation of a course",
+			"create_level": "Creation of a level",
+			"create_iot_project": "Creation of an IoT project",
+			"create_iot_object": "Creation of an IoT object"
+		},
+		"join_classroom": {
+			"title": "Join a classroom",
+			"submit": "Join",
+			"code": "Code of the classroom",
+			"invalid_code": "Invalid code"
 		},
 		"pwd": {
 			"label": "Password",
 			"placeholder": "*****",
-			"required": "The password is required"
+			"required": "The password is required",
+			"pattern": "Password should only contain alphanumeric characters and special characters: !@#\\$&*~"
 		},
 		"email": {
 			"label": "Email address",
 			"placeholder": "MyEmailAdress@alivecode.ca",
 			"required": "An email address is required",
+			"taken": "This email address is already taken",
 			"info": "We will not share your email address with anyone"
 		},
 		"name": {
 			"label": "Name",
 			"placeholder": "Enric",
-			"required": "A username is required"
+			"required": "A username is required",
+			"taken": "This username is already taken",
+			"pattern": "The username should only be letters, numbers and underscores"
 		},
 		"firstName": {
 			"label": "First name",
@@ -66,12 +91,22 @@
 			"required": "Your school grade is required"
 		}
 	},
+	"modal": {
+		"close": "Close",
+		"save": "Save Changes",
+		"confirm": "Confirm",
+		"cancel": "Cancel"
+	},
 	"msg": {
 		"professor": "professor",
 		"student": "student",
+		"creator": "Creator",
 		"understood": "Understood!",
 		"description": "description",
 		"deleted_user": "Deleted user",
+		"search": "Search",
+		"creation_date": "Creation date",
+		"update_date": "Update date",
 		"time": {
 			"format": "{{dayName}}, {{day}} {{monthName}} {{year}} {{hour}}:{{minute}}",
 			"day": {
@@ -103,7 +138,9 @@
 		},
 		"auth": {
 			"signin": "Connect",
+			"signin_success": "You are successfully logged in",
 			"signup": "Sign up",
+			"signup_success": "You are successfully logged into your new account",
 			"signup_professor": "Professor account",
 			"signup_student": "Student account",
 			"signout": "Sign out",
@@ -135,10 +172,23 @@
 	},
 	"dashboard": {
 		"classrooms": {
+			"title": "My classrooms",
 			"empty": {
 				"student": "You are not part of any classroom",
 				"professor": "You do not have any classroom"
 			}
+		},
+		"levels": {
+			"title": "Levels",
+			"my_levels": "My levels",
+			"create_level": "Create a level",
+			"browse_levels": "Browse levels"
+		},
+		"quizzes": {
+			"title": "Quizzes",
+			"my_quizzes": "My quizzes",
+			"create_quiz": "Create a quiz",
+			"browse_quizzes": "Browse quizzes"
 		}
 	},
 	"classroom": {
@@ -165,6 +215,21 @@
 			"desc": "Give this code to your students so that they can join the classroom from the website!"
 		}
 	},
+	"course": {
+		"desc": "Course of {{professor}}",
+		"subject": "Subject",
+		"empty": "This course is empty.",
+		"section": {
+			"empty": "This section has no activities.",
+			"new": "New section"
+		},
+		"activity": {
+			"empty": "This activity is empty.",
+			"no_activity": "Open an activity to get started.",
+			"new": "Add an activity",
+			"new_name": "Activity #{{num}}"
+		}
+	},
 	"menu": {
 		"signup": {
 			"professor": "Professor account",
@@ -173,7 +238,8 @@
 		"level": {
 			"alive": "Level with ALIVE car",
 			"code": "Level with console",
-			"ai": "Level with artificial intelligence"
+			"ai": "Level with artificial intelligence",
+			"iot": "Level with Internet of Things"
 		}
 	},
 	"home": {
@@ -225,6 +291,9 @@
 			"copyright_2": " 2021 All Rights Reserved by"
 		}
 	},
+	"input": {
+		"defaultValue": "Write your value here..."
+	},
 	"ai": {
 		"header": {
 			"title": "THE WORLD OF ARTIFICIAL INTELLIGENCE WITH ALIVESCRIPT",
@@ -258,6 +327,35 @@
 			}
 		}
 	},
+	"iot": {
+		"project": {
+			"name": "IoT Project"
+		},
+		"object": {
+			"name": "IoT Object"
+		}
+	},
+	"simulation": {
+		"modal": {
+			"retry": "Retry?",
+			"continue": "Continue",
+			"lose": "Better luck next time!",
+			"win": "Nicely done! 🎉",
+			"water": "The car fell in water",
+			"lava": "The car fell in lava",
+			"hole": "The car fell in a hole",
+			"wall": "The car smashed in a wall",
+			"connect_car": {
+				"title": "Connect a real ALIVEcar",
+				"label": "Identifier of the ALIVEcar",
+				"id": "123",
+				"button": "Connect with the real ALIVEcar"
+			}
+		}
+	},
+	"cmd": {
+		"clear": "Clear lines"
+	},
 	"user":{
 		"quiz": "Quiz :",
 		"status": "Status :",
@@ -265,5 +363,26 @@
 		"reward": "Reward :",
 		"rank": "Rank :",
 		"rewardTitle": "Reward"
+	},
+	"simulation": {
+		"modal": {
+			"retry": "Retry?",
+			"continue": "Continue",
+			"lose": "Better luck next time!",
+			"win": "Nicely done! 🎉",
+			"water": "The car fell in water",
+			"lava": "The car fell in lava",
+			"hole": "The car fell in a hole",
+			"wall": "The car smashed in a wall",
+			"connect_car": {
+				"title": "Connect a real ALIVEcar",
+				"label": "Identifier of the ALIVEcar",
+				"id": "123",
+				"button": "Connect with the real ALIVEcar"
+			}
+		}
+	},
+	"cmd": {
+		"clear": "Clear lines"
 	}
 }

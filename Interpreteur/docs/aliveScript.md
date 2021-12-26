@@ -55,8 +55,8 @@
         -   ouverture: <code>get _nom_</code>
         -   fermeture: `fin get`
     -   utilité:
-        > fonction appelée lorsque l'on veut obtenir la valeur d'une variable (par exemple pour l'afficher)
-        > La valeur retournée par le get est la valeur obtenu lorsqu'on veut obtenir la valeur de la variable
+        > fonction appelée lorsque l'on veut obtenir la valeur d'une variable (par exemple pour l'afficher)  
+        La valeur retournée par le get est la valeur obtenu lorsqu'on veut obtenir la valeur de la variable
     -   type retour: _le type retourné d'un getter doit être le même que le type de la variable_
     -   ex:
 
@@ -80,8 +80,9 @@
             -   pas typé: <code>set _nom_(_param_)</code>
         -   fermeture: `fin set`
     -   utilité:
-        > fonction appelée lorsque l'on assigne une valeur à la variable
-        > La valeur retournée par le set est la valeur assignée à la variable
+        > fonction appelée lorsque l'on assigne une valeur à la variable  
+        La valeur retournée par le set est la valeur assignée à la variable  
+        **Le setter n'est pas appliqué lors de la déclaration de la variable**
     -   type param: _le type du param est_ `tout` _s'il n'est pas précisé_
     -   type retour: _le type retourné d'un setter doit être le **même** que le type de la variable_
     -   ex:

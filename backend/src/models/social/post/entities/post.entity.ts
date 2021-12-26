@@ -1,6 +1,5 @@
 import { UserEntity } from "src/models/user/entities/user.entity";
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, Timestamp } from "typeorm";
-import { CategoriesSubject } from "../../categories-subjects/entities/categories-subject.entity";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Timestamp } from "typeorm";
 import { Subject } from "../../subjects/entities/subject.entity";
 //ajouter le many to one avec le user 
 @Entity()

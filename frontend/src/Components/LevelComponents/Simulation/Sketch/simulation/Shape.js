@@ -1,12 +1,13 @@
 import { Vector } from './Vector';
 import { dist } from './functions';
 
+
 export class Shape {
-	templateName = '';
 	constructor(s, ...points) {
 		this.s = s;
 		this.id = s.id;
 		s.id++;
+		this.imgName = '';
 		this.class = 'Shape';
 		this.rotation = new Vector(0, 0);
 		this.zIndex = 0;
@@ -29,6 +30,8 @@ export class Shape {
 		this.carInteraction = false;
 		this.colliding = [];
 		this.children = [];
+		this.bounds = [];
+		this.res = null;
 		for (const point of points) {
 			this.vertices.push(new Vector(point[0], point[1]));
 		}
@@ -38,12 +41,7 @@ export class Shape {
 		this.rememberBounds();
 	}
 
-	loadFromTemplate() {
-		throw new Error('must be override by a subclass');
-	}
-
 	setBounds() {
-		this.bounds = [];
 		this.middle = new Vector(
 			(this.calcLeftX() + this.calcRightX()) / 2,
 			(this.calcTopY() + this.calcBottomY()) / 2,
@@ -70,9 +68,11 @@ export class Shape {
 		this.forward.substract(this.pos);
 	}
 
-	setImg(img) {
+	setImg([imgName, img]) {
 		//if (!this.isRect()) throw new ShapeException('Cannot apply an image to a shape that is not a rectangle')
 		this.img = img;
+		this.imgName = imgName;
+		//console.log(img);
 		// TODO: images saving
 		/*for (const [imgName, img] of Object.entries(this.s.dictImages)) {
 			if (img === this.img) {
@@ -82,9 +82,10 @@ export class Shape {
 		}*/
 	}
 
-	setTexture(img, res = 1) {
+	setTexture([imgName, img], res = 1) {
 		//if (!this.isRect()) throw new ShapeException('Cannot apply an image to a shape that is not a rectangle')
 		this.img = img;
+		this.imgName = imgName;
 
 		// TODO : redo image saving
 		/*for (const [imgName, img] of Object.entries(this.s.dictImages)) {
@@ -148,17 +149,21 @@ export class Shape {
 		let cloned;
 
 		if (this instanceof Obstacle)
-			cloned = new Obstacle(this.s, this.isGameOver, ...points);
+			cloned = new Obstacle(this.s, this.templateName, ...points);
 		else if (this instanceof Road)
-			cloned = new Road(this.s, this.minimumSize, ...points);
+			cloned = new Road(this.s, this.templateName, ...points);
 		else if (this instanceof Terrain)
-			cloned = new Terrain(this.s, this.speedMultiplier, ...points);
-		else if (this instanceof InteractiveObject)
-			cloned = new InteractiveObject(
+			cloned = new Terrain(this.s, this.templateName, ...points);
+		else if (this instanceof Interactive)
+			cloned = new Interactive(
 				this.s,
-				this.isCoin,
-				this.isObjectif,
-				this.isButton,
+				this.isCollectable
+					? 'collectable'
+					: this.isObjectif
+					? 'objective'
+					: this.isButton
+					? 'button'
+					: 'spring',
 				...points,
 			);
 		else cloned = new Shape(this.s, ...points);
@@ -300,8 +305,8 @@ export class Shape {
 		this.children = [];
 	}
 
-	rotate(angle, point = null) {
-		if (point == null) point = this.pos;
+	rotate(angle, point) {
+		if (point === undefined) point = this.pos;
 		this.rotation.x = (this.rotation.x + angle) % 360;
 		if (this.rotation.x < 0) this.rotation.x += 360;
 		let newAngle = 360 - angle;
@@ -415,9 +420,7 @@ export class Shape {
 	setZIndex(newZIndex) {
 		// Retrait de l'élément
 		let shapesByZIndex = this.s.shapes[this.zIndex];
-		shapesByZIndex = shapesByZIndex.filter(el => {
-			return el !== this;
-		});
+		shapesByZIndex = shapesByZIndex.filter(el => el !== this);
 		this.s.shapes[this.zIndex] = shapesByZIndex;
 
 		// Ajout de l'élément
@@ -426,6 +429,7 @@ export class Shape {
 		} else {
 			this.s.shapes[newZIndex] = [this];
 		}
+		this.zIndex = newZIndex;
 	}
 
 	// ATTENTION PLEINS DE FONCTIONS CHIANTES POUR LES SYSTÈME D'EVENT
@@ -495,6 +499,8 @@ export class Shape {
 	onClick(fct) {
 		this.clickFct = fct;
 	}
+
+	rightClick() {}
 
 	collisionEnter(e) {
 		this.colliding.push(e.collidingWith);
@@ -1068,7 +1074,7 @@ export class Shape {
 
 export class ShapeException extends Error {}
 
-const Obstacle = require('./Obstacle').Obstacle;
-const Road = require('./Road').Road;
-const Terrain = require('./Terrain').Terrain;
-const InteractiveObject = require('./InteractiveObject').InteractiveObject;
+const { Obstacle } = require('./ts/Obstacle');
+const { Road } = require('./ts/Road');
+const { Terrain } = require('./ts/Terrain');
+const { Interactive } = require('./ts/Interactive');

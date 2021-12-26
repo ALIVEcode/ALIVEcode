@@ -3,6 +3,7 @@ nav {
   width: 100%;
   background-color: var(--background-color);
   color: var(--foreground-color);
+  border-bottom: var(--bg-shade-four-color) 1px solid;
 }
 
 .dropdown-toggle::after {

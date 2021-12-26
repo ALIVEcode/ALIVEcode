@@ -1,7 +1,5 @@
 package interpreteur.ast.buildingBlocs;
 
-
-
 import interpreteur.as.Objets.ASObjet;
 
 import java.io.Serializable;

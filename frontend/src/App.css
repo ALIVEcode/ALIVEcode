@@ -3,6 +3,39 @@
   font-weight: 500;
 }
 
+.rdtPicker {
+  border: 1px solid var(--bg-shade-four-color) !important;
+  background-color: var(--background-color) !important;
+}
+
+.rdtDays {
+	color: var(--foreground-color);
+}
+
+.rdtPicker td.rdtDay:hover,
+.rdtPicker td.rdtYear:hover,
+.rdtPicker td.rdtHour:hover,
+.rdtPicker td.rdtMinute:hover,
+.rdtPicker td.rdtSecond:hover,
+.rdtPicker .rdtTimeToggle:hover,
+td.rdtMonth:hover, 
+td.rdtMonth:hover,
+.rdtBtn:hover,
+.rdtPicker button:hover,
+.rdtPicker thead tr:first-of-type th:hover,
+.rdtPicker .rdtTimeToggle:hover {
+  background: var(--bg-shade-one-color) !important;
+  cursor: pointer;
+}
+
+.rdtPicker td.rdtToday:before {
+  border-bottom: 7px solid var(--primary-color) !important;
+}
+
+.rdtPicker td.rdtActive, .rdtPicker td.rdtActive:hover {
+  background-color: var(--contrast-color) !important;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -36,4 +69,13 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.modal-backdrop-alert-confirm {
+  z-index: 1060 !important;
+}
+
+hr {
+  margin-bottom: 0 !important;
+  border-top: 1px solid var(--bg-shade-four-color) !important;
 }

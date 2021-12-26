@@ -1,35 +1,29 @@
-import styled from 'styled-components';
-import { IoTRouteCardProps } from './iotRouteCardTypes';
+import { IoTRouteCardProps, StyledRouteCard } from './iotRouteCardTypes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import {
 	faLevelUpAlt,
 	faTrash,
 	faWrench,
 } from '@fortawesome/free-solid-svg-icons';
 import AlertConfirm from '../../../UtilsComponents/Alert/AlertConfirm/AlertConfirm';
+import Modal from '../../../UtilsComponents/Modal/Modal';
+import IoTRouteSettings from '../IoTRouteSettings/IoTRouteSettings';
+import { IoTProjectContext } from '../../../../state/contexts/IoTProjectContext';
 
-const StyledRouteCard = styled.div`
-	background-color: rgba(var(--primary-color-rgb), 0.6);
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 5px 10px 5px 10px;
-
-	.icon {
-		color: var(--foreground-color);
-		transition: 0.1s;
-		cursor: pointer;
-		margin-left: 10px;
-	}
-
-	.icon:hover {
-		color: rgba(var(--foreground-color-rgb), 0.3);
-	}
-`;
-
+/**
+ * Component that shows an IoTRoute with its information
+ * (name, path)
+ *
+ * @param {IoTRoute} route IoTRoute object
+ *
+ * @author MoSk3
+ */
 const IoTRouteCard = ({ route }: IoTRouteCardProps) => {
 	const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+	const [settingsOpen, setSettingsOpen] = useState(false);
+
+	const { deleteRoute } = useContext(IoTProjectContext);
 
 	return (
 		<>
@@ -47,7 +41,11 @@ const IoTRouteCard = ({ route }: IoTRouteCardProps) => {
 					</div>
 				</div>
 				<div>
-					<FontAwesomeIcon className="icon" icon={faWrench} />
+					<FontAwesomeIcon
+						className="icon"
+						icon={faWrench}
+						onClick={() => setSettingsOpen(true)}
+					/>
 					<FontAwesomeIcon
 						className="icon"
 						icon={faTrash}
@@ -55,12 +53,19 @@ const IoTRouteCard = ({ route }: IoTRouteCardProps) => {
 					/>
 				</div>
 			</StyledRouteCard>
+			<Modal
+				title="Route settings"
+				open={settingsOpen}
+				onClose={() => setSettingsOpen(false)}
+				size="xl"
+			>
+				<IoTRouteSettings route={route} />
+			</Modal>
 			<AlertConfirm
 				title="Are you sure you want to delete this route"
 				open={deleteConfirmOpen}
 				onClose={() => setDeleteConfirmOpen(false)}
-				onConfirm={() => console.log('DELETE!')}
-				onCancel={() => console.log('CANCEL!')}
+				onConfirm={() => deleteRoute(route)}
 			/>
 		</>
 	);

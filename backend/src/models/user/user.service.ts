@@ -16,9 +16,11 @@ import { IoTObjectEntity } from '../iot/IoTobject/entities/IoTobject.entity';
 import { LevelEntity } from '../level/entities/level.entity';
 import { CourseEntity } from '../course/entities/course.entity';
 import { MyRequest } from '../../utils/guards/auth.guard';
+import { Result } from '../social/results/entities/result.entity';
 
 @Injectable({ scope: Scope.REQUEST })
 export class UserService {
+  [x: string]: any;
   constructor(
     @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>,
     @InjectRepository(ProfessorEntity)
@@ -31,16 +33,17 @@ export class UserService {
     @InjectRepository(LevelEntity) private levelRepository: Repository<LevelEntity>,
     @Inject(REQUEST) private req: MyRequest,
   ) {}
-
   async createStudent(createStudentDto: UserEntity) {
-    // TODO: random salt
     const hashedPassword = await hash(createStudentDto.password, 12);
     createStudentDto.password = hashedPassword;
 
     try {
       const student = await this.studentRepository.save(this.studentRepository.create(createStudentDto));
       return student;
-    } catch {
+    } catch (err) {
+      if ((err as any).detail.includes('Key (name)='))
+        throw new HttpException('This username is already in use', HttpStatus.CONFLICT);
+
       throw new HttpException('This email is already in use', HttpStatus.CONFLICT);
     }
   }
@@ -87,7 +90,13 @@ export class UserService {
     const refreshToken = req.cookies.wif;
     if (!refreshToken) throw new HttpException('No credentials were provided', HttpStatus.UNAUTHORIZED);
 
-    const payload = verify(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY) as AuthPayload;
+    let payload: AuthPayload;
+
+    try {
+      payload = verify(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY) as AuthPayload;
+    } catch {
+      throw new HttpException('Invalid Credentials', HttpStatus.UNAUTHORIZED);
+    }
     if (!payload) throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
 
     const user = await this.findById(payload.id);
@@ -122,8 +131,8 @@ export class UserService {
     return user;
   }
 
-  update(user: UserEntity, updateUserDto: UserEntity) {
-    return this.userRepository.update(user, updateUserDto);
+  async update(userId: string, updateUserDto: UserEntity) {
+    return await this.userRepository.update(userId, updateUserDto);
   }
 
   remove(user: UserEntity) {
@@ -151,7 +160,9 @@ export class UserService {
   async getIoTObjects(user: UserEntity) {
     return await this.iotObjectRepository.find({ where: { creator: user } });
   }
-
+  async getResults(user: UserEntity) {
+    return await this.userRepository.find({ where: {id: user } });
+  }
   async getLevels(user: UserEntity, query: string) {
     return await this.levelRepository.find({
       where: { creator: user, name: ILike(`%${query ?? ''}%`) },

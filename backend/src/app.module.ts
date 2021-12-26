@@ -17,7 +17,6 @@ import { AuthMiddleware } from './utils/middlewares/auth.middleware';
 import { MaintenanceService } from './models/maintenance/maintenance.service';
 import { UserModule } from './models/user/user.module';
 import { UserService } from './models/user/user.service';
-import { AdminModule } from '@adminjs/nestjs';
 import adminjs from 'adminjs';
 import { Database, Resource } from '@adminjs/typeorm';
 import { UserEntity } from './models/user/entities/user.entity';
@@ -45,6 +44,7 @@ import { ResultsModule } from './models/social/results/results.module';
 import { MessagesModule } from './models/social/messages/messages.module';
 import { ChatModule } from './socket/chatSocket/chatSocket.module';
 import { TopicsModule } from './models/social/topics/topics.module';
+import { AdminModule } from '@adminjs/nestjs';
 
 adminjs.registerAdapter({ Database, Resource });
 

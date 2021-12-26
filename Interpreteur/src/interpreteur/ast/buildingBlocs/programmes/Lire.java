@@ -34,28 +34,30 @@ public class Lire extends Programme {
     @Override
     public NullType execute() {
         assert executeurInstance != null;
-        if (executeurInstance.getDataResponse().isEmpty()) {
+        if (executeurInstance.getDataResponse().isEmpty())
             throw new ASErreur.StopGetInfo(new Data(Data.Id.GET).addParam("read").addParam(message.eval().getValue().toString()));
-        } else {
-            ASObjet.Texte data = new ASObjet.Texte(executeurInstance.getDataResponse().pop());
-            if (this.fonction == null) {
-                new Assigner(var, new ValeurConstante(new ASObjet.Texte(data)), null).execute();
-                return null;
-            }
-            ASObjet<?> exprEval = this.fonction.eval();
-            ASObjet<?> valeur;
-            List<ASObjet.Texte> argument = Collections.singletonList(data);
-            if (exprEval instanceof ASObjet.Fonction fct) {
-                valeur = fct.setParamPuisExecute(new ArrayList<>(argument));
-            } else if (exprEval instanceof ASFonction fct) {
-                valeur = fct.makeInstance().executer(new ArrayList<>(argument));
-            } else {
-                throw new ASErreur.ErreurInputOutput("Un \u00E9l\u00E9ment de type 'fonctionType' est attendue " +
-                        "apr\u00E8s le deux points ':' dans la commande 'lire', mais '" +
-                        exprEval.obtenirNomType() + "' a \u00E9t\u00E9 trouv\u00E9.");
-            }
-            new Assigner(var, new ValeurConstante(valeur), null).execute();
+
+        ASObjet.Texte data = new ASObjet.Texte(executeurInstance.getDataResponse().pop());
+        if (this.fonction == null) {
+            new Assigner(var, new ValeurConstante(new ASObjet.Texte(data)), null).execute();
+            return null;
         }
+        ASObjet<?> exprEval = this.fonction.eval();
+        ASObjet<?> valeur;
+        List<ASObjet.Texte> argument = Collections.singletonList(data);
+        if (exprEval instanceof ASObjet.Fonction fct) {
+            valeur = fct.setParamPuisExecute(new ArrayList<>(argument));
+        } else if (exprEval instanceof ASFonction fct) {
+            valeur = fct.makeInstance().executer(new ArrayList<>(argument));
+        } else {
+            throw new ASErreur.ErreurInputOutput("Un \u00E9l\u00E9ment de type 'fonctionType' est attendue " +
+                    "apr\u00E8s le deux points ':' dans la commande 'lire', mais '" +
+                    exprEval.obtenirNomType() + "' a \u00E9t\u00E9 trouv\u00E9.");
+        }
+        new Assigner(var, new ValeurConstante(valeur), null).execute();
+
         return null;
+
     }
 }
+

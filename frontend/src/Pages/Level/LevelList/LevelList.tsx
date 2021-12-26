@@ -12,7 +12,12 @@ import {
 	StyledLevelBrowse,
 } from '../LevelBrowse/levelBrowseTypes';
 
-const LevelBrowse = (props: LevelBrowseProps) => {
+/**
+ * Browsing menu that shows all the levels of the current user sorted with a query
+ *
+ * @author MoSk3
+ */
+const LevelList = (props: LevelBrowseProps) => {
 	const [browsingResult, setBrowsingResult] =
 		useState<BrowsingResults<Level>>();
 	const levels = browsingResult?.results;
@@ -51,4 +56,4 @@ const LevelBrowse = (props: LevelBrowseProps) => {
 	);
 };
 
-export default LevelBrowse;
+export default LevelList;

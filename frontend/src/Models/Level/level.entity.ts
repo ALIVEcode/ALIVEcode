@@ -1,6 +1,7 @@
 import { Exclude, Transform, Type, plainToClass } from 'class-transformer';
 import { CreatedByUser } from '../Generics/createdByUser.entity';
 import { User, Professor, Student } from '../User/user.entity';
+import { ActivityLevel } from '../Course/activity_level.entity';
 
 export enum LEVEL_TAG {}
 export enum LEVEL_ACCESS {
@@ -19,6 +20,13 @@ export enum LEVEL_DIFFICULTY {
 	EXPERT = 'EX',
 }
 
+export enum LEVEL_TYPE {
+	CODE = 'LevelCodeEntity',
+	ALIVE = 'LevelAliveEntity',
+	AI = 'LevelAIEntity',
+	IOT = 'LevelIoTEntity',
+}
+
 export class Level extends CreatedByUser {
 	@Exclude({ toPlainOnly: true })
 	@Type(() => User)
@@ -33,6 +41,8 @@ export class Level extends CreatedByUser {
 	)
 	creator: User | undefined;
 
+	type: LEVEL_TYPE;
+
 	access: LEVEL_ACCESS;
 
 	difficulty: LEVEL_DIFFICULTY;
@@ -41,12 +51,14 @@ export class Level extends CreatedByUser {
 
 	tags: LEVEL_TAG[];
 
+	@Type(() => ActivityLevel)
+	activities?: ActivityLevel[];
+
 	getTypeDisplay() {
-		if (this instanceof LevelAlive) return 'Car coding';
-		if (this instanceof LevelCode) return 'Coding';
+		if (this.type === LEVEL_TYPE.ALIVE) return 'Car coding';
+		if (this.type === LEVEL_TYPE.CODE) return 'Coding';
+		if (this.type === LEVEL_TYPE.AI) return 'Aritificial Intelligence';
+		if (this.type === LEVEL_TYPE.IOT) return 'Internet of Things';
 		return;
 	}
 }
-
-const LevelAlive = require('./levelAlive.entity').LevelAlive;
-const LevelCode = require('./levelCode.entity').LevelCode;

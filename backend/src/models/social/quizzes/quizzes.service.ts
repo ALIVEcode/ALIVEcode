@@ -1,23 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateQuizDto } from './dto/create-quiz.dto';
 import { UpdateQuizDto } from './dto/update-quiz.dto';
+import { Quiz } from './entities/quiz.entity';
 
 @Injectable()
 export class QuizzesService {
-  create(createQuizDto: CreateQuizDto) {
-    return 'This action adds a new quiz';
+  constructor(
+    @InjectRepository(Quiz) private quizRepository: Repository<Quiz>,
+  ) {}
+  async create(createQuizDto: Quiz) {
+    const quiz = this.quizRepository.save(this.quizRepository.create(createQuizDto));
+    return await quiz;
   }
 
-  findAll() {
-    return `This action returns all quizzes`;
+  async findAll() {
+    return await this.quizRepository.find({ relations: ['reward', 'questions'] });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} quiz`;
+  async findOne(id: number) {
+    if (!id) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+    const quiz = await this.quizRepository.findOne(id);
+    if (!quiz) throw new HttpException('Quiz not found', HttpStatus.NOT_FOUND);
+    return quiz;
   }
 
-  update(id: number, updateQuizDto: UpdateQuizDto) {
-    return `This action updates a #${id} quiz`;
+  async update(id: number, updateQuizDto: UpdateQuizDto) {
+    return 'This Updates a Quiz';
   }
 
   remove(id: number) {

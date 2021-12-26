@@ -1,5 +1,9 @@
 ## AliveScript
 
+<small>[v1.2.0](#versioning)</small>  
+<small>Auteur: Mathis Laroche</small>  
+<br/>
+
 #### Commentaires
 
 -   simple ligne: <code># _commentaire_</code>
@@ -18,10 +22,10 @@
     -   ex:
         ```
         (-:
-        Cette fonction additionne deux nombres et retourne le résultat
-        @param num1: le premier nombre
-        @param num2: le deuxième nombre
-        @retourne la somme deux deux nombres
+         - Cette fonction additionne deux nombres et retourne le résultat
+         - @param num1: le premier nombre
+         - @param num2: le deuxième nombre
+         - @retourne la somme deux deux nombres
         :-)
         fonction additionner(num1: nombre, num2: nombre) -> nombre
           retourner num1 + num2
@@ -51,8 +55,8 @@
         -   ouverture: <code>get _nom_</code>
         -   fermeture: `fin get`
     -   utilité:
-        > fonction appelée lorsque l'on veut obtenir la valeur d'une variable (par exemple pour l'afficher)
-        > La valeur retournée par le get est la valeur obtenu lorsqu'on veut obtenir la valeur de la variable
+        > fonction appelée lorsque l'on veut obtenir la valeur d'une variable (par exemple pour l'afficher)  
+        La valeur retournée par le get est la valeur obtenu lorsqu'on veut obtenir la valeur de la variable
     -   type retour: _le type retourné d'un getter doit être le même que le type de la variable_
     -   ex:
 
@@ -76,8 +80,9 @@
             -   pas typé: <code>set _nom_(_param_)</code>
         -   fermeture: `fin set`
     -   utilité:
-        > fonction appelée lorsque l'on assigne une valeur à la variable
-        > La valeur retournée par le set est la valeur assignée à la variable
+        > fonction appelée lorsque l'on assigne une valeur à la variable  
+        La valeur retournée par le set est la valeur assignée à la variable  
+        **Le setter n'est pas appliqué lors de la déclaration de la variable**
     -   type param: _le type du param est_ `tout` _s'il n'est pas précisé_
     -   type retour: _le type retourné d'un setter doit être le **même** que le type de la variable_
     -   ex:
@@ -122,12 +127,45 @@
 #### Arithmétique
 
 -   addition: `+`
+    -   nombre + nombre -> nombre
+        -   ex: `2 + 2 = 4`
+    -   liste + tout -> ajoute le deuxième terme à la fin de la liste
+        -   ex: `[2, 3, 4] + "salut" = [2, 3, 4, "salut"]`
+    -   texte + tout -> concationne le texte avec la représentation en texte du deuxième terme
+        -   ex: `"salut " + vrai = "salut vrai"`
+    -   (tout sauf liste) + texte -> concationne le texte avec la représentation en texte du premier terme
+        -   ex: `12 + "hey" = "12hey"`
 -   soustraction: `-`
+    -   nombre - nombre -> nombre
+        -   ex: `12 - 2 = 10`
+    -   liste - tout -> retire tous les éléments de la liste qui sont égaux au deuxième terme
+        -   ex: `[1, vrai, "bonjour"] - vrai = [1, "bonjour"]`
+    -   texte - texte -> retire tous les sous-textes du premier terme matchant au deuxième terme
+        -   ex: `"salut je suis Mathis" - "is" = "salut je su Math`
 -   multiplication: `*`
+    -   nombre \* nombre -> nombre
+        -   ex: `4 * 12 = 48`
+    -   texte \* entier -> répète le texte un nombre de fois égal au deuxième terme
+        -   ex: `"salut " * 3 = "salut salut salut "`
+    -   liste \* entier -> répète la liste un nombre de fois égal au deuxième terme
+        -   ex: `[12, vrai, "h"] * 3 = [12, vrai, "h", 12, vrai, "h", 12, vrai, "h"]`
 -   division: `/`
+    -   nombre / nombre -> nombre
+        -   ex: `25 / 2 = 12.5`
+    -   liste / liste -> retire tous les éléments de la liste 1 présent dans la liste 2
+        -   ex: `[1, 1, 2, vrai, faux, 4, 5, "foo"] / [vrai, 2, 4, 1] = [faux, 5, "foo"]`
 -   division entière: `//`
+    -   nombre // nombre -> entier
+        -   ex: `25 / 2 = 12`
 -   exposant: `^`
+    -   nombre ^ nombre -> nombre
+        -   ex: `3 ^ 4 = 81`
 -   modulo: `%`
+    -   entier % entier -> entier
+        -   ex: `7 % 3 = 1`
+-   pipe: `|`
+    -   liste | liste -> créé une nouvelle liste composé des éléments des deux listes sans modifier les listes originales
+        -   ex: `[1, 2, 3, vrai] | [3, faux, "salut"] = [1, 2, 3, vrai, 3, faux, "salut"]`
 
 #### Comparaisons
 
@@ -190,6 +228,17 @@
     -   `fonctionType` syntaxe: [fonction](#Fonction)
     -   `nulType` syntaxe: `nul`
     -   `rien` syntaxe: `rien`
+
+-   ##### Transformation de type
+
+    -   txt: texte -> nombre: `+txt` **OU** `--txt`
+    -   txt: texte -> entier: `entier(txt)`
+    -   txt: texte -> decimal: `decimal(txt)`
+
+    -   txt: texte -> liste: `liste(txt)`
+
+    -   element: tout -> texte: `"" + element` **OU** `texte(element)`
+    -   element: tout -> booleen: `pas pas element` **OU** `booleen(element)`
 
 #### Iterable (liste | texte)
 
@@ -266,34 +315,35 @@
 
             -   ~~info~~
 
-            -   aleatoire(choix: iterable) -> tout
-            -   typeDe(element: tout) -> texte
+            -   [aleatoire(choix: iterable) -> tout](/as/builtins/)
+            -   [typeDe(element: tout) -> texte](/as/builtins/)
 
-            -   sep(txt: texte) -> liste
-            -   joindre(lst: liste, separateur: texte = " ") -> texte
-            -   inverser(iter: iterable) -> iterable
-            -   map(f: fonctionType, lst: liste) -> liste
-            -   filtrer(f: fonctionType, lst: liste) -> liste
-            -   somme(lst: liste) -> nombre
-            -   max(lst: liste) -> nombre
-            -   min(lst: liste) -> nombre
-            -   unir(lst1: liste, lst2: liste) -> liste
-            -   tailleDe(iter: iterable) -> entier
+            -   [joindre(lst: liste, separateur: texte = " ") -> texte](/as/builtins)
+            -   [inv(iter: iterable) -> iterable](/as/builtins)
+            -   [map(f: fonctionType, lst: liste) -> liste](/as/builtins)
+            -   [filtrer(f: fonctionType, lst: liste) -> liste](/as/builtins)
+            -   [somme(lst: liste) -> nombre](/as/builtins)
+            -   [max(lst: liste) -> nombre](/as/builtins)
+            -   [min(lst: liste) -> nombre](/as/builtins)
+            -   [unir(lst1: liste, lst2: liste) -> liste](/as/builtins)
+            -   [tailleDe(iter: iterable) -> entier](/as/builtins)
 
-            -   bin(nb: entier) -> texte
-            -   maj(txt: texte) -> texte
-            -   minus(txt: texte) -> texte
-            -   estNumerique(txt: texte) -> booleen
-            -   format(txt: texte, valeurs: liste) -> texte
-            -   remplacer(txt: texte, pattern: texte, remplacement: texte) -> texte
-            -   remplacerRe(txt: texte, pattern: texte, remplacement: texte) -> texte
-            -   match(txt: texte, pattern: texte) -> booleen
+            -   [bin(nb: entier) -> texte](/as/builtins)
+            -   [maj(txt: texte) -> texte](/as/builtins)
+            -   [minus(txt: texte) -> texte](/as/builtins)
+            -   [estNumerique(txt: texte) -> booleen](/as/builtins)
+            -   [format(txt: texte, valeurs: liste) -> texte](/as/builtins)
+            -   [remplacer(txt: texte, pattern: texte, remplacement: texte) -> texte](/as/builtins)
+            -   [remplacerRe(txt: texte, pattern: texte, remplacement: texte) -> texte](/as/builtins)
+            -   [match(txt: texte, pattern: texte) -> booleen](/as/builtins)
 
-            -   texte(element: tout) -> texte
-            -   entier(txt: texte, base: entier = 10) -> entier
-            -   nombre(txt: texte) -> nombre
-            -   decimal(txt: texte) -> decimal
-            -   booleen(element: tout) -> booleen
+            -   [liste(txt: texte) -> liste](/as/builtins)
+            -   [texte(element: tout) -> texte](/as/builtins)
+            -   [entier(txt: texte, base: entier = 10) -> entier](/as/builtins)
+            -   [nombre(txt: texte) -> nombre](/as/builtins)
+            -   [decimal(txt: texte) -> decimal](/as/builtins)
+            -   [booleen(element: tout) -> booleen](/as/builtins)
+            -   [auto(txt: texte) -> tout](/as/builtins)
 
         -   constantes:
             -   **AUCUNE**
@@ -311,32 +361,36 @@
 
 ## Versioning
 
-> Légende:
->
-> -   _italique_ = nombre
+-   Définitions
 
-#### Alpha (a)
+    > _Majeur_:
+    >
+    > 1.  La nouvelle verison contient des changements incompatibles avec les anciennes versions _Majeur_ du langage
+    > 2.  Déprécation de certaines fonctionnalités
+    >
+    > _Mineur_:
+    >
+    > 1. La nouvelle version est 100% backward compatible avec toutes les autres versions _Mineur_ à l'intérieur de la même version _Majeur_
+    > 2. Les nouvelles fonctionnalités n'introduisent pas de problèmes de compatibilités
+    >
+    > _Bugfix_ (.bf):
+    >
+    > 1. Ne contient que des fix de bugs et aucune nouvelle fonctionnalité
+    > 2. 100% backward compatible
+    >
+    > _Release Candidate_ (-rc):
+    >
+    > 1. Candidat pour le lancement d'une nouvelle verison mineur du langage
+    >
+    > _build_ :
+    >
+    > 1. numéro changeant chaque fois qu'il y a un commit dans le langage
 
--   Utilisé pour désigner une version du langage où les nouvelles fonctionnalités sont en train d'être implémentéees (hautement instable)
--   v*Majeur*._Mineur_-a._Version_
--   ex: v1.2-a.3
+    ***
 
-#### Béta (b)
-
--   Utilisé pour désigner une version du langage possédant toutes les nouvelles fonctionnalités de la nouvelle version (instable)
--   v*Majeur*._Mineur_-b._Version_
--   ex: v1.1-b.0
-
-#### Release candidate (rc)
-
--   Utilisé pour désigner une version _suffisamment_ stable du langage, mais qui doit encore être rigoureusement testée avant d'être utilisée en production (stable)
--   v*Majeur*._Mineur_-rc._Version_
--   ex: v1.4-rc.1
-
-#### Version finale
-
--   Utilisé pour désigner une version finale du langage pouvant être utilisée en production (hautement stable)
--   v*Majeur*._Mineur_._Patch_
--   ex: v1.5.2
-
-<small>Auteur: Mathis Laroche</small>
+-   v*Majeur*._Mineur_\[ ._bf_ | -rc._num_ | -_build_ ]  
+     ex: `v1.2.3-45`  
+     -> 1: Majeur  
+     -> 2: Mineur  
+     -> 3: bugfix  
+     -> 45: build

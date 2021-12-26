@@ -5,6 +5,11 @@ import { Maintenance } from '../../../Models/Maintenance/maintenance.entity';
 import LoadingScreen from '../../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
 import MaintenanceCard from '../../../Components/SiteStatusComponents/MaintenanceCard/MaintenanceCard';
 
+/**
+ * Page displaying all the historic of the maintenances
+ *
+ * @author MoSk3
+ */
 const MaintenanceMenu = () => {
 	const [maintenances, setMaintenances] = useState<Maintenance[]>();
 

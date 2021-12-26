@@ -3,7 +3,8 @@ package interpreteur.as.modules;
 import interpreteur.as.Objets.ASObjet;
 import interpreteur.executeur.Executeur;
 
-public class ModuleDict extends ASModule {
+public class ModuleDict {
+
 
     String dictCode = """
             fonction Dict.creer() -> fonctionType
@@ -18,23 +19,17 @@ public class ModuleDict extends ASModule {
                         sinon
                             retourner valeurs[idx]
                         fin si
-                    sinon
-                        si valeur != nul
+                    sinon si valeur != nul
                             clefs += clef
                             valeurs += valeur
                             retourner {clef, valeur}
-                        sinon
-                            retourner nul
-                        fin si
+                    sinon
+                        retourner nul
                     fin si
                 fin fonction
                 retourner dict
             fin fonction
             """;
-
-    public ModuleDict(ASModuleManager moduleManager) {
-        super(moduleManager);
-    }
 
     //ASFonction creer = new ASFonction("creer", ASObjet.TypeBuiltin.fonctionType.asType()) {
     //    @Override
@@ -46,8 +41,8 @@ public class ModuleDict extends ASModule {
     //    }
     //};
 
-    public void charger() {
-        moduleManager.ajouterModule("Dict", new ASObjet.Fonction[]{
+    static ASModule charger(Executeur executeurInstance) {
+        return new ASModule(new ASObjet.Fonction[]{
 
                 new ASObjet.Fonction("creer", new ASObjet.Fonction.Parametre[]{
 
@@ -60,3 +55,18 @@ public class ModuleDict extends ASModule {
         });
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -9,8 +9,13 @@ import {
 	IOTPROJECT_ACCESS,
 	IOTPROJECT_INTERACT_RIGHTS,
 } from '../../../../Models/Iot/IoTproject.entity';
+import { FORM_ACTION } from '../../../UtilsComponents/Form/formTypes';
 
-/** Reusable form component to handle header creation */
+/**
+ * Form that creates in the database an IoTProject and navigates to it
+ *
+ * @author MoSk3
+ */
 const IoTProjectCreate = () => {
 	const { t } = useTranslation();
 	const history = useHistory();
@@ -27,19 +32,19 @@ const IoTProjectCreate = () => {
 				}}
 				name="iot_project"
 				url="iot/projects"
-				action="POST"
+				action={FORM_ACTION.POST}
 				inputGroups={[
 					{
 						name: 'name',
 						required: true,
 						inputType: 'text',
 						minLength: 3,
-						maxLength: 25,
+						maxLength: 100,
 					},
 					{
 						name: 'description',
 						inputType: 'text',
-						maxLength: 200,
+						maxLength: 500,
 					},
 					{
 						name: 'access',

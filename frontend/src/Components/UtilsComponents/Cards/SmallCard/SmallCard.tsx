@@ -1,6 +1,11 @@
-import { GenericCardProps } from '../CardContent/genericCardTypes';
-import GenericCard from '../CardContent/GenricCard';
+import { GenericCardProps } from '../GenericCard/genericCardTypes';
+import GenericCard from '../GenericCard/GenericCard';
 
+/**
+ * Generic custom styled small card for ALIVEcode
+ *
+ * @author MoSk3
+ */
 const SmallCard = (props: GenericCardProps) => {
 	return (
 		<GenericCard

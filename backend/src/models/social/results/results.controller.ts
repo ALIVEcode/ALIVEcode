@@ -7,11 +7,22 @@ import { DTOInterceptor } from '../../../utils/interceptors/dto.interceptor';
 @Controller('results')
 @UseInterceptors(DTOInterceptor)
 export class ResultsController {
+  [x: string]: any;
   constructor(private readonly resultsService: ResultsService) {}
 
+  @Get('user')
+  async getResults() {
+    return await this.resultsService.getResults();
+  }
   @Post()
   create(@Body() createResultDto: CreateResultDto) {
     return this.resultsService.create(createResultDto);
+  }
+
+  @Post('findandcount')
+  async findAndCount(@Body('percentage') percentage: number) {
+    const [, count] = await this.resultsService.findAndCount(percentage);
+    return count;
   }
 
   @Get()

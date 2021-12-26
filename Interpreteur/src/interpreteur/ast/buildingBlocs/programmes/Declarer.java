@@ -82,7 +82,7 @@ public class Declarer extends Programme {
         ASObjet.Variable variable = Scope.getCurrentScopeInstance().getVariable(var.getNom());
         if (this.valeur != null) {
             ASObjet<?> valeur = this.valeur.eval();
-            variable.changerValeur(valeur);
+            variable.setValeur(valeur);
         }
         return null;
     }

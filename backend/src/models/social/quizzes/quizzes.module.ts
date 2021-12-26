@@ -7,6 +7,7 @@ import { Reward } from '../rewards/entities/reward.entity';
 import { Question } from '../questions/entities/question.entity';
 import { Result } from '../results/entities/result.entity';
 import { CategoriesQuiz } from '../categories-quiz/entities/categories-quiz.entity';
+import { Quiz } from './entities/quiz.entity';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { CategoriesQuiz } from '../categories-quiz/entities/categories-quiz.enti
       Reward,
       Question,
       Result,
-      CategoriesQuiz
+      CategoriesQuiz,
+      Quiz
 
     ]),
   ],

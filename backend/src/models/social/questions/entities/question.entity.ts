@@ -10,9 +10,9 @@ export class Question {
     @Column('varchar')
     name : string;
 
-    @ManyToOne(() => Quiz, quiz => quiz.id_questions)
-    @JoinColumn( { name : 'id_quiz' } )
-    id_quiz : Quiz;
+    @ManyToOne(() => Quiz, quiz => quiz.questions, { eager: true})
+    @JoinColumn()
+    quiz : Quiz;
 
     @OneToMany(() => Answer, answer => answer.id_question)
     id_answer : Answer[];

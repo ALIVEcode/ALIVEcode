@@ -18,6 +18,12 @@ export class PostController {
     console.log(createPostDto);
     return await this.postService.create(user, createPostDto);
   }
+  @Post('findandcount')
+  async findAndCount() {
+    let [data,count] = await this.postService.findAndCount()
+    return count
+  }
+
 
   @Get()
   findAll() {

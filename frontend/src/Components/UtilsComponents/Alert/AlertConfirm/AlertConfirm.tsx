@@ -5,6 +5,8 @@ import Button from '../../Button/Button';
 import { useTranslation } from 'react-i18next';
 
 const StyledModal = styled(Modal)`
+	z-index: 1075;
+
 	.modal-content {
 		background-color: var(--background-color);
 		color: white;
@@ -22,6 +24,16 @@ const StyledModal = styled(Modal)`
 	}
 `;
 
+/**
+ * Modal used to confirm an action (for example: deleting something)
+ *
+ * @param {() => void} onClose when the modal is closed
+ * @param {() => void} onConfirm when the action is confirmed
+ * @param {() => void} onCancel when the action is cancelled
+ * @param {ModalProps} other other normal modal props
+ *
+ * @author MoSk3
+ */
 const AlertConfirm = ({
 	onClose,
 	onConfirm,
@@ -31,7 +43,14 @@ const AlertConfirm = ({
 	const { t } = useTranslation();
 
 	return (
-		<StyledModal closeButton={false} hideFooter size="md" centered {...other}>
+		<StyledModal
+			backdropClassName="modal-backdrop-alert-confirm"
+			closeButton={false}
+			hideFooter
+			size="md"
+			centered
+			{...other}
+		>
 			<Button
 				padding="15px"
 				variant="primary"
@@ -40,7 +59,7 @@ const AlertConfirm = ({
 					onCancel && onCancel();
 				}}
 			>
-				{t('msg.cancel')}
+				{t('modal.cancel')}
 			</Button>
 			<Button
 				padding="15px"
@@ -50,7 +69,7 @@ const AlertConfirm = ({
 					onConfirm && onConfirm();
 				}}
 			>
-				{t('msg.confirm')}
+				{t('modal.confirm')}
 			</Button>
 		</StyledModal>
 	);

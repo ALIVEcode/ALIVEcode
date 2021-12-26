@@ -6,10 +6,14 @@ import { generate } from 'randomstring';
 import { ProfessorEntity } from '../user/entities/professor.entity';
 import { UserEntity } from '../user/entities/user.entity';
 import { StudentEntity } from '../user/entities/student.entity';
+import { CourseEntity } from '../course/entities/course.entity';
 
 @Injectable()
 export class ClassroomService {
-  constructor(@InjectRepository(ClassroomEntity) private classroomRepository: Repository<ClassroomEntity>) {}
+  constructor(
+    @InjectRepository(ClassroomEntity) private classroomRepository: Repository<ClassroomEntity>,
+    @InjectRepository(CourseEntity) private courseRepo: Repository<CourseEntity>,
+  ) {}
 
   async create(createClassroomDto: ClassroomEntity, professor: ProfessorEntity) {
     const classroom = this.classroomRepository.create(createClassroomDto);

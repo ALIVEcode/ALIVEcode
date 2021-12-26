@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors } from '@nestjs/common';
 import { QuizzesService } from './quizzes.service';
-import { CreateQuizDto } from './dto/create-quiz.dto';
 import { UpdateQuizDto } from './dto/update-quiz.dto';
 import { DTOInterceptor } from '../../../utils/interceptors/dto.interceptor';
+import { Quiz } from './entities/quiz.entity';
 
 @Controller('quizzes')
 @UseInterceptors(DTOInterceptor)
@@ -10,13 +10,14 @@ export class QuizzesController {
   constructor(private readonly quizzesService: QuizzesService) {}
 
   @Post()
-  create(@Body() createQuizDto: CreateQuizDto) {
-    return this.quizzesService.create(createQuizDto);
+  async create(@Body() createQuizDto: Quiz) {
+    console.log(createQuizDto);
+    return await this.quizzesService.create(createQuizDto);
   }
 
   @Get()
-  findAll() {
-    return this.quizzesService.findAll();
+  async findAll() {
+    return await this.quizzesService.findAll();
   }
 
   @Get(':id')

@@ -10,6 +10,11 @@ import { UserContext } from '../../../state/contexts/UserContext';
 import { formatDate } from '../../../Types/formatting';
 import { NotFound } from '../NotFound/NotFound';
 
+/**
+ * Page that is displayed when the requested url cannot be reach due to maintenance
+ *
+ * @author MoSk3
+ */
 export const MaintenanceError = () => {
 	const history = useHistory();
 	const { routes } = useRoutes();

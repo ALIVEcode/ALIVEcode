@@ -29,7 +29,7 @@
   }
 
 
-  .button {
+  .buttonGamepad {
     transition: transform .1s ease-out;
     font-size: 18px;
     font-weight: bold;
@@ -60,7 +60,7 @@
     background-color: #494343
    }
 
-   .button:hover {background-color: #000000}
+   .buttonGamepad:hover {background-color: #000000}
       
    .push {
     background-color: #000000; 

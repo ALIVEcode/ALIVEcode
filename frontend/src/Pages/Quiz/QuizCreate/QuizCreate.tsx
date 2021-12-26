@@ -1,4 +1,4 @@
-import { Button, Card, Col, Form, Row } from "react-bootstrap";
+import { Button, Card, Form } from "react-bootstrap";
 import CenteredContainer from '../../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
 import { QuizCategoryProps } from '../QuizCategory/Category';
 

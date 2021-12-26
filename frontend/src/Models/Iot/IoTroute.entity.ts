@@ -1,4 +1,5 @@
-import { Exclude } from 'class-transformer';
+import { Exclude, Type } from 'class-transformer';
+import { AsScript } from '../AsScript/as-script.entity';
 import { IoTProject } from './IoTproject.entity';
 
 export class IotRoute {
@@ -10,4 +11,7 @@ export class IotRoute {
 	path: string;
 
 	project: IoTProject;
+
+	@Type(() => AsScript)
+	asScript?: AsScript;
 }

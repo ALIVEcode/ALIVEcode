@@ -4,10 +4,8 @@ import HeaderAI from '../../Components/ALIVEIAComponents/Header/HeaderAI';
 import InfoBox from '../../Components/ALIVEIAComponents/InfoBox/InfoBox';
 
 /**
- * Méthode retournant la page d'accueil de la section IA du site web. Elle instancie également 
- * tous ses composants.
- * @param props aucune propriété pour ce composant.
- * @returns un AliveIA.
+ * Home page of the AI section. It contains all components visible inside this page.
+ * @param props no props for this component.
  */
 const AliveIa = (props: AliveIaProps) => {
   const {t} = useTranslation();
@@ -20,6 +18,7 @@ const AliveIa = (props: AliveIaProps) => {
         children={
           <div>
             <p>{t("ai.section.artificial-intelligence.paragraph1")}</p>
+            <br/>
             <p>{t("ai.section.artificial-intelligence.paragraph2")}</p>
             <ul>
               <li>{t("ai.section.artificial-intelligence.point1")}</li>
@@ -37,6 +36,7 @@ const AliveIa = (props: AliveIaProps) => {
         children={
           <div>
             <p>{t("ai.section.machine-learning.paragraph1")}</p>
+            <br/>
             <p>{t("ai.section.machine-learning.paragraph2")}</p>
           </div>
         }
@@ -47,7 +47,9 @@ const AliveIa = (props: AliveIaProps) => {
         children={
           <div>
             <p>{t("ai.section.deep-learning.paragraph1")}</p>
+            <br/>
             <p>{t("ai.section.deep-learning.paragraph2")}</p>
+            <br/>
             <p>{t("ai.section.deep-learning.paragraph3")}</p>
             <ol>
               <li>{t("ai.section.deep-learning.point1")}</li>

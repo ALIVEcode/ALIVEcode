@@ -24,6 +24,17 @@ const StyledSvg = styled.svg`
 	}
 `;
 
+/**
+ * EditorTab for the line interface
+ *
+ * @param {EditorTabModel} tab tab object
+ * @param {(bool: boolean) => void} setOpen callback function that update the parent state
+ * @param {() => void} onClick callback function called when the tab is clicked
+ * @param {() => void} onOpen callback called when the tab gets opened
+ * @param {() => void} onClose callback called when the tab gets closed
+ *
+ * @author MoSk3
+ */
 const EditorTab = ({
 	tab,
 	setOpen,

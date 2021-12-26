@@ -5,7 +5,6 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import interpreteur.as.erreurs.ASErreur;
 import interpreteur.ast.Ast;
@@ -15,8 +14,6 @@ import interpreteur.generateurs.lexer.Regle;
 import interpreteur.tokens.Token;
 import interpreteur.utils.ArraysUtils;
 import interpreteur.utils.Range;
-import interpreteur.utils.StringUtils;
-
 
 /**
  * @author Mathis Laroche
@@ -33,7 +30,8 @@ public class AstGenerator {
 
     static Hashtable<String, Ast<?>> expressionsDict = new Hashtable<>();
     static ArrayList<String> ordreExpressions = new ArrayList<>();
-    int cptr = 0;
+    private int cptrExpr = 0;
+    private int cptrProg = 0;
 
     private static ArrayList<String> ajouterSousAstOrdre(Hashtable<String, Ast<?>> sous_ast) {
         ArrayList<String> nouvelOrdre = new ArrayList<>(ordreExpressions);
@@ -210,7 +208,7 @@ public class AstGenerator {
                         //    } else if (exp.equals(ferm)) {
                         //        cptr--;
                         //    }
-                        //    idx++;
+                        //    idxOrKey++;
                         //    if (cptr == 0) {
                         //        break;
                         //    }
@@ -316,6 +314,14 @@ public class AstGenerator {
         ordreProgrammes.clear();
     }
 
+    public static ArrayList<String> getOrdreExpressions() {
+        return ordreExpressions;
+    }
+
+    public static ArrayList<String> getOrdreProgrammes() {
+        return ordreProgrammes;
+    }
+
     private String remplacerCategoriesParMembre(String pattern) {
         String nouveauPattern = pattern;
         for (String option : pattern.split("~")) {
@@ -351,8 +357,10 @@ public class AstGenerator {
                 fonction.getSousAst().remove(p);
                 fonction.getSousAst().put(remplacerCategoriesParMembre(p), sousAstCopy.get(p));
             }
-
-            programmesDict.put(remplacerCategoriesParMembre(programme), fonction); // remplace les categories par ses membres, s'il n'y a pas de categorie, ne modifie pas le pattern
+            fonction.setImportance(cptrProg++);
+            String nouveauPattern = remplacerCategoriesParMembre(programme);
+            programmesDict.put(nouveauPattern, fonction); // remplace les categories par ses membres, s'il n'y a pas de categorie, ne modifie pas le pattern
+            ordreProgrammes.add(nouveauPattern);
         }
     }
 
@@ -362,8 +370,9 @@ public class AstGenerator {
             si plusieurs expressions ont la mÃªme importance, la derniÃ¨re ajoutÃ©e sera priorisÃ©e
 		 */
         String nouveauPattern = remplacerCategoriesParMembre(pattern);
-        fonction.setImportance(cptr++);
+        fonction.setImportance(cptrExpr++);
         expressionsDict.put(nouveauPattern, fonction);
+        ordreExpressions.add(nouveauPattern);
     }
 
     protected void setOrdreProgramme() {
@@ -375,11 +384,12 @@ public class AstGenerator {
             if (importance == -1) {
                 ordreProgrammes.add(pattern);
             } else {
-                if (ordreProgrammes.get(importance) == null) {
-                    ordreProgrammes.set(importance, pattern);
-                } else {
-                    ordreProgrammes.add(importance, pattern);
-                }
+                //if (ordreProgrammes.get(importance) == null) {
+                //    ordreProgrammes.set(importance, pattern);
+                //} else {
+                //    ordreProgrammes.add(importance, pattern);
+                //}
+                ordreProgrammes.add(importance, pattern);
             }
         }
         ordreProgrammes.removeIf(Objects::isNull);
@@ -400,7 +410,6 @@ public class AstGenerator {
                 } else {
                     ordreExpressions.add(importance, pattern);
                 }
-
             }
         }
         ordreExpressions.removeIf(Objects::isNull);

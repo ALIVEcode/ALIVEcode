@@ -5,6 +5,14 @@ import {
 	StyledMaintenanceCard,
 } from './maintenanceCardTypes';
 
+/**
+ * Component that displays the maintenance with all its informations
+ * (started, finished, ongoing, startDate, finishDate, name, description, etc)
+ *
+ * @param {Maintenance} maintenance maintenance object
+ *
+ * @author MoSk3
+ */
 const MaintenanceCard = ({ maintenance }: MaintenanceCardProps) => {
 	const { t } = useTranslation();
 

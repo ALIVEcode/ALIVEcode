@@ -6,6 +6,11 @@ import { useHistory } from 'react-router';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { useTranslation } from 'react-i18next';
 
+/**
+ * Page that is displayed when the requested url doesn't lead to anywhere
+ *
+ * @author MoSk3
+ */
 export const NotFound = () => {
 	const history = useHistory();
 	const { routes } = useRoutes();

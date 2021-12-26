@@ -21,6 +21,7 @@ function handleErrors(message: string) {
 
 export const PhysicEngine: any = {
 	s: null,
+	enabled: false,
 
 	acceleration: (sumForces: Vector, mass: number): Vector | null => {
 		if (mass < EPSILON) {

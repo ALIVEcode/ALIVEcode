@@ -13,6 +13,13 @@ import { useTranslation } from 'react-i18next';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { ThemeContext, themes } from '../../../state/contexts/ThemeContext';
 
+/**
+ * Navbar of ALIVEcode
+ *
+ * @param {() => void} handleLogout callback that logs out the user and change the global state of the app
+ *
+ * @author MoSk3
+ */
 const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 	const { user } = useContext(UserContext);
 	const { t } = useTranslation();
@@ -37,7 +44,6 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 			<Navbar.Toggle aria-controls="basic-navbar-nav" />
 			<Navbar.Collapse id="basic-navbar-nav">
 				<Nav className="mr-auto">
-
 					<Nav.Link
 						className="nav-link"
 						onClick={() => history.push(routes.auth.dashboard.path)}
@@ -84,7 +90,7 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 						<li className="nav-item">
 							<div id="user" className="dropdown">
 								<NavDropdown
-								alignRight
+									alignRight
 									title={
 										<svg
 											version="1.1"
@@ -161,7 +167,7 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 						<li className="nav-item">
 							<div id="user" className="dropdown">
 								<NavDropdown
-								alignRight
+									alignRight
 									title={
 										<svg
 											xmlns="http://www.w3.org/2000/svg"

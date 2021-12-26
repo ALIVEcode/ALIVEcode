@@ -3,6 +3,7 @@ import FillContainer from '../FillContainer/FillContainer';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
+import { SizeProp } from '@fortawesome/fontawesome-svg-core';
 
 const StyledSpinner = styled.div`
 	color: var(--primary-color);
@@ -44,7 +45,21 @@ const StyledSpinner = styled.div`
 	}
 `;
 
-const LoadingScreen = ({ relative }: { relative?: boolean }) => {
+/**
+ *	Loading effect used when loading content (the loading appears 300ms after the render)
+ *
+ * @param {boolean} relative if it should have a relative positioning
+ * @param {SizeProp} size size of the loading logo
+ *
+ * @author MoSk3
+ */
+const LoadingScreen = ({
+	relative,
+	size,
+}: {
+	relative?: boolean;
+	size?: SizeProp;
+}) => {
 	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
@@ -62,12 +77,16 @@ const LoadingScreen = ({ relative }: { relative?: boolean }) => {
 			relative={relative}
 			centered
 			startAtTop
-			style={{ textAlign: 'center' }}
+			style={{ textAlign: 'center', minHeight: loading ? '100px' : undefined }}
 		>
 			<div>
 				<StyledSpinner>
 					{loading && (
-						<FontAwesomeIcon className="rotating" size="5x" icon={faSpinner} />
+						<FontAwesomeIcon
+							className="rotating"
+							size={size ? size : '5x'}
+							icon={faSpinner}
+						/>
 					)}
 				</StyledSpinner>
 			</div>

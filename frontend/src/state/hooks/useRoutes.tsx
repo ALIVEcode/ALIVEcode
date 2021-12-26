@@ -30,6 +30,9 @@ import { useHistory } from 'react-router';
 import ASDocs from '../../Components/AliveScriptComponents/ASDocs/ASDocs';
 import { MaintenanceError } from '../../Pages/Errors/MaintenanceError/MaintenanceError';
 import MaintenanceMenu from '../../Pages/SiteStatus/MaintenanceMenu/MaintenanceMenu';
+import ASBuiltinsDocs from '../../Components/AliveScriptComponents/ASDocs/ASBuiltinsDocs';
+import MDEditor from '../../Components/CourseComponents/MDEditor/MDEditor';
+import ActivityEditor from '../../Components/CourseComponents/MDEditor/ActivityEditor';
 import Forum from '../../Pages/Forum/Forum';
 import QuizHome from '../../Pages/Quiz/QuizHome/QuizHome';
 import QuizCategory from '../../Pages/Quiz/QuizCategory/QuizCategory';
@@ -39,6 +42,8 @@ import SubjectList from '../../Pages/Forum/SubjectList';
 import FormQuestion from '../../Pages/Forum/formQuestion';
 import DetailsQuestion from '../../Pages/Forum/detailsQuestion';
 import SearchForum from '../../Pages/Forum/searchForum';
+import Chat from '../../Pages/Chat/Chat';
+import { LEVEL_TYPE } from '../../Models/Level/level.entity';
 
 type component =
 	| React.ComponentType<RouteComponentProps<any>>
@@ -136,8 +141,12 @@ const useRoutes = () => {
 			maintenanceExempt: true,
 		},
 		asDocs: {
-			path: '/as',
+			path: '/as/doc',
 			component: ASDocs,
+		},
+		asBuiltinsDocs: {
+			path: '/as/builtins',
+			component: ASBuiltinsDocs,
 		},
 		ai: {
 			path: '/aliveai',
@@ -167,25 +176,21 @@ const useRoutes = () => {
 			exact: true,
 			path: '/iot',
 			component: IoTHome,
-			adminOnly: true,
+			//adminOnly: true,
 		},
 		level_alive: {
 			path: '/level/play/alive',
-			component: () => <Level type="ALIVE" editMode />,
+			component: () => <Level type={LEVEL_TYPE.ALIVE} editMode />,
 		},
 		level_code: {
 			path: '/level/play/code',
-			component: () => <Level type="code" editMode />,
+			component: () => <Level type={LEVEL_TYPE.CODE} editMode />,
 		},
 		maintenances: {
 			path: '/maintenances',
 			exact: true,
 			maintenanceExempt: true,
 			component: MaintenanceMenu,
-		},
-		categoriesForum: {
-			path: '/forum/categoriesForum',
-			component: CategoriesForum,
 		},
 		question: {
 			path: '/forum/post/:id',
@@ -199,23 +204,37 @@ const useRoutes = () => {
 			path: '/forum/searchForum/:id',
 			component: SearchForum,
 		},
+		album: {
+			path: '/album-test',
+			exact: true,
+			component: ActivityEditor,
+		},
 		forum: {
 			path: '/forum',
 			component: Forum,
+			adminOnly: true,
+		},
+		categoriesForum: {
+			path: '/categoriesForum',
+			component: CategoriesForum,
+			adminOnly: true,
 		},
 		quiz: {
 			path: '/quiz',
 			exact: true,
 			component: QuizHome,
+			adminOnly: true,
 		},
 		quiz_category: {
 			path: '/quiz/category/:id',
 			component: QuizCategory,
+			adminOnly: true,
 		},
 		// Only for testing, place in auth Professor in production.
 		quiz_create: {
 			path: '/quiz/create',
 			component: QuizCreate,
+			adminOnly: true,
 		},
 	});
 
@@ -241,31 +260,35 @@ const useRoutes = () => {
 		create_course: {
 			path: '/course/create',
 			component: CourseForm,
-			adminOnly: true,
 		},
 		course: {
 			path: '/course/:id',
 			component: Course,
-			adminOnly: true,
 		},
 		account: {
 			path: '/account',
 			component: AccountPage,
 		},
+		chat: {
+			path: '/chat',
+			exact: true,
+			component: Chat,
+			adminOnly: true,
+		},
 		iot_dashboard: {
 			path: '/iot/dashboard',
 			component: IoTDashboard,
-			adminOnly: true,
+			//adminOnly: true,
 		},
 		create_iot_project: {
 			path: '/iot/projects/create',
 			component: IoTProjectCreate,
-			adminOnly: true,
+			//adminOnly: true,
 		},
 		iot_project: {
 			path: '/iot/projects/:id',
 			component: IoTProject,
-			adminOnly: true,
+			//adminOnly: true,
 		},
 		level_list: {
 			path: '/level',
@@ -273,7 +296,7 @@ const useRoutes = () => {
 			component: LevelList,
 		},
 		level_edit: {
-			path: '/level/edit/:id',
+			path: '/level/edit/:levelId',
 			component: () => <Level editMode />,
 		},
 		level_browse: {
@@ -281,7 +304,7 @@ const useRoutes = () => {
 			component: LevelBrowse,
 		},
 		level_play: {
-			path: '/level/play/:id',
+			path: '/level/play/:levelId',
 			component: Level,
 		},
 		level_create: {
@@ -291,19 +314,23 @@ const useRoutes = () => {
 		},
 		level_create_alive: {
 			path: '/level/create/alive',
-			component: () => <LevelForm type="ALIVE" />,
+			component: () => <LevelForm type={LEVEL_TYPE.ALIVE} />,
 		},
 		level_create_code: {
 			path: '/level/create/code',
-			component: () => <LevelForm type="code" />,
+			component: () => <LevelForm type={LEVEL_TYPE.CODE} />,
 		},
 		level_create_ai: {
 			path: '/level/create/ai',
-			component: () => <LevelForm type="AI" />,
+			component: () => <LevelForm type={LEVEL_TYPE.AI} />,
+		},
+		level_create_iot: {
+			path: '/level/create/iot',
+			component: () => <LevelForm type={LEVEL_TYPE.IOT} />,
 		},
 		formQuestion: {
 			path: '/formQuestion/forum',
-			component: FormQuestion, 
+			component: FormQuestion,
 		},
 	});
 

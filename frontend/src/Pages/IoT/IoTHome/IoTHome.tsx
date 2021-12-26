@@ -6,6 +6,11 @@ import FillContainer from '../../../Components/UtilsComponents/FillContainer/Fil
 
 const StyledDiv = styled(FillContainer)``;
 
+/**
+ * Home of the IoT branch
+ *
+ * @author MoSk3
+ */
 const IoTHome = (props: iotHomeProps) => {
 	const { routes } = useRoutes();
 

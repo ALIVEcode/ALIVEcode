@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-
+import brainImage from "../../../assets/images/ai/IA.png";
 /**
  * Ce composant correspond à l'en-tête de la page d'accueil de la section IA du site web. 
  * Elle comprend donc le titre de la page, sa description et l'image de fond.
@@ -8,34 +8,36 @@ import styled from 'styled-components';
 
 //CSS de HeaderAI
 const StyledHeader = styled.div`
-  & {
     width: 100%;
     height: 70vh;
-    background-color: var(--primary-color);
-  }
+    background: rgb(255,255,255);
+    background: var(--headerAIBack-color);
+    display: flex;
+    flex-direction: row;
 
   .header-text {
     display: flex;
     flex-direction: column;
-    padding-top: 8vh;
-    padding-bottom: 8vh;
-    color: var(--background-color);
+
+    padding: 8vh 5vw;
+    color: #ffffffbe;
   }
 
   .title {
     font-size: 8vh;
-    padding-left: 10vw;
-    padding-right: 25vw;
   }
 
   .presentation-paragraph {
-    padding-left: 10vw;
-    padding-right: 35vw;
     font-size: 14px;
     color: #ffffffbe;
   }
 
-  @media screen and (max-width: 1100px) {
+  .brain-img {
+    height: 70vh;
+    padding-right: 5vw;
+  }
+
+  @media screen and (max-width: 1300px) {
     & {
       height: 90vh;
     }
@@ -44,9 +46,12 @@ const StyledHeader = styled.div`
     }
   }
 
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 800px) {
     & {
       height: 110vh;
+    }
+    .presentation-paragraph {
+      font-size: 9px;
     }
   }
 `
@@ -68,6 +73,7 @@ const HeaderAI = (props:any) => {
           {t('ai.header.description')}
         </p>
       </div>
+      <img className="brain-img" alt="Electrical and mechanical brain" src={brainImage}></img>
     </StyledHeader>
   );
 }

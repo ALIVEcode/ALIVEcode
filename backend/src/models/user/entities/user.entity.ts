@@ -13,11 +13,12 @@ import { LevelEntity } from '../../level/entities/level.entity';
 import { IoTObjectEntity } from '../../iot/IoTobject/entities/IoTobject.entity';
 import { IoTProjectEntity } from '../../iot/IoTproject/entities/IoTproject.entity';
 import { LevelProgressionEntity } from '../../level/entities/levelProgression.entity';
-import { Post as Post_Table } from "src/models/social/post/entities/post.entity";
+import { Post as Post_Table } from 'src/models/social/post/entities/post.entity';
 import { Quiz } from 'src/models/social/quizzes/entities/quiz.entity';
 import { Result } from 'src/models/social/results/entities/result.entity';
 import { AsScriptEntity } from 'src/models/as-script/entities/as-script.entity';
-import { CommentairesForum as Comment_Table} from 'src/models/social/commentaires-forum/entities/commentaires-forum.entity';
+import { CommentairesForum as Comment_Table } from 'src/models/social/commentaires-forum/entities/commentaires-forum.entity';
+import Messages from 'src/models/social/messages/entities/messages.entity';
 
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
@@ -30,7 +31,7 @@ export class UserEntity extends BaseEntity {
   @Exclude({ toPlainOnly: true })
   @Length(6, 32)
   @IsNotEmpty()
-  @Matches(/^[A-Za-z0-9!@#\$&*~]*$/)
+  @Matches(/^[A-Za-z0-9!@#\\$&*~]*$/)
   password: string;
 
   @Column({ unique: true, nullable: false })
@@ -84,11 +85,15 @@ export class UserEntity extends BaseEntity {
   @OneToMany(() => Comment_Table, comment => comment.creator)
   comment: Comment_Table[];
 
-  @OneToMany(() => Quiz, quiz => quiz.user_id)
+  @OneToMany(() => Quiz, quiz => quiz.user)
   quiz: Quiz[];
 
-  @OneToMany(() => Result, result => result.user_id)
+  @OneToMany(() => Result, result => result.user, { cascade: true })
   result: Result[];
-  @Column({type:'varchar', default: ""})
-  avatar : string;
+
+  @OneToMany(() => Messages, message => message.creator, { cascade: true })
+  message: Messages[];
+
+  @Column({ type: 'varchar', default: '' })
+  image: string;
 } 

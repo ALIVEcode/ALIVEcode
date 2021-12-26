@@ -7,8 +7,8 @@ export class CategoriesQuiz {
     @PrimaryGeneratedColumn()
     id : number;
 
-    @OneToMany(() => Quiz, quiz => quiz.id_category)
-    id_quiz : Quiz[];
+    @OneToMany(() => Quiz, quiz => quiz.category)
+    quiz : Quiz;
 
     @Column('varchar')
     name : string;

@@ -14,6 +14,11 @@ import TypeWriter from '../../Components/UtilsComponents/TypeWriter/TypeWriter';
 import useRoutes from '../../state/hooks/useRoutes';
 import { useTranslation } from 'react-i18next';
 
+/**
+ * Home page of ALIVEcode
+ *
+ * @author MoSk3
+ */
 const Home = (props: HomeProps) => {
 	const history = useHistory();
 	const { t } = useTranslation();

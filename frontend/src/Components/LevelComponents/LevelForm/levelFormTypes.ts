@@ -1,3 +1,5 @@
+import { LEVEL_TYPE } from "../../../Models/Level/level.entity";
+
 export type LevelFormProps = {
-	type: 'ALIVE' | 'IoT' | 'code' | 'AI';
+	type: LEVEL_TYPE;
 };

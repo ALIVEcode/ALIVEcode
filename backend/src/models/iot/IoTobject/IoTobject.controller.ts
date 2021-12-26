@@ -51,7 +51,7 @@ export class IoTObjectController {
   async update(@User() user: UserEntity, @Param('id') id: string, @Body() updateIoTobjectDto: IoTObjectEntity) {
     if (!id) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     const IoTObject = await this.IoTObjectService.findOne(id);
-    if (IoTObject.creator.id !== id && !hasRole(user, Role.STAFF))
+    if (IoTObject.creator.id !== user.id && !hasRole(user, Role.STAFF))
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
 
     return await this.IoTObjectService.update(IoTObject.id, updateIoTobjectDto);
@@ -62,7 +62,7 @@ export class IoTObjectController {
   async remove(@User() user: UserEntity, @Param('id') id: string) {
     if (!id) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     const IoTObject = await this.IoTObjectService.findOne(id);
-    if (IoTObject.creator.id !== id && !hasRole(user, Role.STAFF))
+    if (IoTObject.creator.id !== user.id && !hasRole(user, Role.STAFF))
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
 
     return await this.IoTObjectService.remove(id);

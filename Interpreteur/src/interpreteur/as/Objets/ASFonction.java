@@ -17,7 +17,7 @@ public class ASFonction implements ASObjet<Object> {
     private final String nom;
     private Scope scope;
     private String coordBlocName;
-    private Executeur executeurInstance;
+    private final Executeur executeurInstance;
 
     /**
      * @param nom        <li>

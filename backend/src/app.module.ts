@@ -10,7 +10,6 @@ import { IoTObjectModule } from './models/iot/IoTobject/IoTobject.module';
 import { IoTProjectModule } from './models/iot/IoTproject/IoTproject.module';
 import { IoTRouteModule } from './models/iot/IoTroute/IoTroute.module';
 import { LevelModule } from './models/level/level.module';
-import { IoTGateway } from './socket/iotSocket/iot.gateway';
 import { MaintenanceModule } from './models/maintenance/maintenance.module';
 import { MaintenanceMiddleware } from './utils/middlewares/maintenance.middleware';
 import { MaintenanceEntity } from './models/maintenance/entities/maintenance.entity';
@@ -29,12 +28,20 @@ import { compare } from 'bcryptjs';
 import { adminOptions } from './admin/admin.options';
 import { LoggerModule } from './admin/loger/loger.module';
 import { MyLogger } from './admin/loger/logger';
+import { CarModule } from './socket/carSocket/carSocket.module';
+import { IoTModule } from './socket/iotSocket/iotSocket.module';
 import { QuizzesModule } from './models/social/quizzes/quizzes.module';
 import { PostModule } from './models/social/post/post.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { CategoriesSubjectsModule } from './models/social/categories-subjects/categories-subjects.module';
 import { SubjectsModule } from './models/social/subjects/subjects.module';
 import { CommentairesForumModule } from './models/social/commentaires-forum/commentaires-forum.module';
+import { ServeStaticModule } from '@nestjs/serve-static/dist/serve-static.module';
+import { join } from 'path';
+import { ResultsModule } from './models/social/results/results.module';
+import { MessagesModule } from './models/social/messages/messages.module';
+import { ChatModule } from './socket/chatSocket/chatSocket.module';
+import { TopicsModule } from './models/social/topics/topics.module';
 
 adminjs.registerAdapter({ Database, Resource });
 
@@ -63,9 +70,12 @@ adminjs.registerAdapter({ Database, Resource });
       }),
     }),
     MulterModule.register({
-        dest: './files',
-      }),
-    
+      dest: 'images/uploads',
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../../images'),
+    }),
+
     UserModule,
     ClassroomModule,
     LevelModule,
@@ -73,15 +83,21 @@ adminjs.registerAdapter({ Database, Resource });
     IoTObjectModule,
     IoTProjectModule,
     IoTRouteModule,
-    IoTGateway,
+    IoTModule,
     MaintenanceModule,
     AsScriptModule,
+    CarModule,
     QuizzesModule,
     PostModule,
     CategoriesSubjectsModule,
     SubjectsModule,
     CommentairesForumModule,
 
+    ResultsModule,
+    MessagesModule,
+    ChatModule,
+    CarModule,
+    TopicsModule,
   ],
   controllers: [AppController],
   providers: [AppService, MaintenanceService, UserService],

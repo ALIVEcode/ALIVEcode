@@ -2,8 +2,19 @@ import { Modal as BootModal } from 'react-bootstrap';
 import styled from 'styled-components';
 import Button from '../Button/Button';
 import { ModalProps } from './modalTypes';
+import { useTranslation } from 'react-i18next';
 
 const StyledModal = styled(BootModal)`
+	${({ centeredText }) =>
+		centeredText &&
+		`
+		text-align: center;
+
+		.modal-header {
+			justify-content: center;
+		}
+	`}
+
 	.modal-content {
 		background-color: var(--background-color);
 	}
@@ -29,6 +40,7 @@ const StyledModal = styled(BootModal)`
  * Other
  * @param {boolean} hideFooter
  * @param {boolean} centered Centers the modal at the center of the screen
+ * @param {boolean} centeredText Centers the text inside of the modal
  * @returns
  */
 const Modal = (props: ModalProps) => {
@@ -45,6 +57,9 @@ const Modal = (props: ModalProps) => {
 		onClose,
 		...other
 	} = props;
+
+	const { t } = useTranslation();
+
 	return (
 		<StyledModal size={size} show={open} onHide={onClose} {...other}>
 			<BootModal.Header closeButton={closeCross}>
@@ -55,11 +70,11 @@ const Modal = (props: ModalProps) => {
 				<BootModal.Footer>
 					{!hideCloseButton && (
 						<Button variant="secondary" onClick={onClose}>
-							Close
+							{t('modal.close')}
 						</Button>
 					)}
 					<Button variant={buttonVariant || 'primary'} onClick={onClose}>
-						{submitText ?? 'Save Changes'}
+						{submitText ?? t('modal.save')}
 					</Button>
 				</BootModal.Footer>
 			)}

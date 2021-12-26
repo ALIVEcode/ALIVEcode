@@ -17,6 +17,10 @@ public class Regle {
 
     private final String nom, pattern, categorie;
 
+    public static void reset() {
+        categories.clear();
+    }
+
     public Regle(String nom, String pattern, String categorie){
         this.nom = nom;
         this.pattern = pattern;

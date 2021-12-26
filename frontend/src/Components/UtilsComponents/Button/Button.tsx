@@ -1,43 +1,21 @@
-import { ButtonProps, ButtonVariants, StyledButtonProps } from './buttonTypes';
-import styled from 'styled-components';
+import { ButtonProps, StyledButton } from './buttonTypes';
 import { useHistory } from 'react-router';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const PrimaryButton = styled.button`
-	background-color: var(--third-color) !important;
-	border-style: none;
-	color: white;
-	padding: ${({ padding }: StyledButtonProps) => padding ?? 'none'};
-
-	&:hover {
-		background-color: var(--contrast-color) !important;
-		color: white;
-	}
-`;
-
-const DangerButton = styled.button`
-	background-color: rgb(207, 0, 0) !important;
-	border-style: none;
-	color: white;
-	padding: ${({ padding }: StyledButtonProps) => padding ?? 'none'};
-
-	&:hover {
-		background-color: var(--contrast-color) !important;
-		color: white;
-	}
-`;
-
-const SecondaryButton = styled.button`
-	background-color: var(--secondary-color) !important;
-	border-style: none;
-	color: white;
-	padding: ${({ padding }: StyledButtonProps) => padding ?? 'none'};
-
-	&:hover {
-		background-color: var(--contrast-color) !important;
-		color: white;
-	}
-`;
-
+/**
+ * Styled button with different premade variants
+ *
+ * @param {string} variant primary secondary or danger variant
+ * @param {React.ReactNode} children react children
+ * @param {string} type button type: button, submit or reset
+ * @param {() => void} onClick callback called when the button is clicked
+ * @param {FontAwesomeIcon} icon FontAwesomeIcon to d
+ * @param {string} to url to redirect on click
+ * @param {string} padding css padding
+ * @param {string} className css classes applied to the button
+ *
+ * @author MoSk3
+ */
 const Button = ({
 	variant,
 	type,
@@ -46,6 +24,8 @@ const Button = ({
 	children,
 	padding,
 	className,
+	disabled,
+	icon,
 }: ButtonProps) => {
 	const history = useHistory();
 
@@ -53,45 +33,27 @@ const Button = ({
 		onClick ? onClick() : to && history.push(to);
 	};
 
-	const renderSwitch = (param: ButtonVariants) => {
-		switch (param) {
-			case 'secondary':
-				return (
-					<SecondaryButton
-						className={'btn ' + className}
-						padding={padding}
-						type={type}
-						onClick={customOnClick}
-					>
-						{children}
-					</SecondaryButton>
-				);
-			case 'danger':
-				return (
-					<DangerButton
-						className={'btn ' + className}
-						padding={padding}
-						type={type}
-						onClick={customOnClick}
-					>
-						{children}
-					</DangerButton>
-				);
-			default:
-				return (
-					<PrimaryButton
-						className={'btn ' + className}
-						padding={padding}
-						type={type}
-						onClick={customOnClick}
-					>
-						{children}
-					</PrimaryButton>
-				);
-		}
+	const defaultInputOptions = {
+		className: 'btn ' + className,
+		padding,
+		variant,
+		type,
+		disabled,
+		onClick: customOnClick,
 	};
 
-	return <>{renderSwitch(variant)}</>;
+	if (icon) {
+		return (
+			<StyledButton {...defaultInputOptions}>
+				<>
+					{children}
+					<FontAwesomeIcon className="ml-2" icon={icon}></FontAwesomeIcon>
+				</>
+			</StyledButton>
+		);
+	}
+
+	return <StyledButton {...defaultInputOptions}>{children}</StyledButton>;
 };
 
 export default Button;

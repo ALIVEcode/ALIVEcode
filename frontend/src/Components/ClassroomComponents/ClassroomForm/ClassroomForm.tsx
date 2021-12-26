@@ -9,7 +9,13 @@ import {
 import useRoutes from '../../../state/hooks/useRoutes';
 import { useHistory } from 'react-router-dom';
 import { useAlert } from 'react-alert';
+import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
 
+/**
+ * Form that creates a new classroom in the db and navigates to it
+ *
+ * @author MoSk3
+ */
 const ClassroomForm = (props: ClassroomFormProps) => {
 	const { t } = useTranslation();
 	const { routes } = useRoutes();
@@ -26,19 +32,19 @@ const ClassroomForm = (props: ClassroomFormProps) => {
 				}}
 				name="classroom"
 				url="classrooms"
-				action="POST"
+				action={FORM_ACTION.POST}
 				inputGroups={[
 					{
 						name: 'name',
 						inputType: 'text',
 						required: true,
 						minLength: 3,
-						maxLength: 25,
+						maxLength: 100,
 					},
 					{
 						name: 'description',
 						inputType: 'textarea',
-						maxLength: 200,
+						maxLength: 500,
 					},
 					{
 						name: 'subject',

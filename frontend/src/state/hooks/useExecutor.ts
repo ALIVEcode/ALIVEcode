@@ -1,9 +1,9 @@
-import { LevelExecutor } from '../../Pages/Level/LevelExecutor';
 import { useState, useEffect } from 'react';
 import { CMD } from '../../Components/LevelComponents/Cmd/cmdTypes';
 import { ClassConstructor } from 'class-transformer';
+import LevelCodeExecutor from '../../Pages/Level/LevelCode/LevelCodeExecutor';
 
-const useExecutor = <T extends LevelExecutor>(
+const useExecutor = <T extends LevelCodeExecutor>(
 	U: ClassConstructor<T>,
 	cmd: CMD | null,
 ) => {

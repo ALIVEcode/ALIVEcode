@@ -12,4 +12,5 @@ export interface ModalProps extends BootModalProps {
 	children?: React.ReactNode;
 	hideFooter?: boolean;
 	onClose: () => void;
+	centeredText?: boolean;
 };

@@ -20,7 +20,10 @@ export class PostService {
   async findAll() {
     return await this.postRepository.find();
   }
-
+  findAndCount(){
+    return this.postRepository.findAndCount({
+    })
+}
   async getLastPost() {
     return await this.postRepository.find({ 
       order: { 

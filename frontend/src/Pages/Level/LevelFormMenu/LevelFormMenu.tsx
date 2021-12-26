@@ -1,19 +1,23 @@
 import FillContainer from '../../../Components/UtilsComponents/FillContainer/FillContainer';
 import Card from '../../../Components/UtilsComponents/Cards/Card/Card';
-import { Row } from 'react-bootstrap';
-
 import Voiture from '../../../assets/images/Voiture.gif';
 import Code from '../../../assets/images/icons/sandboxblanc.png';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { useTranslation } from 'react-i18next';
+import { StyledLevelFormMenu } from './levelFormMenuType';
 
+/**
+ * Menu to select which type of level to create
+ *
+ * @author MoSk3
+ */
 const LevelFormMenu = () => {
 	const { routes } = useRoutes();
 	const { t } = useTranslation();
 
 	return (
-		<FillContainer startAtTop centered>
-			<Row style={{ justifyContent: 'center' }}>
+		<FillContainer centered>
+			<StyledLevelFormMenu>
 				<Card
 					img={Voiture}
 					to={routes.auth.level_create_alive.path}
@@ -29,7 +33,12 @@ const LevelFormMenu = () => {
 					to={routes.auth.level_create_ai.path}
 					title={t('menu.level.ai')}
 				/>
-			</Row>
+				<Card
+					img={Code}
+					to={routes.auth.level_create_iot.path}
+					title={t('menu.level.iot')}
+				/>
+			</StyledLevelFormMenu>
 		</FillContainer>
 	);
 };

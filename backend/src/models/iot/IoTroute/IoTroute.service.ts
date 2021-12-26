@@ -32,7 +32,7 @@ export class IoTRouteService {
   }
 
   async update(id: string, updateIoTprojectDto: IoTRouteEntity) {
-    return await this.routeRepository.update(id, updateIoTprojectDto);
+    return await this.routeRepository.save({ ...updateIoTprojectDto, id });
   }
 
   async remove(id: string) {

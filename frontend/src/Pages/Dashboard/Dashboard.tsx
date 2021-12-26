@@ -23,6 +23,11 @@ import JoinClassroomForm from '../../Components/ClassroomComponents/JoinClassroo
 import { useTranslation } from 'react-i18next';
 import LoadingScreen from '../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
 
+/**
+ * Dashboard page that contains all the links to the different pages of the plaform
+ *
+ * @author MoSk3
+ */
 const Dashboard = (props: DashboardProps) => {
 	const { user } = useContext(UserContext);
 	const { t } = useTranslation();
@@ -63,7 +68,7 @@ const Dashboard = (props: DashboardProps) => {
 				<CardContainer
 					asRow
 					height="60px"
-					title="Mes classes"
+					title={t('dashboard.classrooms.title')}
 					style={{ marginTop: '20px' }}
 					onIconClick={() =>
 						user instanceof Professor
@@ -90,29 +95,45 @@ const Dashboard = (props: DashboardProps) => {
 				<CardContainer asRow title="Niveaux">
 					<SmallCard
 						to={routes.auth.level_list.path}
-						title="Mes niveaux"
+						title={t('dashboard.levels.my_levels')}
 						img={List}
 					/>
 					<SmallCard
 						to={routes.auth.level_create.path}
-						title="Créer un niveau"
+						title={t('dashboard.levels.create_level')}
 						img={Sandbox}
 					/>
 					<SmallCard
 						to={routes.auth.level_browse.path}
-						title="Jouer un niveau"
+						title={t('dashboard.levels.browse_levels')}
 						img={Voiture}
 					/>
 				</CardContainer>
 
-				<CardContainer asRow style={{ marginBottom: '100px' }} title="Niveaux">
-					<SmallCard to="/quiz" title="Mes quiz" img={List} />
-					<SmallCard to="/quiz/new" title="Créer un quiz" img={Sandbox} />
-					<SmallCard to="/quiz/browse" title="Jouer un quiz" img={Puzzle} />
+				<CardContainer
+					asRow
+					style={{ marginBottom: '100px' }}
+					title={t('dashboard.quizzes.title')}
+				>
+					<SmallCard
+						to="/quiz"
+						title={t('dashboard.quizzes.my_quizzes')}
+						img={List}
+					/>
+					<SmallCard
+						to="/quiz/new"
+						title={t('dashboard.quizzes.create_quiz')}
+						img={Sandbox}
+					/>
+					<SmallCard
+						to="/quiz/browse"
+						title={t('dashboard.quizzes.browse_quizzes')}
+						img={Puzzle}
+					/>
 				</CardContainer>
 			</CenteredContainer>
 			<FormModal
-				title={t('form.classroom.title')}
+				title={t('form.join_classroom.title')}
 				open={formJoinClassOpen}
 				onClose={() => setFormJoinClassOpen(false)}
 			>

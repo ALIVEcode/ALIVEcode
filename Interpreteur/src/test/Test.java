@@ -14,7 +14,7 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class Test {
-    final static String lastElement = "{\"p\":[\"[exécution terminée]\"],\"d\":0,\"id\":300}";
+    final static String lastElement = "{\"p\":[],\"d\":0,\"id\":0}";
     private final ArrayList<JSONArray> outputs = new ArrayList<>();
     private final ArrayList<String> inputs = new ArrayList<>();
     private final Hashtable<String, String> results = new Hashtable<>();

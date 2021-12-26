@@ -2,16 +2,32 @@ package interpreteur.as.modules;
 
 import interpreteur.as.Objets.ASObjet;
 import interpreteur.ast.buildingBlocs.expressions.Type;
+import interpreteur.executeur.Executeur;
 
 
-public class ModuleMath extends ASModule {
+public class ModuleMath {
+    static ASModule charger(Executeur executeurInstance) {
+        return new ASModule(new ASObjet.Fonction[]{
+                new ASObjet.Fonction("rad", new ASObjet.Fonction.Parametre[]{
+                        new ASObjet.Fonction.Parametre(new Type("nombre"), "x", null)
+                }, new Type("decimal")) {
+                    @Override
+                    public ASObjet<?> executer() {
+                        double angle = ((Number) this.getValeurParam("x").getValue()).doubleValue();
+                        return new Decimal(Math.toRadians(angle));
+                    }
+                },
 
-    public ModuleMath(ASModuleManager moduleManager) {
-        super(moduleManager);
-    }
+                new ASObjet.Fonction("deg", new ASObjet.Fonction.Parametre[]{
+                        new ASObjet.Fonction.Parametre(new Type("nombre"), "x", null)
+                }, new Type("decimal")) {
+                    @Override
+                    public ASObjet<?> executer() {
+                        double angle = ((Number) this.getValeurParam("x").getValue()).doubleValue();
+                        return new Decimal(Math.toDegrees(angle));
+                    }
+                },
 
-    public void charger() {
-        moduleManager.ajouterModule("Math", new ASObjet.Fonction[]{
                 new ASObjet.Fonction("sin", new ASObjet.Fonction.Parametre[]{
                         new ASObjet.Fonction.Parametre(new Type("nombre"), "x", null)
                 }, new Type("decimal")) {
@@ -42,15 +58,6 @@ public class ModuleMath extends ASModule {
                     }
                 },
 
-                new ASObjet.Fonction("abs", new ASObjet.Fonction.Parametre[]{
-                        new ASObjet.Fonction.Parametre(new Type("nombre"), "x", null)
-                }, new Type("nombre")) {
-                    @Override
-                    public ASObjet<?> executer() {
-                        return new Decimal(Math.abs(((Number) this.getValeurParam("x").getValue()).doubleValue()));
-                    }
-                },
-
                 new ASObjet.Fonction("arrondir", new ASObjet.Fonction.Parametre[]{
                         new ASObjet.Fonction.Parametre(new Type("nombre"), "n", null),
                         new ASObjet.Fonction.Parametre(new Type("entier"), "nbSignificatifs", new ASObjet.Entier(0)),
@@ -62,10 +69,9 @@ public class ModuleMath extends ASModule {
                         return new Decimal(Math.round(n * shift) / shift);
                     }
                 },
-        }, new ASObjet.Constante[]{
+        }, new ASObjet.Variable[]{
                 new ASObjet.Constante("PI", new ASObjet.Decimal(Math.PI)),
                 new ASObjet.Constante("E", new ASObjet.Decimal(Math.E))
         });
     }
-
 }

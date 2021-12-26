@@ -1,5 +1,5 @@
-import { IoTProjectProps, IoTProjectTabs, StyledIoTProject } from './iotProjectTypes';
-import { useEffect, useState, useContext } from 'react';
+import { IoTProjectProps } from './iotProjectTypes';
+import { useEffect, useContext, useMemo, useCallback, useRef } from 'react';
 import {
 	IoTProject as ProjectModel,
 	IOTPROJECT_ACCESS,
@@ -11,60 +11,52 @@ import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
 import { UserContext } from '../../../state/contexts/UserContext';
 import LoadingScreen from '../../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
-import { Col, Row } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-	faRoute,
-	faCog,
-	faPlug,
-	faPlus,
-} from '@fortawesome/free-solid-svg-icons';
-import Form from '../../../Components/UtilsComponents/Form/Form';
-import IconButton from '../../../Components/DashboardComponents/IconButton/IconButton';
-import FormModal from '../../../Components/UtilsComponents/FormModal/FormModal';
+	IoTProjectContext,
+	IoTProjectContextValues,
+} from '../../../state/contexts/IoTProjectContext';
 import { IotRoute } from '../../../Models/Iot/IoTroute.entity';
-import { plainToClass } from 'class-transformer';
-import IoTRouteCard from '../../../Components/IoTComponents/IoTRoute/IoTRouteCard/IoTRouteCard';
-import { io, Socket } from 'socket.io-client';
-import Button from '../../../Components/UtilsComponents/Button/Button';
-import CenteredContainer from '../../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
+import { IoTObject } from '../../../Models/Iot/IoTobject.entity';
+import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
+import { useParams } from 'react-router';
+import IoTProjectPage from '../IoTProjectPage/IoTProjectPage';
+import IoTLevel from '../../Level/LevelIoT/LevelIoT';
+import { AsScript } from '../../../Models/AsScript/as-script.entity';
 
-const IoTProject = (props: IoTProjectProps) => {
-	const [project, setProject] = useState<ProjectModel>();
-	const [selectedTab, setSelectedTab] = useState<IoTProjectTabs>('settings');
-	const [socket, setSocket] = useState<Socket>();
-	const [routeModalOpen, setRouteModalOpen] = useState(false);
-	const [lightLevel, setLightLevel] = useState<number>(34);
+/**
+ * IoTProject. On this page are all the components essential in the functionning of an IoTProject.
+ * Such as the routes, the settings, creation/update forms, the body with all the IoTComponents etc.
+ *
+ * @param {string} id id of the project (as url prop)
+ *
+ * @author MoSk3
+ */
+const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
+	const projectRef = useRef<ProjectModel | null>(level?.project ?? null);
+	const project = projectRef.current;
+
 	const history = useHistory();
 	const alert = useAlert();
 	const { t } = useTranslation();
 	const { user } = useContext(UserContext);
+	const { id: paramId } = useParams<{ id: string | undefined }>();
+	const forceUpdate = useForceUpdate();
 
-	// Socket io
-	useEffect(() => {
-		if (!process.env.REACT_APP_IOT_URL) return;
-		const socket = io(process.env.REACT_APP_IOT_URL);
+	const id = level?.id ?? paramId;
 
-		socket.emit('register_light');
-
-		socket.on('light', lightLevel => {
-			setLightLevel(lightLevel / 1000);
-		});
-
-		setSocket(socket);
-		return () => {
-			socket.close();
-		};
-	}, []);
+	const isLevel = level ? true : false;
+	const canEdit = user?.id === projectRef.current?.creator?.id && !isLevel;
 
 	useEffect(() => {
+		if (!id || level?.project) return;
 		const getProject = async () => {
 			try {
 				const project: ProjectModel = await api.db.iot.projects.get({
-					id: props.match.params.id,
+					id,
 				});
 				await project.getRoutes();
-				setProject(project);
+				projectRef.current = project;
+				forceUpdate();
 			} catch (err) {
 				history.push('/');
 				return alert.error(t('error.not_found', { obj: t('msg.course') }));
@@ -72,202 +64,124 @@ const IoTProject = (props: IoTProjectProps) => {
 		};
 		getProject();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [props.match.params.id, user]);
+	}, [id, user]);
+
+	const addRoute = useCallback(
+		(route: IotRoute) => {
+			if (!canEdit || !project) return;
+			project.routes.push(route);
+			forceUpdate();
+		},
+		[canEdit, forceUpdate, project],
+	);
+
+	const deleteRoute = useCallback(
+		async (route: IotRoute) => {
+			if (!project) return;
+			await api.db.iot.projects.deleteRoute({
+				id: route.id,
+				projectId: project?.id,
+			});
+			project.routes = project?.routes.filter(r => r.id !== route.id);
+			forceUpdate();
+		},
+		[forceUpdate, project],
+	);
+
+	const addIoTObject = useCallback(
+		(iotObject: IoTObject) => {
+			if (!canEdit || !project) return;
+			project.iotObjects?.push(iotObject);
+			alert.success(t('iot.project.add_object.success'));
+		},
+		[alert, canEdit, project, t],
+	);
+
+	const loadIoTObjects = useCallback(async () => {
+		if (!project) return;
+		await project.getIoTObjects();
+		forceUpdate();
+	}, [project, forceUpdate]);
+
+	const updateProjectData = useCallback(
+		(
+			name: string,
+			description: string,
+			access: IOTPROJECT_ACCESS,
+			interactRights: IOTPROJECT_INTERACT_RIGHTS,
+		) => {
+			if (!project) return;
+			project.name = name;
+			project.description = description;
+			project.access = access;
+			project.interactRights = interactRights;
+			forceUpdate();
+		},
+		[project, forceUpdate],
+	);
+
+	const updateRoute = useCallback(
+		(route: IotRoute) => {
+			if (!project) return;
+			project.routes = project?.routes.map(r =>
+				r.id === route.id ? route : r,
+			);
+			forceUpdate();
+		},
+		[forceUpdate, project],
+	);
+
+	const updateScript = useCallback(
+		(route: IotRoute, asScript: AsScript) => {
+			const routeFound = project?.routes.find(r => r.id === route.id);
+			if (routeFound) {
+				routeFound.asScript = asScript;
+				forceUpdate();
+			}
+		},
+		[forceUpdate, project?.routes],
+	);
+
+	const providerValues: IoTProjectContextValues = useMemo(() => {
+		return {
+			project: project ?? null,
+			canEdit,
+			updateId: updateId ? updateId : project ? project.id : '',
+			isLevel,
+			addRoute,
+			deleteRoute,
+			updateRoute,
+			addIoTObject,
+			loadIoTObjects,
+			updateProjectData,
+			updateScript,
+		};
+	}, [
+		project,
+		canEdit,
+		updateId,
+		isLevel,
+		addRoute,
+		deleteRoute,
+		updateRoute,
+		addIoTObject,
+		loadIoTObjects,
+		updateProjectData,
+		updateScript,
+	]);
 
 	if (!project) {
 		return <LoadingScreen />;
 	}
 
-	const getTabContent = () => {
-		switch (selectedTab) {
-			case 'settings':
-				return (
-					<>
-						<div className="project-details-content-header">Settings</div>
-						<Form
-							onSubmit={res => {
-								const updatedProject: ProjectModel = plainToClass(
-									ProjectModel,
-									res.data,
-								);
-								updatedProject.routes = project.routes;
-								setProject(updatedProject);
-							}}
-							action="PATCH"
-							name="iot_project"
-							url={`iot/projects/${project.id}`}
-							inputGroups={[
-								{
-									name: 'name',
-									required: true,
-									default: project.name,
-									inputType: 'text',
-								},
-								{
-									name: 'description',
-									required: true,
-									default: project.description,
-									inputType: 'text',
-								},
-								{
-									name: 'access',
-									required: true,
-									inputType: 'select',
-									default: project.access,
-									selectOptions: IOTPROJECT_ACCESS,
-								},
-								{
-									name: 'interactRights',
-									required: true,
-									default: project.interactRights,
-									inputType: 'select',
-									selectOptions: IOTPROJECT_INTERACT_RIGHTS,
-								},
-							]}
-						/>
-					</>
-				);
-			case 'routes':
-				return (
-					<>
-						<div className="project-details-content-header">
-							<label className="mr-2">Routes</label>
-							<IconButton
-								icon={faPlus}
-								onClick={() => setRouteModalOpen(true)}
-							/>
-						</div>
-						<div>
-							{project.routes.length > 0 ? (
-								project.routes.map((r, idx) => (
-									<IoTRouteCard key={idx} route={r} />
-								))
-							) : (
-								<label className="disabled-text">No route</label>
-							)}
-						</div>
-						<FormModal
-							title="New route"
-							onSubmit={res => {
-								const resRoute: IotRoute = res.data;
-								project.routes.push(resRoute);
-								setProject(project);
-								setRouteModalOpen(false);
-							}}
-							onClose={() => setRouteModalOpen(false)}
-							open={routeModalOpen}
-						>
-							<Form
-								action="POST"
-								name="create_iot_route"
-								url={`iot/projects/${project.id}/routes`}
-								inputGroups={[
-									{
-										name: 'name',
-										required: true,
-										inputType: 'text',
-									},
-									{
-										name: 'path',
-										required: true,
-										inputType: 'text',
-									},
-								]}
-							/>
-						</FormModal>
-					</>
-				);
-			case 'access':
-				return (
-					<>
-						<div className="project-details-content-header">Access</div>
-					</>
-				);
-		}
-	};
-
 	return (
-		<StyledIoTProject>
-			<Row className="h-100">
-				<Col sm="4" id="project-details">
-					<Row className="project-name">{project.name}</Row>
-					<Row className="project-details-body">
-						<Col className="project-details-tabs">
-							<Row
-								className={
-									'project-details-tab ' +
-									(selectedTab === 'settings' && 'project-details-tab-selected')
-								}
-								onClick={() => setSelectedTab('settings')}
-							>
-								<FontAwesomeIcon
-									className="project-details-tab-logo"
-									icon={faCog}
-								/>
-								Settings
-							</Row>
-							<Row
-								className={
-									'project-details-tab ' +
-									(selectedTab === 'routes' && 'project-details-tab-selected')
-								}
-								onClick={() => setSelectedTab('routes')}
-							>
-								<FontAwesomeIcon
-									className="project-details-tab-logo"
-									icon={faPlug}
-								/>
-								Routes
-							</Row>
-							<Row
-								className={
-									'project-details-tab ' +
-									(selectedTab === 'access' && 'project-details-tab-selected')
-								}
-								onClick={() => setSelectedTab('access')}
-							>
-								<FontAwesomeIcon
-									className="project-details-tab-logo"
-									icon={faRoute}
-								/>
-								Access
-							</Row>
-						</Col>
-						<Col className="project-details-content">{getTabContent()}</Col>
-					</Row>
-				</Col>
-				<Col sm="8" id="project-body">
-					<Row className="project-top-row"></Row>
-					<CenteredContainer style={{ height: '100%' }} vertically horizontally>
-						<h2 className="mb-3">Light level</h2>
-						<div className="my-progress mb-5">
-							<div className="barOverflow">
-								<div
-									className="bar"
-									style={{
-										transform: `rotate(${
-											((lightLevel > 100 ? 100 : lightLevel) / 100) * 180 + 45
-										}deg)`,
-									}}
-								></div>
-							</div>
-							<span className="my-progress-span">
-								{lightLevel > 100 ? 100 : lightLevel}%
-							</span>
-						</div>
-						<h2 className="mb-3">Cluster notification</h2>
-						<Button
-							variant="primary"
-							onClick={() =>
-								socket && socket.emit('send_notification', 'notif')
-							}
-						>
-							Send notification to cluster
-						</Button>
-					</CenteredContainer>
-				</Col>
-			</Row>
-		</StyledIoTProject>
+		<IoTProjectContext.Provider value={providerValues}>
+			{level ? (
+				<IoTLevel initialCode={initialCode ?? ''} />
+			) : (
+				<IoTProjectPage />
+			)}
+		</IoTProjectContext.Provider>
 	);
 };
 

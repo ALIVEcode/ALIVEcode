@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors } from '@nestjs/common';
 import { CategoriesSubjectsService } from './categories-subjects.service';
 import { CreateCategoriesSubjectDto } from './dto/create-categories-subject.dto';
 import { UpdateCategoriesSubjectDto } from './dto/update-categories-subject.dto';
+import { DTOInterceptor } from '../../../utils/interceptors/dto.interceptor';
 
 @Controller('categories-subjects')
+@UseInterceptors(DTOInterceptor)
 export class CategoriesSubjectsController {
   constructor(private readonly categoriesSubjectsService: CategoriesSubjectsService) {}
 

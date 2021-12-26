@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors } from '@nestjs/common';
 import { RewardsService } from './rewards.service';
 import { CreateRewardDto } from './dto/create-reward.dto';
 import { UpdateRewardDto } from './dto/update-reward.dto';
+import { DTOInterceptor } from '../../../utils/interceptors/dto.interceptor';
 
 @Controller('rewards')
+@UseInterceptors(DTOInterceptor)
 export class RewardsController {
   constructor(private readonly rewardsService: RewardsService) {}
 

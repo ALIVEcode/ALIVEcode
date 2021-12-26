@@ -25,7 +25,9 @@ const CourseForm = () => {
 	const alert = useAlert();
 
 	const location = useLocation();
-	const { classroom } = location.state as CourseFormLocation;
+	const state = location.state as any;
+	const { classroom } =
+		state && 'classroom' in state ? state : { classroom: undefined };
 
 	return (
 		<FormContainer title={t('form.title.create_course')}>

@@ -9,13 +9,17 @@ export const RouterSwitch = () => {
 		<Routes>
 			{Object.values(routes).map(route_group =>
 				Object.values(route_group).map(
-					({ path, component, exact }: any, idx) => (
-						<Route
-							path={path + (path.endsWith('/') ? '' : '/') + (exact ? '' : '*')}
-							element={component}
-							key={idx}
-						/>
-					),
+					({ path, component, exact }: any, idx) => {
+						return (
+							<Route
+								path={
+									path + (path.endsWith('/') ? '' : '/') + (exact ? '' : '*')
+								}
+								element={component}
+								key={idx + path}
+							/>
+						);
+					},
 				),
 			)}
 		</Routes>

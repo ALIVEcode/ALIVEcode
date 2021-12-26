@@ -19,10 +19,10 @@ const MessageForm = ({ activeTopic }: MessageFormProp) => {
 	useEffect(() => {
 		if (!user) return;
 
-		if (!process.env.REACT_APP_CHAT_URL)
-			throw new Error('REACT_APP_CHAT_URL .env variable not set');
+		if (!process.env.CHAT_URL)
+			throw new Error('CHAT_URL .env variable not set');
 
-		socket.current = new WebSocket(process.env.REACT_APP_CHAT_URL);
+		socket.current = new WebSocket(process.env.CHAT_URL);
 
 		socket.current.onopen = () => {
 			console.log('Connected to Chat');

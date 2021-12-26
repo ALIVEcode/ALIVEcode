@@ -313,7 +313,7 @@ export const sketch = s => {
 			// TODO: save
 			//Save
 			if (s.levelHasChanged) {
-				if (process.env.REACT_APP_DEBUG)
+				if (process.env.DEBUG)
 					console.log('level changed, it will be saved automatically soon...');
 				s.onChange(s);
 				s.levelHasChanged = false;

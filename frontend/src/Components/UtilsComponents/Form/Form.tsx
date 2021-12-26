@@ -85,7 +85,7 @@ const Form = (props: FormProps) => {
 
 	const onFormSubmit = async (formValues: any) => {
 		if (props.alterFormValues) formValues = props.alterFormValues(formValues);
-		if (process.env.REACT_APP_DEBUG) console.log(formValues);
+		if (process.env.DEBUG) console.log(formValues);
 		try {
 			let res;
 			switch (props.action) {

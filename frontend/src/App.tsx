@@ -1,6 +1,6 @@
 import './App.css';
 import { RouterSwitch } from './Router/RouterSwitch/RouterSwitch';
-import { BrowserRouter as Router, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ALIVENavbar from './Components/MainComponents/Navbar/Navbar';
 import { UserContext } from './state/contexts/UserContext';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -140,13 +140,11 @@ const App = () => {
 			response => response,
 			async error => {
 				const originalRequest = error.config;
-				if (process.env.REACT_APP_DEBUG && error.response)
-					console.log(error.response);
+				if (process.env.DEBUG && error.response) console.log(error.response);
 				if (
 					error.response &&
 					error.response.status === 401 &&
-					originalRequest.url ===
-						process.env.REACT_APP_BACKEND_URL + 'users/refreshToken'
+					originalRequest.url === process.env.BACKEND_URL + 'users/refreshToken'
 				) {
 					if (user) await logout();
 					return Promise.reject(error);
@@ -205,27 +203,23 @@ const App = () => {
 				{loading ? (
 					<LoadingScreen />
 				) : (
-					<Router>
-						<UserContext.Provider value={providerValue}>
-							<ALIVENavbar handleLogout={async () => await logout()} />
-							<StyledApp theme={theme} className="m-auto my-4">
-								<RouterSwitch />
-							</StyledApp>
-							{maintenance && !maintenance.hidden && (
-								<MaintenanceBar
-									onClose={() =>
-										setMaintenance({ ...maintenance, hidden: true })
-									}
-									maintenance={maintenance}
-								/>
-							)}
-							{/**
+					<UserContext.Provider value={providerValue}>
+						<ALIVENavbar handleLogout={async () => await logout()} />
+						<StyledApp theme={theme} className="m-auto">
+							<RouterSwitch />
+						</StyledApp>
+						{maintenance && !maintenance.hidden && (
+							<MaintenanceBar
+								onClose={() => setMaintenance({ ...maintenance, hidden: true })}
+								maintenance={maintenance}
+							/>
+						)}
+						{/**
 							<BackArrow
 								maintenancePopUp={maintenance != null && !maintenance.hidden}
 							/>
 							 */}
-						</UserContext.Provider>
-					</Router>
+					</UserContext.Provider>
 				)}
 			</ThemeContext.Provider>
 		</div>

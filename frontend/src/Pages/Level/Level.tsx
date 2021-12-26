@@ -95,6 +95,7 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 		setInitialProgressionCode('');
 
 		const loadLevel = async () => {
+			if (!user) return;
 			let fetchedLevel: LevelModel | null = null;
 			// LevelId as url param
 			if (levelId) {
@@ -153,7 +154,7 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 		};
 		loadLevel();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [levelId, levelProp]);
+	}, [levelId, levelProp, user]);
 
 	const saveLevel = useCallback(async () => {
 		(level as any).project = undefined;
@@ -162,10 +163,7 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 		setSaving(true);
 		setSaved(false);
 
-		if (!level) {
-			if (process.env.REACT_APP_DEBUG) console.log('save aborted');
-			return;
-		}
+		if (!level) return;
 
 		const updatedLevel = (await api.db.levels.update(
 			{
@@ -272,7 +270,6 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 
 	if (!level || !progression) return <LoadingScreen />;
 
-	console.log('PASSED');
 	return (
 		<StyledLevel editMode={editMode}>
 			<LevelContext.Provider value={levelContextValues}>

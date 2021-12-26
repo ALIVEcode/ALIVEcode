@@ -45,12 +45,10 @@ import ForumSearch from '../../Pages/Forum/ForumSearch/ForumSearch';
 import Chat from '../../Pages/Chat/Chat';
 import { LEVEL_TYPE } from '../../Models/Level/level.entity';
 
-type component = React.ComponentType<RouteProps> | React.ComponentType<any>;
-
 export interface Route {
 	path: string;
 	exact?: boolean;
-	component?: component;
+	component?: React.ReactNode | null;
 	maintenanceExempt?: boolean;
 	adminOnly?: boolean;
 
@@ -59,7 +57,7 @@ export interface Route {
 }
 
 export interface AuthRoute extends Route {
-	redirect?: component;
+	redirect?: React.ReactNode;
 	accountType?: typeof Professor | typeof Student;
 }
 
@@ -74,7 +72,7 @@ const useRoutes = () => {
 	const asRoutes = <T extends RoutesGroup<Route>>(routeGroup: T): T => {
 		Object.values(routeGroup).forEach(route => {
 			if (route.adminOnly && !user?.isAdmin) {
-				route.component = NotFound;
+				route.component = <NotFound></NotFound>;
 				route.hasAccess = false;
 			}
 
@@ -86,7 +84,7 @@ const useRoutes = () => {
 				!route.maintenanceExempt
 			) {
 				if (!user || !user.isAdmin) {
-					route.component = MaintenanceError;
+					route.component = <MaintenanceError></MaintenanceError>;
 					route.hasAccess = false;
 				}
 			}
@@ -95,7 +93,7 @@ const useRoutes = () => {
 	};
 
 	const asAuthRoutes = <T extends RoutesGroup<AuthRoute>>(
-		defaultRedirect: component,
+		defaultRedirect: React.ReactNode,
 		routeGroup: T,
 	): T => {
 		Object.values(routeGroup).forEach(route => {
@@ -114,7 +112,7 @@ const useRoutes = () => {
 	};
 
 	const asNonAuthRoutes = <T extends RoutesGroup<AuthRoute>>(
-		defaultRedirect: component,
+		defaultRedirect: React.ReactNode,
 		routeGroup: T,
 	): T => {
 		if (user) {
@@ -129,232 +127,232 @@ const useRoutes = () => {
 	const public_routes = asRoutes({
 		test: {
 			path: '/test',
-			component: Test,
+			component: <Test></Test>,
 			adminOnly: true,
 		},
 		home: {
 			exact: true,
 			path: '/',
-			component: Home,
+			component: <Home></Home>,
 			maintenanceExempt: true,
 		},
 		asDocs: {
 			path: '/as/doc',
-			component: ASDocs,
+			component: <ASDocs></ASDocs>,
 		},
 		asBuiltinsDocs: {
 			path: '/as/builtins',
-			component: ASBuiltinsDocs,
+			component: <ASBuiltinsDocs></ASBuiltinsDocs>,
 		},
 		ai: {
 			path: '/aliveai',
-			component: AliveIa,
+			component: <AliveIa></AliveIa>,
 			maintenanceExempt: true,
 		},
 		about: {
 			path: '/about',
-			component: About,
+			component: <About></About>,
 			maintenanceExempt: true,
 		},
 		amc: {
 			path: '/amc',
-			component: NotFound,
+			component: <NotFound></NotFound>,
 		},
 		en: {
 			// Route for switching language to english
 			path: '/en',
-			component: Home,
+			component: <Home></Home>,
 		},
 		fr: {
 			// Route for switching language to french
 			path: '/fr',
-			component: Home,
+			component: <Home></Home>,
 		},
 		iot: {
 			exact: true,
 			path: '/iot',
-			component: IoTHome,
+			component: <IoTHome></IoTHome>,
 			//adminOnly: true,
 		},
 		level_alive: {
 			path: '/level/play/alive',
-			component: () => <Level type={LEVEL_TYPE.ALIVE} editMode />,
+			component: <Level type={LEVEL_TYPE.ALIVE} editMode />,
 		},
 		level_code: {
 			path: '/level/play/code',
-			component: () => <Level type={LEVEL_TYPE.CODE} editMode />,
+			component: <Level type={LEVEL_TYPE.CODE} editMode />,
 		},
 		maintenances: {
 			path: '/maintenances',
 			exact: true,
 			maintenanceExempt: true,
-			component: MaintenanceMenu,
+			component: <MaintenanceMenu></MaintenanceMenu>,
 		},
 		question: {
 			path: '/forum/post/:id',
-			component: ForumPost,
+			component: <ForumPost></ForumPost>,
 		},
 		subject_list: {
 			path: '/forum/subjectList/:id',
-			component: ForumSubjectList,
+			component: <ForumSubjectList></ForumSubjectList>,
 		},
 		album: {
 			path: '/album-test',
 			exact: true,
-			component: ActivityEditor,
+			component: <ActivityEditor></ActivityEditor>,
 			adminOnly: true,
 		},
 		forum: {
 			path: '/forum',
-			component: ForumHome,
+			component: <ForumHome></ForumHome>,
 			exact: true,
 			adminOnly: true,
 		},
 		forum_search: {
 			path: '/forum/search',
-			component: ForumSearch,
+			component: <ForumSearch></ForumSearch>,
 			adminOnly: true,
 		},
 		forum_categories: {
 			path: '/forum/categories',
-			component: ForumCategories,
+			component: <ForumCategories></ForumCategories>,
 			adminOnly: true,
 		},
 		quiz: {
 			path: '/quiz',
 			exact: true,
-			component: QuizHome,
+			component: <QuizHome></QuizHome>,
 			adminOnly: true,
 		},
 		quiz_category: {
 			path: '/quiz/category/:id',
-			component: QuizCategory,
+			component: <QuizCategory></QuizCategory>,
 			adminOnly: true,
 		},
 		quiz_play: {
 			path: '/quiz/play/:id',
-			component: QuizPlay,
+			component: <QuizPlay></QuizPlay>,
 			adminOnly: true,
 		},
 	});
 
-	const auth_routes = asAuthRoutes(SignIn, {
+	const auth_routes = asAuthRoutes(<SignIn></SignIn>, {
 		dashboard: {
 			path: '/dashboard',
-			component: Dashboard,
+			component: <Dashboard></Dashboard>,
 		},
 		create_classroom: {
 			accountType: Professor,
 			path: '/classroom/create',
-			component: ClassroomForm,
+			component: <ClassroomForm></ClassroomForm>,
 		},
 		join_classroom: {
 			accountType: Student,
 			path: '/classroom/join',
-			component: ClassroomForm,
+			component: <ClassroomForm></ClassroomForm>,
 		},
 		classroom: {
 			path: '/classroom/:id',
-			component: Classroom,
+			component: <Classroom></Classroom>,
 		},
 		create_course: {
 			path: '/course/create',
-			component: CourseForm,
+			component: <CourseForm></CourseForm>,
 		},
 		course: {
 			path: '/course/:id',
-			component: Course,
+			component: <Course></Course>,
 		},
 		account: {
 			path: '/account',
-			component: AccountPage,
+			component: <AccountPage></AccountPage>,
 		},
 		chat: {
 			path: '/chat',
 			exact: true,
-			component: Chat,
+			component: <Chat></Chat>,
 			adminOnly: true,
 		},
 		iot_dashboard: {
 			path: '/iot/dashboard',
-			component: IoTDashboard,
+			component: <IoTDashboard></IoTDashboard>,
 			//adminOnly: true,
 		},
 		create_iot_project: {
 			path: '/iot/projects/create',
-			component: IoTProjectCreate,
+			component: <IoTProjectCreate></IoTProjectCreate>,
 			//adminOnly: true,
 		},
 		iot_project: {
 			path: '/iot/projects/:id',
-			component: IoTProject,
+			component: <IoTProject></IoTProject>,
 			//adminOnly: true,
 		},
 		level_list: {
 			path: '/level',
 			exact: true,
-			component: LevelList,
+			component: <LevelList></LevelList>,
 		},
 		level_edit: {
 			path: '/level/edit/:levelId',
-			component: () => <Level editMode />,
+			component: <Level editMode />,
 		},
 		level_browse: {
 			path: '/level/browse',
-			component: LevelBrowse,
+			component: <LevelBrowse></LevelBrowse>,
 		},
 		level_play: {
 			path: '/level/play/:levelId',
-			component: Level,
+			component: <Level editMode={false}></Level>,
 		},
 		level_create: {
 			path: '/level/create',
 			exact: true,
-			component: LevelFormMenu,
+			component: <LevelFormMenu></LevelFormMenu>,
 		},
 		level_create_alive: {
 			path: '/level/create/alive',
-			component: () => <LevelForm type={LEVEL_TYPE.ALIVE} />,
+			component: <LevelForm type={LEVEL_TYPE.ALIVE} />,
 		},
 		level_create_code: {
 			path: '/level/create/code',
-			component: () => <LevelForm type={LEVEL_TYPE.CODE} />,
+			component: <LevelForm type={LEVEL_TYPE.CODE} />,
 		},
 		level_create_ai: {
 			path: '/level/create/ai',
-			component: () => <LevelForm type={LEVEL_TYPE.AI} />,
+			component: <LevelForm type={LEVEL_TYPE.AI} />,
 		},
 		level_create_iot: {
 			path: '/level/create/iot',
-			component: () => <LevelForm type={LEVEL_TYPE.IOT} />,
+			component: <LevelForm type={LEVEL_TYPE.IOT} />,
 		},
 		quiz_create: {
 			accountType: Professor,
 			path: '/quiz/create',
-			component: QuizCreate,
+			component: <QuizCreate></QuizCreate>,
 			adminOnly: true,
 		},
 		quiz_edit: {
 			accountType: Professor,
 			path: '/quiz/edit/:id',
-			component: QuizEdit,
+			component: <QuizEdit></QuizEdit>,
 			adminOnly: true,
 		},
 		form_question: {
 			path: '/formQuestion/forum',
-			component: ForumFormQuestion,
+			component: <ForumFormQuestion></ForumFormQuestion>,
 		},
 	});
 
-	const non_auth_routes = asNonAuthRoutes(Home, {
+	const non_auth_routes = asNonAuthRoutes(<Home></Home>, {
 		signin: {
 			path: '/signin',
-			component: SignIn,
+			component: <SignIn></SignIn>,
 			maintenanceExempt: true,
 		},
 		signup: {
 			path: '/signup',
-			component: SignUpMenu,
+			component: <SignUpMenu></SignUpMenu>,
 		},
 		signup_professor: {
 			path: '/signup-professor',
@@ -369,7 +367,7 @@ const useRoutes = () => {
 	const error_routes = asRoutes({
 		not_found: {
 			path: '*',
-			component: NotFound,
+			component: <NotFound></NotFound>,
 			maintenanceExempt: true,
 		},
 	});

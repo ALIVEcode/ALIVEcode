@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserEntity } from 'src/models/user/entities/user.entity';
 import { Repository } from 'typeorm';
-import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Post } from './entities/post.entity';
 
@@ -11,8 +11,10 @@ export class PostService {
     @InjectRepository(Post) private postRepository: Repository<Post>,
   ) {}
 
-  create(createPostDto: CreatePostDto) {
-    return 'This action adds a new post';
+  async create(creator: UserEntity, createPostDto: Post) {
+    const post = this.postRepository.save(this.postRepository.create({ ...createPostDto, creator }));
+    return await post;
+
   }
 
   async findAll() {
@@ -25,7 +27,7 @@ export class PostService {
   async getLastPost() {
     return await this.postRepository.find({ 
       order: { 
-        created_at: 'DESC', 
+        id: 'DESC', 
       },
       take: 2,
     });

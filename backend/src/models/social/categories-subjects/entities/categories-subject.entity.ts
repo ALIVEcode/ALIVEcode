@@ -9,7 +9,7 @@ export class CategoriesSubject {
     @Column('varchar')
     name : string;
 
-    @OneToMany(() => Subject, subject => subject.id_category)
+    @OneToMany(() => Subject, subject => subject.category, { eager: true })
     subjects: Subject[];
 
 }

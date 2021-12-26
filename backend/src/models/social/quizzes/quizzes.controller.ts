@@ -1,14 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors } from '@nestjs/common';
 import { QuizzesService } from './quizzes.service';
 import { Quiz } from './entities/quiz.entity';
+import { DTOInterceptor } from '../../../utils/interceptors/dto.interceptor';
 
 @Controller('quizzes')
+@UseInterceptors(DTOInterceptor)
 export class QuizzesController {
   constructor(private readonly quizzesService: QuizzesService) {}
 
   @Post()
   async create(@Body() createQuizDto: Quiz) {
-    console.log(createQuizDto)
+    console.log(createQuizDto);
     return await this.quizzesService.create(createQuizDto);
   }
 

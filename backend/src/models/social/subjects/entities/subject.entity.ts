@@ -10,10 +10,10 @@ export class Subject {
     @Column('varchar')
     name : string;
 
-    @OneToMany(() => Post, post => post.id_subject)
+    @OneToMany(() => Post, post => post.subject, { eager: true })
     posts: Post[];
 
     @ManyToOne(() => CategoriesSubject, category => category.subjects)
-    @JoinColumn( { name : 'id_category' } )
-    id_category : CategoriesSubject;
+    @JoinColumn()
+    category : CategoriesSubject;
 }

@@ -19,15 +19,16 @@ import { Category } from './Quiz/categories-quiz.entity';
 import { QuizForm } from './Quiz/quizForm.entity';
 import { QuestionForm } from './Quiz/questionForm.entity';
 import { Answer } from './Quiz/answer.entity';
+import { CategorySubject } from './Forum/categorySubject.entity';
 import { Activity } from './Course/activity.entity';
 import { Maintenance } from './Maintenance/maintenance.entity';
 import { Result } from './Social/result.entity';
 import { CompileDTO } from './ASModels';
 import { AsScript } from './AsScript/as-script.entity';
 import { LevelIoT } from './Level/levelIoT.entity';
-import { Post } from './Social/post.entity';
-import { Topics } from './Social/topics.entity';
 import { Quiz } from './Quiz/quiz.entity';
+import { Topics } from './Social/topics.entity';
+import { Post } from './Forum/post.entity';
 
 type urlArgType<S extends string> = S extends `${infer _}:${infer A}/${infer B}`
 	? A | urlArgType<B>
@@ -305,6 +306,27 @@ const api = {
 			findandcount: apiCreate('posts/findandcount', Post),
 			create: apiCreate('posts', Post),
 			delete: apiDelete('posts/:id'),
+		},
+		forum: {
+			categories: {
+				get: apiGet('categories-subjects', CategorySubject, true),
+				getById: apiGet('categories-subjects/:id', CategorySubject, false),
+			},
+			commentaires: {
+				createComment: apiCreate('commentaires-forum', Comment),
+			},
+			getLastPost: apiGet('post/lastPost', Post, true),
+			createQuestion: apiCreate('post', Post),
+			getById: apiGet('post/:id', Post, false),
+			getPost: apiGet('post', Post, true),
+
+			posts: {
+				all: apiGet('posts', Post, true),
+				get: apiGet('posts/:id/', Post, false),
+				findandcount: apiCreate('posts/findandcount', Post),
+				create: apiCreate('posts', Post),
+				delete: apiDelete('posts/:id'),
+			},
 		},
 		topics: {
 			all: apiGet('topics', Topics, true),

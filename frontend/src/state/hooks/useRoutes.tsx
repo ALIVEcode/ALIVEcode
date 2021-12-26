@@ -31,7 +31,6 @@ import ASDocs from '../../Components/AliveScriptComponents/ASDocs/ASDocs';
 import { MaintenanceError } from '../../Pages/Errors/MaintenanceError/MaintenanceError';
 import MaintenanceMenu from '../../Pages/SiteStatus/MaintenanceMenu/MaintenanceMenu';
 import ASBuiltinsDocs from '../../Components/AliveScriptComponents/ASDocs/ASBuiltinsDocs';
-import { LEVEL_TYPE } from '../../Models/Level/level.entity';
 import ActivityEditor from '../../Components/CourseComponents/MDEditor/ActivityEditor';
 import Forum from '../../Pages/Forum/Forum';
 import QuizHome from '../../Pages/Quiz/QuizHome/QuizHome';
@@ -40,7 +39,12 @@ import QuizCreate from '../../Pages/Quiz/QuizCreate/QuizCreate';
 import QuizEdit from '../../Pages/Quiz/QuizEdit/QuizEdit';
 import QuizPlay from '../../Pages/Quiz/PlayQuiz/PlayQuiz';
 import CategoriesForum from '../../Pages/Forum/CategoriesForum';
+import SubjectList from '../../Pages/Forum/SubjectList';
+import FormQuestion from '../../Pages/Forum/formQuestion';
+import DetailsQuestion from '../../Pages/Forum/detailsQuestion';
+import SearchForum from '../../Pages/Forum/searchForum';
 import Chat from '../../Pages/Chat/Chat';
+import { LEVEL_TYPE } from '../../Models/Level/level.entity';
 
 type component =
 	| React.ComponentType<RouteComponentProps<any>>
@@ -189,6 +193,18 @@ const useRoutes = () => {
 			maintenanceExempt: true,
 			component: MaintenanceMenu,
 		},
+		question: {
+			path: '/forum/post/:id',
+			component: DetailsQuestion,
+		},
+		subjectList: {
+			path: '/forum/subjectList/:id',
+			component: SubjectList,
+		},
+		searchForum: {
+			path: '/forum/searchForum/:id',
+			component: SearchForum,
+		},
 		album: {
 			path: '/album-test',
 			exact: true,
@@ -324,6 +340,10 @@ const useRoutes = () => {
 			path: '/quiz/edit/:id',
 			component: QuizEdit,
 			adminOnly: true,
+		},
+		formQuestion: {
+			path: '/formQuestion/forum',
+			component: FormQuestion,
 		},
 	});
 

@@ -36,7 +36,15 @@ import { CategoriesQuizModule } from './models/social/categories-quiz/categories
 import { QuestionsModule } from './models/social/questions/questions.module';
 import { AnswersModule } from './models/social/answers/answers.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { CategoriesSubjectsModule } from './models/social/categories-subjects/categories-subjects.module';
+import { SubjectsModule } from './models/social/subjects/subjects.module';
+import { CommentairesForumModule } from './models/social/commentaires-forum/commentaires-forum.module';
 import { join } from 'path';
+import { PostModule } from './models/social/post/post.module';
+import { ResultsModule } from './models/social/results/results.module';
+import { MessagesModule } from './models/social/messages/messages.module';
+import { ChatModule } from './socket/chatSocket/chatSocket.module';
+import { TopicsModule } from './models/social/topics/topics.module';
 
 adminjs.registerAdapter({ Database, Resource });
 
@@ -86,6 +94,14 @@ adminjs.registerAdapter({ Database, Resource });
     CategoriesQuizModule,
     QuestionsModule,
     AnswersModule,
+    PostModule,
+    CategoriesSubjectsModule,
+    SubjectsModule,
+    CommentairesForumModule,
+    ResultsModule,
+    MessagesModule,
+    ChatModule,
+    TopicsModule,
   ],
   controllers: [AppController],
   providers: [AppService, MaintenanceService, UserService],

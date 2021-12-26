@@ -15,15 +15,19 @@ import { LevelProgression } from './Level/levelProgression';
 import { LevelAI } from './Level/levelAI.entity';
 import { IoTObject } from './Iot/IoTobject.entity';
 import { QueryDTO } from '../../../backend/src/models/level/dto/query.dto';
+import { Category } from './Quiz/categories-quiz.entity';
+import { QuizForm } from './Quiz/quizForm.entity';
+import { QuestionForm } from './Quiz/questionForm.entity';
+import { Answer } from './Quiz/answer.entity';
 import { Activity } from './Course/activity.entity';
 import { Maintenance } from './Maintenance/maintenance.entity';
-import { Quiz } from './Social/quiz.entity';
 import { Result } from './Social/result.entity';
 import { CompileDTO } from './ASModels';
 import { AsScript } from './AsScript/as-script.entity';
 import { LevelIoT } from './Level/levelIoT.entity';
 import { Post } from './Social/post.entity';
-import {Topics} from './Social/topics.entity'
+import { Topics } from './Social/topics.entity';
+import { Quiz } from './Quiz/quiz.entity';
 
 type urlArgType<S extends string> = S extends `${infer _}:${infer A}/${infer B}`
 	? A | urlArgType<B>
@@ -132,8 +136,8 @@ const api = {
 				getProjects: apiGet('users/iot/projects', IoTProject, true),
 				getObjects: apiGet('users/iot/objects', IoTObject, true),
 			},
-			social:{
-				getResults: apiGet('users/quizzes/results', Result, true)
+			social: {
+				getResults: apiGet('users/quizzes/results', Result, true),
 			},
 			//get: apiGetter('users', User),
 			getClassrooms: apiGet('users/:id/classrooms', Classroom, true),
@@ -277,38 +281,45 @@ const api = {
 				});
 			},
 		},
-
-		posts:{
+		quiz: {
+			all: apiGet('/quizzes', Quiz, true),
+			one: apiGet('/quizzes/:id', Quiz, false),
+			create: apiCreate('/quizzes', QuizForm),
+			update: apiUpdate('/quizzes/:id', QuizForm),
+			delete: apiDelete('/quizzes/:id'),
+			categories: {
+				all: apiGet('/categories-quiz', Category, true),
+				one: apiGet('/categories-quiz/:id', Category, false),
+			},
+		},
+		question: {
+			delete: apiDelete('/questions/:id'),
+			create: apiCreate('/questions', QuestionForm),
+		},
+		answer: {
+			create: apiCreate('/answers', Answer),
+		},
+		posts: {
 			all: apiGet('posts', Post, true),
 			get: apiGet('posts/:id/', Post, false),
 			findandcount: apiCreate('posts/findandcount', Post),
 			create: apiCreate('posts', Post),
 			delete: apiDelete('posts/:id'),
-		
 		},
-		topics:{
+		topics: {
 			all: apiGet('topics', Topics, true),
 			get: apiGet('topics/:id/', Topics, false),
 			create: apiCreate('topics', Topics),
 			delete: apiDelete('topics/:id'),
-		
 		},
-		quiz:{
-			all: apiGet('quizzes', Quiz, true),
-			get: apiGet('quizzes/:id/', Quiz, false),
-			create: apiCreate('quizzes', Quiz),
-			delete: apiDelete('quizzes/:id'),
-
-		},
-		results:{
+		results: {
 			all: apiGet('results', Result, true),
 			get: apiGet('results/:id/', Result, false),
 			findandcount: apiCreate('results/findandcount', Result),
 			create: apiCreate('results', Result),
 			delete: apiDelete('results/:id'),
-			getresultuser : apiGet('results/user', Result, true),
-		
-		}
+			getresultuser: apiGet('results/user', Result, true),
+		},
 	},
 	as: {
 		async compile(data: CompileDTO) {

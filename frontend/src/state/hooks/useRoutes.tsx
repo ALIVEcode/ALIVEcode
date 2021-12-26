@@ -31,13 +31,14 @@ import ASDocs from '../../Components/AliveScriptComponents/ASDocs/ASDocs';
 import { MaintenanceError } from '../../Pages/Errors/MaintenanceError/MaintenanceError';
 import MaintenanceMenu from '../../Pages/SiteStatus/MaintenanceMenu/MaintenanceMenu';
 import ASBuiltinsDocs from '../../Components/AliveScriptComponents/ASDocs/ASBuiltinsDocs';
-import MDEditor from '../../Components/CourseComponents/MDEditor/MDEditor';
 import { LEVEL_TYPE } from '../../Models/Level/level.entity';
 import ActivityEditor from '../../Components/CourseComponents/MDEditor/ActivityEditor';
 import Forum from '../../Pages/Forum/Forum';
 import QuizHome from '../../Pages/Quiz/QuizHome/QuizHome';
 import QuizCategory from '../../Pages/Quiz/QuizCategory/QuizCategory';
 import QuizCreate from '../../Pages/Quiz/QuizCreate/QuizCreate';
+import QuizEdit from '../../Pages/Quiz/QuizEdit/QuizEdit';
+import QuizPlay from '../../Pages/Quiz/PlayQuiz/PlayQuiz';
 import CategoriesForum from '../../Pages/Forum/CategoriesForum';
 import Chat from '../../Pages/Chat/Chat';
 
@@ -192,6 +193,7 @@ const useRoutes = () => {
 			path: '/album-test',
 			exact: true,
 			component: ActivityEditor,
+			adminOnly: true,
 		},
 		forum: {
 			path: '/forum',
@@ -214,10 +216,9 @@ const useRoutes = () => {
 			component: QuizCategory,
 			adminOnly: true,
 		},
-		// Only for testing, place in auth Professor in production.
-		quiz_create: {
-			path: '/quiz/create',
-			component: QuizCreate,
+		quiz_play: {
+			path: '/quiz/play/:id',
+			component: QuizPlay,
 			adminOnly: true,
 		},
 	});
@@ -311,6 +312,18 @@ const useRoutes = () => {
 		level_create_iot: {
 			path: '/level/create/iot',
 			component: () => <LevelForm type={LEVEL_TYPE.IOT} />,
+		},
+		quiz_create: {
+			accountType: Professor,
+			path: '/quiz/create',
+			component: QuizCreate,
+			adminOnly: true,
+		},
+		quiz_edit: {
+			accountType: Professor,
+			path: '/quiz/edit/:id',
+			component: QuizEdit,
+			adminOnly: true,
 		},
 	});
 

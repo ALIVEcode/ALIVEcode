@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CategoriesQuizService } from './categories-quiz.service';
 import { CreateCategoriesQuizDto } from './dto/create-categories-quiz.dto';
 import { UpdateCategoriesQuizDto } from './dto/update-categories-quiz.dto';
+import { CategoriesQuiz } from './entities/categories-quiz.entity';
 
 @Controller('categories-quiz')
 export class CategoriesQuizController {
@@ -23,7 +24,7 @@ export class CategoriesQuizController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCategoriesQuizDto: UpdateCategoriesQuizDto) {
+  update(@Param('id') id: string, @Body() updateCategoriesQuizDto: CategoriesQuiz) {
     return this.categoriesQuizService.update(+id, updateCategoriesQuizDto);
   }
 

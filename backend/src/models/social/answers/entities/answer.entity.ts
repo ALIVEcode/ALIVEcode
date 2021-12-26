@@ -1,3 +1,4 @@
+import { IsNotEmpty } from "class-validator";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Question } from "../../questions/entities/question.entity";
 
@@ -8,12 +9,15 @@ export class Answer {
     id : number;
 
     @Column('varchar')
+    @IsNotEmpty()
     value : string;
 
-    @ManyToOne(() => Question, question => question.id_answer)
-    @JoinColumn( { name : 'id_question' } )
-    id_question : Question;
+    @ManyToOne(() => Question, question => question.answers, {onDelete: 'CASCADE'})
+    @JoinColumn()
+    @IsNotEmpty()
+    question : Question;
 
     @Column({ default: false})
+    @IsNotEmpty()
     is_good: boolean;
 }

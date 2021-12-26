@@ -1,7 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { QuizzesService } from './quizzes.service';
-import { CreateQuizDto } from './dto/create-quiz.dto';
-import { UpdateQuizDto } from './dto/update-quiz.dto';
 import { Quiz } from './entities/quiz.entity';
 
 @Controller('quizzes')
@@ -25,12 +23,12 @@ export class QuizzesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateQuizDto: UpdateQuizDto) {
+  update(@Param('id') id: string, @Body() updateQuizDto: Quiz) {
     return this.quizzesService.update(+id, updateQuizDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.quizzesService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.quizzesService.remove(+id);
   }
 }

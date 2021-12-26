@@ -45,6 +45,7 @@ export class UserController {
 
   @Post('students')
   async createStudent(@Body() createStudent: StudentEntity) {
+    console.log(createStudent);
     return {
       user: await this.userService.createStudent(createStudent),
     };

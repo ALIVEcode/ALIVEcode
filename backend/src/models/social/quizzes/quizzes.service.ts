@@ -16,21 +16,27 @@ export class QuizzesService {
   }
 
   async findAll() {
-    return await this.quizRepository.find({ relations: ['reward', 'questions'] });
+    const quizzes = await this.quizRepository.find({ relations: ['reward', 'questions'] });
+    console.log(quizzes);
+    return quizzes;
   }
 
-  async findOne(id: number) {
+  async findOne(id: number,) {
     if (!id) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
-    const quiz = await this.quizRepository.findOne(id);
+    const quiz = await this.quizRepository.findOne(id, { relations: ['reward', 'questions'] });
+    console.log(quiz);
     if (!quiz) throw new HttpException('Quiz not found', HttpStatus.NOT_FOUND);
     return quiz;
   }
 
-  async update(id: number, updateQuizDto: UpdateQuizDto) {
-    return 'This Updates a Quiz';
+  async update(id: number, updateQuizDto: Quiz) {
+    updateQuizDto.id = id;
+    const quiz = this.quizRepository.save(updateQuizDto);
+    return await quiz
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} quiz`;
+  async remove(id: number) {
+    const quiz = await this.quizRepository.delete(id);
+    return await quiz
   }
 }

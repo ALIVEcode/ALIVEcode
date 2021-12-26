@@ -40,9 +40,9 @@ import QuizEdit from '../../Pages/Quiz/QuizEdit/QuizEdit';
 import QuizPlay from '../../Pages/Quiz/PlayQuiz/PlayQuiz';
 import CategoriesForum from '../../Pages/Forum/CategoriesForum';
 import SubjectList from '../../Pages/Forum/SubjectList';
-import FormQuestion from '../../Pages/Forum/formQuestiona';
-import DetailsQuestion from '../../Pages/Forum/detailsQuestiona';
-import SearchForum from '../../Pages/Forum/searchForuma';
+import FormQuestion from '../../Pages/Forum/FormQuestion';
+import DetailsQuestion from '../../Pages/Forum/DetailsQuestion';
+import SearchForum from '../../Pages/Forum/SearchForum';
 import Chat from '../../Pages/Chat/Chat';
 import { LEVEL_TYPE } from '../../Models/Level/level.entity';
 

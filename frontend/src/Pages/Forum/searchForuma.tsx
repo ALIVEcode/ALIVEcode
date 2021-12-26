@@ -5,8 +5,8 @@ import CardContainer from '../../Components/UtilsComponents/CardContainer/CardCo
 import CenteredContainer from '../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
 import api from '../../Models/api';
 import { Post } from '../../Models/Forum/post.entity';
-import NavBarSocial from './NavBarSocial';
-import { SearchProps } from './searchType';
+import NavBarSocial from './NavbarSocial';
+import { SearchProps } from './searchTypes';
 
 const SearchForum = (props: SearchProps) => {
 	const [posts, setPosts] = useState<Post[]>([]);

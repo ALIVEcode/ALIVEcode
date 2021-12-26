@@ -6,7 +6,7 @@ import CenteredContainer from '../../Components/UtilsComponents/CenteredContaine
 import api from '../../Models/api';
 import { CategorySubject } from '../../Models/Forum/categorySubject.entity';
 import { Subject } from '../../Models/Forum/subjects.entity';
-import NavBarSocial from './NavBarSocial';
+import NavBarSocial from './NavbarSocial';
 import { SubjectProps } from './subjectTypes';
 import { Link } from 'react-router-dom';
 

@@ -2,7 +2,7 @@ import Button from '../../Components/UtilsComponents/Button/Button';
 import CenteredContainer from '../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
 import CardContainer from '../../Components/UtilsComponents/CardContainer/CardContainer';
 import { Card, Col, Row } from 'react-bootstrap';
-import NavBarSocial from './NavBarSocial';
+import NavBarSocial from './NavbarSocial';
 import { Post as PostModel } from '../../Models/Forum/post.entity';
 import { useEffect, useState } from 'react';
 import api from '../../Models/api';

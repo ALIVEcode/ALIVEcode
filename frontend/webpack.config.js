@@ -74,8 +74,7 @@ module.exports = (env, argv) => {
 		plugins: [
 			isProduction &&
 				new MiniCssExtractPlugin({
-					filename: 'assets/css/[name].[contenthash:8].css',
-					chunkFilename: 'assets/css/[name].[contenthash:8].chunk.css',
+					filename: 'styles.css',
 				}),
 			new webpack.DefinePlugin({
 				'process.env.NODE_ENV': JSON.stringify(

@@ -4,7 +4,6 @@ import Form from '../../UtilsComponents/Form/Form';
 import { useNavigate, useLocation } from 'react-router';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { useAlert } from 'react-alert';
-import { CourseFormLocation } from './courseFormTypes';
 import {
 	COURSE_DIFFICULTY,
 	COURSE_SUBJECT,

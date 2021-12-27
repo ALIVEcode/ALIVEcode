@@ -18,7 +18,10 @@
 			}
 		],
 		"@babel/plugin-syntax-dynamic-import",
-		"@babel/plugin-proposal-class-properties"
+		"@babel/plugin-proposal-class-properties",
+		"babel-plugin-twin",
+		"babel-plugin-macros",
+		"babel-plugin-styled-components"
 	],
 	"env": {
 		// Production optimizations

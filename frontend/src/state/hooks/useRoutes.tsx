@@ -1,4 +1,4 @@
-import { RouteProps, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Professor, Student } from '../../Models/User/user.entity';
 import Classroom from '../../Pages/Classroom/Classroom';
 import Course from '../../Pages/Course/Course';

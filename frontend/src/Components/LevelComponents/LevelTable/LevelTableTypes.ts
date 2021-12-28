@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import FillContainer from '../../UtilsComponents/FillContainer/FillContainer';
 
 export interface LevelTableProps {
 	data: (

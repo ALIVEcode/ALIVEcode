@@ -2,7 +2,6 @@ import { LevelAIProps, StyledAliveLevel } from './levelAITypes';
 import { useEffect, useState, useContext, useRef, useMemo } from 'react';
 import LineInterface from '../../../Components/LevelComponents/LineInterface/LineInterface';
 import { UserContext } from '../../../state/contexts/UserContext';
-import { Row, Col } from 'react-bootstrap';
 import Cmd from '../../../Components/LevelComponents/Cmd/Cmd';
 import LevelAIExecutor from './LevelAIExecutor';
 import useCmd from '../../../state/hooks/useCmd';

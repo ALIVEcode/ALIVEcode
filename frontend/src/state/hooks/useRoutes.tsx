@@ -356,11 +356,11 @@ const useRoutes = () => {
 		},
 		signup_professor: {
 			path: '/signup-professor',
-			component: () => <SignUp userType={USER_TYPES.PROFESSOR} />,
+			component: <SignUp userType={USER_TYPES.PROFESSOR} />,
 		},
 		signup_student: {
 			path: '/signup-student',
-			component: () => <SignUp userType={USER_TYPES.STUDENT} />,
+			component: <SignUp userType={USER_TYPES.STUDENT} />,
 		},
 	});
 

@@ -17,8 +17,6 @@ export type EditorTabModel = {
 };
 
 export const StyledLineInterface = styled.div`
-	flex: 1 1 auto;
-	height: 100%;
 	${({ theme }: { theme: Theme }) =>
 		theme.name === 'light'
 			? 'color: var(--background-color);'
@@ -28,8 +26,14 @@ export const StyledLineInterface = styled.div`
 		display: none;
 	}
 
+	.opened-editor {
+		flex: 1 1 0%;
+	}
+
 	.ace-editor {
 		font-size: large;
+		width: auto !important;
+		height: auto !important;
 	}
 
 	.ace-cobalt .ace_gutter {

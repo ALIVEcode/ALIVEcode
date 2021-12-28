@@ -83,11 +83,12 @@ const LevelAlive = ({ initialCode }: LevelAliveProps) => {
 		<>
 			{level ? (
 				<StyledAliveLevel>
-					<Row className="h-100">
-						<Col className="left-col" md={6}>
+					<div tw="h-full flex flex-row">
+						<div tw="w-1/2 h-full flex flex-col">
 							<LevelToolsBar />
 							{editMode ? (
 								<LineInterface
+									tw="flex-1"
 									hasTabs
 									tabs={[
 										{
@@ -117,9 +118,9 @@ const LevelAlive = ({ initialCode }: LevelAliveProps) => {
 									handleChange={lineInterfaceContentChanges}
 								/>
 							)}
-						</Col>
-						<Col md={6} style={{ resize: 'both', padding: '0' }}>
-							<Row id="simulation-row" style={{ height: '60vh' }}>
+						</div>
+						<div tw="flex flex-col w-1/2">
+							<div tw="h-3/5 w-full" id="simulation-row">
 								{executor && level.layout && (
 									<Simulation
 										id={level.id}
@@ -145,13 +146,12 @@ const LevelAlive = ({ initialCode }: LevelAliveProps) => {
 										setShowConfetti={set => setShowConfetti(set)}
 									/>
 								)}
-							</Row>
-							<Row style={{ height: '40vh' }}>
+							</div>
+							<div tw="h-2/5 flex-1">
 								<Cmd ref={cmdRef} />
-								<GamepadAlive></GamepadAlive>
-							</Row>
-						</Col>
-					</Row>
+							</div>
+						</div>
+					</div>
 				</StyledAliveLevel>
 			) : (
 				<LoadingScreen />

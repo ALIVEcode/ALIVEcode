@@ -92,6 +92,15 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 	};
 
 	useEffect(() => {
+		const previousOverflowY = document.body.style.overflowY;
+		document.body.style.overflowY = 'hidden';
+
+		return () => {
+			document.body.style.overflowY = previousOverflowY;
+		};
+	}, []);
+
+	useEffect(() => {
 		setInitialProgressionCode('');
 
 		const loadLevel = async () => {

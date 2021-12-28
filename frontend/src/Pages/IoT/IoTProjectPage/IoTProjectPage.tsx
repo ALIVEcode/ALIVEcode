@@ -38,7 +38,7 @@ const IoTProjectPage = () => {
 	};
 
 	return (
-		<StyledIoTProject tw="w-full h-full flex flex-col md:flex-row bg-white">
+		<StyledIoTProject tw="w-full h-full flex flex-col md:flex-row">
 			<div tw="block order-2 md:order-1" id="project-details">
 				<div className="project-name">{project.name}</div>
 				<div tw="flex flex-row" className="project-details-body">

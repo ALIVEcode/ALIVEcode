@@ -3,6 +3,8 @@ import styled from 'styled-components';
 export type IoTProjectTabs = 'settings' | 'routes' | 'access';
 
 export const StyledIoTProject = styled.div`
+	background-color: var(--background-color);
+
 	#project-details {
 		padding: 0;
 		background-color: var(--background-color);

@@ -61,12 +61,18 @@ const LineInterface = memo(
 		};
 
 		return (
-			<StyledLineInterface theme={theme}>
+			<StyledLineInterface theme={theme} tw="flex flex-col h-full">
 				{hasTabs && (
-					<div className="editors-tab w-100">
-						{tabs.map((t, idx) => (
-							<EditorTab key={idx} tab={t} setOpen={() => setOpenedTab(idx)} />
-						))}
+					<div className="editors-tab-bg w-100">
+						<div className="editors-tab w-100">
+							{tabs.map((t, idx) => (
+								<EditorTab
+									key={idx}
+									tab={t}
+									setOpen={() => setOpenedTab(idx)}
+								/>
+							))}
+						</div>
 					</div>
 				)}
 				{hasTabs ? (
@@ -76,8 +82,9 @@ const LineInterface = memo(
 								<AceEditor
 									key={idx}
 									className={
-										'ace-editor relative w-100 h-100 ' +
-										(!t.open && t.loaded ? 'hidden-editor' : '')
+										'ace-editor relative ' +
+										(!t.open && t.loaded ? 'hidden-editor ' : '') +
+										(t.open ? 'opened-editor ' : '')
 									}
 									defaultValue={t.defaultContent}
 									value={t.content}
@@ -120,7 +127,7 @@ const LineInterface = memo(
 				) : (
 					<AceEditor
 						ref={ref}
-						className="ace-editor relative w-100 h-100"
+						className="ace-editor relative"
 						mode="alivescript"
 						theme="cobalt"
 						defaultValue={initialContent}

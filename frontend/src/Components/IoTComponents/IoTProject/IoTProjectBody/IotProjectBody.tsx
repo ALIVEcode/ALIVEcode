@@ -95,7 +95,7 @@ const IoTProjectBody = ({ noTopRow }: { noTopRow?: boolean }) => {
 
 	if (!socket || !project) return <LoadingScreen />;
 	return (
-		<div tw="flex-1">
+		<div tw="flex-1" style={{ backgroundColor: 'var(--background-color)' }}>
 			<div tw="flex flex-col h-full items-center">
 				<div tw="p-5">
 					{canEdit && (

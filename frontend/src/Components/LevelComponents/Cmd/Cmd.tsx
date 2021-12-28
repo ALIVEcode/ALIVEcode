@@ -9,6 +9,7 @@ const StyledDiv = styled.div`
 	color: var(--foreground-color);
 	padding: 15px;
 	width: 100%;
+	height: 100%;
 	overflow-y: auto;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: large;

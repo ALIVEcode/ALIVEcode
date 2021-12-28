@@ -56,9 +56,13 @@ const StyledSpinner = styled.div`
 const LoadingScreen = ({
 	relative,
 	size,
+	id,
+	bg,
 }: {
 	relative?: boolean;
 	size?: SizeProp;
+	id?: string;
+	bg?: string;
 }) => {
 	const [loading, setLoading] = useState(false);
 
@@ -77,7 +81,12 @@ const LoadingScreen = ({
 			relative={relative}
 			centered
 			startAtTop
-			style={{ textAlign: 'center', minHeight: loading ? '100px' : undefined }}
+			style={{
+				textAlign: 'center',
+				minHeight: loading ? '100px' : undefined,
+				backgroundColor: bg,
+			}}
+			id={id}
 		>
 			<div>
 				<StyledSpinner>

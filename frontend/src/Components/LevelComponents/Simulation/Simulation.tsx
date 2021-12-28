@@ -2,10 +2,10 @@ import FillContainer from "../../UtilsComponents/FillContainer/FillContainer";
 import { sketch } from './Sketch/simulation/sketch';
 import { SimulationProps, StyledSimulation } from './simulationTypes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquare } from '@fortawesome/free-solid-svg-icons';
+import { faExpand } from '@fortawesome/free-solid-svg-icons';
 import $ from 'jquery';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect, useContext } from 'react';
 import Modal from '../../UtilsComponents/Modal/Modal';
 import { useTranslation } from 'react-i18next';
 import { Image } from 'react-bootstrap';
@@ -13,6 +13,7 @@ import FormModal from '../../UtilsComponents/FormModal/FormModal';
 import ConnectCarForm from '../ConnectCarForm/ConnectCarForm';
 import { ReactP5Wrapper } from 'react-p5-wrapper';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
+import { ThemeContext } from '../../../state/contexts/ThemeContext';
 
 /**
  * Simulation component that draws the car and make it functionnal
@@ -37,6 +38,7 @@ const Simulation = ({
 	const [deathGif, setDeathGif] = useState<string>();
 	const sketchRef = useRef<any>(null);
 	const { t } = useTranslation();
+	const { theme } = useContext(ThemeContext);
 	const forceUpdate = useForceUpdate();
 
 	useEffect(() => {
@@ -74,16 +76,18 @@ const Simulation = ({
 
 	return (
 		<StyledSimulation>
-			<FillContainer id={id} relative style={{ backgroundColor: 'white' }}>
+			<div tw="h-full w-full" id={id}>
 				<FontAwesomeIcon
+					tw="absolute top-2 right-2"
 					className="zoom-button"
-					icon={faSquare}
+					icon={faExpand}
+					size="2x"
 					color="black"
 				/>
 				{$(`#${id}`).length ? (
 					<>
-						{loading && <LoadingScreen relative />}
 						<ReactP5Wrapper
+							tw="w-full h-full bg-white"
 							fullscreenDiv="fullscreen-div"
 							canvasDiv={$(`#${id}`)}
 							zoomButton={''}
@@ -98,11 +102,15 @@ const Simulation = ({
 								init(s);
 							}}
 						/>
+						{loading && <LoadingScreen bg={theme.color.background} relative />}
+
+						{/* Div for removing the default p5 loading message*/}
+						<div id="p5_loading"></div>
 					</>
 				) : (
 					<LoadingScreen relative />
 				)}
-			</FillContainer>
+			</div>
 			<FillContainer className="fullscreen-div" startAtTop />
 			<Modal
 				title={t('simulation.modal.lose')}

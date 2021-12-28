@@ -172,10 +172,9 @@ export const sketch = s => {
 
 		// Fonction pour zoomer/dezoomer
 		const zoom = () => {
-			if (s.fullscreenDiv.css('display') === 'none') {
+			if (s.fullscreenDiv.css('display') !== 'block') {
 				previousParent = canvasDiv.parent();
 				s.fullscreenDiv.css('display', 'block');
-				canvasDiv.css('height', '100%');
 				canvasDiv.appendTo(s.fullscreenDiv);
 
 				if (s.isMobile) {
@@ -185,11 +184,8 @@ export const sketch = s => {
 					}
 					s.fullscreen = true;
 				}
-
-				s.zoomButton.attr('src', '/static/images/fullscreen-off.png');
 			} else if (!s.editorButton?.hovering) {
 				s.fullscreenDiv.css('display', 'none');
-				canvasDiv.css('height', '60vh');
 				canvasDiv.appendTo(previousParent);
 
 				if (s.isMobile) {
@@ -199,15 +195,16 @@ export const sketch = s => {
 					}
 				}
 
-				s.zoomButton.attr('src', '/static/images/fullscreen-on.png');
 				if (s.editMode) {
 					s.exitEditMode();
 				}
-				setTimeout(s.resize, 1000);
 			}
 		};
 
-		if (s.zoomButton) s.zoomButton.click(zoom);
+		if (s.zoomButton) {
+			s.zoomButton.unbind('click');
+			s.zoomButton.click(zoom);
+		}
 
 		s.maxFPS = 30;
 		s.frameRate(60);

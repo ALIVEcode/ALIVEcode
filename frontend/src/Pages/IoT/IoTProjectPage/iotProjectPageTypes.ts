@@ -1,21 +1,35 @@
 import styled from 'styled-components';
-import FillContainer from '../../../Components/UtilsComponents/FillContainer/FillContainer';
 
 export type IoTProjectTabs = 'settings' | 'routes' | 'access';
 
-export const StyledIoTProject = styled(FillContainer)`
-	overflow-y: hidden;
+export const StyledIoTProject = styled.div`
+	display: table;
+	height: 100%;
+	width: 100%;
+	box-sizing: border-box;
 
 	#project-details {
-		height: 100%;
+		padding: 0;
 		background-color: var(--background-color);
 		border-right: var(--bg-shade-four-color) 1px solid;
 		position: relative;
+		vertical-align: bottom;
 	}
 
 	#project-body {
-		height: 100%;
+		position: relative;
+		padding: 0;
 		background-color: var(--background-color);
+	}
+
+	.main-row {
+		height: 100%;
+		display: table-row;
+	}
+
+	.row .no-float {
+		display: table-cell;
+		float: none;
 	}
 
 	.project-top-row {
@@ -32,7 +46,7 @@ export const StyledIoTProject = styled(FillContainer)`
 	}
 
 	.project-details-body {
-		height: 100%;
+		height: calc(100% - 50px);
 	}
 
 	.project-details-tabs {

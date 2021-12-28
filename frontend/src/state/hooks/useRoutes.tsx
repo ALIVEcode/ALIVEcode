@@ -16,7 +16,6 @@ import { UserContext } from '../contexts/UserContext';
 import AccountPage from '../../Pages/Account/AccountInfo/AccountPage';
 import CourseForm from '../../Components/CourseComponents/CourseForm/CourseForm';
 import ClassroomForm from '../../Components/ClassroomComponents/ClassroomForm/ClassroomForm';
-import Dashboard from '../../Pages/Dashboard/Dashboard';
 import IoTHome from '../../Pages/IoT/IoTHome/IoTHome';
 import IoTProject from '../../Pages/IoT/IoTProject/IoTProject';
 import IoTProjectCreate from '../../Components/IoTComponents/IoTProject/IotProjectForm/IoTProjectCreate';
@@ -44,6 +43,7 @@ import ForumPost from '../../Pages/Forum/ForumPost/ForumPost';
 import ForumSearch from '../../Pages/Forum/ForumSearch/ForumSearch';
 import Chat from '../../Pages/Chat/Chat';
 import { LEVEL_TYPE } from '../../Models/Level/level.entity';
+import Dashboard from '../../Pages/Dashboard/Dashboard';
 
 export interface Route {
 	path: string;

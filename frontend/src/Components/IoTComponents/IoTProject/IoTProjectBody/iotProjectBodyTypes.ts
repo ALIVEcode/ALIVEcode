@@ -14,5 +14,4 @@ export const StyledIoTProjectBody = styled.div`
 	height: ${({ noTopRow }: { noTopRow?: boolean }) =>
 		noTopRow ? `100%` : `calc(100% - 65px)`};
 	padding: 20px;
-	margin-bottom: 20px;
 `;

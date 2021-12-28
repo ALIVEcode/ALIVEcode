@@ -23,11 +23,12 @@ import { Auth } from '../../utils/decorators/auth.decorator';
 import { User } from '../../utils/decorators/user.decorator';
 import { ActivityEntity } from './entities/activity.entity';
 import { CreateCourseDTO } from './dtos/CreateCourseDTO';
+import { UserService } from '../user/user.service';
 
 @Controller('courses')
 @UseInterceptors(DTOInterceptor)
 export class CourseController {
-  constructor(private readonly courseService: CourseService) {}
+  constructor(private readonly courseService: CourseService, private readonly userService: UserService) {}
 
   @Post()
   @Auth(Role.PROFESSOR)
@@ -99,6 +100,7 @@ export class CourseController {
     const course = await this.courseService.findOne(id);
     await this.courseService.filterCourseAccess(course, user);
 
+    await this.userService.accessCourse(user, course);
     return await this.courseService.getSections(id);
   }
 

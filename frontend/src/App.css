@@ -1,6 +1,19 @@
+body, html, #root, .App {
+  height: 100%;
+  font-weight: 500;
+}
+
 .App {
   text-align: left;
-  font-weight: 500;
+}
+
+.no-cursor {
+  cursor: default !important;
+}
+
+.row .no-float {
+  display: table-cell;
+  float: none;
 }
 
 .rdtPicker {

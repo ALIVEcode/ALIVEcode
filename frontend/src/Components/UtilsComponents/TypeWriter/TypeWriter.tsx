@@ -19,7 +19,7 @@ const TypeWriter = ({ lines, typeSpeed, noErase, eraseSpeed, delayAfterWrite, de
   const [reverse, setReverse] = useState(false);
   const [blinking, setBlinking] = useState(true);
 
-  const shadowStyle = shadow ? {textShadow: '3px 3px 0px rgba(0, 0, 0, 0.3)'} : {};
+  const shadowStyle = shadow ? {textShadow: 'var(--drop-shadow)'} : {};
 
   useEffect(() => {
     const currentLine = lines[lineIndex];

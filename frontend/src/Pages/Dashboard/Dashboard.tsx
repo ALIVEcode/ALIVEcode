@@ -44,7 +44,7 @@ const Dashboard = (props: DashboardProps) => {
 				id: user.id,
 			});
 			setLoading(false);
-			setClassrooms(data.map((d: any) => plainToClass(Classroom, d)));
+			setClassrooms(data);
 		};
 		getClassrooms();
 	}, [user]);

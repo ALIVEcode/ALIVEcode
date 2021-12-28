@@ -24,3 +24,7 @@ export const formatDate = (date: Date, t: TFunction) => {
 		year,
 	});
 };
+
+export const formatTooLong = (text: string, maxLength: number = 20) => {
+	return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+};

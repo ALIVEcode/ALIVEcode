@@ -151,8 +151,8 @@
 			"alive": "ALIVE Play",
 			"dashboard": "Dashboard",
 			"iot": "Internet of Things",
-			"amc": "ALIVE Mind Controller",
-			"ai": "ALIVE Artificial Intelligence",
+			"amc": "Mind Control",
+			"ai": "Artificial Intelligence",
 			"about": "About",
 			"avp": "Augmented Vehicle Perception",
 			"lrima": "LRIMA's research laboratory",
@@ -243,9 +243,9 @@
 		}
 	},
 	"home": {
-		"msg1": "Learn programming",
-		"msg2": "Learn while playing",
-		"msg3": "Learn the concepts of AI",
+		"msg1": "code",
+		"msg2": "ai",
+		"msg3": "iot",
 		"section": {
 			"alive": {
 				"title": "$t(msg.section.alive)",

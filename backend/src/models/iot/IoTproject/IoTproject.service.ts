@@ -11,8 +11,7 @@ import { IoTProjectAddScriptDTO } from './dto/addScript.dto';
 import { AsScriptEntity } from '../../as-script/entities/as-script.entity';
 import { AsScriptService } from '../../as-script/as-script.service';
 import { LevelService } from '../../level/level.service';
-import { IoTLayoutManager } from './IoTLayoutManager';
-import { LevelIoTProgressionData, LevelProgressionEntity } from '../../level/entities/levelProgression.entity';
+import { LevelProgressionEntity } from '../../level/entities/levelProgression.entity';
 
 @Injectable()
 export class IoTProjectService {

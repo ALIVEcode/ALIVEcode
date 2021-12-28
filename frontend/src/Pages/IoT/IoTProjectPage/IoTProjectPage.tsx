@@ -39,8 +39,16 @@ const IoTProjectPage = () => {
 
 	return (
 		<StyledIoTProject>
-			<Row className="h-100">
-				<Col sm="4" id="project-details">
+			<Row className="main-row" xs={1} sm={2}>
+				<Col
+					xl={{ span: 3, order: 1 }}
+					lg={{ span: 4, order: 1 }}
+					md={{ span: 5, order: 1 }}
+					sm={{ span: 6, order: 1 }}
+					xs={{ span: 12, order: 2 }}
+					id="project-details"
+					className="no-float"
+				>
 					<Row className="project-name">{project.name}</Row>
 					<Row className="project-details-body">
 						<Col className="project-details-tabs">
@@ -87,7 +95,15 @@ const IoTProjectPage = () => {
 						<Col className="project-details-content">{getTabContent()}</Col>
 					</Row>
 				</Col>
-				<Col sm="8" id="project-body">
+				<Col
+					xl={{ span: 9, order: 1 }}
+					lg={{ span: 8, order: 1 }}
+					md={{ span: 7, order: 1 }}
+					sm={{ span: 6, order: 1 }}
+					xs={{ span: 12, order: 1 }}
+					id="project-body"
+					className="no-float"
+				>
 					<Row className="project-top-row"></Row>
 					<IoTProjectBody />
 				</Col>

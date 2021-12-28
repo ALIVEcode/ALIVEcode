@@ -96,7 +96,7 @@ const IoTProjectBody = ({ noTopRow }: { noTopRow?: boolean }) => {
 	}, [socket, onLayoutChange]);
 
 	const getComponentsMatrix = (): Array<Array<IoTComponent>> => {
-		const nbColumns = 2;
+		const nbColumns = 3;
 		const componentsMatrix = [];
 		for (let i = 0; i < Math.ceil(components.length / nbColumns); i++) {
 			const row = components.slice(i * nbColumns, i * nbColumns + nbColumns);

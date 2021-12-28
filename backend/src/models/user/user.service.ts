@@ -16,7 +16,7 @@ import { IoTObjectEntity } from '../iot/IoTobject/entities/IoTobject.entity';
 import { LevelEntity } from '../level/entities/level.entity';
 import { CourseEntity } from '../course/entities/course.entity';
 import { MyRequest } from '../../utils/guards/auth.guard';
-import { Result } from '../social/results/entities/result.entity';
+import { CourseHistoryEntity } from '../course/entities/course_history.entity';
 
 @Injectable({ scope: Scope.REQUEST })
 export class UserService {
@@ -28,6 +28,7 @@ export class UserService {
     @InjectRepository(StudentEntity) private studentRepository: Repository<StudentEntity>,
     @InjectRepository(ClassroomEntity) private classroomRepository: Repository<ClassroomEntity>,
     @InjectRepository(CourseEntity) private courseRepository: Repository<CourseEntity>,
+    @InjectRepository(CourseHistoryEntity) private courseHistoryRepo: Repository<CourseHistoryEntity>,
     @InjectRepository(IoTProjectEntity) private iotProjectRepository: Repository<IoTProjectEntity>,
     @InjectRepository(IoTObjectEntity) private iotObjectRepository: Repository<IoTObjectEntity>,
     @InjectRepository(LevelEntity) private levelRepository: Repository<LevelEntity>,
@@ -153,6 +154,38 @@ export class UserService {
     return [];
   }
 
+  async getRecentCourses(user: UserEntity) {
+    const courses = await this.courseHistoryRepo
+      .createQueryBuilder('course_history')
+      .leftJoinAndSelect('course_history.course', 'course')
+      .leftJoinAndSelect('course_history.user', 'user')
+      .where('user.id = :userId', { userId: user.id })
+      .orderBy('course_history.lastInteraction', 'DESC')
+      .getMany();
+
+    return courses.map(c => c.course);
+  }
+
+  async accessCourse(user: UserEntity, course: CourseEntity) {
+    let courseHistory = await this.courseHistoryRepo
+      .createQueryBuilder('course_history')
+      .leftJoinAndSelect('course_history.course', 'course')
+      .leftJoinAndSelect('course_history.user', 'user')
+      .where('course.id = :courseId', { courseId: course.id })
+      .andWhere('user.id = :userId', { userId: user.id })
+      .getOne();
+    if (!courseHistory) {
+      courseHistory = await this.courseHistoryRepo.save({
+        user,
+        course,
+        lastInteraction: new Date(),
+      });
+    } else {
+      courseHistory.lastInteraction = new Date();
+      await this.courseHistoryRepo.save(courseHistory);
+    }
+  }
+
   async getIoTProjects(user: UserEntity) {
     return await this.iotProjectRepository.find({ where: { creator: user } });
   }
@@ -161,7 +194,7 @@ export class UserService {
     return await this.iotObjectRepository.find({ where: { creator: user } });
   }
   async getResults(user: UserEntity) {
-    return await this.userRepository.find({ where: {id: user } });
+    return await this.userRepository.find({ where: { id: user } });
   }
   async getLevels(user: UserEntity, query: string) {
     return await this.levelRepository.find({

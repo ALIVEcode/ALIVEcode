@@ -70,17 +70,19 @@ const apiGet = <T, S extends string, U extends boolean>(
 		args: { [key in urlArgType<S>]: string },
 		query?: { [name: string]: string },
 	) => {
+		const formattedUrl = formatUrl(url, args, query);
+		if (process.env.REACT_APP_DEBUG_AXIOS === 'true') {
+			console.log('GET : ' + formattedUrl);
+		}
 		if (overrideCast !== undefined) {
-			const data = await (await axios.get(formatUrl(url, args, query))).data;
+			const data = await (await axios.get(formattedUrl)).data;
 			return (
 				Array.isArray(data)
 					? data.map(d => overrideCast(d))
 					: overrideCast(data)
 			) as U extends true ? T[] : T;
 		}
-		return (await loadObj(formatUrl(url, args), target)) as U extends true
-			? T[]
-			: T;
+		return (await loadObj(formattedUrl, target)) as U extends true ? T[] : T;
 	};
 };
 
@@ -89,13 +91,21 @@ const apiDelete = <S extends string>(url: S) => {
 		args: { [key in urlArgType<S>]: string },
 		query?: { [name: string]: string },
 	) => {
-		return await axios.delete(formatUrl(url, args, query));
+		const formattedUrl = formatUrl(url, args, query);
+		if (process.env.REACT_APP_DEBUG_AXIOS === 'true') {
+			console.log('DELETE : ' + formattedUrl);
+		}
+		return await axios.delete(formattedUrl);
 	};
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const apiCreate = <T>(moduleName: string, target: ClassConstructor<T>) => {
 	return async (fields: any): Promise<T> => {
+		if (process.env.REACT_APP_DEBUG_AXIOS === 'true') {
+			console.log('POST : ' + moduleName);
+			console.log(moduleName);
+		}
 		const data = (await axios.post(moduleName, fields)).data;
 		return plainToClass(target, data);
 	};
@@ -111,7 +121,12 @@ const apiUpdate = <T, S extends string>(
 		fields: object,
 		query?: { [name: string]: string },
 	): Promise<T> => {
-		const data = (await axios.patch(formatUrl(url, args, query), fields)).data;
+		const formattedUrl = formatUrl(url, args, query);
+		if (process.env.REACT_APP_DEBUG_AXIOS === 'true') {
+			console.log('PATCH : ' + formattedUrl);
+			console.log(fields);
+		}
+		const data = (await axios.patch(formattedUrl, fields)).data;
 		if (overrideCast !== undefined) return overrideCast(data);
 		return plainToClass(target, data);
 	};
@@ -143,6 +158,7 @@ const api = {
 			//get: apiGetter('users', User),
 			getClassrooms: apiGet('users/:id/classrooms', Classroom, true),
 			getCourses: apiGet('users/:id/courses', Course, true),
+			getRecentCourses: apiGet('users/:id/courses/recents', Course, true),
 			getLevels: apiGet('users/:id/levels', Level, true, level => {
 				if (level.type === LEVEL_TYPE.ALIVE)
 					return plainToClass(LevelAlive, level);

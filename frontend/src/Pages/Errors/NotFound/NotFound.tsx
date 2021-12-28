@@ -17,11 +17,15 @@ export const NotFound = () => {
 	const { t } = useTranslation();
 
 	return (
-		<FillContainer style={{ textAlign: 'center' }} startAtTop centered>
+		<FillContainer style={{ textAlign: 'center' }} centered>
 			<div>
 				<h1>{t('error.sorry')}</h1>
 				<h2>{t('error.page404')}</h2>
-				<img src={VoitureGIF} alt="Voiture ALIVE" />
+				<img
+					style={{ width: '20%', height: '20%' }}
+					src={VoitureGIF}
+					alt="Voiture ALIVE"
+				/>
 				<div>
 					<Link onClick={() => navigate(-1)} dark bold>
 						{t('error.back')}

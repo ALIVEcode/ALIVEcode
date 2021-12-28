@@ -50,8 +50,6 @@ const ActivityEditor = ({
 	const renderLeaf = useCallback(props => <Leaf {...props} />, []);
 	const { t } = useTranslation();
 
-	console.log(defaultValue);
-
 	return (
 		<StyledActivityEditor isEditable={isEditable ?? (() => false)}>
 			<div className="editor-body">

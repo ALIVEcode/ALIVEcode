@@ -71,7 +71,7 @@ const apiGet = <T, S extends string, U extends boolean>(
 		query?: { [name: string]: string },
 	) => {
 		const formattedUrl = formatUrl(url, args, query);
-		if (process.env.REACT_APP_DEBUG_AXIOS === 'true') {
+		if (process.env.DEBUG_AXIOS === 'true') {
 			console.log('GET : ' + formattedUrl);
 		}
 		if (overrideCast !== undefined) {
@@ -92,7 +92,7 @@ const apiDelete = <S extends string>(url: S) => {
 		query?: { [name: string]: string },
 	) => {
 		const formattedUrl = formatUrl(url, args, query);
-		if (process.env.REACT_APP_DEBUG_AXIOS === 'true') {
+		if (process.env.DEBUG_AXIOS === 'true') {
 			console.log('DELETE : ' + formattedUrl);
 		}
 		return await axios.delete(formattedUrl);
@@ -102,7 +102,7 @@ const apiDelete = <S extends string>(url: S) => {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const apiCreate = <T>(moduleName: string, target: ClassConstructor<T>) => {
 	return async (fields: any): Promise<T> => {
-		if (process.env.REACT_APP_DEBUG_AXIOS === 'true') {
+		if (process.env.DEBUG_AXIOS === 'true') {
 			console.log('POST : ' + moduleName);
 			console.log(moduleName);
 		}
@@ -122,7 +122,7 @@ const apiUpdate = <T, S extends string>(
 		query?: { [name: string]: string },
 	): Promise<T> => {
 		const formattedUrl = formatUrl(url, args, query);
-		if (process.env.REACT_APP_DEBUG_AXIOS === 'true') {
+		if (process.env.DEBUG_AXIOS === 'true') {
 			console.log('PATCH : ' + formattedUrl);
 			console.log(fields);
 		}

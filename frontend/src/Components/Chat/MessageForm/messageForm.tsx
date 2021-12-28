@@ -98,7 +98,6 @@ const MessageForm = ({ activeTopic }: MessageFormProp) => {
 						}}
 					>
 						{messages.map((message: any, idx) => {
-							console.log(message);
 							return (
 								activeTopic === message.data.active_topic && (
 									<Messages

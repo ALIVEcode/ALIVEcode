@@ -61,7 +61,6 @@ const CourseNavigation = (props: CourseNavigationProps) => {
 											if (!(editMode && titleRef.current)) return;
 											setTitle(titleRef.current.value);
 											setCourseTitle(titleRef.current.value);
-											console.log(titleRef.current.value);
 											setEditTitle(false);
 										}}
 										defaultValue={courseTitle}

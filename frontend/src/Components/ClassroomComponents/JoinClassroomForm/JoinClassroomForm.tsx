@@ -66,7 +66,6 @@ const JoinClassroomForm = () => {
 					</Form.Control.Feedback>
 				</InputGroup>
 			</Form.Group>
-			{console.log(errors)}
 			<Button type="submit" variant="primary">
 				{t('form.join_classroom.submit')}
 			</Button>

@@ -920,7 +920,6 @@ export const sketch = s => {
 
 	s.keyPressed = () => {
 		// Controller du véhicule
-		console.log(s.carController);
 		if (
 			s.carController &&
 			s.selectedCar != null &&

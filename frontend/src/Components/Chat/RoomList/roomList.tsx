@@ -14,13 +14,11 @@ const RoomList = ({ setActiveTopic }: RoomListProp) => {
 	useEffect(() => {
 		async function getTopics() {
 			const resultTopics = await api.db.topics.all({});
-			console.log(resultTopics);
 			setTopics(resultTopics);
 			setActiveTopic(resultTopics[0].name);
 		}
 		getTopics();
 	}, [user, setActiveTopic]);
-	console.log();
 	return (
 		<div className="text-left col-sm-3">
 			<Card style={{ height: '100%' }}>

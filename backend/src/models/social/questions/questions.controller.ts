@@ -10,7 +10,6 @@ export class QuestionsController {
 
   @Post()
   create(@Body() createQuestionDto: Question) {
-    console.log(createQuestionDto);
     return this.questionsService.create(createQuestionDto);
   }
 
@@ -31,7 +30,6 @@ export class QuestionsController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    console.log(id);
     return this.questionsService.remove(+id);
   }
 }

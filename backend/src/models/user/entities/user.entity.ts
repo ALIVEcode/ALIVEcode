@@ -13,7 +13,12 @@ import { LevelEntity } from '../../level/entities/level.entity';
 import { IoTObjectEntity } from '../../iot/IoTobject/entities/IoTobject.entity';
 import { IoTProjectEntity } from '../../iot/IoTproject/entities/IoTproject.entity';
 import { LevelProgressionEntity } from '../../level/entities/levelProgression.entity';
-import { AsScriptEntity } from '../../as-script/entities/as-script.entity';
+import { Post as Post_Table } from 'src/models/social/post/entities/post.entity';
+import { Quiz } from 'src/models/social/quizzes/entities/quiz.entity';
+import { Result } from 'src/models/social/results/entities/result.entity';
+import { AsScriptEntity } from 'src/models/as-script/entities/as-script.entity';
+import { CommentairesForum as Comment_Table } from 'src/models/social/commentaires-forum/entities/commentaires-forum.entity';
+import Messages from 'src/models/social/messages/entities/messages.entity';
 
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
@@ -73,4 +78,22 @@ export class UserEntity extends BaseEntity {
 
   @OneToMany(() => LevelProgressionEntity, prog => prog.user)
   levelProgressions: LevelProgressionEntity[];
+
+  @OneToMany(() => Post_Table, post => post.creator)
+  post: Post_Table[];
+
+  @OneToMany(() => Comment_Table, comment => comment.creator)
+  comment: Comment_Table[];
+
+  @OneToMany(() => Quiz, quiz => quiz.user)
+  quiz: Quiz[];
+
+  @OneToMany(() => Result, result => result.user, { cascade: true })
+  result: Result[];
+
+  @OneToMany(() => Messages, message => message.creator, { cascade: true })
+  message: Messages[];
+
+  @Column({ type: 'varchar', default: '' })
+  image: string;
 } 

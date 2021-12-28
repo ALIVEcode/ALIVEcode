@@ -1,6 +1,6 @@
-import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { LinkProps, StyledLinkProps } from './linkTypes';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Link component with different variants
@@ -28,7 +28,7 @@ const Link = ({
 	pale,
 	onClick,
 }: LinkProps) => {
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	return (
 		<label
@@ -36,7 +36,7 @@ const Link = ({
 			style={style}
 			onClick={() => {
 				if (onClick) onClick();
-				else if (to) history.push(to);
+				else if (to) navigate(to);
 			}}
 		>
 			{children}

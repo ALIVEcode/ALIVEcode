@@ -97,7 +97,7 @@ export class BackendLevelExecutor {
       this.interrupt();
       return;
     }
-    if (process.env.REACT_APP_DEBUG) console.log(data);
+    if (process.env.DEBUG) console.log(data);
     if (data.status === 'ongoing') {
       this.idToken = data.idToken;
     }

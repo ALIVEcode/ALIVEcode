@@ -1,5 +1,5 @@
 import { CourseSectionProps } from './courseSectionTypes';
-import { useState, useContext } from 'react';
+import { useState, useContext, useRef } from 'react';
 import { Collapse } from 'react-bootstrap';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import Link from '../../UtilsComponents/Link/Link';
@@ -7,19 +7,34 @@ import { Activity } from '../../../Models/Course/activity.entity';
 import { plainToClass } from 'class-transformer';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import { useTranslation } from 'react-i18next';
-
+import AlertConfirm from '../../UtilsComponents/Alert/AlertConfirm/AlertConfirm';
+import { Option, TDOption } from '../../UtilsComponents/Option/TDOption';
+import { faPenFancy, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faDropbox } from '@fortawesome/free-brands-svg-icons';
 /**
  * Component that shows the section in the navigation and handles different actions like adding in an activity onto the section
  *
  * @param {Section} section
  * @author MoSk3
+ * @author Ecoral360
  */
-const CourseSection = ({ section }: CourseSectionProps) => {
+const CourseSection = ({ section, editMode }: CourseSectionProps) => {
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const { loadActivity, addActivity, course, canEdit } =
-		useContext(CourseContext);
+	const {
+		loadActivity,
+		addActivity,
+		course,
+		canEdit,
+		deleteSection,
+		deleteActivity,
+		activity,
+		closeCurrentActivity,
+	} = useContext(CourseContext);
 	const { t } = useTranslation();
+	const [confirmSectionDelete, setConfirmSectionDelete] = useState(false);
+	const [confirmActivityDelete, setConfirmActivityDelete] = useState(false);
+	const currentActivity = useRef<Activity>();
 
 	const toggleOpenSection = async () => {
 		if (!course) return;
@@ -35,11 +50,24 @@ const CourseSection = ({ section }: CourseSectionProps) => {
 		<div className="course-section">
 			<div
 				className="course-section-header"
-				onClick={toggleOpenSection}
 				aria-controls={`section-${section.name}`}
 				aria-expanded={open}
 			>
-				{section.name}
+				<div className="course-section-header-edit">
+					<span onClick={toggleOpenSection}>{section.name}</span>
+					{canEdit && editMode && (
+						<TDOption color="black" size="1x">
+							<Option name="Rename" icon={faPenFancy} onClick={() => {}} />
+							<Option name="Move" icon={faDropbox} onClick={() => {}} />
+							<Option
+								name="Delete"
+								icon={faTrash}
+								onClick={() => setConfirmSectionDelete(true)}
+								hoverColor="red"
+							/>
+						</TDOption>
+					)}
+				</div>
 			</div>
 			<Collapse in={open} timeout={500}>
 				<div id={`section-${section.name}`} className="course-section-body">
@@ -66,11 +94,38 @@ const CourseSection = ({ section }: CourseSectionProps) => {
 						<>
 							{section.activities?.map((a, idx) => (
 								<div
-									onClick={() => loadActivity(section, a)}
+									onClick={() =>
+										a.id === activity?.id
+											? closeCurrentActivity()
+											: loadActivity(section, a)
+									}
 									key={idx}
 									className="course-activity"
 								>
-									{a.name}
+									{a.id === activity?.id ? (
+										<b style={{ color: 'var(--contrast-color)' }}>{a.name}</b>
+									) : (
+										a.name
+									)}
+									{canEdit && editMode && (
+										<TDOption color="black" size="1x">
+											<Option
+												name="Rename"
+												icon={faPenFancy}
+												onClick={() => {}}
+											/>
+											<Option name="Move" icon={faDropbox} onClick={() => {}} />
+											<Option
+												name="Delete"
+												icon={faTrash}
+												onClick={() => {
+													currentActivity.current = a;
+													setConfirmActivityDelete(true);
+												}}
+												hoverColor="red"
+											/>
+										</TDOption>
+									)}
 								</div>
 							))}
 							{canEdit && (
@@ -96,6 +151,26 @@ const CourseSection = ({ section }: CourseSectionProps) => {
 					)}
 				</div>
 			</Collapse>
+			<AlertConfirm
+				open={confirmSectionDelete}
+				title={t('couse.section.delete')}
+				onClose={() => setConfirmSectionDelete(false)}
+				onConfirm={() => {
+					if (!(course && section)) return;
+					deleteSection(section);
+				}}
+				hideFooter
+			></AlertConfirm>
+			<AlertConfirm
+				open={confirmActivityDelete}
+				title={t('couse.activity.delete')}
+				onClose={() => setConfirmActivityDelete(false)}
+				onConfirm={() => {
+					if (!(course && section && currentActivity.current)) return;
+					deleteActivity(section, currentActivity.current);
+				}}
+				hideFooter
+			></AlertConfirm>
 		</div>
 	);
 };

@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import FillContainer from '../../../Components/UtilsComponents/FillContainer/FillContainer';
 import CardContainer from '../../../Components/UtilsComponents/CardContainer/CardContainer';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { useHistory } from 'react-router';
 import { IoTObject } from '../../../Models/Iot/IoTobject.entity';
 import IoTObjectCreate from '../../../Components/IoTComponents/IoTObject/IotObjectForm/IoTObjectCreate';
 import FormModal from '../../../Components/UtilsComponents/FormModal/FormModal';
@@ -15,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { UserContext } from '../../../state/contexts/UserContext';
 import IoTObjectLargeCard from '../../../Components/IoTComponents/IoTObject/IoTObjectLargeCard/IoTObjectLargeCard';
 import Card from '../../../Components/UtilsComponents/Cards/Card/Card';
+import { useNavigate } from 'react-router-dom';
 
 const StyledDiv = styled(FillContainer)`
 	padding: 2vw;
@@ -31,7 +31,7 @@ const IoTDashboard = (props: iotDashboardProps) => {
 	const [objects, setObjects] = useState<IoTObject[]>();
 	const { routes } = useRoutes();
 	const { t } = useTranslation();
-	const history = useHistory();
+	const navigate = useNavigate();
 	// TODO: ADD MODAL FORM GENERIC
 	const [openObjectCreate, setOpenObjectCreate] = useState(false);
 
@@ -55,7 +55,7 @@ const IoTDashboard = (props: iotDashboardProps) => {
 				<CardContainer
 					asRow
 					icon={faPlus}
-					onIconClick={() => history.push(routes.auth.create_iot_project.path)}
+					onIconClick={() => navigate(routes.auth.create_iot_project.path)}
 					height="200px"
 					className="iot-container"
 					title="My projects"

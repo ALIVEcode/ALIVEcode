@@ -54,12 +54,13 @@ const FormModal = ({
 			<Modal.Footer>
 				{(closeButton ?? true) && (
 					<Button variant="secondary" onClick={onClose}>
-						Close
+						{t('modal.cancel')}
 					</Button>
 				)}
-				<Button variant={buttonVariant || 'primary'} onClick={onClose}>
+				{/*<Button variant={buttonVariant || 'primary'} onClick={onClose}>
 					{t('modal.save')}
 				</Button>
+				*/}
 			</Modal.Footer>
 		</StyledModal>
 	);

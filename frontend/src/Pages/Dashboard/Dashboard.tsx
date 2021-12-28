@@ -4,7 +4,6 @@ import LabelHighlight from '../../Components/UtilsComponents/LabelHighlight/Labe
 import { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../../state/contexts/UserContext';
 import CardContainer from '../../Components/UtilsComponents/CardContainer/CardContainer';
-import { useHistory } from 'react-router-dom';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import ClassroomCard from '../../Components/DashboardComponents/ClassroomCard/ClassroomCard';
 import SmallCard from '../../Components/UtilsComponents/Cards/SmallCard/SmallCard';
@@ -22,6 +21,7 @@ import FormModal from '../../Components/UtilsComponents/FormModal/FormModal';
 import JoinClassroomForm from '../../Components/ClassroomComponents/JoinClassroomForm/JoinClassroomForm';
 import { useTranslation } from 'react-i18next';
 import LoadingScreen from '../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Dashboard page that contains all the links to the different pages of the plaform
@@ -33,7 +33,7 @@ const Dashboard = (props: DashboardProps) => {
 	const { t } = useTranslation();
 	const [loading, setLoading] = useState(true);
 	const [classrooms, setClassrooms] = useState<Classroom[]>([]);
-	const history = useHistory();
+	const navigate = useNavigate();
 	const { routes } = useRoutes();
 	const [formJoinClassOpen, setFormJoinClassOpen] = useState(false);
 
@@ -72,7 +72,7 @@ const Dashboard = (props: DashboardProps) => {
 					style={{ marginTop: '20px' }}
 					onIconClick={() =>
 						user instanceof Professor
-							? history.push(routes.auth.create_classroom.path)
+							? navigate(routes.auth.create_classroom.path)
 							: setFormJoinClassOpen(true)
 					}
 					icon={faPlus}

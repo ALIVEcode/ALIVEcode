@@ -8,6 +8,7 @@ import Cmd from '../../../Components/LevelComponents/Cmd/Cmd';
 import LevelAliveExecutor from './LevelAliveExecutor';
 import useCmd from '../../../state/hooks/useCmd';
 import { LevelAlive as LevelAliveModel } from '../../../Models/Level/levelAlive.entity';
+import GamepadAlive from '../../../Components/LevelComponents/Gamepad/GamepadAlive';
 import { useAlert } from 'react-alert';
 import LoadingScreen from '../../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
 import { LevelContext } from '../../../state/contexts/LevelContext';
@@ -127,6 +128,7 @@ const LevelAlive = ({ initialCode }: LevelAliveProps) => {
 											//setSketch(s);
 											executor.current?.loadLevelLayout(level?.layout ?? '[]');
 											executor.current?.stop();
+											s.enableCarController();
 										}}
 										onChange={(s: any) => {
 											const newLayout = executor.current?.saveLayout(s);
@@ -146,6 +148,7 @@ const LevelAlive = ({ initialCode }: LevelAliveProps) => {
 							</Row>
 							<Row style={{ height: '40vh' }}>
 								<Cmd ref={cmdRef} />
+								<GamepadAlive></GamepadAlive>
 							</Row>
 						</Col>
 					</Row>

@@ -131,7 +131,7 @@ export class LevelExecutor {
 			this.interrupt();
 			return;
 		}
-		if (process.env.REACT_APP_DEBUG) console.log(data);
+		if (process.env.DEBUG) console.log(data);
 		if (data.status === 'failed') {
 			return this.cmd?.error('Internal Error', 0);
 		}

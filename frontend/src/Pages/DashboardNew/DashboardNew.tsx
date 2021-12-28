@@ -8,7 +8,6 @@ import {
 	useCallback,
 } from 'react';
 import { UserContext } from '../../state/contexts/UserContext';
-import { useHistory } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
 import api from '../../Models/api';
 import FormModal from '../../Components/UtilsComponents/FormModal/FormModal';
@@ -32,6 +31,7 @@ import {
 	DashboardContextValues,
 } from '../../state/contexts/DashboardContext';
 import { Course } from '../../Models/Course/course.entity';
+import { useNavigate } from 'react-router-dom';
 
 const SwitchTabReducer = (
 	state: { index: number; classroom?: ClassroomModel },
@@ -66,7 +66,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 	const [formJoinClassOpen, setFormJoinClassOpen] = useState(false);
 	const [hoveringClassroom, setHoveringClassroom] = useState(false);
 	useState<ClassroomModel | null>(null);
-	const history = useHistory();
+	const navigate = useNavigate();
 	const query = useQuery();
 	const { pathname } = useLocation();
 	const [tabSelected, setTabSelected] = useReducer(SwitchTabReducer, {
@@ -85,7 +85,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 			if (!classroom) return;
 			setTabSelected({ type: 'classrooms', classroom });
 		}
-	}, [classrooms, history, pathname, query, tabSelected.index]);
+	}, [classrooms, navigate, pathname, query, tabSelected.index]);
 
 	useEffect(() => {
 		if (!user) return;
@@ -100,7 +100,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 
 	const openRecents = () => {
 		query.delete('id');
-		history.push({
+		navigate({
 			pathname: `/dashboard/recents`,
 			search: query.toString(),
 		});
@@ -108,7 +108,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 
 	const openSummary = () => {
 		query.delete('id');
-		history.push({
+		navigate({
 			pathname: `/dashboard/summary`,
 			search: query.toString(),
 		});
@@ -116,7 +116,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 
 	const openClassroom = (classroom: ClassroomModel) => {
 		query.set('id', classroom.id);
-		history.push({
+		navigate({
 			pathname: `/dashboard/classroom`,
 			search: query.toString(),
 		});

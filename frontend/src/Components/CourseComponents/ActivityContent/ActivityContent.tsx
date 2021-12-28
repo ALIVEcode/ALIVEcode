@@ -5,7 +5,6 @@ import {
 import { useContext, useState, useEffect } from 'react';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import { ThemeContext } from '../../../state/contexts/ThemeContext';
-import ReactMarkdown from 'react-markdown';
 import CenteredContainer from '../../UtilsComponents/CenteredContainer/CenteredContainer';
 import Level from '../../../Pages/Level/Level';
 import IconButton from '../../DashboardComponents/IconButton/IconButton';
@@ -19,6 +18,9 @@ import { Form } from 'react-bootstrap';
 import Button from '../../UtilsComponents/Button/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useTranslation } from 'react-i18next';
+import Modal from '../../UtilsComponents/Modal/Modal';
+import NewActivityContentModal from './NewActivityContentModal';
+import ReactMarkdown from 'react-markdown';
 
 /**
  * Displays the content of the activity in the CourseContext
@@ -40,6 +42,8 @@ const ActivityContent = (props: ActivityContentProps) => {
 	const [name, setName] = useState<string>('');
 	const [editingName, setEditingName] = useState(false);
 	const [defaultMDValue, setDefaultMDValue] = useState<string>();
+	const [contentLayout, setContentLayout] = useState<any[]>([]);
+	const [newContentModalOpen, setNewContentModalOpen] = useState(false);
 
 	useEffect(() => {
 		activity && setName(activity.name);
@@ -51,11 +55,97 @@ const ActivityContent = (props: ActivityContentProps) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [activity?.content?.data]);
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const addContent = (content: any) => {
+		setContentLayout(layout =>
+			contentLayout.concat(
+				<MDEditor onSave={saveActivityContent} defaultValue={defaultMDValue} />,
+			),
+		);
+	};
+
 	/*const projectId = useMemo(() => {
 		return Math.random() > 0.5
 			? '73f799b7-1019-4f8e-8205-872cf1fac1ff'
 			: '7ae63621-b0f9-4996-a742-6f9bdce715b4';
 	}, [activity?.id]);*/
+	/*
+	<>
+							<div
+								className="activity-header"
+								style={{ cursor: editMode ? 'pointer' : 'initial' }}
+							>
+								{!editingName ? (
+									<div
+										className="activity-header-title"
+										onClick={() => editMode && setEditingName(true)}
+									>
+										{activity.name}
+									</div>
+								) : (
+									<Form.Control
+										className="activity-header-title"
+										value={name}
+										autoFocus
+										onChange={e => setName(e.target.value)}
+										onBlur={() => {
+											activity.name = name;
+											saveActivity(activity);
+											setEditingName(false);
+										}}
+										onKeyDown={(e: any) => {
+											if (e.keyCode === 13) {
+												activity.name = name;
+												saveActivity(activity);
+												setEditingName(false);
+											}
+										}}
+									/>
+								)}
+								{canEdit && (
+									<IconButton
+										icon={editMode ? faCheckCircle : faPencilAlt}
+										onClick={() => setEditMode(!editMode)}
+										size="2x"
+									/>
+								)}
+							</div>
+							<div>
+								{/*<IoTProject
+									key={`iotproject-${projectId}`}
+									id={projectId}
+								></IoTProject>}
+								<ActivityEditor
+									isEditable={() => canEdit && editMode}
+									onSave={content => {
+										if (!activity.content) {
+											activity.content = { data: '{}' };
+										}
+										activity.content.data = JSON.stringify(content);
+										saveActivity(plainToClass(Activity, activity));
+									}}
+									defaultValue={
+										activity.content?.data && JSON.parse(activity.content.data)
+									}
+								/>
+
+								{activity.levels && activity.levels.length > 0 && (
+									<>
+										{activity.levels &&
+											activity.levels.map((a, idx) => (
+												<div key={idx} style={{ position: 'relative' }}>
+													<Level
+														key={`level-${a.level.id}`}
+														level={a.level}
+														editMode={false}
+													/>
+												</div>
+											))}
+									</>
+								)}
+							</div>
+						</>
+						*/
 
 	return (
 		<StyledActivityContent navigationOpen={isNavigationOpen} theme={theme}>
@@ -117,9 +207,9 @@ const ActivityContent = (props: ActivityContentProps) => {
 							</div>
 							<div>
 								{/*<IoTProject
-									key={`iotproject-${projectId}`}
-									id={projectId}
-								></IoTProject>*/}
+								key={`iotproject-${projectId}`}
+								id={projectId}
+							></IoTProject>*/}
 								{canEdit && editMode ? (
 									<MDEditor
 										onSave={saveActivityContent}
@@ -157,6 +247,19 @@ const ActivityContent = (props: ActivityContentProps) => {
 						</CenteredContainer>
 					)}
 				</div>
+				{editMode && canEdit && (
+					<Modal
+						centered
+						title={'course.activity.new_content'}
+						open={newContentModalOpen}
+						onClose={() => setNewContentModalOpen(false)}
+						animation
+						hideCloseButton
+						hideFooter
+					>
+						<NewActivityContentModal />
+					</Modal>
+				)}
 			</div>
 		</StyledActivityContent>
 	);

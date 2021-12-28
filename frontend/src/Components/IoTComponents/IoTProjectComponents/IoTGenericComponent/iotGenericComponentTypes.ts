@@ -5,6 +5,7 @@ import { Col } from 'react-bootstrap';
 export type IoTGenericComponentProps = {
 	component: IoTComponent;
 	selectable?: boolean;
+	colSize?: number;
 	onSelect?: () => void;
 	setEditingComponent?: (component: IoTComponent) => void;
 };

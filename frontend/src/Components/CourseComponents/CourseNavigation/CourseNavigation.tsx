@@ -3,7 +3,7 @@ import {
 	CourseNavigationProps,
 	StyledCourseNavigation,
 } from './courseNavigationTypes';
-import { useContext, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import CourseSection from '../CourseSection/CourseSection';
 import useRoutes from '../../../state/hooks/useRoutes';
@@ -15,6 +15,8 @@ import { Section } from '../../../Models/Course/section.entity';
 import { plainToClass } from 'class-transformer';
 import { useTranslation } from 'react-i18next';
 import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
+import IconButton from '../../DashboardComponents/IconButton/IconButton';
+import { faCheckCircle, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Navigation menu of a course containing all the sections and activities
@@ -22,13 +24,18 @@ import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
  * @author MoSk3
  */
 const CourseNavigation = (props: CourseNavigationProps) => {
-	const { course, addSection, canEdit, isNavigationOpen } =
+	const { course, addSection, canEdit, isNavigationOpen, setTitle } =
 		useContext(CourseContext);
 	const { theme } = useContext(ThemeContext);
 	const { routes, goTo } = useRoutes();
 	const { t } = useTranslation();
+	const titleRef = useRef<HTMLInputElement>(null);
+
+	const [courseTitle, setCourseTitle] = useState(course?.name);
 
 	const [openModalSection, setOpenModalSection] = useState(false);
+	const [editMode, setEditMode] = useState(false);
+	const [editTitle, setEditTitle] = useState(false);
 
 	if (!course) {
 		goTo(routes.auth.dashboard.path);
@@ -36,16 +43,54 @@ const CourseNavigation = (props: CourseNavigationProps) => {
 	}
 
 	return (
-		<StyledCourseNavigation isNavigationOpen={isNavigationOpen} theme={theme}>
+		<StyledCourseNavigation
+			options={{ isNavigationOpen, editMode }}
+			theme={theme}
+		>
 			<CenteredContainer horizontally>
 				<div className="course-nav-header">
-					<div className="course-nav-title">{course?.name}</div>
+					{canEdit ? (
+						<div className="course-nav-title">
+							<div className="course-edit-button">
+								{editMode && editTitle ? (
+									<input
+										ref={titleRef}
+										type="text"
+										autoFocus
+										onBlur={event => {
+											if (!(editMode && titleRef.current)) return;
+											setTitle(titleRef.current.value);
+											setCourseTitle(titleRef.current.value);
+											console.log(titleRef.current.value);
+											setEditTitle(false);
+										}}
+										defaultValue={courseTitle}
+									/>
+								) : (
+									<span
+										style={{ cursor: editMode ? 'pointer' : 'auto' }}
+										onClick={() => editMode && setEditTitle(true)}
+									>
+										{courseTitle}
+									</span>
+								)}
+								<IconButton
+									icon={editMode ? faCheckCircle : faPencilAlt}
+									onClick={() => {
+										setEditMode(!editMode);
+									}}
+								/>
+							</div>
+						</div>
+					) : (
+						<div className="course-nav-title">{courseTitle}</div>
+					)}
 				</div>
 				<div className="course-nav-body">
 					{course.sections.length > 0 ? (
 						<>
 							{course.sections.map((s, idx) => (
-								<CourseSection key={idx} section={s} />
+								<CourseSection key={idx} section={s} editMode={editMode} />
 							))}
 							{canEdit && (
 								<Link

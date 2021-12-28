@@ -45,16 +45,14 @@ export class IoTSocket {
 	}
 
 	public openSocket() {
-		if (!process.env.REACT_APP_IOT_URL)
-			throw new Error('Env variable REACT_APP_IOT_URL not set');
+		if (!process.env.IOT_URL) throw new Error('Env variable IOT_URL not set');
 
 		if (this.socket && (this.socket.CONNECTING || this.socket.OPEN)) return;
 
-		this.socket = new WebSocket(process.env.REACT_APP_IOT_URL);
+		this.socket = new WebSocket(process.env.IOT_URL);
 
 		this.socket.onopen = () => {
-			if (process.env.REACT_APP_DEBUG)
-				console.log('Connected to IoTProjectSocket');
+			if (process.env.DEBUG) console.log('Connected to IoTProjectSocket');
 
 			this.socket.onmessage = e => {
 				const data = JSON.parse(e.data);

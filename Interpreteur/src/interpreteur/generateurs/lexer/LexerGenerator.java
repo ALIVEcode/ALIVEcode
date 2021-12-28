@@ -177,7 +177,7 @@ public class LexerGenerator {
          */
         idx = this.prochainIndexValide(idx, s);
         Matcher match = Pattern.compile("\\S+").matcher(s);
-        //System.out.println("idx : " + idx);
+        //System.out.println("idxOrKey : " + idxOrKey);
 
         if (idx < s.length()) {
             match.find(idx);

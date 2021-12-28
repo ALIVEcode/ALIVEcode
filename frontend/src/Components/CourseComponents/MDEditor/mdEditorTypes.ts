@@ -15,6 +15,7 @@ export const StyledMDEditor = styled.div`
 		justify-content: space-evenly;
 		position: relative;
 		border-bottom: 1px solid var(--foreground-color);
+		overflow: hidden;
 	}
 
 	.editor-header div {
@@ -22,10 +23,25 @@ export const StyledMDEditor = styled.div`
 		height: 100%;
 		padding: 20px;
 		text-align: center;
+		transition: 100ms ease-in-out;
 	}
 
 	.editor-header div:hover {
 		background-color: var(--background-hover-color);
+		transform: scale(1.1);
+	}
+
+	.editor-toolbar {
+		display: flex;
+		justify-content: space-evenly;
+		position: relative;
+	}
+
+	.editor-toolbar div {
+		width: 100%;
+		height: 50%;
+		padding: 5px;
+		text-align: center;
 	}
 
 	.editor-body {
@@ -36,14 +52,14 @@ export const StyledMDEditor = styled.div`
 		display: flex;
 		justify-content: flex-end;
 		position: relative;
-		border-top: 1px solid var(--foreground-color);
+		/* border-top: 1px solid var(--foreground-color); */
 		padding: 20px;
 	}
 
 	textarea {
-		resize: none;
-		overflow: hidden;
-		min-height: 250px;
-		max-height: 100px;
+		/* resize: none; */
+		/* overflow: hidden; */
+		min-height: 25vh;
+		max-height: 60vh;
 	}
 `;

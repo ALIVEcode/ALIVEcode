@@ -12,7 +12,8 @@ import { IoTObjectEntity } from '../iot/IoTobject/entities/IoTobject.entity';
 import { LevelEntity } from '../level/entities/level.entity';
 import { LevelProgressionEntity } from '../level/entities/levelProgression.entity';
 import { CourseHistoryEntity } from '../course/entities/course_history.entity';
-import { CourseModule } from '../course/course.module';
+import { Quiz } from '../social/quizzes/entities/quiz.entity';
+import { Result } from '../social/results/entities/result.entity';
 
 @Module({
   imports: [
@@ -27,6 +28,8 @@ import { CourseModule } from '../course/course.module';
       LevelEntity,
       LevelProgressionEntity,
       CourseHistoryEntity,
+      Quiz,
+      Result,
     ]),
   ],
   exports: [TypeOrmModule],

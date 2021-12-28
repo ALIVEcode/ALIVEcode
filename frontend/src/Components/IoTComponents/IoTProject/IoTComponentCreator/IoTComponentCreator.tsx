@@ -10,6 +10,7 @@ import {
 	IoTComponentCreatorProps,
 } from './iotComponentCreatorTypes';
 import { createDefaultIoTLabel } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTLabel';
+import { createDefaultIoTBuzzer } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTBuzzer';
 
 export const IoTComponentCreator = ({ onSelect }: IoTComponentCreatorProps) => {
 	const components = useMemo(
@@ -19,6 +20,7 @@ export const IoTComponentCreator = ({ onSelect }: IoTComponentCreatorProps) => {
 			createDefaultIoTLogs(),
 			createDefaultIoTLed(),
 			createDefaultIoTLabel(),
+			createDefaultIoTBuzzer(),
 		],
 		[],
 	);
@@ -31,7 +33,7 @@ export const IoTComponentCreator = ({ onSelect }: IoTComponentCreatorProps) => {
 						selectable
 						onSelect={() => onSelect(c)}
 						component={c}
-					></IoTGenericComponent>
+					/>
 				))}
 			</Row>
 		</StyledIoTComponentCreator>

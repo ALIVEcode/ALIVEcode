@@ -1,4 +1,3 @@
-import "dotenv/config";
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
@@ -13,11 +12,12 @@ import { initReactI18next } from 'react-i18next';
 import HttpAPI from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import LoadingScreen from './Components/UtilsComponents/LoadingScreen/LoadingScreen';
+import { BrowserRouter as Router } from 'react-router-dom';
 
-axios.defaults.baseURL = process.env.REACT_APP_BACKEND_URL;
+axios.defaults.baseURL = process.env.BACKEND_URL;
 axios.defaults.withCredentials = true;
 axios.defaults.timeout = 5000;
-axios.defaults.headers = {
+axios.defaults.headers.common = {
 	'Content-Type': 'application/json',
 	accept: 'application/json',
 };
@@ -63,7 +63,9 @@ ReactDOM.render(
 	<Suspense fallback={<LoadingScreen />}>
 		<React.StrictMode>
 			<AlertProvider template={AlertTemplate} {...alertOptions}>
-				<App />
+				<Router>
+					<App />
+				</Router>
 			</AlertProvider>
 		</React.StrictMode>
 	</Suspense>,

@@ -62,14 +62,18 @@ class LevelAliveExecutor extends LevelCodeExecutor {
 					apply: params => {
 						if (
 							params.length > 0 &&
-							typeof params[0] === 'number' &&
-							params[0] > 0
+							params[0] !== null &&
+							typeof params[0] == 'number'
 						) {
-							this.s.car.forward();
-							this.wait(() => {
-								this.s.car.stop();
+							if (params[0] > 0) {
+								this.s.car.forward();
+								this.wait(() => {
+									this.s.car.stop();
+									this.perform_next();
+								}, params[0] * 1000);
+							} else {
 								this.perform_next();
-							}, params[0] * 1000);
+							}
 						} else {
 							this.s.car.forward();
 							this.perform_next();
@@ -84,12 +88,20 @@ class LevelAliveExecutor extends LevelCodeExecutor {
 					label: 'Backward',
 					type: 'NORMAL',
 					apply: params => {
-						if (params.length > 0 && typeof params[0] === 'number') {
-							this.s.car.backward();
-							this.wait(() => {
-								this.s.car.stop();
+						if (
+							params.length > 0 &&
+							params[0] !== null &&
+							typeof params[0] == 'number'
+						) {
+							if (params[0] > 0) {
+								this.s.car.backward();
+								this.wait(() => {
+									this.s.car.stop();
+									this.perform_next();
+								}, params[0] * 1000);
+							} else {
 								this.perform_next();
-							}, params[0] * 1000);
+							}
 						} else {
 							this.s.car.backward();
 							this.perform_next();
@@ -265,7 +277,7 @@ class LevelAliveExecutor extends LevelCodeExecutor {
 				makeShapeEditable(shape);
 			}
 
-			if (process.env.REACT_APP_DEBUG) console.log(this.s.shapes);
+			if (process.env.DEBUG) console.log(this.s.shapes);
 		}
 		if (this.editMode) {
 			this.spawnEditorButton();

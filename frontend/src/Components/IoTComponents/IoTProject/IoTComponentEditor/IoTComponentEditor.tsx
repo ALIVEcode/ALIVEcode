@@ -20,6 +20,7 @@ import {
 	LED_STATE,
 } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTLed';
 import { IoTLabel } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTLabel';
+import { IoTBuzzer } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTBuzzer';
 
 const IoTComponentEditor = ({
 	component,
@@ -65,7 +66,7 @@ const IoTComponentEditor = ({
 					/>
 					<Form.Label>Minimum</Form.Label>
 					<Form.Control
-						defaultValue={component.getMin()}
+						value={component.getMin()}
 						type="number"
 						className="mb-2"
 						onChange={(e: any) =>
@@ -75,7 +76,7 @@ const IoTComponentEditor = ({
 					/>
 					<Form.Label>Maximum</Form.Label>
 					<Form.Control
-						defaultValue={component.getMax()}
+						value={component.getMax()}
 						type="number"
 						className="mb-2"
 						onChange={(e: any) =>
@@ -100,7 +101,7 @@ const IoTComponentEditor = ({
 				<>
 					<Form.Label>Value (Label)</Form.Label>
 					<Form.Control
-						defaultValue={component.value}
+						value={component.value}
 						className="mb-2"
 						onChange={(e: any) => component.setValue(e.target.value)}
 						disabled={!canEdit}
@@ -124,7 +125,7 @@ const IoTComponentEditor = ({
 					<Form.Control
 						className="mb-2"
 						type="number"
-						defaultValue={component.getActionId()}
+						value={component.getActionId()}
 						onChange={(e: any) => component.setActionId(e.target.value)}
 						disabled={!canEdit}
 					/>
@@ -132,7 +133,7 @@ const IoTComponentEditor = ({
 					<Form.Control
 						as="textarea"
 						className="mb-2"
-						defaultValue={component.getActionData() || '{}'}
+						value={component.getActionData() || '{}'}
 						onChange={(e: any) => component.setActionData(e.target.value)}
 						disabled={!canEdit}
 					/>
@@ -164,7 +165,7 @@ const IoTComponentEditor = ({
 								<Form.Control
 									as="textarea"
 									className="mb-2"
-									defaultValue={log.text}
+									value={log.text}
 									onChange={(e: any) =>
 										component.updateLog(log, { ...log, text: e.target.value })
 									}
@@ -223,7 +224,7 @@ const IoTComponentEditor = ({
 				<>
 					<Form.Label>Displayed Text</Form.Label>
 					<Form.Control
-						defaultValue={component.value}
+						value={component.value}
 						className="mb-2"
 						onChange={(e: any) => component.setValue(e.target.value)}
 						disabled={!canEdit}
@@ -240,20 +241,77 @@ const IoTComponentEditor = ({
 					/>
 				</>
 			);
+		if (component instanceof IoTBuzzer)
+			return (
+				<>
+					<Form.Label>Frequency</Form.Label>
+					<Form.Control
+						type="number"
+						min={0}
+						max={10000}
+						value={component.value}
+						className="mb-2"
+						onChange={(e: any) => component.setValue(e.target.value)}
+						disabled={!canEdit}
+					/>
+					<Form.Label>Sound Duration (seconds)</Form.Label>
+					<Form.Control
+						type="range"
+						min={0.2}
+						max={30}
+						step={0.2}
+						value={component.getSoundDuration()}
+						className="mb-2"
+						onChange={(e: any) => {
+							component.setSoundDuration(e.target.value);
+						}}
+						disabled={!canEdit}
+					/>
+					<label style={{ fontSize: '1.2em' }}>
+						{component.getSoundDuration()}s
+					</label>
+					<br />
+					<Form.Label className="mt-2">Frequency type</Form.Label>
+					<Form.Control
+						type="select"
+						as="select"
+						value={component.getFrequencyType()}
+						className="mb-2"
+						onChange={(e: any) => {
+							component.setFrequencyType(e.target.value);
+						}}
+						disabled={!canEdit}
+					>
+						<option value="sine">Sine</option>
+						<option value="sawtooth">Sawtooth</option>
+						<option value="square">Square</option>
+						<option value="triangle">Triangle</option>
+					</Form.Control>
+					<Button
+						onClick={() => {
+							component.isBuzzing() ? component.stopBuzz() : component.buzz();
+						}}
+						variant="primary"
+						className="mt-2"
+					>
+						{component.isBuzzing() ? 'Stop the sound' : 'Start the sound'}
+					</Button>
+				</>
+			);
 	};
 
 	return (
 		<div>
 			<Form.Label>Name</Form.Label>
 			<Form.Control
-				defaultValue={component.name}
+				value={component.name}
 				className="mb-2"
 				onChange={(e: any) => component.setName(e.target.value)}
 				disabled={!canEdit}
 			/>
 			<Form.Label>Id</Form.Label>
 			<Form.Control
-				defaultValue={component.id}
+				value={component.id}
 				className="mb-2"
 				onChange={(e: any) => component.setId(e.target.value)}
 				disabled={!canEdit}

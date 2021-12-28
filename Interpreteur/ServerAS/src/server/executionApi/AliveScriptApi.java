@@ -110,7 +110,9 @@ public class AliveScriptApi extends BaseApi {
 
             return compileResult.length() == 0
                     ? aliveScriptService.execute()
-                    : new JSONObject().put("result", compileResult).toString();
+                    : new JSONObject()
+                    .put("status", AliveScriptService.ResponseStatus.COMPLETE)
+                    .put("result", compileResult).toString();
         } else {
             aliveScriptService.destroy();
         }

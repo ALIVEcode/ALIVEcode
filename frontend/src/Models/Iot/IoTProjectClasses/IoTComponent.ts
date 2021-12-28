@@ -7,6 +7,7 @@ export enum IOT_COMPONENT_TYPE {
 	LOGS,
 	LED,
 	LABEL,
+	BUZZER,
 }
 
 @Exclude()

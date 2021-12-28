@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import CourseSection from '../CourseSection/CourseSection';
 import { formatTooLong } from '../../../Types/formatting';
-import { useLocation, useHistory } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { useQuery } from '../../../state/hooks/useQuery';
 
 const ClassroomSection = ({
@@ -17,7 +17,7 @@ const ClassroomSection = ({
 	const [isOpen, setIsOpen] = useState(false);
 	const forceUpdate = useForceUpdate();
 	const location = useLocation();
-	const history = useHistory();
+	const navigate = useNavigate();
 	const query = useQuery();
 
 	useEffect(() => {
@@ -73,7 +73,7 @@ const ClassroomSection = ({
 									query.set('open', query.get('open') + '_' + classroom.id);
 								else query.set('open', classroom.id);
 							}
-							history.push({
+							navigate({
 								pathname: location.pathname,
 								search: query.toString(),
 							});

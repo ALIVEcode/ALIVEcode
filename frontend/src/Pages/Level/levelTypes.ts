@@ -25,14 +25,16 @@ type StyledProps = {
 
 export const StyledLevel = styled.div`
 	.row {
-		padding: 0;
-		margin: 0;
+		padding: 0px;
+		margin: 0px;
 	}
 
 	.left-col {
-		padding: 0;
+		padding: 0px;
 		display: flex;
 		flex-flow: column;
+		overflow-y: hidden;
+		position: sticky;
 	}
 
 	.right-col {

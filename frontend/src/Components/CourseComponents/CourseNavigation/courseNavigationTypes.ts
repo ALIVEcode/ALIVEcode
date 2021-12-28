@@ -2,6 +2,11 @@ import styled from 'styled-components';
 import { themes } from '../../../state/contexts/ThemeContext';
 export type CourseNavigationProps = {};
 
+type NavigationOptions = {
+	isNavigationOpen: boolean;
+	editMode: boolean;
+};
+
 export const StyledCourseNavigation = styled.div`
 	color: white;
 
@@ -12,8 +17,8 @@ export const StyledCourseNavigation = styled.div`
 	box-sizing: content-box;
 	position: fixed;
 
-	${({ isNavigationOpen }: { isNavigationOpen: boolean }) =>
-		isNavigationOpen ? `margin-left: 0;` : `margin-left: -20vw;`}
+	${({ options }: { options: NavigationOptions }) =>
+		options.isNavigationOpen ? `margin-left: 0;` : `margin-left: -20vw;`}
 
 	${({ theme }) =>
 		theme.name === themes.light.name &&
@@ -35,8 +40,13 @@ export const StyledCourseNavigation = styled.div`
 
 	.course-nav-title {
 		padding: 10px 5px 10px 5px;
-		font-size: 25px;
+		font-size: 1.2rem;
 		color: var(--foreground-color);
+	}
+	.course-edit-button {
+		display: grid;
+		align-items: center;
+		grid-template-columns: 5fr 1fr;
 	}
 
 	.course-nav-header {
@@ -69,6 +79,13 @@ export const StyledCourseNavigation = styled.div`
 		}};
 	}
 
+	.course-section-header-edit {
+		display: grid;
+		grid-template-columns: ${({ options }: { options: NavigationOptions }) =>
+			options.editMode ? '5fr 1fr;' : '1fr;'};
+		align-items: center;
+	}
+
 	.course-activity {
 		width: 100%;
 		margin-top: 5px;
@@ -77,6 +94,9 @@ export const StyledCourseNavigation = styled.div`
 			if (theme.name === themes.light.name) return 'var(--third-color)';
 			if (theme.name === themes.dark.name) return 'var(--secondary-color)';
 		}};
+		display: grid;
+		grid-template-columns: ${({ options }: { options: NavigationOptions }) =>
+			options.editMode ? '5fr 1fr;' : '1fr;'};
 	}
 
 	.course-section-body {
@@ -85,6 +105,6 @@ export const StyledCourseNavigation = styled.div`
 
 	.course-section-header:hover,
 	.course-activity:hover {
-		background-color: var(--contrast-color);
+		background-color: var(--third-color);
 	}
 `;

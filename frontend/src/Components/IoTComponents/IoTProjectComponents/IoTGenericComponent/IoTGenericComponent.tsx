@@ -14,6 +14,8 @@ import { IoTLed } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTL
 import IoTLedComponent from '../IoTLedComponent/IoTLedComponent';
 import { IoTLabel } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTLabel';
 import IoTLabelComponent from '../IoTLabelComponent/IoTLabelComponent';
+import IoTBuzzerComponent from '../IoTBuzzerComponent/IoTBuzzerComponent';
+import { IoTBuzzer } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTBuzzer';
 
 const IoTGenericComponent = ({
 	component,
@@ -38,6 +40,8 @@ const IoTGenericComponent = ({
 				return <IoTLedComponent component={component as IoTLed} />;
 			case IOT_COMPONENT_TYPE.LABEL:
 				return <IoTLabelComponent component={component as IoTLabel} />;
+			case IOT_COMPONENT_TYPE.BUZZER:
+				return <IoTBuzzerComponent component={component as IoTBuzzer} />;
 		}
 	};
 

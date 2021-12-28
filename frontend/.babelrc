@@ -1,0 +1,42 @@
+{
+	"presets": [
+		[
+			"@babel/preset-env",
+			{
+				"targets": "> 0.25%, not dead"
+			}
+		],
+		["@babel/preset-react", { "runtime": "automatic" }],
+		"@babel/preset-typescript"
+	],
+	"plugins": [
+		["@babel/plugin-proposal-decorators", { "legacy": true }],
+		[
+			"@babel/plugin-transform-runtime",
+			{
+				"regenerator": true
+			}
+		],
+		"@babel/plugin-syntax-dynamic-import",
+		"@babel/plugin-proposal-class-properties",
+		"babel-plugin-twin",
+		"babel-plugin-macros",
+		"babel-plugin-styled-components"
+	],
+	"env": {
+		// Production optimizations
+		"production": {
+			"only": ["src"],
+			"plugins": [
+				[
+					"transform-react-remove-prop-types",
+					{
+						"removeImport": true
+					}
+				],
+				"@babel/plugin-transform-react-inline-elements",
+				"@babel/plugin-transform-react-constant-elements"
+			]
+		}
+	}
+}

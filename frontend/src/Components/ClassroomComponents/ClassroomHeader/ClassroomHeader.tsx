@@ -5,13 +5,13 @@ import { useContext, useState } from 'react';
 import { UserContext } from '../../../state/contexts/UserContext';
 import { Professor } from '../../../Models/User/user.entity';
 import api from '../../../Models/api';
-import { useHistory } from 'react-router';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { useTranslation } from 'react-i18next';
 import { useAlert } from 'react-alert';
 import Modal from '../../UtilsComponents/Modal/Modal';
 import { prettyField } from '../../../Types/formatting';
 import { ThemeContext } from '../../../state/contexts/ThemeContext';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Classroom header that displays the className, the professor and
@@ -26,9 +26,9 @@ const ClassroomHeader = ({ className, classroom }: ClassroomHeaderProps) => {
 	const { routes } = useRoutes();
 	const { t } = useTranslation();
 	const { theme } = useContext(ThemeContext);
-	const history = useHistory();
 	const alert = useAlert();
 	const [codeModalOpen, setCodeModalOpen] = useState(false);
+	const navigate = useNavigate();
 
 	const leaveClassroom = async () => {
 		if (!user) return;
@@ -37,7 +37,7 @@ const ClassroomHeader = ({ className, classroom }: ClassroomHeaderProps) => {
 				classroomId: classroom.id,
 				studentId: user.id,
 			});
-			history.push(routes.auth.dashboard.path);
+			navigate(routes.auth.dashboard.path);
 		} catch {
 			return alert.error(t('error.505'));
 		}
@@ -49,7 +49,7 @@ const ClassroomHeader = ({ className, classroom }: ClassroomHeaderProps) => {
 				<Col md={6} className="classroom-title">
 					<label className="classroom-title-name">{classroom.name}</label>
 					<label className="classroom-title-desc">
-						<Badge variant="primary">{prettyField(t('msg.professor'))}</Badge>{' '}
+						<Badge bg="primary">{prettyField(t('msg.professor'))}</Badge>{' '}
 						{classroom.creator.getDisplayName()}
 					</label>
 				</Col>

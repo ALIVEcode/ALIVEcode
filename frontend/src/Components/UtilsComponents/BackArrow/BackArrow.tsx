@@ -1,7 +1,7 @@
-import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { BackArrowProps } from './backArrowTypes';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Back arrow on the left bottom corner of the site to go back to the previous page.
@@ -12,11 +12,11 @@ import { BackArrowProps } from './backArrowTypes';
  * @author MoSk3
  */
 const BackArrow = ({ color, maintenancePopUp }: BackArrowProps) => {
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	return (
 		<FontAwesomeIcon
-			onClick={() => history.goBack()}
+			onClick={() => navigate(-1)}
 			style={{
 				cursor: 'pointer',
 				position: 'fixed',

@@ -1,6 +1,6 @@
 import { ButtonProps, StyledButton } from './buttonTypes';
-import { useHistory } from 'react-router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Styled button with different premade variants
@@ -27,10 +27,10 @@ const Button = ({
 	disabled,
 	icon,
 }: ButtonProps) => {
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	const customOnClick = () => {
-		onClick ? onClick() : to && history.push(to);
+		onClick ? onClick() : to && navigate(to);
 	};
 
 	const defaultInputOptions = {

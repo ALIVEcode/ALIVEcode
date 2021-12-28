@@ -1,5 +1,5 @@
 import { SignUpProps, FormSignUpValues } from './signUpTypes';
-import { Button, Form, Col, InputGroup } from 'react-bootstrap';
+import { Button, Form, Col, InputGroup, Row } from 'react-bootstrap';
 import { useAlert } from 'react-alert';
 import { useForm } from 'react-hook-form';
 import { USER_TYPES } from '../../../Types/userTypes';
@@ -9,11 +9,12 @@ import axios, { AxiosError } from 'axios';
 import { useContext } from 'react';
 import { UserContext } from '../../../state/contexts/UserContext';
 import { User } from '../../../Models/User/user.entity';
-import { useHistory } from 'react-router';
 import { setAccessToken } from '../../../Types/accessToken';
 import { useTranslation } from 'react-i18next';
 import HttpStatusCode from '../../../Types/http-errors';
 import useRoutes from '../../../state/hooks/useRoutes';
+import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router';
 
 /**
  * Signup page that allows the user to register a new account
@@ -32,7 +33,8 @@ const SignUp = ({ userType }: SignUpProps) => {
 	const { t } = useTranslation();
 	const { routes } = useRoutes();
 	const alert = useAlert();
-	const history = useHistory();
+	const navigate = useNavigate();
+	const location = useLocation();
 
 	const onSignIn = async (formValues: FormSignUpValues) => {
 		try {
@@ -57,12 +59,12 @@ const SignUp = ({ userType }: SignUpProps) => {
 			const user = await User.loadUser();
 			if (!user) {
 				alert.error(t('error.signin_first_time'));
-				return history.push(routes.non_auth.signin.path);
+				return navigate(routes.non_auth.signin.path);
 			}
 
 			setUser(user);
 
-			if (history.location.pathname === '/signin') history.push('/dashboard');
+			if (location.pathname === '/signin') navigate(routes.auth.dashboard.path);
 			return alert.success(t('msg.auth.signup_success'));
 		} catch (e) {
 			const err = e as AxiosError;
@@ -106,7 +108,7 @@ const SignUp = ({ userType }: SignUpProps) => {
 					<Form.Text>{t('form.email.info')}</Form.Text>
 				</Form.Group>
 				{userType === USER_TYPES.PROFESSOR ? (
-					<Form.Row>
+					<Row>
 						<Form.Group as={Col}>
 							<Form.Label>{t('form.firstName.label')}</Form.Label>
 							<InputGroup hasValidation>
@@ -159,7 +161,7 @@ const SignUp = ({ userType }: SignUpProps) => {
 								</Form.Control.Feedback>
 							</InputGroup>
 						</Form.Group>
-					</Form.Row>
+					</Row>
 				) : (
 					<>
 						<Form.Group>

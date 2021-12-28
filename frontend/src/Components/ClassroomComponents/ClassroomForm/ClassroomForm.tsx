@@ -7,7 +7,7 @@ import {
 	Classroom,
 } from '../../../Models/Classroom/classroom.entity';
 import useRoutes from '../../../state/hooks/useRoutes';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAlert } from 'react-alert';
 import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
 
@@ -19,7 +19,7 @@ import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
 const ClassroomForm = (props: ClassroomFormProps) => {
 	const { t } = useTranslation();
 	const { routes } = useRoutes();
-	const history = useHistory();
+	const navigate = useNavigate();
 	const alert = useAlert();
 
 	return (
@@ -27,7 +27,7 @@ const ClassroomForm = (props: ClassroomFormProps) => {
 			<Form
 				onSubmit={res => {
 					const classroom: Classroom = res.data;
-					history.push(routes.auth.classroom.path.replace(':id', classroom.id));
+					navigate(routes.auth.classroom.path.replace(':id', classroom.id));
 					return alert.success('Classe créée avec succès');
 				}}
 				name="classroom"

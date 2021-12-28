@@ -12,7 +12,6 @@ export const registerSnippets = (
 	snippetText: string,
 ) => {
 	var snippetManager = ace.require('ace/snippets').snippetManager;
-	console.log(snippetManager);
 
 	const scope = mode;
 	const snippet = snippetManager.parseSnippetFile(snippetText, scope);

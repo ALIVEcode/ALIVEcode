@@ -129,7 +129,6 @@ const LevelAlive = ({ initialCode }: LevelAliveProps) => {
 											//setSketch(s);
 											executor.current?.loadLevelLayout(level?.layout ?? '[]');
 											executor.current?.stop();
-											s.enableCarController();
 										}}
 										onChange={(s: any) => {
 											const newLayout = executor.current?.saveLayout(s);

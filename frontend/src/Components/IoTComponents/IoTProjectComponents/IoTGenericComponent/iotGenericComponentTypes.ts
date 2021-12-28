@@ -1,6 +1,5 @@
 import { IoTComponent } from '../../../../Models/Iot/IoTProjectClasses/IoTComponent';
 import styled from 'styled-components';
-import { Col } from 'react-bootstrap';
 
 export type IoTGenericComponentProps = {
 	component: IoTComponent;
@@ -10,7 +9,7 @@ export type IoTGenericComponentProps = {
 	setEditingComponent?: (component: IoTComponent) => void;
 };
 
-export const StyledIoTGenericComponent = styled(Col)`
+export const StyledIoTGenericComponent = styled.div`
 	background-color: var(--bg-shade-one-color);
 	margin: 5px !important;
 	border-radius: 10px;
@@ -26,6 +25,7 @@ export const StyledIoTGenericComponent = styled(Col)`
 
 	.component {
 		height: 100%;
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -41,7 +41,7 @@ export const StyledIoTGenericComponent = styled(Col)`
 		border-radius: 5px;
 		cursor: pointer;
 		transition: 0.2s;
-		${({ ishovering }: any) => (ishovering ? 'opacity: 1;' : 'opacity: 0;')}
+		${({ ishovering }: any) => (ishovering ? 'opacity: 1' : 'opacity: 0')};
 	}
 
 	.component-btn:hover {

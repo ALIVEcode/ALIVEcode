@@ -1,5 +1,5 @@
 import { IoTProjectTabs, StyledIoTProject } from './iotProjectPageTypes';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import LoadingScreen from '../../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
 import { Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -38,76 +38,72 @@ const IoTProjectPage = () => {
 	};
 
 	return (
-		<StyledIoTProject>
-			<Row className="main-row" xs={1} sm={2}>
-				<Col
-					xl={{ span: 3, order: 1 }}
-					lg={{ span: 4, order: 1 }}
-					md={{ span: 5, order: 1 }}
-					sm={{ span: 6, order: 1 }}
-					xs={{ span: 12, order: 2 }}
-					id="project-details"
-					className="no-float"
-				>
-					<Row className="project-name">{project.name}</Row>
-					<Row className="project-details-body">
-						<Col className="project-details-tabs">
-							<Row
-								className={
-									'project-details-tab ' +
-									(selectedTab === 'settings' && 'project-details-tab-selected')
-								}
-								onClick={() => setSelectedTab('settings')}
-							>
+		<StyledIoTProject tw="w-full h-full flex flex-col md:flex-row bg-white">
+			<div tw="block order-2 md:order-1" id="project-details">
+				<div className="project-name">{project.name}</div>
+				<div tw="flex flex-row" className="project-details-body">
+					<div tw="flex flex-col" className="project-details-tabs">
+						<div
+							tw="flex align-middle justify-center"
+							className={
+								'project-details-tab ' +
+								(selectedTab === 'settings' && 'project-details-tab-selected')
+							}
+							onClick={() => setSelectedTab('settings')}
+						>
+							<div tw="text-center">
 								<FontAwesomeIcon
 									className="project-details-tab-logo"
 									icon={faCog}
 								/>
-								Settings
-							</Row>
-							<Row
-								className={
-									'project-details-tab ' +
-									(selectedTab === 'routes' && 'project-details-tab-selected')
-								}
-								onClick={() => setSelectedTab('routes')}
-							>
+								<div>Settings</div>
+							</div>
+						</div>
+						<div
+							tw="flex align-middle justify-center"
+							className={
+								'project-details-tab ' +
+								(selectedTab === 'routes' && 'project-details-tab-selected')
+							}
+							onClick={() => setSelectedTab('routes')}
+						>
+							<div tw="text-center">
 								<FontAwesomeIcon
 									className="project-details-tab-logo"
 									icon={faPlug}
 								/>
-								Routes
-							</Row>
-							<Row
-								className={
-									'project-details-tab ' +
-									(selectedTab === 'access' && 'project-details-tab-selected')
-								}
-								onClick={() => setSelectedTab('access')}
-							>
+								<div>Routes</div>
+							</div>
+						</div>
+						<div
+							tw="flex align-middle justify-center"
+							className={
+								'project-details-tab ' +
+								(selectedTab === 'access' && 'project-details-tab-selected')
+							}
+							onClick={() => setSelectedTab('access')}
+						>
+							<div tw="text-center">
 								<FontAwesomeIcon
 									className="project-details-tab-logo"
 									icon={faRoute}
 								/>
-								Access
-							</Row>
-						</Col>
-						<Col className="project-details-content">{getTabContent()}</Col>
-					</Row>
-				</Col>
-				<Col
-					xl={{ span: 9, order: 1 }}
-					lg={{ span: 8, order: 1 }}
-					md={{ span: 7, order: 1 }}
-					sm={{ span: 6, order: 1 }}
-					xs={{ span: 12, order: 1 }}
-					id="project-body"
-					className="no-float"
-				>
-					<Row className="project-top-row"></Row>
-					<IoTProjectBody />
-				</Col>
-			</Row>
+								<div>Access</div>
+							</div>
+						</div>
+					</div>
+					<div tw="flex-grow md:w-[16rem]" className="project-details-content">
+						{getTabContent()}
+					</div>
+				</div>
+			</div>
+			<div
+				tw="flex-grow flex flex-col h-full order-1 md:order-2"
+				id="project-body"
+			>
+				<div tw="hidden sm:block" className="project-top-row"></div>
+				<IoTProjectBody />
+			</div>
 		</StyledIoTProject>
 	);
 };

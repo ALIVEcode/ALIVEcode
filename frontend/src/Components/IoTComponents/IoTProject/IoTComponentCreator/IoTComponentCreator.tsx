@@ -27,7 +27,7 @@ export const IoTComponentCreator = ({ onSelect }: IoTComponentCreatorProps) => {
 
 	return (
 		<StyledIoTComponentCreator>
-			<Row>
+			<div tw="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
 				{components.map(c => (
 					<IoTGenericComponent
 						selectable
@@ -35,7 +35,7 @@ export const IoTComponentCreator = ({ onSelect }: IoTComponentCreatorProps) => {
 						component={c}
 					/>
 				))}
-			</Row>
+			</div>
 		</StyledIoTComponentCreator>
 	);
 };

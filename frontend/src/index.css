@@ -15,6 +15,10 @@ p {
   margin-bottom: 0 !important;
 }
 
+.form-control {
+  appearance: auto !important;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

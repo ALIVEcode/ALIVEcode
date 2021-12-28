@@ -3,23 +3,12 @@ import styled from 'styled-components';
 export type IoTProjectTabs = 'settings' | 'routes' | 'access';
 
 export const StyledIoTProject = styled.div`
-	display: table;
-	height: 100%;
-	width: 100%;
-	box-sizing: border-box;
-
 	#project-details {
 		padding: 0;
 		background-color: var(--background-color);
 		border-right: var(--bg-shade-four-color) 1px solid;
 		position: relative;
 		vertical-align: bottom;
-	}
-
-	#project-body {
-		position: relative;
-		padding: 0;
-		background-color: var(--background-color);
 	}
 
 	.main-row {

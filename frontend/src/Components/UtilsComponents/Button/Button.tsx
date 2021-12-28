@@ -47,7 +47,7 @@ const Button = ({
 			<StyledButton {...defaultInputOptions}>
 				<>
 					{children}
-					<FontAwesomeIcon className="ml-2" icon={icon}></FontAwesomeIcon>
+					<FontAwesomeIcon tw="ml-2" icon={icon}></FontAwesomeIcon>
 				</>
 			</StyledButton>
 		);

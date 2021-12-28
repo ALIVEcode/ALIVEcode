@@ -16,8 +16,3 @@ export interface LevelGraphProps {
 	yAxis: string;
 }
 
-export const StyledLevelGraph = styled(FillContainer)`
-	.graph-holder {
-		margin-bottom: 40vh;
-	}
-`;

@@ -12,17 +12,14 @@ import { LevelTableProps, StyledLevelTable } from './LevelTableTypes';
  */
 
 const LevelTable = (props: LevelTableProps) => {
-  let num: number = 0;
   function renderTableData() {
-    
     return (
       <>
         {props.data.map((point: any, index: number) => {
           const {id, x, y} = point;
-          num++;
           return (
             <tr key={id}>
-              <td className="data-number">{num}</td>
+              <td className="data-number">{index}</td>
               <td className="data">{x}</td>
               <td className="data">{y}</td>
             </tr>
@@ -33,8 +30,8 @@ const LevelTable = (props: LevelTableProps) => {
   }
 
   return (
-    <StyledLevelTable>
-      <div className="container">
+    <StyledLevelTable tw="w-full h-full p-4">
+      <div tw="w-full h-full overflow-y-auto">
         <table className="table">
           <tbody className="body">
             <tr>

@@ -1,4 +1,4 @@
-import { LevelGraphProps, StyledLevelGraph } from './LevelGraphTypes';
+import { LevelGraphProps } from './LevelGraphTypes';
 import { Scatter } from 'react-chartjs-2';
 import { memo } from 'react';
 import { Chart, registerables } from 'chart.js';
@@ -19,7 +19,7 @@ const LevelGraph = memo((props: LevelGraphProps) => {
 	// Chart.defaults.font.weight = 'bold';
 
 	return (
-		<StyledLevelGraph className="graph-holder ">
+		<div tw="w-full h-full flex items-center justify-center p-4 pl-0">
 			<Scatter
 				color="black"
 				className="graph"
@@ -64,7 +64,7 @@ const LevelGraph = memo((props: LevelGraphProps) => {
 					},
 				}}
 			/>
-		</StyledLevelGraph>
+		</div>
 	);
 });
 

@@ -1,7 +1,6 @@
 import './App.css';
 import { RouterSwitch } from './Router/RouterSwitch/RouterSwitch';
 import { useNavigate } from 'react-router-dom';
-import ALIVENavbar from './Components/MainComponents/Navbar/Navbar';
 import { UserContext } from './state/contexts/UserContext';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
@@ -29,6 +28,7 @@ import { Maintenance } from './Models/Maintenance/maintenance.entity';
 import openPlaySocket from './Pages/Level/PlaySocket';
 import { PlaySocket } from './Pages/Level/PlaySocket';
 import FillGrid from './Components/UtilsComponents/FillGrid/FillGrid';
+import Navbar from './Components/MainComponents/Navbar/Navbar';
 
 type GlobalStyleProps = {
 	theme: Theme;
@@ -219,7 +219,7 @@ const App = () => {
 					<LoadingScreen />
 				) : (
 					<UserContext.Provider value={providerValue}>
-						<ALIVENavbar handleLogout={async () => await logout()} />
+						<Navbar handleLogout={async () => await logout()} />
 						<StyledApp theme={theme} className="h-100">
 							<FillGrid>
 								<RouterSwitch />

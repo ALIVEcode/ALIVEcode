@@ -10,7 +10,7 @@ export const StyledNavbar = styled(Navbar)`
 	width: 100%;
 	background-color: var(--background-color);
 	border-bottom: var(--bg-shade-four-color) 1px solid;
-	padding: 0.2rem 0.6rem !important;
+	padding: 0.6rem 0.6rem !important;
 
 	.dropdown-toggle::after {
 		display: none !important;
@@ -53,6 +53,10 @@ export const StyledNavbar = styled(Navbar)`
 		stroke: #00a2ff;
 	}
 
+	.navbar-collapse {
+		justify-content: space-between;
+	}
+
 	#navbarNavDropdown li {
 		margin-right: 10px;
 	}
@@ -92,6 +96,11 @@ export const StyledNavbar = styled(Navbar)`
 
 	.nav-link:hover {
 		color: rgba(var(--foreground-color), 0.75) !important;
+	}
+
+	.nav-item .dropdown,
+	.basic-nav-dropdown {
+		height: 100%;
 	}
 
 	@media (max-width: 1199px) {

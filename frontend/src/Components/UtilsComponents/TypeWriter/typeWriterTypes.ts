@@ -7,4 +7,5 @@ export type TypeWriterProps = {
 	delayAfterErase?: number;
 	delayAfterWrite?: number;
 	shadow?: boolean;
+	startWithText?: boolean;
 };

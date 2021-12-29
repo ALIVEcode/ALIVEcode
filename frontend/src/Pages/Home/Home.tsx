@@ -28,9 +28,6 @@ const Home = (props: HomeProps) => {
 
 	return (
 		<StyledHome>
-			<div className="header-circle">
-				<img alt="alive-car" src={VoitureAnimee} />
-			</div>
 			<div className="header" style={{ top: '-50px' }}>
 				<div>
 					<label className="header-alive">ALIVE</label>
@@ -39,9 +36,10 @@ const Home = (props: HomeProps) => {
 							lines={[t('home.msg1'), t('home.msg2'), t('home.msg3')]}
 							typeSpeed={200}
 							eraseSpeed={150}
-							delayAfterWrite={5000}
+							delayAfterWrite={3000}
 							delayAfterErase={500}
 							shadow
+							startWithText
 						/>
 					</label>
 				</div>
@@ -64,6 +62,9 @@ const Home = (props: HomeProps) => {
 				<li>News</li>
 			</ul>
 			<Footer />
+			<div className="header-circle">
+				<img alt="alive-car" src={VoitureAnimee} />
+			</div>
 		</StyledHome>
 	);
 };

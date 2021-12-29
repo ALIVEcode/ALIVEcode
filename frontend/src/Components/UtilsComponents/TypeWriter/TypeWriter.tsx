@@ -13,10 +13,10 @@ import { useState, useEffect } from 'react';
  * 
  * @author MoSk3
  */
-const TypeWriter = ({ lines, typeSpeed, noErase, eraseSpeed, delayAfterWrite, delayAfterErase, shadow }: TypeWriterProps) => {
+const TypeWriter = ({ lines, typeSpeed, noErase, eraseSpeed, delayAfterWrite, delayAfterErase, shadow, startWithText }: TypeWriterProps) => {
   const [lineIndex, setLineIndex] = useState(0);
-  const [letterIndex, setLetterIndex] = useState(0);
-  const [reverse, setReverse] = useState(false);
+  const [letterIndex, setLetterIndex] = useState(!startWithText ? 0 : lines[0].length);
+  const [reverse, setReverse] = useState<boolean>();
   const [blinking, setBlinking] = useState(true);
 
   const shadowStyle = shadow ? {textShadow: 'var(--drop-shadow)'} : {};

@@ -1,6 +1,3 @@
-import styled from 'styled-components';
-import FillContainer from '../../UtilsComponents/FillContainer/FillContainer';
-
 /**
  * This interface defines all properties of a level graph.
  *

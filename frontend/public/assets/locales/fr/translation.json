@@ -243,9 +243,9 @@
 		}
 	},
 	"home": {
-		"msg1": "Apprendre la programmation",
-		"msg2": "Apprendre en jouant",
-		"msg3": "Apprendre les concepts de l'IA",
+		"msg1": "code",
+		"msg2": "ai",
+		"msg3": "iot",
 		"section": {
 			"alive": {
 				"title": "$t(msg.section.alive)",
@@ -356,14 +356,13 @@
 	"cmd": {
 		"clear": "Effacer les lignes"
 	},
-	"user":{
+	"user": {
 		"quiz": "Quiz : ",
 		"status": "Status : ",
 		"posts": "Posts : ",
 		"reward": "Récompenses : ",
 		"rank": "Rank : ",
 		"rewardTitle": "Récompenses"
-
 	},
 	"simulation": {
 		"modal": {

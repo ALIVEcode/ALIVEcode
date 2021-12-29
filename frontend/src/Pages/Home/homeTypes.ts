@@ -14,6 +14,7 @@ export const StyledHome = styled.div`
 		top: -430px;
 		border-radius: 50%;
 		background: rgba(var(--secondary-color-rgb), 0.64);
+		z-index: 0;
 	}
 
 	.header-circle img {

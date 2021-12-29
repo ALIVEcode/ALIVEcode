@@ -10,7 +10,7 @@ export const DashboardRecents = () => {
 	return (
 		<StyledDashboardRecent className="h-100">
 			<Container fluid className="container-1">
-				<Row className="h-100 no-gutters">
+				<Row className="h-100 g-0">
 					<Col className="h-100 section-recents">
 						<div className="section-title">Formations Récentes</div>
 						<div className="underline"></div>
@@ -19,7 +19,7 @@ export const DashboardRecents = () => {
 				</Row>
 			</Container>
 			<Container fluid className="container-2">
-				<Row className="h-100 no-gutters">
+				<Row className="h-100 g-0">
 					<Col className="h-100 section-levels">
 						<div className="section-title">Mes niveaux</div>
 						<div className="underline"></div>

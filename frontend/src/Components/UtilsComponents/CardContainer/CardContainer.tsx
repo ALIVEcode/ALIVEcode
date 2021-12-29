@@ -51,19 +51,15 @@ const CardContainer = ({
 			<div className="card-container-title">
 				{title} {icon && <IconButton icon={icon} onClick={onIconClick} />}
 			</div>
-			<Container fluid className="card-container-body">
-				<CenteredContainer
-					className="card-container-body-centered"
-					vertically
-					horizontally
-				>
-					{asRow ? (
-						<Row className="card-container-row">{children}</Row>
-					) : (
-						<>{children}</>
-					)}
-				</CenteredContainer>
-			</Container>
+			<div className="card-container-body" tw="w-full h-full">
+				{asRow ? (
+					<div tw="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-items-center">
+						{children}
+					</div>
+				) : (
+					<>{children}</>
+				)}
+			</div>
 		</StyledCardContainer>
 	);
 };

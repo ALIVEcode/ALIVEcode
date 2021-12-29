@@ -44,6 +44,7 @@ import ForumSearch from '../../Pages/Forum/ForumSearch/ForumSearch';
 import Chat from '../../Pages/Chat/Chat';
 import { LEVEL_TYPE } from '../../Models/Level/level.entity';
 import Dashboard from '../../Pages/Dashboard/Dashboard';
+import DashboardNew from '../../Pages/DashboardNew/DashboardNew';
 
 export interface Route {
 	path: string;
@@ -239,7 +240,7 @@ const useRoutes = () => {
 	const auth_routes = asAuthRoutes(<SignIn></SignIn>, {
 		dashboard: {
 			path: '/dashboard',
-			component: <Dashboard></Dashboard>,
+			component: <DashboardNew></DashboardNew>,
 		},
 		create_classroom: {
 			accountType: Professor,

@@ -57,8 +57,4 @@ export const StyledCardContainer = styled.div`
 	.card-container-body-centered {
 		min-height: ${({ height }: StyledCardContainerProps) => height ?? 'auto'};
 	}
-
-	.card-container-row {
-		justify-content: center;
-	}
 `;

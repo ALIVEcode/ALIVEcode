@@ -5,8 +5,8 @@ const StyledContainer = styled.div`
 	display: table;
 	height: 100%;
 	width: 100%;
-	margin-top: -50px;
-	padding: 50px 0 0 0; /*set left/right padding according to needs*/
+	margin-top: -60px;
+	padding: 60px 0 0 0; /*set left/right padding according to needs*/
 	box-sizing: border-box;
 `;
 

@@ -51,14 +51,17 @@ const Classroom = ({ classroomProp, ...props }: ClassroomProps) => {
 	const forceUpdate = useForceUpdate();
 
 	useEffect(() => {
-		if (!id) return;
 		const getClassroom = async () => {
 			try {
-				const classroom =
-					classroomProp ??
-					(await api.db.classrooms.get({
+				let classroom = classroomProp;
+
+				if (!classroom) {
+					if (!id) return;
+					classroom = await api.db.classrooms.get({
 						id,
-					}));
+					});
+				}
+
 				await classroom.getStudents();
 				await classroom.getCourses();
 				setClassroom(classroom);

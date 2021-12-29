@@ -45,7 +45,7 @@ const ClassroomHeader = ({ className, classroom }: ClassroomHeaderProps) => {
 
 	return (
 		<StyledClassroomHeader className={className} fluid>
-			<Row className="header-row no-gutters">
+			<Row className="header-row g-0">
 				<Col md={6} className="classroom-title">
 					<label className="classroom-title-name">{classroom.name}</label>
 					<label className="classroom-title-desc">

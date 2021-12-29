@@ -32,6 +32,7 @@ import {
 } from '../../state/contexts/DashboardContext';
 import { Course } from '../../Models/Course/course.entity';
 import { useNavigate } from 'react-router-dom';
+import useRoutes from '../../state/hooks/useRoutes';
 
 const SwitchTabReducer = (
 	state: { index: number; classroom?: ClassroomModel },
@@ -62,6 +63,7 @@ const SwitchTabReducer = (
 const DashboardNew = (props: DashboardNewProps) => {
 	const { user } = useContext(UserContext);
 	const { t } = useTranslation();
+	const { routes } = useRoutes();
 	const [classrooms, setClassrooms] = useState<ClassroomModel[]>([]);
 	const [formJoinClassOpen, setFormJoinClassOpen] = useState(false);
 	const [hoveringClassroom, setHoveringClassroom] = useState(false);
@@ -196,7 +198,16 @@ const DashboardNew = (props: DashboardNewProps) => {
 							<FontAwesomeIcon className="sidebar-icon" icon={faBook} />
 							<label className="sidebar-header-text">Classes</label>
 							{hoveringClassroom && (
-								<FontAwesomeIcon className="sidebar-icon-right" icon={faPlus} />
+								<FontAwesomeIcon
+									onClick={() =>
+										user?.isProfessor()
+											? navigate(routes.auth.create_classroom.path)
+											: setFormJoinClassOpen(true)
+									}
+									className="sidebar-icon-right"
+									tw="cursor-pointer"
+									icon={faPlus}
+								/>
 							)}
 						</div>
 

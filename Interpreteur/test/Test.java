@@ -1,6 +1,3 @@
-package test;
-
-import interpreteur.as.erreurs.ASErreur;
 import interpreteur.data_manager.Data;
 import interpreteur.executeur.Executeur;
 import org.json.JSONArray;
@@ -9,7 +6,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.IllegalFormatException;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 

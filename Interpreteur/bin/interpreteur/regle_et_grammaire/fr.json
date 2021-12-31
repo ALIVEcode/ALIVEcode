@@ -1,0 +1,11 @@
+{
+  "error": {
+  },
+  "module": {
+    "builtins": {
+      "print": "afficher",
+      "wait": "attendre",
+      "sum": "somme"
+    }
+  }
+}

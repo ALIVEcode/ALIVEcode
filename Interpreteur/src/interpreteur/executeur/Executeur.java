@@ -48,6 +48,8 @@ afficher "fin"
 public class Executeur {
 
     private final static int MAX_DATA_BEFORE_SEND;
+    // coordonne ou commencer tous les programmes
+    final private static Coordonnee debutCoord = new Coordonnee("<0>main");
 
     static {
         Dotenv dotenv = Dotenv.configure()
@@ -56,8 +58,6 @@ public class Executeur {
         MAX_DATA_BEFORE_SEND = Integer.parseInt(dotenv.get("MAX_DATA_BEFORE_SEND"));
     }
 
-    // coordonne ou commencer tous les programmes
-    final private static Coordonnee debutCoord = new Coordonnee("<0>main");
     // lexer et parser
     private final ASLexer lexer;
     //------------------------ compilation -----------------------------//
@@ -70,23 +70,21 @@ public class Executeur {
 
     // data explaining the actions to do to the com.server
     private final ArrayList<Data> datas = new ArrayList<>();
-
-    private JSONObject context = null;
-
     // data stack used when the program asks the site for information
     private final Stack<Object> dataResponse = new Stack<>();
+    // ast
+    private final ASAst ast;
     //debug mode
     public boolean debug = false;
+    private JSONObject context = null;
     private String[] anciennesLignes = null;
     // failsafe
     private boolean compilationActive = false;
     private boolean executionActive = false;
     private boolean canExecute = false;
-    // ast
-    private final ASAst ast;
 
     public Executeur() {
-        lexer =  new ASLexer();
+        lexer = new ASLexer();
         asModuleManager = new ASModuleManager(this);
         ast = new ASAst(this);
     }
@@ -128,19 +126,13 @@ public class Executeur {
         System.out.println();
     }
 
-    /**
-     * @return le lexer utilise par l'interpreteur (voir ASLexer)
-     */
-    public ASLexer getLexer() {
-        return lexer;
-    }
-
     public static void main(String[] args) {
 
 
         String[] lines = """
                 var maVariable = 10
                 si maVariable == 10 alors
+                    afficher maVariable
                 fin si
                 """.split("\n");
 
@@ -159,6 +151,13 @@ public class Executeur {
         if (!(a2 = executeur2.compiler(lines, true)).equals("[]")) System.out.println(a2);
         // executeur.printCompileDict();
         System.out.println(executeur2.executerMain(false));*/
+    }
+
+    /**
+     * @return le lexer utilise par l'interpreteur (voir ASLexer)
+     */
+    public ASLexer getLexer() {
+        return lexer;
     }
 
     // methode utilisee a chaque fois qu'une info doit etre afficher par le langage
@@ -204,9 +203,14 @@ public class Executeur {
             for (var param : additionnalParams)
                 dataToGet.addParam(param);
             throw new ASErreur.StopGetInfo(dataToGet);
-        }
-        else
+        } else
             return this.dataResponse.pop();
+    }
+
+    public JSONObject getContext() {
+        if (context == null)
+            throw new ASErreur.ErreurContexteAbsent("Il n'y a pas de contexte");
+        return context;
     }
 
     public void setContext(JSONObject context) {
@@ -214,12 +218,6 @@ public class Executeur {
             throw new IllegalArgumentException("aaaaa");
         }
         this.context = context;
-    }
-
-    public JSONObject getContext() {
-        if (context == null)
-            throw new ASErreur.ErreurContexteAbsent("Il n'y a pas de contexte");
-        return context;
     }
 
     public Object pushDataResponse(Object item) {
@@ -265,6 +263,10 @@ public class Executeur {
 
     public ASModuleManager getAsModuleManager() {
         return asModuleManager;
+    }
+
+    public ArrayList<Data> getDatas() {
+        return datas;
     }
 
     /**
@@ -553,7 +555,7 @@ public class Executeur {
                 }
 
                 if (datas.size() >= MAX_DATA_BEFORE_SEND) {
-                    synchronized(datas) {
+                    synchronized (datas) {
                         return datas.toString();
                     }
                 }

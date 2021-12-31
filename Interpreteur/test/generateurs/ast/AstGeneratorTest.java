@@ -1,4 +1,4 @@
-package test.generateurs.ast;
+package generateurs.ast;
 
 import interpreteur.as.ASAst;
 import interpreteur.as.ASLexer;

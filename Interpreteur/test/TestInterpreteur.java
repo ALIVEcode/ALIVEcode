@@ -1,5 +1,3 @@
-package test;
-
 import interpreteur.as.erreurs.ASErreur;
 
 import java.util.stream.Stream;

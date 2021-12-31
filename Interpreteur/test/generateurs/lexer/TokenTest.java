@@ -1,4 +1,4 @@
-package test.generateurs.lexer;
+package generateurs.lexer;
 
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,4 @@
-package test.utils;
+package utils;
 
 import interpreteur.utils.Range;
 import interpreteur.utils.StringUtils;

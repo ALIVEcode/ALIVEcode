@@ -4,6 +4,8 @@ package interpreteur.data_manager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.stream.IntStream;
+
 public class Data extends JSONObject {
     /*----------------------------- ID de data -----------------------------*/
 
@@ -21,6 +23,12 @@ public class Data extends JSONObject {
         this.put("p", new JSONArray());
     }
 
+    public static Data endOfExecution() {
+        Data endOfExecutionData = new Data(Id.ARRETER);
+        endOfExecutionData.put("id", 0);
+        return endOfExecutionData;
+    }
+
     public Data addParam(Object val) {
         this.getJSONArray("p").put(val);
         return this;
@@ -31,10 +39,16 @@ public class Data extends JSONObject {
         return this;
     }
 
-    public static Data endOfExecution() {
-        Data endOfExecutionData = new Data(Id.ARRETER);
-        endOfExecutionData.put("id", 0);
-        return endOfExecutionData;
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof JSONObject data)) return false;
+        var dataParams = data.getJSONArray("p");
+        var thisParams = this.getJSONArray("p");
+        return data.getInt("id") == this.getInt("id")
+                && data.getInt("d") == this.getInt("d")
+                && IntStream.range(0, dataParams.length())
+                .allMatch(idx -> dataParams.get(idx).equals(thisParams.get(idx)));
     }
 
     /**

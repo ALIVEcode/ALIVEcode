@@ -2,10 +2,20 @@ package executeur;
 
 import interpreteur.executeur.Executeur;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import result.Result;
 
+/**
+ * C'est dans cette classe que les différents aspects d'alivescript seront testés
+ */
 public class ExectueurTest {
+    private Executeur executeur;
+
+    @BeforeEach
+    public void setup() {
+        executeur = new Executeur();
+    }
 
     @Test
     public void test() {
@@ -21,7 +31,6 @@ public class ExectueurTest {
                                 
                 """.split("\n");
 
-        Executeur executeur = new Executeur();
         Object a = executeur.compiler(lines, true);
         Assertions.assertNotEquals("[]", a, a.toString());
 

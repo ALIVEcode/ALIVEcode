@@ -132,7 +132,9 @@ public class AstGenerator {
         hasSafeSyntax(expressionArray.stream().filter(e -> e instanceof Token).toArray(Token[]::new));
 
         for (String regleSyntaxeEtVariante : ordreRegleSyntaxe) {
-            for (String regleSyntaxe : regleSyntaxeEtVariante.split("~")) {
+            String[] split = regleSyntaxeEtVariante.split("~");
+            for (int idxVariante = 0; idxVariante < split.length; idxVariante++) {
+                String regleSyntaxe = split[idxVariante];
                 regleSyntaxe = regleSyntaxe.trim();
 
                 List<String> membresRegleSyntaxe = Arrays.asList(regleSyntaxe.split(" "));
@@ -171,7 +173,7 @@ public class AstGenerator {
                         // expr.stream().map(Object::toString).forEach(Executeur::printCompiledCode);
 
 
-                        Expression<?> capsule = (Expression<?>) expressionsDict.get(regleSyntaxeEtVariante).apply(new ArrayList<>(expr));
+                        Expression<?> capsule = (Expression<?>) expressionsDict.get(regleSyntaxeEtVariante).apply(new ArrayList<>(expr), idxVariante);
                         //System.out.println(capsule);
 
                         ArrayList<Object> newArray = new ArrayList<>(expressionArray.subList(0, debut));
@@ -212,7 +214,7 @@ public class AstGenerator {
                              */
                             //System.out.println("expr ->" + expression + " : " + expressionArray.subList(debut, fin));
 
-                            Expression<?> capsule = (Expression<?>) regleSyntaxeDispo.get(regleSyntaxeEtVariante).apply(expressionArray.subList(debut, exprLength));
+                            Expression<?> capsule = (Expression<?>) regleSyntaxeDispo.get(regleSyntaxeEtVariante).apply(expressionArray.subList(debut, exprLength), 0);
                             //System.out.println(capsule);
 
                             ArrayList<Object> newArray = new ArrayList<>(debut != 0 ? expressionArray.subList(0, debut) : new ArrayList<>());
@@ -390,7 +392,7 @@ public class AstGenerator {
             throw new ASErreur.ErreurSyntaxe("Syntaxe invalide. Est-ce qu'il manque une virgule entre deux \u00E9l\u00E9ments?");
         }
 
-        return (Programme) programmesDict.get(programme).apply(finalLine);
+        return (Programme) programmesDict.get(programme).apply(finalLine, 0);
     }
 
     public String obtenirProgramme(List<Token> listToken) {

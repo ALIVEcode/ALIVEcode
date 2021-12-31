@@ -11,10 +11,16 @@ public class ArraysUtils {
         return String.join(delemiter, Arrays.stream(array).map(Object::toString).toArray(String[]::new));
     }
 
+    @SuppressWarnings("unchecked")
+    public static <T> T[] append(T[] array, T otherElement) {
+        var ls = Arrays.asList(array);
+        ls.add(otherElement);
+        return (T[]) ls.toArray();
+    }
+
     /**
-     *
-     * @param list the collection checked
-     * @param open the openning symbol
+     * @param list  the collection checked
+     * @param open  the openning symbol
      * @param close the closing symbol
      * @return null if there are no openning symbol or the first openning symbol is before the last closing symbol
      */

@@ -1,6 +1,7 @@
 package result;
 
 import interpreteur.data_manager.Data;
+import interpreteur.utils.ArraysUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -44,12 +45,12 @@ public record Result(JSONArray resultData) {
 
     //----------------- car movement -----------------//
 
-    public static Data carForeward(int duration) {
-        return new Data(Data.Id.AVANCER).addParam(duration);
+    public static Data carForeward(Integer duration) {
+        return new Data(Data.Id.AVANCER).addParam(duration).addDodo(Objects.requireNonNullElse(duration, 0));
     }
 
-    public static Data carBackward(int duration) {
-        return new Data(Data.Id.RECULER).addParam(duration);
+    public static Data carBackward(Integer duration) {
+        return new Data(Data.Id.RECULER).addParam(duration).addDodo(Objects.requireNonNullElse(duration, 0));
     }
 
     public static Data carLeft(int duration) {
@@ -65,6 +66,11 @@ public record Result(JSONArray resultData) {
     }
 
     //----------------- end car movement -----------------//
+
+    public void expectToEndAfter(Data... actions) {
+        actions = ArraysUtils.append(actions, end());
+        Assert.assertArrayEquals(actions, IntStream.range(0, resultData.length()).mapToObj(resultData::get).toArray());
+    }
 
     public void expectTo(Data... actions) {
         Assert.assertArrayEquals(actions, IntStream.range(0, resultData.length()).mapToObj(resultData::get).toArray());

@@ -3,12 +3,13 @@ package interpreteur.ast;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
  * @author Mathis Laroche
  */
-public abstract class Ast<T> implements Function<List<Object>, T> {
+public abstract class Ast<T> implements BiFunction<List<Object>, Integer, T> {
     private final Hashtable<String, Ast<?>> sous_asts = new Hashtable<>();
     private int importance;
 
@@ -49,5 +50,5 @@ public abstract class Ast<T> implements Function<List<Object>, T> {
     }
 
     @Override
-    public abstract T apply(List<Object> p);
+    public abstract T apply(List<Object> p, Integer idxVariante);
 }

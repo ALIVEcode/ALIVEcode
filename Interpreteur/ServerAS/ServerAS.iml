@@ -23,5 +23,6 @@
     <orderEntry type="library" name="annotations-19.0.0" level="project" />
     <orderEntry type="library" name="javax.websocket-api-1.1" level="project" />
     <orderEntry type="library" name="snakeyaml-1.28" level="project" />
+    <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
   </component>
 </module>

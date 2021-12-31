@@ -67,10 +67,6 @@ public record Result(JSONArray resultData) {
 
     //----------------- end car movement -----------------//
 
-    public void expectToEndAfter(Data... actions) {
-        actions = ArraysUtils.append(actions, end());
-        Assert.assertArrayEquals(actions, IntStream.range(0, resultData.length()).mapToObj(resultData::get).toArray());
-    }
 
     public void expectTo(Data... actions) {
         Assert.assertArrayEquals(actions, IntStream.range(0, resultData.length()).mapToObj(resultData::get).toArray());

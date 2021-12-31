@@ -10,6 +10,7 @@ import interpreteur.utils.ArraysUtils;
 import interpreteur.utils.Range;
 
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -297,7 +298,7 @@ public class AstGenerator {
         return nouveauPattern;  // on retourne le pattern avec les categories changees
     }
 
-    protected void ajouterProgramme(String pattern, Ast<?> fonction) {
+    protected void ajouterProgramme(String pattern, Ast<? extends Programme> fonction) {
         for (String programme : pattern.split("~")) {
             var sousAstCopy = new Hashtable<>(fonction.getSousAst());
             for (String p : sousAstCopy.keySet()) {
@@ -311,10 +312,39 @@ public class AstGenerator {
         }
     }
 
-    protected void ajouterExpression(String pattern, Ast<?> fonction) {
+    protected void ajouterProgramme(String pattern, BiFunction<List<Object>, Integer, ? extends Programme> fonction) {
+        var ast = new Ast<Programme>() {
+            @Override
+            public Programme apply(List<Object> p, Integer idxVariante) {
+                return fonction.apply(p, idxVariante);
+            }
+        };
+        for (String programme : pattern.split("~")) {
+            ast.setImportance(cptrProg++);
+            String nouveauPattern = remplacerCategoriesParMembre(programme);
+            programmesDict.put(nouveauPattern, ast); // remplace les categories par ses membres, s'il n'y a pas de categorie, ne modifie pas le pattern
+            ordreProgrammes.add(nouveauPattern);
+        }
+    }
+
+    protected void ajouterExpression(String pattern, Ast<? extends Expression<?>> fonction) {
         String nouveauPattern = remplacerCategoriesParMembre(pattern);
         fonction.setImportance(cptrExpr++);
         expressionsDict.put(nouveauPattern, fonction);
+        ordreExpressions.add(nouveauPattern);
+    }
+
+
+    protected void ajouterExpression(String pattern, BiFunction<List<Object>, Integer, ? extends Expression<?>> fonction) {
+        var ast = new Ast<Expression<?>>() {
+            @Override
+            public Expression<?> apply(List<Object> p, Integer idxVariante) {
+                return fonction.apply(p, idxVariante);
+            }
+        };
+        String nouveauPattern = remplacerCategoriesParMembre(pattern);
+        ast.setImportance(cptrExpr++);
+        expressionsDict.put(nouveauPattern, ast);
         ordreExpressions.add(nouveauPattern);
     }
 

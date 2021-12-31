@@ -25,6 +25,8 @@ public class ExectueurTest {
                                 
                 afficher((decimal(nb) + decimal(nb2)) / 2)
                                 
+                afficher 25 % 3
+                                
                 utiliser Math
                                 
                 afficher Math.sin(90)
@@ -37,6 +39,7 @@ public class ExectueurTest {
         var result = executeur.executerMain(false);
         new Result(result).expectTo(
                 Result.print((12 + 74) / 2.0),
+                Result.print(1),
                 Result.print(Math.sin(Math.toRadians(90))),
                 Result.end()
         );

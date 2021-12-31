@@ -42,12 +42,7 @@ public class ASAst extends AstGenerator {
 
 
     protected void ajouterProgrammes() {
-        ajouterProgramme("", new Ast<NullType>() {
-            @Override
-            public NullType apply(List<Object> p, Integer idxVariante) {
-                return null;
-            }
-        });
+        ajouterProgramme("", (List<Object> p, Integer idxVariante) -> Programme.evalExpression(new Expression.ExpressionVide(), "vide"));
 
         ajouterProgramme("UTILISER expression~"
                         + "UTILISER expression BRACES_OUV expression BRACES_FERM",
@@ -725,20 +720,12 @@ public class ASAst extends AstGenerator {
                 });
 
         ajouterExpression("!expression PLUS expression",
-                new Ast<UnaryOp>() {
-                    @Override
-                    public UnaryOp apply(List<Object> p, Integer idxVariante) {
-                        return new UnaryOp((Expression<?>) p.get(1), UnaryOp.Operation.PLUS);
-                    }
-                });
+                (List<Object> p, Integer idxVariante) -> new UnaryOp((Expression<?>) p.get(1), UnaryOp.Operation.PLUS)
+        );
 
-
-        ajouterExpression("expression MOD expression", new Ast<BinOp>() {
-            @Override
-            public BinOp apply(List<Object> p, Integer idxVariante) {
-                return new BinOp((Expression<?>) p.get(0), BinOp.Operation.MOD, (Expression<?>) p.get(2));
-            }
-        });
+        ajouterExpression("expression MOD expression",
+                (List<Object> p, Integer idxVariante) -> new BinOp((Expression<?>) p.get(0), BinOp.Operation.MOD, (Expression<?>) p.get(2))
+        );
 
 
         ajouterExpression("expression POW expression", new Ast<BinOp>() {

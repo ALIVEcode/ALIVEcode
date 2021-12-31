@@ -12,7 +12,7 @@ import java.util.stream.IntStream;
 
 public record Result(JSONArray resultData) {
 
-    public static Data printMsg(Object message) {
+    public static Data print(Object message) {
         return new Data(Data.Id.AFFICHER).addParam(message.toString());
     }
 
@@ -38,7 +38,7 @@ public record Result(JSONArray resultData) {
         return data;
     }
 
-    public static Data endExecution() {
+    public static Data end() {
         return Data.endOfExecution();
     }
 

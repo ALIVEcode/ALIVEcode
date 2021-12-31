@@ -34,6 +34,7 @@ public class Data extends JSONObject {
         return this;
     }
 
+    @Deprecated
     public Data addDodo(double dodo) {
         this.put("d", dodo);
         return this;

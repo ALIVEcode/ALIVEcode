@@ -1,13 +1,9 @@
 package executeur;
 
 import interpreteur.executeur.Executeur;
-import interpreteur.generateurs.ast.AstGenerator;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import result.Result;
-
-import java.util.ArrayList;
 
 public class ExectueurTest {
 
@@ -31,9 +27,9 @@ public class ExectueurTest {
 
         var result = executeur.executerMain(false);
         new Result(result).expectTo(
-                Result.printMsg((12 + 74) / 2.0),
-                Result.printMsg(Math.sin(Math.toRadians(90))),
-                Result.endExecution()
+                Result.print((12 + 74) / 2.0),
+                Result.print(Math.sin(Math.toRadians(90))),
+                Result.end()
         );
         System.out.println(result);
     }

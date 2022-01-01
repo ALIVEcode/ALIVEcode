@@ -81,16 +81,16 @@ const LevelAlive = ({ initialCode }: LevelAliveProps) => {
 		<>
 			{level ? (
 				<StyledAliveLevel>
-					<div tw="h-full flex flex-row">
+					<div className="h-full flex flex-row">
 						{/* Left Side of screen */}
-						<div tw="w-1/2 h-full flex flex-col">
+						<div className="w-1/2 h-full flex flex-col">
 							{/* Barre d'infos du niveau */}
 							<LevelToolsBar />
 							{/* Interface de code */}
 							{editMode ? (
 								/* Interface du code avec les tabs */
 								<LineInterface
-									tw="flex-1"
+									className="flex-1"
 									hasTabs
 									tabs={[
 										{
@@ -125,8 +125,8 @@ const LevelAlive = ({ initialCode }: LevelAliveProps) => {
 						{/* Right Side of screen 
 							  Contains the graph and the console
 						*/}
-						<div tw="flex flex-col w-1/2">
-							<div tw="h-3/5 w-full" id="simulation-row">
+						<div className="flex flex-col w-1/2">
+							<div className="h-3/5 w-full" id="simulation-row">
 								{executor && level.layout && (
 									<Simulation
 										id={level.id}
@@ -152,7 +152,7 @@ const LevelAlive = ({ initialCode }: LevelAliveProps) => {
 									/>
 								)}
 							</div>
-							<div tw="h-2/5 flex-1">
+							<div className="h-2/5 flex-1">
 								<Cmd ref={cmdRef} />
 							</div>
 						</div>

@@ -205,7 +205,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 											: setFormJoinClassOpen(true)
 									}
 									className="sidebar-icon-right"
-									tw="cursor-pointer"
+									className="cursor-pointer"
 									icon={faPlus}
 								/>
 							)}

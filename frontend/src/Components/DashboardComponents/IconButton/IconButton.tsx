@@ -42,7 +42,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
 				{props.children && (
 					<label
 						onClick={() => to && navigate(to)}
-						tw="m-1 mr-2 cursor-pointer"
+						className="m-1 mr-2 cursor-pointer"
 					>
 						{props.children}
 					</label>

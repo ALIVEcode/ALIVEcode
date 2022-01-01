@@ -16,7 +16,7 @@ const CourseCard = ({ course }: CourseCardProps) => {
 	return (
 		<StyledCourseCard
 			onClick={() => goTo(routes.auth.course.path.replace(':id', course.id))}
-			tw="shadow-lg"
+			className="shadow-lg"
 		>
 			<div className="top-card">
 				<FontAwesomeIcon icon={course.getSubjectIcon()} />

@@ -30,8 +30,8 @@ const LevelTable = (props: LevelTableProps) => {
   }
 
   return (
-    <StyledLevelTable tw="w-full h-full p-4">
-      <div tw="w-full h-full overflow-y-auto">
+    <StyledLevelTable className="w-full h-full p-4">
+      <div className="w-full h-full overflow-y-auto">
         <table className="table">
           <tbody className="body">
             <tr>

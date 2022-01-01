@@ -76,9 +76,9 @@ const Simulation = ({
 
 	return (
 		<StyledSimulation>
-			<div tw="h-full w-full" id={id}>
+			<div className="h-full w-full" id={id}>
 				<FontAwesomeIcon
-					tw="absolute top-2 right-2"
+					className="absolute top-2 right-2"
 					className="zoom-button"
 					icon={faExpand}
 					size="2x"
@@ -87,7 +87,7 @@ const Simulation = ({
 				{$(`#${id}`).length ? (
 					<>
 						<ReactP5Wrapper
-							tw="w-full h-full bg-white"
+							className="w-full h-full bg-white"
 							fullscreenDiv="fullscreen-div"
 							canvasDiv={$(`#${id}`)}
 							zoomButton={''}

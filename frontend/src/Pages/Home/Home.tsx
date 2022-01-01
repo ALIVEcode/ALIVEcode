@@ -57,7 +57,7 @@ const Home = (props: HomeProps) => {
 				/>
 			</svg>
 			<ul className="nav">
-				<li>About</li>
+				<li className="text-xl">About</li>
 				<li>Trainings</li>
 				<li>News</li>
 			</ul>

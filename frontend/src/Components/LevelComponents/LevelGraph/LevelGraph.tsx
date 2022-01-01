@@ -19,7 +19,7 @@ const LevelGraph = memo((props: LevelGraphProps) => {
 	// Chart.defaults.font.weight = 'bold';
 
 	return (
-		<div tw="w-full h-full flex items-center justify-center p-4 pl-0">
+		<div className="w-full h-full flex items-center justify-center p-4 pl-0">
 			<Scatter
 				color="black"
 				className="graph"

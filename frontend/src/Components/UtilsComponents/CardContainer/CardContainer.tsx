@@ -51,9 +51,9 @@ const CardContainer = ({
 			<div className="card-container-title">
 				{title} {icon && <IconButton icon={icon} onClick={onIconClick} />}
 			</div>
-			<div className="card-container-body" tw="w-full h-full">
+			<div className="card-container-body" className="w-full h-full">
 				{asRow ? (
-					<div tw="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-items-center">
+					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-items-center">
 						{children}
 					</div>
 				) : (

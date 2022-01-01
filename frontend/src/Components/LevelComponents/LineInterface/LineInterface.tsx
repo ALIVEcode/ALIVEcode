@@ -61,7 +61,7 @@ const LineInterface = memo(
 		};
 
 		return (
-			<StyledLineInterface theme={theme} tw="flex flex-col h-full">
+			<StyledLineInterface theme={theme} className="flex flex-col h-full">
 				{hasTabs && (
 					<div className="editors-tab-bg w-100">
 						<div className="editors-tab w-100">

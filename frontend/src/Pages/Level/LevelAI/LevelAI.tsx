@@ -208,9 +208,9 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 	return (
 		<>
 			<StyledAliveLevel>
-				<div tw="h-full flex flex-row">
+				<div className="h-full flex flex-row">
 					{/* Left Side of screen */}
-					<div tw="w-1/2 h-full flex flex-col">
+					<div className="w-1/2 h-full flex flex-col">
 						{/* Barre d'infos du niveau */}
 						<LevelToolsBar />
 						{/* Interface de code */}
@@ -252,16 +252,19 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 					{/* Right Side of screen 
 							Contains the graph and the console
 					*/}
-					<div tw="flex flex-col w-1/2">
-						<div tw="h-3/5 w-full flex flex-row" className="data-section">
-							<div tw="w-1/3 h-full">
+					<div className="flex flex-col w-1/2">
+						<div
+							className="h-3/5 w-full flex flex-row"
+							className="data-section"
+						>
+							<div className="w-1/3 h-full">
 								<LevelTable
 									data={data}
 									xData="Énergie utilisée (kWh)"
 									yData="Distance parcourue (km)"
 								/>
 							</div>
-							<div tw="w-2/3 h-full">
+							<div className="w-2/3 h-full">
 								<LevelGraph
 									data={chartData}
 									title="Distance parcourue selon l'énergie utilisée"
@@ -270,7 +273,7 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 								/>
 							</div>
 						</div>
-						<div tw="h-2/5 flex-1" className="command">
+						<div className="h-2/5 flex-1" className="command">
 							<Cmd ref={cmdRef}></Cmd>
 						</div>
 					</div>

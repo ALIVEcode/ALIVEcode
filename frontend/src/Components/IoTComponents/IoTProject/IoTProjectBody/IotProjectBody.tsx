@@ -95,14 +95,17 @@ const IoTProjectBody = ({ noTopRow }: { noTopRow?: boolean }) => {
 
 	if (!socket || !project) return <LoadingScreen />;
 	return (
-		<div tw="flex-1" style={{ backgroundColor: 'var(--background-color)' }}>
-			<div tw="flex flex-col h-full items-center">
-				<div tw="p-5">
+		<div
+			className="flex-1"
+			style={{ backgroundColor: 'var(--background-color)' }}
+		>
+			<div className="flex flex-col h-full items-center">
+				<div className="p-5">
 					{canEdit && (
 						<Button
 							variant="secondary"
 							onClick={() => setOpenComponentCreator(!openComponentCreator)}
-							tw="mr-2"
+							className="mr-2"
 						>
 							Add a component
 						</Button>
@@ -118,7 +121,7 @@ const IoTProjectBody = ({ noTopRow }: { noTopRow?: boolean }) => {
 						Copy Project Id
 					</Button>
 				</div>
-				<div tw="p-2 pt-0 w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+				<div className="p-2 pt-0 w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
 					{components.map((c, idx) => (
 						<IoTGenericComponent
 							key={idx}

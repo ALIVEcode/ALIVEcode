@@ -189,11 +189,11 @@ const useRoutes = () => {
 			maintenanceExempt: true,
 			component: <MaintenanceMenu></MaintenanceMenu>,
 		},
-		question: {
+		forum_post: {
 			path: '/forum/post/:id',
 			component: <ForumPost></ForumPost>,
 		},
-		subject_list: {
+		forum_subject_list: {
 			path: '/forum/subjectList/:id',
 			component: <ForumSubjectList></ForumSubjectList>,
 		},

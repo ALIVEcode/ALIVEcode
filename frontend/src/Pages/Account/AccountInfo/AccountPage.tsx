@@ -4,7 +4,7 @@ import { UserContext } from '../../../state/contexts/UserContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CenteredContainer from '../../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
 import CardContainer from '../../../Components/UtilsComponents/CardContainer/CardContainer';
-import { Form, Row } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import styled from 'styled-components';
 import AboutCard from '../../../Components/UtilsComponents/Cards/AboutCard/AboutCard';
 import axios from 'axios';
@@ -36,7 +36,7 @@ const AccountPage = () => {
 	return (
 		<>
 			<StyledCenteredContainer>
-				<Row>
+				<div>
 					<div className="col-md-6">
 						<div className="pb-5">
 							<CardContainer title="Profil">
@@ -44,29 +44,29 @@ const AccountPage = () => {
 									<FontAwesomeIcon icon={faSpinner} />
 								) : (
 									<>
-										<Row>
+										<div>
 											<AboutCard
 												name={user.getDisplayName()}
 												img={`http://localhost:8000/uploads/${user.getDisplayImage()}`}
 											/>
-										</Row>
+										</div>
 										<Form onSubmit={handleSubmit(onSubmit)}>
-											<Row>
+											<div>
 												<input
 													type="file"
 													{...register('file', { required: true })}
 												/>
-											</Row>
-											<Row>
+											</div>
+											<div>
 												<button type="submit">upload</button>
-											</Row>
+											</div>
 										</Form>
 									</>
 								)}
 							</CardContainer>
 						</div>
 					</div>
-				</Row>
+				</div>
 			</StyledCenteredContainer>
 		</>
 	);

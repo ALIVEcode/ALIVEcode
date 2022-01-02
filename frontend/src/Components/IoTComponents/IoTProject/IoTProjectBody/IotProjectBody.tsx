@@ -10,7 +10,6 @@ import {
 import { IoTSocket } from '../../../../Models/Iot/IoTProjectClasses/IoTSocket';
 import { classToPlain, plainToClass } from 'class-transformer';
 import { IoTComponent } from '../../../../Models/Iot/IoTProjectClasses/IoTComponent';
-import { Row, Container } from 'react-bootstrap';
 import api from '../../../../Models/api';
 import IoTGenericComponent from '../../IoTProjectComponents/IoTGenericComponent/IoTGenericComponent';
 import Modal from '../../../UtilsComponents/Modal/Modal';

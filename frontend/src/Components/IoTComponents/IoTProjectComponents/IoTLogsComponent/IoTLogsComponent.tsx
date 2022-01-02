@@ -3,7 +3,6 @@ import { formatDate } from '../../../../Types/formatting';
 import { useTranslation } from 'react-i18next';
 import { StyledIoTLogsComponent } from './iotLogsComponentTypes';
 import Button from '../../../UtilsComponents/Button/Button';
-import { Row } from 'react-bootstrap';
 
 const IoTLogsComponent = ({ component }: { component: IoTLogs }) => {
 	const { t } = useTranslation();
@@ -23,7 +22,7 @@ const IoTLogsComponent = ({ component }: { component: IoTLogs }) => {
 
 	return (
 		<StyledIoTLogsComponent>
-			<Row className="log-row">
+			<div className="log-row">
 				<div className="log-content">
 					<div className="log-entries">
 						{component.value.length <= 0 ? (
@@ -38,12 +37,12 @@ const IoTLogsComponent = ({ component }: { component: IoTLogs }) => {
 						)}
 					</div>
 				</div>
-			</Row>
-			<Row>
+			</div>
+			<div>
 				<Button onClick={() => component.clearLogs()} variant="danger">
 					Clear logs
 				</Button>
-			</Row>
+			</div>
 		</StyledIoTLogsComponent>
 	);
 };

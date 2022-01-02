@@ -1,4 +1,3 @@
-import { Row } from 'react-bootstrap';
 import { useMemo } from 'react';
 import { createDefaultIoTProgressBar } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTProgressBar';
 import { createDefaultIoTLogs } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTLogs';

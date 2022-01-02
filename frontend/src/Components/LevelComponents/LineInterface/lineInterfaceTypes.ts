@@ -5,6 +5,7 @@ export type LineInterfaceProps = {
 	hasTabs?: boolean;
 	tabs?: EditorTabModel[];
 	initialContent?: string;
+	className?: string;
 };
 
 export type EditorTabModel = {
@@ -32,8 +33,8 @@ export const StyledLineInterface = styled.div`
 
 	.ace-editor {
 		font-size: large;
-		width: auto !important;
-		height: auto !important;
+		width: 100% !important;
+		height: 100% !important;
 	}
 
 	.ace-cobalt .ace_gutter {

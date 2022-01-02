@@ -78,90 +78,84 @@ const LevelAlive = ({ initialCode }: LevelAliveProps) => {
 	if (!level) return <LoadingScreen></LoadingScreen>;
 
 	return (
-		<>
-			{level ? (
-				<StyledAliveLevel>
-					<div className="h-full flex flex-row">
-						{/* Left Side of screen */}
-						<div className="w-1/2 h-full flex flex-col">
-							{/* Barre d'infos du niveau */}
-							<LevelToolsBar />
-							{/* Interface de code */}
-							{editMode ? (
-								/* Interface du code avec les tabs */
-								<LineInterface
-									className="flex-1"
-									hasTabs
-									tabs={[
-										{
-											title: 'Initial Code',
-											open: true,
-											defaultContent: level.initialCode,
-											onChange: content => {
-												level.initialCode = content;
-												saveLevelTimed();
-											},
-										},
-										{
-											title: 'Solution',
-											open: false,
-											defaultContent: level.solution,
-											onChange: content => {
-												level.solution = content;
-												saveLevelTimed();
-											},
-										},
-									]}
-									handleChange={lineInterfaceContentChanges}
-								/>
-							) : (
-								/* Interface de code sans les tabs */
-								<LineInterface
-									initialContent={initialCode}
-									handleChange={lineInterfaceContentChanges}
-								/>
-							)}
-						</div>
-						{/* Right Side of screen 
+		<StyledAliveLevel>
+			<div className="h-full flex flex-row">
+				{/* Left Side of screen */}
+				<div className="w-1/2 h-full flex flex-col">
+					{/* Barre d'infos du niveau */}
+					<LevelToolsBar />
+					{/* Interface de code */}
+					{editMode ? (
+						/* Interface du code avec les tabs */
+						<LineInterface
+							className="flex-1"
+							hasTabs
+							tabs={[
+								{
+									title: 'Initial Code',
+									open: true,
+									defaultContent: level.initialCode,
+									onChange: content => {
+										level.initialCode = content;
+										saveLevelTimed();
+									},
+								},
+								{
+									title: 'Solution',
+									open: false,
+									defaultContent: level.solution,
+									onChange: content => {
+										level.solution = content;
+										saveLevelTimed();
+									},
+								},
+							]}
+							handleChange={lineInterfaceContentChanges}
+						/>
+					) : (
+						/* Interface de code sans les tabs */
+						<LineInterface
+							initialContent={initialCode}
+							handleChange={lineInterfaceContentChanges}
+						/>
+					)}
+				</div>
+				{/* Right Side of screen 
 							  Contains the graph and the console
 						*/}
-						<div className="flex flex-col w-1/2">
-							<div className="h-3/5 w-full" id="simulation-row">
-								{executor && level.layout && (
-									<Simulation
-										id={level.id}
-										init={s => {
-											executor.current?.init(s);
-											//setSketch(s);
-											executor.current?.loadLevelLayout(level?.layout ?? '[]');
-											executor.current?.stop();
-										}}
-										onChange={(s: any) => {
-											const newLayout = executor.current?.saveLayout(s);
-											if (!newLayout) {
-												alert.error(
-													'Une erreur est survenue lors de la sauvegarde du niveau',
-												);
-												return;
-											}
-											level!.layout = newLayout;
-											saveLevelTimed();
-										}}
-										stopExecution={() => executor.current?.stop()}
-										setShowConfetti={set => setShowConfetti(set)}
-									/>
-								)}
-							</div>
-							<div className="h-2/5 flex-1">
-								<Cmd ref={cmdRef} />
-							</div>
-						</div>
+				<div className="flex flex-col w-1/2">
+					<div className="h-3/5 w-full" id="simulation-row">
+						{executor && level.layout && (
+							<Simulation
+								id={level.id}
+								init={s => {
+									executor.current?.init(s);
+									//setSketch(s);
+									executor.current?.loadLevelLayout(level?.layout ?? '[]');
+									executor.current?.stop();
+								}}
+								onChange={(s: any) => {
+									const newLayout = executor.current?.saveLayout(s);
+									if (!newLayout) {
+										alert.error(
+											'Une erreur est survenue lors de la sauvegarde du niveau',
+										);
+										return;
+									}
+									level!.layout = newLayout;
+									saveLevelTimed();
+								}}
+								stopExecution={() => executor.current?.stop()}
+								setShowConfetti={set => setShowConfetti(set)}
+							/>
+						)}
 					</div>
-				</StyledAliveLevel>
-			) : (
-				<LoadingScreen />
-			)}
-		</>
+					<div className="h-2/5 flex-1">
+						<Cmd ref={cmdRef} />
+					</div>
+				</div>
+			</div>
+		</StyledAliveLevel>
 	);
 };
 

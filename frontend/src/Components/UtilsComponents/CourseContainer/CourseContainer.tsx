@@ -1,5 +1,4 @@
 import { CourseContainerProps } from './courseContainerTypes';
-import { Col, Container, Row } from 'react-bootstrap';
 import CourseCard from '../../CourseComponents/CourseCard/CourseCard';
 
 /**
@@ -22,15 +21,13 @@ import CourseCard from '../../CourseComponents/CourseCard/CourseCard';
  */
 const CourseContainer = ({ courses }: CourseContainerProps) => {
 	return (
-		<Container fluid className="h-100 mt-4 justify-content-start">
-			<Row>
+		<div className="h-full mt-4 justify-start">
+			<div className="grid phone:grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4 big:grid-cols-5 gap-4">
 				{courses.map((c, idx) => (
-					<Col key={idx} className="mb-5" xs={12} sm={6} md={4} lg={3} xl={2}>
-						<CourseCard course={c}></CourseCard>
-					</Col>
+					<CourseCard course={c}></CourseCard>
 				))}
-			</Row>
-		</Container>
+			</div>
+		</div>
 	);
 };
 

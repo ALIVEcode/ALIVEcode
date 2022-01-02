@@ -11,6 +11,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.order-1 {
+  order: initial !important;
+}
+
 p {
   margin-bottom: 0 !important;
 }

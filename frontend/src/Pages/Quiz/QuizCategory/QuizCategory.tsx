@@ -34,69 +34,63 @@ const QuizCategory = () => {
 
 	return (
 		<div>
-			<CenteredContainer
-				horizontally
-				textAlign="center"
-				style={{ paddingLeft: '250px', paddingRight: '250px' }}
-			>
-				<Card>
-					<Card.Body>
-						<Card.Title>{category?.name}</Card.Title>
-					</Card.Body>
-				</Card>
-				<Card>
-					<Card.Title>
-						<Container>
-							<Row>
-								<Col>{category?.quizzes.length} Quiz</Col>
-								<Col></Col>
-								<Col>
-									<Link to="/quiz/create">
-										<Button>Créer un Quiz</Button>
-									</Link>
-								</Col>
-							</Row>
-						</Container>
-					</Card.Title>
-					<Table striped bordered hover>
-						<thead>
-							<tr>
-								<th>Nom</th>
-								<th> # de Questions</th>
-							</tr>
-						</thead>
-						<tbody>
-							{category?.quizzes.map(quiz => {
-								return (
-									<tr>
-										<td>{quiz.name}</td>
-										<td>{quiz.questions.length}</td>
-										<td>
-											<Link to={`/quiz/play/${quiz.id}`}>
-												<Button>Play</Button>
-											</Link>
-										</td>
-										<td>
-											<Link to={`/quiz/edit/${quiz.id}`}>
-												<Button>Edit</Button>
-											</Link>
-										</td>
-										<td>
-											<Button
-												onClick={() => {
-													handleDelete(quiz.id);
-												}}
-											>
-												Delete
-											</Button>
-										</td>
-									</tr>
-								);
-							})}
-						</tbody>
-					</Table>
-				</Card>
-			</CenteredContainer>
+			<div className="p-4 bg-white">
+				<div>
+					<div className="text-2xl">{category?.name}</div>
+				</div>
+			</div>
+			<Card>
+				<Card.Title>
+					<Container>
+						<Row>
+							<Col>{category?.quizzes.length} Quiz</Col>
+							<Col></Col>
+							<Col>
+								<Link to="/quiz/create">
+									<Button>Créer un Quiz</Button>
+								</Link>
+							</Col>
+						</Row>
+					</Container>
+				</Card.Title>
+				<Table striped bordered hover>
+					<thead>
+						<tr>
+							<th>Nom</th>
+							<th> # de Questions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{category?.quizzes.map(quiz => {
+							return (
+								<tr>
+									<td>{quiz.name}</td>
+									<td>{quiz.questions.length}</td>
+									<td>
+										<Link to={`/quiz/play/${quiz.id}`}>
+											<Button>Play</Button>
+										</Link>
+									</td>
+									<td>
+										<Link to={`/quiz/edit/${quiz.id}`}>
+											<Button>Edit</Button>
+										</Link>
+									</td>
+									<td>
+										<Button
+											onClick={() => {
+												handleDelete(quiz.id);
+											}}
+										>
+											Delete
+										</Button>
+									</td>
+								</tr>
+							);
+						})}
+					</tbody>
+				</Table>
+			</Card>
 		</div>
 	);
 };

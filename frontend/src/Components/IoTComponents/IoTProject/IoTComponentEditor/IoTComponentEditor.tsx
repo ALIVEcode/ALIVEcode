@@ -1,4 +1,4 @@
-import { Col, Form, Row } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { IoTComponentEditorProps } from './iotComponentEditorTypes';
 import { IoTProgressBar } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTProgressBar';
 import IoTGenericComponent from '../../IoTProjectComponents/IoTGenericComponent/IoTGenericComponent';
@@ -160,8 +160,8 @@ const IoTComponentEditor = ({
 						</>
 					)}
 					{component.value.map(log => (
-						<Row>
-							<Col>
+						<div className="flex flex-row gap-4">
+							<div className="w-1/2">
 								<Form.Control
 									as="textarea"
 									className="mb-2"
@@ -171,8 +171,8 @@ const IoTComponentEditor = ({
 									}
 									disabled={!canEdit}
 								/>
-							</Col>
-							<Col>
+							</div>
+							<div className="w-1/2">
 								<DateTime
 									onChange={date => {
 										if (moment.isMoment(date)) {
@@ -185,8 +185,8 @@ const IoTComponentEditor = ({
 									className="date"
 									initialValue={log.date}
 								></DateTime>
-							</Col>
-						</Row>
+							</div>
+						</div>
 					))}
 					{component.value.length > 0 && (
 						<>

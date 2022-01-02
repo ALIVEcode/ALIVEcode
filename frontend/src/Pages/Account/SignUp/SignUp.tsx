@@ -108,7 +108,7 @@ const SignUp = ({ userType }: SignUpProps) => {
 					<Form.Text>{t('form.email.info')}</Form.Text>
 				</Form.Group>
 				{userType === USER_TYPES.PROFESSOR ? (
-					<Row>
+					<div className="flex flex-row gap-3">
 						<Form.Group as={Col}>
 							<Form.Label>{t('form.firstName.label')}</Form.Label>
 							<InputGroup hasValidation>
@@ -161,7 +161,7 @@ const SignUp = ({ userType }: SignUpProps) => {
 								</Form.Control.Feedback>
 							</InputGroup>
 						</Form.Group>
-					</Row>
+					</div>
 				) : (
 					<>
 						<Form.Group>

@@ -10,6 +10,7 @@ module.exports = (env, argv) => {
 
 	return {
 		entry: './src/index.tsx',
+		stats: 'errors-warnings',
 		output: {
 			path: path.join(__dirname, '/dist'),
 			filename: 'index.bundle.js',

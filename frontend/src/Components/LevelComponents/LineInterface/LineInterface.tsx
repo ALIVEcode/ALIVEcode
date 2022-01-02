@@ -27,6 +27,7 @@ const LineInterface = memo(
 		tabs: initialTabs,
 		initialContent,
 		handleChange,
+		className,
 	}: LineInterfaceProps) => {
 		/* Content for a multiple tabs interface */
 		const [tabs, setTabs] = useState<EditorTabModel[]>(() => {
@@ -61,7 +62,10 @@ const LineInterface = memo(
 		};
 
 		return (
-			<StyledLineInterface theme={theme} className="flex flex-col h-full">
+			<StyledLineInterface
+				theme={theme}
+				className={'flex flex-col h-full ' + className}
+			>
 				{hasTabs && (
 					<div className="editors-tab-bg w-100">
 						<div className="editors-tab w-100">

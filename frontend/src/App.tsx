@@ -89,8 +89,6 @@ const GlobalStyle = createGlobalStyle`
 	}}
 `;
 
-const StyledApp = styled.section``;
-
 const App = () => {
 	const [user, setUser] = useState<Student | Professor | null>(null);
 	const [playSocket, setPlaySocket] = useState<PlaySocket | null>(null);
@@ -220,11 +218,11 @@ const App = () => {
 				) : (
 					<UserContext.Provider value={providerValue}>
 						<Navbar handleLogout={async () => await logout()} />
-						<StyledApp theme={theme} className="h-100">
+						<section className="h-100">
 							<FillGrid>
 								<RouterSwitch />
 							</FillGrid>
-						</StyledApp>
+						</section>
 						{maintenance && !maintenance.hidden && (
 							<MaintenanceBar
 								onClose={() => setMaintenance({ ...maintenance, hidden: true })}

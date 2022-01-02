@@ -8,7 +8,6 @@ import {
 	useCallback,
 } from 'react';
 import { UserContext } from '../../state/contexts/UserContext';
-import { Col, Row } from 'react-bootstrap';
 import api from '../../Models/api';
 import FormModal from '../../Components/UtilsComponents/FormModal/FormModal';
 import JoinClassroomForm from '../../Components/ClassroomComponents/JoinClassroomForm/JoinClassroomForm';
@@ -165,8 +164,8 @@ const DashboardNew = (props: DashboardNewProps) => {
 	return (
 		<StyledDashboard>
 			<DashboardContext.Provider value={ctx}>
-				<Row className="dashboard-row" xs={1} md={2}>
-					<Col className="sidebar no-float" xs={12} md={2} sm={3}>
+				<div className="dashboard-row">
+					<div className="sidebar no-float phone:w-1/4 table:1/6 laptop:1/8 desktop:1/12">
 						<div
 							className={
 								'sidebar-btn ' +
@@ -204,8 +203,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 											? navigate(routes.auth.create_classroom.path)
 											: setFormJoinClassOpen(true)
 									}
-									className="sidebar-icon-right"
-									className="cursor-pointer"
+									className="sidebar-icon-right cursor-pointer"
 									icon={faPlus}
 								/>
 							)}
@@ -221,11 +219,9 @@ const DashboardNew = (props: DashboardNewProps) => {
 								classroom={classroom}
 							></ClassroomSection>
 						))}
-					</Col>
-					<Col className="content no-float" xs={12} md={10} sm={9}>
-						{renderTabSelected()}
-					</Col>
-				</Row>
+					</div>
+					<div>{renderTabSelected()}</div>
+				</div>
 			</DashboardContext.Provider>
 			<FormModal
 				title={t('form.join_classroom.title')}

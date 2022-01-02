@@ -1,5 +1,5 @@
 import { ClassroomHeaderProps, StyledClassroomHeader } from './classroomHeaderTypes';
-import { Alert, Badge, Col, Row } from 'react-bootstrap';
+import { Alert, Badge } from 'react-bootstrap';
 import Button from '../../UtilsComponents/Button/Button';
 import { useContext, useState } from 'react';
 import { UserContext } from '../../../state/contexts/UserContext';
@@ -45,16 +45,16 @@ const ClassroomHeader = ({ className, classroom }: ClassroomHeaderProps) => {
 
 	return (
 		<StyledClassroomHeader className={className} fluid>
-			<Row className="header-row g-0">
-				<Col md={6} className="classroom-title">
+			<div className="flex flex-row phone:flex-col justify-between">
+				<div className="classroom-title p-10">
 					<label className="classroom-title-name">{classroom.name}</label>
 					<label className="classroom-title-desc">
 						<Badge bg="primary">{prettyField(t('msg.professor'))}</Badge>{' '}
 						{classroom.creator.getDisplayName()}
 					</label>
-				</Col>
+				</div>
 
-				<Col md={6} className="classroom-buttons">
+				<div className="classroom-buttons p-10">
 					{user instanceof Professor ? (
 						<>
 							<div>
@@ -76,8 +76,8 @@ const ClassroomHeader = ({ className, classroom }: ClassroomHeaderProps) => {
 							</Button>
 						</div>
 					)}{' '}
-				</Col>
-			</Row>
+				</div>
+			</div>
 			<svg
 				id="visual"
 				viewBox="0 0 960 200"

@@ -1,7 +1,6 @@
 import { IoTProjectTabs, StyledIoTProject } from './iotProjectPageTypes';
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import LoadingScreen from '../../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
-import { Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRoute, faCog, faPlug } from '@fortawesome/free-solid-svg-icons';
 import IoTProjectBody from '../../../Components/IoTComponents/IoTProject/IoTProjectBody/IotProjectBody';
@@ -39,14 +38,13 @@ const IoTProjectPage = () => {
 
 	return (
 		<StyledIoTProject className="w-full h-full flex flex-col md:flex-row">
-			<div className="block order-2 md:order-1" id="project-details">
+			<div className="block order-1 phone:order-2" id="project-details">
 				<div className="project-name">{project.name}</div>
-				<div className="flex flex-row" className="project-details-body">
-					<div className="flex flex-col" className="project-details-tabs">
+				<div className="flex flex-row project-details-body">
+					<div className="flex flex-col project-details-tabs">
 						<div
-							className="flex align-middle justify-center"
 							className={
-								'project-details-tab ' +
+								'flex align-middle justify-center project-details-tab ' +
 								(selectedTab === 'settings' && 'project-details-tab-selected')
 							}
 							onClick={() => setSelectedTab('settings')}
@@ -60,9 +58,8 @@ const IoTProjectPage = () => {
 							</div>
 						</div>
 						<div
-							className="flex align-middle justify-center"
 							className={
-								'project-details-tab ' +
+								'flex align-middle justify-center project-details-tab ' +
 								(selectedTab === 'routes' && 'project-details-tab-selected')
 							}
 							onClick={() => setSelectedTab('routes')}
@@ -76,9 +73,8 @@ const IoTProjectPage = () => {
 							</div>
 						</div>
 						<div
-							className="flex align-middle justify-center"
 							className={
-								'project-details-tab ' +
+								'flex align-middle justify-center project-details-tab ' +
 								(selectedTab === 'access' && 'project-details-tab-selected')
 							}
 							onClick={() => setSelectedTab('access')}
@@ -92,19 +88,16 @@ const IoTProjectPage = () => {
 							</div>
 						</div>
 					</div>
-					<div
-						className="flex-grow md:w-[16rem]"
-						className="project-details-content"
-					>
+					<div className="flex-grow md:w-[16rem] project-details-content">
 						{getTabContent()}
 					</div>
 				</div>
 			</div>
 			<div
-				className="flex-grow flex flex-col h-full order-1 md:order-2"
+				className="flex-grow flex flex-col h-full order-2 phone:order-1"
 				id="project-body"
 			>
-				<div className="hidden sm:block" className="project-top-row"></div>
+				<div className="hidden sm:block project-top-row"></div>
 				<IoTProjectBody />
 			</div>
 		</StyledIoTProject>

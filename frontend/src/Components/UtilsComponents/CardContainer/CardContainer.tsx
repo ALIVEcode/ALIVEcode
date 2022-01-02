@@ -1,7 +1,5 @@
 import { CardContainerProps, StyledCardContainer } from './cardContainerTypes';
 import IconButton from '../../DashboardComponents/IconButton/IconButton';
-import { Container, Row } from 'react-bootstrap';
-import CenteredContainer from '../../UtilsComponents/CenteredContainer/CenteredContainer';
 import { useContext } from 'react';
 import { ThemeContext } from '../../../state/contexts/ThemeContext';
 
@@ -51,9 +49,9 @@ const CardContainer = ({
 			<div className="card-container-title">
 				{title} {icon && <IconButton icon={icon} onClick={onIconClick} />}
 			</div>
-			<div className="card-container-body" className="w-full h-full">
+			<div className="card-container-body w-full h-full">
 				{asRow ? (
-					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-items-center">
+					<div className="grid phone:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-items-center">
 						{children}
 					</div>
 				) : (

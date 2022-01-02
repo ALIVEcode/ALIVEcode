@@ -1,7 +1,6 @@
 import { useEffect, useContext, useMemo } from 'react';
 import LineInterface from '../../../Components/LevelComponents/LineInterface/LineInterface';
 import { UserContext } from '../../../state/contexts/UserContext';
-import { Row, Col } from 'react-bootstrap';
 import Cmd from '../../../Components/LevelComponents/Cmd/Cmd';
 import useCmd from '../../../state/hooks/useCmd';
 import { LevelCode as LevelCodeModel } from '../../../Models/Level/levelCode.entity';
@@ -71,8 +70,9 @@ const LevelCode = ({ initialCode }: LevelCodeProps) => {
 	return (
 		<>
 			<StyledCodeLevel>
-				<Row className="h-100">
-					<Col className="left-col" md={6}>
+				<div className="h-full flex flex-row">
+					{/* Left Side of screen */}
+					<div className="w-1/2 h-full flex flex-col">
 						<LevelToolsBar />
 						{editMode ? (
 							<LineInterface
@@ -105,13 +105,11 @@ const LevelCode = ({ initialCode }: LevelCodeProps) => {
 								handleChange={lineInterfaceContentChanges}
 							/>
 						)}
-					</Col>
-					<Col md={6} style={{ resize: 'both', padding: '0' }}>
-						<Row className="h-100">
-							<Cmd ref={cmdRef}></Cmd>
-						</Row>
-					</Col>
-				</Row>
+					</div>
+					<div className=" h-full w-1/2">
+						<Cmd ref={cmdRef}></Cmd>
+					</div>
+				</div>
 			</StyledCodeLevel>
 		</>
 	);

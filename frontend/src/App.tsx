@@ -29,6 +29,7 @@ import openPlaySocket from './Pages/Level/PlaySocket';
 import { PlaySocket } from './Pages/Level/PlaySocket';
 import FillGrid from './Components/UtilsComponents/FillGrid/FillGrid';
 import Navbar from './Components/MainComponents/Navbar/Navbar';
+import { useLocation } from 'react-router';
 
 type GlobalStyleProps = {
 	theme: Theme;
@@ -99,6 +100,7 @@ const App = () => {
 	const { routes } = useRoutes();
 	const { t } = useTranslation();
 	const alert = useAlert();
+	const { pathname } = useLocation();
 
 	const navigate = useNavigate();
 	const providerValue = useMemo(
@@ -204,6 +206,11 @@ const App = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	// Scroll restoration
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, [pathname]);
+
 	return (
 		<div className="App">
 			<ThemeContext.Provider
@@ -217,11 +224,8 @@ const App = () => {
 					<LoadingScreen />
 				) : (
 					<UserContext.Provider value={providerValue}>
-						<Navbar handleLogout={async () => await logout()} />
-						<section className="h-100">
-							<FillGrid>
-								<RouterSwitch />
-							</FillGrid>
+						<section className="pt-[4rem] h-full">
+							<RouterSwitch />
 						</section>
 						{maintenance && !maintenance.hidden && (
 							<MaintenanceBar
@@ -229,6 +233,7 @@ const App = () => {
 								maintenance={maintenance}
 							/>
 						)}
+						<Navbar handleLogout={async () => await logout()} />
 						{/**
 							<BackArrow
 								maintenancePopUp={maintenance != null && !maintenance.hidden}

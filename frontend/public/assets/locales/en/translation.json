@@ -144,7 +144,7 @@
 			"signup_professor": "Professor account",
 			"signup_student": "Student account",
 			"signout": "Sign out",
-			"already_registered": "Already have an account?",
+			"already_registered": "Already have an account ?",
 			"account_required": "You need an account to do that"
 		},
 		"section": {
@@ -276,7 +276,7 @@
 				"auth": "Hello, {{name}}",
 				"non_auth": {
 					"label": "You are not authenticated, ",
-					"link": "$t(msg.auth.signin) to your account?"
+					"link": "$t(msg.auth.signin) to your account ?"
 				}
 			}
 		},
@@ -356,7 +356,7 @@
 	"cmd": {
 		"clear": "Clear lines"
 	},
-	"user":{
+	"user": {
 		"quiz": "Quiz :",
 		"status": "Status :",
 		"posts": "Posts :",

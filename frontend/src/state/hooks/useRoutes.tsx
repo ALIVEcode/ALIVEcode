@@ -146,7 +146,7 @@ const useRoutes = () => {
 			component: <ASBuiltinsDocs></ASBuiltinsDocs>,
 		},
 		ai: {
-			path: '/aliveai',
+			path: '/ai',
 			component: <AliveIa></AliveIa>,
 			maintenanceExempt: true,
 		},

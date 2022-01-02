@@ -144,7 +144,7 @@
 			"signup_professor": "Compte professeur",
 			"signup_student": "Compte étudiant",
 			"signout": "Se déconnecter",
-			"already_registered": "Tu as déjà un compte?",
+			"already_registered": "Tu as déjà un compte ?",
 			"account_required": "Il te faut un compte pour faire ça"
 		},
 		"section": {
@@ -276,7 +276,7 @@
 				"auth": "Bonjour, {{name}}",
 				"non_auth": {
 					"label": "Vous n'êtes pas connecté, ",
-					"link": "$t(msg.auth.signin)?"
+					"link": "$t(msg.auth.signin) ?"
 				}
 			}
 		},

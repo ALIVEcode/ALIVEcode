@@ -150,8 +150,8 @@
 		"section": {
 			"alive": "ALIVE Play",
 			"dashboard": "Tableau de bord",
-			"ai": "ALIVE intelligence artificielle",
-			"iot": "Internet des objets",
+			"ai": "Intelligence artificielle",
+			"iot": "IoT",
 			"amc": "Contrôle par la pensée",
 			"about": "À propos",
 			"avp": "Perception de véhicule augmentée",

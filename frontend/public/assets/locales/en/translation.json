@@ -275,8 +275,8 @@
 			"msg": {
 				"auth": "Hello, {{name}}",
 				"non_auth": {
-					"label": "You are not authenticated, ",
-					"link": "$t(msg.auth.signin) to your account ?"
+					"label": "You are not logged in, ",
+					"link": "$t(msg.auth.signin) ?"
 				}
 			}
 		},

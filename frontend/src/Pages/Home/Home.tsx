@@ -17,11 +17,9 @@ const Home = (props: HomeProps) => {
 
 	useEffect(() => {
 		const oldOverflow = document.body.style.overflowX;
-		console.log(oldOverflow);
 		document.body.style.overflowX = 'hidden';
 
 		return () => {
-			console.log(oldOverflow);
 			document.body.style.overflowX = oldOverflow || 'auto';
 		};
 	}, []);

@@ -1,9 +1,9 @@
 import { useContext, useState, Fragment } from 'react';
-import { NavbarProps, StyledNavbar } from './NavbarTypes';
+import { NavbarProps } from './NavbarTypes';
 import { UserContext } from '../../../state/contexts/UserContext';
 import { Link, useNavigate } from 'react-router-dom';
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import Logo from '../../../assets/images/LogoALIVE.png';
+import TestLogo from '../../../assets/images/TestLogo.png';
 import i18next from 'i18next';
 import { languages } from '../../../appConfigs';
 import { useTranslation } from 'react-i18next';
@@ -16,7 +16,7 @@ import {
 import { useLocation } from 'react-router';
 import { Menu, Transition } from '@headlessui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 function classNames(...classes: any[]) {
 	return classes.filter(Boolean).join(' ');
@@ -62,72 +62,86 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 	];
 
 	return (
-		<div className="fixed top-0 px-4 bg-[color:var(--background-color)] w-full border-b border-[color:var(--bg-shade-four-color)]">
+		<div className="fixed top-0 px-2 laptop:px-4 bg-[color:var(--background-color)] w-full border-b border-[color:var(--bg-shade-four-color)]">
 			<div className="flex flex-row items-center h-16 justify-between">
-				<div className="flex h-full items-center">
-					<Link to={routes.public.home.path} className="py-2 mr-5">
+				<div className="h-full gap-x-2 laptop:gap-x-0 laptop:hidden block w-1/3 laptop:w-auto">
+					<FontAwesomeIcon className="h-full" icon={faBars}></FontAwesomeIcon>
+				</div>
+				<div className="flex h-full items-center justify-center w-1/3 laptop:w-auto">
+					<Link
+						to={routes.public.home.path}
+						className="py-3 h-full no-underline"
+					>
 						<img
-							src={Logo}
+							src={TestLogo}
 							alt=""
-							width="100"
-							height="30"
-							className="d-inline-block align-top"
+							className="d-inline-block align-top h-full"
 						/>
-						<label className="h-full font-bold text-2xl align-bottom cursor-pointer ml-1 text-[color:var(--logo-color)]">
-							code
+						<label
+							className={classNames(
+								'hidden phone:inline font-bold text-xl tablet:text-2xl align-bottom cursor-pointer ml-4',
+								theme === themes.dark && 'text-white',
+								theme === themes.light && 'text-gray-700',
+							)}
+						>
+							ALIVEcode
 						</label>
 					</Link>
-					{links.map((l, idx) => (
-						<Link
-							key={idx}
-							className="h-full flex flex-col justify-center items-center mr-4 no-underline"
-							to={l.path}
-							onMouseEnter={() => setHovering(idx)}
-							onMouseLeave={() => setHovering(undefined)}
-						>
-							<label
-								className={
-									'mt-2 text-sm cursor-pointer p-2 ' +
-									(!l.active
-										? 'text-[color:rgba(var(--foreground-color-rgb),0.6)]'
-										: '')
-								}
+					<div className="laptop:flex hidden ml-5">
+						{links.map((l, idx) => (
+							<Link
+								key={idx}
+								className="h-full flex flex-col justify-center items-center mr-4 no-underline"
+								to={l.path}
+								onMouseEnter={() => setHovering(idx)}
+								onMouseLeave={() => setHovering(undefined)}
 							>
-								{l.name}
-							</label>
-							<div
-								className={
-									'h-1 border-b-2 transition-all ' +
-									(l.active
-										? 'border-blue-500 w-full '
-										: 'hover:border-gray-100 w-4 ' +
-										  (hovering === idx
-												? 'border-gray-300'
-												: 'border-transparent'))
-								}
-							></div>
-						</Link>
-					))}
-				</div>
-				<div className="h-full flex items-center py-2">
-					{user ? (
-						<label className="text-sm text-[color:rgba(var(--foreground-color-rgb),0.6)]">
-							{t('home.navbar.msg.auth', { name: user.getDisplayName() })}
-						</label>
-					) : (
-						<label className="text-sm text-[color:rgba(var(--foreground-color-rgb),0.6)]">
-							{t('home.navbar.msg.non_auth.label')}
-							<Link to={'/signin'} className="text-blue-500 underline">
-								{t('home.navbar.msg.non_auth.link')}
+								<label
+									className={
+										'mt-2 text-sm cursor-pointer p-2 ' +
+										(!l.active
+											? 'text-[color:rgba(var(--foreground-color-rgb),0.6)]'
+											: '')
+									}
+								>
+									{l.name}
+								</label>
+								<div
+									className={
+										'h-1 border-b-2 transition-all ' +
+										(l.active
+											? 'border-blue-500 w-full '
+											: 'hover:border-gray-100 w-4 ' +
+											  (hovering === idx
+													? 'border-gray-300'
+													: 'border-transparent'))
+									}
+								></div>
 							</Link>
-						</label>
-					)}
+						))}
+					</div>
+				</div>
+				<div className="h-full flex justify-end items-center py-2 w-1/3 laptop:w-auto">
+					<div className="hidden laptop:block text-right">
+						{user ? (
+							<label className="text-[color:rgba(var(--foreground-color-rgb),0.6)]">
+								{t('home.navbar.msg.auth', { name: user.getDisplayName() })}
+							</label>
+						) : (
+							<label className="text-xs laptop:text-sm text-[color:rgba(var(--foreground-color-rgb),0.6)]">
+								{t('home.navbar.msg.non_auth.label')}
+								<Link to={'/signin'} className="text-blue-500 underline">
+									{t('home.navbar.msg.non_auth.link')}
+								</Link>
+							</label>
+						)}
+					</div>
 					<Menu
 						as="div"
-						className="ml-5 relative inline-block text-left h-full"
+						className="ml-4 relative inline-block text-left h-full"
 					>
 						<div className="h-full">
-							<Menu.Button className="h-full">
+							<Menu.Button className="h-full w-10">
 								<svg
 									className="w-full h-full"
 									version="1.1"
@@ -246,7 +260,7 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 					</Menu>
 					<Menu
 						as="div"
-						className="ml-2 relative inline-block text-left h-full"
+						className="ml-2 relative inline-block text-left h-full w-10"
 					>
 						<div className="h-full">
 							<Menu.Button className="h-full">

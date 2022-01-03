@@ -10,7 +10,7 @@ import { USER_TYPES } from '../../Types/userTypes';
 import Level from '../../Pages/Level/Level';
 import SignUpMenu from '../../Pages/Account/SignUpMenu/SignUpMenu';
 import About from '../../Pages/About/About';
-import AliveIa from '../../Pages/ALIVEIA/AliveIa';
+import AIHome from '../../Pages/AI/AIHome/AIHome';
 import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
 import AccountPage from '../../Pages/Account/AccountInfo/AccountPage';
@@ -147,7 +147,7 @@ const useRoutes = () => {
 		},
 		ai: {
 			path: '/ai',
-			component: <AliveIa></AliveIa>,
+			component: <AIHome></AIHome>,
 			maintenanceExempt: true,
 		},
 		about: {

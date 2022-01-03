@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { InfoBoxProps } from './infoBoxTypes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretUp } from '@fortawesome/free-solid-svg-icons';
-import { Collapse } from 'react-bootstrap';
 import styled from 'styled-components';
+import { Disclosure } from '@headlessui/react';
 
 /**
  * Ce composant définit une boîte d'information contenant un titre et une description.
@@ -84,33 +84,33 @@ const StyledDiv = styled.div`
  * @returns un Infobox.
  */
 const InfoBox = (props: InfoBoxProps) => {
-	const [open, setOpen] = useState(true);
-
 	return (
-		<StyledDiv>
-			<div className="container">
-				<div
-					className={
-						'section-head section-open ' +
-						(open ? 'section-open' : 'section-close')
-					}
-				>
-					<h2 className="section-title">{props.title}</h2>
-					<FontAwesomeIcon
-						scale="10px"
-						className="collapse-button text-xs tablet:text-base laptop:text-lg desktop:text-xl"
-						icon={faCaretUp}
-						rotation={open ? undefined : 180}
-						onClick={() => setOpen(!open)}
-						aria-controls="section-description"
-						aria-expanded={open}
-					/>
+		<Disclosure defaultOpen as={StyledDiv}>
+			{({ open }) => (
+				<div className="container">
+					<div
+						className={
+							'section-head section-open ' +
+							(open ? 'section-open' : 'section-close')
+						}
+					>
+						<h2 className="section-title">{props.title}</h2>
+						<Disclosure.Button
+							as={FontAwesomeIcon}
+							scale="10px"
+							className="collapse-button text-xs tablet:text-base laptop:text-lg desktop:text-xl"
+							icon={faCaretUp}
+							rotation={open ? undefined : 180}
+							aria-controls="section-description"
+							aria-expanded={open}
+						/>
+					</div>
+					<Disclosure.Panel>
+						<div className="section-description">{props.children}</div>
+					</Disclosure.Panel>
 				</div>
-				<Collapse in={open}>
-					<div className="section-description">{props.children}</div>
-				</Collapse>
-			</div>
-		</StyledDiv>
+			)}
+		</Disclosure>
 	);
 };
 

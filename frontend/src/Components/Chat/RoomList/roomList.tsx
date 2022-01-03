@@ -1,6 +1,5 @@
-import {RoomListProp} from './roomlistType' 
+import { RoomListProp } from './roomlistType';
 import { useContext, useEffect, useState } from 'react';
-import { Card, Row } from 'react-bootstrap';
 import { UserContext } from '../../../state/contexts/UserContext';
 import api from '../../../Models/api';
 import { Topics } from '../../../Models/Social/topics.entity';
@@ -20,12 +19,9 @@ const RoomList = ({ setActiveTopic }: RoomListProp) => {
 		getTopics();
 	}, [user, setActiveTopic]);
 	return (
-		<div className="text-left col-sm-3">
-			<Card style={{ height: '100%' }}>
-				<Row
-					className="justify-content-md-center"
-					style={{ paddingTop: '1rem', height: '100px' }}
-				>
+		<div className="text-left h-full w-1/4 bg-[color:var(--background-color)]">
+			<div className="h-full">
+				<div>
 					<img
 						className="message-image "
 						style={{ width: '100px', maxHeight: '100px' }}
@@ -36,10 +32,10 @@ const RoomList = ({ setActiveTopic }: RoomListProp) => {
 								: Jihene
 						}
 					/>
-				</Row>
-				<Row className="justify-content-md-center">
+				</div>
+				<div className="justify-content-md-center">
 					<h3>{user?.getDisplayName()}</h3>
-				</Row>{' '}
+				</div>{' '}
 				{topics.map((topic, idx) => {
 					return (
 						<div className="list-group" key={idx}>
@@ -57,7 +53,7 @@ const RoomList = ({ setActiveTopic }: RoomListProp) => {
 						</div>
 					);
 				})}
-			</Card>
+			</div>
 		</div>
 	);
 };

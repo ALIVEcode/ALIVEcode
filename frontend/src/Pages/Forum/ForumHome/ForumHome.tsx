@@ -1,6 +1,5 @@
 import Button from '../../../Components/UtilsComponents/Button/Button';
 import CardContainer from '../../../Components/UtilsComponents/CardContainer/CardContainer';
-import { Card } from 'react-bootstrap';
 import ForumNavbar from '../ForumNavbar/ForumNavbar';
 import { Post as PostModel } from '../../../Models/Forum/post.entity';
 import { useEffect, useState } from 'react';
@@ -102,8 +101,8 @@ const ForumHome = () => {
 
 				<div className="h-1/3">
 					<div className="flex justify-center">
-						<Link to="/formQuestion/forum">
-							<Button variant={'primary'} className="btn-lg mt-5">
+						<Link className="mt-5" to="/formQuestion/forum">
+							<Button variant={'primary'} className="btn-lg">
 								Créer un sujet
 							</Button>
 						</Link>
@@ -116,14 +115,14 @@ const ForumHome = () => {
 										<div className="card-content">
 											<div className="media">
 												<img
-													className="rounded-circle mt-1 ml-1 mr-3"
+													className="rounded-circle inline"
 													src="https://bulma.io/images/placeholders/64x64.png"
 													alt=""
 												/>
 												{p.creator && (
-													<Card.Title className="mt-1 mr-1">
+													<div className="ml-2 text-xl inline">
 														{p.creator.email}
-													</Card.Title>
+													</div>
 												)}
 											</div>
 										</div>

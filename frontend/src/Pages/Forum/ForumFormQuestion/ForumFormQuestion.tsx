@@ -1,8 +1,7 @@
-import CardContainer from "../../../Components/UtilsComponents/CardContainer/CardContainer";
+import CardContainer from '../../../Components/UtilsComponents/CardContainer/CardContainer';
 import CenteredContainer from '../../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
 import { Post } from '../../../Models/Forum/post.entity';
 import Form from 'react-bootstrap/esm/Form';
-import { Button } from 'react-bootstrap';
 import { SetStateAction, useContext, useEffect, useState } from 'react';
 import { plainToClass } from 'class-transformer';
 import api from '../../../Models/api';
@@ -11,6 +10,7 @@ import { Subject } from '../../../Models/Forum/subjects.entity';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { UserContext } from '../../../state/contexts/UserContext';
 import { useNavigate } from 'react-router-dom';
+import Button from '../../../Components/UtilsComponents/Button/Button';
 
 const ForumFormQuestion = () => {
 	const [category, setCategory] = useState<CategorySubject[]>([]);
@@ -129,7 +129,7 @@ const ForumFormQuestion = () => {
 							)}
 						</Form.Group>
 						<Form.Group className="text-right">
-							<Button variant="primary" id="btn" type="submit">
+							<Button variant="primary" type="submit">
 								Envoyer
 							</Button>
 						</Form.Group>

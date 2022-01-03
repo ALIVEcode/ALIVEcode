@@ -1,6 +1,5 @@
-import {MessageFormProp} from './messageFormType'
+import { MessageFormProp } from './messageFormType';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { Container, Card, Row, Form, DropdownButton } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { UserContext } from '../../../state/contexts/UserContext';
 import Messages from '../Messages/messages';
@@ -85,10 +84,10 @@ const MessageForm = ({ activeTopic }: MessageFormProp) => {
 	};
 
 	return (
-		<>
-			<div className="col-md-7">
-				<Card>
-					<Container
+		<div className="flex flex-row w-full h-full bg-[color:var(--background-color)]">
+			<div className="w-1/2 h-full">
+				<div>
+					<div
 						className="card-container-body"
 						style={{
 							overflow: 'auto',
@@ -114,10 +113,10 @@ const MessageForm = ({ activeTopic }: MessageFormProp) => {
 								)
 							);
 						})}
-					</Container>
-					<Container>
-						<Form>
-							<Row>
+					</div>
+					<div>
+						<form onSubmit={handleSubmit(onSubmit)}>
+							<div className="flex flex-row">
 								<div className="input-group mb-10">
 									<input
 										className="form-control"
@@ -127,38 +126,21 @@ const MessageForm = ({ activeTopic }: MessageFormProp) => {
 										value={input}
 										onChange={e => setInput(e.target.value)}
 									/>
-									<DropdownButton
-										id="dropdown-button-drop-end"
-										drop="up"
-										variant="white"
-										title={
-											<img
-												className="emoji-icon"
-												alt="emoji-icon"
-												src="https://icons.getbootstrap.com/assets/icons/emoji-smile.svg"
-											/>
-										}
-									>
-										<Picker
-											pickerStyle={{ width: '400px' }}
-											onEmojiClick={() => onEmojiClick}
-										/>
-									</DropdownButton>
 									<button
 										className="btn"
 										style={{ background: '#0177bc' }}
-										onClick={handleSubmit(onSubmit)}
+										type="submit"
 									>
 										Send
 									</button>
 								</div>
-							</Row>
-						</Form>
-					</Container>
-				</Card>
+							</div>
+						</form>
+					</div>
+				</div>
 			</div>
-			<div className="col-sm-2">
-				<Card style={{ height: '100%' }}>
+			<div className="w-1/2">
+				<div className="h-full">
 					<div className="list-group">
 						{users.map((userConnected: any, idx) => {
 							return (
@@ -170,10 +152,9 @@ const MessageForm = ({ activeTopic }: MessageFormProp) => {
 							);
 						})}
 					</div>
-				</Card>
+				</div>
 			</div>
-		</>
+		</div>
 	);
 };
 export default MessageForm;
-

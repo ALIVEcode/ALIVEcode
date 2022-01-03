@@ -1,4 +1,7 @@
-import { ClassroomHeaderProps, StyledClassroomHeader } from './classroomHeaderTypes';
+import {
+	ClassroomHeaderProps,
+	StyledClassroomHeader,
+} from './classroomHeaderTypes';
 import { Alert, Badge } from 'react-bootstrap';
 import Button from '../../UtilsComponents/Button/Button';
 import { useContext, useState } from 'react';
@@ -21,7 +24,13 @@ import { useNavigate } from 'react-router-dom';
  *
  * @author MoSk3
  */
-const ClassroomHeader = ({ className, classroom }: ClassroomHeaderProps) => {
+const ClassroomHeader: React.FC<
+	ClassroomHeaderProps &
+		React.DetailedHTMLProps<
+			React.HTMLAttributes<HTMLDivElement>,
+			HTMLDivElement
+		>
+> = ({ classroom, ...other }) => {
 	const { user } = useContext(UserContext);
 	const { routes } = useRoutes();
 	const { t } = useTranslation();
@@ -44,17 +53,22 @@ const ClassroomHeader = ({ className, classroom }: ClassroomHeaderProps) => {
 	};
 
 	return (
-		<StyledClassroomHeader className={className} fluid>
-			<div className="flex flex-row phone:flex-col justify-between">
-				<div className="classroom-title p-10">
-					<label className="classroom-title-name">{classroom.name}</label>
-					<label className="classroom-title-desc">
+		<div
+			className="bg-[color:var(--primary-color)] text-white text-center tablet:text-left"
+			{...other}
+		>
+			<div className="h-full flex flex-col tablet:flex-row justify-between">
+				<div className="p-10">
+					<div className="text-4xl tablet:text-3xl laptop:text-4xl desktop:text-5xl">
+						{classroom.name}
+					</div>
+					<label className="text-base tablet:text-lg laptop:text-xl desktop:text-2xl mt-4">
 						<Badge bg="primary">{prettyField(t('msg.professor'))}</Badge>{' '}
 						{classroom.creator.getDisplayName()}
 					</label>
 				</div>
 
-				<div className="classroom-buttons p-10">
+				<div className="p-10 flex flex-row tablet:flex-col items-center gap-4">
 					{user instanceof Professor ? (
 						<>
 							<div>
@@ -117,7 +131,7 @@ const ClassroomHeader = ({ className, classroom }: ClassroomHeaderProps) => {
 					{classroom.code}
 				</Alert>
 			</Modal>
-		</StyledClassroomHeader>
+		</div>
 	);
 };
 

@@ -25,7 +25,7 @@ const Home = (props: HomeProps) => {
 	}, []);
 
 	return (
-		<StyledHome>
+		<StyledHome className="bg-[color:var(--background-color)]">
 			<div className="header" style={{ top: '-50px' }}>
 				<div>
 					<label className="header-alive">ALIVE</label>
@@ -54,11 +54,11 @@ const Home = (props: HomeProps) => {
 					fill={theme.color.primary}
 				/>
 			</svg>
-			<ul className="nav">
-				<li className="text-xl">About</li>
-				<li>Trainings</li>
-				<li>News</li>
-			</ul>
+			<nav className="flex flex-row gap-5 w-full px-20 text-xl">
+				<div>About</div>
+				<div>Trainings</div>
+				<div>News</div>
+			</nav>
 			<Footer />
 			<div className="header-circle">
 				<img alt="alive-car" src={VoitureAnimee} />

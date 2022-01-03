@@ -1,10 +1,9 @@
-import { Classroom } from "../../../Models/Classroom/classroom.entity";
+import { Classroom } from '../../../Models/Classroom/classroom.entity';
 import styled from 'styled-components';
 import { Container } from 'react-bootstrap';
 
 export type ClassroomHeaderProps = {
 	classroom: Classroom;
-	className?: string;
 };
 
 export const StyledClassroomHeader = styled(Container)`

@@ -81,7 +81,7 @@ const Classroom = ({ classroomProp, ...props }: ClassroomProps) => {
 
 	return (
 		<StyledDiv>
-			<ClassroomHeader className="classroom-header" classroom={classroom} />
+			<ClassroomHeader classroom={classroom} />
 			<Container className="classroom-content">
 				<CardContainer
 					asRow

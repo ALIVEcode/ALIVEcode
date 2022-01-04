@@ -1,8 +1,5 @@
-import {
-	ClassroomHeaderProps,
-	StyledClassroomHeader,
-} from './classroomHeaderTypes';
-import { Alert, Badge } from 'react-bootstrap';
+import { ClassroomHeaderProps } from './classroomHeaderTypes';
+import { Alert } from 'react-bootstrap';
 import Button from '../../UtilsComponents/Button/Button';
 import { useContext, useState } from 'react';
 import { UserContext } from '../../../state/contexts/UserContext';
@@ -15,6 +12,7 @@ import Modal from '../../UtilsComponents/Modal/Modal';
 import { prettyField } from '../../../Types/formatting';
 import { ThemeContext } from '../../../state/contexts/ThemeContext';
 import { useNavigate } from 'react-router-dom';
+import Badge from '../../UtilsComponents/Badge/Badge';
 
 /**
  * Classroom header that displays the className, the professor and
@@ -57,31 +55,26 @@ const ClassroomHeader: React.FC<
 			className="bg-[color:var(--primary-color)] text-white text-center tablet:text-left"
 			{...other}
 		>
-			<div className="h-full flex flex-col tablet:flex-row justify-between">
-				<div className="p-10">
-					<div className="text-4xl tablet:text-3xl laptop:text-4xl desktop:text-5xl">
+			<div className="h-full flex flex-col tablet:flex-row justify-between p-10 pb-0 gap-6">
+				<div className="mt-10">
+					<div className="text-4xl tablet:text-3xl laptop:text-4xl desktop:text-5xl mb-4">
 						{classroom.name}
 					</div>
-					<label className="text-base tablet:text-lg laptop:text-xl desktop:text-2xl mt-4">
-						<Badge bg="primary">{prettyField(t('msg.professor'))}</Badge>{' '}
+					<label className="flex justify-center tablet:justify-start text-base tablet:text-lg laptop:text-xl desktop:text-2xl">
+						<Badge className="text-lg mr-2" variant="secondary">
+							{prettyField(t('msg.professor'))}
+						</Badge>{' '}
 						{classroom.creator.getDisplayName()}
 					</label>
 				</div>
 
-				<div className="p-10 flex flex-row tablet:flex-col items-center gap-4">
+				<div className="flex flex-row tablet:flex-col gap-4 mt-10">
 					{user instanceof Professor ? (
 						<>
-							<div>
-								<Button
-									onClick={() => setCodeModalOpen(true)}
-									variant="primary"
-								>
-									{t('classroom.add_students')}
-								</Button>
-							</div>
-							<div>
-								<Button variant="danger">{t('classroom.delete')}</Button>
-							</div>
+							<Button onClick={() => setCodeModalOpen(true)} variant="third">
+								{t('classroom.add_students')}
+							</Button>
+							<Button variant="danger">{t('classroom.delete')}</Button>
 						</>
 					) : (
 						<div>

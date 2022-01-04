@@ -9,7 +9,7 @@ const Test = (props: any) => {
 	}, [chiffre2]);
 	return (
 		<FillContainer centered>
-			<Button variant="primary" onClick={() => setChiffre(chiffre + 1)}>
+			<Button variant=third onClick={() => setChiffre(chiffre + 1)}>
 				Le bouton
 			</Button>
 			<label>{chiffre}</label>

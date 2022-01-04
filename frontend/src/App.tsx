@@ -5,6 +5,7 @@ import { UserContext } from './state/contexts/UserContext';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import 'bootstrap';
+//import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-datetime/css/react-datetime.css';
 import useRoutes from './state/hooks/useRoutes';
 import {
@@ -13,7 +14,7 @@ import {
 	themes,
 	commonColors,
 } from './state/contexts/ThemeContext';
-import styled, { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
 import { loadThemeFromCookies, setCookie } from './Types/cookies';
 import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
@@ -26,9 +27,9 @@ import MaintenanceBar from './Components/SiteStatusComponents/MaintenanceBar/Mai
 import { Maintenance } from './Models/Maintenance/maintenance.entity';
 import openPlaySocket from './Pages/Level/PlaySocket';
 import { PlaySocket } from './Pages/Level/PlaySocket';
-import FillGrid from './Components/UtilsComponents/FillGrid/FillGrid';
 import Navbar from './Components/MainComponents/Navbar/Navbar';
 import { useLocation } from 'react-router';
+import { hot } from 'react-hot-loader/root';
 
 type GlobalStyleProps = {
 	theme: Theme;
@@ -245,4 +246,4 @@ const App = () => {
 	);
 };
 
-export default App;
+export default hot(App);

@@ -1,6 +1,8 @@
-import { ButtonProps, StyledButton } from './buttonTypes';
+import { ButtonProps } from './buttonTypes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { classNames } from '../../../Types/utils';
 
 /**
  * Styled button with different premade variants
@@ -16,44 +18,50 @@ import { useNavigate } from 'react-router-dom';
  *
  * @author MoSk3
  */
-const Button = ({
-	variant,
-	type,
-	onClick,
-	to,
-	children,
-	padding,
-	className,
-	disabled,
-	icon,
-}: ButtonProps) => {
+const Button: React.FC<
+	ButtonProps &
+		React.DetailedHTMLProps<
+			React.ButtonHTMLAttributes<HTMLButtonElement>,
+			HTMLButtonElement
+		>
+> = ({ variant, onClick, to, children, className, icon, ...props }) => {
 	const navigate = useNavigate();
 
-	const customOnClick = () => {
-		onClick ? onClick() : to && navigate(to);
+	const customOnClick = (
+		e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+	) => {
+		onClick ? onClick(e) : to && navigate(to);
 	};
 
 	const defaultInputOptions = {
-		className: 'btn ' + className,
-		padding,
+		className: classNames(
+			'py-2 px-3 rounded-md text-white transition-colors hover:bg-[color:var(--contrast-color)]',
+			variant === 'primary' && 'bg-[color:var(--primary-color)]',
+			variant === 'secondary' && 'bg-[color:var(--secondary-color)]',
+			variant === 'third' && 'bg-[color:var(--third-color)]',
+			variant === 'danger' && 'bg-red-600',
+			className,
+		),
 		variant,
-		type,
-		disabled,
 		onClick: customOnClick,
 	};
 
 	if (icon) {
 		return (
-			<StyledButton {...defaultInputOptions}>
+			<button {...defaultInputOptions} {...props}>
 				<>
 					{children}
 					<FontAwesomeIcon className="ml-2" icon={icon}></FontAwesomeIcon>
 				</>
-			</StyledButton>
+			</button>
 		);
 	}
 
-	return <StyledButton {...defaultInputOptions}>{children}</StyledButton>;
+	return (
+		<button {...defaultInputOptions} {...props}>
+			{children}
+		</button>
+	);
 };
 
 export default Button;

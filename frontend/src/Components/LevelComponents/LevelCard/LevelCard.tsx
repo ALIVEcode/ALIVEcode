@@ -1,6 +1,5 @@
 import { LevelCardProps, StyledLevelCard } from './levelCardTypes';
 import useRoutes from '../../../state/hooks/useRoutes';
-import { Badge } from 'react-bootstrap';
 import {
 	faHeart,
 	faPencilAlt,
@@ -11,6 +10,7 @@ import { useContext } from 'react';
 import { UserContext } from '../../../state/contexts/UserContext';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import Badge from '../../UtilsComponents/Badge/Badge';
 
 /**
  * Display of a level that contains all its informations
@@ -33,9 +33,16 @@ const LevelCard = ({ level, enterEdit }: LevelCardProps) => {
 				<div className="details-section">
 					<div className="level-name">{level.name}</div>
 					<div className="level-tags">
-						Tags: <Badge bg="success">{level.getTypeDisplay()}</Badge>
+						Tags:{' '}
+						<Badge variant="primary" className="bg-green-500 text-xl">
+							{level.getTypeDisplay()}
+						</Badge>
 						{level.tags.map((t, idx) => (
-							<Badge key={idx} bg="success">
+							<Badge
+								variant="primary"
+								key={idx}
+								className="bg-green-300 text-xl"
+							>
 								{t}
 							</Badge>
 						))}

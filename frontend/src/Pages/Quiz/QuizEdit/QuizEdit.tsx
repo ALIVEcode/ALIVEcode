@@ -1,6 +1,5 @@
-import { plainToClass } from "class-transformer";
-import { useState, useEffect } from "react";
-import { Card, Form, Button, Table } from 'react-bootstrap';
+import { plainToClass } from 'class-transformer';
+import { useState, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import CenteredContainer from '../../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
 import api from '../../../Models/api';
@@ -12,6 +11,8 @@ import { QuestionForm } from '../../../Models/Quiz/questionForm.entity';
 import { Answer } from '../../../Models/Quiz/answer.entity';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { useNavigate } from 'react-router-dom';
+import Input from '../../../Components/UtilsComponents/Input/Input';
+import Button from '../../../Components/UtilsComponents/Button/Button';
 
 const QuizEdit = () => {
 	const navigate = useNavigate();
@@ -93,36 +94,31 @@ const QuizEdit = () => {
 				textAlign="left"
 				style={{ paddingLeft: '250px', paddingRight: '250px' }}
 			>
-				<Card>
-					<Card.Body>
+				<div>
+					<div>
 						<h1>Edit your Quiz!</h1>
-						<Form onSubmit={handleSubmit(onSubmit)}>
-							<Form.Group>
-								<Form.Label>Quiz Category</Form.Label>
-								<Form.Control
-									as="select"
-									aria-label=""
-									{...register('category.id')}
-								>
-									<option></option>
-									{categories.map(category => {
-										return <option value={category.id}>{category.name}</option>;
-									})}
-								</Form.Control>
-							</Form.Group>
-							<Form.Group>
-								<Form.Label>Quiz Name</Form.Label>
-								<Form.Control {...register('name')}></Form.Control>
-							</Form.Group>
-							<Form.Group>
-								<Form.Label>Quiz Description</Form.Label>
-								<Form.Control
-									as="textarea"
-									rows={5}
-									{...register('description')}
-								></Form.Control>
-							</Form.Group>
-							<Button variant="primary" type="submit">
+						<form onSubmit={handleSubmit(onSubmit)}>
+							<Input
+								label="Quiz Category"
+								as="select"
+								aria-label=""
+								{...register('category.id')}
+							>
+								<option></option>
+								{categories.map((category, idx) => (
+									<option key={idx} value={category.id}>
+										{category.name}
+									</option>
+								))}
+							</Input>
+							<Input label="Quiz Name" {...register('name')}></Input>
+							<Input
+								label="Quiz Description"
+								as="textarea"
+								rows={5}
+								{...register('description')}
+							/>
+							<Button variant="third" type="submit">
 								Update!
 							</Button>
 							<br />
@@ -130,63 +126,66 @@ const QuizEdit = () => {
 							{
 								// Should now redirect to the quiz category page to show the quiz has been updated
 							}
-						</Form>
-						<Form onSubmit={handleSubmitQuestion(onSubmitNewQuestion)}>
-							<Form.Group>
-								<Form.Label>Question</Form.Label>
-								<Form.Control
-									as="textarea"
-									rows={3}
-									{...registerQuestion('name')}
-								></Form.Control>
-							</Form.Group>
-							<Button type="button">Ajouter une Question!</Button>
-						</Form>
-						<Form onSubmit={handleSubmitAnswer(onSubmitNewAnswer)}>
+						</form>
+						<form onSubmit={handleSubmitQuestion(onSubmitNewQuestion)}>
+							<Input
+								label="Question"
+								as="textarea"
+								rows={3}
+								{...registerQuestion('name')}
+							/>
+							<Button variant="third" type="button">
+								Ajouter une Question!
+							</Button>
+						</form>
+						<form onSubmit={handleSubmitAnswer(onSubmitNewAnswer)}>
 							<br />
-							<Form.Label>Réponse: </Form.Label>
-							<Form.Control
+							<Input
+								label="Response: "
 								type="checkbox"
 								{...registerAnswer('is_good')}
-							></Form.Control>
-							<Form.Control
+							/>
+							<Input
+								label="Response: "
 								as="textarea"
-								rows={2}
 								{...registerAnswer('value')}
-							></Form.Control>
-							<Form.Group>
-								<Form.Label>Question</Form.Label>
-								<Form.Control
-									as="select"
-									aria-label=""
-									{...registerAnswer('question.id')}
-								>
-									<option></option>
-									{quiz?.questions.map(question => {
-										return <option value={question.id}>{question.name}</option>;
-									})}
-								</Form.Control>
-							</Form.Group>
-							<Button type="submit">Ajouter une Réponse!</Button>
-						</Form>
-					</Card.Body>
-				</Card>
+							/>
+							<Input
+								label="Question"
+								as="select"
+								aria-label=""
+								{...registerAnswer('question.id')}
+							>
+								<option></option>
+								{quiz?.questions.map((question, idx) => (
+									<option key={idx} value={question.id}>
+										{question.name}
+									</option>
+								))}
+							</Input>
+							<Button variant="third" type="submit">
+								Ajouter une Réponse!
+							</Button>
+						</form>
+					</div>
+				</div>
 				{quiz?.questions.map(question => {
 					return (
 						<div>
 							<br />
-							<Card>
-								<Card.Body>
+							<div>
+								<div>
 									<p>{question.name}</p>
 									<br />
 									<Button
+										variant="danger"
 										onClick={() => {
 											handleDeleteQuestion(question.id);
 										}}
 									>
 										Delete
 									</Button>
-									<Table>
+									<table>
 										<tbody>
 											{question.answers.map((answer, idx) => (
 												<tr key={idx}>
@@ -195,9 +194,9 @@ const QuizEdit = () => {
 												</tr>
 											))}
 										</tbody>
-									</Table>
-								</Card.Body>
-							</Card>
+									</table>
+								</div>
+							</div>
 							<br />
 						</div>
 					);

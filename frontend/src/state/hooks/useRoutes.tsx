@@ -43,7 +43,6 @@ import ForumPost from '../../Pages/Forum/ForumPost/ForumPost';
 import ForumSearch from '../../Pages/Forum/ForumSearch/ForumSearch';
 import Chat from '../../Pages/Chat/Chat';
 import { LEVEL_TYPE } from '../../Models/Level/level.entity';
-import Dashboard from '../../Pages/Dashboard/Dashboard';
 import DashboardNew from '../../Pages/DashboardNew/DashboardNew';
 
 export interface Route {
@@ -221,7 +220,6 @@ const useRoutes = () => {
 		},
 		quiz: {
 			path: '/quiz',
-			exact: true,
 			component: <QuizHome></QuizHome>,
 			adminOnly: true,
 		},
@@ -368,7 +366,7 @@ const useRoutes = () => {
 	const error_routes = asRoutes({
 		not_found: {
 			path: '*',
-			component: <NotFound></NotFound>,
+			component: <NotFound />,
 			maintenanceExempt: true,
 		},
 	});

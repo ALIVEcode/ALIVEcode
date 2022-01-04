@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import api from '../../../Models/api';
 import { useForm } from 'react-hook-form';
-import { Form, InputGroup } from 'react-bootstrap';
 import { useState, useEffect, useRef } from 'react';
 import Button from '../../UtilsComponents/Button/Button';
 import useRoutes from '../../../state/hooks/useRoutes';
+import Input from '../../UtilsComponents/Input/Input';
 
 /**
  * Component used to join a classroom with a provided classroom code
@@ -17,9 +17,10 @@ const JoinClassroomForm = () => {
 	const {
 		register,
 		handleSubmit,
+		setError,
+		clearErrors,
 		formState: { errors },
 	} = useForm();
-	const [notFound, setNotFound] = useState(false);
 	const timeout = useRef<NodeJS.Timeout>();
 
 	// Cleanup of timeouts
@@ -33,43 +34,38 @@ const JoinClassroomForm = () => {
 		try {
 			const classroom = await api.db.classrooms.join({ code: formValues.code });
 			goTo(routes.auth.classroom.path.replace(':id', classroom.id));
-			setNotFound(false);
+			clearErrors('code');
 		} catch {
-			setNotFound(true);
+			setError('code', {
+				type: 'notFound',
+			});
 			timeout.current = setTimeout(() => {
-				setNotFound(false);
+				clearErrors('code');
 			}, 5000);
 		}
 	};
 
 	return (
-		<Form onSubmit={handleSubmit(SubmitForm)}>
-			<Form.Group>
-				<Form.Label>{t('form.join_classroom.code')}</Form.Label>
-				<InputGroup hasValidation>
-					<Form.Control
-						isInvalid={notFound || errors.code?.type}
-						placeholder={t('form.join_classroom.code')}
-						{...register('code', {
-							required: true,
-							minLength: 6,
-							maxLength: 6,
-						})}
-					/>
-					<Form.Control.Feedback type="invalid">
-						{notFound && !errors.code && t('form.join_classroom.invalid_code')}
-						{errors.code?.type === 'required' && t('form.error.required')}
-						{errors.code?.type === 'minLength' &&
-							t('form.error.minLength', { min: 6 })}
-						{errors.code?.type === 'maxLength' &&
-							t('form.error.maxLength', { max: 6 })}
-					</Form.Control.Feedback>
-				</InputGroup>
-			</Form.Group>
-			<Button type="submit" variant="primary">
+		<form onSubmit={handleSubmit(SubmitForm)}>
+			<Input
+				label={t('form.join_classroom.code')}
+				errors={errors.code}
+				messages={{
+					notFound: t('form.join_classroom.invalid_code'),
+				}}
+				placeholder={t('form.join_classroom.code')}
+				minLength={6}
+				maxLength={6}
+				{...register('code', {
+					required: true,
+					minLength: 6,
+					maxLength: 6,
+				})}
+			/>
+			<Button type="submit" variant="third">
 				{t('form.join_classroom.submit')}
 			</Button>
-		</Form>
+		</form>
 	);
 };
 

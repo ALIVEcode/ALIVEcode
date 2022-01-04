@@ -109,7 +109,7 @@ const IoTProjectBody = ({ noTopRow }: { noTopRow?: boolean }) => {
 						</Button>
 					)}
 					<Button
-						variant="primary"
+						variant="third"
 						onClick={() => {
 							navigator.clipboard.writeText(updateId);
 							alert.success('Copied');

@@ -105,13 +105,11 @@ const Classroom = ({ classroomProp, ...props }: ClassroomProps) => {
 						<CardContainer title={t('classroom.container.details.title')}>
 							<div>
 								<h4>
-									<Badge bg="primary">{t('classroom.subject')}</Badge>
+									<Badge bg="third">{t('classroom.subject')}</Badge>
 								</h4>
 								{classroom.getSubjectDisplay()}
 								<h4>
-									<Badge bg="primary">
-										{prettyField(t('msg.description'))}
-									</Badge>
+									<Badge bg="third">{prettyField(t('msg.description'))}</Badge>
 								</h4>
 								<p>
 									{classroom.description

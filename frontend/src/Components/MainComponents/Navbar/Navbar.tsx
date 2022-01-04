@@ -16,11 +16,8 @@ import {
 import { useLocation } from 'react-router';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faCross, faTimes } from '@fortawesome/free-solid-svg-icons';
-
-function classNames(...classes: any[]) {
-	return classes.filter(Boolean).join(' ');
-}
+import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { classNames } from '../../../Types/utils';
 
 /**
  * Navbar of ALIVEcode
@@ -34,7 +31,6 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 	const { t } = useTranslation();
 	const { routes } = useRoutes();
 	const { theme, setTheme } = useContext(ThemeContext);
-	const navigate = useNavigate();
 	const location = useLocation();
 	const [hovering, setHovering] = useState<number>();
 
@@ -64,7 +60,8 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 	return (
 		<Disclosure
 			as="nav"
-			className="fixed top-0 px-2 laptop:px-4 bg-[color:var(--background-color)] w-full border-b border-[color:var(--bg-shade-four-color)]"
+			id="navbar"
+			className="fixed top-0 px-2 laptop:px-4 bg-[color:var(--background-color)] w-full border-b border-[color:var(--bg-shade-four-color)] z-10"
 		>
 			{({ open }) => (
 				<>
@@ -80,12 +77,12 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 						<div className="flex h-full items-center justify-center w-1/3 laptop:w-auto">
 							<Link
 								to={routes.public.home.path}
-								className="py-3 h-full no-underline whitespace-nowrap"
+								className="py-3 h-full no-underline whitespace-nowrap flex items-center"
 							>
 								<img
 									src={TestLogo}
 									alt=""
-									className="d-inline-block align-top h-full"
+									className="inline-block align-top h-full"
 								/>
 								<label
 									className={classNames(
@@ -183,7 +180,7 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 									leaveFrom="transform opacity-100 scale-100"
 									leaveTo="transform opacity-0 scale-95"
 								>
-									<Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-[color:var(--background-color)] ring-1 ring-[color:var(--foreground-color)] ring-opacity-5 divide-y divide-[color:var(--bg-shade-three-color)] focus:outline-none">
+									<Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-[color:var(--background-color)] ring-1 ring-[color:var(--bg-shade-three-color)] ring-opacity-5 divide-y divide-[color:var(--bg-shade-three-color)] focus:outline-none">
 										<div className="py-1">
 											{user ? (
 												<Menu.Item>
@@ -245,7 +242,7 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 														}
 														className={classNames(
 															active && 'bg-[color:var(--bg-shade-two-color)]',
-															'block px-4 py-2 text-sm text-[color:var(--foreground-color)] hover:text-[color:var(--foreground-color)]',
+															'cursor-pointer block px-4 py-2 text-sm text-[color:var(--foreground-color)] hover:text-[color:var(--foreground-color)]',
 														)}
 													>
 														Theme
@@ -302,7 +299,7 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 									leaveFrom="transform opacity-100 scale-100"
 									leaveTo="transform opacity-0 scale-95"
 								>
-									<Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-[color:var(--background-color)] ring-1 ring-[color:var(--foreground-color)] ring-opacity-5 divide-y divide-[color:var(--bg-shade-three-color)] focus:outline-none">
+									<Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-[color:var(--background-color)] ring-1 ring-[color:var(--bg-shade-three-color)] ring-opacity-5 divide-y divide-[color:var(--bg-shade-three-color)] focus:outline-none">
 										<div className="py-1">
 											{languages.map(({ code, name }, idx) => (
 												<Menu.Item key={idx}>

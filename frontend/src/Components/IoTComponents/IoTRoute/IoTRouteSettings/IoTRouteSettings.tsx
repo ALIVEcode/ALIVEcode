@@ -58,7 +58,7 @@ const IoTRouteSettings = ({ route }: IoTRouteSettingsProps) => {
 				></AsScript>
 			) : (
 				<Button
-					variant="primary"
+					variant="third"
 					onClick={async () => {
 						const asScript = new AsScriptModel();
 						asScript.content = '# New Script';

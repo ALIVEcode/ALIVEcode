@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import CardContainer from '../../../Components/UtilsComponents/CardContainer/CardContainer';
 import api from '../../../Models/api';
@@ -89,7 +89,7 @@ const ForumPost = () => {
 										/>
 									</div>
 									<div className="text-right">
-										<Button variant="primary" type="submit">
+										<Button variant="third" type="submit">
 											Envoyer
 										</Button>
 									</div>

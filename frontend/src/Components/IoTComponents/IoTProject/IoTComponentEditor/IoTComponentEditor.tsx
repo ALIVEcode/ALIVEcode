@@ -291,7 +291,7 @@ const IoTComponentEditor = ({
 						onClick={() => {
 							component.isBuzzing() ? component.stopBuzz() : component.buzz();
 						}}
-						variant="primary"
+						variant="third"
 						className="mt-2"
 					>
 						{component.isBuzzing() ? 'Stop the sound' : 'Start the sound'}

@@ -91,14 +91,14 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 		setUserInputModalOpen(true);
 	};
 
-	useEffect(() => {
+	/*useEffect(() => {
 		const previousOverflowY = document.body.style.overflowY;
 		document.body.style.overflowY = 'hidden';
 
 		return () => {
 			document.body.style.overflowY = previousOverflowY;
 		};
-	}, []);
+	}, []);*/
 
 	useEffect(() => {
 		setInitialProgressionCode('');
@@ -349,7 +349,7 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 					onClose={() => setAccountModalOpen(false)}
 				>
 					<Button
-						variant="primary"
+						variant="third"
 						to={routes.non_auth.signup.path}
 						className="mb-2"
 					>
@@ -359,7 +359,7 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 					or
 					<br />
 					<Button
-						variant="primary"
+						variant="third"
 						to={routes.non_auth.signin.path}
 						className="mt-2"
 					>

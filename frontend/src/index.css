@@ -35,6 +35,11 @@ code {
 	word-wrap: break-word !important;
 }
 
+#navbar {
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+
 /*
 .card {
   border-radius: 15px;

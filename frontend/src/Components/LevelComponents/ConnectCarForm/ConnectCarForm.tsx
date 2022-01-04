@@ -1,4 +1,3 @@
-
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { Form, InputGroup } from 'react-bootstrap';
@@ -68,7 +67,7 @@ const ConnectCarForm = ({ onClose }: ConnectCarFormProps) => {
 					</Form.Control.Feedback>
 				</InputGroup>
 			</Form.Group>
-			<Button type="submit" variant="primary">
+			<Button type="submit" variant="third">
 				{t('simulation.modal.connect_car.button')}
 			</Button>
 		</Form>

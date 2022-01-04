@@ -1,9 +1,9 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import FillContainer from '../FillContainer/FillContainer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { SizeProp } from '@fortawesome/fontawesome-svg-core';
+import { classNames } from '../../../Types/utils';
 
 const StyledSpinner = styled.div`
 	color: var(--primary-color);
@@ -77,12 +77,12 @@ const LoadingScreen = ({
 	}, []);
 
 	return (
-		<FillContainer
-			relative={relative}
-			centered
-			startAtTop
+		<div
+			className={classNames(
+				'absolute w-full h-full flex items-center justify-center',
+				relative && 'relative',
+			)}
 			style={{
-				textAlign: 'center',
 				minHeight: loading ? '100px' : undefined,
 				backgroundColor: bg,
 			}}
@@ -99,7 +99,7 @@ const LoadingScreen = ({
 					)}
 				</StyledSpinner>
 			</div>
-		</FillContainer>
+		</div>
 	);
 };
 

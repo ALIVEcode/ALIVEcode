@@ -19,7 +19,7 @@ const Test = () => {
 			{user ? <div>{user.getDisplayName()}</div> : <div>Not connected</div>}
 			<Button
 				onClick={() => navigate(routes.auth.account.path)}
-				variant="primary"
+				variant="third"
 			></Button>
 			{routes.public.test.path}
 		</div>

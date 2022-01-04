@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { Button, Card } from "react-bootstrap";
+import { useEffect, useState } from 'react';
 import api from '../../../Models/api';
 import { Quiz } from '../../../Models/Quiz/quiz.entity';
 import { useParams } from 'react-router';
+import Button from '../../../Components/UtilsComponents/Button/Button';
 
 const QuizPlay = () => {
 	const [quiz, setQuiz] = useState<Quiz>();
@@ -29,10 +29,10 @@ const QuizPlay = () => {
 				quiz?.questions.map(question => {
 					return (
 						<div>
-							<Card>
-								<Card.Body>
-									<Card.Title>{question.name}</Card.Title>
-									<Card.Text>
+							<div>
+								<div>
+									<div className="text-xl">{question.name}</div>
+									<div className="text-base">
 										{
 											/* Generate possibles answers as buttons */
 											question.answers.map(answer => {
@@ -44,14 +44,16 @@ const QuizPlay = () => {
 												return (
 													<div>
 														<br />
-														<Button onClick={btnClick}>{answer.value}</Button>
+														<Button variant="third" onClick={btnClick}>
+															{answer.value}
+														</Button>
 													</div>
 												);
 											})
 										}
-									</Card.Text>
-								</Card.Body>
-							</Card>
+									</div>
+								</div>
+							</div>
 						</div>
 					);
 				})

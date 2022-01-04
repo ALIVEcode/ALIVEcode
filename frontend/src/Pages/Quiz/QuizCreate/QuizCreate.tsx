@@ -1,4 +1,4 @@
-import { plainToClass } from "class-transformer";
+import { plainToClass } from 'class-transformer';
 import { useEffect, useState } from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -71,7 +71,7 @@ const QuizCreate = () => {
 									{...register('description')}
 								></Form.Control>
 							</Form.Group>
-							<Button variant="primary" type="submit">
+							<Button variant="third" type="submit">
 								Create
 							</Button>
 							{

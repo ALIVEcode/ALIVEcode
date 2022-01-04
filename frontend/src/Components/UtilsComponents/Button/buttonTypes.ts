@@ -1,7 +1,7 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import styled from 'styled-components';
 
-export type ButtonVariants = 'primary' | 'secondary' | 'danger';
+export type ButtonVariants = 'primary' | 'secondary' | 'third' | 'danger';
 
 export type StyledButtonProps = {
 	padding?: string;
@@ -11,13 +11,7 @@ export type StyledButtonProps = {
 
 export type ButtonProps = {
 	to?: string;
-	className?: string;
 	variant: ButtonVariants;
-	type?: 'button' | 'submit' | 'reset';
-	onClick?: () => void;
-	children?: React.ReactNode;
-	padding?: string;
-	disabled?: boolean;
 	icon?: IconProp;
 };
 

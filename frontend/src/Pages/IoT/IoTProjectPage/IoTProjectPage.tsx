@@ -56,17 +56,17 @@ const IoTProjectPage = () => {
 				<>
 					<div
 						className={classNames(
-							open ? 'h-1/2' : 'h-auto',
-							'block order-2 tablet:order-1 tablet:h-auto',
+							open ? 'h-3/5' : 'h-auto',
+							'block order-3 tablet:order-1 tablet:h-auto',
 						)}
 						id="project-details"
 					>
-						<div className="tablet:hidden project-name flex flex-row justify-between items-center">
+						<div className="project-name border-b border-t border-[color:var(--bg-shade-four-color)] tablet:border-t-0 flex flex-row justify-between items-center">
 							<div>{project.name}</div>
 							<Disclosure.Button
 								as={FontAwesomeIcon}
-								icon={open ? faChevronUp : faChevronDown}
-								className="cursor-pointer"
+								icon={open ? faChevronDown : faChevronUp}
+								className="cursor-pointer tablet:hidden"
 							></Disclosure.Button>
 						</div>
 
@@ -130,7 +130,7 @@ const IoTProjectPage = () => {
 						</div>
 					</div>
 					<div
-						className="flex-grow flex flex-col h-1/2 tablet:h-full order-2 phone:order-1"
+						className="flex-grow flex flex-col h-2/5 tablet:h-full order-2"
 						id="project-body"
 					>
 						<IoTProjectBody />

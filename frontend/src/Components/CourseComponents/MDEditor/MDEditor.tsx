@@ -78,7 +78,7 @@ const MDEditor = ({ onSave, defaultValue }: MDEditorProps) => {
 				)}
 			</div>
 			<div className="editor-footer">
-				<Button onClick={() => onSave && onSave(content)} variant="primary">
+				<Button onClick={() => onSave && onSave(content)} variant="third">
 					Save
 				</Button>
 			</div>

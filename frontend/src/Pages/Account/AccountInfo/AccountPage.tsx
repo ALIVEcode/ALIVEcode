@@ -1,10 +1,9 @@
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { useContext} from 'react';
+import { useContext } from 'react';
 import { UserContext } from '../../../state/contexts/UserContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CenteredContainer from '../../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
 import CardContainer from '../../../Components/UtilsComponents/CardContainer/CardContainer';
-import { Form } from 'react-bootstrap';
 import styled from 'styled-components';
 import AboutCard from '../../../Components/UtilsComponents/Cards/AboutCard/AboutCard';
 import axios from 'axios';
@@ -50,7 +49,7 @@ const AccountPage = () => {
 												img={`http://localhost:8000/uploads/${user.getDisplayImage()}`}
 											/>
 										</div>
-										<Form onSubmit={handleSubmit(onSubmit)}>
+										<form onSubmit={handleSubmit(onSubmit)}>
 											<div>
 												<input
 													type="file"
@@ -60,7 +59,7 @@ const AccountPage = () => {
 											<div>
 												<button type="submit">upload</button>
 											</div>
-										</Form>
+										</form>
 									</>
 								)}
 							</CardContainer>
@@ -73,4 +72,3 @@ const AccountPage = () => {
 };
 
 export default AccountPage;
-

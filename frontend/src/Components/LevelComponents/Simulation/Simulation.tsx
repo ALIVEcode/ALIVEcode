@@ -1,4 +1,4 @@
-import FillContainer from "../../UtilsComponents/FillContainer/FillContainer";
+import FillContainer from '../../UtilsComponents/FillContainer/FillContainer';
 import { sketch } from './Sketch/simulation/sketch';
 import { SimulationProps, StyledSimulation } from './simulationTypes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,7 +8,6 @@ import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import { useState, useCallback, useRef, useEffect, useContext } from 'react';
 import Modal from '../../UtilsComponents/Modal/Modal';
 import { useTranslation } from 'react-i18next';
-import { Image } from 'react-bootstrap';
 import FormModal from '../../UtilsComponents/FormModal/FormModal';
 import ConnectCarForm from '../ConnectCarForm/ConnectCarForm';
 import { ReactP5Wrapper } from 'react-p5-wrapper';
@@ -78,8 +77,7 @@ const Simulation = ({
 		<StyledSimulation>
 			<div className="h-full w-full" id={id}>
 				<FontAwesomeIcon
-					className="absolute top-2 right-2"
-					className="zoom-button"
+					className="absolute top-2 right-2 zoom-button"
 					icon={faExpand}
 					size="2x"
 					color="black"
@@ -121,7 +119,7 @@ const Simulation = ({
 				centeredText
 				submitText={t('simulation.modal.retry')}
 			>
-				<Image alt="lose gif" src={deathGif} height={200}></Image>
+				<img alt="lose gif" src={deathGif} height="200px" />
 				<br />
 				{t(loseDescripton)}
 			</Modal>

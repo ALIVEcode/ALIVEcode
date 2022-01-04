@@ -51,7 +51,7 @@ const BrowsingMenu = <T extends any>({
 				/>
 			</div>
 			<div>
-				<Button variant="primary" onClick={getResults}>
+				<Button variant="third" onClick={getResults}>
 					{t('msg.search')}
 				</Button>
 			</div>

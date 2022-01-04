@@ -39,7 +39,7 @@ const ForumNavbar = () => {
 			<form className="d-flex">
 				<input className="input" type="search" onChange={handleChangeSearch} />
 				<Button
-					variant="primary"
+					variant="third"
 					onClick={() =>
 						navigate({
 							pathname: routes.public.forum_search.path,

@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import useRoutes from '../../state/hooks/useRoutes';
+import { NotFound } from '../../Pages/Errors/NotFound/NotFound';
 
 export const RouterSwitch = () => {
 	// Check in useRoutes hook to see the registered routes
@@ -13,7 +14,11 @@ export const RouterSwitch = () => {
 						return (
 							<Route
 								path={
-									path + (path.endsWith('/') ? '' : '/') + (exact ? '' : '*')
+									path !== '*'
+										? path +
+										  (path.endsWith('/') ? '' : '/') +
+										  (exact ? '' : '*')
+										: '*'
 								}
 								element={component}
 								key={idx + path}
@@ -22,6 +27,7 @@ export const RouterSwitch = () => {
 					},
 				),
 			)}
+			<Route path="*" element={<NotFound />}></Route>
 		</Routes>
 	);
 };

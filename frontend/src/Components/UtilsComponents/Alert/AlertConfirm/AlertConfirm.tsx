@@ -52,8 +52,8 @@ const AlertConfirm = ({
 			{...other}
 		>
 			<Button
-				padding="15px"
-				variant="primary"
+				className="p-5"
+				variant="third"
 				onClick={() => {
 					onClose();
 					onCancel && onCancel();
@@ -62,7 +62,7 @@ const AlertConfirm = ({
 				{t('modal.cancel')}
 			</Button>
 			<Button
-				padding="15px"
+				className="p-5"
 				variant="danger"
 				onClick={() => {
 					onClose();

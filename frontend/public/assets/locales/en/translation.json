@@ -22,9 +22,12 @@
 			"DELETE": "Delete {{name}}"
 		},
 		"error": {
+			"generic": "This field is wrong",
 			"required": "This field is required",
 			"maxLength": "This field exceeds {{max}} characters",
 			"minLength": "This field should be at least {{min}} characters",
+			"too_long": "This field is too long",
+			"too_short": "This field is too short",
 			"match": {
 				"alphabetic": "This field should only contains alphabetic characters",
 				"alphabetic_lower": "This field should only contains lowercase alphabetic characters",

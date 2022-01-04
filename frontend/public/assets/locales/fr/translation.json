@@ -22,9 +22,12 @@
 			"DELETE": "Supprimer {{name}}"
 		},
 		"error": {
+			"generic": "Ce champs est erroné",
 			"required": "Ce champs est requis",
 			"maxLength": "Ce champs dépasse {{max}} caractères",
 			"minLength": "Ce champs devrait être d'au moins {{min}} caractères",
+			"too_long": "Ce champs est trop long",
+			"too_short": "Ce champs est trop court",
 			"match": {
 				"alphabetic": "Ce champs doit contenir uniquement des lettres",
 				"alphabetic_lower": "Ce champs doit contenir uniquement des lettres minuscules",

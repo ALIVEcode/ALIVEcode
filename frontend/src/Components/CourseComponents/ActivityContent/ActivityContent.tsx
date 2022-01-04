@@ -14,13 +14,13 @@ import {
 	faPencilAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import MDEditor from '../MDEditor/MDEditor';
-import { Form } from 'react-bootstrap';
 import Button from '../../UtilsComponents/Button/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useTranslation } from 'react-i18next';
 import Modal from '../../UtilsComponents/Modal/Modal';
 import NewActivityContentModal from './NewActivityContentModal';
 import ReactMarkdown from 'react-markdown';
+import Input from '../../UtilsComponents/Input/Input';
 
 /**
  * Displays the content of the activity in the CourseContext
@@ -179,10 +179,10 @@ const ActivityContent = (props: ActivityContentProps) => {
 										{activity.name}
 									</div>
 								) : (
-									<Form.Control
+									<Input
 										className="activity-header-title"
 										value={name}
-										onChange={e => setName(e.target.value)}
+										onChange={(e: any) => setName(e.target.value)}
 										onBlur={() => {
 											activity.name = name;
 											saveActivity(activity);
@@ -223,7 +223,7 @@ const ActivityContent = (props: ActivityContentProps) => {
 										)}
 										{activity.levels &&
 											activity.levels.map((a, idx) => (
-												<div key={idx} style={{ position: 'relative' }}>
+												<div key={idx} className="h-64">
 													<Level
 														key={`level-${a.level.id}`}
 														level={a.level}

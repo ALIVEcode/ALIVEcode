@@ -129,7 +129,7 @@ const ForumFormQuestion = () => {
 							)}
 						</Form.Group>
 						<Form.Group className="text-right">
-							<Button variant="primary" type="submit">
+							<Button variant="third" type="submit">
 								Envoyer
 							</Button>
 						</Form.Group>

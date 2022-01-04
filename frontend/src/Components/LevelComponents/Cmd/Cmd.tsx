@@ -40,7 +40,7 @@ const Cmd = React.forwardRef<HTMLDivElement>((props: CmdProps, ref) => {
 	return (
 		<StyledDiv>
 			<Button
-				variant="primary"
+				variant="third"
 				onClick={() => {
 					if (!ref || !('current' in ref) || !ref.current) return;
 					ref.current.innerHTML = '';

@@ -33,7 +33,6 @@ export const StyledIoTProject = styled.div`
 		font-size: 1.2em;
 		height: 50px;
 		padding: 10px !important;
-		border-bottom: var(--bg-shade-four-color) 1px solid;
 	}
 
 	.project-details-body {

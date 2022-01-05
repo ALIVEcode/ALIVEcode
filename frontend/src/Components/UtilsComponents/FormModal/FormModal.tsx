@@ -2,6 +2,7 @@ import { cloneElement, isValidElement } from 'react';
 import styled from 'styled-components';
 import { FormModalProps } from './formModalTypes';
 import Modal from '../Modal/Modal';
+import { classNames } from '../../../Types/utils';
 
 /**
  * Modal containing a Form component (the one used to create a relation in the db) in the children
@@ -15,12 +16,7 @@ import Modal from '../Modal/Modal';
  *
  * @author MoSk3
  */
-const FormModal = ({
-	children: form,
-	closeButton,
-	onSubmit,
-	...props
-}: FormModalProps) => {
+const FormModal = ({ children: form, onSubmit, ...props }: FormModalProps) => {
 	const makeChildrenWithProps = () => {
 		return (
 			form && isValidElement(form) && cloneElement(form as any, { onSubmit })
@@ -28,7 +24,7 @@ const FormModal = ({
 	};
 
 	return (
-		<Modal hideCloseButton={!closeButton} {...props}>
+		<Modal hideFooter closeCross {...props}>
 			{makeChildrenWithProps()}
 		</Modal>
 	);

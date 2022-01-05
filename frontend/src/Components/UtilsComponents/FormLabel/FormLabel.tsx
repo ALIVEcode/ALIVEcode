@@ -17,10 +17,7 @@ type LabelProps = CustomProps &
 const FormLabel: React.FC<LabelProps> = ({ className, ...props }) => {
 	return (
 		<label
-			className={classNames(
-				'block text-[color:var(--foreground-color)] text-base mb-2',
-				className,
-			)}
+			className={classNames('block text-base mb-2', className)}
 			{...props}
 		/>
 	);

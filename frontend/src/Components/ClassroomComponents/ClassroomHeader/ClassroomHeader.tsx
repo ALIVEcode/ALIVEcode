@@ -114,7 +114,7 @@ const ClassroomHeader: React.FC<
 				centeredText
 				centered
 				closeCross
-				buttonVariant="primary"
+				submitButtonVariant="primary"
 			>
 				{t('classroom.code.desc')}
 				<Badge

@@ -48,7 +48,6 @@ export type Theme = {
 const addHexColors = (colors: { [key: string]: string }) => {
 	return Object.entries(colors).reduce(
 		(cols: { [key: string]: string }, entry: [string, string]) => {
-			console.log(entry[0]);
 			cols[`${entry[0]}_rgb`] = hexToRGB(entry[1]);
 			return cols;
 		},
@@ -121,8 +120,6 @@ export const themes: { light: Theme; dark: Theme } = {
 		name: 'dark',
 	},
 };
-
-console.log(themes.light.color);
 
 export const commonColors = {
 	almost_black: '#23272A',

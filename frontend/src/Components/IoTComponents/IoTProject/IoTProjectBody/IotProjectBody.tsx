@@ -133,6 +133,8 @@ const IoTProjectBody = ({ noTopRow }: { noTopRow?: boolean }) => {
 					title="Edit component"
 					open={editingComponent ? true : false}
 					setOpen={bool => !bool && setEditingComponent(undefined)}
+					closeCross
+					hideSubmitButton
 				>
 					{editingComponent && (
 						<IoTComponentEditor
@@ -146,6 +148,8 @@ const IoTProjectBody = ({ noTopRow }: { noTopRow?: boolean }) => {
 					title="Add a component"
 					open={openComponentCreator}
 					setOpen={setOpenComponentCreator}
+					closeCross
+					hideSubmitButton
 				>
 					<IoTComponentCreator
 						onSelect={(c: IoTComponent) => {

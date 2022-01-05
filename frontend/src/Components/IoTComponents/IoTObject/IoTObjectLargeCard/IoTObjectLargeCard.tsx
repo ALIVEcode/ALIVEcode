@@ -19,6 +19,8 @@ const IoTObjectLargeCard = ({ object, onUpdate }: IoTObjectLargeCardProps) => {
 				title="Object settings"
 				open={settingsOpen}
 				setOpen={setSettingsOpen}
+				hideFooter
+				closeCross
 			>
 				<IoTObjectSettings
 					onUpdate={obj => {

@@ -275,7 +275,7 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 								className="ml-2 relative inline-block text-left h-full w-10"
 							>
 								<div className="h-full">
-									<Menu.Button className="h-full">
+									<Menu.Button className="h-full w-10">
 										<svg
 											className="w-full h-full"
 											xmlns="http://www.w3.org/2000/svg"

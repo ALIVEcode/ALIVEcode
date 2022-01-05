@@ -1,10 +1,10 @@
 import { ModalProps } from './modalTypes';
-import { useTranslation } from 'react-i18next';
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { classNames } from '../../../Types/utils';
 import Button from '../Button/Button';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Component used to show a custom styled modal
@@ -34,8 +34,11 @@ const Modal = (props: ModalProps) => {
 		size = 'sm',
 		hideFooter,
 		closeCross,
-		buttonVariant,
+		submitButtonVariant,
+		closeButtonVariant,
 		submitText,
+		closeText,
+		hideSubmitButton,
 		hideCloseButton,
 		centered,
 		centeredText,
@@ -46,7 +49,6 @@ const Modal = (props: ModalProps) => {
 		onShow,
 	} = props;
 
-	const { t } = useTranslation();
 	const cancelButtonRef = useRef<HTMLButtonElement | null>(null);
 
 	useEffect(() => {
@@ -110,6 +112,14 @@ const Modal = (props: ModalProps) => {
 								dialogClassName,
 							)}
 						>
+							{closeCross && (
+								<div
+									className="absolute top-2 right-2 w-6 h-6 text-[color:var(--fg-shade-four-color)] cursor-pointer text-center"
+									onClick={() => setOpen(false)}
+								>
+									<FontAwesomeIcon icon={faTimes}></FontAwesomeIcon>
+								</div>
+							)}
 							<div className="p-4 py-0 tablet:p-5 tablet:py-2 desktop:p-7 desktop:py-4">
 								<div className="sm:flex sm:items-start w-full">
 									{icon && (
@@ -128,7 +138,7 @@ const Modal = (props: ModalProps) => {
 										<div className="mt-2 border-b border-[color:var(--bg-shade-four-color)]"></div>
 										<div
 											className={classNames(
-												size === 'sm' ? 'mt-2' : 'mt-4',
+												size === 'sm' ? 'my-2' : 'my-4',
 												centered && 'flex flex-col justify-center',
 											)}
 										>
@@ -142,20 +152,22 @@ const Modal = (props: ModalProps) => {
 									{!hideCloseButton && (
 										<Button
 											type="button"
-											variant="secondary"
-											className="mr-4"
+											variant={closeButtonVariant ?? 'secondary'}
+											className={!hideSubmitButton ? 'mr-4' : ''}
 											onClick={() => setOpen(false)}
 											ref={cancelButtonRef}
 										>
-											Close
+											{closeText ?? 'Close'}
 										</Button>
 									)}
-									<Button
-										variant={buttonVariant ?? 'third'}
-										onClick={() => setOpen(false)}
-									>
-										{submitText ?? 'Submit Changes'}
-									</Button>
+									{!hideSubmitButton && (
+										<Button
+											variant={submitButtonVariant ?? 'third'}
+											onClick={() => setOpen(false)}
+										>
+											{submitText ?? 'Submit Changes'}
+										</Button>
+									)}
 								</div>
 							)}
 						</div>

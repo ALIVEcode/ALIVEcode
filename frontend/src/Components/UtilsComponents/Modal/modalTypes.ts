@@ -6,10 +6,13 @@ export interface ModalProps {
 	open: boolean;
 	setOpen: (bool: boolean) => void;
 	size?: 'sm' | 'lg' | 'xl';
-	buttonVariant?: ButtonVariants;
-	closeCross?: boolean;
+	submitButtonVariant?: ButtonVariants;
+	closeButtonVariant?: ButtonVariants;
 	hideCloseButton?: boolean;
+	hideSubmitButton?: boolean;
 	submitText?: string;
+	closeText?: string;
+	closeCross?: boolean;
 	children?: React.ReactNode;
 	hideFooter?: boolean;
 	centeredText?: boolean;

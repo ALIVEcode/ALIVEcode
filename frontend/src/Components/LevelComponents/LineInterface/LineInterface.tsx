@@ -1,4 +1,8 @@
-import { LineInterfaceProps, StyledLineInterface, EditorTabModel } from './lineInterfaceTypes';
+import {
+	LineInterfaceProps,
+	StyledLineInterface,
+	EditorTabModel,
+} from './lineInterfaceTypes';
 import EditorTab from '../../AliveScriptComponents/EditorTab/EditorTab';
 import { useState, useRef, memo, useContext } from 'react';
 import { ThemeContext } from '../../../state/contexts/ThemeContext';
@@ -147,12 +151,11 @@ const LineInterface = memo(
 							setTimeout(() => {
 								if (ref.current) {
 									ref.current.editor.resize();
+									const editor = ace.edit('1nt3rf4c3');
+									setAutocomplete(editor);
+									editor.keyBinding.addKeyboardHandler(new Autocomplete(), 0);
 								}
 							}, 10);
-
-							const editor = ace.edit('1nt3rf4c3');
-							setAutocomplete(editor);
-							editor.keyBinding.addKeyboardHandler(new Autocomplete(), 0);
 						}}
 						fontSize="large"
 						name="1nt3rf4c3" //"UNIQUE_ID_OF_DIV"

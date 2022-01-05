@@ -28,6 +28,7 @@ const AlertConfirm = ({
 			centered
 			setOpen={setOpen}
 			centeredText
+			closeCross
 			{...other}
 		>
 			<div className="flex justify-evenly">

@@ -108,7 +108,6 @@ const IoTDashboard = (props: iotDashboardProps) => {
 				setOpen={setOpenObjectCreate}
 				title={t('form.title.create_iot_project')}
 				open={openObjectCreate}
-				closeButton={false}
 			>
 				<IoTObjectCreate />
 			</FormModal>

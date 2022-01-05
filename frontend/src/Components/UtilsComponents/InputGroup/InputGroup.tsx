@@ -47,6 +47,8 @@ const InputGroup = React.forwardRef<any, any>(
 			messages,
 			className,
 			label,
+			labelClassName,
+			inputClassName,
 			name,
 			minLength,
 			maxLength,
@@ -75,12 +77,15 @@ const InputGroup = React.forwardRef<any, any>(
 
 		return (
 			<div className={'mb-2 w-full ' + className}>
-				<FormLabel htmlFor={name}>{label}</FormLabel>
+				<FormLabel htmlFor={name} className={labelClassName}>
+					{label}
+				</FormLabel>
 				<FormInput
 					minLength={minLength}
 					maxLength={maxLength}
 					ref={ref}
 					name={name}
+					className={inputClassName}
 					{...props}
 				/>
 				<p className="text-red-500 text-sm italic mt-1">

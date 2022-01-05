@@ -105,7 +105,7 @@ const IoTDashboard = (props: iotDashboardProps) => {
 					setObjects([...objects, newObject]);
 					setOpenObjectCreate(false);
 				}}
-				onClose={() => setOpenObjectCreate(false)}
+				setOpen={setOpenObjectCreate}
 				title={t('form.title.create_iot_project')}
 				open={openObjectCreate}
 				closeButton={false}

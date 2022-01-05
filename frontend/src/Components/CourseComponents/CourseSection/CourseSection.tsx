@@ -155,7 +155,7 @@ const CourseSection = ({ section, editMode }: CourseSectionProps) => {
 			<AlertConfirm
 				open={confirmSectionDelete}
 				title={t('couse.section.delete')}
-				onClose={() => setConfirmSectionDelete(false)}
+				setOpen={setConfirmSectionDelete}
 				onConfirm={() => {
 					if (!(course && section)) return;
 					deleteSection(section);
@@ -165,7 +165,7 @@ const CourseSection = ({ section, editMode }: CourseSectionProps) => {
 			<AlertConfirm
 				open={confirmActivityDelete}
 				title={t('couse.activity.delete')}
-				onClose={() => setConfirmActivityDelete(false)}
+				setOpen={setConfirmActivityDelete}
 				onConfirm={() => {
 					if (!(course && section && currentActivity.current)) return;
 					deleteActivity(section, currentActivity.current);

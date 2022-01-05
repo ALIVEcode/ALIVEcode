@@ -38,7 +38,7 @@ import QuizEdit from '../../Pages/Quiz/QuizEdit/QuizEdit';
 import QuizPlay from '../../Pages/Quiz/QuizPlay/QuizPlay';
 import ForumCategories from '../../Pages/Forum/ForumCategories/ForumCategories';
 import ForumSubjectList from '../../Pages/Forum/ForumSubjectList/ForumSubjectList';
-import ForumFormQuestion from '../../Pages/Forum/ForumFormQuestion/ForumFormQuestion';
+import ForumPostForm from '../../Pages/Forum/ForumFormQuestion/ForumFormQuestion';
 import ForumPost from '../../Pages/Forum/ForumPost/ForumPost';
 import ForumSearch from '../../Pages/Forum/ForumSearch/ForumSearch';
 import Chat from '../../Pages/Chat/Chat';
@@ -337,9 +337,9 @@ const useRoutes = () => {
 			component: <QuizEdit></QuizEdit>,
 			adminOnly: true,
 		},
-		form_question: {
-			path: '/formQuestion/forum',
-			component: <ForumFormQuestion></ForumFormQuestion>,
+		forum_post_form: {
+			path: '/forum/post',
+			component: <ForumPostForm></ForumPostForm>,
 		},
 	});
 

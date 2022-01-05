@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useState, useEffect, useRef } from 'react';
 import Button from '../../UtilsComponents/Button/Button';
 import useRoutes from '../../../state/hooks/useRoutes';
-import Input from '../../UtilsComponents/Input/Input';
+import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
 
 /**
  * Component used to join a classroom with a provided classroom code
@@ -47,7 +47,7 @@ const JoinClassroomForm = () => {
 
 	return (
 		<form onSubmit={handleSubmit(SubmitForm)}>
-			<Input
+			<InputGroup
 				label={t('form.join_classroom.code')}
 				errors={errors.code}
 				messages={{

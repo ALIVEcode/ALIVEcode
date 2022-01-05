@@ -113,7 +113,7 @@ const Simulation = ({
 			<Modal
 				title={t('simulation.modal.lose')}
 				open={loseModalOpen}
-				onClose={() => setLoseModalOpen(false)}
+				setOpen={setLoseModalOpen}
 				hideCloseButton
 				centered
 				centeredText
@@ -126,9 +126,11 @@ const Simulation = ({
 			<Modal
 				title={t('simulation.modal.win')}
 				open={winModalOpen}
-				onClose={() => {
-					setWinModalOpen(false);
-					setShowConfetti(false);
+				setOpen={bool => {
+					if (!bool) {
+						setWinModalOpen(false);
+						setShowConfetti(false);
+					}
 				}}
 				hideCloseButton
 				centered
@@ -140,9 +142,9 @@ const Simulation = ({
 			<FormModal
 				open={connectModalOpen}
 				title={t('simulation.modal.connect_car.title')}
-				onClose={() => setConnectModalOpen(false)}
+				setOpen={setConnectModalOpen}
 			>
-				<ConnectCarForm onClose={() => setConnectModalOpen(false)} />
+				<ConnectCarForm setOpen={setConnectModalOpen} />
 			</FormModal>
 		</StyledSimulation>
 	);

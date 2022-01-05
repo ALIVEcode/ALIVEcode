@@ -11,7 +11,7 @@ import { ConnectCarFormProps } from './connectCarFormTypes';
  *
  * @author MoSk3
  */
-const ConnectCarForm = ({ onClose }: ConnectCarFormProps) => {
+const ConnectCarForm = ({ setOpen }: ConnectCarFormProps) => {
 	const { t } = useTranslation();
 	const { playSocket } = useContext(UserContext);
 	const {
@@ -34,7 +34,7 @@ const ConnectCarForm = ({ onClose }: ConnectCarFormProps) => {
 		try {
 			playSocket.robotConnect(id, data => {
 				if (data.event === 'success') {
-					onClose();
+					setOpen(false);
 					setNotFound(false);
 				} else if (data.event === 'error') {
 					console.log(data.error);

@@ -117,7 +117,7 @@ const CourseNavigation = (props: CourseNavigationProps) => {
 			<FormModal
 				open={openModalSection}
 				title="Create section"
-				onClose={() => setOpenModalSection(false)}
+				setOpen={setOpenModalSection}
 				onSubmit={res => {
 					const section: Section = plainToClass(Section, res.data);
 					addSection(section);

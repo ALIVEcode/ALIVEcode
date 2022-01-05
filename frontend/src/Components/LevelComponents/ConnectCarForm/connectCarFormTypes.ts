@@ -1,3 +1,3 @@
 export type ConnectCarFormProps = {
-	onClose: () => void;
+	setOpen: (bool: boolean) => void;
 };

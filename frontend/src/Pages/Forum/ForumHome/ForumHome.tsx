@@ -6,9 +6,11 @@ import { useEffect, useState } from 'react';
 import api from '../../../Models/api';
 import { plainToClass } from 'class-transformer';
 import { Link } from 'react-router-dom';
+import useRoutes from '../../../state/hooks/useRoutes';
 
 const ForumHome = () => {
 	const [post, setPost] = useState<PostModel[]>([]);
+	const { routes } = useRoutes();
 
 	useEffect(() => {
 		const getPost = async () => {
@@ -101,7 +103,7 @@ const ForumHome = () => {
 
 				<div className="h-1/3">
 					<div className="flex justify-center">
-						<Link className="mt-5" to="/formQuestion/forum">
+						<Link className="mt-5" to={routes.auth.forum_post_form.path}>
 							<Button variant={'primary'} className="btn-lg">
 								Créer un sujet
 							</Button>
@@ -110,7 +112,10 @@ const ForumHome = () => {
 					<CardContainer asRow title="Derniers sujets">
 						<div>
 							{post.map((p, idx) => (
-								<Link to={'/forum/post/' + p.id} key={idx}>
+								<Link
+									to={routes.public.forum_post.path.replace(':id', p.id)}
+									key={idx}
+								>
 									<div className="ml-2 mr-2 mt-2" style={{ width: '22rem' }}>
 										<div className="card-content">
 											<div className="media">

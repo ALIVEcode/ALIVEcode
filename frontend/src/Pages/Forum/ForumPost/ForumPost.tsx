@@ -7,6 +7,7 @@ import { Post } from '../../../Models/Forum/post.entity';
 import { UserContext } from '../../../state/contexts/UserContext';
 import { useParams } from 'react-router';
 import Button from '../../../Components/UtilsComponents/Button/Button';
+import InputGroup from '../../../Components/UtilsComponents/InputGroup/InputGroup';
 
 const ForumPost = () => {
 	const [post, setPost] = useState<Post>();
@@ -80,19 +81,15 @@ const ForumPost = () => {
 							</div>
 							<div>
 								<form onSubmit={handleSubmit(onSubmit)}>
-									<div className="mb-3 text-left">
-										<textarea
-											className="w-full border-1 rounded-md"
-											id="formComment"
-											rows={5}
-											{...register('content', { required: true })}
-										/>
-									</div>
-									<div className="text-right">
-										<Button variant="third" type="submit">
-											Envoyer
-										</Button>
-									</div>
+									<InputGroup
+										label="Nouveau commentaire"
+										as="textarea"
+										rows={5}
+										{...register('content', { required: true })}
+									/>
+									<Button variant="third" type="submit">
+										Envoyer
+									</Button>
 								</form>
 							</div>
 						</div>

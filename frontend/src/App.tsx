@@ -53,8 +53,8 @@ const GlobalStyle = createGlobalStyle`
 			...commonColors,
 			...theme.color,
 		})) {
-			const cssName = colorName.includes('rgb')
-				? `--${colorName.split('_')[0]}-color-rgb`
+			const cssName = colorName.endsWith('rgb')
+				? `--${colorName.split('_').slice(0, -1).join('-')}-color-rgb`
 				: `--${colorName.replaceAll('_', '-')}-color`;
 			cssVars.push(`${cssName}: ${color}`);
 		}
@@ -78,7 +78,6 @@ const GlobalStyle = createGlobalStyle`
 						--pale-color-rgb: ${theme.color.pale_rgb};
 						--contrast-color: ${theme.color.contrast};
 						--contrast-color-rgb: ${theme.color.contrast};
-						--hover-color: ${theme.color.hover};
 						--background-color: ${theme.color.background};
 						--background-color-rgb: ${theme.color.background_rgb};
 						--background-hover-color: ${theme.color.background_hover};

@@ -1,4 +1,8 @@
-import { DashboardNewProps, StyledDashboard, SwitchTabActions } from './dashboardNewTypes';
+import {
+	DashboardNewProps,
+	StyledDashboard,
+	SwitchTabActions,
+} from './dashboardNewTypes';
 import {
 	useContext,
 	useState,
@@ -226,7 +230,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 			<FormModal
 				title={t('form.join_classroom.title')}
 				open={formJoinClassOpen}
-				onClose={() => setFormJoinClassOpen(false)}
+				setOpen={setFormJoinClassOpen}
 			>
 				<JoinClassroomForm />
 			</FormModal>

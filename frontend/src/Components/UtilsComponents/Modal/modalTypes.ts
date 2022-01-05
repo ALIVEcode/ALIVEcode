@@ -1,9 +1,10 @@
 import { ButtonVariants } from '../Button/buttonTypes';
-import { ModalProps as BootModalProps } from 'react-bootstrap';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
-export interface ModalProps extends BootModalProps {
+export interface ModalProps {
 	title: string;
 	open: boolean;
+	setOpen: (bool: boolean) => void;
 	size?: 'sm' | 'lg' | 'xl';
 	buttonVariant?: ButtonVariants;
 	closeCross?: boolean;
@@ -11,6 +12,13 @@ export interface ModalProps extends BootModalProps {
 	submitText?: string;
 	children?: React.ReactNode;
 	hideFooter?: boolean;
-	onClose: () => void;
 	centeredText?: boolean;
-};
+	centered?: boolean;
+	backdropClassName?: string;
+	animation?: boolean;
+	dialogClassName?: string;
+	contentClassName?: string;
+	scrollable?: boolean;
+	icon?: IconProp;
+	onShow?: () => void;
+}

@@ -133,7 +133,7 @@ const Dashboard = (props: DashboardProps) => {
 			<FormModal
 				title={t('form.join_classroom.title')}
 				open={formJoinClassOpen}
-				onClose={() => setFormJoinClassOpen(false)}
+				setOpen={setFormJoinClassOpen}
 			>
 				<JoinClassroomForm />
 			</FormModal>

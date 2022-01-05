@@ -109,9 +109,8 @@ const ClassroomHeader: React.FC<
 			<Modal
 				title={t('classroom.code.title')}
 				open={codeModalOpen}
-				onClose={() => setCodeModalOpen(false)}
+				setOpen={setCodeModalOpen}
 				submitText={t('msg.understood')}
-				button
 				hideCloseButton
 				closeCross
 			>

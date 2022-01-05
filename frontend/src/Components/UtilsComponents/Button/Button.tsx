@@ -35,7 +35,7 @@ const Button: React.FC<
 
 	const defaultInputOptions = {
 		className: classNames(
-			'py-2 px-3 rounded-md text-white transition-colors hover:bg-[color:var(--contrast-color)]',
+			'py-2 px-3 rounded-md text-white text-base font-medium transition-colors hover:bg-[color:var(--contrast-color)]',
 			variant === 'primary' && 'bg-[color:var(--primary-color)]',
 			variant === 'secondary' && 'bg-[color:var(--secondary-color)]',
 			variant === 'third' && 'bg-[color:var(--third-color)]',
@@ -65,3 +65,16 @@ const Button: React.FC<
 };
 
 export default Button;
+
+/*
+
+UPGRADED BUTTON ?
+								<button
+									type="button"
+									className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+									onClick={() => setOpen(false)}
+									ref={cancelButtonRef}
+								>
+									Cancel
+								</button>
+*/

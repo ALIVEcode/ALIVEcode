@@ -313,11 +313,13 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 				)}
 				<Modal
 					open={userInputModalOpen}
-					onClose={() => {
-						if (userInputCallback.current && userInputRef.current)
-							userInputCallback.current(`${userInputRef.current.value}`);
-						setUserInputModalOpen(false);
-						userInputRef.current.value = '';
+					setOpen={opening => {
+						if (!opening) {
+							if (userInputCallback.current && userInputRef.current)
+								userInputCallback.current(`${userInputRef.current.value}`);
+							setUserInputModalOpen(false);
+							userInputRef.current.value = '';
+						}
 					}}
 					title={inputMsg.current}
 					hideCloseButton
@@ -346,7 +348,7 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 				<Modal
 					title={t('msg.auth.account_required')}
 					open={accountModalOpen}
-					onClose={() => setAccountModalOpen(false)}
+					setOpen={setAccountModalOpen}
 				>
 					<Button
 						variant="third"
@@ -380,7 +382,7 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 						forceUpdate();
 						setSettingsModalOpen(false);
 					}}
-					onClose={() => setSettingsModalOpen(false)}
+					setOpen={setSettingsModalOpen}
 					open={settingsModalOpen}
 				>
 					<Form

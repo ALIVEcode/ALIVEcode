@@ -15,7 +15,7 @@ import useRoutes from '../../../state/hooks/useRoutes';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router';
 import Button from '../../../Components/UtilsComponents/Button/Button';
-import Input from '../../../Components/UtilsComponents/Input/Input';
+import InputGroup from '../../../Components/UtilsComponents/InputGroup/InputGroup';
 
 /**
  * Signup page that allows the user to register a new account
@@ -88,7 +88,7 @@ const SignUp = ({ userType }: SignUpProps) => {
 	return (
 		<FormContainer title={t('form.title.signup')}>
 			<form onSubmit={handleSubmit(onSignIn)}>
-				<Input
+				<InputGroup
 					type="email"
 					autoComplete="on"
 					label={t('form.email.label')}
@@ -102,7 +102,7 @@ const SignUp = ({ userType }: SignUpProps) => {
 				/>
 				{userType === USER_TYPES.PROFESSOR ? (
 					<div className="flex flex-row gap-3">
-						<Input
+						<InputGroup
 							label={t('form.firstName.label')}
 							placeholder={t('form.firstName.placeholder')}
 							autoComplete="on"
@@ -118,7 +118,7 @@ const SignUp = ({ userType }: SignUpProps) => {
 								maxLength: 25,
 							})}
 						/>
-						<Input
+						<InputGroup
 							label={t('form.lastName.label')}
 							placeholder="Soldevila"
 							autoComplete="on"
@@ -137,7 +137,7 @@ const SignUp = ({ userType }: SignUpProps) => {
 					</div>
 				) : (
 					<>
-						<Input
+						<InputGroup
 							label={t('form.name.label')}
 							placeholder={t('form.name.placeholder')}
 							errors={errors.name}
@@ -169,7 +169,7 @@ const SignUp = ({ userType }: SignUpProps) => {
 						*/}
 					</>
 				)}
-				<Input
+				<InputGroup
 					label={t('form.pwd.label')}
 					type="password"
 					placeholder={t('form.pwd.placeholder')}

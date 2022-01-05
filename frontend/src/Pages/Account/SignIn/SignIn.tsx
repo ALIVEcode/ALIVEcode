@@ -14,7 +14,7 @@ import useRoutes from '../../../state/hooks/useRoutes';
 import HttpStatusCode from '../../../Types/http-errors';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router';
-import Input from '../../../Components/UtilsComponents/Input/Input';
+import InputGroup from '../../../Components/UtilsComponents/InputGroup/InputGroup';
 
 /**
  * Signin page that allows the user to connect to its account
@@ -72,7 +72,7 @@ const SignIn = (props: SignInProps) => {
 	return (
 		<FormContainer title={t('form.title.signin')}>
 			<form onSubmit={handleSubmit(onSignIn)}>
-				<Input
+				<InputGroup
 					label={t('form.email.label')}
 					type="email"
 					autoComplete="on"
@@ -90,7 +90,7 @@ const SignIn = (props: SignInProps) => {
 					})}
 				/>
 
-				<Input
+				<InputGroup
 					label={t('form.pwd.label')}
 					type="password"
 					autoComplete="on"

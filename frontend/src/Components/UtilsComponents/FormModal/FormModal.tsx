@@ -23,8 +23,7 @@ const StyledModal = styled(Modal)`
  * @param {boolean} open if the modal is open or closed
  * @param {boolean} closeButton if the button should have the closeButton
  * @param {ButtonVariants} buttonVariant variant of the submit button
- * @param {() => any} onClose callback called when the modal closes
- * @param {(res) => any} onClose callback called with the result when the form is submitted
+ * @param {() => any} setOpen method to change modal open state
  *
  * @author MoSk3
  */
@@ -34,7 +33,7 @@ const FormModal = ({
 	open,
 	closeButton,
 	buttonVariant,
-	onClose,
+	setOpen,
 	onSubmit,
 }: FormModalProps) => {
 	const { t } = useTranslation();
@@ -46,14 +45,14 @@ const FormModal = ({
 	};
 
 	return (
-		<StyledModal show={open} onHide={onClose}>
+		<StyledModal show={open} onHide={setOpen}>
 			<Modal.Header closeButton>
 				<Modal.Title>{title}</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>{makeChildrenWithProps()}</Modal.Body>
 			<Modal.Footer>
 				{(closeButton ?? true) && (
-					<Button variant="secondary" onClick={onClose}>
+					<Button variant="secondary" onClick={() => setOpen(false)}>
 						{t('modal.cancel')}
 					</Button>
 				)}

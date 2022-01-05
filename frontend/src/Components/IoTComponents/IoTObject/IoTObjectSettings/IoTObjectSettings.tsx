@@ -1,4 +1,4 @@
-import Form from "../../../UtilsComponents/Form/Form";
+import Form from '../../../UtilsComponents/Form/Form';
 import { IOTOBJECT_LABEL } from '../../../../Models/Iot/IoTobject.entity';
 import Link from '../../../UtilsComponents/Link/Link';
 import { FORM_ACTION } from '../../../UtilsComponents/Form/formTypes';
@@ -64,7 +64,7 @@ const IoTObjectSettings = ({ object, onUpdate }: IoTObjectSettingsProps) => {
 			<AlertConfirm
 				title={t('form.submit.DELETE', { name: t('iot.object.name') })}
 				open={confirmDeleteOpen}
-				onClose={() => setConfirmDeleteOpen(false)}
+				setOpen={setConfirmDeleteOpen}
 				onConfirm={async () => {
 					await api.db.iot.objects.delete({ id: object.id });
 					goTo(routes.auth.iot_dashboard.path);

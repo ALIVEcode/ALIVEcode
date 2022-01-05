@@ -7,6 +7,6 @@ export type FormModalProps = {
 	buttonVariant?: ButtonVariants;
 	closeButton?: boolean;
 	children: React.ReactNode;
-	onClose: () => void;
+	setOpen: (bool: boolean) => void;
 	onSubmit?: (res: AxiosResponse<any>) => void;
 };

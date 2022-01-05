@@ -75,7 +75,7 @@ export const IoTProjectSettings = () => {
 			<AlertConfirm
 				title={t('form.submit.DELETE', { name: t('iot.project.name') })}
 				open={confirmDeleteOpen}
-				onClose={() => setConfirmDeleteOpen(false)}
+				setOpen={setConfirmDeleteOpen}
 				onConfirm={async () => {
 					await api.db.iot.projects.delete({ id: project.id });
 					goTo(routes.auth.iot_dashboard.path);

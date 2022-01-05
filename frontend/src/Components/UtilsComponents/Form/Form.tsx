@@ -10,7 +10,7 @@ import {
 import axios, { AxiosError } from 'axios';
 import { useAlert } from 'react-alert';
 import { prettyField } from '../../../Types/formatting';
-import Input from '../Input/Input';
+import InputGroup from '../InputGroup/InputGroup';
 
 /**
  * Form used to create or alter a relation in the database that auto-generates the fields depending of the arguments.
@@ -149,7 +149,7 @@ const Form = (props: FormProps) => {
 		switch (g.inputType) {
 			case 'select':
 				return (
-					<Input
+					<InputGroup
 						label={t([
 							`form.${props.name}.${props.action}.${g.name}.label`,
 							`form.${props.name}.${g.name}.label`,
@@ -216,11 +216,11 @@ const Form = (props: FormProps) => {
 											{k.toLowerCase()}
 										</option>
 									))}
-					</Input>
+					</InputGroup>
 				);
 			default:
 				return (
-					<Input
+					<InputGroup
 						label={t([
 							`form.${props.name}.${props.action}.${g.name}.label`,
 							`form.${props.name}.${g.name}.label`,

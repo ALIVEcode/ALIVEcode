@@ -20,7 +20,7 @@ import { useTranslation } from 'react-i18next';
 import Modal from '../../UtilsComponents/Modal/Modal';
 import NewActivityContentModal from './NewActivityContentModal';
 import ReactMarkdown from 'react-markdown';
-import Input from '../../UtilsComponents/Input/Input';
+import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
 
 /**
  * Displays the content of the activity in the CourseContext
@@ -179,7 +179,7 @@ const ActivityContent = (props: ActivityContentProps) => {
 										{activity.name}
 									</div>
 								) : (
-									<Input
+									<InputGroup
 										className="activity-header-title"
 										value={name}
 										onChange={(e: any) => setName(e.target.value)}
@@ -252,7 +252,7 @@ const ActivityContent = (props: ActivityContentProps) => {
 						centered
 						title={'course.activity.new_content'}
 						open={newContentModalOpen}
-						onClose={() => setNewContentModalOpen(false)}
+						setOpen={setNewContentModalOpen}
 						animation
 						hideCloseButton
 						hideFooter

@@ -2,7 +2,7 @@ import React from 'react';
 import { FieldError } from 'react-hook-form';
 import { classNames } from '../../../Types/utils';
 import { useTranslation } from 'react-i18next';
-import { useState, useEffect } from 'react';
+import FormLabel from '../FormLabel/FormLabel';
 
 type SelectProps = {
 	errors: FieldError | undefined;
@@ -39,7 +39,7 @@ type Props = FullSelectProps | FullInputProps;
  *
  * @author MoSk3
  */
-const Input = React.forwardRef<any, any>(
+const InputGroup = React.forwardRef<any, any>(
 	(
 		{
 			className,
@@ -133,9 +133,7 @@ const Input = React.forwardRef<any, any>(
 
 		return (
 			<div className="mb-2 w-full">
-				<label className="block text-white text-base mb-2" htmlFor={name}>
-					{label}
-				</label>
+				<FormLabel htmlFor={name}>{label}</FormLabel>
 				{generateInput()}
 				<p className="text-red-500 text-sm italic mt-1">
 					{errors &&
@@ -149,4 +147,4 @@ const Input = React.forwardRef<any, any>(
 	},
 );
 
-export default Input;
+export default InputGroup;

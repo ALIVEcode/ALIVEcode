@@ -1,24 +1,27 @@
-body, html, #root, .App {
-  height: 100%;
-  font-weight: 500;
+body,
+html,
+#root,
+.App {
+	height: 100%;
+	font-weight: 500;
 }
 
 .App {
-  text-align: left;
+	text-align: left;
 }
 
 .no-cursor {
-  cursor: default !important;
+	cursor: default !important;
 }
 
 .row .no-float {
-  display: table-cell;
-  float: none;
+	display: table-cell;
+	float: none;
 }
 
 .rdtPicker {
-  border: 1px solid var(--bg-shade-four-color) !important;
-  background-color: var(--background-color) !important;
+	border: 1px solid var(--bg-shade-four-color) !important;
+	background-color: var(--background-color) !important;
 }
 
 .rdtDays {
@@ -31,64 +34,61 @@ body, html, #root, .App {
 .rdtPicker td.rdtMinute:hover,
 .rdtPicker td.rdtSecond:hover,
 .rdtPicker .rdtTimeToggle:hover,
-td.rdtMonth:hover, 
+td.rdtMonth:hover,
 td.rdtMonth:hover,
 .rdtBtn:hover,
 .rdtPicker button:hover,
 .rdtPicker thead tr:first-of-type th:hover,
 .rdtPicker .rdtTimeToggle:hover {
-  background: var(--bg-shade-one-color) !important;
-  cursor: pointer;
+	background: var(--bg-shade-one-color) !important;
+	cursor: pointer;
 }
 
 .rdtPicker td.rdtToday:before {
-  border-bottom: 7px solid var(--primary-color) !important;
+	border-bottom: 7px solid var(--primary-color) !important;
 }
 
-.rdtPicker td.rdtActive, .rdtPicker td.rdtActive:hover {
-  background-color: var(--contrast-color) !important;
+.rdtPicker td.rdtActive,
+.rdtPicker td.rdtActive:hover {
+	background-color: var(--contrast-color) !important;
 }
 
 .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+	height: 40vmin;
+	pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+	.App-logo {
+		animation: App-logo-spin infinite 20s linear;
+	}
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+	background-color: #282c34;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: calc(10px + 2vmin);
+	color: white;
 }
 
 .App-link {
-  color: #61dafb;
+	color: #61dafb;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.modal-backdrop-alert-confirm {
-  z-index: 1060 !important;
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
 }
 
 hr {
-  margin-bottom: 0 !important;
-  border-top: 1px solid var(--bg-shade-four-color) !important;
+	margin-bottom: 0 !important;
+	border-top: 1px solid var(--bg-shade-four-color) !important;
 }

@@ -39,11 +39,9 @@ const Modal = (props: ModalProps) => {
 		hideCloseButton,
 		centered,
 		centeredText,
-		animation,
 		backdropClassName,
 		contentClassName,
 		dialogClassName,
-		scrollable,
 		icon,
 		onShow,
 	} = props;
@@ -60,11 +58,16 @@ const Modal = (props: ModalProps) => {
 		<Transition.Root show={open} as={Fragment}>
 			<Dialog
 				as="div"
-				className="fixed z-20 inset-0 overflow-y-auto"
+				className="fixed z-20 inset-0 overflow-y-auto h-full"
 				initialFocus={cancelButtonRef}
 				onClose={setOpen}
 			>
-				<div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block">
+				<div
+					className={classNames(
+						centeredText && 'text-center',
+						'flex items-center justify-center min-h-screen p-2 tablet:p-4 laptop:pt-8 desktop:p-10',
+					)}
+				>
 					<Transition.Child
 						as={Fragment}
 						enter="ease-out duration-300"
@@ -74,7 +77,12 @@ const Modal = (props: ModalProps) => {
 						leaveFrom="opacity-100"
 						leaveTo="opacity-0"
 					>
-						<Dialog.Overlay className="fixed inset-0 bg-[color:rgba(var(--bg-shade-three-color-rgb),0.75)] transition-opacity" />
+						<Dialog.Overlay
+							className={classNames(
+								'fixed inset-0 bg-[color:rgba(var(--bg-shade-three-color-rgb),0.75)] transition-opacity',
+								backdropClassName,
+							)}
+						/>
 					</Transition.Child>
 
 					{/* This element is to trick the browser into centering the modal contents. */}
@@ -98,7 +106,8 @@ const Modal = (props: ModalProps) => {
 								size === 'sm' && 'w-full phone:2-4/5 tablet:w-1/2 laptop:w-1/3',
 								size === 'lg' && 'w-full tablet:w-3/4 desktop:w-3/5',
 								size === 'xl' && 'w-full laptop:2/3 desktop:w-4/5',
-								'inline-block align-bottom rounded-lg text-left overflow-hidden shadow-xl transform transition-all bg-[color:var(--background-color)]',
+								'overflow-y-auto inline-block align-bottom rounded-lg overflow-hidden shadow-xl transform transition-all bg-[color:var(--background-color)]',
+								dialogClassName,
 							)}
 						>
 							<div className="p-4 py-0 tablet:p-5 tablet:py-2 desktop:p-7 desktop:py-4">
@@ -112,35 +121,43 @@ const Modal = (props: ModalProps) => {
 											/>
 										</div>
 									)}
-									<div className="mt-3 w-full">
-										<Dialog.Title
-											as="h3"
-											className="text-lg leading-6 font-medium"
-										>
+									<div className={classNames('mt-3 w-full', contentClassName)}>
+										<Dialog.Title className="text-lg leading-6 font-medium">
 											{title}
 										</Dialog.Title>
 										<div className="mt-2 border-b border-[color:var(--bg-shade-four-color)]"></div>
-										<div className="mt-6">{children}</div>
+										<div
+											className={classNames(
+												size === 'sm' ? 'mt-2' : 'mt-4',
+												centered && 'flex flex-col justify-center',
+											)}
+										>
+											{children}
+										</div>
 									</div>
 								</div>
 							</div>
-							<div className="text-right bg-[color:var(--bg-shade-one-color)] px-4 py-3">
-								<Button
-									type="button"
-									variant="secondary"
-									onClick={() => setOpen(false)}
-									ref={cancelButtonRef}
-								>
-									Cancel
-								</Button>
-								<Button
-									variant="third"
-									className="ml-4"
-									onClick={() => setOpen(false)}
-								>
-									Save Changes
-								</Button>
-							</div>
+							{!hideFooter && (
+								<div className="text-right bg-[color:var(--bg-shade-one-color)] px-4 py-3">
+									{!hideCloseButton && (
+										<Button
+											type="button"
+											variant="secondary"
+											className="mr-4"
+											onClick={() => setOpen(false)}
+											ref={cancelButtonRef}
+										>
+											Close
+										</Button>
+									)}
+									<Button
+										variant={buttonVariant ?? 'third'}
+										onClick={() => setOpen(false)}
+									>
+										{submitText ?? 'Submit Changes'}
+									</Button>
+								</div>
+							)}
 						</div>
 					</Transition.Child>
 				</div>

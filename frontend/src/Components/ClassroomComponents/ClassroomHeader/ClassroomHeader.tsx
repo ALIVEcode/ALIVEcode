@@ -1,5 +1,4 @@
 import { ClassroomHeaderProps } from './classroomHeaderTypes';
-import { Alert } from 'react-bootstrap';
 import Button from '../../UtilsComponents/Button/Button';
 import { useContext, useState } from 'react';
 import { UserContext } from '../../../state/contexts/UserContext';
@@ -112,16 +111,19 @@ const ClassroomHeader: React.FC<
 				setOpen={setCodeModalOpen}
 				submitText={t('msg.understood')}
 				hideCloseButton
+				centeredText
+				centered
 				closeCross
+				buttonVariant="primary"
 			>
 				{t('classroom.code.desc')}
-				<Alert
-					className="mt-4"
+				<Badge
+					variant="third"
+					className="mt-4 text-4xl px-6 py-6"
 					style={{ fontSize: '3em', textAlign: 'center' }}
-					variant="success"
 				>
 					{classroom.code}
-				</Alert>
+				</Badge>
 			</Modal>
 		</div>
 	);

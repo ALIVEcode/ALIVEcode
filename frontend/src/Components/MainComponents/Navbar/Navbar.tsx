@@ -1,8 +1,7 @@
 import { useContext, useState, Fragment } from 'react';
 import { NavbarProps } from './NavbarTypes';
 import { UserContext } from '../../../state/contexts/UserContext';
-import { Link, useNavigate } from 'react-router-dom';
-import Logo from '../../../assets/images/LogoALIVE.png';
+import { Link } from 'react-router-dom';
 import TestLogo from '../../../assets/images/TestLogo.png';
 import i18next from 'i18next';
 import { languages } from '../../../appConfigs';

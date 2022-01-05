@@ -1,12 +1,11 @@
 import controller from '../../../assets/images/controller.png';
-import { Col } from 'react-bootstrap';
 import styled from 'styled-components';
 import CenteredContainer from '../../UtilsComponents/CenteredContainer/CenteredContainer';
 import React, { useEffect } from 'react';
 import { StyledGamepad } from './gamepadTypes';
 import { useState } from 'react';
 
-const StyledDiv = styled(Col)`
+const StyledDiv = styled.div`
 	background-color: var(--primary-color);
 	width: 500px;
 	height: 300px;
@@ -112,4 +111,3 @@ const GamepadAlive = () => {
 };
 
 export default GamepadAlive;
-

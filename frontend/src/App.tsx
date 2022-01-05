@@ -4,9 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from './state/contexts/UserContext';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
-import 'bootstrap';
-//import 'bootstrap/dist/css/bootstrap.min.css';
-import 'react-datetime/css/react-datetime.css';
 import useRoutes from './state/hooks/useRoutes';
 import {
 	ThemeContext,

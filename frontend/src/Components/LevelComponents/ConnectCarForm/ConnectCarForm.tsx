@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
-import { Form, InputGroup } from 'react-bootstrap';
 import { useState, useEffect, useRef, useContext } from 'react';
 import Button from '../../UtilsComponents/Button/Button';
 import { UserContext } from '../../../state/contexts/UserContext';
 import { ConnectCarFormProps } from './connectCarFormTypes';
+import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
 
 /**
  * Component used to connect to a car
@@ -48,29 +48,22 @@ const ConnectCarForm = ({ setOpen }: ConnectCarFormProps) => {
 	};
 
 	return (
-		<Form onSubmit={handleSubmit(SubmitForm)}>
-			<Form.Group>
-				<Form.Label>{t('simulation.modal.connect_car.label')}</Form.Label>
-				<InputGroup hasValidation>
-					<Form.Control
-						isInvalid={notFound || errors.code?.type}
-						placeholder={t('simulation.modal.connect_car.id')}
-						{...register('id', {
-							required: true,
-						})}
-					/>
-					<Form.Control.Feedback type="invalid">
-						{notFound &&
-							!errors.code &&
-							t('simulation.modal.connect_car.invalid')}
-						{errors.code?.type === 'required' && t('form.error.required')}
-					</Form.Control.Feedback>
-				</InputGroup>
-			</Form.Group>
-			<Button type="submit" variant="third">
+		<form onSubmit={handleSubmit(SubmitForm)} className="mt-4">
+			<InputGroup
+				label={t('simulation.modal.connect_car.label')}
+				placeholder={t('simulation.modal.connect_car.id')}
+				errors={notFound || errors.code?.type}
+				messages={{
+					notFound: t('simulation.modal.connect_car.invalid'),
+				}}
+				{...register('id', {
+					required: true,
+				})}
+			/>
+			<Button className="mt-4" type="submit" variant="third">
 				{t('simulation.modal.connect_car.button')}
 			</Button>
-		</Form>
+		</form>
 	);
 };
 

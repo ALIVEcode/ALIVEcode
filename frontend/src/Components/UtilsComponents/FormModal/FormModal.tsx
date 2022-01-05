@@ -1,19 +1,7 @@
 import { cloneElement, isValidElement } from 'react';
-import { Modal } from 'react-bootstrap';
 import styled from 'styled-components';
-import Button from '../Button/Button';
 import { FormModalProps } from './formModalTypes';
-import { useTranslation } from 'react-i18next';
-
-const StyledModal = styled(Modal)`
-	.modal-content {
-		background-color: var(--background-color);
-	}
-
-	.close {
-		color: var(--foreground-color);
-	}
-`;
+import Modal from '../Modal/Modal';
 
 /**
  * Modal containing a Form component (the one used to create a relation in the db) in the children
@@ -29,15 +17,10 @@ const StyledModal = styled(Modal)`
  */
 const FormModal = ({
 	children: form,
-	title,
-	open,
 	closeButton,
-	buttonVariant,
-	setOpen,
 	onSubmit,
+	...props
 }: FormModalProps) => {
-	const { t } = useTranslation();
-
 	const makeChildrenWithProps = () => {
 		return (
 			form && isValidElement(form) && cloneElement(form as any, { onSubmit })
@@ -45,23 +28,9 @@ const FormModal = ({
 	};
 
 	return (
-		<StyledModal show={open} onHide={setOpen}>
-			<Modal.Header closeButton>
-				<Modal.Title>{title}</Modal.Title>
-			</Modal.Header>
-			<Modal.Body>{makeChildrenWithProps()}</Modal.Body>
-			<Modal.Footer>
-				{(closeButton ?? true) && (
-					<Button variant="secondary" onClick={() => setOpen(false)}>
-						{t('modal.cancel')}
-					</Button>
-				)}
-				{/*<Button variant={buttonVariant || 'primary'} onClick={onClose}>
-					{t('modal.save')}
-				</Button>
-				*/}
-			</Modal.Footer>
-		</StyledModal>
+		<Modal hideCloseButton={!closeButton} {...props}>
+			{makeChildrenWithProps()}
+		</Modal>
 	);
 };
 

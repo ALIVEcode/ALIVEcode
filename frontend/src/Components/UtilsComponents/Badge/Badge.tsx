@@ -13,8 +13,7 @@ const Badge: React.FC<
 	return (
 		<span
 			className={classNames(
-				variant === 'primary' &&
-					'bg-[color:var(--primary-color)] text-[color:var(--foreground-color)]',
+				variant === 'primary' && 'bg-[color:var(--primary-color)] text-white',
 				variant === 'secondary' &&
 					'bg-[color:var(--secondary-color)] text-white',
 				variant === 'third' && 'bg-[color:var(--third-color)] text-white',

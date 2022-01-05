@@ -1,12 +1,7 @@
-import { ButtonVariants } from '../Button/buttonTypes';
 import { AxiosResponse } from 'axios';
+import { ModalProps } from '../Modal/modalTypes';
 
-export type FormModalProps = {
-	title: string;
-	open: boolean;
-	buttonVariant?: ButtonVariants;
+export interface FormModalProps extends ModalProps {
 	closeButton?: boolean;
-	children: React.ReactNode;
-	setOpen: (bool: boolean) => void;
 	onSubmit?: (res: AxiosResponse<any>) => void;
-};
+}

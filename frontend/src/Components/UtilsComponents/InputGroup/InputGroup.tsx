@@ -3,6 +3,7 @@ import { FieldError } from 'react-hook-form';
 import { classNames } from '../../../Types/utils';
 import { useTranslation } from 'react-i18next';
 import FormLabel from '../FormLabel/FormLabel';
+import FormInput from '../FormInput/FormInput';
 
 type SelectProps = {
 	errors: FieldError | undefined;
@@ -42,14 +43,13 @@ type Props = FullSelectProps | FullInputProps;
 const InputGroup = React.forwardRef<any, any>(
 	(
 		{
-			className,
 			errors,
 			messages,
+			className,
 			label,
 			name,
 			minLength,
 			maxLength,
-			defaultChecked,
 			...props
 		},
 		ref,
@@ -73,68 +73,16 @@ const InputGroup = React.forwardRef<any, any>(
 			return t('form.error.generic');
 		};
 
-		const generateInput = () => {
-			if (props.as === 'select')
-				return (
-					<select
-						className={classNames(
-							'shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-[color:var(--fg-shade-two-color)] bg-[color:var(--background-color)] border-[color:var(--bg-shade-four-color)]',
-							errors && 'border-red-500',
-							className,
-						)}
-						ref={ref}
-						name={name}
-						{...props}
-					/>
-				);
-
-			if (props.as === 'textarea')
-				return (
-					<textarea
-						className={classNames(
-							'shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-[color:var(--fg-shade-two-color)] bg-[color:var(--background-color)] border-[color:var(--bg-shade-four-color)]',
-							errors && 'border-red-500',
-							className,
-						)}
-						ref={ref}
-						name={name}
-						{...props}
-					/>
-				);
-
-			if (props.type === 'checkbox') {
-				return (
-					<input
-						className={classNames(
-							'h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 align-top bg-no-repeat bg-center bg-contain cursor-pointer',
-							errors && 'border-red-500',
-							className,
-						)}
-						ref={ref}
-						name={name}
-						{...props}
-					/>
-				);
-			}
-
-			return (
-				<input
-					className={classNames(
-						'shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-[color:var(--fg-shade-two-color)] bg-[color:var(--background-color)] border-[color:var(--bg-shade-four-color)]',
-						errors && 'border-red-500',
-						className,
-					)}
+		return (
+			<div className={'mb-2 w-full ' + className}>
+				<FormLabel htmlFor={name}>{label}</FormLabel>
+				<FormInput
+					minLength={minLength}
+					maxLength={maxLength}
 					ref={ref}
 					name={name}
 					{...props}
 				/>
-			);
-		};
-
-		return (
-			<div className="mb-2 w-full">
-				<FormLabel htmlFor={name}>{label}</FormLabel>
-				{generateInput()}
 				<p className="text-red-500 text-sm italic mt-1">
 					{errors &&
 						messages &&

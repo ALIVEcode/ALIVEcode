@@ -142,6 +142,7 @@ const Simulation = ({
 			<FormModal
 				open={connectModalOpen}
 				title={t('simulation.modal.connect_car.title')}
+				hideFooter
 				setOpen={setConnectModalOpen}
 			>
 				<ConnectCarForm setOpen={setConnectModalOpen} />

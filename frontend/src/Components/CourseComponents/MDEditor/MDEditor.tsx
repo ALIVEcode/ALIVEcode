@@ -1,4 +1,3 @@
-import { Form } from 'react-bootstrap';
 import { StyledMDEditor, MDEditorProps } from './mdEditorTypes';
 import { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
@@ -13,6 +12,7 @@ import 'katex/dist/katex.min.css';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import alivescript from '../../ALBUMComponents/ASSyntax';
+import FormInput from '../../UtilsComponents/FormInput/FormInput';
 
 const MDEditor = ({ onSave, defaultValue }: MDEditorProps) => {
 	const [isPreview, setIsPreview] = useState(false);
@@ -37,8 +37,8 @@ const MDEditor = ({ onSave, defaultValue }: MDEditorProps) => {
 			</div>
 			<div className="editor-body">
 				{!isPreview ? (
-					<Form.Control
-						onChange={e => setContent(e.target.value)}
+					<FormInput
+						onChange={(e: any) => setContent(e.target.value)}
 						as="textarea"
 						value={content}
 					/>

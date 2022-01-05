@@ -7,8 +7,8 @@ import { useContext } from 'react';
 import { IoTProjectContext } from '../../../../state/contexts/IoTProjectContext';
 import LoadingScreen from '../../../UtilsComponents/LoadingScreen/LoadingScreen';
 import Form from '../../../UtilsComponents/Form/Form';
-import { Form as BootForm } from 'react-bootstrap';
 import { FORM_ACTION } from '../../../UtilsComponents/Form/formTypes';
+import FormLabel from '../../../UtilsComponents/FormLabel/FormLabel';
 
 const IoTRouteSettings = ({ route }: IoTRouteSettingsProps) => {
 	const { asScript: script } = route;
@@ -46,9 +46,7 @@ const IoTRouteSettings = ({ route }: IoTRouteSettingsProps) => {
 				]}
 			/>
 			<hr />
-			<BootForm.Label style={{ display: 'block' }} className="mt-2">
-				Execution Script
-			</BootForm.Label>
+			<FormLabel className="block mt-2">Execution Script</FormLabel>
 			{script ? (
 				<AsScript
 					onSave={(asScript: AsScriptModel) => {

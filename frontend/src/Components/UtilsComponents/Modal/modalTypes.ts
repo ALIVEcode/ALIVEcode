@@ -15,10 +15,8 @@ export interface ModalProps {
 	centeredText?: boolean;
 	centered?: boolean;
 	backdropClassName?: string;
-	animation?: boolean;
 	dialogClassName?: string;
 	contentClassName?: string;
-	scrollable?: boolean;
 	icon?: IconProp;
 	onShow?: () => void;
 }

@@ -130,7 +130,6 @@ const IoTProjectBody = ({ noTopRow }: { noTopRow?: boolean }) => {
 				</div>
 				<Modal
 					size="lg"
-					centered
 					title="Edit component"
 					open={editingComponent ? true : false}
 					setOpen={bool => !bool && setEditingComponent(undefined)}
@@ -145,7 +144,6 @@ const IoTProjectBody = ({ noTopRow }: { noTopRow?: boolean }) => {
 				<Modal
 					size="xl"
 					title="Add a component"
-					centered
 					open={openComponentCreator}
 					setOpen={setOpenComponentCreator}
 				>

@@ -7,9 +7,14 @@ import { MutableRefObject, useContext, useRef } from 'react';
 import { ThemeContext } from '../../state/contexts/ThemeContext';
 import { HomeButton } from '../../Components/UtilsComponents/Buttons/HomeButton';
 import { HomeSection } from '../../Components/MainComponents/HomeSection/HomeSection';
-import OurMission from '../../assets/images/home/our_mission.jpg';
 import useRoutes from '../../state/hooks/useRoutes';
 import { classNames } from '../../Types/utils';
+import OurMission from '../../assets/images/home/our_mission.jpg';
+import OurStory from '../../assets/images/home/our_story.jpg';
+import WhoAreWe from '../../assets/images/home/who_are_we.jpg';
+import TrainingAI from '../../assets/images/home/training_AI.jpg';
+import TrainingIoT from '../../assets/images/home/training_IoT.jpg';
+import TrainingCode from '../../assets/images/home/training_Code.jpg';
 
 /**
  * Home page of ALIVEcode
@@ -115,7 +120,7 @@ const Home = (props: HomeProps) => {
 									 numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
 									 optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis`}
 					img={OurMission}
-					imgAlt="ALIVEcode_our_mission"
+					imgAlt="ALIVEcode's website mission"
 				/>
 				<HomeSection
 					title={'Who are we ?'}
@@ -124,8 +129,8 @@ const Home = (props: HomeProps) => {
 									 molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
 									 numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
 									 optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis`}
-					img={OurMission}
-					imgAlt="ALIVEcode_our_mission"
+					img={WhoAreWe}
+					imgAlt="The team of ALIVEcode"
 				/>
 				<HomeSection
 					title={'Our Story'}
@@ -133,8 +138,8 @@ const Home = (props: HomeProps) => {
 									 molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
 									 numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
 									 optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis`}
-					img={OurMission}
-					imgAlt="ALIVEcode_our_mission"
+					img={OurStory}
+					imgAlt="The story of how ALIVEcode was created"
 				/>
 			</div>
 			<div className="mt-[-32rem] mb-[-16rem] z-0 relative">
@@ -208,8 +213,8 @@ const Home = (props: HomeProps) => {
 									 molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
 									 numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
 									 optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis`}
-					img={OurMission}
-					imgAlt="ALIVEcode_our_mission"
+					img={TrainingAI}
+					imgAlt="Training of Artificial Intelligence on ALIVEcode"
 					button="See Training"
 					to={routes.auth.dashboard.path}
 				/>
@@ -220,8 +225,8 @@ const Home = (props: HomeProps) => {
 									 molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
 									 numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
 									 optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis`}
-					img={OurMission}
-					imgAlt="ALIVEcode_our_mission"
+					img={TrainingIoT}
+					imgAlt="Training of Internet of Things on ALIVEcode"
 					button="See Training"
 					to={routes.auth.dashboard.path}
 				/>
@@ -231,8 +236,8 @@ const Home = (props: HomeProps) => {
 									 molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
 									 numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
 									 optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis`}
-					img={OurMission}
-					imgAlt="ALIVEcode_our_mission"
+					img={TrainingCode}
+					imgAlt="Training of the basics of coding on ALIVEcode"
 					button="See Training"
 					to={routes.auth.dashboard.path}
 				/>

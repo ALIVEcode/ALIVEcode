@@ -1,7 +1,7 @@
 import { CmdProps } from './cmdTypes';
 import styled from 'styled-components';
 import React from 'react';
-import Button from '../../UtilsComponents/Button/Button';
+import Button from '../../UtilsComponents/Buttons/Button';
 import { useTranslation } from 'react-i18next';
 
 const StyledDiv = styled.div`

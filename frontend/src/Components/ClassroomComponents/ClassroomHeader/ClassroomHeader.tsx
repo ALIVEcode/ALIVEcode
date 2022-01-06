@@ -1,5 +1,5 @@
 import { ClassroomHeaderProps } from './classroomHeaderTypes';
-import Button from '../../UtilsComponents/Button/Button';
+import Button from '../../UtilsComponents/Buttons/Button';
 import { useContext, useState } from 'react';
 import { UserContext } from '../../../state/contexts/UserContext';
 import { Professor } from '../../../Models/User/user.entity';

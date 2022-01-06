@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import api from '../../../Models/api';
 import { useForm } from 'react-hook-form';
 import { useState, useEffect, useRef } from 'react';
-import Button from '../../UtilsComponents/Button/Button';
+import Button from '../../UtilsComponents/Buttons/Button';
 import useRoutes from '../../../state/hooks/useRoutes';
 import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
 

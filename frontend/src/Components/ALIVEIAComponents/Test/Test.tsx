@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Button from '../../UtilsComponents/Button/Button';
+import Button from '../../UtilsComponents/Buttons/Button';
 import FillContainer from '../../UtilsComponents/FillContainer/FillContainer';
 const Test = (props: any) => {
 	const [chiffre, setChiffre] = useState(0);

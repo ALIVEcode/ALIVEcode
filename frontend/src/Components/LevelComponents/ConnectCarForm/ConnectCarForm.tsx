@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { useState, useEffect, useRef, useContext } from 'react';
-import Button from '../../UtilsComponents/Button/Button';
+import Button from '../../UtilsComponents/Buttons/Button';
 import { UserContext } from '../../../state/contexts/UserContext';
 import { ConnectCarFormProps } from './connectCarFormTypes';
 import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';

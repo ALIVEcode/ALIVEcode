@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { classNames } from '../../../Types/utils';
-import Button from '../Button/Button';
+import Button from '../Buttons/Button';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 /**

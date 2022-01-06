@@ -1,7 +1,7 @@
 import { StyledMDEditor, MDEditorProps } from './mdEditorTypes';
 import { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
-import Button from '../../UtilsComponents/Button/Button';
+import Button from '../../UtilsComponents/Buttons/Button';
 
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';

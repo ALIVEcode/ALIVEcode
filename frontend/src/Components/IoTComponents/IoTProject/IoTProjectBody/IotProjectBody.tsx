@@ -14,7 +14,7 @@ import api from '../../../../Models/api';
 import IoTGenericComponent from '../../IoTProjectComponents/IoTGenericComponent/IoTGenericComponent';
 import Modal from '../../../UtilsComponents/Modal/Modal';
 import IoTComponentEditor from '../IoTComponentEditor/IoTComponentEditor';
-import Button from '../../../UtilsComponents/Button/Button';
+import Button from '../../../UtilsComponents/Buttons/Button';
 import IoTComponentCreator from '../IoTComponentCreator/IoTComponentCreator';
 import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';

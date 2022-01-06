@@ -1,8 +1,11 @@
-import { IoTLogs, IoTLogModel } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTLogs';
+import {
+	IoTLogs,
+	IoTLogModel,
+} from '../../../../Models/Iot/IoTProjectClasses/Components/IoTLogs';
 import { formatDate } from '../../../../Types/formatting';
 import { useTranslation } from 'react-i18next';
 import { StyledIoTLogsComponent } from './iotLogsComponentTypes';
-import Button from '../../../UtilsComponents/Button/Button';
+import Button from '../../../UtilsComponents/Buttons/Button';
 
 const IoTLogsComponent = ({ component }: { component: IoTLogs }) => {
 	const { t } = useTranslation();

@@ -14,7 +14,7 @@ import HttpStatusCode from '../../../Types/http-errors';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router';
-import Button from '../../../Components/UtilsComponents/Button/Button';
+import Button from '../../../Components/UtilsComponents/Buttons/Button';
 import InputGroup from '../../../Components/UtilsComponents/InputGroup/InputGroup';
 
 /**

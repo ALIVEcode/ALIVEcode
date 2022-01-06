@@ -1,4 +1,4 @@
-import Button from '../../../Components/UtilsComponents/Button/Button';
+import Button from '../../../Components/UtilsComponents/Buttons/Button';
 import CardContainer from '../../../Components/UtilsComponents/CardContainer/CardContainer';
 import ForumNavbar from '../ForumNavbar/ForumNavbar';
 import { Post as PostModel } from '../../../Models/Forum/post.entity';

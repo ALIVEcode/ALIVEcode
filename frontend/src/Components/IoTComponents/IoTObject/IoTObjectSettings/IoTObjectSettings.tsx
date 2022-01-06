@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
 import AlertConfirm from '../../../UtilsComponents/Alert/AlertConfirm/AlertConfirm';
-import Button from '../../../UtilsComponents/Button/Button';
+import Button from '../../../UtilsComponents/Buttons/Button';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import api from '../../../../Models/api';
 

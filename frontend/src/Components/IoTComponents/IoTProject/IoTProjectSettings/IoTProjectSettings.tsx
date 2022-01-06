@@ -6,7 +6,7 @@ import {
 	IOTPROJECT_INTERACT_RIGHTS,
 } from '../../../../Models/Iot/IoTproject.entity';
 import { FORM_ACTION } from '../../../UtilsComponents/Form/formTypes';
-import Button from '../../../UtilsComponents/Button/Button';
+import Button from '../../../UtilsComponents/Buttons/Button';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import AlertConfirm from '../../../UtilsComponents/Alert/AlertConfirm/AlertConfirm';
 import api from '../../../../Models/api';

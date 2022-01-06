@@ -6,7 +6,7 @@ import { Comment } from '../../../Models/Forum/comment.entity';
 import { Post } from '../../../Models/Forum/post.entity';
 import { UserContext } from '../../../state/contexts/UserContext';
 import { useParams } from 'react-router';
-import Button from '../../../Components/UtilsComponents/Button/Button';
+import Button from '../../../Components/UtilsComponents/Buttons/Button';
 import InputGroup from '../../../Components/UtilsComponents/InputGroup/InputGroup';
 
 const ForumPost = () => {

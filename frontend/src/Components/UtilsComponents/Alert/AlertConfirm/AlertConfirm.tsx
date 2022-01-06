@@ -1,5 +1,5 @@
 import { AlertConfirmProps } from './alertConfirmTypes';
-import Button from '../../Button/Button';
+import Button from '../../Buttons/Button';
 import { useTranslation } from 'react-i18next';
 import Modal from '../../Modal/Modal';
 

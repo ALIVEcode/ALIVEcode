@@ -14,7 +14,7 @@ import {
 	faPencilAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import MDEditor from '../MDEditor/MDEditor';
-import Button from '../../UtilsComponents/Button/Button';
+import Button from '../../UtilsComponents/Buttons/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useTranslation } from 'react-i18next';
 import Modal from '../../UtilsComponents/Modal/Modal';

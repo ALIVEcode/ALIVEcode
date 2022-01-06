@@ -31,7 +31,7 @@ import {
 	LevelContext,
 	LevelContextTypes,
 } from '../../state/contexts/LevelContext';
-import Button from '../../Components/UtilsComponents/Button/Button';
+import Button from '../../Components/UtilsComponents/Buttons/Button';
 import useRoutes from '../../state/hooks/useRoutes';
 import $ from 'jquery';
 import Confetti from 'react-confetti';

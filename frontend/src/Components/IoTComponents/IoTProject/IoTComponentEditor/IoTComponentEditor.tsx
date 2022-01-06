@@ -3,7 +3,7 @@ import { IoTProgressBar } from '../../../../Models/Iot/IoTProjectClasses/Compone
 import IoTGenericComponent from '../../IoTProjectComponents/IoTGenericComponent/IoTGenericComponent';
 import { IoTButton } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTButton';
 import { IoTLogs } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTLogs';
-import Button from '../../../UtilsComponents/Button/Button';
+import Button from '../../../UtilsComponents/Buttons/Button';
 import Link from '../../../UtilsComponents/Link/Link';
 import DateTime from 'react-datetime';
 import moment from 'moment';

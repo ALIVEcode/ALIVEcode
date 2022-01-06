@@ -12,7 +12,7 @@ import { Answer } from '../../../Models/Quiz/answer.entity';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { useNavigate } from 'react-router-dom';
 import InputGroup from '../../../Components/UtilsComponents/InputGroup/InputGroup';
-import Button from '../../../Components/UtilsComponents/Button/Button';
+import Button from '../../../Components/UtilsComponents/Buttons/Button';
 import FormContainer from '../../../Components/UtilsComponents/FormContainer/FormContainer';
 
 const QuizEdit = () => {

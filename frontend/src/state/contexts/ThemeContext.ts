@@ -81,8 +81,7 @@ export const themes: { light: Theme; dark: Theme } = {
 			...{
 				tableback: '#9ecbff',
 				databack: '#f2f2f2',
-				headerAIBack:
-					'linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(9,9,121,1) 0%, rgba(0,96,171,1) 0%, rgba(0,168,255,1) 100%)',
+				headerAIBack: 'linear-gradient(90deg, #2E75FF 0%, #04dbe6 100%)',
 			},
 		},
 		background: '#ffffff',
@@ -113,7 +112,7 @@ export const themes: { light: Theme; dark: Theme } = {
 				tableback: '#25496f',
 				databack: '#b0b0b0',
 				headerAIBack:
-					'linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(9,9,121,1) 0%, rgba(0,2,42,1) 0%, rgba(0,49,130,1) 100%)',
+					'linear-gradient(90deg, #02111D 0%, rgba(0,49,130,1) 100%)',
 			},
 		},
 		background: '#222222',

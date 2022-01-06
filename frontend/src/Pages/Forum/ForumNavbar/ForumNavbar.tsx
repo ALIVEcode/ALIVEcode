@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { useNavigate, Link } from 'react-router-dom';
-import Button from '../../../Components/UtilsComponents/Button/Button';
+import Button from '../../../Components/UtilsComponents/Buttons/Button';
 
 const ForumNavbar = () => {
 	const navigate = useNavigate();

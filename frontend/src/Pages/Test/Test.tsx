@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { UserContext } from '../../state/contexts/UserContext';
 import useRoutes from '../../state/hooks/useRoutes';
-import Button from '../../Components/UtilsComponents/Button/Button';
+import Button from '../../Components/UtilsComponents/Buttons/Button';
 import { useNavigate } from 'react-router-dom';
 
 const Test = () => {

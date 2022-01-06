@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import api from '../../../Models/api';
 import { Quiz } from '../../../Models/Quiz/quiz.entity';
 import { useParams } from 'react-router';
-import Button from '../../../Components/UtilsComponents/Button/Button';
+import Button from '../../../Components/UtilsComponents/Buttons/Button';
 
 const QuizPlay = () => {
 	const [quiz, setQuiz] = useState<Quiz>();

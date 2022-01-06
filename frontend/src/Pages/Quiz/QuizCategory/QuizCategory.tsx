@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import api from '../../../Models/api';
 import { Category } from '../../../Models/Quiz/categories-quiz.entity';
 import { useParams } from 'react-router';
-import Button from '../../../Components/UtilsComponents/Button/Button';
+import Button from '../../../Components/UtilsComponents/Buttons/Button';
 
 const QuizCategory = () => {
 	const [category, setCategory] = useState<Category>();

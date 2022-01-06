@@ -5,7 +5,7 @@ import { useAlert } from 'react-alert';
 import { FormSignInValues, SignInProps } from './signInTypes';
 import { UserContext } from '../../../state/contexts/UserContext';
 import FormContainer from '../../../Components/UtilsComponents/FormContainer/FormContainer';
-import Button from '../../../Components/UtilsComponents/Button/Button';
+import Button from '../../../Components/UtilsComponents/Buttons/Button';
 import Link from '../../../Components/UtilsComponents/Link/Link';
 import { useTranslation } from 'react-i18next';
 import { User } from '../../../Models/User/user.entity';

@@ -1,4 +1,4 @@
-import { ButtonVariants } from '../Button/buttonTypes';
+import { ButtonVariants } from '../Buttons/buttonTypes';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 export interface ModalProps {

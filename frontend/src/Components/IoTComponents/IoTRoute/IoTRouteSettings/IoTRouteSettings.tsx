@@ -1,6 +1,6 @@
 import { AsScript as AsScriptModel } from '../../../../Models/AsScript/as-script.entity';
 import AsScript from '../../../AliveScriptComponents/AsScript/AsScript';
-import Button from '../../../UtilsComponents/Button/Button';
+import Button from '../../../UtilsComponents/Buttons/Button';
 import { IoTRouteSettingsProps } from './iotRouteSettingsTypes';
 import api from '../../../../Models/api';
 import { useContext } from 'react';

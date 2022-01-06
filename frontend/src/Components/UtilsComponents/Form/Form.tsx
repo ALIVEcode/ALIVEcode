@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import Button from '../Button/Button';
+import Button from '../Buttons/Button';
 import {
 	FormProps,
 	FORM_ACTION,

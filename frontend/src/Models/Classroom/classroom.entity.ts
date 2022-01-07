@@ -1,3 +1,4 @@
+import { faCalculator, faCode, faFlask, faProjectDiagram } from '@fortawesome/free-solid-svg-icons';
 import { Exclude, Type } from 'class-transformer';
 import api from '../api';
 import { Course } from '../Course/course.entity';
@@ -36,5 +37,19 @@ export class Classroom extends CreatedByUser {
 
 	getSubjectDisplay() {
 		return this.subject[0].toUpperCase() + this.subject.slice(1);
+	}
+
+	getSubjectIcon() {
+		switch (this.subject) {
+			case CLASSROOM_SUBJECT.INFORMATIC:
+				return faCode;
+			case CLASSROOM_SUBJECT.SCIENCE:
+				return faFlask;
+			case CLASSROOM_SUBJECT.MATH:
+				return faCalculator;
+			case CLASSROOM_SUBJECT.AI:
+				return faProjectDiagram;
+		}
+		return faCode;
 	}
 }

@@ -3,6 +3,12 @@ import { CreatedByUser } from '../Generics/createdByUser.entity';
 import { Professor } from '../User/user.entity';
 import api from '../api';
 import { Section } from './section.entity';
+import {
+	faCalculator,
+	faCode,
+	faFlask,
+	faProjectDiagram,
+} from '@fortawesome/free-solid-svg-icons';
 
 export enum COURSE_DIFFICULTY {
 	BEGINNER = 1,
@@ -45,11 +51,26 @@ export class Course extends CreatedByUser {
 	sections: Section[];
 
 	async getSections() {
+		if (this.sections) return this.sections;
 		this.sections = await api.db.courses.getSections({ id: this.id });
-		return api.db.courses.getSections({ id: this.id });
+		return this.sections;
 	}
 
 	getSubjectDisplay() {
 		return this.subject[0].toUpperCase() + this.subject.slice(1);
+	}
+
+	getSubjectIcon() {
+		switch (this.subject) {
+			case COURSE_SUBJECT.INFORMATIC:
+				return faCode;
+			case COURSE_SUBJECT.SCIENCE:
+				return faFlask;
+			case COURSE_SUBJECT.MATH:
+				return faCalculator;
+			case COURSE_SUBJECT.AI:
+				return faProjectDiagram;
+		}
+		return faCode;
 	}
 }

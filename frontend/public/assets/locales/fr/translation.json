@@ -22,9 +22,12 @@
 			"DELETE": "Supprimer {{name}}"
 		},
 		"error": {
+			"generic": "Ce champs est erroné",
 			"required": "Ce champs est requis",
 			"maxLength": "Ce champs dépasse {{max}} caractères",
 			"minLength": "Ce champs devrait être d'au moins {{min}} caractères",
+			"too_long": "Ce champs est trop long",
+			"too_short": "Ce champs est trop court",
 			"match": {
 				"alphabetic": "Ce champs doit contenir uniquement des lettres",
 				"alphabetic_lower": "Ce champs doit contenir uniquement des lettres minuscules",
@@ -144,14 +147,14 @@
 			"signup_professor": "Compte professeur",
 			"signup_student": "Compte étudiant",
 			"signout": "Se déconnecter",
-			"already_registered": "Tu as déjà un compte?",
+			"already_registered": "Tu as déjà un compte ?",
 			"account_required": "Il te faut un compte pour faire ça"
 		},
 		"section": {
 			"alive": "ALIVE Play",
 			"dashboard": "Tableau de bord",
-			"ai": "ALIVE intelligence artificielle",
-			"iot": "Internet des objets",
+			"ai": "Intelligence artificielle",
+			"iot": "IoT",
 			"amc": "Contrôle par la pensée",
 			"about": "À propos",
 			"avp": "Perception de véhicule augmentée",
@@ -243,9 +246,9 @@
 		}
 	},
 	"home": {
-		"msg1": "Apprendre la programmation",
-		"msg2": "Apprendre en jouant",
-		"msg3": "Apprendre les concepts de l'IA",
+		"msg1": "code",
+		"msg2": "ai",
+		"msg3": "iot",
 		"section": {
 			"alive": {
 				"title": "$t(msg.section.alive)",
@@ -276,7 +279,7 @@
 				"auth": "Bonjour, {{name}}",
 				"non_auth": {
 					"label": "Vous n'êtes pas connecté, ",
-					"link": "$t(msg.auth.signin)?"
+					"link": "$t(msg.auth.signin) ?"
 				}
 			}
 		},
@@ -288,7 +291,7 @@
 			"categories": "Catégories",
 			"links": "Liens pratiques",
 			"copyright_1": "Copyright",
-			"copyright_2": " 2021 Tous droits réservés par"
+			"copyright_2": " 2022 Tous droits réservés par"
 		}
 	},
 	"input": {
@@ -334,6 +337,35 @@
 		"object": {
 			"name": "Objet IoT"
 		}
+	},
+	"simulation": {
+		"modal": {
+			"retry": "Réessayer?",
+			"continue": "Continuer",
+			"lose": "Meilleure chance la prochaine fois!",
+			"win": "La victoire t'appartient! 🎉",
+			"water": "La voiture est tombée dans l'eau",
+			"lava": "La voiture est tombée dans la lave",
+			"hole": "La voiture est tombée dans un trou",
+			"wall": "La voiture a foncée dans un mur",
+			"connect_car": {
+				"title": "Connecter un vrai ALIVEcar",
+				"label": "Identifiant du ALIVEcar",
+				"id": "123",
+				"button": "Se connecter avec le vrai ALIVEcar"
+			}
+		}
+	},
+	"cmd": {
+		"clear": "Effacer les lignes"
+	},
+	"user": {
+		"quiz": "Quiz : ",
+		"status": "Status : ",
+		"posts": "Posts : ",
+		"reward": "Récompenses : ",
+		"rank": "Rank : ",
+		"rewardTitle": "Récompenses"
 	},
 	"simulation": {
 		"modal": {

@@ -7,26 +7,30 @@
 		"name": "$dcomment",
 		"code": "(-:\n - $1\n:-)"
 	},
+
 	{
 		"name": "$afficher",
 		"code": "afficher $1"
 	},
+
 	{
-		"name": "$vlire",
+		"name": "$varlire",
 		"code": "var $1\nlire $1"
 	},
 	{
-		"name": "$vliren",
+		"name": "$varlirenb",
 		"code": "var $1\nlire ${2:nombre} dans $1"
 	},
 	{
-		"name": "$liren",
+		"name": "$lirenb",
 		"code": "lire ${1:nombre} dans $2"
 	},
+
 	{
 		"name": "$fonction",
 		"code": "fonction $1($2)\n\t$3\nfin fonction"
 	},
+
 	{
 		"name": "$si",
 		"code": "si $1 alors\n\t$2\nfin si"
@@ -35,17 +39,27 @@
 		"name": "$sisinon",
 		"code": "si $1 alors\n\t$2\nsinon\n\t$3\nfin si"
 	},
+
 	{
 		"name": "$pourr",
 		"code": "pour const ${1:i} dans ${2:[${3:1}...${4:10}]}\n\t$5\nfin pour"
 	},
 	{
-		"name": "$pourv",
+		"name": "$pourvar",
 		"description": "ceci est une description",
-		"code": "pour var ${1:i} dans ${2:[${3:1}...${4:10}]}\n\t$5\nfin pour"
+		"code": "pour var ${1:i} dans ${2:monIterateur}\n\t$3\nfin pour"
 	},
 	{
-		"name": "$pourc",
-		"code": "pour const ${1:i} dans ${2:[${3:1}...${4:10}]}\n\t$5\nfin pour"
+		"name": "$pourconst",
+		"code": "pour const ${1:i} dans ${2:monIterateur}\n\t$3\nfin pour"
+	},
+
+	{
+		"name": "$varget",
+		"code": "var $1\nget $1\n\t$2\nfin get"
+	},
+	{
+		"name": "$varset",
+		"code": "var $1\nset $1(${2:valeur})\n\t$3\nfin set"
 	}
 ]

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useLayoutEffect, useRef } from 'react';
-import { FillContainerProps } from './fillContainerTtypes';
+import { FillContainerProps } from './fillContainerTypes';
 
 const StyledContainer = styled.div`
 	width: 100%;

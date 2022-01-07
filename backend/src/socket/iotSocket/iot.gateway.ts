@@ -88,7 +88,6 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   @SubscribeMessage('send_update')
   async send_update(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTSocketUpdateRequest) {
     if (!payload.id || !payload.projectId || payload.value == null) throw new WsException('Bad payload');
-    console.log(payload);
 
     const object = ObjectClient.getClientBySocket(socket);
     if (!object) throw new WsException('Forbidden');

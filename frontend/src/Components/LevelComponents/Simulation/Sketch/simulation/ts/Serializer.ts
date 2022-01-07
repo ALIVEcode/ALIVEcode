@@ -56,7 +56,7 @@ export class Serializer {
 			);
 			return [point.x, point.y];
 		});
-		if (process.env.REACT_APP_DEBUG) console.log(points);
+		if (process.env.DEBUG) console.log(points);
 
 		return points;
 	}
@@ -83,7 +83,7 @@ export class Serializer {
 
 				if (serializedShape.shapeType === 'Car') {
 					s.car = s.spawnCar(0, 0, 75, 110);
-					if (process.env.REACT_APP_DEBUG) console.log(s.car);
+					if (process.env.DEBUG) console.log(s.car);
 					continue;
 				}
 

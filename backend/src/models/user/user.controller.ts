@@ -10,6 +10,8 @@ import {
   Res,
   UseInterceptors,
   Query,
+  UploadedFile,
+  Request,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ProfessorEntity } from './entities/professor.entity';
@@ -23,7 +25,18 @@ import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
 import { Group } from '../../utils/decorators/group.decorator';
 import { User } from '../../utils/decorators/user.decorator';
 import { Role } from '../../utils/types/roles.types';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { editFileName, imageFileFilter } from 'src/utils/upload/file-uploading';
+import { extname } from 'path';
 
+export const storage = {
+  fileFilter: imageFileFilter,
+  storage: diskStorage({
+    destination: 'images/uploads',
+    filename: editFileName,
+  }),
+};
 @Controller('users')
 @UseInterceptors(DTOInterceptor)
 export class UserController {
@@ -104,7 +117,11 @@ export class UserController {
   async getObjects(@User() user: UserEntity) {
     return await this.userService.getIoTObjects(user);
   }
-
+  @Get('quizzes/results')
+  @Auth()
+  async getResults(@User() user: UserEntity) {
+    return await this.userService.getResults(user);
+  }
   @Get(':id')
   @Auth()
   findOneStudent(@User() user: UserEntity, @Param('id') id: string) {
@@ -118,8 +135,8 @@ export class UserController {
   async update(@User() user: UserEntity, @Param('id') id: string, @Body() updateUserDto: UserEntity) {
     if (!hasRole(user, Role.MOD)) throw new HttpException('You cannot do that', HttpStatus.FORBIDDEN);
 
-    if (user.id === id) return this.userService.update(user, updateUserDto);
-    return this.userService.update(await this.userService.findById(id), updateUserDto);
+    if (user.id === id) return this.userService.update(user.id, updateUserDto);
+    return this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
@@ -146,7 +163,16 @@ export class UserController {
     if (!hasRole(user, Role.MOD) && user.id !== id) throw new HttpException('You cannot do that', HttpStatus.FORBIDDEN);
 
     if (user.id === id) return this.userService.getCourses(user);
-    return this.userService.getClassrooms(await this.userService.findById(id));
+    return this.userService.getCourses(await this.userService.findById(id));
+  }
+
+  @Get(':id/courses/recents')
+  @Auth()
+  async getRecentCourses(@User() user: UserEntity, @Param('id') id: string) {
+    if (!hasRole(user, Role.MOD) && user.id !== id) throw new HttpException('You cannot do that', HttpStatus.FORBIDDEN);
+
+    if (user.id === id) return this.userService.getRecentCourses(user);
+    return this.userService.getRecentCourses(await this.userService.findById(id));
   }
 
   @Get(':id/levels')
@@ -157,4 +183,16 @@ export class UserController {
     if (user.id === id) return this.userService.getLevels(user, query);
     return this.userService.getLevels(await this.userService.findById(id), query);
   }
+
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('image', storage))
+  async uploadedFile(@UploadedFile() file, @Request() req) {
+    const user: UserEntity = req.user;
+
+    user.image = file.filename;
+    console.log(__dirname);
+    console.log(file);
+    return await this.userService.update(user.id, user);
+  }
 }
+

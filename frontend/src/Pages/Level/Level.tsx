@@ -18,7 +18,7 @@ import LoadingScreen from '../../Components/UtilsComponents/LoadingScreen/Loadin
 import { LevelCode as LevelCodeModel } from '../../Models/Level/levelCode.entity';
 import LevelCode from './LevelCode/LevelCode';
 import api from '../../Models/api';
-import { useHistory, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import { UserContext } from '../../state/contexts/UserContext';
 import { LevelProgression } from '../../Models/Level/levelProgression';
 import { plainToClass } from 'class-transformer';
@@ -31,7 +31,7 @@ import {
 	LevelContext,
 	LevelContextTypes,
 } from '../../state/contexts/LevelContext';
-import Button from '../../Components/UtilsComponents/Button/Button';
+import Button from '../../Components/UtilsComponents/Buttons/Button';
 import useRoutes from '../../state/hooks/useRoutes';
 import $ from 'jquery';
 import Confetti from 'react-confetti';
@@ -42,6 +42,7 @@ import { useForceUpdate } from '../../state/hooks/useForceUpdate';
 import { FORM_ACTION } from '../../Components/UtilsComponents/Form/formTypes';
 import { LevelIoT as LevelIoTModel } from '../../Models/Level/levelIoT.entity';
 import IoTProject from '../../Pages/IoT/IoTProject/IoTProject';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * This component is used to load any type of Level with an id or passed as a prop.
@@ -62,7 +63,7 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 	const [initialProgressionCode, setInitialProgressionCode] =
 		useState<string>('');
 	const alert = useAlert();
-	const history = useHistory();
+	const navigate = useNavigate();
 	const { routes } = useRoutes();
 	const { t } = useTranslation();
 	const userInputRef = useRef<any>();
@@ -90,10 +91,20 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 		setUserInputModalOpen(true);
 	};
 
+	/*useEffect(() => {
+		const previousOverflowY = document.body.style.overflowY;
+		document.body.style.overflowY = 'hidden';
+
+		return () => {
+			document.body.style.overflowY = previousOverflowY;
+		};
+	}, []);*/
+
 	useEffect(() => {
 		setInitialProgressionCode('');
 
 		const loadLevel = async () => {
+			if (!user) return;
 			let fetchedLevel: LevelModel | null = null;
 			// LevelId as url param
 			if (levelId) {
@@ -101,7 +112,7 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 					fetchedLevel = await api.db.levels.get({ id: levelId });
 				} catch (err) {
 					alert.error('Niveau introuvable');
-					history.push('/');
+					navigate('/');
 					return;
 				}
 			}
@@ -152,7 +163,7 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 		};
 		loadLevel();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [levelId, levelProp]);
+	}, [levelId, levelProp, user]);
 
 	const saveLevel = useCallback(async () => {
 		(level as any).project = undefined;
@@ -161,10 +172,7 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 		setSaving(true);
 		setSaved(false);
 
-		if (!level) {
-			if (process.env.REACT_APP_DEBUG) console.log('save aborted');
-			return;
-		}
+		if (!level) return;
 
 		const updatedLevel = (await api.db.levels.update(
 			{
@@ -271,7 +279,6 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 
 	if (!level || !progression) return <LoadingScreen />;
 
-	console.log('PASSED');
 	return (
 		<StyledLevel editMode={editMode}>
 			<LevelContext.Provider value={levelContextValues}>
@@ -306,11 +313,13 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 				)}
 				<Modal
 					open={userInputModalOpen}
-					onClose={() => {
-						if (userInputCallback.current && userInputRef.current)
-							userInputCallback.current(`${userInputRef.current.value}`);
-						setUserInputModalOpen(false);
-						userInputRef.current.value = '';
+					setOpen={opening => {
+						if (!opening) {
+							if (userInputCallback.current && userInputRef.current)
+								userInputCallback.current(`${userInputRef.current.value}`);
+							setUserInputModalOpen(false);
+							userInputRef.current.value = '';
+						}
 					}}
 					title={inputMsg.current}
 					hideCloseButton
@@ -339,10 +348,10 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 				<Modal
 					title={t('msg.auth.account_required')}
 					open={accountModalOpen}
-					onClose={() => setAccountModalOpen(false)}
+					setOpen={setAccountModalOpen}
 				>
 					<Button
-						variant="primary"
+						variant="third"
 						to={routes.non_auth.signup.path}
 						className="mb-2"
 					>
@@ -352,7 +361,7 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 					or
 					<br />
 					<Button
-						variant="primary"
+						variant="third"
 						to={routes.non_auth.signin.path}
 						className="mt-2"
 					>
@@ -373,7 +382,7 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 						forceUpdate();
 						setSettingsModalOpen(false);
 					}}
-					onClose={() => setSettingsModalOpen(false)}
+					setOpen={setSettingsModalOpen}
 					open={settingsModalOpen}
 				>
 					<Form

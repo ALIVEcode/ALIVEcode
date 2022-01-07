@@ -17,7 +17,6 @@ import { AuthMiddleware } from './utils/middlewares/auth.middleware';
 import { MaintenanceService } from './models/maintenance/maintenance.service';
 import { UserModule } from './models/user/user.module';
 import { UserService } from './models/user/user.service';
-import { AdminModule } from '@adminjs/nestjs';
 import adminjs from 'adminjs';
 import { Database, Resource } from '@adminjs/typeorm';
 import { UserEntity } from './models/user/entities/user.entity';
@@ -30,6 +29,22 @@ import { LoggerModule } from './admin/loger/loger.module';
 import { MyLogger } from './admin/loger/logger';
 import { CarModule } from './socket/carSocket/carSocket.module';
 import { IoTModule } from './socket/iotSocket/iotSocket.module';
+import { QuizzesModule } from './models/social/quizzes/quizzes.module';
+import { MulterModule } from '@nestjs/platform-express';
+import { CategoriesQuizModule } from './models/social/categories-quiz/categories-quiz.module';
+import { QuestionsModule } from './models/social/questions/questions.module';
+import { AnswersModule } from './models/social/answers/answers.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { CategoriesSubjectsModule } from './models/social/categories-subjects/categories-subjects.module';
+import { SubjectsModule } from './models/social/subjects/subjects.module';
+import { CommentairesForumModule } from './models/social/commentaires-forum/commentaires-forum.module';
+import { join } from 'path';
+import { PostModule } from './models/social/post/post.module';
+import { ResultsModule } from './models/social/results/results.module';
+import { MessagesModule } from './models/social/messages/messages.module';
+import { ChatModule } from './socket/chatSocket/chatSocket.module';
+import { TopicsModule } from './models/social/topics/topics.module';
+import { AdminModule } from '@adminjs/nestjs';
 
 adminjs.registerAdapter({ Database, Resource });
 
@@ -57,6 +72,13 @@ adminjs.registerAdapter({ Database, Resource });
         },
       }),
     }),
+    MulterModule.register({
+      dest: 'images/uploads',
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../../images'),
+    }),
+
     UserModule,
     ClassroomModule,
     LevelModule,
@@ -68,6 +90,18 @@ adminjs.registerAdapter({ Database, Resource });
     MaintenanceModule,
     AsScriptModule,
     CarModule,
+    QuizzesModule,
+    CategoriesQuizModule,
+    QuestionsModule,
+    AnswersModule,
+    PostModule,
+    CategoriesSubjectsModule,
+    SubjectsModule,
+    CommentairesForumModule,
+    ResultsModule,
+    MessagesModule,
+    ChatModule,
+    TopicsModule,
   ],
   controllers: [AppController],
   providers: [AppService, MaintenanceService, UserService],

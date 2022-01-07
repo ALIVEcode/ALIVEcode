@@ -22,9 +22,8 @@ export interface PlaySocket {
 }
 
 const openPlaySocket = (): PlaySocket => {
-	if (!process.env.REACT_APP_CAR_URL)
-		throw new Error('REACT_APP_CAR_URL .env variable not set');
-	let socket: WebSocket = new WebSocket(process.env.REACT_APP_CAR_URL);
+	if (!process.env.CAR_URL) throw new Error('CAR_URL .env variable not set');
+	let socket: WebSocket = new WebSocket(process.env.CAR_URL);
 
 	const playSocketConstructor = (socket: PlaySocketDeclaration) => {
 		socket.compile_callback = () => {};

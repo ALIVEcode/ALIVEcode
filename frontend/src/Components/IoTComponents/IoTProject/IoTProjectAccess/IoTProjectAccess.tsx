@@ -72,7 +72,7 @@ export const IoTProjectAccess = () => {
 				<Modal
 					title="Add an IoTObject to the project"
 					open={addObjectModalOpen}
-					onClose={() => setAddObjectModalOpen(false)}
+					setOpen={setAddObjectModalOpen}
 				>
 					You have no IoTObject to add to the project
 				</Modal>
@@ -84,7 +84,7 @@ export const IoTProjectAccess = () => {
 					}}
 					title="Add an IoTObject to the project"
 					open={addObjectModalOpen}
-					onClose={() => setAddObjectModalOpen(false)}
+					setOpen={setAddObjectModalOpen}
 				>
 					<Form
 						action={FORM_ACTION.POST}

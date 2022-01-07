@@ -1,6 +1,5 @@
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Form, InputGroup } from 'react-bootstrap';
 import { SearchBarProps } from './searchBarTypes';
 
 /**
@@ -14,11 +13,12 @@ import { SearchBarProps } from './searchBarTypes';
  */
 const SearchBar = ({ value, setValue, onSubmit }: SearchBarProps) => {
 	return (
-		<InputGroup>
-			<InputGroup.Text>
+		<div className="rounded-md bg-[color:var(--background-color)] text-[color:var(--fg-shade-two-color)]">
+			<div className="inline p-3">
 				<FontAwesomeIcon icon={faSearch} />
-			</InputGroup.Text>
-			<Form.Control
+			</div>
+			<input
+				className="shadow appearance-none border rounded py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-[color:var(--fg-shade-two-color)] bg-[color:var(--background-color)] border-[color:var(--bg-shade-four-color)]"
 				value={value}
 				onChange={e => setValue(e.target.value)}
 				onBlur={(e: any) => {
@@ -33,7 +33,7 @@ const SearchBar = ({ value, setValue, onSubmit }: SearchBarProps) => {
 				}}
 				type="text"
 			/>
-		</InputGroup>
+		</div>
 	);
 };
 

@@ -14,16 +14,13 @@ import {
 	faPencilAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import MDEditor from '../MDEditor/MDEditor';
-import { Form } from 'react-bootstrap';
-import Button from '../../UtilsComponents/Button/Button';
+import Button from '../../UtilsComponents/Buttons/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useTranslation } from 'react-i18next';
 import Modal from '../../UtilsComponents/Modal/Modal';
 import NewActivityContentModal from './NewActivityContentModal';
-import ActivityEditor from '../MDEditor/ActivityEditor';
-import { plainToClass } from 'class-transformer';
-import { Activity } from '../../../Models/Course/activity.entity';
 import ReactMarkdown from 'react-markdown';
+import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
 
 /**
  * Displays the content of the activity in the CourseContext
@@ -58,6 +55,7 @@ const ActivityContent = (props: ActivityContentProps) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [activity?.content?.data]);
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const addContent = (content: any) => {
 		setContentLayout(layout =>
 			contentLayout.concat(
@@ -181,10 +179,10 @@ const ActivityContent = (props: ActivityContentProps) => {
 										{activity.name}
 									</div>
 								) : (
-									<Form.Control
+									<InputGroup
 										className="activity-header-title"
 										value={name}
-										onChange={e => setName(e.target.value)}
+										onChange={(e: any) => setName(e.target.value)}
 										onBlur={() => {
 											activity.name = name;
 											saveActivity(activity);
@@ -225,7 +223,7 @@ const ActivityContent = (props: ActivityContentProps) => {
 										)}
 										{activity.levels &&
 											activity.levels.map((a, idx) => (
-												<div key={idx} style={{ position: 'relative' }}>
+												<div key={idx} className="h-64">
 													<Level
 														key={`level-${a.level.id}`}
 														level={a.level}
@@ -254,7 +252,7 @@ const ActivityContent = (props: ActivityContentProps) => {
 						centered
 						title={'course.activity.new_content'}
 						open={newContentModalOpen}
-						onClose={() => setNewContentModalOpen(false)}
+						setOpen={setNewContentModalOpen}
 						animation
 						hideCloseButton
 						hideFooter

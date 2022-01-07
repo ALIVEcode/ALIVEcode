@@ -1,7 +1,0 @@
-@import './main.css';
-
-body {
-    background-image: url('/static/images/backgroundEspace.png');
-    background-repeat: repeat;
-    background-size: 100%;
-}

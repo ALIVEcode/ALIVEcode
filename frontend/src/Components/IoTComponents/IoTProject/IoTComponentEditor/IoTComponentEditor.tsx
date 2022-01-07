@@ -1,10 +1,9 @@
-import { Col, Form, Row } from 'react-bootstrap';
 import { IoTComponentEditorProps } from './iotComponentEditorTypes';
 import { IoTProgressBar } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTProgressBar';
 import IoTGenericComponent from '../../IoTProjectComponents/IoTGenericComponent/IoTGenericComponent';
 import { IoTButton } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTButton';
 import { IoTLogs } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTLogs';
-import Button from '../../../UtilsComponents/Button/Button';
+import Button from '../../../UtilsComponents/Buttons/Button';
 import Link from '../../../UtilsComponents/Link/Link';
 import DateTime from 'react-datetime';
 import moment from 'moment';
@@ -21,6 +20,8 @@ import {
 } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTLed';
 import { IoTLabel } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTLabel';
 import { IoTBuzzer } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTBuzzer';
+import InputGroup from '../../../UtilsComponents/InputGroup/InputGroup';
+import FormLabel from '../../../UtilsComponents/FormLabel/FormLabel';
 
 const IoTComponentEditor = ({
 	component,
@@ -54,8 +55,8 @@ const IoTComponentEditor = ({
 		if (component instanceof IoTProgressBar)
 			return (
 				<>
-					<Form.Label>Value</Form.Label>
-					<Form.Control
+					<InputGroup
+						label="Value"
 						type="range"
 						min={component.getMin()}
 						max={component.getMax()}
@@ -64,8 +65,8 @@ const IoTComponentEditor = ({
 						onChange={(e: any) => component.setValue(e.target.value)}
 						disabled={!canEdit}
 					/>
-					<Form.Label>Minimum</Form.Label>
-					<Form.Control
+					<InputGroup
+						label="Minimum"
 						value={component.getMin()}
 						type="number"
 						className="mb-2"
@@ -74,8 +75,8 @@ const IoTComponentEditor = ({
 						}
 						disabled={!canEdit}
 					/>
-					<Form.Label>Maximum</Form.Label>
-					<Form.Control
+					<InputGroup
+						label="Maximum"
 						value={component.getMax()}
 						type="number"
 						className="mb-2"
@@ -84,8 +85,8 @@ const IoTComponentEditor = ({
 						}
 						disabled={!canEdit}
 					/>
-					<Form.Label>Is percentage</Form.Label>
-					<Form.Check
+					<InputGroup
+						label="Is Percentage"
 						defaultChecked={component.isPercentage}
 						type="checkbox"
 						className="mb-2"
@@ -99,8 +100,8 @@ const IoTComponentEditor = ({
 		if (component instanceof IoTButton)
 			return (
 				<>
-					<Form.Label>Value (Label)</Form.Label>
-					<Form.Control
+					<InputGroup
+						label="Value (label)"
 						value={component.value}
 						className="mb-2"
 						onChange={(e: any) => component.setValue(e.target.value)}
@@ -108,8 +109,8 @@ const IoTComponentEditor = ({
 					/>
 					<hr />
 					<h3>On Click</h3>
-					<Form.Label>Targetted IoTObject</Form.Label>
-					<Form.Control
+					<InputGroup
+						label="Targetted IoTObject"
 						as="select"
 						className="mb-2"
 						onChange={(e: any) => component.setTargetId(e.target.value || null)}
@@ -120,17 +121,17 @@ const IoTComponentEditor = ({
 						{iotObjects?.map(obj => (
 							<option value={obj.id}>{obj.name}</option>
 						))}
-					</Form.Control>
-					<Form.Label>Action id</Form.Label>
-					<Form.Control
+					</InputGroup>
+					<InputGroup
+						label="Action id"
 						className="mb-2"
 						type="number"
 						value={component.getActionId()}
 						onChange={(e: any) => component.setActionId(e.target.value)}
 						disabled={!canEdit}
 					/>
-					<Form.Label>Action Data</Form.Label>
-					<Form.Control
+					<InputGroup
+						label="Action Data"
 						as="textarea"
 						className="mb-2"
 						value={component.getActionData() || '{}'}
@@ -142,7 +143,7 @@ const IoTComponentEditor = ({
 		if (component instanceof IoTLogs)
 			return (
 				<>
-					<Form.Label>Logs</Form.Label>
+					<FormLabel>Logs</FormLabel>
 					{component.value.length === 0 && (
 						<>
 							<br />
@@ -160,9 +161,9 @@ const IoTComponentEditor = ({
 						</>
 					)}
 					{component.value.map(log => (
-						<Row>
-							<Col>
-								<Form.Control
+						<div className="flex flex-row gap-4">
+							<div className="w-full">
+								<InputGroup
 									as="textarea"
 									className="mb-2"
 									value={log.text}
@@ -171,8 +172,8 @@ const IoTComponentEditor = ({
 									}
 									disabled={!canEdit}
 								/>
-							</Col>
-							<Col>
+							</div>
+							<div className="w-full">
 								<DateTime
 									onChange={date => {
 										if (moment.isMoment(date)) {
@@ -185,8 +186,8 @@ const IoTComponentEditor = ({
 									className="date"
 									initialValue={log.date}
 								></DateTime>
-							</Col>
-						</Row>
+							</div>
+						</div>
 					))}
 					{component.value.length > 0 && (
 						<>
@@ -209,8 +210,8 @@ const IoTComponentEditor = ({
 		if (component instanceof IoTLed)
 			return (
 				<>
-					<Form.Label>LED on/off</Form.Label>
-					<Form.Check
+					<InputGroup
+						label="LED on/off"
 						type="checkbox"
 						defaultChecked={component.value === LED_STATE.ON}
 						className="mb-2"
@@ -222,15 +223,15 @@ const IoTComponentEditor = ({
 		if (component instanceof IoTLabel)
 			return (
 				<>
-					<Form.Label>Displayed Text</Form.Label>
-					<Form.Control
+					<InputGroup
+						label="Displayed Text"
 						value={component.value}
 						className="mb-2"
 						onChange={(e: any) => component.setValue(e.target.value)}
 						disabled={!canEdit}
 					/>
-					<Form.Label>Font size</Form.Label>
-					<Form.Control
+					<InputGroup
+						label="Font size"
 						type="range"
 						min={10}
 						max={60}
@@ -244,8 +245,8 @@ const IoTComponentEditor = ({
 		if (component instanceof IoTBuzzer)
 			return (
 				<>
-					<Form.Label>Frequency</Form.Label>
-					<Form.Control
+					<InputGroup
+						label="Frequency"
 						type="number"
 						min={0}
 						max={10000}
@@ -254,8 +255,8 @@ const IoTComponentEditor = ({
 						onChange={(e: any) => component.setValue(e.target.value)}
 						disabled={!canEdit}
 					/>
-					<Form.Label>Sound Duration (seconds)</Form.Label>
-					<Form.Control
+					<InputGroup
+						label="Sound Duration (seconds)"
 						type="range"
 						min={0.2}
 						max={30}
@@ -271,8 +272,8 @@ const IoTComponentEditor = ({
 						{component.getSoundDuration()}s
 					</label>
 					<br />
-					<Form.Label className="mt-2">Frequency type</Form.Label>
-					<Form.Control
+					<InputGroup
+						label="Frequency type"
 						type="select"
 						as="select"
 						value={component.getFrequencyType()}
@@ -286,12 +287,12 @@ const IoTComponentEditor = ({
 						<option value="sawtooth">Sawtooth</option>
 						<option value="square">Square</option>
 						<option value="triangle">Triangle</option>
-					</Form.Control>
+					</InputGroup>
 					<Button
 						onClick={() => {
 							component.isBuzzing() ? component.stopBuzz() : component.buzz();
 						}}
-						variant="primary"
+						variant="third"
 						className="mt-2"
 					>
 						{component.isBuzzing() ? 'Stop the sound' : 'Start the sound'}
@@ -302,15 +303,15 @@ const IoTComponentEditor = ({
 
 	return (
 		<div>
-			<Form.Label>Name</Form.Label>
-			<Form.Control
+			<InputGroup
+				label="name"
 				value={component.name}
 				className="mb-2"
 				onChange={(e: any) => component.setName(e.target.value)}
 				disabled={!canEdit}
 			/>
-			<Form.Label>Id</Form.Label>
-			<Form.Control
+			<InputGroup
+				label="id"
 				value={component.id}
 				className="mb-2"
 				onChange={(e: any) => component.setId(e.target.value)}
@@ -328,7 +329,7 @@ const IoTComponentEditor = ({
 			<AlertConfirm
 				title={`Deletion of component ${component.name}`}
 				open={openDeleteMenu}
-				onClose={() => setOpenDeleteMenu(false)}
+				setOpen={setOpenDeleteMenu}
 				onConfirm={removeComponent}
 				onCancel={() => setOpenDeleteMenu(false)}
 			>

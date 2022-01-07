@@ -1,6 +1,7 @@
-import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { LinkProps, StyledLinkProps } from './linkTypes';
+import { useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 /**
  * Link component with different variants
@@ -28,16 +29,20 @@ const Link = ({
 	pale,
 	onClick,
 }: LinkProps) => {
-	const history = useHistory();
+	const navigate = useNavigate();
+
+	if (to)
+		return (
+			<RouterLink className={className} style={style} to={to ?? '#'}>
+				{children}
+			</RouterLink>
+		);
 
 	return (
 		<label
 			className={className}
 			style={style}
-			onClick={() => {
-				if (onClick) onClick();
-				else if (to) history.push(to);
-			}}
+			onClick={() => onClick && onClick()}
 		>
 			{children}
 		</label>

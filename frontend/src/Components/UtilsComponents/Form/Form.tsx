@@ -1,7 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Form as BootForm, InputGroup } from 'react-bootstrap';
-import Button from '../Button/Button';
+import Button from '../Buttons/Button';
 import {
 	FormProps,
 	FORM_ACTION,
@@ -11,6 +10,7 @@ import {
 import axios, { AxiosError } from 'axios';
 import { useAlert } from 'react-alert';
 import { prettyField } from '../../../Types/formatting';
+import InputGroup from '../InputGroup/InputGroup';
 
 /**
  * Form used to create or alter a relation in the database that auto-generates the fields depending of the arguments.
@@ -85,7 +85,7 @@ const Form = (props: FormProps) => {
 
 	const onFormSubmit = async (formValues: any) => {
 		if (props.alterFormValues) formValues = props.alterFormValues(formValues);
-		if (process.env.REACT_APP_DEBUG) console.log(formValues);
+		if (process.env.DEBUG) console.log(formValues);
 		try {
 			let res;
 			switch (props.action) {
@@ -149,7 +149,42 @@ const Form = (props: FormProps) => {
 		switch (g.inputType) {
 			case 'select':
 				return (
-					<BootForm.Control
+					<InputGroup
+						label={t([
+							`form.${props.name}.${props.action}.${g.name}.label`,
+							`form.${props.name}.${g.name}.label`,
+							prettyField(g.name),
+						])}
+						errors={errors[g.name]}
+						messages={{
+							required: t([
+								`form.${props.name}.${props.action}.${g.name}.error.required`,
+								`form.${props.name}.${g.name}.error.required`,
+								'form.error.required',
+							]),
+							maxLength: t(
+								[
+									`form.${props.name}.${props.action}.${g.name}.error.maxLength`,
+									`form.${props.name}.${g.name}.error.maxLength`,
+									'form.error.maxLength',
+								],
+								{ max: g.maxLength },
+							),
+							minLength: t(
+								[
+									`form.${props.name}.${props.action}.${g.name}.error.minlength`,
+									`form.${props.name}.${g.name}.error.minLength`,
+									'form.error.minLength',
+								],
+								{ min: g.minLength },
+							),
+							pattern: t([
+								`form.${props.name}.${props.action}.${g.name}.error.match`,
+								`form.${props.name}.${g.name}.error.match`,
+								`form.error.match.${g.match?.toLowerCase()}`,
+								'form.error.match.name',
+							]),
+						}}
 						{...defaultInputOptions}
 						defaultValue={g.default ?? ''}
 						as="select"
@@ -181,11 +216,46 @@ const Form = (props: FormProps) => {
 											{k.toLowerCase()}
 										</option>
 									))}
-					</BootForm.Control>
+					</InputGroup>
 				);
 			default:
 				return (
-					<BootForm.Control
+					<InputGroup
+						label={t([
+							`form.${props.name}.${props.action}.${g.name}.label`,
+							`form.${props.name}.${g.name}.label`,
+							prettyField(g.name),
+						])}
+						errors={errors[g.name]}
+						messages={{
+							required: t([
+								`form.${props.name}.${props.action}.${g.name}.error.required`,
+								`form.${props.name}.${g.name}.error.required`,
+								'form.error.required',
+							]),
+							maxLength: t(
+								[
+									`form.${props.name}.${props.action}.${g.name}.error.maxLength`,
+									`form.${props.name}.${g.name}.error.maxLength`,
+									'form.error.maxLength',
+								],
+								{ max: g.maxLength },
+							),
+							minLength: t(
+								[
+									`form.${props.name}.${props.action}.${g.name}.error.minlength`,
+									`form.${props.name}.${g.name}.error.minLength`,
+									'form.error.minLength',
+								],
+								{ min: g.minLength },
+							),
+							pattern: t([
+								`form.${props.name}.${props.action}.${g.name}.error.match`,
+								`form.${props.name}.${g.name}.error.match`,
+								`form.error.match.${g.match?.toLowerCase()}`,
+								'form.error.match.name',
+							]),
+						}}
 						{...defaultInputOptions}
 						type={g.inputType}
 						{...register(g.name, registerOptions)}
@@ -195,65 +265,10 @@ const Form = (props: FormProps) => {
 	};
 
 	return (
-		<BootForm onSubmit={handleSubmit(onFormSubmit)}>
-			{props.inputGroups.map((g, idx) => (
-				<BootForm.Group key={idx}>
-					<BootForm.Label>
-						{t([
-							`form.${props.name}.${props.action}.${g.name}.label`,
-							`form.${props.name}.${g.name}.label`,
-							prettyField(g.name),
-						])}
-					</BootForm.Label>
-					<InputGroup
-						hasValidation={
-							g.maxLength != null || g.minLength != null || g.required
-						}
-					>
-						{renderFormInput(g)}
-						{(g.maxLength != null || g.minLength != null || g.required) && (
-							<BootForm.Control.Feedback
-								style={{ wordWrap: 'break-word' }}
-								type="invalid"
-							>
-								{errors[g.name]?.type === 'required' &&
-									t([
-										`form.${props.name}.${props.action}.${g.name}.error.required`,
-										`form.${props.name}.${g.name}.error.required`,
-										'form.error.required',
-									])}
-								{errors[g.name]?.type === 'maxLength' &&
-									t(
-										[
-											`form.${props.name}.${props.action}.${g.name}.error.maxLength`,
-											`form.${props.name}.${g.name}.error.maxLength`,
-											'form.error.maxLength',
-										],
-										{ max: g.maxLength },
-									)}
-								{errors[g.name]?.type === 'minLength' &&
-									t(
-										[
-											`form.${props.name}.${props.action}.${g.name}.error.minlength`,
-											`form.${props.name}.${g.name}.error.minLength`,
-											'form.error.minLength',
-										],
-										{ min: g.minLength },
-									)}
-								{errors[g.name]?.type === 'pattern' &&
-									t([
-										`form.${props.name}.${props.action}.${g.name}.error.match`,
-										`form.${props.name}.${g.name}.error.match`,
-										`form.error.match.${g.match?.toLowerCase()}`,
-										'form.error.match.name',
-									])}
-							</BootForm.Control.Feedback>
-						)}
-					</InputGroup>
-				</BootForm.Group>
-			))}
+		<form onSubmit={handleSubmit(onFormSubmit)}>
+			{props.inputGroups.map((g, idx) => renderFormInput(g))}
 			<Button
-				variant={props.action === FORM_ACTION.DELETE ? 'danger' : 'primary'}
+				variant={props.action === FORM_ACTION.DELETE ? 'danger' : 'secondary'}
 				type="submit"
 				disabled={props.disabled}
 			>
@@ -266,7 +281,7 @@ const Form = (props: FormProps) => {
 					{ name: prettyField(props.name) },
 				)}
 			</Button>
-		</BootForm>
+		</form>
 	);
 };
 

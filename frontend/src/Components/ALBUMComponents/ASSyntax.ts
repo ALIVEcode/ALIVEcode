@@ -8,7 +8,7 @@ async function define() {
 		await axios({
 			method: 'GET',
 			url: '/lintinfo/',
-			baseURL: process.env.REACT_APP_AS_URL,
+			baseURL: process.env.AS_URL,
 		})
 	).data;
 	return lintInfo;

@@ -277,7 +277,7 @@ class LevelAliveExecutor extends LevelCodeExecutor {
 				makeShapeEditable(shape);
 			}
 
-			if (process.env.REACT_APP_DEBUG) console.log(this.s.shapes);
+			if (process.env.DEBUG) console.log(this.s.shapes);
 		}
 		if (this.editMode) {
 			this.spawnEditorButton();

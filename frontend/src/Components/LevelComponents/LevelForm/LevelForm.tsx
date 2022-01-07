@@ -1,6 +1,5 @@
 import Form from '../../UtilsComponents/Form/Form';
 import { LevelFormProps } from './levelFormTypes';
-import { useHistory } from 'react-router';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { useAlert } from 'react-alert';
 import { LevelAlive } from '../../../Models/Level/levelAlive.entity';
@@ -21,6 +20,7 @@ import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
 import { useState, useEffect } from 'react';
 import { IoTProject } from '../../../Models/Iot/IoTproject.entity';
 import api from '../../../Models/api';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Component that renders the create form for the selected level type
@@ -33,7 +33,7 @@ const LevelForm = ({ type }: LevelFormProps) => {
 	const { routes } = useRoutes();
 	const { t } = useTranslation();
 	const alert = useAlert();
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	const [projects, setProjects] = useState<IoTProject[]>([]);
 
@@ -60,7 +60,7 @@ const LevelForm = ({ type }: LevelFormProps) => {
 					<Form
 						onSubmit={res => {
 							const level: LevelAlive = res.data;
-							history.push(
+							navigate(
 								routes.auth.level_edit.path.replace(':levelId', level.id),
 							);
 							return alert.success('Niveau créé avec succès');
@@ -101,7 +101,7 @@ const LevelForm = ({ type }: LevelFormProps) => {
 					<Form
 						onSubmit={res => {
 							const level: LevelAI = res.data;
-							history.push(
+							navigate(
 								routes.auth.level_edit.path.replace(':levelId', level.id),
 							);
 							return alert.success('Niveau créé avec succès');
@@ -142,7 +142,7 @@ const LevelForm = ({ type }: LevelFormProps) => {
 					<Form
 						onSubmit={res => {
 							const level: LevelCode = res.data;
-							history.push(
+							navigate(
 								routes.auth.level_edit.path.replace(':levelId', level.id),
 							);
 							return alert.success('Niveau créé avec succès');
@@ -183,7 +183,7 @@ const LevelForm = ({ type }: LevelFormProps) => {
 					<Form
 						onSubmit={res => {
 							const level: LevelIoT = res.data;
-							history.push(
+							navigate(
 								routes.auth.level_edit.path.replace(':levelId', level.id),
 							);
 							return alert.success('Niveau créé avec succès');

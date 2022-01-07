@@ -1,8 +1,7 @@
 import { AboutCardProps } from './aboutCardTypes';
 import styled from 'styled-components';
-import { Col } from 'react-bootstrap';
 
-const StyledDiv = styled(Col)`
+const StyledDiv = styled.div`
 	background-color: var(--background-color);
 	color: var(--foreground-color);
 	border-radius: 25px;
@@ -34,10 +33,12 @@ const StyledDiv = styled(Col)`
  */
 const AboutCard = ({ img, name, className }: AboutCardProps) => {
 	return (
-		<StyledDiv lg className={className}>
-			<img src={img} alt={`alive-${name}`} />
-			<div className="about-name">
-				<h3>{name}</h3>
+		<StyledDiv className={'flex flex-row justify-center ' + className}>
+			<div>
+				<img className="aspect-auto m-auto" src={img} alt={`alive-${name}`} />
+				<div className="about-name">
+					<h3>{name}</h3>
+				</div>
 			</div>
 		</StyledDiv>
 	);

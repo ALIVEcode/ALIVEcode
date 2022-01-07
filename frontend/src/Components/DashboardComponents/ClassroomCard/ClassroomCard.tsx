@@ -3,9 +3,9 @@ import IconButton from '../IconButton/IconButton';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useTranslation } from 'react-i18next';
-import { Badge } from 'react-bootstrap';
 import { prettyField } from '../../../Types/formatting';
 import useRoutes from '../../../state/hooks/useRoutes';
+import Badge from '../../UtilsComponents/Badge/Badge';
 
 /**
  * Card that shows all the information of a classroom and lets you access to it

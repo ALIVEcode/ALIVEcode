@@ -1,18 +1,18 @@
-import FillContainer from "../../UtilsComponents/FillContainer/FillContainer";
+import FillContainer from '../../UtilsComponents/FillContainer/FillContainer';
 import { sketch } from './Sketch/simulation/sketch';
 import { SimulationProps, StyledSimulation } from './simulationTypes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquare } from '@fortawesome/free-solid-svg-icons';
+import { faExpand } from '@fortawesome/free-solid-svg-icons';
 import $ from 'jquery';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect, useContext } from 'react';
 import Modal from '../../UtilsComponents/Modal/Modal';
 import { useTranslation } from 'react-i18next';
-import { Image } from 'react-bootstrap';
 import FormModal from '../../UtilsComponents/FormModal/FormModal';
 import ConnectCarForm from '../ConnectCarForm/ConnectCarForm';
 import { ReactP5Wrapper } from 'react-p5-wrapper';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
+import { ThemeContext } from '../../../state/contexts/ThemeContext';
 
 /**
  * Simulation component that draws the car and make it functionnal
@@ -37,6 +37,7 @@ const Simulation = ({
 	const [deathGif, setDeathGif] = useState<string>();
 	const sketchRef = useRef<any>(null);
 	const { t } = useTranslation();
+	const { theme } = useContext(ThemeContext);
 	const forceUpdate = useForceUpdate();
 
 	useEffect(() => {
@@ -74,16 +75,17 @@ const Simulation = ({
 
 	return (
 		<StyledSimulation>
-			<FillContainer id={id} relative style={{ backgroundColor: 'white' }}>
+			<div className="h-full w-full" id={id}>
 				<FontAwesomeIcon
-					className="zoom-button"
-					icon={faSquare}
+					className="absolute top-2 right-2 zoom-button"
+					icon={faExpand}
+					size="2x"
 					color="black"
 				/>
 				{$(`#${id}`).length ? (
 					<>
-						{loading && <LoadingScreen relative />}
 						<ReactP5Wrapper
+							className="w-full h-full bg-white"
 							fullscreenDiv="fullscreen-div"
 							canvasDiv={$(`#${id}`)}
 							zoomButton={''}
@@ -98,31 +100,37 @@ const Simulation = ({
 								init(s);
 							}}
 						/>
+						{loading && <LoadingScreen bg={theme.color.background} relative />}
+
+						{/* Div for removing the default p5 loading message*/}
+						<div id="p5_loading"></div>
 					</>
 				) : (
 					<LoadingScreen relative />
 				)}
-			</FillContainer>
+			</div>
 			<FillContainer className="fullscreen-div" startAtTop />
 			<Modal
 				title={t('simulation.modal.lose')}
 				open={loseModalOpen}
-				onClose={() => setLoseModalOpen(false)}
+				setOpen={setLoseModalOpen}
 				hideCloseButton
 				centered
 				centeredText
 				submitText={t('simulation.modal.retry')}
 			>
-				<Image alt="lose gif" src={deathGif} height={200}></Image>
+				<img alt="lose gif" src={deathGif} height="200px" />
 				<br />
 				{t(loseDescripton)}
 			</Modal>
 			<Modal
 				title={t('simulation.modal.win')}
 				open={winModalOpen}
-				onClose={() => {
-					setWinModalOpen(false);
-					setShowConfetti(false);
+				setOpen={bool => {
+					if (!bool) {
+						setWinModalOpen(false);
+						setShowConfetti(false);
+					}
 				}}
 				hideCloseButton
 				centered
@@ -134,9 +142,10 @@ const Simulation = ({
 			<FormModal
 				open={connectModalOpen}
 				title={t('simulation.modal.connect_car.title')}
-				onClose={() => setConnectModalOpen(false)}
+				hideFooter
+				setOpen={setConnectModalOpen}
 			>
-				<ConnectCarForm onClose={() => setConnectModalOpen(false)} />
+				<ConnectCarForm setOpen={setConnectModalOpen} />
 			</FormModal>
 		</StyledSimulation>
 	);

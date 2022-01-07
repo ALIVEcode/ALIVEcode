@@ -3,7 +3,6 @@ import { useEffect, useContext, useMemo } from 'react';
 import LineInterface from '../../../Components/LevelComponents/LineInterface/LineInterface';
 import { UserContext } from '../../../state/contexts/UserContext';
 import Simulation from '../../../Components/LevelComponents/Simulation/Simulation';
-import { Row, Col } from 'react-bootstrap';
 import Cmd from '../../../Components/LevelComponents/Cmd/Cmd';
 import LevelAliveExecutor from './LevelAliveExecutor';
 import useCmd from '../../../state/hooks/useCmd';
@@ -79,81 +78,84 @@ const LevelAlive = ({ initialCode }: LevelAliveProps) => {
 	if (!level) return <LoadingScreen></LoadingScreen>;
 
 	return (
-		<>
-			{level ? (
-				<StyledAliveLevel>
-					<Row className="h-100">
-						<Col className="left-col" md={6}>
-							<LevelToolsBar />
-							{editMode ? (
-								<LineInterface
-									hasTabs
-									tabs={[
-										{
-											title: 'Initial Code',
-											open: true,
-											defaultContent: level.initialCode,
-											onChange: content => {
-												level.initialCode = content;
-												saveLevelTimed();
-											},
-										},
-										{
-											title: 'Solution',
-											open: false,
-											defaultContent: level.solution,
-											onChange: content => {
-												level.solution = content;
-												saveLevelTimed();
-											},
-										},
-									]}
-									handleChange={lineInterfaceContentChanges}
-								/>
-							) : (
-								<LineInterface
-									initialContent={initialCode}
-									handleChange={lineInterfaceContentChanges}
-								/>
-							)}
-						</Col>
-						<Col md={6} style={{ resize: 'both', padding: '0' }}>
-							<Row id="simulation-row" style={{ height: '60vh' }}>
-								{executor && level.layout && (
-									<Simulation
-										id={level.id}
-										init={s => {
-											executor.current?.init(s);
-											//setSketch(s);
-											executor.current?.loadLevelLayout(level?.layout ?? '[]');
-											executor.current?.stop();
-										}}
-										onChange={(s: any) => {
-											const newLayout = executor.current?.saveLayout(s);
-											if (!newLayout) {
-												alert.error(
-													'Une erreur est survenue lors de la sauvegarde du niveau',
-												);
-												return;
-											}
-											level!.layout = newLayout;
-											saveLevelTimed();
-										}}
-										stopExecution={() => executor.current?.stop()}
-										setShowConfetti={set => setShowConfetti(set)}
-									/>
-								)}
-							</Row>
-							<Row style={{ height: '40vh' }}>
-								<Cmd ref={cmdRef} />
-							</Row>
-						</Col>
-					</Row>
-				</StyledAliveLevel>
-			) : (
-				<LoadingScreen />
-			)}
-		</>
+		<StyledAliveLevel>
+			<div className="h-full flex flex-row">
+				{/* Left Side of screen */}
+				<div className="w-1/2 h-full flex flex-col">
+					{/* Barre d'infos du niveau */}
+					<LevelToolsBar />
+					{/* Interface de code */}
+					{editMode ? (
+						/* Interface du code avec les tabs */
+						<LineInterface
+							className="flex-1"
+							hasTabs
+							tabs={[
+								{
+									title: 'Initial Code',
+									open: true,
+									defaultContent: level.initialCode,
+									onChange: content => {
+										level.initialCode = content;
+										saveLevelTimed();
+									},
+								},
+								{
+									title: 'Solution',
+									open: false,
+									defaultContent: level.solution,
+									onChange: content => {
+										level.solution = content;
+										saveLevelTimed();
+									},
+								},
+							]}
+							handleChange={lineInterfaceContentChanges}
+						/>
+					) : (
+						/* Interface de code sans les tabs */
+						<LineInterface
+							initialContent={initialCode}
+							handleChange={lineInterfaceContentChanges}
+						/>
+					)}
+				</div>
+				{/* Right Side of screen 
+							  Contains the graph and the console
+						*/}
+				<div className="flex flex-col w-1/2">
+					<div className="h-3/5 w-full" id="simulation-row">
+						{executor && level.layout && (
+							<Simulation
+								id={level.id}
+								init={s => {
+									executor.current?.init(s);
+									//setSketch(s);
+									executor.current?.loadLevelLayout(level?.layout ?? '[]');
+									executor.current?.stop();
+								}}
+								onChange={(s: any) => {
+									const newLayout = executor.current?.saveLayout(s);
+									if (!newLayout) {
+										alert.error(
+											'Une erreur est survenue lors de la sauvegarde du niveau',
+										);
+										return;
+									}
+									level!.layout = newLayout;
+									saveLevelTimed();
+								}}
+								stopExecution={() => executor.current?.stop()}
+								setShowConfetti={set => setShowConfetti(set)}
+							/>
+						)}
+					</div>
+					<div className="h-2/5 flex-1">
+						<Cmd ref={cmdRef} />
+					</div>
+				</div>
+			</div>
+		</StyledAliveLevel>
 	);
 };
 

@@ -1,16 +1,17 @@
 import './App.css';
 import { RouterSwitch } from './Router/RouterSwitch/RouterSwitch';
-import { BrowserRouter as Router, useHistory } from 'react-router-dom';
-import ALIVENavbar from './Components/MainComponents/Navbar/Navbar';
+import { useNavigate } from 'react-router-dom';
 import { UserContext } from './state/contexts/UserContext';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
-import 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'react-datetime/css/react-datetime.css';
 import useRoutes from './state/hooks/useRoutes';
-import { ThemeContext, Theme, themes } from './state/contexts/ThemeContext';
-import styled, { createGlobalStyle } from 'styled-components';
+import {
+	ThemeContext,
+	Theme,
+	themes,
+	commonColors,
+} from './state/contexts/ThemeContext';
+import { createGlobalStyle } from 'styled-components';
 import { loadThemeFromCookies, setCookie } from './Types/cookies';
 import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
@@ -23,6 +24,9 @@ import MaintenanceBar from './Components/SiteStatusComponents/MaintenanceBar/Mai
 import { Maintenance } from './Models/Maintenance/maintenance.entity';
 import openPlaySocket from './Pages/Level/PlaySocket';
 import { PlaySocket } from './Pages/Level/PlaySocket';
+import Navbar from './Components/MainComponents/Navbar/Navbar';
+import { useLocation } from 'react-router';
+import { hot } from 'react-hot-loader/root';
 
 type GlobalStyleProps = {
 	theme: Theme;
@@ -42,12 +46,20 @@ const GlobalStyle = createGlobalStyle`
 
 	${({ theme }: GlobalStyleProps) => {
 		const cssVars = [];
-		for (const [colorName, color] of Object.entries(theme.color)) {
-			const cssName = colorName.includes('rgb')
-				? `--${colorName.split('_')[0]}-color-rgb`
+		for (const [colorName, color] of Object.entries({
+			...commonColors,
+			...theme.color,
+		})) {
+			const cssName = colorName.endsWith('rgb')
+				? `--${colorName.split('_').slice(0, -1).join('-')}-color-rgb`
 				: `--${colorName.replaceAll('_', '-')}-color`;
 			cssVars.push(`${cssName}: ${color}`);
 		}
+
+		cssVars.push(`--oxygen-font: 'Oxygen', sans-serif`);
+		cssVars.push(`--title-font: 'Roboto', sans-serif`);
+		cssVars.push(`--drop-shadow: 3px 3px 4px rgba(0, 0, 0, 0.25)`);
+
 		return ':root {' + cssVars.join(';') + '}';
 		/*
 		return `:root {
@@ -63,7 +75,6 @@ const GlobalStyle = createGlobalStyle`
 						--pale-color-rgb: ${theme.color.pale_rgb};
 						--contrast-color: ${theme.color.contrast};
 						--contrast-color-rgb: ${theme.color.contrast};
-						--hover-color: ${theme.color.hover};
 						--background-color: ${theme.color.background};
 						--background-color-rgb: ${theme.color.background_rgb};
 						--background-hover-color: ${theme.color.background_hover};
@@ -75,8 +86,6 @@ const GlobalStyle = createGlobalStyle`
 	}}
 `;
 
-const StyledApp = styled.section``;
-
 const App = () => {
 	const [user, setUser] = useState<Student | Professor | null>(null);
 	const [playSocket, setPlaySocket] = useState<PlaySocket | null>(null);
@@ -87,8 +96,9 @@ const App = () => {
 	const { routes } = useRoutes();
 	const { t } = useTranslation();
 	const alert = useAlert();
+	const { pathname } = useLocation();
 
-	const history = useHistory();
+	const navigate = useNavigate();
 	const providerValue = useMemo(
 		() => ({ user, setUser, maintenance, playSocket }),
 		[user, setUser, maintenance, playSocket],
@@ -122,7 +132,7 @@ const App = () => {
 				if (!loadedUser) {
 					const loadedTheme = loadThemeFromCookies();
 					if (loadedTheme && loadedTheme !== theme) setTheme(loadedTheme);
-					return history.push(routes.non_auth.signin.path);
+					return navigate(routes.non_auth.signin.path);
 				}
 				const loadedTheme = loadThemeFromCookies();
 				if (loadedTheme && loadedTheme !== theme) setTheme(loadedTheme);
@@ -141,13 +151,11 @@ const App = () => {
 			response => response,
 			async error => {
 				const originalRequest = error.config;
-				if (process.env.REACT_APP_DEBUG && error.response)
-					console.log(error.response);
+				if (process.env.DEBUG && error.response) console.log(error.response);
 				if (
 					error.response &&
 					error.response.status === 401 &&
-					originalRequest.url ===
-						process.env.REACT_APP_BACKEND_URL + 'users/refreshToken'
+					originalRequest.url === process.env.BACKEND_URL + 'users/refreshToken'
 				) {
 					if (user) await logout();
 					return Promise.reject(error);
@@ -194,6 +202,11 @@ const App = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	// Scroll restoration
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, [pathname]);
+
 	return (
 		<div className="App">
 			<ThemeContext.Provider
@@ -206,31 +219,27 @@ const App = () => {
 				{loading ? (
 					<LoadingScreen />
 				) : (
-					<Router>
-						<UserContext.Provider value={providerValue}>
-							<ALIVENavbar handleLogout={async () => await logout()} />
-							<StyledApp theme={theme} className="m-auto my-4">
-								<RouterSwitch />
-							</StyledApp>
-							{maintenance && !maintenance.hidden && (
-								<MaintenanceBar
-									onClose={() =>
-										setMaintenance({ ...maintenance, hidden: true })
-									}
-									maintenance={maintenance}
-								/>
-							)}
-							{/**
+					<UserContext.Provider value={providerValue}>
+						<section className="pt-[4rem] h-full">
+							<RouterSwitch />
+						</section>
+						{maintenance && !maintenance.hidden && (
+							<MaintenanceBar
+								onClose={() => setMaintenance({ ...maintenance, hidden: true })}
+								maintenance={maintenance}
+							/>
+						)}
+						<Navbar handleLogout={async () => await logout()} />
+						{/**
 							<BackArrow
 								maintenancePopUp={maintenance != null && !maintenance.hidden}
 							/>
 							 */}
-						</UserContext.Provider>
-					</Router>
+					</UserContext.Provider>
 				)}
 			</ThemeContext.Provider>
 		</div>
 	);
 };
 
-export default App;
+export default hot(App);

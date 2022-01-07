@@ -1,7 +1,7 @@
 import { CmdProps } from './cmdTypes';
 import styled from 'styled-components';
 import React from 'react';
-import Button from '../../UtilsComponents/Button/Button';
+import Button from '../../UtilsComponents/Buttons/Button';
 import { useTranslation } from 'react-i18next';
 
 const StyledDiv = styled.div`
@@ -9,6 +9,7 @@ const StyledDiv = styled.div`
 	color: var(--foreground-color);
 	padding: 15px;
 	width: 100%;
+	height: 100%;
 	overflow-y: auto;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: large;
@@ -39,7 +40,7 @@ const Cmd = React.forwardRef<HTMLDivElement>((props: CmdProps, ref) => {
 	return (
 		<StyledDiv>
 			<Button
-				variant="primary"
+				variant="third"
 				onClick={() => {
 					if (!ref || !('current' in ref) || !ref.current) return;
 					ref.current.innerHTML = '';

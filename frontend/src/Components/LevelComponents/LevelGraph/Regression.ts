@@ -57,7 +57,6 @@ export default class Regression {
 
     const data = Regression.DATA_FORMATTING;
     data.data = points;
-    console.log(data)
     return data;
   }
 }

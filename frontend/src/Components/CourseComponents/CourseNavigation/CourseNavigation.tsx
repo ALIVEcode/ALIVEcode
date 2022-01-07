@@ -15,7 +15,6 @@ import { Section } from '../../../Models/Course/section.entity';
 import { plainToClass } from 'class-transformer';
 import { useTranslation } from 'react-i18next';
 import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
-import Button from '../../UtilsComponents/Button/Button';
 import IconButton from '../../DashboardComponents/IconButton/IconButton';
 import { faCheckCircle, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
@@ -62,7 +61,6 @@ const CourseNavigation = (props: CourseNavigationProps) => {
 											if (!(editMode && titleRef.current)) return;
 											setTitle(titleRef.current.value);
 											setCourseTitle(titleRef.current.value);
-											console.log(titleRef.current.value);
 											setEditTitle(false);
 										}}
 										defaultValue={courseTitle}
@@ -119,7 +117,7 @@ const CourseNavigation = (props: CourseNavigationProps) => {
 			<FormModal
 				open={openModalSection}
 				title="Create section"
-				onClose={() => setOpenModalSection(false)}
+				setOpen={setOpenModalSection}
 				onSubmit={res => {
 					const section: Section = plainToClass(Section, res.data);
 					addSection(section);

@@ -90,6 +90,10 @@ module.exports = (env, argv) => {
 			new Dotenv({
 				path: './.env',
 			}),
+			new HtmlWebpackPlugin({
+				template: 'public/index.html',
+				favicon: 'public/favicon.ico',
+			}),
 		].filter(Boolean),
 
 		devtool: isDevelopment && 'source-map',

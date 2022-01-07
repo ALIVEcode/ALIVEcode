@@ -15,6 +15,7 @@ import { UserContext } from '../../../state/contexts/UserContext';
 import IoTObjectLargeCard from '../../../Components/IoTComponents/IoTObject/IoTObjectLargeCard/IoTObjectLargeCard';
 import Card from '../../../Components/UtilsComponents/Cards/Card/Card';
 import { useNavigate } from 'react-router-dom';
+import IoTIcon from '../../../assets/images/icons/sandboxblanc.png';
 
 const StyledDiv = styled(FillContainer)`
 	padding: 2vw;
@@ -66,6 +67,7 @@ const IoTDashboard = (props: iotDashboardProps) => {
 								key={idx}
 								title={p.name}
 								to={routes.auth.iot_project.path.replace(':id', p.id)}
+								img={IoTIcon}
 							/>
 						))
 					) : (

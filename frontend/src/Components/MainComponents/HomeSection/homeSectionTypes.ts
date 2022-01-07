@@ -6,5 +6,6 @@ export type HomeSectionProps = {
 	reverse?: boolean;
 	button?: string;
 	onClick?: () => void;
+	imgOpacity?: number;
 	to?: string;
 };

@@ -11,12 +11,17 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons';
  *
  * @author MoSk3
  */
-const Footer = (props: FooterProps) => {
+const Footer = ({ className }: FooterProps) => {
 	const { t } = useTranslation();
 	const { routes } = useRoutes();
 
 	return (
-		<footer className="site-footer px-4 text-center tablet:text-left tablet:px-10 desktop:px-20 pb-10 mt-[-4rem] text-sm">
+		<footer
+			className={
+				'site-footer px-4 text-center tablet:text-left tablet:px-10 desktop:px-20 pb-10 pt-10 mt-[-4rem] text-sm ' +
+				className
+			}
+		>
 			<div className="flex flex-col tablet:flex-row gap-10">
 				<div className="w-full tablet:w-1/2">
 					<h6>{t('home.footer.about.title')}</h6>

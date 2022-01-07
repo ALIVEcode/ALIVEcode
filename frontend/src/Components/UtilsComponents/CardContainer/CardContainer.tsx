@@ -51,7 +51,7 @@ const CardContainer = ({
 			</div>
 			<div className="card-container-body w-full h-full">
 				{asRow ? (
-					<div className="grid phone:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-items-center">
+					<div className="grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-2 desktop:grid-cols-3 big:grid-cols-4 gap-4 justify-items-center">
 						{children}
 					</div>
 				) : (

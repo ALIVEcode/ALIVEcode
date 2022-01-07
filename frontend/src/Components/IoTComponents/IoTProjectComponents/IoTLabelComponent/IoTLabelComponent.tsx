@@ -6,7 +6,7 @@ const IoTLabelComponent = ({ component }: IoTLabelComponentProps) => {
 		<Badge
 			className="mt-2"
 			style={{ fontSize: `${component.getFontSize()}px` }}
-			variant="third"
+			variant="primary"
 		>
 			{component.value}
 		</Badge>

@@ -1,12 +1,14 @@
 import Button from './Button';
-import React from 'react';
+import React, { FC } from 'react';
+import { ButtonProps } from './buttonTypes';
 
-type ButtonProps = React.DetailedHTMLProps<
-	React.ButtonHTMLAttributes<HTMLButtonElement>,
-	HTMLButtonElement
->;
-
-export const HomeButton = ({ className, ...props }: ButtonProps) => {
+export const HomeButton: FC<
+	Partial<ButtonProps> &
+		React.DetailedHTMLProps<
+			React.ButtonHTMLAttributes<HTMLButtonElement>,
+			HTMLButtonElement
+		>
+> = ({ className, ...props }) => {
 	return (
 		<Button
 			variant="primary"

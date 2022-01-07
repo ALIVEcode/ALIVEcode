@@ -1,11 +1,10 @@
-import {MessagesProp} from './messagesType'
-import { Container, Row } from 'react-bootstrap';
+import { MessagesProp } from './messagesType';
 import Jihene from '../../../assets/images/creators/Jihene.jpg';
 
 const Messages = ({ username, text, time, image }: MessagesProp) => {
 	return (
-		<Container style={{ paddingTop: '5px' }}>
-			<Row>
+		<div style={{ paddingTop: '5px' }}>
+			<div>
 				<img
 					className="message-image rounded-circle"
 					style={{ width: '45px', maxHeight: '45px' }}
@@ -33,8 +32,8 @@ const Messages = ({ username, text, time, image }: MessagesProp) => {
 				>
 					{time}
 				</div>
-			</Row>
-		</Container>
+			</div>
+		</div>
 	);
 };
 export default Messages;

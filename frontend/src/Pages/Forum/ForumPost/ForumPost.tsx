@@ -1,13 +1,13 @@
-import { useContext, useEffect, useState } from "react";
-import { Button, Card, Col, Form, Row } from 'react-bootstrap';
+import { useContext, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import CardContainer from '../../../Components/UtilsComponents/CardContainer/CardContainer';
-import CenteredContainer from '../../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
 import api from '../../../Models/api';
 import { Comment } from '../../../Models/Forum/comment.entity';
 import { Post } from '../../../Models/Forum/post.entity';
 import { UserContext } from '../../../state/contexts/UserContext';
 import { useParams } from 'react-router';
+import Button from '../../../Components/UtilsComponents/Buttons/Button';
+import InputGroup from '../../../Components/UtilsComponents/InputGroup/InputGroup';
 
 const ForumPost = () => {
 	const [post, setPost] = useState<Post>();
@@ -51,66 +51,51 @@ const ForumPost = () => {
 	};
 
 	return (
-		<div>
-			<CenteredContainer
-				horizontally
-				textAlign="center"
-				style={{ paddingLeft: '100px', paddingRight: '100px' }}
-			>
-				{post && (
-					<div>
-						<CardContainer asRow title="Question : ">
-							<Card style={{ width: '70rem' }}>
-								<Card.Title>{post.title}</Card.Title>
-								<div className="text-left">{post.content}</div>
-								<div className="text-right">{post.creator.email}</div>
-							</Card>
-						</CardContainer>
-						<Row>
-							<Col className="col-10">
-								<CardContainer asRow title="Commentaires : ">
-									{comments &&
-										comments.map(comment => {
-											return (
-												<Card
-													style={{ width: '60rem' }}
-													className="text-left mt-5"
-												>
-													<Card.Header>{comment.creator.email}</Card.Header>
-													<Card.Body>
-														<Card.Text>{comment.content}</Card.Text>
-													</Card.Body>
-												</Card>
-											);
-										})}
-									<Card style={{ width: '60rem' }} className="mt-5">
-										<Card.Header>
-											<Card.Text>Écrivez ici :</Card.Text>
-										</Card.Header>
-										<Card.Body>
-											<Form onSubmit={handleSubmit(onSubmit)}>
-												<Form.Group className="mb-3 text-left">
-													<Form.Control
-														as="textarea"
-														id="formComment"
-														rows={5}
-														{...register('content')}
-													/>
-												</Form.Group>
-												<Form.Group className="text-right">
-													<Button variant="primary" id="btn" type="submit">
-														Envoyer
-													</Button>
-												</Form.Group>
-											</Form>
-										</Card.Body>
-									</Card>
-								</CardContainer>
-							</Col>
-						</Row>
-					</div>
-				)}
-			</CenteredContainer>
+		<div className="p-10">
+			{post && (
+				<div>
+					<CardContainer asRow title="Question : ">
+						<div style={{ width: '70rem' }}>
+							<div>{post.title}</div>
+							<div className="text-left">{post.content}</div>
+							<div className="text-right">{post.creator.email}</div>
+						</div>
+					</CardContainer>
+					<CardContainer className="p-10" asRow title="Commentaires : ">
+						{comments &&
+							comments.map(comment => {
+								return (
+									<div className="w-4/5 text-left mt-5 border-1 rounded-md">
+										<div className="bg-gray-100 p-3 border-b-2">
+											{comment.creator.email}
+										</div>
+										<div className="bg-white p-3 rounded-md">
+											<label>{comment.content}</label>
+										</div>
+									</div>
+								);
+							})}
+						<div className="w-full mt-5">
+							<div>
+								<label>Écrivez ici :</label>
+							</div>
+							<div>
+								<form onSubmit={handleSubmit(onSubmit)}>
+									<InputGroup
+										label="Nouveau commentaire"
+										as="textarea"
+										rows={5}
+										{...register('content', { required: true })}
+									/>
+									<Button variant="third" type="submit">
+										Envoyer
+									</Button>
+								</form>
+							</div>
+						</div>
+					</CardContainer>
+				</div>
+			)}
 		</div>
 	);
 };

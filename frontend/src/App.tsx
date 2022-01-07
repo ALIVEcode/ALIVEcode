@@ -1,13 +1,9 @@
 import './App.css';
 import { RouterSwitch } from './Router/RouterSwitch/RouterSwitch';
 import { useNavigate } from 'react-router-dom';
-import ALIVENavbar from './Components/MainComponents/Navbar/Navbar';
 import { UserContext } from './state/contexts/UserContext';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
-import 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'react-datetime/css/react-datetime.css';
 import useRoutes from './state/hooks/useRoutes';
 import {
 	ThemeContext,
@@ -15,7 +11,7 @@ import {
 	themes,
 	commonColors,
 } from './state/contexts/ThemeContext';
-import styled, { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
 import { loadThemeFromCookies, setCookie } from './Types/cookies';
 import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
@@ -28,7 +24,9 @@ import MaintenanceBar from './Components/SiteStatusComponents/MaintenanceBar/Mai
 import { Maintenance } from './Models/Maintenance/maintenance.entity';
 import openPlaySocket from './Pages/Level/PlaySocket';
 import { PlaySocket } from './Pages/Level/PlaySocket';
-import FillGrid from './Components/UtilsComponents/FillGrid/FillGrid';
+import Navbar from './Components/MainComponents/Navbar/Navbar';
+import { useLocation } from 'react-router';
+import { hot } from 'react-hot-loader/root';
 
 type GlobalStyleProps = {
 	theme: Theme;
@@ -52,8 +50,8 @@ const GlobalStyle = createGlobalStyle`
 			...commonColors,
 			...theme.color,
 		})) {
-			const cssName = colorName.includes('rgb')
-				? `--${colorName.split('_')[0]}-color-rgb`
+			const cssName = colorName.endsWith('rgb')
+				? `--${colorName.split('_').slice(0, -1).join('-')}-color-rgb`
 				: `--${colorName.replaceAll('_', '-')}-color`;
 			cssVars.push(`${cssName}: ${color}`);
 		}
@@ -77,7 +75,6 @@ const GlobalStyle = createGlobalStyle`
 						--pale-color-rgb: ${theme.color.pale_rgb};
 						--contrast-color: ${theme.color.contrast};
 						--contrast-color-rgb: ${theme.color.contrast};
-						--hover-color: ${theme.color.hover};
 						--background-color: ${theme.color.background};
 						--background-color-rgb: ${theme.color.background_rgb};
 						--background-hover-color: ${theme.color.background_hover};
@@ -89,8 +86,6 @@ const GlobalStyle = createGlobalStyle`
 	}}
 `;
 
-const StyledApp = styled.section``;
-
 const App = () => {
 	const [user, setUser] = useState<Student | Professor | null>(null);
 	const [playSocket, setPlaySocket] = useState<PlaySocket | null>(null);
@@ -101,6 +96,7 @@ const App = () => {
 	const { routes } = useRoutes();
 	const { t } = useTranslation();
 	const alert = useAlert();
+	const { pathname } = useLocation();
 
 	const navigate = useNavigate();
 	const providerValue = useMemo(
@@ -206,6 +202,11 @@ const App = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	// Scroll restoration
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, [pathname]);
+
 	return (
 		<div className="App">
 			<ThemeContext.Provider
@@ -219,18 +220,16 @@ const App = () => {
 					<LoadingScreen />
 				) : (
 					<UserContext.Provider value={providerValue}>
-						<ALIVENavbar handleLogout={async () => await logout()} />
-						<StyledApp theme={theme} className="h-100">
-							<FillGrid>
-								<RouterSwitch />
-							</FillGrid>
-						</StyledApp>
+						<section className="pt-[4rem] h-full">
+							<RouterSwitch />
+						</section>
 						{maintenance && !maintenance.hidden && (
 							<MaintenanceBar
 								onClose={() => setMaintenance({ ...maintenance, hidden: true })}
 								maintenance={maintenance}
 							/>
 						)}
+						<Navbar handleLogout={async () => await logout()} />
 						{/**
 							<BackArrow
 								maintenancePopUp={maintenance != null && !maintenance.hidden}
@@ -243,4 +242,4 @@ const App = () => {
 	);
 };
 
-export default App;
+export default hot(App);

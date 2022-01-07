@@ -5,7 +5,7 @@ import {
 } from './browsingMenuTypes';
 import SearchBar from './SearchBar/SearchBar';
 import { useState, useEffect } from 'react';
-import Button from '../../UtilsComponents/Button/Button';
+import Button from '../../UtilsComponents/Buttons/Button';
 import { useTranslation } from 'react-i18next';
 
 /**
@@ -51,7 +51,7 @@ const BrowsingMenu = <T extends any>({
 				/>
 			</div>
 			<div>
-				<Button variant="primary" onClick={getResults}>
+				<Button variant="third" onClick={getResults}>
 					{t('msg.search')}
 				</Button>
 			</div>

@@ -11,7 +11,7 @@ import {
   UseInterceptors,
   Query,
   UploadedFile,
-  Request
+  Request,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ProfessorEntity } from './entities/professor.entity';
@@ -28,16 +28,15 @@ import { Role } from '../../utils/types/roles.types';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { editFileName, imageFileFilter } from 'src/utils/upload/file-uploading';
-import  { extname } from 'path';
+import { extname } from 'path';
 
- export const storage =  {
+export const storage = {
   fileFilter: imageFileFilter,
   storage: diskStorage({
-   destination: 'images/uploads' ,
-   filename: editFileName
-  
- })
-}
+    destination: 'images/uploads',
+    filename: editFileName,
+  }),
+};
 @Controller('users')
 @UseInterceptors(DTOInterceptor)
 export class UserController {
@@ -45,7 +44,6 @@ export class UserController {
 
   @Post('students')
   async createStudent(@Body() createStudent: StudentEntity) {
-    console.log(createStudent);
     return {
       user: await this.userService.createStudent(createStudent),
     };
@@ -186,18 +184,15 @@ export class UserController {
     return this.userService.getLevels(await this.userService.findById(id), query);
   }
 
-
   @Post('upload')
-  @UseInterceptors(
-    FileInterceptor('image',storage))
-   async uploadedFile(@UploadedFile() file, @Request() req) {
-      const user: UserEntity = req.user; 
- 
-      user.image = file.filename;
-      console.log(__dirname)
-      console.log(file)
-      return await this.userService.update(user.id, user);
-   } 
+  @UseInterceptors(FileInterceptor('image', storage))
+  async uploadedFile(@UploadedFile() file, @Request() req) {
+    const user: UserEntity = req.user;
 
+    user.image = file.filename;
+    console.log(__dirname);
+    console.log(file);
+    return await this.userService.update(user.id, user);
+  }
 }
 

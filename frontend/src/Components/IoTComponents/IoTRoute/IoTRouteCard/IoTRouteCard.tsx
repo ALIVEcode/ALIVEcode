@@ -56,7 +56,7 @@ const IoTRouteCard = ({ route }: IoTRouteCardProps) => {
 			<Modal
 				title="Route settings"
 				open={settingsOpen}
-				onClose={() => setSettingsOpen(false)}
+				setOpen={setSettingsOpen}
 				size="xl"
 			>
 				<IoTRouteSettings route={route} />
@@ -64,7 +64,7 @@ const IoTRouteCard = ({ route }: IoTRouteCardProps) => {
 			<AlertConfirm
 				title="Are you sure you want to delete this route"
 				open={deleteConfirmOpen}
-				onClose={() => setDeleteConfirmOpen(false)}
+				setOpen={setDeleteConfirmOpen}
 				onConfirm={() => deleteRoute(route)}
 			/>
 		</>

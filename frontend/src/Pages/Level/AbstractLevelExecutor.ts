@@ -90,7 +90,6 @@ export class LevelExecutor {
 	}
 
 	public stop() {
-		console.log('STOP');
 		this._beforeStop && this._beforeStop();
 		this.execution && this.onToggleExecution && this.onToggleExecution(this);
 		// Clear all the timouts of the execution

@@ -58,9 +58,7 @@ const numberToBytes = (num: number, my_bytes: number[]) => {
     my_bytes.push((absNum >> 24) % 256);
     my_bytes.push((absNum >> 16) % 256);
     my_bytes.push((absNum >> 8) % 256);
-    console.log(my_bytes);
     my_bytes.push(absNum % 256);
-    console.log(my_bytes);
   } else {
     my_bytes.push(1);
     my_bytes.push(absNum);

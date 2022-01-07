@@ -10,7 +10,7 @@ import { USER_TYPES } from '../../Types/userTypes';
 import Level from '../../Pages/Level/Level';
 import SignUpMenu from '../../Pages/Account/SignUpMenu/SignUpMenu';
 import About from '../../Pages/About/About';
-import AliveIa from '../../Pages/ALIVEIA/AliveIa';
+import AIHome from '../../Pages/AI/AIHome/AIHome';
 import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
 import AccountPage from '../../Pages/Account/AccountInfo/AccountPage';
@@ -38,12 +38,12 @@ import QuizEdit from '../../Pages/Quiz/QuizEdit/QuizEdit';
 import QuizPlay from '../../Pages/Quiz/QuizPlay/QuizPlay';
 import ForumCategories from '../../Pages/Forum/ForumCategories/ForumCategories';
 import ForumSubjectList from '../../Pages/Forum/ForumSubjectList/ForumSubjectList';
-import ForumFormQuestion from '../../Pages/Forum/ForumFormQuestion/ForumFormQuestion';
+import ForumPostForm from '../../Pages/Forum/ForumFormQuestion/ForumFormQuestion';
 import ForumPost from '../../Pages/Forum/ForumPost/ForumPost';
 import ForumSearch from '../../Pages/Forum/ForumSearch/ForumSearch';
 import Chat from '../../Pages/Chat/Chat';
 import { LEVEL_TYPE } from '../../Models/Level/level.entity';
-import Dashboard from '../../Pages/Dashboard/Dashboard';
+import DashboardNew from '../../Pages/DashboardNew/DashboardNew';
 
 export interface Route {
 	path: string;
@@ -145,8 +145,8 @@ const useRoutes = () => {
 			component: <ASBuiltinsDocs></ASBuiltinsDocs>,
 		},
 		ai: {
-			path: '/aliveai',
-			component: <AliveIa></AliveIa>,
+			path: '/ai',
+			component: <AIHome></AIHome>,
 			maintenanceExempt: true,
 		},
 		about: {
@@ -188,11 +188,11 @@ const useRoutes = () => {
 			maintenanceExempt: true,
 			component: <MaintenanceMenu></MaintenanceMenu>,
 		},
-		question: {
+		forum_post: {
 			path: '/forum/post/:id',
 			component: <ForumPost></ForumPost>,
 		},
-		subject_list: {
+		forum_subject_list: {
 			path: '/forum/subjectList/:id',
 			component: <ForumSubjectList></ForumSubjectList>,
 		},
@@ -220,7 +220,6 @@ const useRoutes = () => {
 		},
 		quiz: {
 			path: '/quiz',
-			exact: true,
 			component: <QuizHome></QuizHome>,
 			adminOnly: true,
 		},
@@ -239,7 +238,7 @@ const useRoutes = () => {
 	const auth_routes = asAuthRoutes(<SignIn></SignIn>, {
 		dashboard: {
 			path: '/dashboard',
-			component: <Dashboard></Dashboard>,
+			component: <DashboardNew></DashboardNew>,
 		},
 		create_classroom: {
 			accountType: Professor,
@@ -338,9 +337,9 @@ const useRoutes = () => {
 			component: <QuizEdit></QuizEdit>,
 			adminOnly: true,
 		},
-		form_question: {
-			path: '/formQuestion/forum',
-			component: <ForumFormQuestion></ForumFormQuestion>,
+		forum_post_form: {
+			path: '/forum/post',
+			component: <ForumPostForm></ForumPostForm>,
 		},
 	});
 
@@ -367,7 +366,7 @@ const useRoutes = () => {
 	const error_routes = asRoutes({
 		not_found: {
 			path: '*',
-			component: <NotFound></NotFound>,
+			component: <NotFound />,
 			maintenanceExempt: true,
 		},
 	});

@@ -10,12 +10,7 @@ export type SimulationProps = {
 
 export const StyledSimulation = styled.div`
 	width: 100%;
-
-	.zoom-button {
-		position: absolute;
-		right: 0;
-		top: 0;
-	}
+	height: 100%;
 
 	.fullscreen-div {
 		position: fixed;

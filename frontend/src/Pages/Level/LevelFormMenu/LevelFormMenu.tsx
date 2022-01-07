@@ -4,7 +4,6 @@ import Voiture from '../../../assets/images/Voiture.gif';
 import Code from '../../../assets/images/icons/sandboxblanc.png';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { useTranslation } from 'react-i18next';
-import { StyledLevelFormMenu } from './levelFormMenuType';
 
 /**
  * Menu to select which type of level to create
@@ -17,7 +16,7 @@ const LevelFormMenu = () => {
 
 	return (
 		<FillContainer centered>
-			<StyledLevelFormMenu>
+			<div className="w-full h-full flex justify-center">
 				<Card
 					img={Voiture}
 					to={routes.auth.level_create_alive.path}
@@ -38,7 +37,7 @@ const LevelFormMenu = () => {
 					to={routes.auth.level_create_iot.path}
 					title={t('menu.level.iot')}
 				/>
-			</StyledLevelFormMenu>
+			</div>
 		</FillContainer>
 	);
 };

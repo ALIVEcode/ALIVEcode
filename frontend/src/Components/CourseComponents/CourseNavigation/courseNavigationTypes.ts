@@ -105,6 +105,6 @@ export const StyledCourseNavigation = styled.div`
 
 	.course-section-header:hover,
 	.course-activity:hover {
-		background-color: var(--third-color);
+		background-color: var(--contrast-color);
 	}
 `;

@@ -1,6 +1,5 @@
 import { CourseSectionProps } from './courseSectionTypes';
 import { useState, useContext, useRef } from 'react';
-import { Collapse } from 'react-bootstrap';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import Link from '../../UtilsComponents/Link/Link';
 import { Activity } from '../../../Models/Course/activity.entity';
@@ -11,6 +10,7 @@ import AlertConfirm from '../../UtilsComponents/Alert/AlertConfirm/AlertConfirm'
 import { Option, TDOption } from '../../UtilsComponents/Option/TDOption';
 import { faPenFancy, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faDropbox } from '@fortawesome/free-brands-svg-icons';
+import { Disclosure } from '@headlessui/react';
 /**
  * Component that shows the section in the navigation and handles different actions like adding in an activity onto the section
  *
@@ -47,8 +47,9 @@ const CourseSection = ({ section, editMode }: CourseSectionProps) => {
 	};
 
 	return (
-		<div className="course-section">
-			<div
+		<Disclosure as="div" className="course-section">
+			<Disclosure.Button
+				as="div"
 				className="course-section-header"
 				aria-controls={`section-${section.name}`}
 				aria-expanded={open}
@@ -68,8 +69,8 @@ const CourseSection = ({ section, editMode }: CourseSectionProps) => {
 						</TDOption>
 					)}
 				</div>
-			</div>
-			<Collapse in={open} timeout={500}>
+			</Disclosure.Button>
+			<Disclosure.Panel>
 				<div id={`section-${section.name}`} className="course-section-body">
 					{loading && open && <LoadingScreen size="3x" relative />}
 
@@ -150,11 +151,11 @@ const CourseSection = ({ section, editMode }: CourseSectionProps) => {
 						</>
 					)}
 				</div>
-			</Collapse>
+			</Disclosure.Panel>
 			<AlertConfirm
 				open={confirmSectionDelete}
 				title={t('couse.section.delete')}
-				onClose={() => setConfirmSectionDelete(false)}
+				setOpen={setConfirmSectionDelete}
 				onConfirm={() => {
 					if (!(course && section)) return;
 					deleteSection(section);
@@ -164,14 +165,14 @@ const CourseSection = ({ section, editMode }: CourseSectionProps) => {
 			<AlertConfirm
 				open={confirmActivityDelete}
 				title={t('couse.activity.delete')}
-				onClose={() => setConfirmActivityDelete(false)}
+				setOpen={setConfirmActivityDelete}
 				onConfirm={() => {
 					if (!(course && section && currentActivity.current)) return;
 					deleteActivity(section, currentActivity.current);
 				}}
 				hideFooter
 			></AlertConfirm>
-		</div>
+		</Disclosure>
 	);
 };
 

@@ -5,7 +5,6 @@ export const StyledHome = styled.div`
 	label {
 		margin-bottom: 0;
 	}
-
 	.header-circle {
 		position: absolute;
 		width: 1235px;
@@ -14,8 +13,8 @@ export const StyledHome = styled.div`
 		top: -430px;
 		border-radius: 50%;
 		background: rgba(var(--secondary-color-rgb), 0.64);
+		z-index: 0;
 	}
-
 	.header-circle img {
 		position: relative;
 		top: 35%;
@@ -23,16 +22,14 @@ export const StyledHome = styled.div`
 		width: 55%;
 		height: 55%;
 	}
-
 	.header {
 		padding-left: 80px;
 		padding-top: 50px;
 		background: var(--primary-color);
 		color: white;
 		font-size: 35px;
-		height: 350px;
+		height: 450px;
 	}
-
 	.header-alive {
 		font-size: 3em;
 		font-family: var(--title-font);
@@ -42,7 +39,6 @@ export const StyledHome = styled.div`
 		text-shadow: var(--drop-shadow);
 		letter-spacing: 0.05em;
 	}
-
 	.header-desc {
 		font-size: 2.2em;
 		font-family: var(--title-font);
@@ -52,7 +48,6 @@ export const StyledHome = styled.div`
 		letter-spacing: 0.105em;
 		margin-left: 10px;
 	}
-
 	.header-lore {
 		position: relative;
 		top: -30px;
@@ -63,18 +58,15 @@ export const StyledHome = styled.div`
 		font-weight: normal;
 		line-height: 35px;
 	}
-
 	#cursor {
 		position: absolute;
 	}
-
 	#divider {
 		position: absolute;
 		width: 100%;
 		left: 0;
 		bottom: 0;
 	}
-
 	.card {
 		text-align: left;
 		border-radius: 25px;
@@ -87,29 +79,23 @@ export const StyledHome = styled.div`
 		transition: all 0.2s ease;
 		cursor: pointer;
 	}
-
 	.card:nth-child(even):hover {
 		transform: rotate(-2deg) scale(1.03) !important;
 		box-shadow: 0px 0px 15px 1px var(--primary-color);
 	}
-
 	.card:nth-child(odd):hover {
 		transform: rotate(2deg) scale(1.03) !important;
 		box-shadow: 0px 15px 35px var(--primary-color);
 	}
-
 	.card p {
 		font-size: 20px;
 	}
-
 	.card .card-img {
 		max-height: 300px;
 	}
-
 	.curve {
 		width: 100%;
 	}
-
 	@media screen and (max-width: 1200px) {
 		.header-circle {
 			width: 1100px;
@@ -117,16 +103,13 @@ export const StyledHome = styled.div`
 			left: 550px;
 			top: -400px;
 		}
-
 		.header {
 			font-size: 27px;
 		}
-
 		.header-lore {
 			top: -15px;
 		}
 	}
-
 	@media screen and (max-width: 1076px) {
 		.header-circle {
 			width: 1000px;
@@ -134,16 +117,13 @@ export const StyledHome = styled.div`
 			left: 500px;
 			top: -350px;
 		}
-
 		.header {
 			font-size: 25px;
 		}
-
 		.header-lore {
 			top: -15px;
 		}
 	}
-
 	@media screen and (max-width: 900px) {
 		.header-circle {
 			width: 800px;
@@ -151,16 +131,13 @@ export const StyledHome = styled.div`
 			left: 450px;
 			top: -200px;
 		}
-
 		.header {
 			font-size: 23px;
 		}
-
 		.header-lore {
 			top: -15px;
 		}
 	}
-
 	@media screen and (max-width: 480px) {
 		.header-circle {
 			width: 1235px;

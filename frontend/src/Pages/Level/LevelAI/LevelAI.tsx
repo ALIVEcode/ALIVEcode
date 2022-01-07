@@ -2,7 +2,6 @@ import { LevelAIProps, StyledAliveLevel } from './levelAITypes';
 import { useEffect, useState, useContext, useRef, useMemo } from 'react';
 import LineInterface from '../../../Components/LevelComponents/LineInterface/LineInterface';
 import { UserContext } from '../../../state/contexts/UserContext';
-import { Row, Col } from 'react-bootstrap';
 import Cmd from '../../../Components/LevelComponents/Cmd/Cmd';
 import LevelAIExecutor from './LevelAIExecutor';
 import useCmd from '../../../state/hooks/useCmd';
@@ -209,9 +208,9 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 	return (
 		<>
 			<StyledAliveLevel>
-				<Row className="h-100">
+				<div className="h-full flex flex-row">
 					{/* Left Side of screen */}
-					<Col className="left-col" md={6}>
+					<div className="w-1/2 h-full flex flex-col">
 						{/* Barre d'infos du niveau */}
 						<LevelToolsBar />
 						{/* Interface de code */}
@@ -248,36 +247,37 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 								handleChange={lineInterfaceContentChanges}
 							/>
 						)}
-					</Col>
+					</div>
 
 					{/* Right Side of screen 
 							Contains the graph and the console
 					*/}
-					<Col md={6} style={{ resize: 'both', padding: '0' }}>
-						<Row className="data-section">
-							<Col md={3}>
+					<div className="flex flex-col w-1/2">
+						<div
+							className="h-3/5 w-full flex flex-row"
+							className="data-section"
+						>
+							<div className="w-1/3 h-full">
 								<LevelTable
 									data={data}
 									xData="Énergie utilisée (kWh)"
 									yData="Distance parcourue (km)"
 								/>
-							</Col>
-							<Col md={8} style={{ padding: '0' }}>
-								<div className="graph-container">
-									<LevelGraph
-										data={chartData}
-										title="Distance parcourue selon l'énergie utilisée"
-										xAxis="Énergie utilisée (kWh)"
-										yAxis="Distance parcourue (km)"
-									/>
-								</div>
-							</Col>
-						</Row>
-						<Row className="command">
+							</div>
+							<div className="w-2/3 h-full">
+								<LevelGraph
+									data={chartData}
+									title="Distance parcourue selon l'énergie utilisée"
+									xAxis="Énergie utilisée (kWh)"
+									yAxis="Distance parcourue (km)"
+								/>
+							</div>
+						</div>
+						<div className="h-2/5 flex-1" className="command">
 							<Cmd ref={cmdRef}></Cmd>
-						</Row>
-					</Col>
-				</Row>
+						</div>
+					</div>
+				</div>
 			</StyledAliveLevel>
 		</>
 	);

@@ -11,7 +11,6 @@ export const StyledCourseCard = styled.div`
 	width: 180px;
 	height: 145px;
 	background-color: var(--background-color);
-	border: 1px solid var(--bg-shade-four-color);
 	border-radius: 10px;
 	margin-left: auto;
 	margin-right: auto;

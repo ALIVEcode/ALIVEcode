@@ -1,6 +1,5 @@
-import { ClassroomHeaderProps, StyledClassroomHeader } from './classroomHeaderTypes';
-import { Alert, Badge, Col, Row } from 'react-bootstrap';
-import Button from '../../UtilsComponents/Button/Button';
+import { ClassroomHeaderProps } from './classroomHeaderTypes';
+import Button from '../../UtilsComponents/Buttons/Button';
 import { useContext, useState } from 'react';
 import { UserContext } from '../../../state/contexts/UserContext';
 import { Professor } from '../../../Models/User/user.entity';
@@ -12,6 +11,7 @@ import Modal from '../../UtilsComponents/Modal/Modal';
 import { prettyField } from '../../../Types/formatting';
 import { ThemeContext } from '../../../state/contexts/ThemeContext';
 import { useNavigate } from 'react-router-dom';
+import Badge from '../../UtilsComponents/Badge/Badge';
 
 /**
  * Classroom header that displays the className, the professor and
@@ -21,7 +21,13 @@ import { useNavigate } from 'react-router-dom';
  *
  * @author MoSk3
  */
-const ClassroomHeader = ({ className, classroom }: ClassroomHeaderProps) => {
+const ClassroomHeader: React.FC<
+	ClassroomHeaderProps &
+		React.DetailedHTMLProps<
+			React.HTMLAttributes<HTMLDivElement>,
+			HTMLDivElement
+		>
+> = ({ classroom, ...other }) => {
 	const { user } = useContext(UserContext);
 	const { routes } = useRoutes();
 	const { t } = useTranslation();
@@ -44,30 +50,30 @@ const ClassroomHeader = ({ className, classroom }: ClassroomHeaderProps) => {
 	};
 
 	return (
-		<StyledClassroomHeader className={className} fluid>
-			<Row className="header-row no-gutters">
-				<Col md={6} className="classroom-title">
-					<label className="classroom-title-name">{classroom.name}</label>
-					<label className="classroom-title-desc">
-						<Badge bg="primary">{prettyField(t('msg.professor'))}</Badge>{' '}
+		<div
+			className="bg-[color:var(--primary-color)] text-white text-center tablet:text-left"
+			{...other}
+		>
+			<div className="h-full flex flex-col tablet:flex-row justify-between p-10 pb-0 gap-6">
+				<div className="mt-10">
+					<div className="text-4xl tablet:text-3xl laptop:text-4xl desktop:text-5xl mb-4">
+						{classroom.name}
+					</div>
+					<label className="flex justify-center tablet:justify-start text-base tablet:text-lg laptop:text-xl desktop:text-2xl">
+						<Badge className="text-lg mr-2" variant="secondary">
+							{prettyField(t('msg.professor'))}
+						</Badge>{' '}
 						{classroom.creator.getDisplayName()}
 					</label>
-				</Col>
+				</div>
 
-				<Col md={6} className="classroom-buttons">
+				<div className="flex flex-row tablet:flex-col gap-4 mt-10">
 					{user instanceof Professor ? (
 						<>
-							<div>
-								<Button
-									onClick={() => setCodeModalOpen(true)}
-									variant="primary"
-								>
-									{t('classroom.add_students')}
-								</Button>
-							</div>
-							<div>
-								<Button variant="danger">{t('classroom.delete')}</Button>
-							</div>
+							<Button onClick={() => setCodeModalOpen(true)} variant="third">
+								{t('classroom.add_students')}
+							</Button>
+							<Button variant="danger">{t('classroom.delete')}</Button>
 						</>
 					) : (
 						<div>
@@ -76,8 +82,8 @@ const ClassroomHeader = ({ className, classroom }: ClassroomHeaderProps) => {
 							</Button>
 						</div>
 					)}{' '}
-				</Col>
-			</Row>
+				</div>
+			</div>
 			<svg
 				id="visual"
 				viewBox="0 0 960 200"
@@ -102,22 +108,24 @@ const ClassroomHeader = ({ className, classroom }: ClassroomHeaderProps) => {
 			<Modal
 				title={t('classroom.code.title')}
 				open={codeModalOpen}
-				onClose={() => setCodeModalOpen(false)}
+				setOpen={setCodeModalOpen}
 				submitText={t('msg.understood')}
-				button
 				hideCloseButton
+				centeredText
+				centered
 				closeCross
+				submitButtonVariant="primary"
 			>
 				{t('classroom.code.desc')}
-				<Alert
-					className="mt-4"
+				<Badge
+					variant="third"
+					className="mt-4 text-4xl px-6 py-6"
 					style={{ fontSize: '3em', textAlign: 'center' }}
-					variant="success"
 				>
 					{classroom.code}
-				</Alert>
+				</Badge>
 			</Modal>
-		</StyledClassroomHeader>
+		</div>
 	);
 };
 

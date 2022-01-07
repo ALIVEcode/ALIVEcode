@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { Card } from "react-bootstrap";
+import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import CardContainer from '../../../Components/UtilsComponents/CardContainer/CardContainer';
 import CenteredContainer from '../../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
@@ -36,14 +35,14 @@ const ForumSearch = () => {
 				<CardContainer asRow title={'Recherche : '}>
 					{posts.map((post, idx) => {
 						return (
-							<Card style={{ width: '20rem' }} className="mt-3 ml-2" key={idx}>
+							<div style={{ width: '20rem' }} className="mt-3 ml-2" key={idx}>
 								<Link to={'/forum/post/' + post.id}>
-									<Card.Title>{post.title}</Card.Title>
+									<div className="text-2xl">{post.title}</div>
 								</Link>
-								<Card.Footer>
+								<p className="text-sm">
 									{post.created_at + ' ' + post.creator.email}
-								</Card.Footer>
-							</Card>
+								</p>
+							</div>
 						);
 					})}
 				</CardContainer>

@@ -1,5 +1,4 @@
 import { useCallback, useMemo, useState } from 'react';
-import { DropdownButton } from 'react-bootstrap';
 import {
 	createEditor,
 	Descendant,
@@ -50,8 +49,6 @@ const ActivityEditor = ({
 	const renderLeaf = useCallback(props => <Leaf {...props} />, []);
 	const { t } = useTranslation();
 
-	console.log(defaultValue);
-
 	return (
 		<StyledActivityEditor isEditable={isEditable ?? (() => false)}>
 			<div className="editor-body">
@@ -69,11 +66,11 @@ const ActivityEditor = ({
 							<BlockButton format="heading-one" icon="one" />
 							<BlockButton format="heading-two" icon="two" />
 							<BlockButton format="block-quote" icon="quote" />
-							<DropdownButton title="listes" variant={'secondary'}>
+							{/*<DropdownButton title="listes" variant={'secondary'}>
 								<BlockButton format="numbered-list" icon="liste numérotée" />
 								<br />
 								<BlockButton format="bulleted-list" icon="liste point" />
-							</DropdownButton>
+					</DropdownButton>*/}
 						</Toolbar>
 					)}
 					<Editable

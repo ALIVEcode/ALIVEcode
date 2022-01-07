@@ -33,7 +33,7 @@ export const StyledIoTLogsComponent = styled.div`
 	.log-entries {
 		position: relative;
 		height: 100%;
-		overflow-y: scroll;
+		overflow-y: auto;
 	}
 
 	.log-entries label {

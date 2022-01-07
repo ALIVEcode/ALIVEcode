@@ -1,7 +1,5 @@
 import CardContainer from '../../Components/UtilsComponents/CardContainer/CardContainer';
-import { Row, Container, Badge } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { Col } from 'react-bootstrap';
 import styled from 'styled-components';
 import { useState, useEffect, useContext } from 'react';
 import { Classroom as ClassroomModel } from '../../Models/Classroom/classroom.entity';
@@ -19,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { ClassroomProps } from './classroomTypes';
 import ClassroomHeader from '../../Components/ClassroomComponents/ClassroomHeader/ClassroomHeader';
 import CourseCard from '../../Components/CourseComponents/CourseCard/CourseCard';
+import Badge from '../../Components/UtilsComponents/Badge/Badge';
 
 const StyledDiv = styled.div`
 	.classroom-content {
@@ -51,14 +50,17 @@ const Classroom = ({ classroomProp, ...props }: ClassroomProps) => {
 	const forceUpdate = useForceUpdate();
 
 	useEffect(() => {
-		if (!id) return;
 		const getClassroom = async () => {
 			try {
-				const classroom =
-					classroomProp ??
-					(await api.db.classrooms.get({
+				let classroom = classroomProp;
+
+				if (!classroom) {
+					if (!id) return;
+					classroom = await api.db.classrooms.get({
 						id,
-					}));
+					});
+				}
+
 				await classroom.getStudents();
 				await classroom.getCourses();
 				setClassroom(classroom);
@@ -78,8 +80,8 @@ const Classroom = ({ classroomProp, ...props }: ClassroomProps) => {
 
 	return (
 		<StyledDiv>
-			<ClassroomHeader className="classroom-header" classroom={classroom} />
-			<Container className="classroom-content">
+			<ClassroomHeader classroom={classroom} />
+			<div className="p-2 tablet:p-10 laptop:p-12">
 				<CardContainer
 					asRow
 					title={t('classroom.container.courses.title')}
@@ -97,16 +99,16 @@ const Classroom = ({ classroomProp, ...props }: ClassroomProps) => {
 						<p>{t('classroom.container.courses.empty')}</p>
 					)}
 				</CardContainer>
-				<Row>
-					<Col lg>
+				<div>
+					<div>
 						<CardContainer title={t('classroom.container.details.title')}>
 							<div>
 								<h4>
-									<Badge bg="primary">{t('classroom.subject')}</Badge>
+									<Badge variant="third">{t('classroom.subject')}</Badge>
 								</h4>
 								{classroom.getSubjectDisplay()}
 								<h4>
-									<Badge bg="primary">
+									<Badge variant="third">
 										{prettyField(t('msg.description'))}
 									</Badge>
 								</h4>
@@ -119,8 +121,8 @@ const Classroom = ({ classroomProp, ...props }: ClassroomProps) => {
 								</p>
 							</div>
 						</CardContainer>
-					</Col>
-					<Col lg>
+					</div>
+					<div>
 						<CardContainer
 							scrollY
 							title={t('classroom.container.students.title')}
@@ -134,9 +136,9 @@ const Classroom = ({ classroomProp, ...props }: ClassroomProps) => {
 								<p>{t('classroom.container.students.empty')}</p>
 							)}
 						</CardContainer>
-					</Col>
-				</Row>
-			</Container>
+					</div>
+				</div>
+			</div>
 		</StyledDiv>
 	);
 };

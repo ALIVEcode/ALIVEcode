@@ -1,6 +1,3 @@
-import styled from 'styled-components';
-import FillContainer from '../../UtilsComponents/FillContainer/FillContainer';
-
 /**
  * This interface defines all properties of a level graph.
  *
@@ -16,8 +13,3 @@ export interface LevelGraphProps {
 	yAxis: string;
 }
 
-export const StyledLevelGraph = styled(FillContainer)`
-	.graph-holder {
-		margin-bottom: 40vh;
-	}
-`;

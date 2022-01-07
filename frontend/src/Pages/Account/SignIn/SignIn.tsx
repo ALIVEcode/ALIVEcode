@@ -5,8 +5,7 @@ import { useAlert } from 'react-alert';
 import { FormSignInValues, SignInProps } from './signInTypes';
 import { UserContext } from '../../../state/contexts/UserContext';
 import FormContainer from '../../../Components/UtilsComponents/FormContainer/FormContainer';
-import { Form, InputGroup } from 'react-bootstrap';
-import Button from '../../../Components/UtilsComponents/Button/Button';
+import Button from '../../../Components/UtilsComponents/Buttons/Button';
 import Link from '../../../Components/UtilsComponents/Link/Link';
 import { useTranslation } from 'react-i18next';
 import { User } from '../../../Models/User/user.entity';
@@ -15,15 +14,21 @@ import useRoutes from '../../../state/hooks/useRoutes';
 import HttpStatusCode from '../../../Types/http-errors';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router';
+import InputGroup from '../../../Components/UtilsComponents/InputGroup/InputGroup';
 
-/** 
+/**
  * Signin page that allows the user to connect to its account
- * 
+ *
  * @author MoSk3
- * 
-*/
+ *
+ */
 const SignIn = (props: SignInProps) => {
-	const { register, handleSubmit, setError, formState: { errors } } = useForm();
+	const {
+		register,
+		handleSubmit,
+		setError,
+		formState: { errors },
+	} = useForm();
 	const { setUser } = useContext(UserContext);
 	const { t } = useTranslation();
 	const { routes } = useRoutes();
@@ -32,94 +37,96 @@ const SignIn = (props: SignInProps) => {
 	const alert = useAlert();
 
 	const onSignIn = async (formValues: FormSignInValues) => {
+		console.log(formValues);
 		try {
-			const { accessToken } = (await axios.post('users/login/', formValues)).data;
-			if (!accessToken) return alert.error(t('error.unknown'))
+			const { accessToken } = (await axios.post('users/login/', formValues))
+				.data;
+			if (!accessToken) return alert.error(t('error.unknown'));
 
 			setAccessToken(accessToken);
 
 			const user = await User.loadUser();
-			if(!user) return alert.error(t('error.unknown'));
+			if (!user) return alert.error(t('error.unknown'));
 
 			setUser(user);
 
-			if(location.pathname === '/signin') navigate(routes.auth.dashboard.path);
+			if (location.pathname === '/signin') navigate(routes.auth.dashboard.path);
 			return alert.success(t('msg.auth.signin_success'));
-
 		} catch (e) {
 			const err = e as AxiosError;
 			if (!err.response) return alert.error(t('error.unknown'));
 
 			const statusCode = err.response.status;
-			if(statusCode === HttpStatusCode.BAD_REQUEST) {
+			if (statusCode === HttpStatusCode.BAD_REQUEST) {
 				setError('email', { type: 'invalid' });
 				setError('password', { type: 'invalid' });
-				return alert.error(t('error.signin'))
+				return alert.error(t('error.signin'));
 			}
 
-			return alert.error(t('error.custom', { error: err.response.data.message }));
+			return alert.error(
+				t('error.custom', { error: err.response.data.message }),
+			);
 		}
 	};
 
 	return (
 		<FormContainer title={t('form.title.signin')}>
-			<Form onSubmit={handleSubmit(onSignIn)}>
-				<Form.Group controlId="formBasicEmail">
-					<Form.Label>{t('form.email.label')}</Form.Label>
-					<InputGroup hasValidation>
-					<Form.Control
-						type="email"
-						autoComplete="on"
-						placeholder={t('form.email.placeholder')}
-						isInvalid={errors.email}
-						{...register('email', { required: true })}
-					/>
-						<Form.Control.Feedback
-							style={{ wordWrap: 'break-word' }}
-							type="invalid"
-						>
-							{errors.email?.type === 'required' && t('form.email.required')}
-							{errors.email?.type === 'invalid' && t('error.signin')}
-						</Form.Control.Feedback>
-					</InputGroup>
-				</Form.Group>
+			<form onSubmit={handleSubmit(onSignIn)}>
+				<InputGroup
+					label={t('form.email.label')}
+					type="email"
+					autoComplete="on"
+					placeholder={t('form.email.placeholder')}
+					errors={errors.email}
+					messages={{
+						required: t('form.email.required'),
+						invalid: t('error.signin'),
+					}}
+					{...register('email', {
+						required: {
+							value: true,
+							message: t('from.email.required'),
+						},
+					})}
+				/>
 
-				<Form.Group controlId="formBasicPassword">
-					<Form.Label>{t('form.pwd.label')}</Form.Label>
-					<InputGroup hasValidation>
-						<Form.Control
-							type="password"
-							autoComplete="on"
-							isInvalid={errors.password}
-							placeholder={t('form.pwd.placeholder')}
-							{...register('password', { required: true, minLength: 6, maxLength: 32, pattern: /^[A-Za-z0-9!@#\\$&*~]*$/,})}
-						/>
-						<Form.Control.Feedback
-							style={{ wordWrap: 'break-word' }}
-							type="invalid"
-						>
-							{errors.password?.type === 'required' && t('form.pwd.required')}
-							{errors.password?.type === 'pattern' && t('form.pwd.pattern')}
-							{errors.password?.type === 'minLength' && t('form.error.minLength', { min: 6})}
-							{errors.password?.type === 'maxLength' && t('form.error.maxLength', { max: 32 })}
-							{errors.password?.type === 'invalid' && t('error.signin')}
-						</Form.Control.Feedback>
-					</InputGroup>
-				</Form.Group>
-				<Button variant="primary" type="submit">
+				<InputGroup
+					label={t('form.pwd.label')}
+					type="password"
+					autoComplete="on"
+					errors={errors.password}
+					placeholder={t('form.pwd.placeholder')}
+					messages={{
+						pattern: t('form.pwd.pattern'),
+						invalid: t('error.signin'),
+					}}
+					minLength={6}
+					maxLength={32}
+					{...register('password', {
+						required: true,
+						minLength: 6,
+						maxLength: 32,
+						pattern: /^[A-Za-z0-9!@#\\$&*~]*$/,
+					})}
+				/>
+
+				<Button className="mt-4" variant="third" type="submit">
 					{t('msg.auth.signin')}
 				</Button>
 
-				<br /><br />
+				<br />
+				<br />
 
-				{t('home.navbar.msg.non_auth.label')}<Link pale to="/signup">{t('msg.auth.signup')}</Link>
-			</Form>
+				{t('home.navbar.msg.non_auth.label')}
+				<Link pale to="/signup">
+					{t('msg.auth.signup')}
+				</Link>
+			</form>
 		</FormContainer>
 	);
-}
+};
 
 export default SignIn;
-
 
 /*
 

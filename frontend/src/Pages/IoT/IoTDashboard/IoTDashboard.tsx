@@ -15,6 +15,7 @@ import { UserContext } from '../../../state/contexts/UserContext';
 import IoTObjectLargeCard from '../../../Components/IoTComponents/IoTObject/IoTObjectLargeCard/IoTObjectLargeCard';
 import Card from '../../../Components/UtilsComponents/Cards/Card/Card';
 import { useNavigate } from 'react-router-dom';
+import IoTIcon from '../../../assets/images/icons/sandboxblanc.png';
 
 const StyledDiv = styled(FillContainer)`
 	padding: 2vw;
@@ -66,6 +67,7 @@ const IoTDashboard = (props: iotDashboardProps) => {
 								key={idx}
 								title={p.name}
 								to={routes.auth.iot_project.path.replace(':id', p.id)}
+								img={IoTIcon}
 							/>
 						))
 					) : (
@@ -105,11 +107,9 @@ const IoTDashboard = (props: iotDashboardProps) => {
 					setObjects([...objects, newObject]);
 					setOpenObjectCreate(false);
 				}}
-				onClose={() => setOpenObjectCreate(false)}
+				setOpen={setOpenObjectCreate}
 				title={t('form.title.create_iot_project')}
 				open={openObjectCreate}
-				closeButton={false}
-				buttonVariant="primary"
 			>
 				<IoTObjectCreate />
 			</FormModal>

@@ -2,7 +2,6 @@ import { AboutProps } from './aboutTypes';
 import CardContainer from '../../Components/UtilsComponents/CardContainer/CardContainer';
 import { useTranslation } from 'react-i18next';
 import AboutCard from '../../Components/UtilsComponents/Cards/AboutCard/AboutCard';
-import { Row } from 'react-bootstrap';
 import CenteredContainer from '../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
 
 import Jihene from '../../assets/images/creators/Jihene.jpg';
@@ -39,16 +38,16 @@ const About = (props: AboutProps) => {
 	const { t } = useTranslation();
 
 	return (
-		<StyledCenteredContainer vertically horizontally>
+		<div className="p-10">
 			<CardContainer titleSize="1.2em" title={t('msg.section.about')}>
-				<Row>
+				<div>
 					<AboutCard
 						className="row-prof"
 						name="Dre. Jihene Rezgui directrice de LRIMa"
 						img={Jihene}
 					/>
-				</Row>
-				<Row>
+				</div>
+				<div className="grid phone:grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4">
 					<AboutCard name="Enric Soldevila" img={Enric} />
 					<AboutCard name="Mathis Laroche" img={Mathis} />
 					<AboutCard name="Zarine Ardekani" img={Zarine} />
@@ -62,9 +61,9 @@ const About = (props: AboutProps) => {
 					<AboutCard name="Simon Beaulieu" img={Simon} />
 					<AboutCard name="Guillaume Blain" img={Guillaume} />
 					<AboutCard name="Émile Gagné" img={Emile} />
-				</Row>
+				</div>
 			</CardContainer>
-		</StyledCenteredContainer>
+		</div>
 	);
 };
 

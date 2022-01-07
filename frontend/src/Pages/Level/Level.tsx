@@ -31,7 +31,7 @@ import {
 	LevelContext,
 	LevelContextTypes,
 } from '../../state/contexts/LevelContext';
-import Button from '../../Components/UtilsComponents/Button/Button';
+import Button from '../../Components/UtilsComponents/Buttons/Button';
 import useRoutes from '../../state/hooks/useRoutes';
 import $ from 'jquery';
 import Confetti from 'react-confetti';
@@ -90,6 +90,15 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 		inputMsg.current = msg;
 		setUserInputModalOpen(true);
 	};
+
+	/*useEffect(() => {
+		const previousOverflowY = document.body.style.overflowY;
+		document.body.style.overflowY = 'hidden';
+
+		return () => {
+			document.body.style.overflowY = previousOverflowY;
+		};
+	}, []);*/
 
 	useEffect(() => {
 		setInitialProgressionCode('');
@@ -304,11 +313,13 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 				)}
 				<Modal
 					open={userInputModalOpen}
-					onClose={() => {
-						if (userInputCallback.current && userInputRef.current)
-							userInputCallback.current(`${userInputRef.current.value}`);
-						setUserInputModalOpen(false);
-						userInputRef.current.value = '';
+					setOpen={opening => {
+						if (!opening) {
+							if (userInputCallback.current && userInputRef.current)
+								userInputCallback.current(`${userInputRef.current.value}`);
+							setUserInputModalOpen(false);
+							userInputRef.current.value = '';
+						}
 					}}
 					title={inputMsg.current}
 					hideCloseButton
@@ -337,10 +348,10 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 				<Modal
 					title={t('msg.auth.account_required')}
 					open={accountModalOpen}
-					onClose={() => setAccountModalOpen(false)}
+					setOpen={setAccountModalOpen}
 				>
 					<Button
-						variant="primary"
+						variant="third"
 						to={routes.non_auth.signup.path}
 						className="mb-2"
 					>
@@ -350,7 +361,7 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 					or
 					<br />
 					<Button
-						variant="primary"
+						variant="third"
 						to={routes.non_auth.signin.path}
 						className="mt-2"
 					>
@@ -371,7 +382,7 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 						forceUpdate();
 						setSettingsModalOpen(false);
 					}}
-					onClose={() => setSettingsModalOpen(false)}
+					setOpen={setSettingsModalOpen}
 					open={settingsModalOpen}
 				>
 					<Form

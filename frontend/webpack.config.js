@@ -1,7 +1,8 @@
-const path = require("path");
+const path = require('path');
 const webpack = require('webpack');
 const Dotenv = require('dotenv-webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 //const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = (env, argv) => {
@@ -9,14 +10,15 @@ module.exports = (env, argv) => {
 	const isDevelopment = !isProduction;
 
 	return {
-		entry: './src/index.tsx',
+		entry: ['react-hot-loader/patch', './src/index.tsx'],
+		stats: 'errors-warnings',
 		output: {
 			path: path.join(__dirname, '/dist'),
 			filename: 'index.bundle.js',
 		},
 		devServer: {
 			port: 3000,
-			hot: 'only',
+			hot: true,
 			historyApiFallback: true,
 		},
 		module: {
@@ -38,6 +40,7 @@ module.exports = (env, argv) => {
 					use: [
 						isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
 						'css-loader',
+						'postcss-loader',
 					],
 				},
 				{

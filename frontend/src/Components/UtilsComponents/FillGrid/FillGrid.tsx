@@ -3,10 +3,9 @@ import { FillGridProps } from './fillGridTypes';
 
 const StyledContainer = styled.div`
 	display: table;
-	height: 100%;
+	margin-top: 4rem;
+	height: calc(100% - 4rem);
 	width: 100%;
-	margin-top: -50px;
-	padding: 50px 0 0 0; /*set left/right padding according to needs*/
 	box-sizing: border-box;
 `;
 

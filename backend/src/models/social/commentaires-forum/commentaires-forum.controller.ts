@@ -15,7 +15,6 @@ export class CommentairesForumController {
   @Post()
   @Auth()
   async create(@User() user: UserEntity, @Body() createPostDto: CommentairesForum) {
-    console.log(createPostDto);
     return await this.commentairesForumService.create(user, createPostDto);
   }
 

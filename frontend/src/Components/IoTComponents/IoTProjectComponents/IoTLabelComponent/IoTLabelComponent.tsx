@@ -1,4 +1,4 @@
-import { Badge } from 'react-bootstrap';
+import Badge from '../../../UtilsComponents/Badge/Badge';
 import { IoTLabelComponentProps } from './IoTLabelComponentTypes';
 
 const IoTLabelComponent = ({ component }: IoTLabelComponentProps) => {
@@ -6,7 +6,7 @@ const IoTLabelComponent = ({ component }: IoTLabelComponentProps) => {
 		<Badge
 			className="mt-2"
 			style={{ fontSize: `${component.getFontSize()}px` }}
-			bg="primary"
+			variant="primary"
 		>
 			{component.value}
 		</Badge>

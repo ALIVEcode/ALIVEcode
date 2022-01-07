@@ -10,7 +10,6 @@ export class QuizzesController {
 
   @Post()
   async create(@Body() createQuizDto: Quiz) {
-    console.log(createQuizDto);
     return await this.quizzesService.create(createQuizDto);
   }
 

@@ -35,7 +35,7 @@ export const IoTProjectRoutes = () => {
 					addRoute(plainToClass(IotRoute, res.data));
 					setRouteModalOpen(false);
 				}}
-				onClose={() => setRouteModalOpen(false)}
+				setOpen={setRouteModalOpen}
 				open={routeModalOpen}
 			>
 				<IoTprojectAddRouteForm project={project} />

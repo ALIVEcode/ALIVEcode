@@ -61,7 +61,6 @@ const CourseNavigation = (props: CourseNavigationProps) => {
 											if (!(editMode && titleRef.current)) return;
 											setTitle(titleRef.current.value);
 											setCourseTitle(titleRef.current.value);
-											console.log(titleRef.current.value);
 											setEditTitle(false);
 										}}
 										defaultValue={courseTitle}
@@ -118,7 +117,7 @@ const CourseNavigation = (props: CourseNavigationProps) => {
 			<FormModal
 				open={openModalSection}
 				title="Create section"
-				onClose={() => setOpenModalSection(false)}
+				setOpen={setOpenModalSection}
 				onSubmit={res => {
 					const section: Section = plainToClass(Section, res.data);
 					addSection(section);

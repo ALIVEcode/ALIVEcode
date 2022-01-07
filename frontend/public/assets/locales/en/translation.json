@@ -22,9 +22,12 @@
 			"DELETE": "Delete {{name}}"
 		},
 		"error": {
+			"generic": "This field is wrong",
 			"required": "This field is required",
 			"maxLength": "This field exceeds {{max}} characters",
 			"minLength": "This field should be at least {{min}} characters",
+			"too_long": "This field is too long",
+			"too_short": "This field is too short",
 			"match": {
 				"alphabetic": "This field should only contains alphabetic characters",
 				"alphabetic_lower": "This field should only contains lowercase alphabetic characters",
@@ -144,7 +147,7 @@
 			"signup_professor": "Professor account",
 			"signup_student": "Student account",
 			"signout": "Sign out",
-			"already_registered": "Already have an account?",
+			"already_registered": "Already have an account ?",
 			"account_required": "You need an account to do that"
 		},
 		"section": {
@@ -275,8 +278,8 @@
 			"msg": {
 				"auth": "Hello, {{name}}",
 				"non_auth": {
-					"label": "You are not authenticated, ",
-					"link": "$t(msg.auth.signin) to your account?"
+					"label": "You are not logged in, ",
+					"link": "$t(msg.auth.signin) ?"
 				}
 			}
 		},
@@ -288,7 +291,7 @@
 			"categories": "Categories",
 			"links": "Useful links",
 			"copyright_1": "Copyright",
-			"copyright_2": " 2021 All Rights Reserved by"
+			"copyright_2": " 2022 All Rights Reserved by"
 		}
 	},
 	"input": {
@@ -356,7 +359,7 @@
 	"cmd": {
 		"clear": "Clear lines"
 	},
-	"user":{
+	"user": {
 		"quiz": "Quiz :",
 		"status": "Status :",
 		"posts": "Posts :",

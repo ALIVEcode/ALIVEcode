@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { UserContext } from '../../state/contexts/UserContext';
 import useRoutes from '../../state/hooks/useRoutes';
-import Button from '../../Components/UtilsComponents/Button/Button';
+import Button from '../../Components/UtilsComponents/Buttons/Button';
 import { useNavigate } from 'react-router-dom';
 
 const Test = () => {
@@ -19,7 +19,7 @@ const Test = () => {
 			{user ? <div>{user.getDisplayName()}</div> : <div>Not connected</div>}
 			<Button
 				onClick={() => navigate(routes.auth.account.path)}
-				variant="primary"
+				variant="third"
 			></Button>
 			{routes.public.test.path}
 		</div>

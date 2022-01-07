@@ -1,4 +1,3 @@
-import { Col, Container, Row } from 'react-bootstrap';
 import { StyledDashboardRecent } from './dashboardRecentTypes';
 import { useContext } from 'react';
 import { DashboardContext } from '../../../state/contexts/DashboardContext';
@@ -9,27 +8,27 @@ export const DashboardRecents = () => {
 
 	return (
 		<StyledDashboardRecent className="h-100">
-			<Container fluid className="container-1">
-				<Row className="h-100 no-gutters">
-					<Col className="h-100 section-recents">
+			<div className="p-4 h-3/5">
+				<div className="h-full w-full">
+					<div className="h-100 section-recents">
 						<div className="section-title">Formations Récentes</div>
 						<div className="underline"></div>
 						<CourseContainer courses={getCourses()}></CourseContainer>
-					</Col>
-				</Row>
-			</Container>
-			<Container fluid className="container-2">
-				<Row className="h-100 no-gutters">
-					<Col className="h-100 section-levels">
+					</div>
+				</div>
+			</div>
+			<div className="p-4 h-2/5">
+				<div className="h-full w-full flex flex-row">
+					<div className="h-100 w-1/2 section-levels">
 						<div className="section-title">Mes niveaux</div>
 						<div className="underline"></div>
-					</Col>
-					<Col className="h-100 section-notifs">
+					</div>
+					<div className="h-100 w-1/2 section-notifs">
 						<div className="section-title">Notifications</div>
 						<div className="underline"></div>
-					</Col>
-				</Row>
-			</Container>
+					</div>
+				</div>
+			</div>
 		</StyledDashboardRecent>
 	);
 };

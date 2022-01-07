@@ -11,9 +11,7 @@ import List from '../../assets/images/icons/my_levels.png';
 import Puzzle from '../../assets/images/icons/puzzle.png';
 import Sandbox from '../../assets/images/icons/sandboxblanc.png';
 import Voiture from '../../assets/images/Voiture.gif';
-import { Row } from 'react-bootstrap';
 import { Classroom } from '../../Models/Classroom/classroom.entity';
-import { plainToClass } from 'class-transformer';
 import { Professor, Student } from '../../Models/User/user.entity';
 import useRoutes from '../../state/hooks/useRoutes';
 import api from '../../Models/api';
@@ -56,7 +54,7 @@ const Dashboard = (props: DashboardProps) => {
 				textAlign="center"
 				style={{ paddingLeft: '100px', paddingRight: '100px' }}
 			>
-				<Row style={{ justifyContent: 'center' }}>
+				<div className="flex justify-center">
 					<LabelHighlight
 						text={`Bonjour, ${user?.getDisplayName()}`}
 						textColor="white"
@@ -64,7 +62,7 @@ const Dashboard = (props: DashboardProps) => {
 						borderRadius="25px"
 						fontSize="45px"
 					/>
-				</Row>
+				</div>
 				<CardContainer
 					asRow
 					height="60px"
@@ -135,7 +133,7 @@ const Dashboard = (props: DashboardProps) => {
 			<FormModal
 				title={t('form.join_classroom.title')}
 				open={formJoinClassOpen}
-				onClose={() => setFormJoinClassOpen(false)}
+				setOpen={setFormJoinClassOpen}
 			>
 				<JoinClassroomForm />
 			</FormModal>

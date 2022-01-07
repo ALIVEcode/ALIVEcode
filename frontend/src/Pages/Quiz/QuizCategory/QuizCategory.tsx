@@ -1,11 +1,10 @@
-import { plainToClass } from "class-transformer";
-import { useEffect, useState } from "react";
-import { Button, Card, Col, Container, Row, Table } from 'react-bootstrap';
+import { plainToClass } from 'class-transformer';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import CenteredContainer from '../../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
 import api from '../../../Models/api';
 import { Category } from '../../../Models/Quiz/categories-quiz.entity';
 import { useParams } from 'react-router';
+import Button from '../../../Components/UtilsComponents/Buttons/Button';
 
 const QuizCategory = () => {
 	const [category, setCategory] = useState<Category>();
@@ -33,70 +32,60 @@ const QuizCategory = () => {
 	};
 
 	return (
-		<div>
-			<CenteredContainer
-				horizontally
-				textAlign="center"
-				style={{ paddingLeft: '250px', paddingRight: '250px' }}
-			>
-				<Card>
-					<Card.Body>
-						<Card.Title>{category?.name}</Card.Title>
-					</Card.Body>
-				</Card>
-				<Card>
-					<Card.Title>
-						<Container>
-							<Row>
-								<Col>{category?.quizzes.length} Quiz</Col>
-								<Col></Col>
-								<Col>
-									<Link to="/quiz/create">
-										<Button>Créer un Quiz</Button>
-									</Link>
-								</Col>
-							</Row>
-						</Container>
-					</Card.Title>
-					<Table striped bordered hover>
-						<thead>
-							<tr>
-								<th>Nom</th>
-								<th> # de Questions</th>
-							</tr>
-						</thead>
-						<tbody>
-							{category?.quizzes.map(quiz => {
-								return (
-									<tr>
-										<td>{quiz.name}</td>
-										<td>{quiz.questions.length}</td>
-										<td>
-											<Link to={`/quiz/play/${quiz.id}`}>
-												<Button>Play</Button>
-											</Link>
-										</td>
-										<td>
-											<Link to={`/quiz/edit/${quiz.id}`}>
-												<Button>Edit</Button>
-											</Link>
-										</td>
-										<td>
-											<Button
-												onClick={() => {
-													handleDelete(quiz.id);
-												}}
-											>
-												Delete
-											</Button>
-										</td>
-									</tr>
-								);
-							})}
-						</tbody>
-					</Table>
-				</Card>
-			</CenteredContainer>
+		<div className="h-full">
+			<div className="p-4 bg-[color:var(--background-color)] border-b border-[color:var(--bg-shade-four-color)]">
+				<div>
+					<div className="text-2xl">{category?.name}</div>
+				</div>
+			</div>
+			<div className="flex flex-col justify-center p-4 gap-4">
+				<div className="w-full flex flex-col">
+					<div>{category?.quizzes.length} Quiz</div>
+					<div>
+						<Link to="/quiz/create">
+							<Button variant="primary">Créer un Quiz</Button>
+						</Link>
+					</div>
+				</div>
+				<table>
+					<thead>
+						<tr>
+							<th>Nom</th>
+							<th> # de Questions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{category?.quizzes.map(quiz => {
+							return (
+								<tr>
+									<td>{quiz.name}</td>
+									<td>{quiz.questions.length}</td>
+									<td>
+										<Link to={`/quiz/play/${quiz.id}`}>
+											<Button variant="third">Play</Button>
+										</Link>
+									</td>
+									<td>
+										<Link to={`/quiz/edit/${quiz.id}`}>
+											<Button variant="secondary">Edit</Button>
+										</Link>
+									</td>
+									<td>
+										<Button
+											variant="danger"
+											onClick={() => {
+												handleDelete(quiz.id);
+											}}
+										>
+											Delete
+										</Button>
+									</td>
+								</tr>
+							);
+						})}
+					</tbody>
+				</table>
+			</div>
 		</div>
 	);
 };

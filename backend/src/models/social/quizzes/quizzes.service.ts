@@ -7,9 +7,7 @@ import { Quiz } from './entities/quiz.entity';
 
 @Injectable()
 export class QuizzesService {
-  constructor(
-    @InjectRepository(Quiz) private quizRepository: Repository<Quiz>,
-  ) {}
+  constructor(@InjectRepository(Quiz) private quizRepository: Repository<Quiz>) {}
   async create(createQuizDto: Quiz) {
     const quiz = this.quizRepository.save(this.quizRepository.create(createQuizDto));
     return await quiz;
@@ -17,14 +15,12 @@ export class QuizzesService {
 
   async findAll() {
     const quizzes = await this.quizRepository.find({ relations: ['reward', 'questions'] });
-    console.log(quizzes);
     return quizzes;
   }
 
-  async findOne(id: number,) {
+  async findOne(id: number) {
     if (!id) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     const quiz = await this.quizRepository.findOne(id, { relations: ['reward', 'questions'] });
-    console.log(quiz);
     if (!quiz) throw new HttpException('Quiz not found', HttpStatus.NOT_FOUND);
     return quiz;
   }
@@ -32,11 +28,11 @@ export class QuizzesService {
   async update(id: number, updateQuizDto: Quiz) {
     updateQuizDto.id = id;
     const quiz = this.quizRepository.save(updateQuizDto);
-    return await quiz
+    return await quiz;
   }
 
   async remove(id: number) {
     const quiz = await this.quizRepository.delete(id);
-    return await quiz
+    return await quiz;
   }
 }

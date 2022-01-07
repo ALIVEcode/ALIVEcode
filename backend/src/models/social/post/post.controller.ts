@@ -15,15 +15,13 @@ export class PostController {
   @Post()
   @Auth()
   async create(@User() user: UserEntity, @Body() createPostDto: PostEntity) {
-    console.log(createPostDto);
     return await this.postService.create(user, createPostDto);
   }
   @Post('findandcount')
   async findAndCount() {
-    let [data,count] = await this.postService.findAndCount()
-    return count
+    let [data, count] = await this.postService.findAndCount();
+    return count;
   }
-
 
   @Get()
   findAll() {

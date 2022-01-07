@@ -1,4 +1,8 @@
-import { DashboardNewProps, StyledDashboard, SwitchTabActions } from './dashboardNewTypes';
+import {
+	DashboardNewProps,
+	StyledDashboard,
+	SwitchTabActions,
+} from './dashboardNewTypes';
 import {
 	useContext,
 	useState,
@@ -8,7 +12,6 @@ import {
 	useCallback,
 } from 'react';
 import { UserContext } from '../../state/contexts/UserContext';
-import { Col, Row } from 'react-bootstrap';
 import api from '../../Models/api';
 import FormModal from '../../Components/UtilsComponents/FormModal/FormModal';
 import JoinClassroomForm from '../../Components/ClassroomComponents/JoinClassroomForm/JoinClassroomForm';
@@ -32,6 +35,7 @@ import {
 } from '../../state/contexts/DashboardContext';
 import { Course } from '../../Models/Course/course.entity';
 import { useNavigate } from 'react-router-dom';
+import useRoutes from '../../state/hooks/useRoutes';
 
 const SwitchTabReducer = (
 	state: { index: number; classroom?: ClassroomModel },
@@ -62,6 +66,7 @@ const SwitchTabReducer = (
 const DashboardNew = (props: DashboardNewProps) => {
 	const { user } = useContext(UserContext);
 	const { t } = useTranslation();
+	const { routes } = useRoutes();
 	const [classrooms, setClassrooms] = useState<ClassroomModel[]>([]);
 	const [formJoinClassOpen, setFormJoinClassOpen] = useState(false);
 	const [hoveringClassroom, setHoveringClassroom] = useState(false);
@@ -163,8 +168,8 @@ const DashboardNew = (props: DashboardNewProps) => {
 	return (
 		<StyledDashboard>
 			<DashboardContext.Provider value={ctx}>
-				<Row className="dashboard-row" xs={1} md={2}>
-					<Col className="sidebar no-float" xs={12} md={2} sm={3}>
+				<div className="dashboard-row">
+					<div className="sidebar no-float phone:w-1/4 table:1/6 laptop:1/8 desktop:1/12">
 						<div
 							className={
 								'sidebar-btn ' +
@@ -196,7 +201,15 @@ const DashboardNew = (props: DashboardNewProps) => {
 							<FontAwesomeIcon className="sidebar-icon" icon={faBook} />
 							<label className="sidebar-header-text">Classes</label>
 							{hoveringClassroom && (
-								<FontAwesomeIcon className="sidebar-icon-right" icon={faPlus} />
+								<FontAwesomeIcon
+									onClick={() =>
+										user?.isProfessor()
+											? navigate(routes.auth.create_classroom.path)
+											: setFormJoinClassOpen(true)
+									}
+									className="sidebar-icon-right cursor-pointer"
+									icon={faPlus}
+								/>
 							)}
 						</div>
 
@@ -210,16 +223,14 @@ const DashboardNew = (props: DashboardNewProps) => {
 								classroom={classroom}
 							></ClassroomSection>
 						))}
-					</Col>
-					<Col className="content no-float" xs={12} md={10} sm={9}>
-						{renderTabSelected()}
-					</Col>
-				</Row>
+					</div>
+					<div>{renderTabSelected()}</div>
+				</div>
 			</DashboardContext.Provider>
 			<FormModal
 				title={t('form.join_classroom.title')}
 				open={formJoinClassOpen}
-				onClose={() => setFormJoinClassOpen(false)}
+				setOpen={setFormJoinClassOpen}
 			>
 				<JoinClassroomForm />
 			</FormModal>

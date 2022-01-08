@@ -95,7 +95,7 @@ const IoTProjectBody = ({ noTopRow }: { noTopRow?: boolean }) => {
 	if (!socket || !project) return <LoadingScreen />;
 	return (
 		<div
-			className="h-full border-[color:var(--bg-shade-four-color)] border-t"
+			className="w-full h-full overflow-y-auto"
 			style={{ backgroundColor: 'var(--background-color)' }}
 		>
 			<div className="flex flex-col h-full items-center">
@@ -119,7 +119,7 @@ const IoTProjectBody = ({ noTopRow }: { noTopRow?: boolean }) => {
 						Copy Project Id
 					</Button>
 				</div>
-				<div className="p-2 pt-0 w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 overflow-y-auto">
+				<div className="p-2 pt-0 w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
 					{components.map((c, idx) => (
 						<IoTGenericComponent
 							key={idx}

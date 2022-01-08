@@ -1,4 +1,9 @@
-import { IoTProjectTabs, StyledIoTProject } from './iotProjectPageTypes';
+import {
+	IoTProjectOptions,
+	IoTProjectTabs,
+	StyledIoTProject,
+	IoTProjectTab,
+} from './iotProjectPageTypes';
 import { useState, useContext } from 'react';
 import LoadingScreen from '../../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,10 +20,7 @@ import IoTProjectRoutes from '../../../Components/IoTComponents/IoTProject/IoTPr
 import IoTProjectSettings from '../../../Components/IoTComponents/IoTProject/IoTProjectSettings/IoTProjectSettings';
 import { IoTProjectContext } from '../../../state/contexts/IoTProjectContext';
 import { Disclosure } from '@headlessui/react';
-
-function classNames(...classes: any[]) {
-	return classes.filter(Boolean).join(' ');
-}
+import { classNames } from '../../../Types/utils';
 
 /**
  * IoTProject. On this page are all the components essential in the functionning of an IoTProject.
@@ -30,14 +32,31 @@ function classNames(...classes: any[]) {
  */
 const IoTProjectPage = () => {
 	const { project } = useContext(IoTProjectContext);
-	const [selectedTab, setSelectedTab] = useState<IoTProjectTabs>('settings');
+	const [selectedOption, setSelectedOption] =
+		useState<IoTProjectOptions>('settings');
+	const [selectedTab, setSelectedTab] = useState<IoTProjectTabs>('interface');
+
+	const tabs: IoTProjectTab[] = [
+		{
+			name: 'Interface',
+			type: 'interface',
+		},
+		{
+			name: 'Documents',
+			type: 'documents',
+		},
+		{
+			name: 'Network',
+			type: 'network',
+		},
+	];
 
 	if (!project) {
 		return <LoadingScreen />;
 	}
 
-	const getTabContent = () => {
-		switch (selectedTab) {
+	const renderOptionContent = () => {
+		switch (selectedOption) {
 			case 'settings':
 				return <IoTProjectSettings />;
 			case 'routes':
@@ -47,6 +66,16 @@ const IoTProjectPage = () => {
 		}
 	};
 
+	const renderTabContent = () => {
+		switch (selectedTab) {
+			case 'interface':
+				return <IoTProjectBody />;
+			case 'documents':
+				return <IoTProjectRoutes />;
+			case 'network':
+				return <IoTProjectAccess />;
+		}
+	};
 	return (
 		<Disclosure
 			as={StyledIoTProject}
@@ -61,7 +90,7 @@ const IoTProjectPage = () => {
 						)}
 						id="project-details"
 					>
-						<div className="project-name border-b border-t border-[color:var(--bg-shade-four-color)] tablet:border-t-0 flex flex-row justify-between items-center">
+						<div className="text-xl p-2 h-[50px] border-b border-t border-[color:var(--bg-shade-four-color)] tablet:border-t-0 flex flex-row justify-between items-center">
 							<div>{project.name}</div>
 							<Disclosure.Button
 								as={FontAwesomeIcon}
@@ -80,10 +109,10 @@ const IoTProjectPage = () => {
 								<div
 									className={
 										'flex align-middle justify-center project-details-tab ' +
-										(selectedTab === 'settings' &&
+										(selectedOption === 'settings' &&
 											'project-details-tab-selected')
 									}
-									onClick={() => setSelectedTab('settings')}
+									onClick={() => setSelectedOption('settings')}
 								>
 									<div className="text-center">
 										<FontAwesomeIcon
@@ -96,9 +125,10 @@ const IoTProjectPage = () => {
 								<div
 									className={
 										'flex align-middle justify-center project-details-tab ' +
-										(selectedTab === 'routes' && 'project-details-tab-selected')
+										(selectedOption === 'routes' &&
+											'project-details-tab-selected')
 									}
-									onClick={() => setSelectedTab('routes')}
+									onClick={() => setSelectedOption('routes')}
 								>
 									<div className="text-center">
 										<FontAwesomeIcon
@@ -111,9 +141,10 @@ const IoTProjectPage = () => {
 								<div
 									className={
 										'flex align-middle justify-center project-details-tab ' +
-										(selectedTab === 'access' && 'project-details-tab-selected')
+										(selectedOption === 'access' &&
+											'project-details-tab-selected')
 									}
-									onClick={() => setSelectedTab('access')}
+									onClick={() => setSelectedOption('access')}
 								>
 									<div className="text-center">
 										<FontAwesomeIcon
@@ -125,7 +156,7 @@ const IoTProjectPage = () => {
 								</div>
 							</div>
 							<div className="flex-grow tablet:w-[16rem] overflow-y-auto project-details-content">
-								{getTabContent()}
+								{renderOptionContent()}
 							</div>
 						</div>
 					</div>
@@ -133,7 +164,23 @@ const IoTProjectPage = () => {
 						className="flex-grow flex flex-col h-2/5 tablet:h-full order-2"
 						id="project-body"
 					>
-						<IoTProjectBody />
+						<div className="text-lg h-[50px] border-b border-t border-[color:var(--bg-shade-four-color)] tablet:border-t-0 flex flex-row justify-evenly text-center">
+							{tabs.map((t, idx) => (
+								<div
+									key={idx}
+									onClick={() => setSelectedTab(t.type)}
+									className={classNames(
+										'w-full cursor-pointer  p-2',
+										t.type === selectedTab
+											? 'bg-[color:var(--bg-shade-two-color)]'
+											: 'hover:bg-[color:var(--bg-shade-one-color)]',
+									)}
+								>
+									{t.name}
+								</div>
+							))}
+						</div>
+						{renderTabContent()}
 					</div>
 				</>
 			)}

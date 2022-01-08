@@ -249,22 +249,51 @@
 		"msg1": "code",
 		"msg2": "ai",
 		"msg3": "iot",
+		"desc": "Apprend la programmation",
+		"get_started": "Commencer!",
+		"see_training": "Voir la formation",
+		"about": "À propos",
+		"trainings": "Formations",
+		"news": "Nouvelles",
+		"iot": {
+			"desc": "L'IoT n'a jamais été aussi facile",
+			"to_dashboard": "Accéder au Tableau de Bord",
+			"to_trainings": "Accéder aux Formations",
+			"section": {
+				"develop": {
+					"title": "Commence à Développer",
+					"desc": "Pratique tes notions d'internet des objets en développant des projets IoT. Enregistre plusieurs objets connectés, crée un réseau d'objet connectés, établis des communcations entre eux, collecte et partage des données entre les objets et affiche en temps réel les données dans une interface graphique."
+				},
+				"learn": {
+					"title": "Commence à Apprendre",
+					"desc": "$t(home.section.training_iot.desc)"
+				}
+			}
+		},
 		"section": {
-			"alive": {
-				"title": "$t(msg.section.alive)",
-				"description": "Dans cette section, vous pourrez créer vos propres niveaux ou jouer aux niveaux des autres utilisateurs!"
+			"mission": {
+				"title": "Notre mission",
+				"desc": ""
 			},
-			"amc": {
-				"title": "$t(msg.section.amc)",
-				"description": "Dans cette activité, vous auriez la possibilité de controller une voiture à l'aide de votre pensée!"
+			"us": {
+				"title": "Qui sommes-nous ?",
+				"desc": ""
 			},
-			"avp": {
-				"title": "$t(msg.section.avp)",
-				"description": "En construction..."
+			"story": {
+				"title": "Notre histoire",
+				"desc": ""
 			},
-			"lrima": {
-				"title": "$t(msg.section.lrima)",
-				"description": "Site officiel du laboratoire de recherche informatique de Maisonneuve LRIMA."
+			"training_ai": {
+				"title": "Formation en Intelligence Artificielle",
+				"desc": ""
+			},
+			"training_iot": {
+				"title": "Formation en Internet des Objets",
+				"desc": "Apprend la théorie et la pratique de l'IoT. Suis une ou plusieurs formations complètes offertes par ALIVEcode qui t'apprendront tout ce qu'il t'es requis afin de commencer à développer tes propres projets IoT. L'électronique, les protocoles de communication, les base de données, l'IA, l'interfaçage, etc."
+			},
+			"training_code": {
+				"title": "Initiation à la Programmation",
+				"desc": ""
 			}
 		},
 		"navbar": {
@@ -337,27 +366,6 @@
 		"object": {
 			"name": "Objet IoT"
 		}
-	},
-	"simulation": {
-		"modal": {
-			"retry": "Réessayer?",
-			"continue": "Continuer",
-			"lose": "Meilleure chance la prochaine fois!",
-			"win": "La victoire t'appartient! 🎉",
-			"water": "La voiture est tombée dans l'eau",
-			"lava": "La voiture est tombée dans la lave",
-			"hole": "La voiture est tombée dans un trou",
-			"wall": "La voiture a foncée dans un mur",
-			"connect_car": {
-				"title": "Connecter un vrai ALIVEcar",
-				"label": "Identifiant du ALIVEcar",
-				"id": "123",
-				"button": "Se connecter avec le vrai ALIVEcar"
-			}
-		}
-	},
-	"cmd": {
-		"clear": "Effacer les lignes"
 	},
 	"user": {
 		"quiz": "Quiz : ",

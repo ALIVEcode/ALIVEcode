@@ -6,6 +6,7 @@ import InterfaceSlideshow from '../../../assets/images/iot/interface_slideshow.p
 import DemoProject from '../../../assets/images/iot/demo_project.png';
 import Footer from '../../../Components/MainComponents/Footer/Footer';
 import { HomeButton } from '../../../Components/UtilsComponents/Buttons/HomeButton';
+import { useTranslation } from 'react-i18next';
 import {
 	MutableRefObject,
 	useRef,
@@ -56,6 +57,7 @@ const IoTHome = (props: iotHomeProps) => {
 	const { routes } = useRoutes();
 	const getStartedRef = useRef<HTMLDivElement | null>(null);
 	const [viewHeight, setViewHeight] = useState<number>(0);
+	const { t } = useTranslation();
 
 	const goToElement = (ref: MutableRefObject<any>) => {
 		ref.current &&
@@ -65,7 +67,6 @@ const IoTHome = (props: iotHomeProps) => {
 			});
 	};
 
-	console.log('RERENDER');
 	const updateViewHeight = useCallback(() => {
 		const height =
 			Math.max(document.documentElement.clientHeight, window.innerHeight || 0) -
@@ -98,10 +99,10 @@ const IoTHome = (props: iotHomeProps) => {
 							ALIVEcode IoT
 						</div>
 						<div className="text-2xl laptop:text-3xl desktop:text-4xl text-gray-200 font-extralight mb-10">
-							IoT has never been easier
+							{t('home.iot.desc')}
 						</div>
 						<HomeButton onClick={() => goToElement(getStartedRef)}>
-							Get Started
+							{t('home.get_started')}
 						</HomeButton>
 					</div>
 				</div>
@@ -109,27 +110,21 @@ const IoTHome = (props: iotHomeProps) => {
 			<div className="text-gray-50 relative w-full h-full">
 				<HomeSection
 					ref={getStartedRef}
-					title={'Start developping'}
-					text={`Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-									 molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
-									 numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
-									 optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis`}
+					title={t('home.iot.section.develop.title')}
+					text={t('home.iot.section.develop.desc')}
 					img={DemoProject}
 					imgAlt="ALIVEcode's internet of things interface"
-					button="To Dashboard"
+					button={t('home.iot.to_dashboard')}
 					to={routes.auth.iot_dashboard.path}
 					imgOpacity={0.8}
 				/>
 				<HomeSection
 					reverse
-					title={'Start learning'}
-					text={`Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-									 molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
-									 numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
-									 optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis`}
+					title={t('home.iot.section.learn.title')}
+					text={t('home.iot.section.learn.desc')}
 					img={DemoProject}
 					imgAlt="ALIVEcode's internet of things interface"
-					button="To Trainings"
+					button={t('home.iot.to_trainings')}
 					to={routes.auth.dashboard.path}
 					imgOpacity={0.8}
 				/>

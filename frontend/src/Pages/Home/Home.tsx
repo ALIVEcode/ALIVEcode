@@ -31,18 +31,15 @@ const Home = (props: HomeProps) => {
 
 	const tabs = [
 		{
-			scrollAmount: 2000,
-			name: 'About',
+			name: t('home.about'),
 			ref: aboutRef,
 		},
 		{
-			scrollAmount: 4000,
-			name: 'Trainings',
+			name: t('home.trainings'),
 			ref: trainingsRef,
 		},
 		{
-			scrollAmount: 6000,
-			name: 'News',
+			name: t('home.news'),
 			ref: newsRef,
 		},
 	];
@@ -65,16 +62,16 @@ const Home = (props: HomeProps) => {
 							lines={[t('home.msg1'), t('home.msg2'), t('home.msg3')]}
 							typeSpeed={200}
 							eraseSpeed={150}
-							delayAfterWrite={3000}
+							delayAfterWrite={5000}
 							delayAfterErase={500}
 							shadow
 							startWithText
 						/>
 					</label>
 				</div>
-				<label className="header-lore">Learn Programming</label>
+				<label className="header-lore">{t('home.desc')}</label>
 				<HomeButton className="block" onClick={() => goToElement(trainingsRef)}>
-					Get Started!
+					{t('home.get_started')}
 				</HomeButton>
 			</div>
 			<svg
@@ -88,7 +85,7 @@ const Home = (props: HomeProps) => {
 					fill={theme.color.primary}
 				/>
 			</svg>
-			<div className="sticky w-full top-[4rem] bg-[color:var(--background-color)] border-b mt-4">
+			<div className="sticky w-full top-[4rem] bg-[color:var(--background-color)] border-b mt-4 tablet:mt-0">
 				<nav
 					className={classNames(
 						'flex flex-row w-full px-4 text-center text-xl font-normal text-[color:var(--fg-shade-four-color)]',
@@ -111,33 +108,24 @@ const Home = (props: HomeProps) => {
 				className="px-5 tablet:px-10 laptop:px-20 mt-10 mb-10 z-10 relative"
 			>
 				<label className="inline-block text-6xl font-light w-auto border-b border-[color:var(--fg-shade-four-color)] pr-10 pb-2">
-					<span>About</span>
+					<span>{t('msg.section.about')}</span>
 				</label>
 				<HomeSection
-					title={'Our Mission'}
-					text={`Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-									 molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
-									 numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
-									 optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis`}
+					title={t('home.section.mission.title')}
+					text={t('home.section.mission.desc')}
 					img={OurMission}
 					imgAlt="ALIVEcode's website mission"
 				/>
 				<HomeSection
-					title={'Who are we ?'}
+					title={t('home.section.us.title')}
+					text={t('home.section.us.desc')}
 					reverse
-					text={`Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-									 molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
-									 numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
-									 optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis`}
 					img={WhoAreWe}
 					imgAlt="The team of ALIVEcode"
 				/>
 				<HomeSection
-					title={'Our Story'}
-					text={`Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-									 molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
-									 numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
-									 optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis`}
+					title={t('home.section.story.title')}
+					text={t('home.section.story.desc')}
 					img={OurStory}
 					imgAlt="The story of how ALIVEcode was created"
 				/>
@@ -205,40 +193,31 @@ const Home = (props: HomeProps) => {
 				className="px-5 tablet:px-10 laptop:px-20 mt-5 mb-10 z-10 relative"
 			>
 				<label className="inline-block text-6xl font-light w-auto border-b border-[color:var(--fg-shade-four-color)] pr-10 pb-2">
-					<span>Trainings</span>
+					<span>{t('home.trainings')}</span>
 				</label>
 				<HomeSection
-					title={'Artificial Intelligence Training'}
-					text={`Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-									 molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
-									 numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
-									 optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis`}
+					title={t('home.section.training_ai.title')}
+					text={t('home.section.training_ai.desc')}
 					img={TrainingAI}
 					imgAlt="Training of Artificial Intelligence on ALIVEcode"
-					button="See Training"
+					button={t('home.see_training')}
 					to={routes.auth.dashboard.path}
 				/>
 				<HomeSection
-					title={'Internet of Things Training'}
+					title={t('home.section.training_iot.title')}
+					text={t('home.section.training_iot.desc')}
 					reverse
-					text={`Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-									 molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
-									 numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
-									 optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis`}
 					img={TrainingIoT}
 					imgAlt="Training of Internet of Things on ALIVEcode"
-					button="See Training"
+					button={t('home.see_training')}
 					to={routes.auth.dashboard.path}
 				/>
 				<HomeSection
-					title={'Basics of Code training'}
-					text={`Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-									 molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
-									 numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
-									 optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis`}
+					title={t('home.section.training_code.title')}
+					text={t('home.section.training_code.desc')}
 					img={TrainingCode}
 					imgAlt="Training of the basics of coding on ALIVEcode"
-					button="See Training"
+					button={t('home.see_training')}
 					to={routes.auth.dashboard.path}
 				/>
 			</div>

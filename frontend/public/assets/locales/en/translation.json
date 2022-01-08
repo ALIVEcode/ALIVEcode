@@ -249,22 +249,51 @@
 		"msg1": "code",
 		"msg2": "ai",
 		"msg3": "iot",
+		"desc": "Learn Programming",
+		"get_started": "Get Started!",
+		"see_training": "See Training",
+		"about": "About",
+		"trainings": "Trainings",
+		"news": "News",
+		"iot": {
+			"desc": "IoT has never been easier",
+			"to_dashboard": "To Dashboard",
+			"to_trainings": "To Trainings",
+			"section": {
+				"develop": {
+					"title": "Start Developping",
+					"desc": "Practice your notions of Internet of Things by developing IoT Projects. Register your IoT Objects, create a network of connected devices, establish communications between them, collect and share data between those objects and show in real time your data in a graphical user interface."
+				},
+				"learn": {
+					"title": "Start Learning",
+					"desc": "$t(home.section.training_iot.desc)"
+				}
+			}
+		},
 		"section": {
-			"alive": {
-				"title": "$t(msg.section.alive)",
-				"description": "In this section, you will be able to create your own levels or play hundreds of levels created by other people!"
+			"mission": {
+				"title": "Our mission",
+				"desc": "Faciliter l'accès aux technologies"
 			},
-			"amc": {
-				"title": "$t(msg.section.amc)",
-				"description": "In this section, you'll be able to use the power of your mind to control a small version of car and learn the secrets of your brain!"
+			"us": {
+				"title": "Who are we ?",
+				"desc": ""
 			},
-			"avp": {
-				"title": "$t(msg.section.avc)",
-				"description": "In making..."
+			"story": {
+				"title": "Our story",
+				"desc": ""
 			},
-			"lrima": {
-				"title": "$t(msg.section.lrima)",
-				"description": "Offical website of Maisonneuve LRIMA's informatic research laboratory"
+			"training_ai": {
+				"title": "Artificial Intelligence Training",
+				"desc": ""
+			},
+			"training_iot": {
+				"title": "Internet of Things Training",
+				"desc": "Learn the theory and usage of IoT. Follow one or multiple complete trainings offered by ALIVEcode that will teach you everything required to start developping your own IoT projects. The electronics, the communication protocols, the databases, artificial intelligence, setting up a GUI, etc."
+			},
+			"training_code": {
+				"title": "Basic of Code Training",
+				"desc": ""
 			}
 		},
 		"navbar": {
@@ -337,27 +366,6 @@
 		"object": {
 			"name": "IoT Object"
 		}
-	},
-	"simulation": {
-		"modal": {
-			"retry": "Retry?",
-			"continue": "Continue",
-			"lose": "Better luck next time!",
-			"win": "Nicely done! 🎉",
-			"water": "The car fell in water",
-			"lava": "The car fell in lava",
-			"hole": "The car fell in a hole",
-			"wall": "The car smashed in a wall",
-			"connect_car": {
-				"title": "Connect a real ALIVEcar",
-				"label": "Identifier of the ALIVEcar",
-				"id": "123",
-				"button": "Connect with the real ALIVEcar"
-			}
-		}
-	},
-	"cmd": {
-		"clear": "Clear lines"
 	},
 	"user": {
 		"quiz": "Quiz :",

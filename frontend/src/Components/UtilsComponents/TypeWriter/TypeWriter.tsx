@@ -15,13 +15,15 @@ import { useState, useEffect } from 'react';
  */
 const TypeWriter = ({
 	lines,
-	typeSpeed,
 	noErase,
-	eraseSpeed,
+	typeSpeed: typeSpeedProp,
+	eraseSpeed: eraseSpeedProp,
 	delayAfterWrite,
 	delayAfterErase,
 	shadow,
 	startWithText,
+	typeTime,
+	eraseTime,
 }: TypeWriterProps) => {
 	const [lineIndex, setLineIndex] = useState(0);
 	const [letterIndex, setLetterIndex] = useState(
@@ -35,7 +37,12 @@ const TypeWriter = ({
 	useEffect(() => {
 		const currentLine = lines[lineIndex];
 
-		if (!reverse && letterIndex === currentLine.length + 1) {
+		const eraseSpeed = eraseTime
+			? eraseTime / currentLine.length
+			: eraseSpeedProp;
+		const typeSpeed = typeTime ? typeTime / currentLine.length : typeSpeedProp;
+
+		if (!reverse && letterIndex === currentLine.length) {
 			if (!noErase) setReverse(true);
 			return;
 		}
@@ -52,11 +59,11 @@ const TypeWriter = ({
 			},
 			letterIndex === currentLine.length || letterIndex === 0
 				? reverse
-					? delayAfterErase || 2000
-					: delayAfterWrite || 2000
+					? delayAfterWrite ?? 2000
+					: delayAfterErase ?? 2000
 				: reverse
-				? eraseSpeed || 30
-				: typeSpeed || 50,
+				? eraseSpeed ?? 30
+				: typeSpeed ?? 50,
 		);
 
 		return () => {
@@ -65,13 +72,15 @@ const TypeWriter = ({
 	}, [
 		letterIndex,
 		lineIndex,
-		typeSpeed,
+		typeSpeedProp,
 		lines,
 		reverse,
 		delayAfterWrite,
 		delayAfterErase,
-		eraseSpeed,
+		eraseSpeedProp,
 		noErase,
+		eraseTime,
+		typeTime,
 	]);
 
 	useEffect(() => {

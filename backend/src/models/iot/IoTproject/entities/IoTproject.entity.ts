@@ -5,6 +5,7 @@ import { IoTRouteEntity } from '../../IoTroute/entities/IoTroute.entity';
 import { UserEntity } from '../../../user/entities/user.entity';
 import { IoTObjectEntity } from '../../IoTobject/entities/IoTobject.entity';
 import { IoTLayoutManager } from '../IoTLayoutManager';
+import { Type } from 'class-transformer';
 
 export enum IOTPROJECT_INTERACT_RIGHTS {
   ANYONE = 'AN',
@@ -27,14 +28,15 @@ export enum IOTPROJECT_ACCESS {
   PRIVATE = 'PR', // only accessible to the creator
 }
 
-type IoTComponent = {
+export class IoTComponent {
   value: any;
   id: string;
   type: IOT_COMPONENT_TYPE;
-};
+}
 
 export class IoTProjectLayout {
   @IsNotEmpty()
+  @Type(() => IoTComponent)
   components: Array<IoTComponent>;
 }
 

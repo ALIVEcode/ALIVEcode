@@ -62,38 +62,28 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 	const saveTimeout = useRef<any>(null);
 	const [lastSaved, setLastSaved] = useState<number>(Date.now() - 4000);
 
-	const saveComponents = useCallback(
-		async (components: Array<IoTComponent>) => {
-			if (!canEdit || !project) return;
-			setLastSaved(Date.now());
-			project.layout.components = components;
-			const plainProject = instanceToPlain(project);
-			await api.db.iot.projects.updateLayout(project.id, plainProject.layout);
-		},
-		[project, canEdit],
-	);
+	const saveComponents = useCallback(async () => {
+		if (!canEdit || !project) return;
+		setLastSaved(Date.now());
+		const plainProject = instanceToPlain(project);
+		await api.db.iot.projects.updateLayout(project.id, plainProject.layout);
+	}, [project, canEdit]);
 
-	const saveComponentsTimed = useCallback(
-		async (components: Array<IoTComponent>) => {
-			if (!canEdit) return;
-			if (Date.now() - lastSaved < 2000) {
-				saveTimeout.current && clearTimeout(saveTimeout.current);
-				saveTimeout.current = setTimeout(
-					() => saveComponents(components),
-					2000,
-				);
-				return;
-			}
+	const saveComponentsTimed = useCallback(async () => {
+		if (!canEdit) return;
+		if (Date.now() - lastSaved < 2000) {
+			saveTimeout.current && clearTimeout(saveTimeout.current);
+			saveTimeout.current = setTimeout(saveComponents, 2000);
+			return;
+		}
 
-			saveComponents(components);
-		},
-		[lastSaved, saveComponents, canEdit],
-	);
+		saveComponents();
+	}, [lastSaved, saveComponents, canEdit]);
 
-	const onLayoutChange = useCallback(
-		(layout: IoTProjectLayout) => {
+	const onRequestRender = useCallback(
+		(saveLayout: boolean) => {
 			forceUpdate();
-			saveComponentsTimed(layout.components);
+			saveLayout && saveComponentsTimed();
 		},
 		[forceUpdate, saveComponentsTimed],
 	);
@@ -101,14 +91,14 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 	const socket = useMemo(() => {
 		if (!project) return;
 
-		return new IoTSocket(project.id, project, project.name, onLayoutChange);
+		return new IoTSocket(project.id, project, project.name, onRequestRender);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [project]);
 
 	useEffect(() => {
 		if (!socket) return;
-		socket.setOnRender(onLayoutChange);
-	}, [socket, onLayoutChange]);
+		socket.setOnRender(onRequestRender);
+	}, [socket, onRequestRender]);
 
 	useEffect(() => {
 		if (!id || level?.project) return;

@@ -1,4 +1,4 @@
-import { IoTProject, IoTProjectLayout } from '../IoTproject.entity';
+import { IoTProject, IoTProjectDocument } from '../IoTproject.entity';
 import { IoTComponentManager } from './IoTComponentManager';
 import { IoTComponent } from './IoTComponent';
 
@@ -7,19 +7,23 @@ export type IoTSocketUpdateRequest = {
 	value: any;
 };
 
+export type IoTSocketUpdateDocumentRequest = {
+	doc: IoTProjectDocument;
+};
+
 export class IoTSocket {
 	private socket: WebSocket;
 	private id: string;
 	private project: IoTProject;
 	private name: string;
 	private iotComponentManager: IoTComponentManager;
-	private onRender: (layout: IoTProjectLayout) => void;
+	private onRender: (saveLayout: boolean) => void;
 
 	constructor(
 		id: string,
 		project: IoTProject,
 		name: string,
-		onRender: (layout: IoTProjectLayout) => void,
+		onRender: (saveLayout: boolean) => void,
 	) {
 		this.id = id;
 		this.project = project;
@@ -31,17 +35,16 @@ export class IoTSocket {
 			this.onComponentUpdate,
 			(components: Array<IoTComponent>) => {
 				this.project.layout.components = components;
-				this.onRender(this.project.layout);
+				this.onRender(true);
 			},
 			this,
 		);
-		console.log('CREATED');
 		this.openSocket();
 	}
 
 	private onComponentUpdate(layout: Array<IoTComponent>) {}
 
-	public setOnRender(onRender: (layout: IoTProjectLayout) => void) {
+	public setOnRender(onRender: (saveLayout: boolean) => void) {
 		this.onRender = onRender;
 	}
 
@@ -60,6 +63,9 @@ export class IoTSocket {
 				switch (data.event) {
 					case 'update':
 						this.onReceiveUpdate(data.data);
+						break;
+					case 'document_update':
+						this.onDocumentUpdate(data.data);
 						break;
 				}
 			};
@@ -81,7 +87,7 @@ export class IoTSocket {
 	}
 
 	public closeSocket() {
-		if (this.socket) this.socket.close();
+		if (this.socket && this.socket.OPEN) this.socket.close();
 	}
 
 	public sendData(targetId: string, actionId: number, data: string) {
@@ -104,6 +110,11 @@ export class IoTSocket {
 				}),
 			);
 		}
+	}
+
+	public onDocumentUpdate(request: IoTSocketUpdateDocumentRequest) {
+		this.project.document = request.doc;
+		this.onRender(false);
 	}
 
 	public onReceiveUpdate(request: IoTSocketUpdateRequest) {

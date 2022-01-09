@@ -1,4 +1,4 @@
-import { IoTProject, IoTProjectLayout } from '../IoTproject.entity';
+import { IoTProject, IoTProjectDocument } from '../IoTproject.entity';
 import { IoTTarget } from './IoTTypes';
 import { IoTComponent } from './IoTComponent';
 import { IoTSocket } from './IoTSocket';
@@ -7,7 +7,7 @@ export class IoTComponentManager {
 	private project: IoTProject;
 	private components: Array<IoTComponent>;
 	private onLayoutUpdate: (layout: Array<IoTComponent>) => void;
-	private onRender: (layout: Array<IoTComponent>) => void;
+	private onRequestRender: (layout: Array<IoTComponent>) => void;
 	private socket: IoTSocket;
 
 	constructor(
@@ -19,7 +19,7 @@ export class IoTComponentManager {
 		this.project = project;
 		this.components = project.layout.components;
 		this.onLayoutUpdate = onLayoutUpdate;
-		this.onRender = onRender;
+		this.onRequestRender = onRender;
 		this.socket = socket;
 
 		this.components = this.components.map(c => {
@@ -71,6 +71,6 @@ export class IoTComponentManager {
 	public send(target: IoTTarget) {}
 
 	public render() {
-		this.onRender(this.components);
+		this.onRequestRender(this.components);
 	}
 }

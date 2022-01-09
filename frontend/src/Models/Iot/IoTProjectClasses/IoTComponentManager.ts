@@ -6,12 +6,15 @@ import { IoTSocket } from './IoTSocket';
 export class IoTComponentManager {
 	private project: IoTProject;
 	private components: Array<IoTComponent>;
-	private onRequestRender: (layout: Array<IoTComponent>) => void;
+	private onRequestRender: (
+		saveLayout: boolean,
+		layout: Array<IoTComponent>,
+	) => void;
 	private socket: IoTSocket;
 
 	constructor(
 		project: IoTProject,
-		onRender: (layout: Array<IoTComponent>) => void,
+		onRender: (saveLayout: boolean, layout: Array<IoTComponent>) => void,
 		socket: IoTSocket,
 	) {
 		this.project = project;
@@ -42,11 +45,11 @@ export class IoTComponentManager {
 		const component = this.getComponent(id);
 		if (!component) return;
 		component.update(data);
-		this.render();
+		this.render(false);
 	}
 
 	public getComponent(id: string): IoTComponent | undefined {
-		return this.components.find(c => c.ref === id);
+		return this.components.find(c => c.id === id);
 	}
 
 	public getComponents(): Array<IoTComponent> {
@@ -70,8 +73,10 @@ export class IoTComponentManager {
 
 	public send(target: IoTTarget) {}
 
-	public render() {
-		console.log(this.components[0].value);
-		this.onRequestRender(this.components);
+	public render(saveLayout?: boolean) {
+		this.onRequestRender(
+			saveLayout === undefined ? true : saveLayout,
+			this.components,
+		);
 	}
 }

@@ -354,7 +354,7 @@ const IoTComponentEditor = ({
 			/>
 			<InputGroup
 				label="id"
-				value={component.ref}
+				value={component.id}
 				className="mb-2"
 				onChange={(e: any) => component.setId(e.target.value)}
 				disabled={!canEdit}

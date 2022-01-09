@@ -48,7 +48,7 @@ export class IoTProgressBar extends IoTComponent {
 export const createDefaultIoTProgressBar = () => {
 	const progress = new IoTProgressBar();
 	progress.name = 'Default Progress';
-	progress.ref = '';
+	progress.id = '';
 	progress.min = 0;
 	progress.max = 100;
 	progress.isPercentage = true;

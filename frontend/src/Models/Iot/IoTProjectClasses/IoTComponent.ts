@@ -13,7 +13,7 @@ export enum IOT_COMPONENT_TYPE {
 @Exclude()
 export abstract class IoTComponent {
 	@Expose()
-	public ref: string = '';
+	public id: string = '';
 
 	@Expose()
 	public name: string;
@@ -47,7 +47,7 @@ export abstract class IoTComponent {
 	}
 
 	public setId(newId: string) {
-		this.ref = newId;
+		this.id = newId;
 		this.getComponentManager()?.render();
 	}
 

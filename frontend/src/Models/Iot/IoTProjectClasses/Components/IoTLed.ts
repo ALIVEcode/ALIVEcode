@@ -31,7 +31,7 @@ export const createDefaultIoTLed = () => {
 	const progress = new IoTLed();
 	progress.value = false;
 	progress.name = 'Default LED';
-	progress.ref = '';
+	progress.id = '';
 
 	return progress;
 };

@@ -61,7 +61,7 @@ export const createDefaultIoTLogs = () => {
 		},
 	];
 	progress.name = 'Default Logs';
-	progress.ref = '';
+	progress.id = '';
 
 	return progress;
 };

@@ -63,7 +63,7 @@ export const createDefaultIoTButton = () => {
 	const progress = new IoTButton();
 	progress.value = 'Click me';
 	progress.name = 'Default Button';
-	progress.ref = '';
+	progress.id = '';
 
 	return progress;
 };

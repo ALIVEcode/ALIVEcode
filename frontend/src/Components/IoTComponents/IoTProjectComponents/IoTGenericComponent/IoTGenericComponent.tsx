@@ -69,8 +69,8 @@ const IoTGenericComponent = ({
 				)}
 				<FontAwesomeIcon
 					onClick={() => {
-						if (!component.ref) return alert.error('The component has no id');
-						navigator.clipboard.writeText(component.ref);
+						if (!component.id) return alert.error('The component has no id');
+						navigator.clipboard.writeText(component.id);
 						alert.success('Copied');
 					}}
 					className="component-btn copyid-component-btn"

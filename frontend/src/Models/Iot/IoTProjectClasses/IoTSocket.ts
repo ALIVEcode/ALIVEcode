@@ -41,9 +41,9 @@ export class IoTSocket {
 
 		this.iotComponentManager = new IoTComponentManager(
 			this.project,
-			(components: Array<IoTComponent>) => {
+			(saveLayout: boolean, components: Array<IoTComponent>) => {
 				this.project.layout.components = components;
-				this.onRender(true);
+				this.onRender(saveLayout);
 			},
 			this,
 		);

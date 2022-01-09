@@ -1,4 +1,7 @@
-import { IoTGenericComponentProps, StyledIoTGenericComponent } from './iotGenericComponentTypes';
+import {
+	IoTGenericComponentProps,
+	StyledIoTGenericComponent,
+} from './iotGenericComponentTypes';
 import { IOT_COMPONENT_TYPE } from '../../../../Models/Iot/IoTProjectClasses/IoTComponent';
 import IoTButtonComponent from '../IoTButtonComponent/IoTButtonComponent';
 import IoTProgressBarComponent from '../IoTProgressBarComponent/IoTProgressBarComponent';
@@ -66,8 +69,8 @@ const IoTGenericComponent = ({
 				)}
 				<FontAwesomeIcon
 					onClick={() => {
-						if (!component.id) return alert.error('The component has no id');
-						navigator.clipboard.writeText(component.id);
+						if (!component.ref) return alert.error('The component has no id');
+						navigator.clipboard.writeText(component.ref);
 						alert.success('Copied');
 					}}
 					className="component-btn copyid-component-btn"

@@ -13,6 +13,10 @@ export class IoTBuzzer extends IoTComponent {
 	@Expose()
 	private frequencyType: OscillatorType = 'sine';
 
+	public validate(val: any) {
+		return !isNaN(Number(val));
+	}
+
 	private buzzing: boolean = false;
 	private osc: Oscillator | null = null;
 	private oscTimeout: NodeJS.Timeout | null = null;

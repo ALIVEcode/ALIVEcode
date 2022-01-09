@@ -13,7 +13,12 @@ import {
 import { Auth } from '../../../utils/decorators/auth.decorator';
 import { User } from '../../../utils/decorators/user.decorator';
 import { Role } from '../../../utils/types/roles.types';
-import { IoTProjectEntity, IoTProjectLayout, IOTPROJECT_ACCESS } from './entities/IoTproject.entity';
+import {
+  IoTProjectDocument,
+  IoTProjectEntity,
+  IoTProjectLayout,
+  IOTPROJECT_ACCESS,
+} from './entities/IoTproject.entity';
 import { UserEntity } from '../../user/entities/user.entity';
 import { DTOInterceptor } from '../../../utils/interceptors/dto.interceptor';
 import { IoTRouteEntity } from '../IoTroute/entities/IoTroute.entity';
@@ -86,6 +91,17 @@ export class IoTProjectController {
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
 
     return await this.IoTProjectService.updateLayout(id, layout);
+  }
+
+  @Patch(':id/document')
+  @Auth()
+  async updateDocument(@User() user: UserEntity, @Param('id') id: string, @Body() document: IoTProjectDocument) {
+    const project = await this.IoTProjectService.findOne(id);
+
+    if (project.creator.id !== user.id && !hasRole(user, Role.STAFF))
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    console.log(document);
+    return await this.IoTProjectService.updateDocument(id, document);
   }
 
   @Get(':id/routes')

@@ -22,6 +22,7 @@ import IoTProjectPage from '../IoTProjectPage/IoTProjectPage';
 import IoTLevel from '../../Level/LevelIoT/LevelIoT';
 import { AsScript } from '../../../Models/AsScript/as-script.entity';
 import { useNavigate } from 'react-router-dom';
+import { IoTProjectDocument } from '../../../../../backend/src/models/iot/IoTproject/entities/IoTproject.entity';
 
 /**
  * IoTProject. On this page are all the components essential in the functionning of an IoTProject.
@@ -142,6 +143,17 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 		[forceUpdate, project?.routes],
 	);
 
+	const updateDocument = useCallback(
+		async (doc: IoTProjectDocument) => {
+			if (!project) return;
+			project.document = (
+				await api.db.iot.projects.updateDocument(project.id, doc)
+			).document;
+			forceUpdate();
+		},
+		[forceUpdate, project],
+	);
+
 	const providerValues: IoTProjectContextValues = useMemo(() => {
 		return {
 			project: project ?? null,
@@ -155,6 +167,7 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 			loadIoTObjects,
 			updateProjectData,
 			updateScript,
+			updateDocument,
 		};
 	}, [
 		project,
@@ -168,6 +181,7 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 		loadIoTObjects,
 		updateProjectData,
 		updateScript,
+		updateDocument,
 	]);
 
 	if (!project) {

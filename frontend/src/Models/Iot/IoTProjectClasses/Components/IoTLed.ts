@@ -8,11 +8,15 @@ export enum LED_STATE {
 
 @Exclude()
 export class IoTLed extends IoTComponent {
-	public value: LED_STATE = LED_STATE.OFF;
+	public value: boolean = false;
 	public type = IOT_COMPONENT_TYPE.LED;
 
+	public validate(val: any) {
+		return typeof val === 'boolean';
+	}
+
 	setValue(val: boolean) {
-		super.setValue(val ? LED_STATE.ON : LED_STATE.OFF);
+		super.setValue(val);
 	}
 
 	update(data: any): void {
@@ -24,9 +28,9 @@ export class IoTLed extends IoTComponent {
 
 export const createDefaultIoTLed = () => {
 	const progress = new IoTLed();
-	progress.value = LED_STATE.OFF;
+	progress.value = false;
 	progress.name = 'Default LED';
-	progress.id = '';
+	progress.ref = '';
 
 	return progress;
 };

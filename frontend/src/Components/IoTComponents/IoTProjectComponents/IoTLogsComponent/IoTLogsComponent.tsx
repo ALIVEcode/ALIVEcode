@@ -10,6 +10,7 @@ import Button from '../../../UtilsComponents/Buttons/Button';
 const IoTLogsComponent = ({ component }: { component: IoTLogs }) => {
 	const { t } = useTranslation();
 
+	console.log(component.displayedValue);
 	/*useEffect(() => {
 		component.clearLogs();
 		component.addLog(
@@ -28,10 +29,10 @@ const IoTLogsComponent = ({ component }: { component: IoTLogs }) => {
 			<div className="log-row">
 				<div className="log-content">
 					<div className="log-entries">
-						{component.value.length <= 0 ? (
+						{component.displayedValue.length <= 0 ? (
 							<label>No logs available</label>
 						) : (
-							component.value.map((l: IoTLogModel, idx) => (
+							component.displayedValue.map((l: IoTLogModel, idx: number) => (
 								<label key={idx}>
 									<span style={{ color: 'gray' }}>{formatDate(l.date, t)}</span>{' '}
 									: {l.text}

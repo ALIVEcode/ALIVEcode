@@ -1,6 +1,6 @@
 import { Injectable, HttpException, HttpStatus, Inject, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IoTProjectEntity, IoTProjectLayout } from './entities/IoTproject.entity';
+import { IoTProjectEntity, IoTProjectLayout, IoTProjectDocument } from './entities/IoTproject.entity';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../../user/entities/user.entity';
 import { IoTRouteEntity } from '../IoTroute/entities/IoTroute.entity';
@@ -67,6 +67,11 @@ export class IoTProjectService {
 
     return await this.projectRepository.save({ ...project, layout });
   }
+
+  async updateDocument(id: string, document: IoTProjectDocument) {
+    return await this.projectRepository.save({ id, document });
+  }
+
   async getRoutes(project: IoTProjectEntity) {
     return (await this.projectRepository.findOne(project.id, { relations: ['routes'] })).routes;
   }

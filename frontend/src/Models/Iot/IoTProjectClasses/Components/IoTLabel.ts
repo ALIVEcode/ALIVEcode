@@ -9,6 +9,10 @@ export class IoTLabel extends IoTComponent {
 	@Expose()
 	private fontSize: number = 20;
 
+	public validate(val: any) {
+		return typeof val === 'string';
+	}
+
 	setValue(val: any) {
 		super.setValue(val.toString());
 	}

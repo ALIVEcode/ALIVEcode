@@ -1,4 +1,4 @@
-import { IoTProjectLayout } from '../IoTproject.entity';
+import { IoTProject, IoTProjectLayout } from '../IoTproject.entity';
 import { IoTComponentManager } from './IoTComponentManager';
 import { IoTComponent } from './IoTComponent';
 
@@ -10,28 +10,28 @@ export type IoTSocketUpdateRequest = {
 export class IoTSocket {
 	private socket: WebSocket;
 	private id: string;
-	private layout: IoTProjectLayout;
+	private project: IoTProject;
 	private name: string;
 	private iotComponentManager: IoTComponentManager;
 	private onRender: (layout: IoTProjectLayout) => void;
 
 	constructor(
 		id: string,
-		layout: IoTProjectLayout,
+		project: IoTProject,
 		name: string,
 		onRender: (layout: IoTProjectLayout) => void,
 	) {
 		this.id = id;
-		this.layout = layout;
+		this.project = project;
 		this.name = name;
 		this.onRender = onRender;
 
 		this.iotComponentManager = new IoTComponentManager(
-			this.layout,
+			this.project,
 			this.onComponentUpdate,
 			(components: Array<IoTComponent>) => {
-				this.layout.components = components;
-				this.onRender(this.layout);
+				this.project.layout.components = components;
+				this.onRender(this.project.layout);
 			},
 			this,
 		);

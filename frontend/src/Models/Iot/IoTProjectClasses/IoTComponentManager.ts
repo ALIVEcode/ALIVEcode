@@ -1,21 +1,23 @@
-import { IoTProjectLayout } from '../IoTproject.entity';
+import { IoTProject, IoTProjectLayout } from '../IoTproject.entity';
 import { IoTTarget } from './IoTTypes';
 import { IoTComponent } from './IoTComponent';
 import { IoTSocket } from './IoTSocket';
 
 export class IoTComponentManager {
+	private project: IoTProject;
 	private components: Array<IoTComponent>;
 	private onLayoutUpdate: (layout: Array<IoTComponent>) => void;
 	private onRender: (layout: Array<IoTComponent>) => void;
 	private socket: IoTSocket;
 
 	constructor(
-		layout: IoTProjectLayout,
+		project: IoTProject,
 		onLayoutUpdate: (layout: Array<IoTComponent>) => void,
 		onRender: (layout: Array<IoTComponent>) => void,
 		socket: IoTSocket,
 	) {
-		this.components = layout.components;
+		this.project = project;
+		this.components = project.layout.components;
 		this.onLayoutUpdate = onLayoutUpdate;
 		this.onRender = onRender;
 		this.socket = socket;
@@ -32,6 +34,10 @@ export class IoTComponentManager {
 		return this.socket;
 	}
 
+	public getProjectDocument() {
+		return this.project.document;
+	}
+
 	public updateComponent(id: string, data: any) {
 		const component = this.getComponent(id);
 		if (!component) return;
@@ -40,7 +46,7 @@ export class IoTComponentManager {
 	}
 
 	public getComponent(id: string): IoTComponent | undefined {
-		return this.components.find(c => c.id === id);
+		return this.components.find(c => c.ref === id);
 	}
 
 	public getComponents(): Array<IoTComponent> {

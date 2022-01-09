@@ -176,14 +176,14 @@ const Home = (props: HomeProps) => {
 						rx="276"
 						ry="266.214"
 						fill="#92B7FF"
-						fill-opacity="0.64"
+						fillOpacity="0.64"
 					/>
 					<circle
 						cx="-115"
 						cy="450"
 						r="450"
 						fill="#92B7FF"
-						fill-opacity="0.64"
+						fillOpacity="0.64"
 					/>
 				</svg>
 			</div>

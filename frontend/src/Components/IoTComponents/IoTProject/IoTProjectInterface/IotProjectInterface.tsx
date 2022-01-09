@@ -24,7 +24,7 @@ import { LevelContext } from '../../../../state/contexts/LevelContext';
 import { LevelIoTProgressionData } from '../../../../Models/Level/levelProgression';
 import { faClipboard } from '@fortawesome/free-solid-svg-icons';
 
-const IoTProjectBody = ({ noTopRow }: { noTopRow?: boolean }) => {
+const IoTProjectInterface = ({ noTopRow }: { noTopRow?: boolean }) => {
 	const [components, setComponents] = useState<Array<IoTComponent>>([]);
 	const [lastSaved, setLastSaved] = useState<number>(Date.now() - 4000);
 	const [editingComponent, setEditingComponent] = useState<IoTComponent>();
@@ -81,7 +81,7 @@ const IoTProjectBody = ({ noTopRow }: { noTopRow?: boolean }) => {
 				  )
 				: project.layout;
 
-			return new IoTSocket(updateId, layout, project.name, onLayoutChange);
+			return new IoTSocket(updateId, project, project.name, onLayoutChange);
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[],
@@ -167,4 +167,4 @@ const IoTProjectBody = ({ noTopRow }: { noTopRow?: boolean }) => {
 	);
 };
 
-export default IoTProjectBody;
+export default IoTProjectInterface;

@@ -40,6 +40,10 @@ export class IoTProjectLayout {
   components: Array<IoTComponent>;
 }
 
+export type JsonObj = { [key: string]: any };
+
+export type IoTProjectDocument = JsonObj;
+
 @Entity()
 export class IoTProjectEntity extends CreatedByUser {
   @ManyToOne(() => UserEntity, user => user.IoTProjects, { eager: true, onDelete: 'CASCADE' })
@@ -49,7 +53,12 @@ export class IoTProjectEntity extends CreatedByUser {
   // TODO : body typing
   @Column({ nullable: true, type: 'json', default: { components: [] } })
   @IsOptional()
+  @Type(() => IoTProjectLayout)
   layout: IoTProjectLayout;
+
+  @Column({ nullable: false, type: 'jsonb', default: {} })
+  @IsOptional()
+  document: IoTProjectDocument;
 
   @ManyToMany(() => IoTObjectEntity, obj => obj.iotProjects)
   @JoinTable()

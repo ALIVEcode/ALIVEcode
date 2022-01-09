@@ -1,4 +1,4 @@
-import { CreatedByUser } from "../Generics/createdByUser.entity";
+import { CreatedByUser } from '../Generics/createdByUser.entity';
 import { User } from '../User/user.entity';
 import { IotRoute } from './IoTroute.entity';
 import api from '../api';
@@ -17,6 +17,7 @@ import { IoTObject } from './IoTobject.entity';
 import { IoTLed } from './IoTProjectClasses/Components/IoTLed';
 import { IoTLabel } from './IoTProjectClasses/Components/IoTLabel';
 import { IoTBuzzer } from './IoTProjectClasses/Components/IoTBuzzer';
+import { isArray } from 'tone';
 
 export enum IOTPROJECT_INTERACT_RIGHTS {
 	ANYONE = 'AN',
@@ -58,11 +59,76 @@ export class IoTProjectLayout {
 	})
 	components: Array<IoTComponent>;
 }
+
+export type JsonKeys =
+	| string
+	| number
+	| boolean
+	| null
+	| Array<JsonKeys>
+	| Array<JsonObj>
+	| JsonObj;
+export type JsonObj = { [key: string]: JsonKeys };
+
+export type IoTProjectDocument = JsonObj;
+
 export class IoTProject extends CreatedByUser {
 	creator: User;
 
 	@Type(() => IoTProjectLayout)
 	layout: IoTProjectLayout;
+
+	// Date transforming
+	@Transform(({ value: obj, type }) => {
+		if (type !== TransformationType.PLAIN_TO_CLASS || !obj) {
+			return obj;
+		}
+
+		if (typeof obj !== 'object') {
+			return {};
+		}
+
+		const getEntriesDeep = (
+			entries: [string, any][],
+		): { [key: string]: any } => {
+			const res: { [key: string]: any } = {};
+
+			entries.forEach(entry => {
+				const key = entry[0];
+				const val = entry[1];
+
+				const parse = (val: any): any => {
+					if (isArray(val)) {
+						return val.map(v => parse(v));
+					} else if (typeof val === 'object') {
+						return getEntriesDeep(Object.entries(val));
+					} else if (typeof val === 'string') {
+						const match = /\/Date\((\d*)\)\//.exec(val);
+						if (match) {
+							return new Date(+match[1]);
+						} else {
+							const parsedDate = new Date(val);
+							if (
+								Object.prototype.toString.call(parsedDate) ===
+									'[object Date]' &&
+								!isNaN(parsedDate.getTime())
+							)
+								return parsedDate;
+						}
+					}
+					return val;
+				};
+
+				res[key] = parse(val);
+			});
+			return res;
+		};
+
+		const res = getEntriesDeep(Object.entries(obj));
+		console.log(res);
+		return res;
+	})
+	document: IoTProjectDocument;
 
 	@Type(() => IoTObject)
 	iotObjects?: IoTObject[];

@@ -14,13 +14,14 @@ import {
 	faChevronUp,
 	faChevronDown,
 } from '@fortawesome/free-solid-svg-icons';
-import IoTProjectBody from '../../../Components/IoTComponents/IoTProject/IoTProjectBody/IotProjectBody';
+import IoTProjectInterface from '../../../Components/IoTComponents/IoTProject/IoTProjectInterface/IotProjectInterface';
 import IoTProjectAccess from '../../../Components/IoTComponents/IoTProject/IoTProjectAccess/IoTProjectAccess';
 import IoTProjectRoutes from '../../../Components/IoTComponents/IoTProject/IoTProjectRoutes/IoTProjectRoutes';
 import IoTProjectSettings from '../../../Components/IoTComponents/IoTProject/IoTProjectSettings/IoTProjectSettings';
 import { IoTProjectContext } from '../../../state/contexts/IoTProjectContext';
 import { Disclosure } from '@headlessui/react';
 import { classNames } from '../../../Types/utils';
+import IoTProjectDocuments from '../../../Components/IoTComponents/IoTProject/IoTProjectDocuments/IoTProjectDocuments';
 
 /**
  * IoTProject. On this page are all the components essential in the functionning of an IoTProject.
@@ -69,9 +70,9 @@ const IoTProjectPage = () => {
 	const renderTabContent = () => {
 		switch (selectedTab) {
 			case 'interface':
-				return <IoTProjectBody />;
+				return <IoTProjectInterface />;
 			case 'documents':
-				return <IoTProjectRoutes />;
+				return <IoTProjectDocuments />;
 			case 'network':
 				return <IoTProjectAccess />;
 		}

@@ -13,7 +13,7 @@ export enum IOT_COMPONENT_TYPE {
 @Exclude()
 export abstract class IoTComponent {
 	@Expose()
-	public id: string = '';
+	public ref: string = '';
 
 	@Expose()
 	public name: string;
@@ -24,7 +24,7 @@ export abstract class IoTComponent {
 	}
 
 	public setId(newId: string) {
-		this.id = newId;
+		this.ref = newId;
 		this.getComponentManager()?.render();
 	}
 
@@ -35,6 +35,39 @@ export abstract class IoTComponent {
 
 	@Expose()
 	public abstract type: IOT_COMPONENT_TYPE;
+
+	public isRef() {
+		return (
+			typeof this.value === 'string' && this.value.match(/^\/document([^\s]+)$/)
+		);
+	}
+
+	public getValueByRef = () => {
+		const doc = this.getComponentManager()?.getProjectDocument();
+		if (!doc) return;
+		const paths = this.value.split('/').slice(2, this.value.split('/').length);
+
+		const comp = this;
+		function getDeepValue(
+			obj: { [key: string]: any },
+			keys: string[],
+			idx: number,
+		): undefined | typeof comp.value {
+			const val = obj[keys[idx]];
+			if (idx === keys.length - 1 && comp.validate(val)) {
+				return val;
+			} else if (typeof val === 'object') {
+				return getDeepValue(val, paths, idx + 1);
+			}
+		}
+
+		const value = getDeepValue(doc, paths, 0);
+		return value;
+	};
+
+	public get displayedValue() {
+		return this.isRef() ? this.getValueByRef() : this.value;
+	}
 
 	@Expose()
 	@Transform(({ value }) => {
@@ -48,7 +81,9 @@ export abstract class IoTComponent {
 		}
 		return value;
 	})
-	public abstract value: any;
+	public abstract value: any | string;
+
+	public abstract validate(val: any): boolean;
 
 	private componentManager: IoTComponentManager | null = null;
 

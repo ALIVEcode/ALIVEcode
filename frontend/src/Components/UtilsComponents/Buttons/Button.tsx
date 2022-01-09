@@ -1,7 +1,7 @@
 import { ButtonProps } from './buttonTypes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { classNames } from '../../../Types/utils';
 
 /**
@@ -18,13 +18,14 @@ import { classNames } from '../../../Types/utils';
  *
  * @author MoSk3
  */
-const Button: React.FC<
+const Button = forwardRef<
+	HTMLButtonElement,
 	ButtonProps &
 		React.DetailedHTMLProps<
 			React.ButtonHTMLAttributes<HTMLButtonElement>,
 			HTMLButtonElement
 		>
-> = ({ variant, onClick, to, children, className, icon, ...props }) => {
+>(({ variant, onClick, to, children, className, icon, ...props }, ref) => {
 	const navigate = useNavigate();
 
 	const customOnClick = (
@@ -48,7 +49,7 @@ const Button: React.FC<
 
 	if (icon) {
 		return (
-			<button {...defaultInputOptions} {...props}>
+			<button ref={ref} {...defaultInputOptions} {...props}>
 				<>
 					{children}
 					<FontAwesomeIcon className="ml-2" icon={icon}></FontAwesomeIcon>
@@ -58,11 +59,11 @@ const Button: React.FC<
 	}
 
 	return (
-		<button {...defaultInputOptions} {...props}>
+		<button ref={ref} {...defaultInputOptions} {...props}>
 			{children}
 		</button>
 	);
-};
+});
 
 export default Button;
 

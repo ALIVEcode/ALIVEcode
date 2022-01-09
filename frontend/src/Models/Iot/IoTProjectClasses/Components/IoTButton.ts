@@ -15,6 +15,10 @@ export class IoTButton extends IoTComponent {
 	@Expose()
 	private actionData: string = '{}';
 
+	public validate(val: any) {
+		return typeof val === 'string';
+	}
+
 	public setTargetId(id: string) {
 		this.targetId = id;
 		this.getComponentManager()?.render();
@@ -58,7 +62,7 @@ export const createDefaultIoTButton = () => {
 	const progress = new IoTButton();
 	progress.value = 'Click me';
 	progress.name = 'Default Button';
-	progress.id = '';
+	progress.ref = '';
 
 	return progress;
 };

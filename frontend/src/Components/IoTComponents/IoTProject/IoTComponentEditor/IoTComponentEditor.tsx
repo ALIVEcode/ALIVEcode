@@ -2,7 +2,10 @@ import { IoTComponentEditorProps } from './iotComponentEditorTypes';
 import { IoTProgressBar } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTProgressBar';
 import IoTGenericComponent from '../../IoTProjectComponents/IoTGenericComponent/IoTGenericComponent';
 import { IoTButton } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTButton';
-import { IoTLogs } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTLogs';
+import {
+	IoTLogModel,
+	IoTLogs,
+} from '../../../../Models/Iot/IoTProjectClasses/Components/IoTLogs';
 import Button from '../../../UtilsComponents/Buttons/Button';
 import Link from '../../../UtilsComponents/Link/Link';
 import DateTime from 'react-datetime';
@@ -14,14 +17,12 @@ import { useTranslation } from 'react-i18next';
 import { IoTObject } from '../../../../Models/Iot/IoTobject.entity';
 import api from '../../../../Models/api';
 import { IoTProjectContext } from '../../../../state/contexts/IoTProjectContext';
-import {
-	IoTLed,
-	LED_STATE,
-} from '../../../../Models/Iot/IoTProjectClasses/Components/IoTLed';
+import { IoTLed } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTLed';
 import { IoTLabel } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTLabel';
 import { IoTBuzzer } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTBuzzer';
 import InputGroup from '../../../UtilsComponents/InputGroup/InputGroup';
 import FormLabel from '../../../UtilsComponents/FormLabel/FormLabel';
+import { IoTComponent } from '../../../../Models/Iot/IoTProjectClasses/IoTComponent';
 
 const IoTComponentEditor = ({
 	component,
@@ -31,7 +32,7 @@ const IoTComponentEditor = ({
 	const [iotObjects, setIoTObjects] = useState<IoTObject[]>();
 	const alert = useAlert();
 	const { t } = useTranslation();
-	const { canEdit } = useContext(IoTProjectContext);
+	const { project, canEdit } = useContext(IoTProjectContext);
 
 	useEffect(() => {
 		if (!(component instanceof IoTButton)) return;
@@ -49,6 +50,43 @@ const IoTComponentEditor = ({
 		component.getComponentManager()?.removeComponent(component);
 		onClose();
 		alert.success(t('iot.project.remove_component.success'));
+	};
+
+	const getDocumentEntries = (
+		component: IoTComponent,
+	): { ref: string; value: any }[] => {
+		if (!project?.document) return [];
+
+		const res: { ref: string; value: any }[] = [];
+
+		const getEntriesDeep = (entries: [string, any][], path: string) => {
+			entries.forEach(entry => {
+				const key = entry[0];
+				const val = entry[1];
+				if (component.validate(val)) {
+					res.push({ ref: path + key, value: val });
+				} else if (typeof val === 'object') {
+					getEntriesDeep(Object.entries(val), path + key + '/');
+				}
+			}, []);
+		};
+
+		getEntriesDeep(Object.entries(project.document), '/document/');
+		return res;
+	};
+
+	const renderDocumentEntries = () => {
+		return (
+			<>
+				<option key=""></option>
+				{getDocumentEntries(component).map((e, idx) => (
+					<option key={idx} value={e.ref}>
+						{e.ref} {'  (' + e.value.toString()}
+						{')'}
+					</option>
+				))}
+			</>
+		);
 	};
 
 	const renderComponentSpecificFields = () => {
@@ -118,8 +156,10 @@ const IoTComponentEditor = ({
 						value={component.getTargetId() || ''}
 					>
 						<option></option>
-						{iotObjects?.map(obj => (
-							<option value={obj.id}>{obj.name}</option>
+						{iotObjects?.map((obj, idx) => (
+							<option key={idx} value={obj.id}>
+								{obj.name}
+							</option>
 						))}
 					</InputGroup>
 					<InputGroup
@@ -160,8 +200,8 @@ const IoTComponentEditor = ({
 							</div>
 						</>
 					)}
-					{component.value.map(log => (
-						<div className="flex flex-row gap-4">
+					{component.displayedValue.map((log: IoTLogModel, idx: number) => (
+						<div key={idx} className="flex flex-row gap-4">
 							<div className="w-full">
 								<InputGroup
 									as="textarea"
@@ -213,7 +253,7 @@ const IoTComponentEditor = ({
 					<InputGroup
 						label="LED on/off"
 						type="checkbox"
-						defaultChecked={component.value === LED_STATE.ON}
+						defaultChecked={component.value}
 						className="mb-2"
 						onChange={(e: any) => component.setValue(e.target.checked)}
 						disabled={!canEdit}
@@ -312,11 +352,18 @@ const IoTComponentEditor = ({
 			/>
 			<InputGroup
 				label="id"
-				value={component.id}
+				value={component.ref}
 				className="mb-2"
 				onChange={(e: any) => component.setId(e.target.value)}
 				disabled={!canEdit}
 			/>
+			<InputGroup
+				label="Ref"
+				as="select"
+				onChange={(e: any) => component.setValue(e.target.value)}
+			>
+				{renderDocumentEntries()}
+			</InputGroup>
 			{renderComponentSpecificFields()}
 			<IoTGenericComponent component={component}></IoTGenericComponent>
 			<Button

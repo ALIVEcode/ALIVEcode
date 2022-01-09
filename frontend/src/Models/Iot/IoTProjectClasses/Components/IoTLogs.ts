@@ -1,4 +1,6 @@
 import { Exclude } from 'class-transformer';
+import { isDate } from 'moment';
+import { isArray } from 'tone';
 import { IoTComponent, IOT_COMPONENT_TYPE } from '../IoTComponent';
 
 export type IoTLogModel = {
@@ -13,6 +15,13 @@ export class IoTLogs extends IoTComponent {
 	public value: IoTLogsModel = [];
 
 	public type = IOT_COMPONENT_TYPE.LOGS;
+
+	public validate(val: any) {
+		return (
+			isArray(val) &&
+			val.every(v => 'date' in v && isDate(v.date) && 'text' in v)
+		);
+	}
 
 	update(data: any): void {
 		this.addLog(String(data));
@@ -51,7 +60,7 @@ export const createDefaultIoTLogs = () => {
 		},
 	];
 	progress.name = 'Default Logs';
-	progress.id = '';
+	progress.ref = '';
 
 	return progress;
 };

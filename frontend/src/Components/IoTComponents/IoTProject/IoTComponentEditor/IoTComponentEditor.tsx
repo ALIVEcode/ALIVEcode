@@ -78,7 +78,9 @@ const IoTComponentEditor = ({
 	const renderDocumentEntries = () => {
 		return (
 			<>
-				<option key=""></option>
+				<option key="static" value="static">
+					Static Value
+				</option>
 				{getDocumentEntries(component).map((e, idx) => (
 					<option key={idx} value={e.ref}>
 						{e.ref} {'  (' + e.value.toString()}
@@ -360,11 +362,16 @@ const IoTComponentEditor = ({
 			<InputGroup
 				label="Ref"
 				as="select"
-				onChange={(e: any) => component.setValue(e.target.value)}
+				value={component.isRef() ? component.value : 'static'}
+				onChange={(e: any) => {
+					console.log(e.target.value);
+					if (e.target.value === 'static') component.reset();
+					else component.setValue(e.target.value);
+				}}
 			>
 				{renderDocumentEntries()}
 			</InputGroup>
-			{renderComponentSpecificFields()}
+			{!component.isRef() && renderComponentSpecificFields()}
 			<IoTGenericComponent component={component}></IoTGenericComponent>
 			<Button
 				disabled={!canEdit}

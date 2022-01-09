@@ -12,6 +12,7 @@ export type IoTLogsModel = Array<IoTLogModel>;
 
 @Exclude()
 export class IoTLogs extends IoTComponent {
+	public defaultValue: IoTLogsModel = [];
 	public value: IoTLogsModel = [];
 
 	public type = IOT_COMPONENT_TYPE.LOGS;

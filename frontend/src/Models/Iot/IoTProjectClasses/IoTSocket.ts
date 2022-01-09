@@ -35,6 +35,7 @@ export class IoTSocket {
 			},
 			this,
 		);
+		console.log('CREATED');
 		this.openSocket();
 	}
 

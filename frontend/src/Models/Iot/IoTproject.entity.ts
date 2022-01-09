@@ -124,9 +124,7 @@ export class IoTProject extends CreatedByUser {
 			return res;
 		};
 
-		const res = getEntriesDeep(Object.entries(obj));
-		console.log(res);
-		return res;
+		return getEntriesDeep(Object.entries(obj));
 	})
 	document: IoTProjectDocument;
 

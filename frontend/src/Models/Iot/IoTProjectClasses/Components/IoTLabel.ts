@@ -3,6 +3,7 @@ import { IoTComponent, IOT_COMPONENT_TYPE } from '../IoTComponent';
 
 @Exclude()
 export class IoTLabel extends IoTComponent {
+	public defaultValue: string = 'Unset';
 	public value: string = 'Unset';
 	public type = IOT_COMPONENT_TYPE.LABEL;
 

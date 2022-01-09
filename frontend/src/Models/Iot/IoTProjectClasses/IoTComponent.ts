@@ -29,6 +29,7 @@ export abstract class IoTComponent {
 	}
 
 	public setValue(newValue: any) {
+		this.refValue = undefined;
 		this.value = newValue;
 		this.getComponentManager()?.render();
 	}
@@ -43,6 +44,7 @@ export abstract class IoTComponent {
 	}
 
 	public getValueByRef = () => {
+		console.log('GET VALUE BY REF');
 		const doc = this.getComponentManager()?.getProjectDocument();
 		if (!doc) return;
 		const paths = this.value.split('/').slice(2, this.value.split('/').length);
@@ -65,8 +67,14 @@ export abstract class IoTComponent {
 		return value;
 	};
 
+	private refValue: any = undefined;
+
 	public get displayedValue() {
-		return this.isRef() ? this.getValueByRef() : this.value;
+		if (this.isRef()) {
+			if (this.refValue == null) this.refValue = this.getValueByRef();
+			return this.refValue;
+		}
+		return this.value;
 	}
 
 	@Expose()
@@ -82,6 +90,11 @@ export abstract class IoTComponent {
 		return value;
 	})
 	public abstract value: any | string;
+	public abstract defaultValue: any;
+
+	public reset() {
+		this.setValue(this.defaultValue);
+	}
 
 	public abstract validate(val: any): boolean;
 

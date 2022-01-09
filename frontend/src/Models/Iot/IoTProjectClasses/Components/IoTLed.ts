@@ -8,6 +8,7 @@ export enum LED_STATE {
 
 @Exclude()
 export class IoTLed extends IoTComponent {
+	public defaultValue: boolean = false;
 	public value: boolean = false;
 	public type = IOT_COMPONENT_TYPE.LED;
 

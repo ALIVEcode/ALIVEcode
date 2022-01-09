@@ -8,12 +8,14 @@ import {
 import { IotRoute } from '../../Models/Iot/IoTroute.entity';
 import { IoTObject } from '../../Models/Iot/IoTobject.entity';
 import { AsScript } from '../../Models/AsScript/as-script.entity';
+import { IoTSocket } from '../../Models/Iot/IoTProjectClasses/IoTSocket';
 
 export type IoTProjectContextValues = {
 	project: IoTProject | null;
 	canEdit: boolean;
 	updateId: string;
 	isLevel: boolean;
+	socket: IoTSocket | null;
 	addRoute: (route: IotRoute) => void;
 	deleteRoute: (route: IotRoute) => void;
 	updateRoute: (route: IotRoute) => void;
@@ -34,6 +36,7 @@ export const IoTProjectContext = createContext<IoTProjectContextValues>({
 	project: null,
 	updateId: '',
 	isLevel: false,
+	socket: null,
 	addRoute: () => {},
 	deleteRoute: () => {},
 	updateRoute: () => {},

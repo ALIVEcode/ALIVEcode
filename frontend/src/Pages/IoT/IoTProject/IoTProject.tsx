@@ -1,7 +1,15 @@
 import { IoTProjectProps } from './iotProjectTypes';
-import { useEffect, useContext, useMemo, useCallback, useRef } from 'react';
+import {
+	useEffect,
+	useContext,
+	useMemo,
+	useCallback,
+	useRef,
+	useState,
+} from 'react';
 import {
 	IoTProject as ProjectModel,
+	IoTProjectLayout,
 	IOTPROJECT_ACCESS,
 	IOTPROJECT_INTERACT_RIGHTS,
 } from '../../../Models/Iot/IoTproject.entity';
@@ -23,6 +31,9 @@ import IoTLevel from '../../Level/LevelIoT/LevelIoT';
 import { AsScript } from '../../../Models/AsScript/as-script.entity';
 import { useNavigate } from 'react-router-dom';
 import { IoTProjectDocument } from '../../../../../backend/src/models/iot/IoTproject/entities/IoTproject.entity';
+import { IoTSocket } from '../../../Models/Iot/IoTProjectClasses/IoTSocket';
+import { instanceToPlain } from 'class-transformer';
+import { IoTComponent } from '../../../Models/Iot/IoTProjectClasses/IoTComponent';
 
 /**
  * IoTProject. On this page are all the components essential in the functionning of an IoTProject.
@@ -47,6 +58,57 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 
 	const isLevel = level ? true : false;
 	const canEdit = user?.id === projectRef.current?.creator?.id && !isLevel;
+
+	const saveTimeout = useRef<any>(null);
+	const [lastSaved, setLastSaved] = useState<number>(Date.now() - 4000);
+
+	const saveComponents = useCallback(
+		async (components: Array<IoTComponent>) => {
+			if (!canEdit || !project) return;
+			setLastSaved(Date.now());
+			project.layout.components = components;
+			const plainProject = instanceToPlain(project);
+			await api.db.iot.projects.updateLayout(project.id, plainProject.layout);
+		},
+		[project, canEdit],
+	);
+
+	const saveComponentsTimed = useCallback(
+		async (components: Array<IoTComponent>) => {
+			if (!canEdit) return;
+			if (Date.now() - lastSaved < 2000) {
+				saveTimeout.current && clearTimeout(saveTimeout.current);
+				saveTimeout.current = setTimeout(
+					() => saveComponents(components),
+					2000,
+				);
+				return;
+			}
+
+			saveComponents(components);
+		},
+		[lastSaved, saveComponents, canEdit],
+	);
+
+	const onLayoutChange = useCallback(
+		(layout: IoTProjectLayout) => {
+			forceUpdate();
+			saveComponentsTimed(layout.components);
+		},
+		[forceUpdate, saveComponentsTimed],
+	);
+
+	const socket = useMemo(() => {
+		if (!project) return;
+
+		return new IoTSocket(project.id, project, project.name, onLayoutChange);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [project]);
+
+	useEffect(() => {
+		if (!socket) return;
+		socket.setOnRender(onLayoutChange);
+	}, [socket, onLayoutChange]);
 
 	useEffect(() => {
 		if (!id || level?.project) return;
@@ -160,6 +222,7 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 			canEdit,
 			updateId: updateId ? updateId : project ? project.id : '',
 			isLevel,
+			socket: socket ?? null,
 			addRoute,
 			deleteRoute,
 			updateRoute,
@@ -174,6 +237,7 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 		canEdit,
 		updateId,
 		isLevel,
+		socket,
 		addRoute,
 		deleteRoute,
 		updateRoute,

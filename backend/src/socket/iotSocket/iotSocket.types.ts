@@ -1,5 +1,6 @@
 import { WsException } from '@nestjs/websockets';
 import { WebSocket } from 'ws';
+import { IoTProjectDocument, IoTProjectLayout } from '../../models/iot/IoTproject/entities/IoTproject.entity';
 
 export type IoTSocketToObjectRequest = {
   targetId: string;
@@ -27,6 +28,14 @@ export type IoTSocketRouteRequest = {
 export type IoTSocketUpdateRequestWatcher = {
   id: string;
   value: any;
+};
+
+export type IoTSocketUpdateDocumentRequestWatcher = {
+  doc: IoTProjectDocument;
+};
+
+export type IoTSocketUpdateLayoutRequestWatcher = {
+  layout: IoTProjectLayout;
 };
 
 export class Client {

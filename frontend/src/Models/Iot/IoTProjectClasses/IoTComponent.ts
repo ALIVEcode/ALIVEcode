@@ -18,6 +18,29 @@ export abstract class IoTComponent {
 	@Expose()
 	public name: string;
 
+	@Expose()
+	public abstract type: IOT_COMPONENT_TYPE;
+
+	@Expose()
+	@Transform(({ value }) => {
+		// Transform arrays
+		if (Array.isArray(value)) {
+			value = value.map(v => {
+				// Transform dates
+				if (v.date) v.date = new Date(v.date);
+				return v;
+			});
+		}
+		return value;
+	})
+	public abstract value: any | string;
+	public abstract defaultValue: any;
+	private refValue: any = undefined;
+
+	public updateRef() {
+		if (this.isRef()) this.refValue = this.getValueByRef();
+	}
+
 	public setName(newName: string) {
 		this.name = newName;
 		this.getComponentManager()?.render();
@@ -34,17 +57,14 @@ export abstract class IoTComponent {
 		this.getComponentManager()?.render();
 	}
 
-	@Expose()
-	public abstract type: IOT_COMPONENT_TYPE;
-
 	public isRef() {
 		return (
-			typeof this.value === 'string' && this.value.match(/^\/document([^\s]+)$/)
+			typeof this.value === 'string' &&
+			this.value.match(/^\/document([^\s]+)$/) != null
 		);
 	}
 
 	public getValueByRef = () => {
-		console.log('GET VALUE BY REF');
 		const doc = this.getComponentManager()?.getProjectDocument();
 		if (!doc) return;
 		const paths = this.value.split('/').slice(2, this.value.split('/').length);
@@ -67,8 +87,6 @@ export abstract class IoTComponent {
 		return value;
 	};
 
-	private refValue: any = undefined;
-
 	public get displayedValue() {
 		if (this.isRef()) {
 			if (this.refValue == null) this.refValue = this.getValueByRef();
@@ -76,21 +94,6 @@ export abstract class IoTComponent {
 		}
 		return this.value;
 	}
-
-	@Expose()
-	@Transform(({ value }) => {
-		// Transform arrays
-		if (Array.isArray(value)) {
-			value = value.map(v => {
-				// Transform dates
-				if (v.date) v.date = new Date(v.date);
-				return v;
-			});
-		}
-		return value;
-	})
-	public abstract value: any | string;
-	public abstract defaultValue: any;
 
 	public reset() {
 		this.setValue(this.defaultValue);

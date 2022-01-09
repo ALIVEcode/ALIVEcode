@@ -27,6 +27,7 @@ import { AddObjectDTO } from './dto/addObject.dto';
 import { IoTProjectService } from './IoTproject.service';
 import { IoTObjectService } from '../IoTobject/IoTobject.service';
 import { IoTProjectAddScriptDTO } from './dto/addScript.dto';
+import { IoTProjectUpdateDTO } from './dto/updateProject.dto';
 
 @Controller('iot/projects')
 @UseInterceptors(DTOInterceptor)
@@ -62,7 +63,7 @@ export class IoTProjectController {
 
   @Patch(':id')
   @Auth()
-  async update(@User() user: UserEntity, @Param('id') id: string, @Body() updateIoTobjectDto: IoTProjectEntity) {
+  async update(@User() user: UserEntity, @Param('id') id: string, @Body() updateIoTobjectDto: IoTProjectUpdateDTO) {
     const project = await this.IoTProjectService.findOne(id);
 
     if (project.creator.id !== user.id && !hasRole(user, Role.STAFF))
@@ -96,11 +97,13 @@ export class IoTProjectController {
   @Patch(':id/document')
   @Auth()
   async updateDocument(@User() user: UserEntity, @Param('id') id: string, @Body() document: IoTProjectDocument) {
+    if (typeof document !== 'object') throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+
     const project = await this.IoTProjectService.findOne(id);
 
     if (project.creator.id !== user.id && !hasRole(user, Role.STAFF))
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-    console.log(document);
+
     return await this.IoTProjectService.updateDocument(id, document);
   }
 

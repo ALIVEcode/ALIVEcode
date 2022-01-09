@@ -12,13 +12,15 @@ import LoadingScreen from '../../../UtilsComponents/LoadingScreen/LoadingScreen'
 import { faClipboard } from '@fortawesome/free-solid-svg-icons';
 
 const IoTProjectInterface = ({ noTopRow }: { noTopRow?: boolean }) => {
-	const [editingComponent, setEditingComponent] = useState<IoTComponent>();
+	const [editingComponent, setEditingComponent] = useState<number>();
 	const [openComponentCreator, setOpenComponentCreator] = useState(false);
 	const alert = useAlert();
 	const { t } = useTranslation();
 	const { project, canEdit, updateId, socket } = useContext(IoTProjectContext);
 
-	if (!project) return <LoadingScreen />;
+	const componentManager = socket?.getComponentManager();
+
+	if (!project || !socket) return <LoadingScreen />;
 	return (
 		<div
 			className="w-full h-full overflow-y-auto"
@@ -49,7 +51,11 @@ const IoTProjectInterface = ({ noTopRow }: { noTopRow?: boolean }) => {
 					{project.layout.components.map((c, idx) => (
 						<IoTGenericComponent
 							key={idx}
-							setEditingComponent={setEditingComponent}
+							setEditingComponent={c =>
+								setEditingComponent(
+									componentManager?.getComponents().indexOf(c),
+								)
+							}
 							component={c}
 						/>
 					))}
@@ -57,15 +63,15 @@ const IoTProjectInterface = ({ noTopRow }: { noTopRow?: boolean }) => {
 				<Modal
 					size="lg"
 					title="Edit component"
-					open={editingComponent ? true : false}
+					open={editingComponent != null ? true : false}
 					setOpen={bool => !bool && setEditingComponent(undefined)}
 					closeCross
 					hideSubmitButton
 				>
-					{editingComponent && (
+					{editingComponent != null && componentManager && (
 						<IoTComponentEditor
 							onClose={() => setEditingComponent(undefined)}
-							component={editingComponent}
+							component={componentManager.getComponents()[editingComponent]}
 						></IoTComponentEditor>
 					)}
 				</Modal>
@@ -79,12 +85,11 @@ const IoTProjectInterface = ({ noTopRow }: { noTopRow?: boolean }) => {
 				>
 					<IoTComponentCreator
 						onSelect={(c: IoTComponent) => {
-							const componentManager = socket?.getComponentManager();
 							if (!componentManager) return;
 							setOpenComponentCreator(false);
 							c = componentManager.addComponent(c);
 							alert.success(t('iot.project.add_component.success'));
-							setEditingComponent(c);
+							setEditingComponent(componentManager.getComponents().length - 1);
 						}}
 					/>
 				</Modal>

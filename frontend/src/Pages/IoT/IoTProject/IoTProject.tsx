@@ -9,7 +9,6 @@ import {
 } from 'react';
 import {
 	IoTProject as ProjectModel,
-	IoTProjectLayout,
 	IOTPROJECT_ACCESS,
 	IOTPROJECT_INTERACT_RIGHTS,
 } from '../../../Models/Iot/IoTproject.entity';
@@ -33,7 +32,6 @@ import { useNavigate } from 'react-router-dom';
 import { IoTProjectDocument } from '../../../../../backend/src/models/iot/IoTproject/entities/IoTproject.entity';
 import { IoTSocket } from '../../../Models/Iot/IoTProjectClasses/IoTSocket';
 import { instanceToPlain } from 'class-transformer';
-import { IoTComponent } from '../../../Models/Iot/IoTProjectClasses/IoTComponent';
 
 /**
  * IoTProject. On this page are all the components essential in the functionning of an IoTProject.
@@ -71,9 +69,9 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 
 	const saveComponentsTimed = useCallback(async () => {
 		if (!canEdit) return;
-		if (Date.now() - lastSaved < 2000) {
+		if (Date.now() - lastSaved < 1000) {
 			saveTimeout.current && clearTimeout(saveTimeout.current);
-			saveTimeout.current = setTimeout(saveComponents, 2000);
+			saveTimeout.current = setTimeout(saveComponents, 1000);
 			return;
 		}
 

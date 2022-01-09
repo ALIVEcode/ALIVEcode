@@ -9,7 +9,7 @@ const IoTProjectDocuments = () => {
 	const { project, updateDocument } = useContext(IoTProjectContext);
 
 	const [doc, setDoc] = useWaitBeforeUpdate<string>(
-		{ wait: 2000, onUpdate: () => updateDocument(JSON.parse(doc)) },
+		{ wait: 1000, onUpdate: () => updateDocument(JSON.parse(doc)) },
 		JSON.stringify(project?.document, null, '\t'),
 	);
 

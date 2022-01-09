@@ -1,6 +1,11 @@
-import { IoTProject, IoTProjectDocument } from '../IoTproject.entity';
+import {
+	IoTProject,
+	IoTProjectDocument,
+	parseIoTProjectDocument,
+} from '../IoTproject.entity';
 import { IoTComponentManager } from './IoTComponentManager';
 import { IoTComponent } from './IoTComponent';
+import { IoTProjectLayout, parseIoTProjectLayout } from '../IoTproject.entity';
 
 export type IoTSocketUpdateRequest = {
 	id: string;
@@ -9,6 +14,10 @@ export type IoTSocketUpdateRequest = {
 
 export type IoTSocketUpdateDocumentRequest = {
 	doc: IoTProjectDocument;
+};
+
+export type IoTSocketUpdateLayoutRequest = {
+	layout: IoTProjectLayout;
 };
 
 export class IoTSocket {
@@ -32,7 +41,6 @@ export class IoTSocket {
 
 		this.iotComponentManager = new IoTComponentManager(
 			this.project,
-			this.onComponentUpdate,
 			(components: Array<IoTComponent>) => {
 				this.project.layout.components = components;
 				this.onRender(true);
@@ -41,8 +49,6 @@ export class IoTSocket {
 		);
 		this.openSocket();
 	}
-
-	private onComponentUpdate(layout: Array<IoTComponent>) {}
 
 	public setOnRender(onRender: (saveLayout: boolean) => void) {
 		this.onRender = onRender;
@@ -66,6 +72,9 @@ export class IoTSocket {
 						break;
 					case 'document_update':
 						this.onDocumentUpdate(data.data);
+						break;
+					case 'layout_update':
+						this.onLayoutUpdate(data.data);
 						break;
 				}
 			};
@@ -113,7 +122,16 @@ export class IoTSocket {
 	}
 
 	public onDocumentUpdate(request: IoTSocketUpdateDocumentRequest) {
-		this.project.document = request.doc;
+		this.project.document = parseIoTProjectDocument(request.doc);
+		this.getComponentManager()
+			?.getComponents()
+			.map(c => c.updateRef());
+		this.onRender(false);
+	}
+
+	public onLayoutUpdate(request: IoTSocketUpdateLayoutRequest) {
+		this.project.layout = parseIoTProjectLayout(request.layout);
+		this.getComponentManager()?.setNewLayout(this.project.layout);
 		this.onRender(false);
 	}
 

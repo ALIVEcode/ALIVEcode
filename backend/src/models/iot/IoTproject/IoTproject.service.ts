@@ -5,13 +5,19 @@ import { Repository } from 'typeorm';
 import { UserEntity } from '../../user/entities/user.entity';
 import { IoTRouteEntity } from '../IoTroute/entities/IoTroute.entity';
 import { IoTObjectEntity } from '../IoTobject/entities/IoTobject.entity';
-import { IoTSocketUpdateRequestWatcher, WatcherClient } from '../../../socket/iotSocket/iotSocket.types';
+import {
+  IoTSocketUpdateDocumentRequestWatcher,
+  IoTSocketUpdateRequestWatcher,
+  WatcherClient,
+} from '../../../socket/iotSocket/iotSocket.types';
 import { validUUID } from '../../../utils/types/validation.types';
 import { IoTProjectAddScriptDTO } from './dto/addScript.dto';
 import { AsScriptEntity } from '../../as-script/entities/as-script.entity';
 import { AsScriptService } from '../../as-script/as-script.service';
 import { LevelService } from '../../level/level.service';
 import { LevelProgressionEntity } from '../../level/entities/levelProgression.entity';
+import { IoTProjectUpdateDTO } from './dto/updateProject.dto';
+import { IoTSocketUpdateLayoutRequestWatcher } from '../../../socket/iotSocket/iotSocket.types';
 
 @Injectable()
 export class IoTProjectService {
@@ -52,7 +58,7 @@ export class IoTProjectService {
     return { route, project };
   }
 
-  async update(id: string, updateIoTprojectDto: IoTProjectEntity) {
+  async update(id: string, updateIoTprojectDto: IoTProjectUpdateDTO) {
     return await this.projectRepository.save({ id, ...updateIoTprojectDto });
   }
 
@@ -65,10 +71,23 @@ export class IoTProjectService {
 
     layout.components = layout.components.filter((c: any) => c != null && JSON.stringify(c) != '{}');
 
+    const watchers = WatcherClient.getClientsByProject(id);
+
+    const data: IoTSocketUpdateLayoutRequestWatcher = {
+      layout,
+    };
+    watchers.forEach(w => w.sendCustom('layout_update', data));
+
     return await this.projectRepository.save({ ...project, layout });
   }
 
   async updateDocument(id: string, document: IoTProjectDocument) {
+    const watchers = WatcherClient.getClientsByProject(id);
+
+    const data: IoTSocketUpdateDocumentRequestWatcher = {
+      doc: document,
+    };
+    watchers.forEach(w => w.sendCustom('document_update', data));
     return await this.projectRepository.save({ id, document });
   }
 

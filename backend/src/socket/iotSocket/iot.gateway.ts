@@ -11,7 +11,13 @@ import {
   WsException,
 } from '@nestjs/websockets';
 import { Server, WebSocket } from 'ws';
-import { IoTSocketToObjectRequest, IoTSocketUpdateRequest, IoTSocketRouteRequest } from './iotSocket.types';
+import {
+  IoTActionRequestFromWatcher,
+  IoTUpdateRequestFromObject,
+  IoTSocketRouteRequestFromObject,
+  IoTUpdateDocumentRequestFromObject,
+  IoTGetAllRequestFromObject,
+} from './iotSocket.types';
 import { IoTObjectService } from '../../models/iot/IoTobject/IoTobject.service';
 import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
 import { IoTObjectEntity } from '../../models/iot/IoTobject/entities/IoTobject.entity';
@@ -23,6 +29,7 @@ import {
   ObjectClient,
 } from './iotSocket.types';
 import { IOTPROJECT_INTERACT_RIGHTS } from '../../models/iot/IoTproject/entities/IoTproject.entity';
+import { IoTListenRequestFromObject } from './iotSocket.types';
 
 @UseInterceptors(DTOInterceptor)
 @WebSocketGateway(8881)
@@ -46,6 +53,19 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     this.logger.log(`Client disconnected`);
     ObjectClient.objects = ObjectClient.objects.filter(obj => obj.getSocket() !== socket);
     WatcherClient.clients = WatcherClient.watchers.filter(w => w.getSocket() !== socket);
+  }
+
+  async objectPermissionFilter(socket: WebSocket, projectId: string) {
+    const object = ObjectClient.getClientBySocket(socket);
+    if (!object) throw new WsException('Forbidden');
+
+    const project = await this.iotProjectService.findOne(projectId);
+    if (!project) throw new WsException('No project with id');
+
+    if (project.interactRights !== IOTPROJECT_INTERACT_RIGHTS.ANYONE && !object.hasProjectRights(projectId))
+      throw new WsException('Forbidden');
+
+    return { project, object };
   }
 
   @SubscribeMessage('connect_watcher')
@@ -86,7 +106,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   }
 
   @SubscribeMessage('send_update')
-  async send_update(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTSocketUpdateRequest) {
+  async send_update(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTUpdateRequestFromObject) {
     if (!payload.id || !payload.projectId || payload.value == null) throw new WsException('Bad payload');
 
     const object = ObjectClient.getClientBySocket(socket);
@@ -107,8 +127,37 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     object.sendUpdate(payload);
   }
 
+  @SubscribeMessage('update')
+  async update(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTUpdateDocumentRequestFromObject) {
+    if (!payload.projectId || payload.fields == null || typeof payload.fields !== 'object')
+      throw new WsException('Bad payload');
+    this.objectPermissionFilter(socket, payload.projectId);
+
+    await this.iotProjectService.updateDocument(payload.projectId, payload.fields);
+  }
+
+  @SubscribeMessage('get_all')
+  async getAll(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTGetAllRequestFromObject) {
+    if (!payload.projectId) throw new WsException('Bad payload');
+    this.objectPermissionFilter(socket, payload.projectId);
+
+    /*return {
+      type: 'get',
+      value: await this.iotProjectService.getDocument(payload.projectId),
+    };*/
+  }
+
+  @SubscribeMessage('listen')
+  async listen(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTListenRequestFromObject) {
+    if (!payload.projectId && Array.isArray(payload.fields)) throw new WsException('Bad payload');
+    const { object } = await this.objectPermissionFilter(socket, payload.projectId);
+
+    const fields = payload.fields.filter(f => typeof f === 'string');
+    object.listen(payload.projectId, fields);
+  }
+
   @SubscribeMessage('send_object')
-  send_object(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTSocketToObjectRequest) {
+  send_object(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTActionRequestFromWatcher) {
     if (!payload.targetId || !payload.actionId || !payload.value) throw new WsException('Bad payload');
 
     const watcher = WatcherClient.getClientBySocket(socket);
@@ -117,24 +166,15 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     // TOOD : Add sending permission
     //if (!watcher.hasProjectRights(payload.projectId)) throw new WsException('Forbidden');
 
-    watcher.sendToObject(payload);
+    watcher.sendActionToObject(payload);
   }
 
   @SubscribeMessage('send_route')
-  async send_route(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTSocketRouteRequest) {
+  async send_route(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTSocketRouteRequestFromObject) {
     if (!payload.routePath || !payload.data || !payload.projectId) throw new WsException('Bad payload');
-
-    const object = ObjectClient.getClientBySocket(socket);
-    if (!object) throw new WsException('Forbidden');
-
-    const project = await this.iotProjectService.findOne(payload.projectId);
-    if (!project) throw new WsException('No project with id');
-
-    if (project.interactRights !== IOTPROJECT_INTERACT_RIGHTS.ANYONE && !object.hasProjectRights(payload.projectId))
-      throw new WsException('Forbidden');
+    this.objectPermissionFilter(socket, payload.projectId);
 
     const { route } = await this.iotProjectService.findOneWithRoute(payload.projectId, payload.routePath);
-
     await this.iotProjectService.sendRoute(route, payload.data);
   }
 }

@@ -104,7 +104,7 @@ export class IoTProjectController {
     if (project.creator.id !== user.id && !hasRole(user, Role.STAFF))
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
 
-    return await this.IoTProjectService.updateDocument(id, document);
+    return await this.IoTProjectService.setDocument(id, document);
   }
 
   @Get(':id/routes')

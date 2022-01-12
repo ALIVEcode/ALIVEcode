@@ -210,8 +210,15 @@ export class IoTProjectService {
     this.setDocument(id, document, project.document);
   }
 
-  async getDocument(id: string) {
-    return (await this.findOne(id)).document;
+  async getDocument(projectId: string) {
+    return (await this.findOne(projectId)).document;
+  }
+
+  async getField(projectId: string, field: string) {
+    const doc = await this.getDocument(projectId);
+    const entries = this.getDocumentEntries(doc, true);
+
+    return field in entries ? entries[field] : null;
   }
 
   async updateComponent(id: string, componentId: string, value: any, sendUpdate = false): Promise<void> {

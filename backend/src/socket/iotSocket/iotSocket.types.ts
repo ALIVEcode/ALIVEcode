@@ -9,8 +9,15 @@ export type IoTUpdateDocumentRequestFromObject = {
   fields: JsonObj;
 };
 
-export type IoTGetAllRequestFromObject = {
+export type IoTGetDocRequestFromObject = {
   projectId: string;
+  objectId: string;
+};
+
+export type IoTGetFieldRequestFromObject = {
+  projectId: string;
+  objectId: string;
+  field: string;
 };
 
 export type IoTListenRequestFromObject = {

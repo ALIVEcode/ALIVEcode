@@ -1,4 +1,4 @@
-import { Logger, UseInterceptors } from '@nestjs/common';
+import { Get, Logger, UseInterceptors, Controller, Body, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
 import {
   ConnectedSocket,
   MessageBody,
@@ -16,7 +16,7 @@ import {
   IoTUpdateRequestFromObject,
   IoTSocketRouteRequestFromObject,
   IoTUpdateDocumentRequestFromObject,
-  IoTGetAllRequestFromObject,
+  IoTGetDocRequestFromObject,
 } from './iotSocket.types';
 import { IoTObjectService } from '../../models/iot/IoTobject/IoTobject.service';
 import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
@@ -29,10 +29,11 @@ import {
   ObjectClient,
 } from './iotSocket.types';
 import { IOTPROJECT_INTERACT_RIGHTS } from '../../models/iot/IoTproject/entities/IoTproject.entity';
-import { IoTListenRequestFromObject } from './iotSocket.types';
+import { IoTListenRequestFromObject, IoTGetFieldRequestFromObject } from './iotSocket.types';
 
 @UseInterceptors(DTOInterceptor)
 @WebSocketGateway(8881)
+@Controller('iot/aliot')
 export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnGatewayInit {
   private logger: Logger = new Logger('IoTGateway');
 
@@ -136,17 +137,6 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     await this.iotProjectService.updateDocument(payload.projectId, payload.fields);
   }
 
-  @SubscribeMessage('get_all')
-  async getAll(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTGetAllRequestFromObject) {
-    if (!payload.projectId) throw new WsException('Bad payload');
-    this.objectPermissionFilter(socket, payload.projectId);
-
-    /*return {
-      type: 'get',
-      value: await this.iotProjectService.getDocument(payload.projectId),
-    };*/
-  }
-
   @SubscribeMessage('listen')
   async listen(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTListenRequestFromObject) {
     if (!payload.projectId && Array.isArray(payload.fields)) throw new WsException('Bad payload');
@@ -176,5 +166,38 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
 
     const { route } = await this.iotProjectService.findOneWithRoute(payload.projectId, payload.routePath);
     await this.iotProjectService.sendRoute(route, payload.data);
+  }
+
+  /*****   HTTP PROTOCOLS   *****/
+
+  @Post('getDoc')
+  async getAll(@Body() payload: IoTGetDocRequestFromObject) {
+    if (!payload.projectId || !payload.objectId) throw new HttpException('Bad payload', HttpStatus.BAD_REQUEST);
+    const obj = ObjectClient.getClientById(payload.objectId);
+    if (!obj) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+
+    try {
+      this.objectPermissionFilter(obj.getSocket(), payload.projectId);
+    } catch {
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    }
+
+    return await this.iotProjectService.getDocument(payload.projectId);
+  }
+
+  @Post('getField')
+  async getField(@Body() payload: IoTGetFieldRequestFromObject) {
+    if (!payload.projectId || !payload.objectId || !payload.field)
+      throw new HttpException('Bad payload', HttpStatus.BAD_REQUEST);
+    const obj = ObjectClient.getClientById(payload.objectId);
+    if (!obj) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+
+    try {
+      this.objectPermissionFilter(obj.getSocket(), payload.projectId);
+    } catch {
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    }
+
+    return await this.iotProjectService.getField(payload.projectId, payload.field);
   }
 }

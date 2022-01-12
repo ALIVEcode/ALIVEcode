@@ -29,9 +29,11 @@ const IoTLogsComponent = ({ component }: { component: IoTLogs }) => {
 				</div>
 			</div>
 			<div>
-				<Button onClick={() => component.clearLogs()} variant="danger">
-					Clear logs
-				</Button>
+				{!component.isRef() && (
+					<Button onClick={() => component.clearLogs()} variant="danger">
+						Clear logs
+					</Button>
+				)}
 			</div>
 		</StyledIoTLogsComponent>
 	);

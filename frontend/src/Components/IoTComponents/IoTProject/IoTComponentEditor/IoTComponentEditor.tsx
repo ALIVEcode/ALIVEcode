@@ -91,96 +91,29 @@ const IoTComponentEditor = ({
 		);
 	};
 
-	const renderComponentSpecificFields = () => {
+	const renderStaticValue = () => {
 		if (component instanceof IoTProgressBar)
 			return (
-				<>
-					<InputGroup
-						label="Value"
-						type="range"
-						min={component.getMin()}
-						max={component.getMax()}
-						value={component.value}
-						className="mb-2"
-						onChange={(e: any) => component.setValue(e.target.value)}
-						disabled={!canEdit}
-					/>
-					<InputGroup
-						label="Minimum"
-						value={component.getMin()}
-						type="number"
-						className="mb-2"
-						onChange={(e: any) =>
-							component.setRange(e.target.value, component.getMax())
-						}
-						disabled={!canEdit}
-					/>
-					<InputGroup
-						label="Maximum"
-						value={component.getMax()}
-						type="number"
-						className="mb-2"
-						onChange={(e: any) =>
-							component.setRange(component.getMin(), e.target.value)
-						}
-						disabled={!canEdit}
-					/>
-					<InputGroup
-						label="Is Percentage"
-						defaultChecked={component.isPercentage}
-						type="checkbox"
-						className="mb-2"
-						onChange={(e: any) => {
-							component.setIsPercentage(e.target.checked);
-						}}
-						disabled={!canEdit}
-					/>
-				</>
+				<InputGroup
+					label="Value"
+					type="range"
+					min={component.getMin()}
+					max={component.getMax()}
+					value={component.value}
+					className="mb-2"
+					onChange={(e: any) => component.setValue(e.target.value)}
+					disabled={!canEdit}
+				/>
 			);
 		if (component instanceof IoTButton)
 			return (
-				<>
-					<InputGroup
-						label="Value (label)"
-						value={component.value}
-						className="mb-2"
-						onChange={(e: any) => component.setValue(e.target.value)}
-						disabled={!canEdit}
-					/>
-					<hr />
-					<h3>On Click</h3>
-					<InputGroup
-						label="Targetted IoTObject"
-						as="select"
-						className="mb-2"
-						onChange={(e: any) => component.setTargetId(e.target.value || null)}
-						disabled={!canEdit}
-						value={component.getTargetId() || ''}
-					>
-						<option></option>
-						{iotObjects?.map((obj, idx) => (
-							<option key={idx} value={obj.id}>
-								{obj.name}
-							</option>
-						))}
-					</InputGroup>
-					<InputGroup
-						label="Action id"
-						className="mb-2"
-						type="number"
-						value={component.getActionId()}
-						onChange={(e: any) => component.setActionId(e.target.value)}
-						disabled={!canEdit}
-					/>
-					<InputGroup
-						label="Action Data"
-						as="textarea"
-						className="mb-2"
-						value={component.getActionData() || '{}'}
-						onChange={(e: any) => component.setActionData(e.target.value)}
-						disabled={!canEdit}
-					/>
-				</>
+				<InputGroup
+					label="Value (label)"
+					value={component.value}
+					className="mb-2"
+					onChange={(e: any) => component.setValue(e.target.value)}
+					disabled={!canEdit}
+				/>
 			);
 		if (component instanceof IoTLogs)
 			return (
@@ -251,52 +184,130 @@ const IoTComponentEditor = ({
 			);
 		if (component instanceof IoTLed)
 			return (
+				<InputGroup
+					label="LED on/off"
+					type="checkbox"
+					defaultChecked={component.value}
+					className="mb-2"
+					onChange={(e: any) => component.setValue(e.target.checked)}
+					disabled={!canEdit}
+				/>
+			);
+		if (component instanceof IoTLabel)
+			return (
+				<InputGroup
+					label="Displayed Text"
+					value={component.value}
+					className="mb-2"
+					onChange={(e: any) => component.setValue(e.target.value)}
+					disabled={!canEdit}
+				/>
+			);
+		if (component instanceof IoTBuzzer)
+			return (
+				<InputGroup
+					label="Frequency"
+					type="number"
+					min={0}
+					max={10000}
+					value={component.value}
+					className="mb-2"
+					onChange={(e: any) => component.setValue(e.target.value)}
+					disabled={!canEdit}
+				/>
+			);
+	};
+
+	const renderComponentSpecificFields = () => {
+		if (component instanceof IoTProgressBar)
+			return (
 				<>
 					<InputGroup
-						label="LED on/off"
-						type="checkbox"
-						defaultChecked={component.value}
+						label="Minimum"
+						value={component.getMin()}
+						type="number"
 						className="mb-2"
-						onChange={(e: any) => component.setValue(e.target.checked)}
+						onChange={(e: any) =>
+							component.setRange(e.target.value, component.getMax())
+						}
+						disabled={!canEdit}
+					/>
+					<InputGroup
+						label="Maximum"
+						value={component.getMax()}
+						type="number"
+						className="mb-2"
+						onChange={(e: any) =>
+							component.setRange(component.getMin(), e.target.value)
+						}
+						disabled={!canEdit}
+					/>
+					<InputGroup
+						label="Is Percentage"
+						defaultChecked={component.isPercentage}
+						type="checkbox"
+						className="mb-2"
+						onChange={(e: any) => {
+							component.setIsPercentage(e.target.checked);
+						}}
+						disabled={!canEdit}
+					/>
+				</>
+			);
+		if (component instanceof IoTButton)
+			return (
+				<>
+					<hr />
+					<h3 className="text-2xl mt-2">On Click</h3>
+					<InputGroup
+						label="Targetted IoTObject"
+						as="select"
+						className="mb-2"
+						onChange={(e: any) => component.setTargetId(e.target.value || null)}
+						disabled={!canEdit}
+						value={component.getTargetId() || ''}
+					>
+						<option></option>
+						{iotObjects?.map((obj, idx) => (
+							<option key={idx} value={obj.id}>
+								{obj.name}
+							</option>
+						))}
+					</InputGroup>
+					<InputGroup
+						label="Action id"
+						className="mb-2"
+						type="number"
+						value={component.getActionId()}
+						onChange={(e: any) => component.setActionId(e.target.value)}
+						disabled={!canEdit}
+					/>
+					<InputGroup
+						label="Action Data"
+						as="textarea"
+						className="mb-2"
+						value={component.getActionData() || '{}'}
+						onChange={(e: any) => component.setActionData(e.target.value)}
 						disabled={!canEdit}
 					/>
 				</>
 			);
 		if (component instanceof IoTLabel)
 			return (
-				<>
-					<InputGroup
-						label="Displayed Text"
-						value={component.value}
-						className="mb-2"
-						onChange={(e: any) => component.setValue(e.target.value)}
-						disabled={!canEdit}
-					/>
-					<InputGroup
-						label="Font size"
-						type="range"
-						min={10}
-						max={60}
-						value={component.getFontSize()}
-						className="mb-2"
-						onChange={(e: any) => component.setFontSize(e.target.value)}
-						disabled={!canEdit}
-					/>
-				</>
+				<InputGroup
+					label="Font size"
+					type="range"
+					min={10}
+					max={60}
+					value={component.getFontSize()}
+					className="mb-2"
+					onChange={(e: any) => component.setFontSize(e.target.value)}
+					disabled={!canEdit}
+				/>
 			);
 		if (component instanceof IoTBuzzer)
 			return (
 				<>
-					<InputGroup
-						label="Frequency"
-						type="number"
-						min={0}
-						max={10000}
-						value={component.value}
-						className="mb-2"
-						onChange={(e: any) => component.setValue(e.target.value)}
-						disabled={!canEdit}
-					/>
 					<InputGroup
 						label="Sound Duration (seconds)"
 						type="range"
@@ -371,7 +382,8 @@ const IoTComponentEditor = ({
 			>
 				{renderDocumentEntries()}
 			</InputGroup>
-			{!component.isRef() && renderComponentSpecificFields()}
+			{!component.isRef() && renderStaticValue()}
+			{renderComponentSpecificFields()}
 			<IoTGenericComponent component={component}></IoTGenericComponent>
 			<Button
 				disabled={!canEdit}

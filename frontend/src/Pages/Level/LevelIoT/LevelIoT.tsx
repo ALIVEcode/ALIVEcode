@@ -1,7 +1,6 @@
-
 import { useContext, useEffect, useMemo } from 'react';
 import LoadingScreen from '../../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
-import IoTProjectBody from '../../../Components/IoTComponents/IoTProject/IoTProjectBody/IotProjectBody';
+import IoTProjectInterface from '../../../Components/IoTComponents/IoTProject/IoTProjectInterface/IotProjectInterface';
 import { IoTProjectContext } from '../../../state/contexts/IoTProjectContext';
 import FillContainer from '../../../Components/UtilsComponents/FillContainer/FillContainer';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
@@ -109,7 +108,7 @@ const IoTLevel = ({ initialCode }: { initialCode: string }) => {
 				</div>
 				<div className="flex flex-col w-1/2">
 					<div className="h-2/3 w-full">
-						<IoTProjectBody noTopRow />
+						<IoTProjectInterface noTopRow />
 					</div>
 					<div className="h-1/3">
 						<Cmd ref={cmdRef}></Cmd>

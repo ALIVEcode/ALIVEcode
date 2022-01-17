@@ -1,42 +1,51 @@
-import { IoTProjectLayout } from '../IoTproject.entity';
+import { IoTProject, IoTProjectLayout } from '../IoTproject.entity';
 import { IoTTarget } from './IoTTypes';
 import { IoTComponent } from './IoTComponent';
 import { IoTSocket } from './IoTSocket';
 
 export class IoTComponentManager {
+	private project: IoTProject;
 	private components: Array<IoTComponent>;
-	private onLayoutUpdate: (layout: Array<IoTComponent>) => void;
-	private onRender: (layout: Array<IoTComponent>) => void;
+	private onRequestRender: (
+		saveLayout: boolean,
+		layout: Array<IoTComponent>,
+	) => void;
 	private socket: IoTSocket;
 
 	constructor(
-		layout: IoTProjectLayout,
-		onLayoutUpdate: (layout: Array<IoTComponent>) => void,
-		onRender: (layout: Array<IoTComponent>) => void,
+		project: IoTProject,
+		onRender: (saveLayout: boolean, layout: Array<IoTComponent>) => void,
 		socket: IoTSocket,
 	) {
-		this.components = layout.components;
-		this.onLayoutUpdate = onLayoutUpdate;
-		this.onRender = onRender;
+		this.project = project;
+		this.onRequestRender = onRender;
 		this.socket = socket;
 
+		this.setNewLayout(project.layout);
+		this.render();
+	}
+
+	public setNewLayout(layout: IoTProjectLayout) {
+		this.components = layout.components;
 		this.components = this.components.map(c => {
 			c.setComponentManager(this);
 			return c;
 		});
-
-		this.render();
 	}
 
 	public getSocket() {
 		return this.socket;
 	}
 
+	public getProjectDocument() {
+		return this.project.document;
+	}
+
 	public updateComponent(id: string, data: any) {
 		const component = this.getComponent(id);
 		if (!component) return;
 		component.update(data);
-		this.render();
+		this.render(false);
 	}
 
 	public getComponent(id: string): IoTComponent | undefined {
@@ -64,7 +73,10 @@ export class IoTComponentManager {
 
 	public send(target: IoTTarget) {}
 
-	public render() {
-		this.onRender(this.components);
+	public render(saveLayout?: boolean) {
+		this.onRequestRender(
+			saveLayout === undefined ? true : saveLayout,
+			this.components,
+		);
 	}
 }

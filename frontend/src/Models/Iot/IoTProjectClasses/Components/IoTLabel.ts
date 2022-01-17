@@ -3,11 +3,16 @@ import { IoTComponent, IOT_COMPONENT_TYPE } from '../IoTComponent';
 
 @Exclude()
 export class IoTLabel extends IoTComponent {
+	public defaultValue: string = 'Unset';
 	public value: string = 'Unset';
 	public type = IOT_COMPONENT_TYPE.LABEL;
 
 	@Expose()
 	private fontSize: number = 20;
+
+	public validate(val: any) {
+		return typeof val === 'string';
+	}
 
 	setValue(val: any) {
 		super.setValue(val.toString());

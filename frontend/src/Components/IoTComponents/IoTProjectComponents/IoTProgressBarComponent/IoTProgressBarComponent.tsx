@@ -7,7 +7,7 @@ const IoTProgressBarComponent = ({
 	component: IoTProgressBar;
 }) => {
 	const percentage =
-		(component.value - component.getMin()) /
+		(component.displayedValue - component.getMin()) /
 		(component.getMax() - component.getMin());
 
 	return (
@@ -26,9 +26,9 @@ const IoTProgressBarComponent = ({
 					></div>
 				</div>
 				<span className="my-progress-span">
-					{component.value}
+					{component.displayedValue}
 					{component.isPercentage && '%'}
-					{!component.value && !component.isPercentage && '\u00A0'}
+					{!component.displayedValue && !component.isPercentage && '\u00A0'}
 				</span>
 			</div>
 		</StyledIoTProgressBar>

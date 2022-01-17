@@ -18,21 +18,6 @@ export abstract class IoTComponent {
 	@Expose()
 	public name: string;
 
-	public setName(newName: string) {
-		this.name = newName;
-		this.getComponentManager()?.render();
-	}
-
-	public setId(newId: string) {
-		this.id = newId;
-		this.getComponentManager()?.render();
-	}
-
-	public setValue(newValue: any) {
-		this.value = newValue;
-		this.getComponentManager()?.render();
-	}
-
 	@Expose()
 	public abstract type: IOT_COMPONENT_TYPE;
 
@@ -48,7 +33,73 @@ export abstract class IoTComponent {
 		}
 		return value;
 	})
-	public abstract value: any;
+	public abstract value: any | string;
+	public abstract defaultValue: any;
+	private refValue: any = undefined;
+
+	public updateRef() {
+		if (this.isRef()) this.refValue = this.getValueByRef();
+	}
+
+	public setName(newName: string) {
+		this.name = newName;
+		this.getComponentManager()?.render();
+	}
+
+	public setId(newId: string) {
+		this.id = newId;
+		this.getComponentManager()?.render();
+	}
+
+	public setValue(newValue: any) {
+		this.refValue = undefined;
+		this.value = newValue;
+		this.getComponentManager()?.render();
+	}
+
+	public isRef() {
+		return (
+			typeof this.value === 'string' &&
+			this.value.match(/^\/document([^\s]+)$/) != null
+		);
+	}
+
+	public getValueByRef = () => {
+		const doc = this.getComponentManager()?.getProjectDocument();
+		if (!doc) return;
+		const paths = this.value.split('/').slice(2, this.value.split('/').length);
+
+		const comp = this;
+		function getDeepValue(
+			obj: { [key: string]: any },
+			keys: string[],
+			idx: number,
+		): undefined | typeof comp.value {
+			const val = obj[keys[idx]];
+			if (idx === keys.length - 1 && comp.validate(val)) {
+				return val;
+			} else if (typeof val === 'object') {
+				return getDeepValue(val, paths, idx + 1);
+			}
+		}
+
+		const value = getDeepValue(doc, paths, 0);
+		return value;
+	};
+
+	public get displayedValue() {
+		if (this.isRef()) {
+			if (this.refValue == null) this.refValue = this.getValueByRef();
+			return this.refValue;
+		}
+		return this.value;
+	}
+
+	public reset() {
+		this.setValue(this.defaultValue);
+	}
+
+	public abstract validate(val: any): boolean;
 
 	private componentManager: IoTComponentManager | null = null;
 

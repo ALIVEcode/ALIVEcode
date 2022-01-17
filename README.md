@@ -25,7 +25,7 @@ Plateforme Web faite par le laboraoire LRIMa du collège Maisonneuve touchant pl
 
 # Installation
 - ### Setup de Nodejs
-    **Version de nodejs recommandée: v.14.7.5 ou supérieure**
+    **Version de nodejs recommandée: v.14.7.5 à v.16.13.2**
     - ##### Installation des librairies
       ```cmd
       cd backend

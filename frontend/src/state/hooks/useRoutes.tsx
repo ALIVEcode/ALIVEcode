@@ -44,6 +44,7 @@ import ForumSearch from '../../Pages/Forum/ForumSearch/ForumSearch';
 import Chat from '../../Pages/Chat/Chat';
 import { LEVEL_TYPE } from '../../Models/Level/level.entity';
 import DashboardNew from '../../Pages/DashboardNew/DashboardNew';
+import DevHome from '../../Pages/Dev/DevHome';
 
 export interface Route {
 	path: string;
@@ -340,6 +341,14 @@ const useRoutes = () => {
 		forum_post_form: {
 			path: '/forum/post',
 			component: <ForumPostForm></ForumPostForm>,
+		},
+		dev: {
+			path: '/dev',
+			component: <DevHome></DevHome>,
+		},
+		dev_web: {
+			path: '/dev/web',
+			component: <></>,
 		},
 	});
 

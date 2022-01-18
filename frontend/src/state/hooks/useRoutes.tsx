@@ -45,6 +45,7 @@ import Chat from '../../Pages/Chat/Chat';
 import { LEVEL_TYPE } from '../../Models/Level/level.entity';
 import DashboardNew from '../../Pages/DashboardNew/DashboardNew';
 import DevHome from '../../Pages/Dev/DevHome';
+import DevWeb from '../../Pages/Dev/DevWeb';
 
 export interface Route {
 	path: string;
@@ -348,7 +349,7 @@ const useRoutes = () => {
 		},
 		dev_web: {
 			path: '/dev/web',
-			component: <></>,
+			component: <DevWeb></DevWeb>,
 		},
 	});
 

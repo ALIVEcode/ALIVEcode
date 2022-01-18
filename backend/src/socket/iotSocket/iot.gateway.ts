@@ -14,9 +14,10 @@ import { Server, WebSocket } from 'ws';
 import {
   IoTActionRequestFromWatcher,
   IoTUpdateRequestFromObject,
-  IoTSocketRouteRequestFromObject,
+  IoTRouteRequestFromObject,
   IoTUpdateDocumentRequestFromObject,
   IoTGetDocRequestFromObject,
+  Client,
 } from './iotSocket.types';
 import { IoTObjectService } from '../../models/iot/IoTobject/IoTobject.service';
 import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
@@ -29,7 +30,12 @@ import {
   ObjectClient,
 } from './iotSocket.types';
 import { IOTPROJECT_INTERACT_RIGHTS } from '../../models/iot/IoTproject/entities/IoTproject.entity';
-import { IoTListenRequestFromObject, IoTGetFieldRequestFromObject } from './iotSocket.types';
+import { IoTBroadcastRequestToObject } from './iotSocket.types';
+import {
+  IoTListenRequestFromObject,
+  IoTGetFieldRequestFromObject,
+  IoTBroadcastRequestFromBoth,
+} from './iotSocket.types';
 
 @UseInterceptors(DTOInterceptor)
 @WebSocketGateway(8881)
@@ -160,12 +166,36 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   }
 
   @SubscribeMessage('send_route')
-  async send_route(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTSocketRouteRequestFromObject) {
+  async send_route(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTRouteRequestFromObject) {
     if (!payload.routePath || !payload.data || !payload.projectId) throw new WsException('Bad payload');
     this.objectPermissionFilter(socket, payload.projectId);
 
     const { route } = await this.iotProjectService.findOneWithRoute(payload.projectId, payload.routePath);
     await this.iotProjectService.sendRoute(route, payload.data);
+  }
+
+  @SubscribeMessage('broadcast')
+  async broadcast(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTBroadcastRequestFromBoth) {
+    console.log(payload);
+    if (!payload.projectId || !payload.data) throw new WsException('Bad payload');
+    const client = Client.getClientBySocket(socket);
+    if (client instanceof ObjectClient) {
+      this.objectPermissionFilter(socket, payload.projectId);
+    } else {
+      throw new HttpException('Not Implemented', HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    const data: IoTBroadcastRequestToObject = {
+      event: 'broadcast',
+      data: {
+        projectId: payload.projectId,
+        data: payload.data,
+      },
+    };
+
+    const objects = ObjectClient.getClientsByProject(payload.projectId);
+    console.log(objects.length);
+    objects.map(o => o.send(data));
   }
 
   /*****   HTTP PROTOCOLS   *****/

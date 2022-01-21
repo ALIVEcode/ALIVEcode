@@ -89,11 +89,19 @@ const DashboardNew = (props: DashboardNewProps) => {
 			setTabSelected({ type: 'levels' });
 		else if (pathname.includes('classroom')) {
 			const classroomId = query.get('id');
+			if (tabSelected.classroom?.id === classroomId) return;
 			const classroom = classrooms.find(c => c.id === classroomId);
 			if (!classroom) return;
 			setTabSelected({ type: 'classrooms', classroom });
 		}
-	}, [classrooms, navigate, pathname, query, tabSelected.index]);
+	}, [
+		classrooms,
+		navigate,
+		pathname,
+		query,
+		tabSelected.classroom?.id,
+		tabSelected.index,
+	]);
 
 	useEffect(() => {
 		if (!user) return;
@@ -185,7 +193,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 		<StyledDashboard>
 			<DashboardContext.Provider value={ctx}>
 				<div className="flex h-full overflow-auto">
-					<div className="sidebar no-float w-1/4 table:1/6 laptop:1/8 desktop:1/12">
+					<div className="sidebar overflow-y-auto break-words no-float w-1/4 table:1/6 laptop:1/8 desktop:1/12">
 						<div
 							className={
 								'sidebar-btn ' +

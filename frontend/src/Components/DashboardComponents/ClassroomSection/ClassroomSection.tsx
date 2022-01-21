@@ -1,5 +1,5 @@
 import { ClassroomSectionProps } from './classroomSectionTypes';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
@@ -19,14 +19,16 @@ const ClassroomSection = ({
 	const location = useLocation();
 	const navigate = useNavigate();
 	const query = useQuery();
+	const loaded = useRef<boolean | null>();
 
 	useEffect(() => {
 		setIsOpen(query.get('open')?.includes(classroom.id) ?? false);
 	}, [classroom.id, query]);
 
 	useEffect(() => {
-		if (isOpen && !classroom.courses) {
+		if (isOpen && !classroom.courses && !loaded.current) {
 			const loadCourses = async () => {
+				loaded.current = true;
 				await classroom.getCourses();
 				forceUpdate();
 			};

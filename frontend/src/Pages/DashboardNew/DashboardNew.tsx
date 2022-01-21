@@ -87,7 +87,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 			setTabSelected({ type: 'recents' });
 		else if (pathname.endsWith('levels') && tabSelected.index !== 1)
 			setTabSelected({ type: 'levels' });
-		else if (pathname.includes('classroom') && tabSelected.index !== 2) {
+		else if (pathname.includes('classroom')) {
 			const classroomId = query.get('id');
 			const classroom = classrooms.find(c => c.id === classroomId);
 			if (!classroom) return;

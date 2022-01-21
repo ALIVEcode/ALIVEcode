@@ -101,8 +101,8 @@ const ClassroomHeader: React.FC<
 				<path
 					d="M0 172L40 165.2C80 158.3 160 144.7 240 138.2C320 131.7 400 132.3 480 143.7C560 155 640 177 720 186.7C800 196.3 880 193.7 920 192.3L960 191L960 0L920 0C880 0 800 0 720 0C640 0 560 0 480 0C400 0 320 0 240 0C160 0 80 0 40 0L0 0Z"
 					fill={theme.color.primary}
-					stroke-linecap="round"
-					stroke-linejoin="miter"
+					strokeLinecap="round"
+					strokeLinejoin="miter"
 				></path>
 			</svg>
 			<Modal

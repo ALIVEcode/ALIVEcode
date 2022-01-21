@@ -24,7 +24,7 @@ const CourseContainer = ({ courses }: CourseContainerProps) => {
 		<div className="h-full mt-4 justify-start">
 			<div className="grid phone:grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4 big:grid-cols-5 gap-4">
 				{courses.map((c, idx) => (
-					<CourseCard course={c}></CourseCard>
+					<CourseCard key={idx} course={c}></CourseCard>
 				))}
 			</div>
 		</div>

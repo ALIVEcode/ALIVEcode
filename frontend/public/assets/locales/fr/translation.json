@@ -185,7 +185,8 @@
 		"levels": {
 			"title": "Niveaux",
 			"browse_levels": "Explorer les niveaux de la communauté",
-			"create_level": "Créer un niveau"
+			"create_level": "Créer un niveau",
+			"empty": "Tu n'as pas de niveau"
 		},
 		"classrooms": {
 			"title": "Classes",

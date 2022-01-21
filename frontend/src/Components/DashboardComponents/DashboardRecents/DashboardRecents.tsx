@@ -6,7 +6,6 @@ import { UserContext } from '../../../state/contexts/UserContext';
 import Button from '../../UtilsComponents/Buttons/Button';
 import { useNavigate } from 'react-router';
 import useRoutes from '../../../state/hooks/useRoutes';
-import FormModal from '../../UtilsComponents/FormModal/FormModal';
 
 export const DashboardRecents = () => {
 	const { getCourses, setFormJoinClassOpen } = useContext(DashboardContext);

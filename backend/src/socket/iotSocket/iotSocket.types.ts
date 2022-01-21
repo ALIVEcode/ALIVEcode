@@ -31,10 +31,15 @@ export type IoTUpdateRequestFromObject = {
   projectId: string;
 };
 
-export type IoTSocketRouteRequestFromObject = {
+export type IoTRouteRequestFromObject = {
   routePath: string;
   data: any;
   projectId: string;
+};
+
+export type IoTBroadcastRequestFromBoth = {
+  projectId: string;
+  data: any;
 };
 
 // REQUESTS TO OBJECTS
@@ -52,6 +57,14 @@ export type IoTListenRequestToObject = {
   data: {
     projectId: string;
     fields: { [key: string]: any };
+  };
+};
+
+export type IoTBroadcastRequestToObject = {
+  event: 'broadcast';
+  data: {
+    projectId: string;
+    data: any;
   };
 };
 
@@ -211,6 +224,10 @@ export class ObjectClient extends Client {
     return ObjectClient.objects.find(o => {
       return o.id === id;
     });
+  }
+
+  static getClientsByProject(projectId: string) {
+    return ObjectClient.objects.filter(o => o.projectRights.includes(projectId));
   }
 
   static isSocketAlreadyWatcher(socket: WebSocket) {

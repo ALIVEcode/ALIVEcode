@@ -1,4 +1,4 @@
-import { Level } from "../../../Models/Level/level.entity";
+import { Level } from '../../../Models/Level/level.entity';
 import { LevelAlive } from '../../../Models/Level/levelAlive.entity';
 import { LevelCode } from '../../../Models/Level/levelCode.entity';
 import styled from 'styled-components';
@@ -13,6 +13,7 @@ export const StyledLevelCard = styled.div`
 	margin: 10px;
 	border-radius: 10px;
 	transition: 0.2s;
+	color: white;
 
 	.content {
 		display: flex;
@@ -23,12 +24,12 @@ export const StyledLevelCard = styled.div`
 
 	.footer {
 		margin-top: 20px;
-		border-top: 2px solid var(--secondary-color);
+		border-top: 2px solid var(--bg-shade-two-color);
 		padding: 15px 40px 15px 40px;
 		display: flex;
 		justify-content: space-between;
 		font-size: 0.8em;
-		color: rgba(var(--foreground-color-rgb), 0.8);
+		color: rgb(255, 255, 255, 0.7);
 	}
 
 	.level-name {

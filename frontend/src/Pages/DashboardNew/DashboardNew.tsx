@@ -36,6 +36,8 @@ import {
 import { Course } from '../../Models/Course/course.entity';
 import { useNavigate } from 'react-router-dom';
 import useRoutes from '../../state/hooks/useRoutes';
+import DashboardLevels from '../../Components/DashboardComponents/DashboardLevels/DashboardLevels';
+import { Level } from '../../Models/Level/level.entity';
 
 const SwitchTabReducer = (
 	state: { index: number; classroom?: ClassroomModel },
@@ -44,7 +46,7 @@ const SwitchTabReducer = (
 	switch (action.type) {
 		case 'recents':
 			return { index: 0 };
-		case 'summary':
+		case 'levels':
 			return { index: 1 };
 		case 'classrooms':
 			if (action.classroom) {
@@ -78,12 +80,13 @@ const DashboardNew = (props: DashboardNewProps) => {
 		index: 0,
 	});
 	const [courses, setCourses] = useState<Course[]>();
+	const [levels, setLevels] = useState<Level[]>();
 
 	useEffect(() => {
 		if (pathname.endsWith('recents') && tabSelected.index !== 0)
 			setTabSelected({ type: 'recents' });
-		else if (pathname.endsWith('summary') && tabSelected.index !== 1)
-			setTabSelected({ type: 'summary' });
+		else if (pathname.endsWith('levels') && tabSelected.index !== 1)
+			setTabSelected({ type: 'levels' });
 		else if (pathname.includes('classroom') && tabSelected.index !== 2) {
 			const classroomId = query.get('id');
 			const classroom = classrooms.find(c => c.id === classroomId);
@@ -111,10 +114,10 @@ const DashboardNew = (props: DashboardNewProps) => {
 		});
 	};
 
-	const openSummary = () => {
+	const openLevels = () => {
 		query.delete('id');
 		navigate({
-			pathname: `/dashboard/summary`,
+			pathname: `/dashboard/levels`,
 			search: query.toString(),
 		});
 	};
@@ -132,7 +135,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 			case 0:
 				return <DashboardRecents></DashboardRecents>;
 			case 1:
-				return 'Sommaire';
+				return <DashboardLevels></DashboardLevels>;
 			case 2:
 				if (!tabSelected.classroom) return;
 				return (
@@ -150,6 +153,12 @@ const DashboardNew = (props: DashboardNewProps) => {
 		setCourses(courses);
 	}, [user]);
 
+	const loadLevels = useCallback(async () => {
+		if (!user) return;
+		const levels = await api.db.users.getLevels({ id: user.id });
+		setLevels(levels);
+	}, [user]);
+
 	const ctx: DashboardContextValues = useMemo(() => {
 		return {
 			getCourses: () => {
@@ -162,8 +171,15 @@ const DashboardNew = (props: DashboardNewProps) => {
 			getClassrooms: () => {
 				return classrooms;
 			},
+			getLevels: () => {
+				if (!levels) {
+					loadLevels();
+					return [];
+				}
+				return levels;
+			},
 		};
-	}, [classrooms, courses, loadCourses]);
+	}, [classrooms, courses, levels, loadCourses, loadLevels]);
 
 	return (
 		<StyledDashboard>
@@ -185,10 +201,10 @@ const DashboardNew = (props: DashboardNewProps) => {
 								'sidebar-btn ' +
 								(tabSelected.index === 1 ? 'sidebar-selected' : '')
 							}
-							onClick={openSummary}
+							onClick={openLevels}
 						>
 							<FontAwesomeIcon className="sidebar-icon" icon={faStar} />
-							<label className="sidebar-btn-text">Sommaire</label>
+							<label className="sidebar-btn-text">Niveaux</label>
 						</div>
 
 						<hr />
@@ -224,7 +240,9 @@ const DashboardNew = (props: DashboardNewProps) => {
 							></ClassroomSection>
 						))}
 					</div>
-					<div>{renderTabSelected()}</div>
+					<div className="w-full h-full overflow-y-auto p-4">
+						{renderTabSelected()}
+					</div>
 				</div>
 			</DashboardContext.Provider>
 			<FormModal

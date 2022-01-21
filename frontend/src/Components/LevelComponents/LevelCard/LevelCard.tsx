@@ -66,12 +66,15 @@ const LevelCard = ({ level, enterEdit }: LevelCardProps) => {
 								size="2x"
 							/>
 						)}
+						{/*
+						
 						<LevelButton
 							bgColor="rgb(255, 58, 58)"
 							color="white"
 							icon={faHeart}
 							size="2x"
 						/>
+						*/}
 						<LevelButton
 							onClick={() =>
 								enterEdit

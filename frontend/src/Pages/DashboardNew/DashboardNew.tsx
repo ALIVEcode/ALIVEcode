@@ -184,8 +184,8 @@ const DashboardNew = (props: DashboardNewProps) => {
 	return (
 		<StyledDashboard>
 			<DashboardContext.Provider value={ctx}>
-				<div className="dashboard-row">
-					<div className="sidebar no-float phone:w-1/4 table:1/6 laptop:1/8 desktop:1/12">
+				<div className="flex h-full overflow-auto">
+					<div className="sidebar no-float w-1/4 table:1/6 laptop:1/8 desktop:1/12">
 						<div
 							className={
 								'sidebar-btn ' +
@@ -240,7 +240,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 							></ClassroomSection>
 						))}
 					</div>
-					<div className="w-full h-full overflow-y-auto p-4">
+					<div className="w-3/4 table:5/6 laptop:7/8 desktop:11/12 h-full overflow-y-auto">
 						{renderTabSelected()}
 					</div>
 				</div>

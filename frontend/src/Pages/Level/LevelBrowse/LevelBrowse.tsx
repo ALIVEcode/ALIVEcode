@@ -21,24 +21,27 @@ const LevelBrowse = (props: LevelBrowseProps) => {
 	const levels = browsingResult?.results;
 
 	return (
-		<StyledLevelBrowse>
-			<BrowsingMenu<Level>
-				fetchOnSubmit
-				apiRequest={api.db.levels.query}
-				onChange={res => setBrowsingResult(res)}
-			/>
-			<div className="levels">
-				{!levels ? (
-					<LoadingScreen relative />
-				) : (
-					<>
-						{levels.map((l, idx) => (
-							<LevelCard level={l} key={idx} />
-						))}
-					</>
-				)}
-			</div>
-		</StyledLevelBrowse>
+		<div className="p-4 relative">
+			<div className="text-3xl mb-4">Niveaux de la communauté</div>
+			<StyledLevelBrowse>
+				<BrowsingMenu<Level>
+					fetchOnSubmit
+					apiRequest={api.db.levels.query}
+					onChange={res => setBrowsingResult(res)}
+				/>
+				<div className="levels">
+					{!levels ? (
+						<LoadingScreen relative />
+					) : (
+						<>
+							{levels.map((l, idx) => (
+								<LevelCard level={l} key={idx} />
+							))}
+						</>
+					)}
+				</div>
+			</StyledLevelBrowse>
+		</div>
 	);
 };
 

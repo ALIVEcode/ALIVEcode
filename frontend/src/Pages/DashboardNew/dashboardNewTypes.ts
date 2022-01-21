@@ -15,17 +15,6 @@ export const StyledDashboard = styled.div`
 	background-color: var(--background-color);
 	font-family: var(--oxygen-font);
 
-	.dashboard-row {
-		position: relative;
-		height: 100%;
-		display: table-row;
-	}
-
-	.dashboard-row .no-float {
-		display: table-cell;
-		vertical-align: top;
-	}
-
 	.sidebar {
 		border-right: 1px solid var(--bg-shade-four-color);
 		padding: 0;

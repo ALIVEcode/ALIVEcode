@@ -6,7 +6,7 @@ export const DashboardRecents = () => {
 	const { getCourses } = useContext(DashboardContext);
 
 	return (
-		<div className="h-full">
+		<div className="h-full p-4">
 			<div className="section-title">Formations Récentes</div>
 			<div className="border-b w-1/3 border-[color:var(--bg-shade-four-color)]"></div>
 			<div>

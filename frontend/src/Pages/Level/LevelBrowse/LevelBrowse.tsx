@@ -6,6 +6,7 @@ import LevelCard from '../../../Components/LevelComponents/LevelCard/LevelCard';
 import BrowsingMenu from '../../../Components/MainComponents/BrowsingMenu/BrowsingMenu';
 import { BrowsingResults } from '../../../Components/MainComponents/BrowsingMenu/browsingMenuTypes';
 import api from '../../../Models/api';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Browsing menu that shows all the levels sorted with a query
@@ -15,14 +16,13 @@ import api from '../../../Models/api';
 const LevelBrowse = (props: LevelBrowseProps) => {
 	const [browsingResult, setBrowsingResult] =
 		useState<BrowsingResults<Level>>();
-	console.log(browsingResult);
-	console.log('coucou2' + setBrowsingResult);
-
 	const levels = browsingResult?.results;
+
+	const { t } = useTranslation();
 
 	return (
 		<div className="p-4 relative">
-			<div className="text-3xl mb-4">Niveaux de la communauté</div>
+			<div className="text-3xl mb-4">{t('msg.community_levels')}</div>
 			<StyledLevelBrowse>
 				<BrowsingMenu<Level>
 					fetchOnSubmit

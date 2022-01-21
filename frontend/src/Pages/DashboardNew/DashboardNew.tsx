@@ -202,7 +202,9 @@ const DashboardNew = (props: DashboardNewProps) => {
 							onClick={openRecents}
 						>
 							<FontAwesomeIcon className="sidebar-icon" icon={faHistory} />
-							<label className="sidebar-btn-text">Formations Récentes</label>
+							<label className="sidebar-btn-text">
+								{t('dashboard.recents.title')}
+							</label>
 						</div>
 						<div
 							className={
@@ -212,7 +214,9 @@ const DashboardNew = (props: DashboardNewProps) => {
 							onClick={openLevels}
 						>
 							<FontAwesomeIcon className="sidebar-icon" icon={faStar} />
-							<label className="sidebar-btn-text">Niveaux</label>
+							<label className="sidebar-btn-text">
+								{t('dashboard.levels.title')}
+							</label>
 						</div>
 
 						<hr />
@@ -223,7 +227,9 @@ const DashboardNew = (props: DashboardNewProps) => {
 							onMouseLeave={() => setHoveringClassroom(false)}
 						>
 							<FontAwesomeIcon className="sidebar-icon" icon={faBook} />
-							<label className="sidebar-header-text">Classes</label>
+							<label className="sidebar-header-text">
+								{t('dashboard.classrooms.title')}
+							</label>
 							{hoveringClassroom && (
 								<FontAwesomeIcon
 									onClick={() =>

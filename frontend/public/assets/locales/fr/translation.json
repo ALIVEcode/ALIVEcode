@@ -108,6 +108,7 @@
 		"description": "description",
 		"deleted_user": "Ancien utilisateur",
 		"search": "Rechercher",
+		"community_levels": "Niveaux de la communauté",
 		"creation_date": "Date de création",
 		"update_date": "Date de modification",
 		"time": {
@@ -174,24 +175,20 @@
 		}
 	},
 	"dashboard": {
+		"recents": {
+			"title": "Cours Récents"
+		},
+		"levels": {
+			"title": "Niveaux",
+			"browse_levels": "Explorer les niveaux de la communauté",
+			"create_level": "Créer un niveau"
+		},
 		"classrooms": {
-			"title": "Mes classes",
+			"title": "Classes",
 			"empty": {
 				"student": "Tu ne fais parti d'aucune classe",
 				"professor": "Tu ne possède aucune classe"
 			}
-		},
-		"levels": {
-			"title": "Niveaux",
-			"my_levels": "Mes niveaux",
-			"create_level": "Créer un niveau",
-			"browse_levels": "Rechercher un niveau"
-		},
-		"quizzes": {
-			"title": "Quiz",
-			"my_quizzes": "Mes quiz",
-			"create_quiz": "Créer un quiz",
-			"browse_quizzes": "Rechercher un quiz"
 		}
 	},
 	"classroom": {
@@ -215,7 +212,7 @@
 		"subject": "Sujet",
 		"code": {
 			"title": "Code de la classe",
-			"desc": "Donnez ce code aux élèves afin qu'ils puissent rejoindre la classe depuis le site!"
+			"desc": "Donnez ce code aux élèves afin qu'ils puissent rejoindre la classe depuis le tableau de bord!"
 		}
 	},
 	"course": {

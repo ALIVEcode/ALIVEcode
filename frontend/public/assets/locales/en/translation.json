@@ -108,6 +108,7 @@
 		"description": "description",
 		"deleted_user": "Deleted user",
 		"search": "Search",
+		"community_levels": "Community Levels",
 		"creation_date": "Creation date",
 		"update_date": "Update date",
 		"time": {
@@ -174,24 +175,20 @@
 		}
 	},
 	"dashboard": {
+		"recents": {
+			"title": "Recent Courses"
+		},
+		"levels": {
+			"title": "Levels",
+			"browse_levels": "Explore the community levels",
+			"create_level": "Create a level"
+		},
 		"classrooms": {
-			"title": "My classrooms",
+			"title": "Classrooms",
 			"empty": {
 				"student": "You are not part of any classroom",
 				"professor": "You do not have any classroom"
 			}
-		},
-		"levels": {
-			"title": "Levels",
-			"my_levels": "My levels",
-			"create_level": "Create a level",
-			"browse_levels": "Browse levels"
-		},
-		"quizzes": {
-			"title": "Quizzes",
-			"my_quizzes": "My quizzes",
-			"create_quiz": "Create a quiz",
-			"browse_quizzes": "Browse quizzes"
 		}
 	},
 	"classroom": {
@@ -215,7 +212,7 @@
 		"subject": "Subject",
 		"code": {
 			"title": "Code of the classroom",
-			"desc": "Give this code to your students so that they can join the classroom from the website!"
+			"desc": "Give this code to your students so that they can join the classroom from their dashboard!"
 		}
 	},
 	"course": {

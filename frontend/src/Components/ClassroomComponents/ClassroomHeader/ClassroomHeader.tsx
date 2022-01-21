@@ -119,7 +119,7 @@ const ClassroomHeader: React.FC<
 				{t('classroom.code.desc')}
 				<Badge
 					variant="third"
-					className="mt-4 text-4xl px-6 py-6"
+					className="!mt-4 !bg-green-500 !text-4xl !px-6 !py-6"
 					style={{ fontSize: '3em', textAlign: 'center' }}
 				>
 					{classroom.code}

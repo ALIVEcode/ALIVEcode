@@ -25,7 +25,7 @@ const LevelCard = ({ level, enterEdit }: LevelCardProps) => {
 	const { t } = useTranslation();
 
 	return (
-		<div className="mb-4 rounded-xl color-white bg-[color:var(--primary-color)] text-center tablet:text-left">
+		<div className="mb-4 rounded-xl text-white bg-[color:var(--primary-color)] text-center tablet:text-left">
 			<div className="flex flex-col tablet:flex-row items-center justify-between py-4 p-2 tablet:p-6 laptop:p-10 gap-4 tablet:gap-8">
 				<div className="w-full">
 					<div className="text-3xl tablet:text-4xl laptop:text-5xl mb-2 laptop:mb-4 break-words">
@@ -91,7 +91,7 @@ const LevelCard = ({ level, enterEdit }: LevelCardProps) => {
 					/>
 				</div>
 			</div>
-			<div className="flex gap-1 flex-col justify-between laptop:flex-row border-t border-[color:var(--bg-shade-two-color)] !py-4 p-2 tablet:p-6 laptop:p-10 text-xs laptop:text-sm text-gray-400">
+			<div className="flex gap-1 flex-col justify-between laptop:flex-row border-t border-[color:var(--bg-shade-two-color)] !py-4 p-2 tablet:p-6 laptop:p-10 text-xs laptop:text-sm text-gray-300">
 				<div>
 					{t('msg.creator')}:{' '}
 					{level.creator

@@ -15,30 +15,28 @@ const LevelFormMenu = () => {
 	const { t } = useTranslation();
 
 	return (
-		<FillContainer centered>
-			<div className="w-full h-full flex justify-center">
-				<Card
-					img={Voiture}
-					to={routes.auth.level_create_alive.path}
-					title={t('menu.level.alive')}
-				/>
-				<Card
-					img={Code}
-					to={routes.auth.level_create_code.path}
-					title={t('menu.level.code')}
-				/>
-				<Card
-					img={Code}
-					to={routes.auth.level_create_ai.path}
-					title={t('menu.level.ai')}
-				/>
-				<Card
-					img={Code}
-					to={routes.auth.level_create_iot.path}
-					title={t('menu.level.iot')}
-				/>
-			</div>
-		</FillContainer>
+		<div className="w-full h-full items-center justify-items-center grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4">
+			<Card
+				img={Voiture}
+				to={routes.auth.level_create_alive.path}
+				title={t('menu.level.alive')}
+			/>
+			<Card
+				img={Code}
+				to={routes.auth.level_create_code.path}
+				title={t('menu.level.code')}
+			/>
+			<Card
+				img={Code}
+				to={routes.auth.level_create_ai.path}
+				title={t('menu.level.ai')}
+			/>
+			<Card
+				img={Code}
+				to={routes.auth.level_create_iot.path}
+				title={t('menu.level.iot')}
+			/>
+		</div>
 	);
 };
 

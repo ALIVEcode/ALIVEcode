@@ -38,6 +38,7 @@ import { useNavigate } from 'react-router-dom';
 import useRoutes from '../../state/hooks/useRoutes';
 import DashboardLevels from '../../Components/DashboardComponents/DashboardLevels/DashboardLevels';
 import { Level } from '../../Models/Level/level.entity';
+import Button from '../../Components/UtilsComponents/Buttons/Button';
 
 const SwitchTabReducer = (
 	state: { index: number; classroom?: ClassroomModel },
@@ -186,6 +187,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 				}
 				return levels;
 			},
+			setFormJoinClassOpen,
 		};
 	}, [classrooms, courses, levels, loadCourses, loadLevels]);
 
@@ -245,14 +247,37 @@ const DashboardNew = (props: DashboardNewProps) => {
 
 						<hr />
 
-						{classrooms.map((classroom, idx) => (
-							<ClassroomSection
-								key={idx}
-								selected={tabSelected.classroom?.id === classroom.id}
-								onClick={() => openClassroom(classroom)}
-								classroom={classroom}
-							></ClassroomSection>
-						))}
+						{classrooms.length > 0 ? (
+							classrooms.map((classroom, idx) => (
+								<ClassroomSection
+									key={idx}
+									selected={tabSelected.classroom?.id === classroom.id}
+									onClick={() => openClassroom(classroom)}
+									classroom={classroom}
+								></ClassroomSection>
+							))
+						) : (
+							<div className="!text-xs !text-[color:var(--fg-shade-four-color)] !cursor-default flex flex-col items-center sidebar-classroom">
+								<i>
+									{user?.isProfessor()
+										? t('dashboard.classrooms.empty.professor')
+										: t('dashboard.classrooms.empty.student')}
+								</i>
+								<Button
+									className="!text-xs mt-2"
+									onClick={() =>
+										user?.isProfessor()
+											? navigate(routes.auth.create_classroom.path)
+											: setFormJoinClassOpen(true)
+									}
+									variant="primary"
+								>
+									{user?.isProfessor()
+										? t('dashboard.classrooms.add.professor')
+										: t('dashboard.classrooms.add.student')}
+								</Button>
+							</div>
+						)}
 					</div>
 					<div className="w-3/4 table:5/6 laptop:7/8 desktop:11/12 h-full overflow-y-auto">
 						{renderTabSelected()}

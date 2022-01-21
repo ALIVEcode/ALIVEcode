@@ -83,14 +83,15 @@ const LevelForm = ({ type }: LevelFormProps) => {
 								name: 'access',
 								required: true,
 								inputType: 'select',
-								default: LEVEL_ACCESS.PRIVATE,
 								selectOptions: LEVEL_ACCESS,
+								default: LEVEL_ACCESS.PRIVATE,
 							},
 							{
 								name: 'difficulty',
 								required: true,
 								inputType: 'select',
 								selectOptions: LEVEL_DIFFICULTY,
+								default: LEVEL_DIFFICULTY.MEDIUM,
 							},
 						]}
 						{...sharedProps}
@@ -124,14 +125,15 @@ const LevelForm = ({ type }: LevelFormProps) => {
 								name: 'access',
 								required: true,
 								inputType: 'select',
-								default: LEVEL_ACCESS.PRIVATE,
 								selectOptions: LEVEL_ACCESS,
+								default: LEVEL_ACCESS.PRIVATE,
 							},
 							{
 								name: 'difficulty',
 								required: true,
 								inputType: 'select',
 								selectOptions: LEVEL_DIFFICULTY,
+								default: LEVEL_DIFFICULTY.MEDIUM,
 							},
 						]}
 						{...sharedProps}
@@ -165,14 +167,15 @@ const LevelForm = ({ type }: LevelFormProps) => {
 								name: 'access',
 								required: true,
 								inputType: 'select',
-								default: LEVEL_ACCESS.PRIVATE,
 								selectOptions: LEVEL_ACCESS,
+								default: LEVEL_ACCESS.PRIVATE,
 							},
 							{
 								name: 'difficulty',
 								required: true,
 								inputType: 'select',
 								selectOptions: LEVEL_DIFFICULTY,
+								default: LEVEL_DIFFICULTY.MEDIUM,
 							},
 						]}
 						{...sharedProps}
@@ -206,15 +209,15 @@ const LevelForm = ({ type }: LevelFormProps) => {
 								name: 'access',
 								required: true,
 								inputType: 'select',
-								default: LEVEL_ACCESS.PRIVATE,
 								selectOptions: LEVEL_ACCESS,
+								default: LEVEL_ACCESS.PRIVATE,
 							},
 							{
 								name: 'difficulty',
 								required: true,
 								inputType: 'select',
-								default: LEVEL_DIFFICULTY.BEGINNER,
 								selectOptions: LEVEL_DIFFICULTY,
+								default: LEVEL_DIFFICULTY.MEDIUM,
 							},
 							{
 								name: 'project_id',

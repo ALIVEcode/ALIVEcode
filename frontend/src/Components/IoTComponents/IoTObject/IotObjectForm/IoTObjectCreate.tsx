@@ -1,4 +1,4 @@
-import Form from "../../../UtilsComponents/Form/Form"
+import Form from '../../../UtilsComponents/Form/Form';
 import { IOTOBJECT_LABEL } from '../../../../Models/Iot/IoTobject.entity';
 import { useAlert } from 'react-alert';
 import { IoTObjectCreateProps } from './iotObjectCreateProps';
@@ -40,6 +40,7 @@ const IoTObjectCreate = ({ onSubmit }: IoTObjectCreateProps) => {
 					required: true,
 					inputType: 'select',
 					selectOptions: IOTOBJECT_LABEL,
+					default: IOTOBJECT_LABEL.OTHER,
 				},
 			]}
 		/>

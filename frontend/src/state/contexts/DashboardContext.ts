@@ -7,10 +7,12 @@ export type DashboardContextValues = {
 	getCourses: () => Course[];
 	getClassrooms: () => Classroom[];
 	getLevels: () => Level[];
+	setFormJoinClassOpen: (bool: boolean) => void;
 };
 
 export const DashboardContext = createContext<DashboardContextValues>({
 	getCourses: () => [],
 	getClassrooms: () => [],
 	getLevels: () => [],
+	setFormJoinClassOpen: () => {},
 });

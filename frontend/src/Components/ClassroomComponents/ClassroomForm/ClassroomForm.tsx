@@ -51,6 +51,7 @@ const ClassroomForm = (props: ClassroomFormProps) => {
 						inputType: 'select',
 						required: true,
 						selectOptions: CLASSROOM_SUBJECT,
+						default: CLASSROOM_SUBJECT.INFORMATIC,
 					},
 				]}
 			/>

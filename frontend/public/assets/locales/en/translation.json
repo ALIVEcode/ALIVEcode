@@ -176,7 +176,11 @@
 	},
 	"dashboard": {
 		"recents": {
-			"title": "Recent Courses"
+			"title": "Recent Courses",
+			"empty": {
+				"student": "You have no recent activity. Join a public or private classroom to get started",
+				"professor": "You have no recent activity. Create a classroom to get started"
+			}
 		},
 		"levels": {
 			"title": "Levels",
@@ -185,9 +189,14 @@
 		},
 		"classrooms": {
 			"title": "Classrooms",
+			"no_courses": "No courses",
 			"empty": {
 				"student": "You are not part of any classroom",
 				"professor": "You do not have any classroom"
+			},
+			"add": {
+				"student": "Join a classroom",
+				"professor": "Create a classroom"
 			}
 		}
 	},

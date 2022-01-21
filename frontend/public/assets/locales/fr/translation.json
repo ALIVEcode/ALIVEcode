@@ -176,7 +176,11 @@
 	},
 	"dashboard": {
 		"recents": {
-			"title": "Cours Récents"
+			"title": "Cours Récents",
+			"empty": {
+				"student": "Tu n'as pas d'activité récente. Rejoins une classe public ou privée pour commencer à apprendre",
+				"professor": "Tu n'as pas d'activité récente. Crée une classe pour commencer"
+			}
 		},
 		"levels": {
 			"title": "Niveaux",
@@ -185,9 +189,14 @@
 		},
 		"classrooms": {
 			"title": "Classes",
+			"no_courses": "Aucun cours",
 			"empty": {
 				"student": "Tu ne fais parti d'aucune classe",
 				"professor": "Tu ne possède aucune classe"
+			},
+			"add": {
+				"student": "Rejoindre une classe",
+				"professor": "Créer une classe"
 			}
 		}
 	},

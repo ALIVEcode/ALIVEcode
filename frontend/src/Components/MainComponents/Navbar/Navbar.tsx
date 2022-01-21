@@ -244,7 +244,7 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 															'cursor-pointer block px-4 py-2 text-sm text-[color:var(--foreground-color)] hover:text-[color:var(--foreground-color)]',
 														)}
 													>
-														Theme
+														Theme {theme.name === 'dark' ? 'light' : 'dark'}
 													</div>
 												)}
 											</Menu.Item>

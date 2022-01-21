@@ -51,12 +51,14 @@ const IoTProjectCreate = () => {
 						required: true,
 						inputType: 'select',
 						selectOptions: IOTPROJECT_ACCESS,
+						default: IOTPROJECT_ACCESS.PRIVATE,
 					},
 					{
 						name: 'interactRights',
 						required: true,
 						inputType: 'select',
 						selectOptions: IOTPROJECT_INTERACT_RIGHTS,
+						default: IOTPROJECT_INTERACT_RIGHTS.PRIVATE,
 					},
 				]}
 			/>

@@ -7,6 +7,7 @@ import CourseSection from '../CourseSection/CourseSection';
 import { formatTooLong } from '../../../Types/formatting';
 import { useLocation, useNavigate } from 'react-router';
 import { useQuery } from '../../../state/hooks/useQuery';
+import { useTranslation } from 'react-i18next';
 
 const ClassroomSection = ({
 	classroom,
@@ -20,6 +21,7 @@ const ClassroomSection = ({
 	const navigate = useNavigate();
 	const query = useQuery();
 	const loaded = useRef<boolean | null>();
+	const { t } = useTranslation();
 
 	useEffect(() => {
 		setIsOpen(query.get('open')?.includes(classroom.id) ?? false);
@@ -92,7 +94,7 @@ const ClassroomSection = ({
 				) : (
 					<div className="sidebar-course">
 						<label className="sidebar-course-text no-cursor">
-							<i>No Courses</i>
+							<i>{t('dashboard.classrooms.no_courses')}</i>
 						</label>
 					</div>
 				))}

@@ -22,7 +22,7 @@ const ClassroomBrowse = () => {
 
 	return (
 		<div className="p-4 relative">
-			<div className="text-3xl mb-4">{t('msg.community_levels')}</div>
+			<div className="text-3xl mb-4">{t('msg.public_classrooms')}</div>
 			<StyledLevelBrowse>
 				<BrowsingMenu<Classroom>
 					fetchOnSubmit

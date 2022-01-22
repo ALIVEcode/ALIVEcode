@@ -256,6 +256,7 @@ const useRoutes = () => {
 			component: <Classroom></Classroom>,
 		},
 		classroom_browse: {
+			accountType: Student,
 			path: '/classroom/browse',
 			component: <ClassroomBrowse></ClassroomBrowse>,
 		},

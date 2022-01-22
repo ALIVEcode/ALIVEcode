@@ -108,7 +108,8 @@
 		"description": "description",
 		"deleted_user": "Deleted user",
 		"search": "Search",
-		"community_levels": "Community Levels",
+		"community_levels": "Community levels",
+		"public_classrooms": "Public classrooms",
 		"creation_date": "Creation date",
 		"update_date": "Update date",
 		"time": {

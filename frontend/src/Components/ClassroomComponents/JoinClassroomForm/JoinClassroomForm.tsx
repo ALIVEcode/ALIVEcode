@@ -1,10 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import api from '../../../Models/api';
 import { useForm } from 'react-hook-form';
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import Button from '../../UtilsComponents/Buttons/Button';
 import useRoutes from '../../../state/hooks/useRoutes';
 import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
+import Link from '../../UtilsComponents/Link/Link';
 
 /**
  * Component used to join a classroom with a provided classroom code
@@ -65,6 +66,9 @@ const JoinClassroomForm = () => {
 			<Button type="submit" variant="third">
 				{t('form.join_classroom.submit')}
 			</Button>
+			<Link className="ml-2" dark to={routes.auth.classroom_browse.path}>
+				Browse public classrooms
+			</Link>
 		</form>
 	);
 };

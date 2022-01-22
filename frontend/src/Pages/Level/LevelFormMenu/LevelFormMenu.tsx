@@ -1,6 +1,7 @@
-import FillContainer from '../../../Components/UtilsComponents/FillContainer/FillContainer';
 import Card from '../../../Components/UtilsComponents/Cards/Card/Card';
 import Voiture from '../../../assets/images/Voiture.gif';
+import Brain from '../../../assets/images/ai/IA.png';
+import IoT from '../../../assets/images/iot/demo_project.png';
 import Code from '../../../assets/images/icons/sandboxblanc.png';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { useTranslation } from 'react-i18next';
@@ -27,12 +28,12 @@ const LevelFormMenu = () => {
 				title={t('menu.level.code')}
 			/>
 			<Card
-				img={Code}
+				img={Brain}
 				to={routes.auth.level_create_ai.path}
 				title={t('menu.level.ai')}
 			/>
 			<Card
-				img={Code}
+				img={IoT}
 				to={routes.auth.level_create_iot.path}
 				title={t('menu.level.iot')}
 			/>

@@ -12,6 +12,7 @@ import { prettyField } from '../../../Types/formatting';
 import { ThemeContext } from '../../../state/contexts/ThemeContext';
 import { useNavigate } from 'react-router-dom';
 import Badge from '../../UtilsComponents/Badge/Badge';
+import AlertConfirm from '../../UtilsComponents/Alert/AlertConfirm/AlertConfirm';
 
 /**
  * Classroom header that displays the className, the professor and
@@ -34,6 +35,7 @@ const ClassroomHeader: React.FC<
 	const { theme } = useContext(ThemeContext);
 	const alert = useAlert();
 	const [codeModalOpen, setCodeModalOpen] = useState(false);
+	const [openClassroomDelete, setOpenClassroomDelete] = useState(false);
 	const navigate = useNavigate();
 
 	const leaveClassroom = async () => {
@@ -73,7 +75,12 @@ const ClassroomHeader: React.FC<
 							<Button onClick={() => setCodeModalOpen(true)} variant="third">
 								{t('classroom.add_students')}
 							</Button>
-							<Button variant="danger">{t('classroom.delete')}</Button>
+							<Button
+								variant="danger"
+								onClick={() => setOpenClassroomDelete(true)}
+							>
+								{t('classroom.delete')}
+							</Button>
 						</>
 					) : (
 						<div>
@@ -125,6 +132,15 @@ const ClassroomHeader: React.FC<
 					{classroom.code}
 				</Badge>
 			</Modal>
+			<AlertConfirm
+				title={t('classroom.delete')}
+				setOpen={setOpenClassroomDelete}
+				open={openClassroomDelete}
+				onConfirm={() => {
+					api.db.classrooms.delete({ id: classroom.id });
+					navigate(routes.auth.dashboard.path + '/recents');
+				}}
+			></AlertConfirm>
 		</div>
 	);
 };

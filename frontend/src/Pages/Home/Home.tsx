@@ -15,6 +15,7 @@ import WhoAreWe from '../../assets/images/home/who_are_we.jpg';
 import TrainingAI from '../../assets/images/home/training_AI.jpg';
 import TrainingIoT from '../../assets/images/home/training_IoT.jpg';
 import TrainingCode from '../../assets/images/home/training_Code.jpg';
+import { useNavigate } from 'react-router';
 
 /**
  * Home page of ALIVEcode
@@ -25,6 +26,7 @@ const Home = (props: HomeProps) => {
 	const { t } = useTranslation();
 	const { theme } = useContext(ThemeContext);
 	const { routes } = useRoutes();
+	const navigate = useNavigate();
 	const aboutRef = useRef<HTMLDivElement | null>(null);
 	const trainingsRef = useRef<HTMLDivElement | null>(null);
 	const newsRef = useRef<HTMLDivElement | null>(null);
@@ -70,7 +72,10 @@ const Home = (props: HomeProps) => {
 					</label>
 				</div>
 				<label className="header-lore">{t('home.desc')}</label>
-				<HomeButton className="block" onClick={() => goToElement(trainingsRef)}>
+				<HomeButton
+					className="block"
+					onClick={() => navigate(routes.auth.dashboard.path)}
+				>
 					{t('home.get_started')}
 				</HomeButton>
 			</div>

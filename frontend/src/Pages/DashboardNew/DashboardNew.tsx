@@ -107,9 +107,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 	useEffect(() => {
 		if (!user) return;
 		const getClassrooms = async () => {
-			const data = await api.db.users.getClassrooms({
-				id: user.id,
-			});
+			const data = await user.getClassrooms();
 			setClassrooms(data);
 		};
 		getClassrooms();

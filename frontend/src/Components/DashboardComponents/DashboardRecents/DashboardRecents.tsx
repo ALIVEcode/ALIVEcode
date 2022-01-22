@@ -23,7 +23,7 @@ export const DashboardRecents = () => {
 			{courses.length > 0 ? (
 				<CourseContainer courses={getCourses()}></CourseContainer>
 			) : (
-				<div className="w-full h-[calc(100%-2rem)] text-[color:var(--fg-shade-four-color)] flex flex-col items-center justify-center">
+				<div className="w-full h-[calc(100%-2rem)] text-[color:var(--fg-shade-four-color)] text-center flex flex-col items-center justify-center">
 					<i>
 						{user?.isProfessor()
 							? t('dashboard.recents.empty.professor')

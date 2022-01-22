@@ -44,6 +44,7 @@ import ForumSearch from '../../Pages/Forum/ForumSearch/ForumSearch';
 import Chat from '../../Pages/Chat/Chat';
 import { LEVEL_TYPE } from '../../Models/Level/level.entity';
 import DashboardNew from '../../Pages/DashboardNew/DashboardNew';
+import ClassroomBrowse from '../../Components/ClassroomComponents/ClassroomBrowse/ClassroomBrowse';
 
 export interface Route {
 	path: string;
@@ -253,6 +254,10 @@ const useRoutes = () => {
 		classroom: {
 			path: '/classroom/:id',
 			component: <Classroom></Classroom>,
+		},
+		classroom_browse: {
+			path: '/classroom/browse',
+			component: <ClassroomBrowse></ClassroomBrowse>,
 		},
 		create_course: {
 			path: '/course/create',

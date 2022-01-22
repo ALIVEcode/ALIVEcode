@@ -1,12 +1,13 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ClassroomEntity } from './entities/classroom.entity';
-import { Repository } from 'typeorm';
+import { ClassroomEntity, CLASSROOM_ACCESS } from './entities/classroom.entity';
+import { ILike, Repository } from 'typeorm';
 import { generate } from 'randomstring';
 import { ProfessorEntity } from '../user/entities/professor.entity';
 import { UserEntity } from '../user/entities/user.entity';
 import { StudentEntity } from '../user/entities/student.entity';
 import { CourseEntity } from '../course/entities/course.entity';
+import { ClassroomQueryDTO } from './dto/ClassroomQuery.dto';
 
 @Injectable()
 export class ClassroomService {
@@ -38,6 +39,16 @@ export class ClassroomService {
     return classroom;
   }
 
+  async findQuery(query: ClassroomQueryDTO) {
+    return await this.classroomRepository.find({
+      where: { access: CLASSROOM_ACCESS.PUBLIC, name: ILike(`%${query?.txt ?? ''}%`) },
+      order: {
+        creationDate: 'DESC',
+        name: 'ASC',
+      },
+    });
+  }
+
   async findOneByCode(code: string) {
     if (!code) throw new HttpException('Bad request', HttpStatus.FORBIDDEN);
     const classroom = await this.classroomRepository.findOne({ where: { code } });
@@ -49,8 +60,8 @@ export class ClassroomService {
     return this.classroomRepository.update(id, updateClassroomDto);
   }
 
-  async remove(id: string) {
-    return this.classroomRepository.remove(await this.findOne(id));
+  async remove(classroom: ClassroomEntity) {
+    return this.classroomRepository.remove(classroom);
   }
 
   async getStudents(classroom: ClassroomEntity) {

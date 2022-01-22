@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import {
 	CLASSROOM_SUBJECT,
 	Classroom,
+	CLASSROOM_ACCESS,
 } from '../../../Models/Classroom/classroom.entity';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { useNavigate } from 'react-router-dom';
@@ -52,6 +53,13 @@ const ClassroomForm = (props: ClassroomFormProps) => {
 						required: true,
 						selectOptions: CLASSROOM_SUBJECT,
 						default: CLASSROOM_SUBJECT.INFORMATIC,
+					},
+					{
+						name: 'access',
+						inputType: 'select',
+						required: true,
+						selectOptions: CLASSROOM_ACCESS,
+						default: CLASSROOM_ACCESS.PRIVATE,
 					},
 				]}
 			/>

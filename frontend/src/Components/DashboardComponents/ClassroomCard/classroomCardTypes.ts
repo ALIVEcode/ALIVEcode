@@ -13,6 +13,7 @@ export const StyledClassroomCard = styled.div`
 	height: 20em;
 	perspective: 1000px; /* Remove this if you don't want the 3D effect */
 	margin-bottom: 20px;
+	color: white;
 
 	/* This container is needed to position the front and back side */
 	.flip-card-inner {
@@ -46,13 +47,11 @@ export const StyledClassroomCard = styled.div`
 	/* Style the front side (fallback if image is missing) */
 	.flip-card-front {
 		background-color: var(--primary-color);
-		color: black;
 	}
 
 	/* Style the back side */
 	.flip-card-back {
 		background-color: var(--secondary-color);
-		color: white;
 		transform: rotateY(180deg);
 	}
 `;

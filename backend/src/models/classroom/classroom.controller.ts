@@ -27,6 +27,7 @@ import { Auth } from '../../utils/decorators/auth.decorator';
 import { User } from '../../utils/decorators/user.decorator';
 import { Role } from '../../utils/types/roles.types';
 import { Classroom } from '../../utils/decorators/classroom.decorator';
+import { ClassroomQueryDTO } from './dto/ClassroomQuery.dto';
 
 @Controller('classrooms')
 @UseInterceptors(DTOInterceptor)
@@ -47,6 +48,12 @@ export class ClassroomController {
   @Auth(Role.STAFF)
   findAll() {
     return this.classroomService.findAll();
+  }
+
+  @Post('query')
+  @Auth()
+  async findQuery(@Body() query: ClassroomQueryDTO) {
+    return await this.classroomService.findQuery(query);
   }
 
   @Get(':id/courses')
@@ -103,7 +110,9 @@ export class ClassroomController {
 
   @Delete(':id')
   @Auth(Role.PROFESSOR)
-  remove(@Param('id') id: string) {
-    return this.classroomService.remove(id);
+  async remove(@User() user: ProfessorEntity, @Param('id') id: string) {
+    const classroom = await this.classroomService.findOne(id);
+    if (!classroom || classroom.creator.id !== user.id) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    return this.classroomService.remove(classroom);
   }
 }

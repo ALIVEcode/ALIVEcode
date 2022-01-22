@@ -6,6 +6,11 @@ import { useTranslation } from 'react-i18next';
 import { prettyField } from '../../../Types/formatting';
 import useRoutes from '../../../state/hooks/useRoutes';
 import Badge from '../../UtilsComponents/Badge/Badge';
+import { useContext, useState, useEffect } from 'react';
+import { UserContext } from '../../../state/contexts/UserContext';
+import { Classroom } from '../../../Models/Classroom/classroom.entity';
+import api from '../../../Models/api';
+import { useNavigate } from 'react-router';
 
 /**
  * Card that shows all the information of a classroom and lets you access to it
@@ -17,6 +22,17 @@ import Badge from '../../UtilsComponents/Badge/Badge';
 const ClassroomCard = ({ classroom }: ClassRoomCardProps) => {
 	const { t } = useTranslation();
 	const { routes } = useRoutes();
+	const { user } = useContext(UserContext);
+	const [userClassrooms, setUserClassrooms] = useState<Classroom[]>();
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		const getClassrooms = async () => {
+			setUserClassrooms(await user?.getClassrooms());
+		};
+		getClassrooms();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	return (
 		<StyledClassroomCard>
@@ -47,7 +63,18 @@ const ClassroomCard = ({ classroom }: ClassRoomCardProps) => {
 								  })}
 						</p>
 						<IconButton
-							to={routes.auth.classroom.path.replace(':id', classroom.id)}
+							onClick={async () => {
+								const isInClassroom = userClassrooms?.some(
+									c => c.id === classroom.id,
+								);
+								if (!isInClassroom) {
+									user?.addClassroom(classroom);
+									await api.db.classrooms.join({ code: classroom.code });
+								}
+								navigate(
+									routes.auth.classroom.path.replace(':id', classroom.id),
+								);
+							}}
 							size="3x"
 							icon={faAngleRight}
 						/>

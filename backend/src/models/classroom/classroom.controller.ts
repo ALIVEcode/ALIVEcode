@@ -103,8 +103,14 @@ export class ClassroomController {
   }
 
   @Patch(':id')
-  @Auth(Role.STAFF)
-  update(@Param('id') id: string, @Body() updateClassroomDto: ClassroomEntity) {
+  @Auth(Role.PROFESSOR)
+  async update(
+    @User() professor: ProfessorEntity,
+    @Param('id') id: string,
+    @Body() updateClassroomDto: ClassroomEntity,
+  ) {
+    const classroom = await this.classroomService.findOne(id);
+    if (!classroom || classroom.creator.id !== professor.id) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     return this.classroomService.update(id, updateClassroomDto);
   }
 

@@ -3,7 +3,7 @@ import IconButton from '../IconButton/IconButton';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useTranslation } from 'react-i18next';
-import { prettyField } from '../../../Types/formatting';
+import { prettyField, formatTooLong } from '../../../Types/formatting';
 import useRoutes from '../../../state/hooks/useRoutes';
 import Badge from '../../UtilsComponents/Badge/Badge';
 import { useContext, useState, useEffect } from 'react';
@@ -26,6 +26,8 @@ const ClassroomCard = ({ classroom }: ClassRoomCardProps) => {
 	const [userClassrooms, setUserClassrooms] = useState<Classroom[]>();
 	const navigate = useNavigate();
 
+	const isInClassroom = userClassrooms?.some(c => c.id === classroom.id);
+
 	useEffect(() => {
 		const getClassrooms = async () => {
 			setUserClassrooms(await user?.getClassrooms());
@@ -38,6 +40,11 @@ const ClassroomCard = ({ classroom }: ClassRoomCardProps) => {
 		<StyledClassroomCard>
 			<div className="flip-card-inner">
 				<div className="flip-card-front text-white">
+					{isInClassroom && (
+						<div className="absolute bottom-4 text-gray-300">
+							<i>{t('classroom.already_in')}</i>
+						</div>
+					)}
 					<div className="card-body">
 						<h4>{classroom.name}</h4>
 						<FontAwesomeIcon icon={faAngleRight} size="5x" />
@@ -46,33 +53,32 @@ const ClassroomCard = ({ classroom }: ClassRoomCardProps) => {
 				<div className="flip-card-back">
 					<div>
 						<h3>{classroom.name}</h3>
-						<h4>
+						<div>
 							<Badge variant="primary">{t('classroom.subject')}</Badge>
-						</h4>
+						</div>
 						{classroom.getSubjectDisplay()}
-						<h4>
+						<div>
 							<Badge variant="primary">
 								{prettyField(t('msg.description'))}
 							</Badge>
-						</h4>
-						<p className="mb-2">
-							{classroom.description
-								? classroom.description
-								: t('classroom.desc', {
-										professor: classroom.creator.getDisplayName(),
-								  })}
-						</p>
+						</div>
+						<div className="mb-2">
+							<p className="text-xs">
+								{classroom.description
+									? formatTooLong(classroom.description, 100)
+									: t('classroom.desc', {
+											professor: classroom.creator.getDisplayName(),
+									  })}
+							</p>
+						</div>
 						<IconButton
 							onClick={async () => {
-								const isInClassroom = userClassrooms?.some(
-									c => c.id === classroom.id,
-								);
 								if (!isInClassroom) {
 									user?.addClassroom(classroom);
 									await api.db.classrooms.join({ code: classroom.code });
 								}
 								navigate(
-									routes.auth.classroom.path.replace(':id', classroom.id),
+									routes.auth.dashboard.path + `/classroom?id=${classroom.id}`,
 								);
 							}}
 							size="3x"

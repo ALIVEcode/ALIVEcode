@@ -45,6 +45,7 @@ import Chat from '../../Pages/Chat/Chat';
 import { LEVEL_TYPE } from '../../Models/Level/level.entity';
 import DashboardNew from '../../Pages/DashboardNew/DashboardNew';
 import ClassroomBrowse from '../../Components/ClassroomComponents/ClassroomBrowse/ClassroomBrowse';
+import { UnderDevelopment } from '../../Pages/Errors/UnderDevelopment/UnderDevelopment';
 
 export interface Route {
 	path: string;
@@ -52,6 +53,7 @@ export interface Route {
 	component?: React.ReactNode | null;
 	maintenanceExempt?: boolean;
 	adminOnly?: boolean;
+	redirect?: React.ReactNode;
 
 	// Do not set manually
 	hasAccess?: boolean;
@@ -73,7 +75,7 @@ const useRoutes = () => {
 	const asRoutes = <T extends RoutesGroup<Route>>(routeGroup: T): T => {
 		Object.values(routeGroup).forEach(route => {
 			if (route.adminOnly && !user?.isAdmin) {
-				route.component = <NotFound></NotFound>;
+				route.component = route.redirect ?? <NotFound></NotFound>;
 				route.hasAccess = false;
 			}
 
@@ -251,10 +253,6 @@ const useRoutes = () => {
 			path: '/classroom/join',
 			component: <ClassroomForm></ClassroomForm>,
 		},
-		classroom: {
-			path: '/classroom/:id',
-			component: <Classroom></Classroom>,
-		},
 		classroom_browse: {
 			accountType: Student,
 			path: '/classroom/browse',
@@ -271,6 +269,8 @@ const useRoutes = () => {
 		account: {
 			path: '/account',
 			component: <AccountPage></AccountPage>,
+			adminOnly: true,
+			redirect: <UnderDevelopment></UnderDevelopment>,
 		},
 		chat: {
 			path: '/chat',

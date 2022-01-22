@@ -10,6 +10,7 @@
 		"signin_first_time": "Something went wrong when automatically logging into your new account",
 		"500": "Something went wrong, please try again.",
 		"page404": "This page does not exist.",
+		"page501": "This page is under construction.",
 		"maintenance": {
 			"ongoing": "The website is under maintenance since {{startDate}} and will finish at {{finishDate}}, this page could not be loaded.",
 			"short": "The request could not be made, the website is currently under maintenance."
@@ -192,6 +193,7 @@
 		"classrooms": {
 			"title": "Classrooms",
 			"no_courses": "No courses",
+			"browse_public": "Browse public classrooms",
 			"empty": {
 				"student": "You are not part of any classroom",
 				"professor": "You do not have any classroom"
@@ -206,6 +208,7 @@
 		"add_students": "Add students",
 		"delete": "Delete classroom",
 		"leave": "Leave classroom",
+		"already_in": "Already in classroom",
 		"container": {
 			"courses": {
 				"title": "Courses",

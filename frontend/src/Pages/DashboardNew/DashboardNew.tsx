@@ -107,11 +107,10 @@ const DashboardNew = (props: DashboardNewProps) => {
 	useEffect(() => {
 		if (!user) return;
 		const getClassrooms = async () => {
-			const data = await user.getClassrooms();
-			setClassrooms(data);
+			setClassrooms(await user.getClassrooms());
 		};
 		getClassrooms();
-	}, [user]);
+	});
 
 	const openRecents = () => {
 		query.delete('id');

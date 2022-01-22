@@ -55,14 +55,20 @@ export class User {
 		if (!this.classrooms) {
 			const fetchedClassrooms: Classroom[] =
 				(await api.db.users.getClassrooms({ id: this.id })) ?? [];
+			this.classrooms = fetchedClassrooms;
 			return fetchedClassrooms;
 		}
 		return this.classrooms;
 	}
 
 	public async addClassroom(classroom: Classroom) {
-		if (this.classrooms) this.classrooms.push(classroom);
-		else (await this.getClassrooms()).push(classroom);
+		(await this.getClassrooms()).push(classroom);
+	}
+
+	public async removeClassroom(classroom: Classroom) {
+		this.classrooms = (await this.getClassrooms()).filter(
+			c => c.id !== classroom.id,
+		);
 	}
 
 	static async loadUser() {

@@ -10,6 +10,7 @@
 		"signin_first_time": "une erreur est survenue lors de votre connexion automatique à votre nouveau compte.",
 		"500": "Une erreur est survenue, veuillez réessayer.",
 		"page404": "Cette page n'existe pas.",
+		"page501": "Cette page est en construction.",
 		"maintenance": {
 			"ongoing": "Une maintenance est en cours du {{startDate}} et prend fin le {{finishDate}}, cette page n'a pas pu être affichée.",
 			"short": "La requête n'a pas pu être faite, le site est présentement en maintenance."
@@ -109,7 +110,7 @@
 		"deleted_user": "Ancien utilisateur",
 		"search": "Rechercher",
 		"community_levels": "Niveaux de la communauté",
-		"public_classrooms": "Classes public",
+		"public_classrooms": "Classes publiques",
 		"creation_date": "Date de création",
 		"update_date": "Date de modification",
 		"time": {
@@ -179,7 +180,7 @@
 		"recents": {
 			"title": "Cours Récents",
 			"empty": {
-				"student": "Tu n'as pas d'activité récente. Rejoins une classe public ou privée pour commencer à apprendre",
+				"student": "Tu n'as pas d'activité récente. Rejoins une classe publique ou privée pour commencer à apprendre",
 				"professor": "Tu n'as pas d'activité récente. Crée une classe pour commencer"
 			}
 		},
@@ -192,6 +193,7 @@
 		"classrooms": {
 			"title": "Classes",
 			"no_courses": "Aucun cours",
+			"browse_public": "Explorer les classes publiques",
 			"empty": {
 				"student": "Tu ne fais parti d'aucune classe",
 				"professor": "Tu ne possède aucune classe"
@@ -206,6 +208,7 @@
 		"add_students": "Ajoutez des étudiants",
 		"delete": "Supprimer la classe",
 		"leave": "Quitter la classe",
+		"already_in": "Déjà dans la classe",
 		"container": {
 			"courses": {
 				"title": "Cours",

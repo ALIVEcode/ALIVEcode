@@ -23,13 +23,13 @@ const ClassroomBrowse = () => {
 	return (
 		<div className="p-4 relative">
 			<div className="text-3xl mb-4">{t('msg.public_classrooms')}</div>
-			<StyledLevelBrowse>
+			<div className="rounded-b-xl bg-[color:var(--background-color)]">
 				<BrowsingMenu<Classroom>
 					fetchOnSubmit
 					apiRequest={api.db.classrooms.query}
 					onChange={res => setBrowsingResult(res)}
 				/>
-				<div className="levels">
+				<div className="grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4 gap-4 justify-items-center p-4 tablet:p-8 laptop:p-12 desktop:p-14">
 					{!classrooms ? (
 						<LoadingScreen relative />
 					) : (
@@ -40,7 +40,7 @@ const ClassroomBrowse = () => {
 						</>
 					)}
 				</div>
-			</StyledLevelBrowse>
+			</div>
 		</div>
 	);
 };

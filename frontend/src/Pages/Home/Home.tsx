@@ -55,7 +55,7 @@ const Home = (props: HomeProps) => {
 	};
 
 	return (
-		<StyledHome className="bg-[color:var(--background-color)] relative w-full overflow-x-hidden">
+		<StyledHome className="bg-[color:rgba(var(--background-color-rgb),0.7)] relative w-full overflow-x-hidden">
 			<div className="header w-full overflow-x-hidden" style={{ top: '-50px' }}>
 				<div>
 					<label className="header-alive">ALIVE</label>
@@ -90,7 +90,7 @@ const Home = (props: HomeProps) => {
 					fill={theme.color.primary}
 				/>
 			</svg>
-			<div className="sticky w-full top-[4rem] bg-[color:var(--background-color)] border-b mt-4 tablet:mt-0">
+			<div className="sticky w-full top-[4rem] border-b mt-4 tablet:mt-0">
 				<nav
 					className={classNames(
 						'flex flex-row w-full px-4 text-center text-xl font-normal text-[color:var(--fg-shade-four-color)]',

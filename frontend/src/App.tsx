@@ -19,6 +19,7 @@ import { setAccessToken } from './Types/accessToken';
 import { User, Student, Professor } from './Models/User/user.entity';
 import LoadingScreen from './Components/UtilsComponents/LoadingScreen/LoadingScreen';
 import background_image_light from './assets/images/backgroundImage4.png';
+import background_image_dark from './assets/images/backgroundImageDark4.png';
 import api from './Models/api';
 import MaintenanceBar from './Components/SiteStatusComponents/MaintenanceBar/MaintenanceBar';
 import { Maintenance } from './Models/Maintenance/maintenance.entity';
@@ -40,7 +41,7 @@ const GlobalStyle = createGlobalStyle`
 		${({ theme }: GlobalStyleProps) => {
 			return theme.name === 'light'
 				? `background-image: url(${background_image_light});`
-				: '';
+				: `background-image: url(${background_image_dark});`;
 		}}
 	}
 

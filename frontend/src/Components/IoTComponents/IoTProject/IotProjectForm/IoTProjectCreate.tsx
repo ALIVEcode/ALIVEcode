@@ -43,7 +43,7 @@ const IoTProjectCreate = () => {
 					},
 					{
 						name: 'description',
-						inputType: 'text',
+						inputType: 'textarea',
 						maxLength: 500,
 					},
 					{

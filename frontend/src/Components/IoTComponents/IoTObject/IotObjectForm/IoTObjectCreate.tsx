@@ -32,7 +32,7 @@ const IoTObjectCreate = ({ onSubmit }: IoTObjectCreateProps) => {
 				{
 					name: 'description',
 					required: false,
-					inputType: 'text',
+					inputType: 'textarea',
 					maxLength: 500,
 				},
 				{

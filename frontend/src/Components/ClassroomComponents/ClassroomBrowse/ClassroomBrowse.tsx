@@ -4,7 +4,6 @@ import BrowsingMenu from '../../MainComponents/BrowsingMenu/BrowsingMenu';
 import { BrowsingResults } from '../../MainComponents/BrowsingMenu/browsingMenuTypes';
 import api from '../../../Models/api';
 import { useTranslation } from 'react-i18next';
-import { StyledLevelBrowse } from '../../../Pages/Level/LevelBrowse/levelBrowseTypes';
 import { Classroom } from '../../../Models/Classroom/classroom.entity';
 import ClassroomCard from '../../DashboardComponents/ClassroomCard/ClassroomCard';
 
@@ -23,13 +22,13 @@ const ClassroomBrowse = () => {
 	return (
 		<div className="p-4 relative">
 			<div className="text-3xl mb-4">{t('msg.public_classrooms')}</div>
-			<div className="rounded-b-xl bg-[color:var(--background-color)]">
+			<div>
 				<BrowsingMenu<Classroom>
 					fetchOnSubmit
 					apiRequest={api.db.classrooms.query}
 					onChange={res => setBrowsingResult(res)}
 				/>
-				<div className="grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4 gap-4 justify-items-center p-4 tablet:p-8 laptop:p-12 desktop:p-14">
+				<div className="!bg-[color:var(--background-color)] rounded-b-xl grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4 gap-4 justify-items-center p-4 tablet:p-8 laptop:p-12 desktop:p-14">
 					{!classrooms ? (
 						<LoadingScreen relative />
 					) : (

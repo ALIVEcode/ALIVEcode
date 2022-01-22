@@ -76,7 +76,7 @@ const LevelForm = ({ type }: LevelFormProps) => {
 							},
 							{
 								name: 'description',
-								inputType: 'text',
+								inputType: 'textarea',
 								maxLength: 500,
 							},
 							{
@@ -118,7 +118,7 @@ const LevelForm = ({ type }: LevelFormProps) => {
 							},
 							{
 								name: 'description',
-								inputType: 'text',
+								inputType: 'textarea',
 								maxLength: 500,
 							},
 							{
@@ -160,7 +160,7 @@ const LevelForm = ({ type }: LevelFormProps) => {
 							},
 							{
 								name: 'description',
-								inputType: 'text',
+								inputType: 'textarea',
 								maxLength: 500,
 							},
 							{
@@ -202,7 +202,7 @@ const LevelForm = ({ type }: LevelFormProps) => {
 							},
 							{
 								name: 'description',
-								inputType: 'text',
+								inputType: 'textarea',
 								maxLength: 500,
 							},
 							{

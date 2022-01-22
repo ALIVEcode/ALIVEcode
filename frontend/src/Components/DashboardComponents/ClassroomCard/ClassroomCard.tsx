@@ -46,7 +46,7 @@ const ClassroomCard = ({ classroom }: ClassRoomCardProps) => {
 						</div>
 					)}
 					<div className="card-body">
-						<h4>{classroom.name}</h4>
+						<div className="text-xl">{classroom.name}</div>
 						<FontAwesomeIcon icon={faAngleRight} size="5x" />
 					</div>
 				</div>

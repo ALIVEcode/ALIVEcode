@@ -3,7 +3,7 @@ import Footer from '../../Components/MainComponents/Footer/Footer';
 import VoitureAnimee from '../../assets/images/Voiture.gif';
 import TypeWriter from '../../Components/UtilsComponents/TypeWriter/TypeWriter';
 import { useTranslation } from 'react-i18next';
-import { MutableRefObject, useContext, useRef } from 'react';
+import { MutableRefObject, useContext, useRef, useState } from 'react';
 import { ThemeContext } from '../../state/contexts/ThemeContext';
 import { HomeButton } from '../../Components/UtilsComponents/Buttons/HomeButton';
 import { HomeSection } from '../../Components/MainComponents/HomeSection/HomeSection';
@@ -15,6 +15,8 @@ import WhoAreWe from '../../assets/images/home/who_are_we.jpg';
 import TrainingAI from '../../assets/images/home/training_AI.jpg';
 import TrainingIoT from '../../assets/images/home/training_IoT.jpg';
 import TrainingCode from '../../assets/images/home/training_Code.jpg';
+import Modal from '../../Components/UtilsComponents/Modal/Modal';
+import Link from '../../Components/UtilsComponents/Link/Link';
 
 /**
  * Home page of ALIVEcode
@@ -28,6 +30,7 @@ const Home = (props: HomeProps) => {
 	const aboutRef = useRef<HTMLDivElement | null>(null);
 	const trainingsRef = useRef<HTMLDivElement | null>(null);
 	const newsRef = useRef<HTMLDivElement | null>(null);
+	const [linksOpen, setLinksOpen] = useState(false);
 
 	const tabs = [
 		{
@@ -162,12 +165,15 @@ const Home = (props: HomeProps) => {
 					text={t('home.section.mission.desc')}
 					img={OurMission}
 					imgAlt="ALIVEcode's website mission"
+					important
 				/>
 				<HomeSection
 					title={t('home.section.us.title')}
-					text={t('home.section.us.desc')}
+					text={t('home.section.us.desc', { test: 'dawawdawd' })}
 					reverse
 					img={WhoAreWe}
+					onClick={() => setLinksOpen(true)}
+					button={t('msg.see_links')}
 					imgAlt="The team of ALIVEcode"
 				/>
 				<HomeSection
@@ -247,7 +253,7 @@ const Home = (props: HomeProps) => {
 					text={t('home.section.training_ai.desc')}
 					img={TrainingAI}
 					imgAlt="Training of Artificial Intelligence on ALIVEcode"
-					button={t('home.see_training')}
+					button={t('home.see_trainings')}
 					to={routes.auth.classroom_browse.path}
 				/>
 				<HomeSection
@@ -256,7 +262,7 @@ const Home = (props: HomeProps) => {
 					reverse
 					img={TrainingIoT}
 					imgAlt="Training of Internet of Things on ALIVEcode"
-					button={t('home.see_training')}
+					button={t('home.see_trainings')}
 					to={routes.auth.classroom_browse.path}
 				/>
 				<HomeSection
@@ -264,7 +270,7 @@ const Home = (props: HomeProps) => {
 					text={t('home.section.training_code.desc')}
 					img={TrainingCode}
 					imgAlt="Training of the basics of coding on ALIVEcode"
-					button={t('home.see_training')}
+					button={t('home.see_trainings')}
 					to={routes.auth.classroom_browse.path}
 				/>
 			</div>
@@ -303,6 +309,21 @@ const Home = (props: HomeProps) => {
 				</svg>
 			</div>
 			<Footer />
+			<Modal
+				title={t('msg.see_links')}
+				hideSubmitButton
+				open={linksOpen}
+				setOpen={setLinksOpen}
+			>
+				<div className="mt-3">
+					<Link outsideLink openInNewTab to="https://lrima.cmaisonneuve.qc.ca/">
+						{t('msg.section.lrima')}
+					</Link>
+				</div>
+				<div className="mt-2">
+					<Link to={routes.public.about.path}>{t('msg.section.about')}</Link>
+				</div>
+			</Modal>
 		</StyledHome>
 	);
 };

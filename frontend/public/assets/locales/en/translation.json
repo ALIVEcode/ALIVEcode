@@ -97,7 +97,7 @@
 	},
 	"modal": {
 		"close": "Close",
-		"save": "Save Changes",
+		"save": "Save",
 		"confirm": "Confirm",
 		"cancel": "Cancel"
 	},
@@ -113,6 +113,7 @@
 		"public_classrooms": "Public classrooms",
 		"creation_date": "Creation date",
 		"update_date": "Update date",
+		"see_links": "See links",
 		"time": {
 			"format": "{{dayName}}, {{day}} {{monthName}} {{year}} {{hour}}:{{minute}}",
 			"day": {
@@ -262,7 +263,7 @@
 		"msg3": "iot",
 		"desc": "Learn Programming",
 		"get_started": "Get Started!",
-		"see_training": "See Training",
+		"see_trainings": "See Trainings",
 		"about": "About",
 		"trainings": "Trainings",
 		"news": "News",
@@ -284,19 +285,19 @@
 		"section": {
 			"mission": {
 				"title": "Our mission",
-				"desc": "Faciliter l'accès aux technologies"
+				"desc": "Facilitate access, sharing and conversations about new technologies. Give the chance to anyone to accomplish anything."
 			},
 			"us": {
 				"title": "Who are we ?",
-				"desc": ""
+				"desc": "We are researchers of the informatic research lab LRIMa, a laboratory part of the Maisonneuve College. Each year we aim to innovate in the informatic industry by conducting researches that we share and publish at conferences accross the globe. Visit the LRIMa's website for more details and the about section to learn about all the researchers."
 			},
 			"story": {
 				"title": "Our story",
-				"desc": ""
+				"desc": "ALIVEcode comes from way back in time. Three years from now we thought of making miniature autonomous vehicles for researchs' purposes. A year later, we had the idea to use those robots to teach programming to young students. Fast-forward one year and we decided to create ALIVEcode to make our teaching more accessible to the mass. It's now been over a year that the website exists and keeps expanding."
 			},
 			"training_ai": {
 				"title": "Artificial Intelligence Training",
-				"desc": ""
+				"desc": "Learn the theory and current usage of AI in society. Follow one or multiple complete trainings offered by ALIVEcode that will teach your all there is to know about AI. Such as linear regressions, classification, decisionnal trees, neural networks, etc."
 			},
 			"training_iot": {
 				"title": "Internet of Things Training",
@@ -304,7 +305,7 @@
 			},
 			"training_code": {
 				"title": "Basic of Code Training",
-				"desc": ""
+				"desc": "Learn the basics of coding. Follow one or multiple complete trainings offered by ALIVEcode that will transform you into a fine programmer. Learn programming by controlling a motorised vehicle, by solving challenges and by publishing your own challenges/projects to the community."
 			}
 		},
 		"navbar": {

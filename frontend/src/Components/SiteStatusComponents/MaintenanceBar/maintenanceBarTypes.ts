@@ -15,6 +15,7 @@ export const StyledMaintenanceBar = styled.div`
 	display: flex;
 	justify-content: space-around;
 	flex-direction: column;
+	z-index: 50;
 
 	label {
 		text-align: center;

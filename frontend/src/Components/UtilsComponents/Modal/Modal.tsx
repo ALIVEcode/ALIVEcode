@@ -55,6 +55,7 @@ const Modal = (props: ModalProps) => {
 
 	useEffect(() => {
 		if (open) onShow && onShow();
+		if (!open) document.documentElement.style = 'overflow:auto !important';
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [open]);
 

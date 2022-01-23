@@ -49,7 +49,8 @@ const LineInterface = memo(
 		const [content, setContent] = useState<string>(initialContent ?? '');
 		const { theme } = useContext(ThemeContext);
 
-		const ref = useRef<AceEditor>(null);
+		const ref = useRef<AceEditor | null>(null);
+		const refList = useRef<AceEditor[]>([]);
 
 		const setOpenedTab = (idx: number) => {
 			const updatedTabs = tabs.map((t, i) => {
@@ -89,6 +90,9 @@ const LineInterface = memo(
 							return (
 								<AceEditor
 									key={idx}
+									ref={el => {
+										if (el) refList.current[idx] = el;
+									}}
 									className={
 										'ace-editor relative ' +
 										(!t.open && t.loaded ? 'hidden-editor ' : '') +
@@ -108,6 +112,7 @@ const LineInterface = memo(
 											tabs[idx].content = t.defaultContent;
 											tabs[idx].loaded = true;
 											setTabs([...tabs]);
+											refList.current.forEach(el => el.editor.resize());
 										}, 100);
 										const editor = ace.edit('1nt3rf4c3');
 										setAutocomplete(editor);

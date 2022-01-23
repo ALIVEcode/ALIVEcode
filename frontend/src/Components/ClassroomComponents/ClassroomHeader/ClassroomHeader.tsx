@@ -120,7 +120,7 @@ const ClassroomHeader: React.FC<
 				xmlns="http://www.w3.org/2000/svg"
 				xmlnsXlink="http://www.w3.org/1999/xlink"
 				version="1.1"
-				className="relative z-0 mt-0 tablet:mt-[-2rem] laptop:mt-[-5rem] desktop:mt-[-7rem]"
+				className="relative z-0 mt-0 tablet:mt-[-1rem] laptop:mt-[-3rem] desktop:mt-[-5rem]"
 			>
 				<rect
 					x="0"

@@ -56,28 +56,72 @@ const Home = (props: HomeProps) => {
 
 	return (
 		<StyledHome className="bg-[color:rgba(var(--background-color-rgb),0.7)] relative w-full overflow-x-hidden">
-			<div className="header w-full overflow-x-hidden" style={{ top: '-50px' }}>
-				<div>
-					<label className="header-alive">ALIVE</label>
-					<label className="header-desc">
-						<TypeWriter
-							lines={[t('home.msg1'), t('home.msg2'), t('home.msg3')]}
-							typeSpeed={200}
-							eraseSpeed={150}
-							delayAfterWrite={5000}
-							delayAfterErase={500}
-							shadow
-							startWithText
-						/>
-					</label>
-				</div>
-				<label className="header-lore">{t('home.desc')}</label>
-				<HomeButton
-					className="block"
-					onClick={() => navigate(routes.auth.dashboard.path)}
+			<div
+				className={classNames(
+					'header-circle absolute rounded-[50%] hidden tablet:block',
+					'desktop:w-[1235px] desktop:h-[1235px] desktop:left-[778px] desktop:top-[-430px]',
+					' laptop:w-[1100px]  laptop:h-[1100px]  laptop:left-[550px]  laptop:top-[-400px]',
+					' tablet:w-[900px]  tablet:h-[900px]  tablet:left-[400px]  tablet:top-[-300px]',
+				)}
+			>
+				<img
+					className="relative tablet:opacity-100 tablet:top-[35%] tablet:left-[10%] tablet:w-[55%] tablet:h-[55%]"
+					alt="alive car designed at LRIMa"
+					src={VoitureAnimee}
+				/>
+			</div>
+			<div
+				className={classNames(
+					'header tablet:block tablet:flex-row w-full overflow-hidden tablet:text-left',
+					'desktop:px-20 desktop:py-18',
+					'laptop:px-16 laptop:py-14',
+					'tablet:px-14 tablet:py-12',
+					'px-4 py-4', // Mobile view
+				)}
+			>
+				<div
+					className={classNames(
+						'z-10 w-full h-full relative tablet:text-left',
+						'tablet:text-left tablet:items-start',
+						'justify-center text-center flex flex-col items-center', // mobile view
+					)}
 				>
-					{t('home.get_started')}
-				</HomeButton>
+					<div className="absolute z-0 left-0 right-0">
+						<img
+							className="relative tablet:hidden w-[100%] h-[100%] opacity-[0.15] mt-[-30px]"
+							alt="alive car designed at LRIMa"
+							src={VoitureAnimee}
+						/>
+					</div>
+					<div
+						className={classNames(
+							'relative text-[70px] tablet:text-[63px] laptop:text-[90px] desktop:text-[120px]',
+							'flex flex-col tablet:inline',
+						)}
+					>
+						<label className="header-alive">ALIVE</label>
+						<label className="header-desc text-[0.6em] tablet:text-[0.75em] mt-[-20px] tablet:mt-0">
+							<TypeWriter
+								lines={[t('home.msg1'), t('home.msg2'), t('home.msg3')]}
+								typeSpeed={200}
+								eraseSpeed={150}
+								delayAfterWrite={5000}
+								delayAfterErase={500}
+								shadow
+								startWithText
+							/>
+						</label>
+					</div>
+					<div className="relative mb-8 mt-4 tablet:mt-[-5px] laptop:mt-[-15px] text-[25px] tablet:text-[20px] laptop:text-[27px] desktop:text-[35px]">
+						{t('home.desc')}
+					</div>
+					<HomeButton
+						className="block relative"
+						onClick={() => goToElement(trainingsRef)}
+					>
+						{t('home.get_started')}
+					</HomeButton>
+				</div>
 			</div>
 			<svg
 				className="curve mt-[-0.2rem]"
@@ -206,7 +250,7 @@ const Home = (props: HomeProps) => {
 					img={TrainingAI}
 					imgAlt="Training of Artificial Intelligence on ALIVEcode"
 					button={t('home.see_training')}
-					to={routes.auth.dashboard.path}
+					to={routes.auth.classroom_browse.path}
 				/>
 				<HomeSection
 					title={t('home.section.training_iot.title')}
@@ -215,7 +259,7 @@ const Home = (props: HomeProps) => {
 					img={TrainingIoT}
 					imgAlt="Training of Internet of Things on ALIVEcode"
 					button={t('home.see_training')}
-					to={routes.auth.dashboard.path}
+					to={routes.auth.classroom_browse.path}
 				/>
 				<HomeSection
 					title={t('home.section.training_code.title')}
@@ -223,7 +267,7 @@ const Home = (props: HomeProps) => {
 					img={TrainingCode}
 					imgAlt="Training of the basics of coding on ALIVEcode"
 					button={t('home.see_training')}
-					to={routes.auth.dashboard.path}
+					to={routes.auth.classroom_browse.path}
 				/>
 			</div>
 			<div className="mt-32">
@@ -261,9 +305,6 @@ const Home = (props: HomeProps) => {
 				</svg>
 			</div>
 			<Footer />
-			<div className="header-circle">
-				<img alt="alive-car" src={VoitureAnimee} />
-			</div>
 		</StyledHome>
 	);
 };

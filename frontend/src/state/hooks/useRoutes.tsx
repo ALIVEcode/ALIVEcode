@@ -173,7 +173,7 @@ const useRoutes = () => {
 		iot: {
 			exact: true,
 			path: '/iot',
-			component: <MaintenanceError></MaintenanceError>,
+			component: <IoTHome></IoTHome>,
 			maintenanceExempt: true,
 		},
 		level_alive: {

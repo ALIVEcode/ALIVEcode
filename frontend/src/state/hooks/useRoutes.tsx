@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import { Professor, Student } from '../../Models/User/user.entity';
-import Classroom from '../../Pages/Classroom/Classroom';
 import Course from '../../Pages/Course/Course';
 import { NotFound } from '../../Pages/Errors/NotFound/NotFound';
 import Home from '../../Pages/Home/Home';
@@ -174,8 +173,8 @@ const useRoutes = () => {
 		iot: {
 			exact: true,
 			path: '/iot',
-			component: <IoTHome></IoTHome>,
-			//adminOnly: true,
+			component: <MaintenanceError></MaintenanceError>,
+			maintenanceExempt: true,
 		},
 		level_alive: {
 			path: '/level/play/alive',

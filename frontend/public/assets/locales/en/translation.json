@@ -168,7 +168,7 @@
 		"maintenance": {
 			"more_info": "More info",
 			"no_desc": "No description available.",
-			"ongoing": "The website is currently undergoing a maintenance from {{startDate}} to {{finishDate}}. You cannot use your account or see other users' levels during this period of time. Sorry for the incovenience.",
+			"ongoing": "The website is currently undergoing a maintenance from {{startDate}} to {{finishDate}}. You cannot use your account or see other users' levels during this period of time. Sorry for the inconvenience.",
 			"upcoming": "The website will be undergoing a maintenance from {{startDate}} to {{finishDate}}. You will not be able to use your account or see other users' levels during this period of time. Sorry for the inconvenience.",
 			"status": {
 				"ongoing": "Ongoing",
@@ -274,7 +274,7 @@
 			"section": {
 				"develop": {
 					"title": "Start Developping",
-					"desc": "Practice your notions of Internet of Things by developing IoT Projects. Register your IoT Objects, create a network of connected devices, establish communications between them, collect and share data between those objects and show in real time your data in a graphical user interface."
+					"desc": "Practice your notions of the Internet of Things by developing IoT Projects. Register your IoT Objects. Create a network of connected devices and establish communications between them. Collect and share data between those objects. Show in real-time your data in a graphical user interface."
 				},
 				"learn": {
 					"title": "Start Learning",
@@ -285,11 +285,11 @@
 		"section": {
 			"mission": {
 				"title": "Our mission",
-				"desc": "Facilitate access, sharing and conversations about new technologies. Give the chance to anyone to accomplish anything."
+				"desc": "Facilitate access, sharing, and discussions about new technologies. Give anyone the chance to accomplish anything."
 			},
 			"us": {
 				"title": "Who are we ?",
-				"desc": "We are researchers of the informatic research lab LRIMa, a laboratory part of the Maisonneuve College. Each year we aim to innovate in the informatic industry by conducting researches that we share and publish at conferences accross the globe. Visit the LRIMa's website for more details and the about section to learn about all the researchers."
+				"desc": "We are researchers of the informatics research lab LRIMa, a laboratory part of the Maisonneuve College. Each year we aim to innovate in the informatic industry by conducting research that we share and publish at conferences across the globe. Visit the LRIMa's website for more details and the about section to learn about all the researchers."
 			},
 			"story": {
 				"title": "Our story",
@@ -297,15 +297,15 @@
 			},
 			"training_ai": {
 				"title": "Artificial Intelligence Training",
-				"desc": "Learn the theory and current usage of AI in society. Follow one or multiple complete trainings offered by ALIVEcode that will teach your all there is to know about AI. Such as linear regressions, classification, decisionnal trees, neural networks, etc."
+				"desc": "Learn the theory and current usage of AI in society. Follow one or multiple complete pieces of training offered by ALIVEcode that will teach you all there is to know about AI. Such as linear regressions, classification, decisional trees, neural networks, etc."
 			},
 			"training_iot": {
 				"title": "Internet of Things Training",
-				"desc": "Learn the theory and usage of IoT. Follow one or multiple complete trainings offered by ALIVEcode that will teach you everything required to start developping your own IoT projects. The electronics, the communication protocols, the databases, artificial intelligence, setting up a GUI, etc."
+				"desc": "Learn the theory and usage of IoT. Follow one or multiple complete pieces of training offered by ALIVEcode that will teach you everything required to start developing your own IoT projects. The electronics, the communication protocols, the databases, artificial intelligence, setting up a GUI, etc."
 			},
 			"training_code": {
 				"title": "Basic of Code Training",
-				"desc": "Learn the basics of coding. Follow one or multiple complete trainings offered by ALIVEcode that will transform you into a fine programmer. Learn programming by controlling a motorised vehicle, by solving challenges and by publishing your own challenges/projects to the community."
+				"desc": "Learn the basics of coding. Follow one or multiple complete pieces of training offered by ALIVEcode that will transform you into a fine programmer. Learn programming by controlling a motorized vehicle, solving challenges, and publishing your challenges/projects to the community."
 			}
 		},
 		"navbar": {

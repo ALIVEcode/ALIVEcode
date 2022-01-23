@@ -274,7 +274,7 @@
 			"section": {
 				"develop": {
 					"title": "Commence à Développer",
-					"desc": "Pratique tes notions d'internet des objets en développant des projets IoT. Enregistre plusieurs objets connectés, crée un réseau d'objet connectés, établis des communcations entre eux, collecte et partage des données entre les objets et affiche en temps réel les données dans une interface graphique."
+					"desc": "Pratique tes notions d'internet des objets en développant des projets IoT. Enregistre plusieurs objets connectés, crée un réseau d'objets connectés, établis des communications entre eux, collecte et partage des données entre les objets et affiche en temps réel les données dans une interface graphique."
 				},
 				"learn": {
 					"title": "Commence à Apprendre",
@@ -285,27 +285,27 @@
 		"section": {
 			"mission": {
 				"title": "Notre mission",
-				"desc": "Facilité l'accès, le partage et les discussions autour des nouvelles technologies. Donner la chance à n'importe qui d'accomplir n'importe quoi."
+				"desc": "Faciliter l'accès, le partage et les discussions autour des nouvelles technologies. Donner la chance à n'importe qui d'accomplir n'importe quoi."
 			},
 			"us": {
 				"title": "Qui sommes-nous ?",
-				"desc": "Nous sommes des chercheurs du Laboratoire de Recherche Informatique Maisonneuve LRIMa. Chaque année nous avons comme but d'innover dans l'industrie informatique en menant des recherches et en publiant/partageans les résultats de nos recherches durant des conférences à travers le monde. Visitez le site du LRIMa pour plus de détails et la section à propos."
+				"desc": "Nous sommes des chercheurs du Laboratoire de Recherche Informatique Maisonneuve LRIMa. Chaque année nous avons comme but d'innover dans l'industrie informatique en menant des recherches et en publiant/partageant les résultats de nos recherches durant des conférences à travers le monde. Visitez le site du LRIMa pour plus de détails et la section à propos."
 			},
 			"story": {
 				"title": "Notre histoire",
-				"desc": "Les origines d'ALIVEcode remontent loin dans le temps. Il y a trois ans, nous avons eu l'idée de créer des véhicules miniatures autonomes dans le but de recherches scientifiques. Un an plus tard, nous avons eu l'idée d'utiliser ces robots afin d'apprendre la programmation à de jeunes étudiants. L'année suivante, nous avons décidé de créer ALIVEcode afin de rendre l'apprentissage de la programmation accessible à tous. Cela fait maintenant plus d'un an qu'ALIVEcode existe et continue d'être amélioré."
+				"desc": "Les origines d'ALIVEcode remontent à loin dans le temps. Il y a trois ans, nous avons eu l'idée de créer des véhicules miniatures autonomes dans le but de recherches scientifiques. Un an plus tard, nous avons eu l'idée d'utiliser ces robots afin d'apprendre la programmation à de jeunes étudiants. L'année suivante, nous avons décidé de créer ALIVEcode afin de rendre l'apprentissage de la programmation accessible à tous. Cela fait maintenant plus d'un an qu'ALIVEcode existe et continue d'être amélioré."
 			},
 			"training_ai": {
 				"title": "Formation en Intelligence Artificielle",
-				"desc": "Apprend la théorie et la pratique de l'IoT. Suis une ou plusieurs formations complètes offertes par ALIVEcode qui t'apprendront tout ce qu'il y a à savoir sur l'IA. Tels que: les régressions linéaires, la classification, les arbres décisionnels, les réseaux de neurones, etc."
+				"desc": "Apprends la théorie et la pratique de l'IoT. Suis une ou plusieurs formations complètes offertes par ALIVEcode qui t'apprendront tout ce qu'il y a à savoir sur l'IA. Tels que: les régressions linéaires, la classification, les arbres décisionnels, les réseaux de neurones, etc."
 			},
 			"training_iot": {
 				"title": "Formation en Internet des Objets",
-				"desc": "Apprend la théorie et la pratique de l'IoT. Suis une ou plusieurs formations complètes offertes par ALIVEcode qui t'apprendront tout ce qu'il t'es requis afin de commencer à développer tes propres projets IoT. L'électronique, les protocoles de communication, les base de données, l'IA, l'interfaçage, etc."
+				"desc": "Apprends la théorie et la pratique de l'IoT. Suis une ou plusieurs formations complètes offertes par ALIVEcode qui t'apprendront tout ce qui t'est requis afin de commencer à développer tes propres projets IoT. L'électronique, les protocoles de communication, les bases de données, l'IA, l'interfaçage, etc."
 			},
 			"training_code": {
 				"title": "Initiation à la Programmation",
-				"desc": "Apprend les bases de la programmation. Suis une ou plusieurs formations complètes offertes par ALIVEcode qui te transformeront en programmeur aguerri. Apprend la programmation en contrôlant un véhicule motorisé, en résolvant des défis et en publiant tes propres défis/projets à la communauté."
+				"desc": "Apprends les bases de la programmation. Suis une ou plusieurs formations complètes offertes par ALIVEcode qui te transformeront en programmeur aguerri. Apprends la programmation en contrôlant un véhicule motorisé, en résolvant des défis et en publiant tes propres défis/projets à la communauté."
 			}
 		},
 		"navbar": {

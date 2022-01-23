@@ -43,6 +43,7 @@ import { FORM_ACTION } from '../../Components/UtilsComponents/Form/formTypes';
 import { LevelIoT as LevelIoTModel } from '../../Models/Level/levelIoT.entity';
 import IoTProject from '../../Pages/IoT/IoTProject/IoTProject';
 import { useNavigate } from 'react-router-dom';
+import FormInput from '../../Components/UtilsComponents/FormInput/FormInput';
 
 /**
  * This component is used to load any type of Level with an id or passed as a prop.
@@ -325,14 +326,14 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 					hideCloseButton
 					submitText="Confirmer"
 					centered
-					onShow={() => userInputRef.current.focus()}
+					onShow={() => userInputRef.current && userInputRef.current.focus()}
 					centeredText
 				>
-					<input
+					<FormInput
 						ref={userInputRef}
 						placeholder={`${t('input.defaultValue')}`}
 						type="text"
-						onKeyPress={e => {
+						onKeyPress={(e: KeyboardEvent) => {
 							if (e.key === 'Enter') {
 								e.preventDefault();
 								if (userInputCallback.current && userInputRef.current)

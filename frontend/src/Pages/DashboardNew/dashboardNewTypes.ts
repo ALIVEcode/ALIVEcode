@@ -3,7 +3,7 @@ import { Classroom } from '../../Models/Classroom/classroom.entity';
 export type DashboardNewProps = {};
 
 export type SwitchTabActions = {
-	type: 'recents' | 'summary' | 'classrooms';
+	type: 'recents' | 'levels' | 'classrooms';
 	classroom?: Classroom;
 };
 
@@ -14,21 +14,6 @@ export const StyledDashboard = styled.div`
 	box-sizing: border-box;
 	background-color: var(--background-color);
 	font-family: var(--oxygen-font);
-
-	.dashboard-row {
-		position: relative;
-		height: 100%;
-		display: table-row;
-	}
-
-	.dashboard-row .no-float {
-		display: table-cell;
-		vertical-align: top;
-	}
-
-	.content {
-		padding: 0;
-	}
 
 	.sidebar {
 		border-right: 1px solid var(--bg-shade-four-color);
@@ -120,7 +105,6 @@ export const StyledDashboard = styled.div`
 
 	hr {
 		margin-top: 0;
-		width: 90%;
 		border-color: var(--bg-shade-three-color) !important;
 	}
 `;

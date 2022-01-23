@@ -400,7 +400,7 @@ const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 							},
 							{
 								name: 'description',
-								inputType: 'text',
+								inputType: 'textarea',
 								default: level?.description,
 								maxLength: 500,
 							},

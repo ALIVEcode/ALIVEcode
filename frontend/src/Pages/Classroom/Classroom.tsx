@@ -20,6 +20,8 @@ import CourseCard from '../../Components/CourseComponents/CourseCard/CourseCard'
 import Badge from '../../Components/UtilsComponents/Badge/Badge';
 
 const StyledDiv = styled.div`
+	background-color: var(--background-color);
+
 	.classroom-content {
 		width: 80%;
 		margin-top: 50px;
@@ -81,7 +83,7 @@ const Classroom = ({ classroomProp, ...props }: ClassroomProps) => {
 	return (
 		<StyledDiv>
 			<ClassroomHeader classroom={classroom} />
-			<div className="p-2 tablet:p-10 laptop:p-12">
+			<div className="px-2 tablet:px-10 laptop:px-12">
 				<CardContainer
 					asRow
 					title={t('classroom.container.courses.title')}

@@ -5,11 +5,15 @@ import { useTranslation } from 'react-i18next';
 import {
 	CLASSROOM_SUBJECT,
 	Classroom,
+	CLASSROOM_ACCESS,
 } from '../../../Models/Classroom/classroom.entity';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { useNavigate } from 'react-router-dom';
 import { useAlert } from 'react-alert';
 import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
+import { useContext } from 'react';
+import { UserContext } from '../../../state/contexts/UserContext';
+import { plainToInstance } from 'class-transformer';
 
 /**
  * Form that creates a new classroom in the db and navigates to it
@@ -21,13 +25,17 @@ const ClassroomForm = (props: ClassroomFormProps) => {
 	const { routes } = useRoutes();
 	const navigate = useNavigate();
 	const alert = useAlert();
+	const { user } = useContext(UserContext);
 
 	return (
 		<FormContainer title={t('form.title.create_classroom')}>
 			<Form
-				onSubmit={res => {
-					const classroom: Classroom = res.data;
-					navigate(routes.auth.classroom.path.replace(':id', classroom.id));
+				onSubmit={async res => {
+					const classroom: Classroom = plainToInstance(Classroom, res.data);
+					await user?.addClassroom(classroom);
+					navigate(
+						routes.auth.dashboard.path + `/classroom?id=${classroom.id}`,
+					);
 					return alert.success('Classe créée avec succès');
 				}}
 				name="classroom"
@@ -51,6 +59,14 @@ const ClassroomForm = (props: ClassroomFormProps) => {
 						inputType: 'select',
 						required: true,
 						selectOptions: CLASSROOM_SUBJECT,
+						default: CLASSROOM_SUBJECT.INFORMATIC,
+					},
+					{
+						name: 'access',
+						inputType: 'select',
+						required: true,
+						selectOptions: CLASSROOM_ACCESS,
+						default: CLASSROOM_ACCESS.PRIVATE,
 					},
 				]}
 			/>

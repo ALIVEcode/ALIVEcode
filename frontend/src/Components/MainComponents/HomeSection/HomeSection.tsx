@@ -5,7 +5,17 @@ import { forwardRef } from 'react';
 
 export const HomeSection = forwardRef<HTMLDivElement, HomeSectionProps>(
 	(
-		{ title, text, img, imgAlt, reverse, button, imgOpacity, ...buttonProps },
+		{
+			title,
+			text,
+			img,
+			imgAlt,
+			reverse,
+			button,
+			imgOpacity,
+			important,
+			...buttonProps
+		},
 		ref,
 	) => {
 		return (
@@ -13,8 +23,8 @@ export const HomeSection = forwardRef<HTMLDivElement, HomeSectionProps>(
 				className={classNames(
 					'w-full h-full flex flex-col items-center font-normal mt-20 px-5 gap-8',
 					'tablet:gap-8 tablet:px-5',
-					'laptop:gap-32 laptop:px-10',
-					'desktop:px-16',
+					'laptop:gap-16 laptop:px-10',
+					'desktop:px-16 desktop:gap-32',
 					reverse ? 'tablet:flex-row-reverse' : 'tablet:flex-row',
 				)}
 				ref={ref}
@@ -29,10 +39,24 @@ export const HomeSection = forwardRef<HTMLDivElement, HomeSectionProps>(
 				</div>
 				<div className="tablet:w-3/5 laptopt:w-1/3 flex items-center">
 					<div>
-						<div className="text-3xl tablet:text-2xl laptop:text-3xl desktop:text-4xl tracking-tight mb-6 tablet:mb-3 desktop:mb-6">
+						<div
+							className={classNames(
+								'tracking-tight',
+								important
+									? 'font-semibold text-4xl tablet:text-3xl laptop:text-4xl desktop:text-5xl mb-6 tablet:mb-7 desktop:mb-10'
+									: 'text-3xl tablet:text-2xl laptop:text-3xl desktop:text-4xl mb-6 tablet:mb-3 desktop:mb-6',
+							)}
+						>
 							{title}
 						</div>
-						<div className="text-lg tablet:leading-normal tablet:text-sm laptop:leading-relaxed laptop:text-lg desktop:leading-loose desktop:text-xl text-justify">
+						<div
+							className={classNames(
+								'tablet:leading-normal laptop:leading-relaxed desktop:leading-loose text-justify',
+								important
+									? 'text-xl tablet:text-base laptop:text-xl desktop:text-2xl'
+									: 'text-lg tablet:text-sm laptop:text-lg desktop:text-xl',
+							)}
+						>
 							{text}
 						</div>
 						{button && (

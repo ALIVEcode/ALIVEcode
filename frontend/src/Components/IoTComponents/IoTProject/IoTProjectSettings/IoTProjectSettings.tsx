@@ -46,7 +46,7 @@ export const IoTProjectSettings = () => {
 						name: 'description',
 						required: false,
 						default: project.description,
-						inputType: 'text',
+						inputType: 'textarea',
 					},
 					{
 						name: 'access',

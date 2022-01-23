@@ -1,7 +1,6 @@
 import Link from '../../../Components/UtilsComponents/Link/Link';
 
 import VoitureGIF from '../../../assets/images/Voiture.gif';
-import FillContainer from '../../../Components/UtilsComponents/FillContainer/FillContainer';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';

@@ -36,6 +36,9 @@ import {
 import { Course } from '../../Models/Course/course.entity';
 import { useNavigate } from 'react-router-dom';
 import useRoutes from '../../state/hooks/useRoutes';
+import DashboardLevels from '../../Components/DashboardComponents/DashboardLevels/DashboardLevels';
+import { Level } from '../../Models/Level/level.entity';
+import Button from '../../Components/UtilsComponents/Buttons/Button';
 
 const SwitchTabReducer = (
 	state: { index: number; classroom?: ClassroomModel },
@@ -44,7 +47,7 @@ const SwitchTabReducer = (
 	switch (action.type) {
 		case 'recents':
 			return { index: 0 };
-		case 'summary':
+		case 'levels':
 			return { index: 1 };
 		case 'classrooms':
 			if (action.classroom) {
@@ -78,30 +81,36 @@ const DashboardNew = (props: DashboardNewProps) => {
 		index: 0,
 	});
 	const [courses, setCourses] = useState<Course[]>();
+	const [levels, setLevels] = useState<Level[]>();
 
 	useEffect(() => {
 		if (pathname.endsWith('recents') && tabSelected.index !== 0)
 			setTabSelected({ type: 'recents' });
-		else if (pathname.endsWith('summary') && tabSelected.index !== 1)
-			setTabSelected({ type: 'summary' });
-		else if (pathname.includes('classroom') && tabSelected.index !== 2) {
+		else if (pathname.endsWith('levels') && tabSelected.index !== 1)
+			setTabSelected({ type: 'levels' });
+		else if (pathname.includes('classroom')) {
 			const classroomId = query.get('id');
+			if (tabSelected.classroom?.id === classroomId) return;
 			const classroom = classrooms.find(c => c.id === classroomId);
 			if (!classroom) return;
 			setTabSelected({ type: 'classrooms', classroom });
 		}
-	}, [classrooms, navigate, pathname, query, tabSelected.index]);
+	}, [
+		classrooms,
+		navigate,
+		pathname,
+		query,
+		tabSelected.classroom?.id,
+		tabSelected.index,
+	]);
 
 	useEffect(() => {
 		if (!user) return;
 		const getClassrooms = async () => {
-			const data = await api.db.users.getClassrooms({
-				id: user.id,
-			});
-			setClassrooms(data);
+			setClassrooms(await user.getClassrooms());
 		};
 		getClassrooms();
-	}, [user]);
+	});
 
 	const openRecents = () => {
 		query.delete('id');
@@ -111,10 +120,10 @@ const DashboardNew = (props: DashboardNewProps) => {
 		});
 	};
 
-	const openSummary = () => {
+	const openLevels = () => {
 		query.delete('id');
 		navigate({
-			pathname: `/dashboard/summary`,
+			pathname: `/dashboard/levels`,
 			search: query.toString(),
 		});
 	};
@@ -132,7 +141,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 			case 0:
 				return <DashboardRecents></DashboardRecents>;
 			case 1:
-				return 'Sommaire';
+				return <DashboardLevels></DashboardLevels>;
 			case 2:
 				if (!tabSelected.classroom) return;
 				return (
@@ -150,6 +159,12 @@ const DashboardNew = (props: DashboardNewProps) => {
 		setCourses(courses);
 	}, [user]);
 
+	const loadLevels = useCallback(async () => {
+		if (!user) return;
+		const levels = await api.db.users.getLevels({ id: user.id });
+		setLevels(levels);
+	}, [user]);
+
 	const ctx: DashboardContextValues = useMemo(() => {
 		return {
 			getCourses: () => {
@@ -162,14 +177,22 @@ const DashboardNew = (props: DashboardNewProps) => {
 			getClassrooms: () => {
 				return classrooms;
 			},
+			getLevels: () => {
+				if (!levels) {
+					loadLevels();
+					return [];
+				}
+				return levels;
+			},
+			setFormJoinClassOpen,
 		};
-	}, [classrooms, courses, loadCourses]);
+	}, [classrooms, courses, levels, loadCourses, loadLevels]);
 
 	return (
 		<StyledDashboard>
 			<DashboardContext.Provider value={ctx}>
-				<div className="dashboard-row">
-					<div className="sidebar no-float phone:w-1/4 table:1/6 laptop:1/8 desktop:1/12">
+				<div className="flex h-full overflow-auto">
+					<div className="sidebar overflow-y-auto break-words no-float w-1/4 table:1/6 laptop:1/8 desktop:1/12">
 						<div
 							className={
 								'sidebar-btn ' +
@@ -178,17 +201,21 @@ const DashboardNew = (props: DashboardNewProps) => {
 							onClick={openRecents}
 						>
 							<FontAwesomeIcon className="sidebar-icon" icon={faHistory} />
-							<label className="sidebar-btn-text">Formations Récentes</label>
+							<label className="sidebar-btn-text">
+								{t('dashboard.recents.title')}
+							</label>
 						</div>
 						<div
 							className={
 								'sidebar-btn ' +
 								(tabSelected.index === 1 ? 'sidebar-selected' : '')
 							}
-							onClick={openSummary}
+							onClick={openLevels}
 						>
 							<FontAwesomeIcon className="sidebar-icon" icon={faStar} />
-							<label className="sidebar-btn-text">Sommaire</label>
+							<label className="sidebar-btn-text">
+								{t('dashboard.levels.title')}
+							</label>
 						</div>
 
 						<hr />
@@ -199,7 +226,9 @@ const DashboardNew = (props: DashboardNewProps) => {
 							onMouseLeave={() => setHoveringClassroom(false)}
 						>
 							<FontAwesomeIcon className="sidebar-icon" icon={faBook} />
-							<label className="sidebar-header-text">Classes</label>
+							<label className="sidebar-header-text">
+								{t('dashboard.classrooms.title')}
+							</label>
 							{hoveringClassroom && (
 								<FontAwesomeIcon
 									onClick={() =>
@@ -215,16 +244,41 @@ const DashboardNew = (props: DashboardNewProps) => {
 
 						<hr />
 
-						{classrooms.map((classroom, idx) => (
-							<ClassroomSection
-								key={idx}
-								selected={tabSelected.classroom?.id === classroom.id}
-								onClick={() => openClassroom(classroom)}
-								classroom={classroom}
-							></ClassroomSection>
-						))}
+						{classrooms.length > 0 ? (
+							classrooms.map((classroom, idx) => (
+								<ClassroomSection
+									key={idx}
+									selected={tabSelected.classroom?.id === classroom.id}
+									onClick={() => openClassroom(classroom)}
+									classroom={classroom}
+								></ClassroomSection>
+							))
+						) : (
+							<div className="!text-xs !text-[color:var(--fg-shade-four-color)] !cursor-default flex flex-col items-center sidebar-classroom">
+								<i>
+									{user?.isProfessor()
+										? t('dashboard.classrooms.empty.professor')
+										: t('dashboard.classrooms.empty.student')}
+								</i>
+								<Button
+									className="!text-xs mt-2"
+									onClick={() =>
+										user?.isProfessor()
+											? navigate(routes.auth.create_classroom.path)
+											: setFormJoinClassOpen(true)
+									}
+									variant="primary"
+								>
+									{user?.isProfessor()
+										? t('dashboard.classrooms.add.professor')
+										: t('dashboard.classrooms.add.student')}
+								</Button>
+							</div>
+						)}
 					</div>
-					<div>{renderTabSelected()}</div>
+					<div className="w-3/4 table:5/6 laptop:7/8 desktop:11/12 h-full overflow-y-auto">
+						{renderTabSelected()}
+					</div>
 				</div>
 			</DashboardContext.Provider>
 			<FormModal

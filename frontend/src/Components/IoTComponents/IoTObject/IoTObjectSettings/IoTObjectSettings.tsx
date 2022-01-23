@@ -42,7 +42,7 @@ const IoTObjectSettings = ({ object, onUpdate }: IoTObjectSettingsProps) => {
 						name: 'description',
 						required: false,
 						default: object.description,
-						inputType: 'text',
+						inputType: 'textarea',
 					},
 					{
 						name: 'label',

@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { classNames } from '../../../Types/utils';
 import Button from '../Buttons/Button';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Component used to show a custom styled modal
@@ -50,6 +51,7 @@ const Modal = (props: ModalProps) => {
 	} = props;
 
 	const cancelButtonRef = useRef<HTMLButtonElement | null>(null);
+	const { t } = useTranslation();
 
 	useEffect(() => {
 		if (open) onShow && onShow();
@@ -157,7 +159,7 @@ const Modal = (props: ModalProps) => {
 											onClick={() => setOpen(false)}
 											ref={cancelButtonRef}
 										>
-											{closeText ?? 'Close'}
+											{closeText ?? t('modal.close')}
 										</Button>
 									)}
 									{!hideSubmitButton && (
@@ -165,7 +167,7 @@ const Modal = (props: ModalProps) => {
 											variant={submitButtonVariant ?? 'third'}
 											onClick={() => setOpen(false)}
 										>
-											{submitText ?? 'Submit Changes'}
+											{submitText ?? t('modal.save')}
 										</Button>
 									)}
 								</div>

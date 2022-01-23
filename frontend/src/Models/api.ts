@@ -6,7 +6,11 @@ import { Course } from './Course/course.entity';
 import { Section } from './Course/section.entity';
 import { Classroom } from './Classroom/classroom.entity';
 import { Professor, Student, User } from './User/user.entity';
-import { IoTProject, IoTProjectLayout } from './Iot/IoTproject.entity';
+import {
+	IoTProject,
+	IoTProjectDocument,
+	IoTProjectLayout,
+} from './Iot/IoTproject.entity';
 import { IotRoute } from './Iot/IoTroute.entity';
 import { Level, LEVEL_TYPE } from './Level/level.entity';
 import { LevelAlive } from './Level/levelAlive.entity';
@@ -14,7 +18,6 @@ import { LevelCode } from './Level/levelCode.entity';
 import { LevelProgression } from './Level/levelProgression';
 import { LevelAI } from './Level/levelAI.entity';
 import { IoTObject } from './Iot/IoTobject.entity';
-import { QueryDTO } from '../../../backend/src/models/level/dto/query.dto';
 import { Category } from './Quiz/categories-quiz.entity';
 import { QuizForm } from './Quiz/quizForm.entity';
 import { QuestionForm } from './Quiz/questionForm.entity';
@@ -29,6 +32,8 @@ import { LevelIoT } from './Level/levelIoT.entity';
 import { Quiz } from './Quiz/quiz.entity';
 import { Topics } from './Social/topics.entity';
 import { Post } from './Forum/post.entity';
+import { LevelQueryDTO } from './Level/dto/LevelQuery.dto';
+import { ClassroomQueryDTO } from './Level/dto/ClassroomQueryDTO';
 
 type urlArgType<S extends string> = S extends `${infer _}:${infer A}/${infer B}`
 	? A | urlArgType<B>
@@ -181,6 +186,11 @@ const api = {
 			delete: apiDelete('classrooms/:id'),
 			join: apiCreate('classrooms/students', Classroom),
 			leave: apiDelete('classrooms/:classroomId/students/:studentId'),
+			async query(body: ClassroomQueryDTO) {
+				return (await axios.post('classrooms/query', body)).data.map((d: any) =>
+					plainToClass(Classroom, d),
+				);
+			},
 		},
 		courses: {
 			get: apiGet('courses/:id', Course, false),
@@ -255,7 +265,7 @@ const api = {
 				if (level.type === LEVEL_TYPE.IOT) return plainToClass(LevelIoT, level);
 				return plainToClass(LevelCode, level);
 			}),
-			async query(body: QueryDTO) {
+			async query(body: LevelQueryDTO) {
 				return (await axios.post('levels/query', body)).data.map((d: any) =>
 					plainToClass(Level, d),
 				);
@@ -270,6 +280,12 @@ const api = {
 				getObjects: apiGet('iot/projects/:id/objects', IoTObject, true),
 				async updateLayout(id: string, layout: IoTProjectLayout) {
 					await axios.patch(`iot/projects/${id}/layout`, layout);
+				},
+				async updateDocument(id: string, document: IoTProjectDocument) {
+					return plainToClass(
+						IoTProject,
+						(await axios.patch(`iot/projects/${id}/document`, document)).data,
+					);
 				},
 				async createScriptRoute(
 					projectId: string,

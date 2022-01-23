@@ -5,6 +5,7 @@ import { IoTRouteEntity } from '../../IoTroute/entities/IoTroute.entity';
 import { UserEntity } from '../../../user/entities/user.entity';
 import { IoTObjectEntity } from '../../IoTobject/entities/IoTobject.entity';
 import { IoTLayoutManager } from '../IoTLayoutManager';
+import { Type } from 'class-transformer';
 
 export enum IOTPROJECT_INTERACT_RIGHTS {
   ANYONE = 'AN',
@@ -27,16 +28,21 @@ export enum IOTPROJECT_ACCESS {
   PRIVATE = 'PR', // only accessible to the creator
 }
 
-type IoTComponent = {
+export class IoTComponent {
   value: any;
   id: string;
   type: IOT_COMPONENT_TYPE;
-};
+}
 
 export class IoTProjectLayout {
   @IsNotEmpty()
+  @Type(() => IoTComponent)
   components: Array<IoTComponent>;
 }
+
+export type JsonObj = { [key: string]: any };
+
+export type IoTProjectDocument = JsonObj;
 
 @Entity()
 export class IoTProjectEntity extends CreatedByUser {
@@ -47,7 +53,12 @@ export class IoTProjectEntity extends CreatedByUser {
   // TODO : body typing
   @Column({ nullable: true, type: 'json', default: { components: [] } })
   @IsOptional()
+  @Type(() => IoTProjectLayout)
   layout: IoTProjectLayout;
+
+  @Column({ nullable: false, type: 'jsonb', default: {} })
+  @IsOptional()
+  document: IoTProjectDocument;
 
   @ManyToMany(() => IoTObjectEntity, obj => obj.iotProjects)
   @JoinTable()

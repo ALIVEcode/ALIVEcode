@@ -47,7 +47,7 @@ import InputGroup from '../InputGroup/InputGroup';
  *			},
  *			{
  *				name: 'description',
- *				inputType: 'text',
+ *				inputType: 'textarea',
  *				maxLength: 200,
  *			},
  *			{
@@ -111,7 +111,7 @@ const Form = (props: FormProps) => {
 		}
 	};
 
-	const renderFormInput = (g: InputGroupModel) => {
+	const renderFormInput = (g: InputGroupModel, idx: number) => {
 		const placeholderValue = t([
 			`form.${props.name}.${props.action}.${g.name}.placeholder`,
 			`form.${props.name}.${g.name}.placeholder`,
@@ -120,7 +120,7 @@ const Form = (props: FormProps) => {
 
 		const defaultInputOptions = {
 			style: { paddingRight: 0 },
-			isInvalid: errors[g.name]?.type,
+			key: idx,
 			placeholder: placeholderValue,
 			defaultValue: g.default,
 			disabled: g.disabled != null ? g.disabled : props.disabled,
@@ -226,6 +226,7 @@ const Form = (props: FormProps) => {
 							`form.${props.name}.${g.name}.label`,
 							prettyField(g.name),
 						])}
+						as={g.inputType === 'textarea' ? 'textarea' : undefined}
 						errors={errors[g.name]}
 						messages={{
 							required: t([
@@ -266,7 +267,7 @@ const Form = (props: FormProps) => {
 
 	return (
 		<form onSubmit={handleSubmit(onFormSubmit)}>
-			{props.inputGroups.map((g, idx) => renderFormInput(g))}
+			{props.inputGroups.map((g, idx) => renderFormInput(g, idx))}
 			<Button
 				variant={props.action === FORM_ACTION.DELETE ? 'danger' : 'secondary'}
 				type="submit"

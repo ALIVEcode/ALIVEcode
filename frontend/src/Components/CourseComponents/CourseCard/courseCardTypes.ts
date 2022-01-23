@@ -33,5 +33,6 @@ export const StyledCourseCard = styled.div`
 		font-size: 0.8em;
 		height: 50px;
 		padding: 5px 10px 5px 10px;
+		overflow-wrap: break-word;
 	}
 `;

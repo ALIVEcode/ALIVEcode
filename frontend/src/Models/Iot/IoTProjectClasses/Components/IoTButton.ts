@@ -3,8 +3,13 @@ import { IoTComponent, IOT_COMPONENT_TYPE } from '../IoTComponent';
 
 @Exclude()
 export class IoTButton extends IoTComponent {
+	public defaultValue: string = '';
 	public value: string = '';
 	public type = IOT_COMPONENT_TYPE.BUTTON;
+
+	public validate(val: any) {
+		return typeof val === 'string';
+	}
 
 	@Expose()
 	private targetId?: string | null = null;

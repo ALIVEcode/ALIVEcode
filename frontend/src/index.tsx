@@ -4,7 +4,12 @@ import './index.css';
 import 'reflect-metadata';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { transitions, positions, Provider as AlertProvider } from 'react-alert';
+import {
+	transitions,
+	positions,
+	Provider as AlertProvider,
+	AlertProviderProps,
+} from 'react-alert';
 import axios from 'axios';
 import AlertTemplate from 'react-alert-template-basic';
 import i18next from 'i18next';
@@ -13,6 +18,7 @@ import HttpAPI from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import LoadingScreen from './Components/UtilsComponents/LoadingScreen/LoadingScreen';
 import { BrowserRouter as Router } from 'react-router-dom';
+import Alert from './Components/UtilsComponents/Alert/Alert/Alert';
 
 axios.defaults.baseURL = process.env.BACKEND_URL;
 axios.defaults.withCredentials = true;
@@ -23,11 +29,12 @@ axios.defaults.headers.common = {
 };
 
 // React Alert Configs
-const alertOptions = {
+const alertOptions: AlertProviderProps = {
 	position: positions.BOTTOM_RIGHT,
 	timeout: 7000,
 	offset: '30px',
 	transition: transitions.FADE,
+	template: AlertTemplate,
 };
 
 i18next
@@ -62,7 +69,7 @@ i18next
 ReactDOM.render(
 	<Suspense fallback={<LoadingScreen />}>
 		<React.StrictMode>
-			<AlertProvider template={AlertTemplate} {...alertOptions}>
+			<AlertProvider {...alertOptions}>
 				<Router>
 					<App />
 				</Router>

@@ -10,6 +10,7 @@
 		"signin_first_time": "une erreur est survenue lors de votre connexion automatique à votre nouveau compte.",
 		"500": "Une erreur est survenue, veuillez réessayer.",
 		"page404": "Cette page n'existe pas.",
+		"page501": "Cette page est en construction.",
 		"maintenance": {
 			"ongoing": "Une maintenance est en cours du {{startDate}} et prend fin le {{finishDate}}, cette page n'a pas pu être affichée.",
 			"short": "La requête n'a pas pu être faite, le site est présentement en maintenance."
@@ -96,7 +97,7 @@
 	},
 	"modal": {
 		"close": "Fermer",
-		"save": "Enregistrer les changements",
+		"save": "Enregistrer",
 		"confirm": "Confirmer",
 		"cancel": "Annuler"
 	},
@@ -108,8 +109,11 @@
 		"description": "description",
 		"deleted_user": "Ancien utilisateur",
 		"search": "Rechercher",
+		"community_levels": "Niveaux de la communauté",
+		"public_classrooms": "Classes publiques",
 		"creation_date": "Date de création",
 		"update_date": "Date de modification",
+		"see_links": "Voir les liens",
 		"time": {
 			"format": "{{dayName}}, {{day}} {{monthName}} {{year}} - {{hour}}:{{minute}}",
 			"day": {
@@ -174,30 +178,38 @@
 		}
 	},
 	"dashboard": {
-		"classrooms": {
-			"title": "Mes classes",
+		"recents": {
+			"title": "Cours Récents",
 			"empty": {
-				"student": "Tu ne fais parti d'aucune classe",
-				"professor": "Tu ne possède aucune classe"
+				"student": "Tu n'as pas d'activité récente. Rejoins une classe publique ou privée pour commencer à apprendre",
+				"professor": "Tu n'as pas d'activité récente. Crée une classe pour commencer"
 			}
 		},
 		"levels": {
 			"title": "Niveaux",
-			"my_levels": "Mes niveaux",
+			"browse_levels": "Explorer les niveaux de la communauté",
 			"create_level": "Créer un niveau",
-			"browse_levels": "Rechercher un niveau"
+			"empty": "Tu n'as pas de niveau"
 		},
-		"quizzes": {
-			"title": "Quiz",
-			"my_quizzes": "Mes quiz",
-			"create_quiz": "Créer un quiz",
-			"browse_quizzes": "Rechercher un quiz"
+		"classrooms": {
+			"title": "Classes",
+			"no_courses": "Aucun cours",
+			"browse_public": "Explorer les classes publiques",
+			"empty": {
+				"student": "Tu ne fais parti d'aucune classe",
+				"professor": "Tu ne possède aucune classe"
+			},
+			"add": {
+				"student": "Rejoindre une classe",
+				"professor": "Créer une classe"
+			}
 		}
 	},
 	"classroom": {
 		"add_students": "Ajoutez des étudiants",
 		"delete": "Supprimer la classe",
 		"leave": "Quitter la classe",
+		"already_in": "Déjà dans la classe",
 		"container": {
 			"courses": {
 				"title": "Cours",
@@ -215,7 +227,7 @@
 		"subject": "Sujet",
 		"code": {
 			"title": "Code de la classe",
-			"desc": "Donnez ce code aux élèves afin qu'ils puissent rejoindre la classe depuis le site!"
+			"desc": "Donnez ce code aux élèves afin qu'ils puissent rejoindre la classe depuis le tableau de bord!"
 		}
 	},
 	"course": {
@@ -249,22 +261,51 @@
 		"msg1": "code",
 		"msg2": "ai",
 		"msg3": "iot",
+		"desc": "Apprend la programmation",
+		"get_started": "Commencer!",
+		"see_trainings": "Voir les formations",
+		"about": "À propos",
+		"trainings": "Formations",
+		"news": "Nouvelles",
+		"iot": {
+			"desc": "L'IoT n'a jamais été aussi facile",
+			"to_dashboard": "Accéder au Tableau de Bord",
+			"to_trainings": "Accéder aux Formations",
+			"section": {
+				"develop": {
+					"title": "Commence à Développer",
+					"desc": "Pratique tes notions d'internet des objets en développant des projets IoT. Enregistre plusieurs objets connectés, crée un réseau d'objet connectés, établis des communcations entre eux, collecte et partage des données entre les objets et affiche en temps réel les données dans une interface graphique."
+				},
+				"learn": {
+					"title": "Commence à Apprendre",
+					"desc": "$t(home.section.training_iot.desc)"
+				}
+			}
+		},
 		"section": {
-			"alive": {
-				"title": "$t(msg.section.alive)",
-				"description": "Dans cette section, vous pourrez créer vos propres niveaux ou jouer aux niveaux des autres utilisateurs!"
+			"mission": {
+				"title": "Notre mission",
+				"desc": "Facilité l'accès, le partage et les discussions autour des nouvelles technologies. Donner la chance à n'importe qui d'accomplir n'importe quoi."
 			},
-			"amc": {
-				"title": "$t(msg.section.amc)",
-				"description": "Dans cette activité, vous auriez la possibilité de controller une voiture à l'aide de votre pensée!"
+			"us": {
+				"title": "Qui sommes-nous ?",
+				"desc": "Nous sommes des chercheurs du Laboratoire de Recherche Informatique Maisonneuve LRIMa. Chaque année nous avons comme but d'innover dans l'industrie informatique en menant des recherches et en publiant/partageans les résultats de nos recherches durant des conférences à travers le monde. Visitez le site du LRIMa pour plus de détails et la section à propos."
 			},
-			"avp": {
-				"title": "$t(msg.section.avp)",
-				"description": "En construction..."
+			"story": {
+				"title": "Notre histoire",
+				"desc": "Les origines d'ALIVEcode remontent loin dans le temps. Il y a trois ans, nous avons eu l'idée de créer des véhicules miniatures autonomes dans le but de recherches scientifiques. Un an plus tard, nous avons eu l'idée d'utiliser ces robots afin d'apprendre la programmation à de jeunes étudiants. L'année suivante, nous avons décidé de créer ALIVEcode afin de rendre l'apprentissage de la programmation accessible à tous. Cela fait maintenant plus d'un an qu'ALIVEcode existe et continue d'être amélioré."
 			},
-			"lrima": {
-				"title": "$t(msg.section.lrima)",
-				"description": "Site officiel du laboratoire de recherche informatique de Maisonneuve LRIMA."
+			"training_ai": {
+				"title": "Formation en Intelligence Artificielle",
+				"desc": "Apprend la théorie et la pratique de l'IoT. Suis une ou plusieurs formations complètes offertes par ALIVEcode qui t'apprendront tout ce qu'il y a à savoir sur l'IA. Tels que: les régressions linéaires, la classification, les arbres décisionnels, les réseaux de neurones, etc."
+			},
+			"training_iot": {
+				"title": "Formation en Internet des Objets",
+				"desc": "Apprend la théorie et la pratique de l'IoT. Suis une ou plusieurs formations complètes offertes par ALIVEcode qui t'apprendront tout ce qu'il t'es requis afin de commencer à développer tes propres projets IoT. L'électronique, les protocoles de communication, les base de données, l'IA, l'interfaçage, etc."
+			},
+			"training_code": {
+				"title": "Initiation à la Programmation",
+				"desc": "Apprend les bases de la programmation. Suis une ou plusieurs formations complètes offertes par ALIVEcode qui te transformeront en programmeur aguerri. Apprend la programmation en contrôlant un véhicule motorisé, en résolvant des défis et en publiant tes propres défis/projets à la communauté."
 			}
 		},
 		"navbar": {
@@ -337,27 +378,6 @@
 		"object": {
 			"name": "Objet IoT"
 		}
-	},
-	"simulation": {
-		"modal": {
-			"retry": "Réessayer?",
-			"continue": "Continuer",
-			"lose": "Meilleure chance la prochaine fois!",
-			"win": "La victoire t'appartient! 🎉",
-			"water": "La voiture est tombée dans l'eau",
-			"lava": "La voiture est tombée dans la lave",
-			"hole": "La voiture est tombée dans un trou",
-			"wall": "La voiture a foncée dans un mur",
-			"connect_car": {
-				"title": "Connecter un vrai ALIVEcar",
-				"label": "Identifiant du ALIVEcar",
-				"id": "123",
-				"button": "Se connecter avec le vrai ALIVEcar"
-			}
-		}
-	},
-	"cmd": {
-		"clear": "Effacer les lignes"
 	},
 	"user": {
 		"quiz": "Quiz : ",

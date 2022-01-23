@@ -1,4 +1,7 @@
-import { FontAwesomeIcon, FontAwesomeIconProps } from '@fortawesome/react-fontawesome';
+import {
+	FontAwesomeIcon,
+	FontAwesomeIconProps,
+} from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
 import { useLayoutEffect, useRef } from 'react';
 
@@ -23,6 +26,7 @@ const StyledButton = styled.div`
 		bgColor ?? 'var(--secondary-color)'};
 	text-align: center;
 	transition: 0.2s;
+	cursor: pointer;
 
 	&:hover {
 		background-color: ${({ hoverBg }: StyledProps) =>

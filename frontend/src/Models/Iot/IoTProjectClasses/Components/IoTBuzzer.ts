@@ -4,8 +4,13 @@ import { Oscillator } from 'tone';
 
 @Exclude()
 export class IoTBuzzer extends IoTComponent {
+	public defaultValue: number = 500;
 	public value: number = 500;
 	public type = IOT_COMPONENT_TYPE.BUZZER;
+
+	public validate(val: any) {
+		return typeof val === 'number';
+	}
 
 	@Expose()
 	private soundDuration: number = 1;
@@ -17,12 +22,6 @@ export class IoTBuzzer extends IoTComponent {
 	private osc: Oscillator | null = null;
 	private oscTimeout: NodeJS.Timeout | null = null;
 
-	setValue(val: any) {
-		const num = Number(val);
-		if (isNaN(num)) return;
-		super.setValue(num);
-	}
-
 	update(data: any): void {
 		this.setValue(data);
 		if (this.buzzing) {
@@ -33,7 +32,7 @@ export class IoTBuzzer extends IoTComponent {
 
 	public buzz() {
 		if (!this.buzzing) {
-			this.osc = new Oscillator(this.value, this.frequencyType)
+			this.osc = new Oscillator(this.displayedValue, this.frequencyType)
 				.toDestination()
 				.start();
 			this.buzzing = true;

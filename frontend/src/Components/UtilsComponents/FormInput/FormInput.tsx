@@ -82,8 +82,10 @@ const FormInput = React.forwardRef<any, any>(
 		return (
 			<input
 				className={classNames(
-					'shadow border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-[color:var(--fg-shade-two-color)] bg-[color:var(--background-color)] border-[color:var(--bg-shade-four-color)]',
-					errors && 'border-red-500',
+					'shadow border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-[color:var(--fg-shade-two-color)] bg-[color:var(--background-color)]',
+					errors
+						? 'border-red-500'
+						: 'border-[color:var(--bg-shade-four-color)]',
 					className,
 				)}
 				ref={ref}

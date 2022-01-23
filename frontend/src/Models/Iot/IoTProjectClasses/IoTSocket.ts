@@ -1,46 +1,56 @@
-import { IoTProjectLayout } from '../IoTproject.entity';
+import {
+	IoTProject,
+	IoTProjectDocument,
+	parseIoTProjectDocument,
+} from '../IoTproject.entity';
 import { IoTComponentManager } from './IoTComponentManager';
 import { IoTComponent } from './IoTComponent';
+import { IoTProjectLayout, parseIoTProjectLayout } from '../IoTproject.entity';
 
 export type IoTSocketUpdateRequest = {
 	id: string;
 	value: any;
 };
 
+export type IoTSocketUpdateDocumentRequest = {
+	doc: IoTProjectDocument;
+};
+
+export type IoTSocketUpdateLayoutRequest = {
+	layout: IoTProjectLayout;
+};
+
 export class IoTSocket {
 	private socket: WebSocket;
 	private id: string;
-	private layout: IoTProjectLayout;
+	private project: IoTProject;
 	private name: string;
 	private iotComponentManager: IoTComponentManager;
-	private onRender: (layout: IoTProjectLayout) => void;
+	private onRender: (saveLayout: boolean) => void;
 
 	constructor(
 		id: string,
-		layout: IoTProjectLayout,
+		project: IoTProject,
 		name: string,
-		onRender: (layout: IoTProjectLayout) => void,
+		onRender: (saveLayout: boolean) => void,
 	) {
 		this.id = id;
-		this.layout = layout;
+		this.project = project;
 		this.name = name;
 		this.onRender = onRender;
 
 		this.iotComponentManager = new IoTComponentManager(
-			this.layout,
-			this.onComponentUpdate,
-			(components: Array<IoTComponent>) => {
-				this.layout.components = components;
-				this.onRender(this.layout);
+			this.project,
+			(saveLayout: boolean, components: Array<IoTComponent>) => {
+				this.project.layout.components = components;
+				this.onRender(saveLayout);
 			},
 			this,
 		);
 		this.openSocket();
 	}
 
-	private onComponentUpdate(layout: Array<IoTComponent>) {}
-
-	public setOnRender(onRender: (layout: IoTProjectLayout) => void) {
+	public setOnRender(onRender: (saveLayout: boolean) => void) {
 		this.onRender = onRender;
 	}
 
@@ -59,6 +69,12 @@ export class IoTSocket {
 				switch (data.event) {
 					case 'update':
 						this.onReceiveUpdate(data.data);
+						break;
+					case 'document_update':
+						this.onDocumentUpdate(data.data);
+						break;
+					case 'layout_update':
+						this.onLayoutUpdate(data.data);
 						break;
 				}
 			};
@@ -80,7 +96,7 @@ export class IoTSocket {
 	}
 
 	public closeSocket() {
-		if (this.socket) this.socket.close();
+		if (this.socket && this.socket.OPEN) this.socket.close();
 	}
 
 	public sendData(targetId: string, actionId: number, data: string) {
@@ -103,6 +119,20 @@ export class IoTSocket {
 				}),
 			);
 		}
+	}
+
+	public onDocumentUpdate(request: IoTSocketUpdateDocumentRequest) {
+		this.project.document = parseIoTProjectDocument(request.doc);
+		this.getComponentManager()
+			?.getComponents()
+			.map(c => c.updateRef());
+		this.onRender(false);
+	}
+
+	public onLayoutUpdate(request: IoTSocketUpdateLayoutRequest) {
+		this.project.layout = parseIoTProjectLayout(request.layout);
+		this.getComponentManager()?.setNewLayout(this.project.layout);
+		this.onRender(false);
 	}
 
 	public onReceiveUpdate(request: IoTSocketUpdateRequest) {

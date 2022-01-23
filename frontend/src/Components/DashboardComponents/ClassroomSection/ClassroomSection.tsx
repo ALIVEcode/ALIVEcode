@@ -1,5 +1,5 @@
 import { ClassroomSectionProps } from './classroomSectionTypes';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
@@ -7,6 +7,7 @@ import CourseSection from '../CourseSection/CourseSection';
 import { formatTooLong } from '../../../Types/formatting';
 import { useLocation, useNavigate } from 'react-router';
 import { useQuery } from '../../../state/hooks/useQuery';
+import { useTranslation } from 'react-i18next';
 
 const ClassroomSection = ({
 	classroom,
@@ -19,14 +20,17 @@ const ClassroomSection = ({
 	const location = useLocation();
 	const navigate = useNavigate();
 	const query = useQuery();
+	const loaded = useRef<boolean | null>();
+	const { t } = useTranslation();
 
 	useEffect(() => {
 		setIsOpen(query.get('open')?.includes(classroom.id) ?? false);
 	}, [classroom.id, query]);
 
 	useEffect(() => {
-		if (isOpen && !classroom.courses) {
+		if (isOpen && !classroom.courses && !loaded.current) {
 			const loadCourses = async () => {
+				loaded.current = true;
 				await classroom.getCourses();
 				forceUpdate();
 			};
@@ -90,7 +94,7 @@ const ClassroomSection = ({
 				) : (
 					<div className="sidebar-course">
 						<label className="sidebar-course-text no-cursor">
-							<i>No Courses</i>
+							<i>{t('dashboard.classrooms.no_courses')}</i>
 						</label>
 					</div>
 				))}

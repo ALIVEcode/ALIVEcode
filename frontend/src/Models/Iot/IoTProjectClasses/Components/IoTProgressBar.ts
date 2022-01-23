@@ -3,7 +3,8 @@ import { IoTComponent, IOT_COMPONENT_TYPE } from '../IoTComponent';
 
 @Exclude()
 export class IoTProgressBar extends IoTComponent {
-	public value: number;
+	public defaultValue: number = 10;
+	public value: number = 10;
 	@Expose()
 	public max: number = 100;
 	@Expose()
@@ -12,6 +13,10 @@ export class IoTProgressBar extends IoTComponent {
 	public isPercentage: boolean = true;
 
 	public type = IOT_COMPONENT_TYPE.PROGRESS_BAR;
+
+	public validate(val: any) {
+		return typeof val === 'number';
+	}
 
 	update(data: any): void {
 		if (isNaN(data)) return;
@@ -42,7 +47,6 @@ export class IoTProgressBar extends IoTComponent {
 
 export const createDefaultIoTProgressBar = () => {
 	const progress = new IoTProgressBar();
-	progress.value = 10;
 	progress.name = 'Default Progress';
 	progress.id = '';
 	progress.min = 0;

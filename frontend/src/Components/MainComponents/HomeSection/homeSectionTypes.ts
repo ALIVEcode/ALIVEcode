@@ -8,4 +8,5 @@ export type HomeSectionProps = {
 	onClick?: () => void;
 	imgOpacity?: number;
 	to?: string;
+	important?: boolean;
 };

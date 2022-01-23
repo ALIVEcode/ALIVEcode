@@ -15,6 +15,7 @@ module.exports = (env, argv) => {
 		output: {
 			path: path.join(__dirname, '/dist'),
 			filename: 'index.bundle.js',
+			publicPath: '/',
 		},
 		devServer: {
 			port: 3000,
@@ -93,6 +94,7 @@ module.exports = (env, argv) => {
 			new HtmlWebpackPlugin({
 				template: 'public/index.html',
 				favicon: 'public/favicon.ico',
+				filename: './index.html',
 			}),
 		].filter(Boolean),
 

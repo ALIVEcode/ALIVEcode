@@ -1,4 +1,4 @@
-import { Get, Logger, UseInterceptors, Controller, Body, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
+import { Logger, UseInterceptors, Controller, Body, HttpException, HttpStatus, Post, UseFilters } from '@nestjs/common';
 import {
   ConnectedSocket,
   MessageBody,
@@ -31,6 +31,7 @@ import {
 } from './iotSocket.types';
 import { IOTPROJECT_INTERACT_RIGHTS } from '../../models/iot/IoTproject/entities/IoTproject.entity';
 import { IoTBroadcastRequestToObject } from './iotSocket.types';
+import { IoTExceptionFilter } from './iot.exception';
 import {
   IoTListenRequestFromObject,
   IoTGetFieldRequestFromObject,
@@ -66,15 +67,23 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     const object = ObjectClient.getClientBySocket(socket);
     if (!object) throw new WsException('Forbidden');
 
-    const project = await this.iotProjectService.findOne(projectId);
-    if (!project) throw new WsException('No project with id');
+    try {
+      const project = await this.iotProjectService.findOne(projectId);
 
-    if (project.interactRights !== IOTPROJECT_INTERACT_RIGHTS.ANYONE && !object.hasProjectRights(projectId))
-      throw new WsException('Forbidden');
+      if (project.interactRights !== IOTPROJECT_INTERACT_RIGHTS.ANYONE && !object.hasProjectRights(projectId))
+        throw new WsException(`You don't have the rights to interact with project "${projectId}"`);
 
-    return { project, object };
+      return { project, object };
+    } catch (err) {
+      if (err instanceof HttpException) {
+        if (err.getStatus() == HttpStatus.BAD_REQUEST)
+          throw new WsException(`Id "${projectId}" is not a valid project id.`);
+      }
+      throw err;
+    }
   }
 
+  @UseFilters(new IoTExceptionFilter())
   @SubscribeMessage('connect_watcher')
   connect_watcher(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: WatcherClientConnectPayload) {
     if (!payload.iotProjectId || !payload.iotProjectName) throw new WsException('Bad payload');
@@ -90,6 +99,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     client.sendCustom('connect-success', 'Watcher connected');
   }
 
+  @UseFilters(new IoTExceptionFilter())
   @SubscribeMessage('connect_object')
   async connect_object(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: ObjectClientConnectPayload) {
     if (!payload.id) throw new WsException('Bad payload');
@@ -100,7 +110,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     try {
       iotObject = await this.iotObjectService.findOneWithLoadedProjects(payload.id);
     } catch (err) {
-      throw new WsException('Id not registered on ALIVEcode');
+      throw new WsException(`Objet with id "${payload.id}" is not registered on ALIVEcode`);
     }
 
     // Register client
@@ -110,8 +120,11 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
 
     // Logging
     this.logger.log(`IoTObject connect with id : ${payload.id}`);
+
+    socket.send(JSON.stringify({ event: 'connected', data: null }));
   }
 
+  @UseFilters(new IoTExceptionFilter())
   @SubscribeMessage('send_update')
   async send_update(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTUpdateRequestFromObject) {
     if (!payload.id || !payload.projectId || payload.value == null) throw new WsException('Bad payload');
@@ -134,6 +147,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     object.sendUpdate(payload);
   }
 
+  @UseFilters(new IoTExceptionFilter())
   @SubscribeMessage('update')
   async update(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTUpdateDocumentRequestFromObject) {
     if (!payload.projectId || payload.fields == null || typeof payload.fields !== 'object')
@@ -143,6 +157,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     await this.iotProjectService.updateDocument(payload.projectId, payload.fields);
   }
 
+  @UseFilters(new IoTExceptionFilter())
   @SubscribeMessage('listen')
   async listen(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTListenRequestFromObject) {
     if (!payload.projectId && Array.isArray(payload.fields)) throw new WsException('Bad payload');
@@ -150,8 +165,11 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
 
     const fields = payload.fields.filter(f => typeof f === 'string');
     object.listen(payload.projectId, fields);
+
+    socket.send(JSON.stringify({ event: 'listener_set', data: null }));
   }
 
+  @UseFilters(new IoTExceptionFilter())
   @SubscribeMessage('send_object')
   send_object(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTActionRequestFromWatcher) {
     if (!payload.targetId || !payload.actionId || !payload.value) throw new WsException('Bad payload');
@@ -165,6 +183,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     watcher.sendActionToObject(payload);
   }
 
+  @UseFilters(new IoTExceptionFilter())
   @SubscribeMessage('send_route')
   async send_route(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTRouteRequestFromObject) {
     if (!payload.routePath || !payload.data || !payload.projectId) throw new WsException('Bad payload');
@@ -174,6 +193,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     await this.iotProjectService.sendRoute(route, payload.data);
   }
 
+  @UseFilters(new IoTExceptionFilter())
   @SubscribeMessage('broadcast')
   async broadcast(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTBroadcastRequestFromBoth) {
     console.log(payload);

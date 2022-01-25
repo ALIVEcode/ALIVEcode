@@ -63,7 +63,7 @@ export class IoTProjectService {
   async findOne(id: string) {
     if (!id || !validUUID(id)) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     const project = await this.projectRepository.findOne(id);
-    if (!project) throw new HttpException('IoTProject not found', HttpStatus.NOT_FOUND);
+    if (!project) throw new HttpException(`IoTProject with id "${id}" found`, HttpStatus.NOT_FOUND);
     return project;
   }
 

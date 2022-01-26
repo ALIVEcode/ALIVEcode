@@ -104,6 +104,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   async connect_object(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: ObjectClientConnectPayload) {
     if (!payload.id) throw new WsException('Bad payload');
     if (WatcherClient.isSocketAlreadyWatcher(socket)) throw new WsException('Already connected as a watcher');
+    if (ObjectClient.getClientById(payload.id)) throw new WsException(`An IoTObject is already connected with the id "${payload.id}"`)
 
     // Checks if the object exists in the database and checks for permissions for projects
     let iotObject: IoTObjectEntity;

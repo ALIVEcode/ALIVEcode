@@ -96,7 +96,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
       `Watcher connected and listening on project : ${payload.iotProjectName} id : ${payload.iotProjectId}`,
     );
 
-    client.sendCustom('connect-success', 'Watcher connected');
+    client.sendEvent('connect-success', 'Watcher connected');
   }
 
   @UseFilters(new IoTExceptionFilter())
@@ -104,7 +104,8 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   async connect_object(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: ObjectClientConnectPayload) {
     if (!payload.id) throw new WsException('Bad payload');
     if (WatcherClient.isSocketAlreadyWatcher(socket)) throw new WsException('Already connected as a watcher');
-    if (ObjectClient.getClientById(payload.id)) throw new WsException(`An IoTObject is already connected with the id "${payload.id}"`)
+    if (ObjectClient.getClientById(payload.id))
+      throw new WsException(`An IoTObject is already connected with the id "${payload.id}"`);
 
     // Checks if the object exists in the database and checks for permissions for projects
     let iotObject: IoTObjectEntity;
@@ -122,7 +123,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     // Logging
     this.logger.log(`IoTObject connect with id : ${payload.id}`);
 
-    socket.send(JSON.stringify({ event: 'connected', data: null }));
+    client.sendEvent('connected', null);
   }
 
   @UseFilters(new IoTExceptionFilter())
@@ -167,7 +168,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     const fields = payload.fields.filter(f => typeof f === 'string');
     object.listen(payload.projectId, fields);
 
-    socket.send(JSON.stringify({ event: 'listener_set', data: null }));
+    object.sendEvent('listener_set', null);
   }
 
   @UseFilters(new IoTExceptionFilter())
@@ -215,7 +216,6 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     };
 
     const objects = ObjectClient.getClientsByProject(payload.projectId);
-    console.log(objects.length);
     objects.map(o => o.send(data));
   }
 

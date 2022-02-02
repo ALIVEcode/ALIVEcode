@@ -7,8 +7,35 @@ const StyledCenteredContainer = styled.div`
 	border-radius: 20px;
 	background-color: var(--primary-color);
 	box-shadow: 0px 15px 30px rgb(160, 160, 160);
-	padding: 60px;
+	padding: 40px;
 	color: white;
+	width: 40%;
+	max-height: 90%;
+	overflow-y: auto;
+
+	.title {
+		font-size: 3em;
+	}
+
+	@media screen and (max-width: 1238px) {
+		width: 50%;
+	}
+
+	@media screen and (max-width: 1076px) {
+		width: 60%;
+	}
+
+	@media screen and (max-width: 900px) {
+		width: 70%;
+	}
+
+	@media screen and (max-width: 700px) {
+		width: 80%;
+	}
+
+	@media screen and (max-width: 500px) {
+		width: 100%;
+	}
 `;
 
 /**
@@ -23,7 +50,9 @@ const FormContainer = ({ children, title }: FormContainerProps) => {
 	return (
 		<FillContainer centered>
 			<StyledCenteredContainer>
-				<h1 style={{ marginBottom: '30px' }}>{title}</h1>
+				<div className="mb-4">
+					<label className="title ">{title}</label>
+				</div>
 				{children}
 			</StyledCenteredContainer>
 		</FillContainer>

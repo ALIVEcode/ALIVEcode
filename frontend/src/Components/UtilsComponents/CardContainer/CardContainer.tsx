@@ -1,7 +1,7 @@
 import { CardContainerProps, StyledCardContainer } from './cardContainerTypes';
 import IconButton from '../../DashboardComponents/IconButton/IconButton';
-import { Container, Row } from 'react-bootstrap';
-import CenteredContainer from '../../UtilsComponents/CenteredContainer/CenteredContainer';
+import { useContext } from 'react';
+import { ThemeContext } from '../../../state/contexts/ThemeContext';
 
 /**
  * Container used to display cards components in a grid
@@ -34,6 +34,8 @@ const CardContainer = ({
 	height,
 	asRow,
 }: CardContainerProps) => {
+	const { theme } = useContext(ThemeContext);
+
 	return (
 		<StyledCardContainer
 			height={height}
@@ -42,23 +44,20 @@ const CardContainer = ({
 			scrollY={scrollY}
 			titleSize={titleSize}
 			className={className}
+			theme={theme}
 		>
 			<div className="card-container-title">
 				{title} {icon && <IconButton icon={icon} onClick={onIconClick} />}
 			</div>
-			<Container fluid className="card-container-body">
-				<CenteredContainer
-					className="card-container-body-centered"
-					vertically
-					horizontally
-				>
-					{asRow ? (
-						<Row className="card-container-row">{children}</Row>
-					) : (
-						<>{children}</>
-					)}
-				</CenteredContainer>
-			</Container>
+			<div className="card-container-body w-full h-full">
+				{asRow ? (
+					<div className="grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-2 desktop:grid-cols-3 big:grid-cols-4 gap-4 justify-items-center">
+						{children}
+					</div>
+				) : (
+					<>{children}</>
+				)}
+			</div>
 		</StyledCardContainer>
 	);
 };

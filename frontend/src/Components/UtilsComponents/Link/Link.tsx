@@ -1,6 +1,6 @@
-import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { LinkProps, StyledLinkProps } from './linkTypes';
+import { Link as RouterLink } from 'react-router-dom';
 
 /**
  * Link component with different variants
@@ -26,18 +26,42 @@ const Link = ({
 	bold,
 	block,
 	pale,
+	openInNewTab,
+	outsideLink,
 	onClick,
 }: LinkProps) => {
-	const history = useHistory();
+	if (to && !outsideLink)
+		return (
+			<RouterLink className={className} style={style} to={to ?? '#'}>
+				{children}
+			</RouterLink>
+		);
+
+	if (to && openInNewTab)
+		return (
+			<a
+				href={to}
+				rel="noreferrer"
+				target="_blank"
+				style={style}
+				className={className}
+			>
+				{children}
+			</a>
+		);
+
+	if (to && !openInNewTab)
+		return (
+			<a href={to} style={style} className={className}>
+				{children}
+			</a>
+		);
 
 	return (
 		<label
 			className={className}
 			style={style}
-			onClick={() => {
-				if (onClick) onClick();
-				else if (to) history.push(to);
-			}}
+			onClick={() => onClick && onClick()}
 		>
 			{children}
 		</label>

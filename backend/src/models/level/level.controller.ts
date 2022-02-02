@@ -24,6 +24,7 @@ import { LevelAIEntity } from './entities/levelAI.entity';
 import { Auth } from '../../utils/decorators/auth.decorator';
 import { User } from '../../utils/decorators/user.decorator';
 import { Role } from '../../utils/types/roles.types';
+import { LevelIoTEntity } from './entities/levelIoT.entity';
 
 @Controller('levels')
 @UseInterceptors(DTOInterceptor)
@@ -46,6 +47,12 @@ export class LevelController {
   @Auth()
   async createLevelAI(@User() user: UserEntity, @Body() createLevelDto: LevelAIEntity) {
     return await this.levelService.createLevelAI(user, createLevelDto);
+  }
+
+  @Post('iot')
+  @Auth()
+  async createLevelIoT(@User() user: UserEntity, @Body() createLevelDto: LevelIoTEntity) {
+    return await this.levelService.createLevelIoT(user, createLevelDto);
   }
 
   @Get()

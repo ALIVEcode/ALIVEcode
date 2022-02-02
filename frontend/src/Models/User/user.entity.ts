@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Exclude, plainToClass } from 'class-transformer';
 import { BackendUser } from '../../Types/userTypes';
+import { Classroom } from '../Classroom/classroom.entity';
 import { IoTObject } from '../Iot/IoTobject.entity';
 import { IoTProject } from '../Iot/IoTproject.entity';
 import { Level } from '../Level/level.entity';
@@ -36,6 +37,8 @@ export class User {
 
 	collabIoTProjects?: IoTProject[];
 
+	private classrooms?: Classroom[];
+
 	public getDisplayName() {
 		return this.email;
 	}
@@ -46,6 +49,26 @@ export class User {
 
 	public isStudent() {
 		return this instanceof Student;
+	}
+
+	public async getClassrooms() {
+		if (!this.classrooms) {
+			const fetchedClassrooms: Classroom[] =
+				(await api.db.users.getClassrooms({ id: this.id })) ?? [];
+			this.classrooms = fetchedClassrooms;
+			return fetchedClassrooms;
+		}
+		return this.classrooms;
+	}
+
+	public async addClassroom(classroom: Classroom) {
+		(await this.getClassrooms()).push(classroom);
+	}
+
+	public async removeClassroom(classroom: Classroom) {
+		this.classrooms = (await this.getClassrooms()).filter(
+			c => c.id !== classroom.id,
+		);
 	}
 
 	static async loadUser() {
@@ -64,32 +87,32 @@ export class User {
 
 export class Student extends User {
 	name: string;
-
-	async getClassrooms() {
-		return await api.db.users.getClassrooms(this.id);
-	}
+	image: string;
 
 	getDisplayName() {
 		return this.name;
+	}
+
+	getDisplayImage() {
+		return this.image;
 	}
 }
 
 export class Professor extends User {
 	firstName: string;
-
 	lastName: string;
+	image: string;
 
 	getCourses() {
 		return api.db.users.getCourses(this.id);
 	}
 
-	getClassrooms() {
-		return api.db.users.getClassrooms(this.id);
-	}
-
 	getDisplayName(): string {
 		return `${this.firstName} ${this.lastName}`;
 	}
+	getDisplayImage() {
+		return this.image;
+	}
 }
 // DONT REMOVE THIS HERE (prevents class used before referenced)
-const api = require('../api');
+const api = require('../api').default;

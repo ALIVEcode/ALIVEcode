@@ -1,24 +1,33 @@
-import { Switch, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import useRoutes from '../../state/hooks/useRoutes';
+import { NotFound } from '../../Pages/Errors/NotFound/NotFound';
 
 export const RouterSwitch = () => {
 	// Check in useRoutes hook to see the registered routes
 	const { routes } = useRoutes();
 
 	return (
-		<Switch>
+		<Routes>
 			{Object.values(routes).map(route_group =>
 				Object.values(route_group).map(
-					({ path, component, exact }: any, idx) => (
-						<Route
-							exact={exact ?? false}
-							path={path}
-							component={component}
-							key={idx}
-						/>
-					),
+					({ path, component, exact }: any, idx) => {
+						return (
+							<Route
+								path={
+									path !== '*'
+										? path +
+										  (path.endsWith('/') ? '' : '/') +
+										  (exact ? '' : '*')
+										: '*'
+								}
+								element={component}
+								key={idx + path}
+							/>
+						);
+					},
 				),
 			)}
-		</Switch>
+			<Route path="*" element={<NotFound />}></Route>
+		</Routes>
 	);
 };

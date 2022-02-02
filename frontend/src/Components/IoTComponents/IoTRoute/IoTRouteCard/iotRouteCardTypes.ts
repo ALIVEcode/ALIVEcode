@@ -3,11 +3,10 @@ import styled from 'styled-components';
 
 export type IoTRouteCardProps = {
 	route: IotRoute;
-	key: string | number;
 };
 
 export const StyledRouteCard = styled.div`
-	background-color: rgba(var(--primary-color-rgb), 0.6);
+	background-color: var(--bg-shade-two-color);
 	display: flex;
 	justify-content: space-between;
 	align-items: center;

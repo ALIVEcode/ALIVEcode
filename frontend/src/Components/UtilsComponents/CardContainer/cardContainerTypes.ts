@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Theme } from '../../../state/contexts/ThemeContext';
 
 export type StyledCardContainerProps = {
 	scrollX?: boolean;
@@ -32,7 +33,10 @@ export const StyledCardContainer = styled.div`
 		border-top-left-radius: 25px;
 		border-top-right-radius: 25px;
 		background-color: var(--primary-color);
-		color: var(--background-color);
+		${({ theme }: { theme: Theme }) =>
+			theme.name === 'light'
+				? 'color: var(--background-color);'
+				: 'color:var(--foreground-color)'}
 		margin-bottom: 0px;
 		padding: 10px;
 	}
@@ -52,9 +56,5 @@ export const StyledCardContainer = styled.div`
 
 	.card-container-body-centered {
 		min-height: ${({ height }: StyledCardContainerProps) => height ?? 'auto'};
-	}
-
-	.card-container-row {
-		justify-content: center;
 	}
 `;

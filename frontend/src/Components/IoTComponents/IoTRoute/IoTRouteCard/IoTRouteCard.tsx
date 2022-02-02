@@ -1,12 +1,15 @@
 import { IoTRouteCardProps, StyledRouteCard } from './iotRouteCardTypes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import {
 	faLevelUpAlt,
 	faTrash,
 	faWrench,
 } from '@fortawesome/free-solid-svg-icons';
 import AlertConfirm from '../../../UtilsComponents/Alert/AlertConfirm/AlertConfirm';
+import Modal from '../../../UtilsComponents/Modal/Modal';
+import IoTRouteSettings from '../IoTRouteSettings/IoTRouteSettings';
+import { IoTProjectContext } from '../../../../state/contexts/IoTProjectContext';
 
 /**
  * Component that shows an IoTRoute with its information
@@ -18,6 +21,9 @@ import AlertConfirm from '../../../UtilsComponents/Alert/AlertConfirm/AlertConfi
  */
 const IoTRouteCard = ({ route }: IoTRouteCardProps) => {
 	const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+	const [settingsOpen, setSettingsOpen] = useState(false);
+
+	const { deleteRoute } = useContext(IoTProjectContext);
 
 	return (
 		<>
@@ -35,7 +41,11 @@ const IoTRouteCard = ({ route }: IoTRouteCardProps) => {
 					</div>
 				</div>
 				<div>
-					<FontAwesomeIcon className="icon" icon={faWrench} />
+					<FontAwesomeIcon
+						className="icon"
+						icon={faWrench}
+						onClick={() => setSettingsOpen(true)}
+					/>
 					<FontAwesomeIcon
 						className="icon"
 						icon={faTrash}
@@ -43,12 +53,19 @@ const IoTRouteCard = ({ route }: IoTRouteCardProps) => {
 					/>
 				</div>
 			</StyledRouteCard>
+			<Modal
+				title="Route settings"
+				open={settingsOpen}
+				setOpen={setSettingsOpen}
+				size="xl"
+			>
+				<IoTRouteSettings route={route} />
+			</Modal>
 			<AlertConfirm
 				title="Are you sure you want to delete this route"
 				open={deleteConfirmOpen}
-				onClose={() => setDeleteConfirmOpen(false)}
-				onConfirm={() => console.log('DELETE!')}
-				onCancel={() => console.log('CANCEL!')}
+				setOpen={setDeleteConfirmOpen}
+				onConfirm={() => deleteRoute(route)}
 			/>
 		</>
 	);

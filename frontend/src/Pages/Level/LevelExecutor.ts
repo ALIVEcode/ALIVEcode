@@ -5,7 +5,7 @@ import { User } from '../../Models/User/user.entity';
 export abstract class LevelExecutor {
 	public cmd?: CMD;
 	public lineInterfaceContent: string = '';
-	public timeouts: Array<NodeJS.Timeout> = [];
+	private timeouts: Array<NodeJS.Timeout> = [];
 	public execution: boolean = false;
 	public onToggleExecution?: (exec: any) => void;
 	protected whenExecutionEnd: (result: any[]) => void;
@@ -16,7 +16,7 @@ export abstract class LevelExecutor {
 	protected async sendDataToAsServer(
 		data:
 			| { lines: string }
-			| { idToken: string; 'response-data': string[] }
+			| { idToken: string; responseData: string[] }
 			| { idToken: string; status: 'interrupted' },
 	) {
 		try {
@@ -24,7 +24,7 @@ export abstract class LevelExecutor {
 				await axios({
 					method: 'POST',
 					url: '/compile/',
-					baseURL: process.env.REACT_APP_AS_URL,
+					baseURL: process.env.AS_URL,
 					data,
 				})
 			).data;
@@ -78,23 +78,23 @@ export abstract class LevelExecutor {
 			this.whenExecutionEnd = async res => {
 				data = await this.sendDataToAsServer({
 					idToken: this.idToken,
-					'response-data': res,
+					responseData: res,
 				});
 				if (!data || !this.execution) {
 					this.interrupt();
 					return;
 				}
-				if (process.env.REACT_APP_DEBUG) console.log(data);
+				if (process.env.DEBUG) console.log(data);
 				if (data.status === 'complete') {
 					this.execute(data.result);
 					return;
 				}
 				this.idToken = data.idToken;
-				if (process.env.REACT_APP_DEBUG) console.log(this.idToken, data.data);
+				if (process.env.DEBUG) console.log(this.idToken, data.data);
 				this.execute(data.result);
 			};
 
-			if (process.env.REACT_APP_DEBUG) console.log(data);
+			if (process.env.DEBUG) console.log(data);
 			if (data.status === 'complete') {
 				this.execute(data.result);
 				return;
@@ -102,7 +102,7 @@ export abstract class LevelExecutor {
 
 			this.idToken = data.idToken;
 
-			if (process.env.REACT_APP_DEBUG) console.log(this.idToken, data.result);
+			if (process.env.DEBUG) console.log(this.idToken, data.result);
 
 			this.execute(data.result);
 		} catch (err) {

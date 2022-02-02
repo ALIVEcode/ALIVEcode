@@ -1,6 +1,7 @@
 package server.executionApi;
 
 import interpreteur.executeur.Executeur;
+import interpreteur.data_manager.Data;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -95,6 +96,14 @@ public class AliveScriptService {
         return result;
     }
 
+    public JSONArray compile(String[] lines, JSONObject context) {
+        resume = false;
+        executeur.setContext(context);
+        JSONArray result = executeur.compiler(lines, true);
+        compiled = true;
+        return result;
+    }
+
     public void pushDataToExecuteur(JSONArray responseData) {
         for (int i = 0; i < responseData.length(); i++)
             executeur.pushDataResponse(responseData.get(i));
@@ -118,7 +127,14 @@ public class AliveScriptService {
         if (!resume) resume = true;
 
         try {
-            boolean executionFinished = result.getJSONObject(result.length() - 1).getInt("id") == 0;
+            boolean executionFinished;
+            int index = result.length() - 1;
+            if(index < 0) {
+                executionFinished = true;
+                result.put(Data.endOfExecution());
+            } else {
+                executionFinished = result.getJSONObject(index).getInt("id") == 0;
+            }
 
             // if the execution is finished, we remove the object from memory
             if (executionFinished) {

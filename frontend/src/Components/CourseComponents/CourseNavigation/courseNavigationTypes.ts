@@ -2,19 +2,30 @@ import styled from 'styled-components';
 import { themes } from '../../../state/contexts/ThemeContext';
 export type CourseNavigationProps = {};
 
+type NavigationOptions = {
+	isNavigationOpen: boolean;
+	editMode: boolean;
+};
+
 export const StyledCourseNavigation = styled.div`
 	color: white;
-	height: 100%;
-	width: 20%;
-	position: fixed;
+
+	/* Navbar size */
+	height: calc(100vh - 56px);
+	width: 20vw;
+	left: 0;
 	box-sizing: content-box;
+	position: fixed;
+
+	${({ options }: { options: NavigationOptions }) =>
+		options.isNavigationOpen ? `margin-left: 0;` : `margin-left: -20vw;`}
+
 	${({ theme }) =>
 		theme.name === themes.light.name &&
 		'border-right: 1px solid rgb(161, 161, 161);'}
 	border-top-right-radius: 10px;
 	border-bottom-right-radius: 10px;
-	transition: 0.35s;
-	transform: translateX(-85%);
+	transition: all 0.35s;
 	background-color: ${({ theme }) => {
 		if (theme.name === themes.light.name) return 'var(--background-color)';
 		if (theme.name === themes.dark.name) return 'var(--fourth-color)';
@@ -27,14 +38,15 @@ export const StyledCourseNavigation = styled.div`
 	touch-action: auto;
 	z-index: 10;
 
-	&:hover {
-		transform: translateX(0%);
-	}
-
 	.course-nav-title {
 		padding: 10px 5px 10px 5px;
-		font-size: 25px;
+		font-size: 1.2rem;
 		color: var(--foreground-color);
+	}
+	.course-edit-button {
+		display: grid;
+		align-items: center;
+		grid-template-columns: 5fr 1fr;
 	}
 
 	.course-nav-header {
@@ -67,6 +79,13 @@ export const StyledCourseNavigation = styled.div`
 		}};
 	}
 
+	.course-section-header-edit {
+		display: grid;
+		grid-template-columns: ${({ options }: { options: NavigationOptions }) =>
+			options.editMode ? '5fr 1fr;' : '1fr;'};
+		align-items: center;
+	}
+
 	.course-activity {
 		width: 100%;
 		margin-top: 5px;
@@ -75,6 +94,9 @@ export const StyledCourseNavigation = styled.div`
 			if (theme.name === themes.light.name) return 'var(--third-color)';
 			if (theme.name === themes.dark.name) return 'var(--secondary-color)';
 		}};
+		display: grid;
+		grid-template-columns: ${({ options }: { options: NavigationOptions }) =>
+			options.editMode ? '5fr 1fr;' : '1fr;'};
 	}
 
 	.course-section-body {
@@ -84,23 +106,5 @@ export const StyledCourseNavigation = styled.div`
 	.course-section-header:hover,
 	.course-activity:hover {
 		background-color: var(--contrast-color);
-	}
-
-	@media screen and (max-width: 1000px) {
-		& {
-			width: 35%;
-		}
-	}
-
-	@media screen and (max-width: 600px) {
-		& {
-			width: 45%;
-		}
-	}
-
-	@media screen and (max-width: 400px) {
-		& {
-			width: 70%;
-		}
 	}
 `;

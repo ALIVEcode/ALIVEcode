@@ -1,1 +1,3 @@
-export type FooterProps = {};
+export type FooterProps = {
+	className?: string;
+};

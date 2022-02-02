@@ -1,26 +1,7 @@
-import styled from 'styled-components';
 import { AlertConfirmProps } from './alertConfirmTypes';
-import Modal from '../../Modal/Modal';
-import Button from '../../Button/Button';
+import Button from '../../Buttons/Button';
 import { useTranslation } from 'react-i18next';
-
-const StyledModal = styled(Modal)`
-	.modal-content {
-		background-color: var(--background-color);
-		color: white;
-	}
-
-	.modal-header {
-		background-color: var(--contrast-color);
-		display: block;
-		text-align: center;
-	}
-
-	.modal-body {
-		display: flex;
-		justify-content: space-evenly;
-	}
-`;
+import Modal from '../../Modal/Modal';
 
 /**
  * Modal used to confirm an action (for example: deleting something)
@@ -33,7 +14,7 @@ const StyledModal = styled(Modal)`
  * @author MoSk3
  */
 const AlertConfirm = ({
-	onClose,
+	setOpen,
 	onConfirm,
 	onCancel,
 	...other
@@ -41,28 +22,38 @@ const AlertConfirm = ({
 	const { t } = useTranslation();
 
 	return (
-		<StyledModal closeButton={false} hideFooter size="md" centered {...other}>
-			<Button
-				padding="15px"
-				variant="primary"
-				onClick={() => {
-					onClose();
-					onCancel && onCancel();
-				}}
-			>
-				{t('modal.cancel')}
-			</Button>
-			<Button
-				padding="15px"
-				variant="danger"
-				onClick={() => {
-					onClose();
-					onConfirm && onConfirm();
-				}}
-			>
-				{t('modal.confirm')}
-			</Button>
-		</StyledModal>
+		<Modal
+			hideFooter
+			size="sm"
+			centered
+			setOpen={setOpen}
+			centeredText
+			closeCross
+			{...other}
+		>
+			<div className="flex justify-evenly">
+				<Button
+					className="p-5"
+					variant="third"
+					onClick={() => {
+						setOpen(false);
+						onCancel && onCancel();
+					}}
+				>
+					{t('modal.cancel')}
+				</Button>
+				<Button
+					className="p-5"
+					variant="danger"
+					onClick={() => {
+						setOpen(false);
+						onConfirm && onConfirm();
+					}}
+				>
+					{t('modal.confirm')}
+				</Button>
+			</div>
+		</Modal>
 	);
 };
 

@@ -1,7 +1,7 @@
 import FormContainer from '../../../UtilsComponents/FormContainer/FormContainer';
 import { useTranslation } from 'react-i18next';
 import Form from '../../../UtilsComponents/Form/Form';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import useRoutes from '../../../../state/hooks/useRoutes';
 import { useAlert } from 'react-alert';
 import { IoTProject } from '../../../../Models/Iot/IoTproject.entity';
@@ -9,6 +9,7 @@ import {
 	IOTPROJECT_ACCESS,
 	IOTPROJECT_INTERACT_RIGHTS,
 } from '../../../../Models/Iot/IoTproject.entity';
+import { FORM_ACTION } from '../../../UtilsComponents/Form/formTypes';
 
 /**
  * Form that creates in the database an IoTProject and navigates to it
@@ -17,7 +18,7 @@ import {
  */
 const IoTProjectCreate = () => {
 	const { t } = useTranslation();
-	const history = useHistory();
+	const navigate = useNavigate();
 	const { routes } = useRoutes();
 	const alert = useAlert();
 
@@ -26,12 +27,12 @@ const IoTProjectCreate = () => {
 			<Form
 				onSubmit={res => {
 					const project: IoTProject = res.data;
-					history.push(routes.auth.iot_project.path.replace(':id', project.id));
+					navigate(routes.auth.iot_project.path.replace(':id', project.id));
 					return alert.success('Projet créé avec succès');
 				}}
 				name="iot_project"
 				url="iot/projects"
-				action="POST"
+				action={FORM_ACTION.POST}
 				inputGroups={[
 					{
 						name: 'name',
@@ -42,7 +43,7 @@ const IoTProjectCreate = () => {
 					},
 					{
 						name: 'description',
-						inputType: 'text',
+						inputType: 'textarea',
 						maxLength: 500,
 					},
 					{
@@ -50,12 +51,14 @@ const IoTProjectCreate = () => {
 						required: true,
 						inputType: 'select',
 						selectOptions: IOTPROJECT_ACCESS,
+						default: IOTPROJECT_ACCESS.PRIVATE,
 					},
 					{
 						name: 'interactRights',
 						required: true,
 						inputType: 'select',
 						selectOptions: IOTPROJECT_INTERACT_RIGHTS,
+						default: IOTPROJECT_INTERACT_RIGHTS.PRIVATE,
 					},
 				]}
 			/>

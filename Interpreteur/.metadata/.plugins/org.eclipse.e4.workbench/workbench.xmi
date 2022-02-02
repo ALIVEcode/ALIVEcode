@@ -1788,7 +1788,7 @@
   <commands xmi:id="_gKl_-XVEEeuCqs2DGewRcg" elementId="org.eclipse.debug.ui.commands.TerminateAndRelaunch" commandName="Terminate and Relaunch" description="Terminate and Relaunch" category="_gKf5ZHVEEeuCqs2DGewRcg"/>
   <commands xmi:id="_gKl_-nVEEeuCqs2DGewRcg" elementId="org.eclipse.jdt.ui.JavaHierarchyPerspective" commandName="Java Type Hierarchy" description="Show the Java Type Hierarchy perspective" category="_gKf5aHVEEeuCqs2DGewRcg"/>
   <commands xmi:id="_gKl_-3VEEeuCqs2DGewRcg" elementId="org.eclipse.egit.ui.RepositoriesToggleBranchCommit" commandName="Toggle Latest Branch Commit" category="_gKf5Z3VEEeuCqs2DGewRcg"/>
-  <commands xmi:id="_gKl__HVEEeuCqs2DGewRcg" elementId="org.eclipse.egit.ui.history.PushCommit" commandName="Push Commit..." category="_gKf5bXVEEeuCqs2DGewRcg"/>
+  <commands xmi:id="_gKl__HVEEeuCqs2DGewRcg" elementId="org.eclipse.egit.ui.navigateCommit" commandName="Push Commit..." category="_gKf5bXVEEeuCqs2DGewRcg"/>
   <commands xmi:id="_gKl__XVEEeuCqs2DGewRcg" elementId="org.eclipse.jdt.ui.edit.text.java.surround.with.try.multicatch" commandName="Surround with try/multi-catch Block" description="Surround the selected text with a try/multi-catch block" category="_gKf5a3VEEeuCqs2DGewRcg"/>
   <commands xmi:id="_gKl__nVEEeuCqs2DGewRcg" elementId="org.eclipse.egit.ui.team.Tag" commandName="Create Tag..." category="_gKf5Z3VEEeuCqs2DGewRcg"/>
   <commands xmi:id="_gKl__3VEEeuCqs2DGewRcg" elementId="org.eclipse.egit.ui.team.NoAssumeUnchanged" commandName="No Assume Unchanged" category="_gKf5Z3VEEeuCqs2DGewRcg"/>

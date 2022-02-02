@@ -1,9 +1,11 @@
 import styled from 'styled-components';
+import { Theme } from '../../../state/contexts/ThemeContext';
 export type LineInterfaceProps = {
 	handleChange: (content: any) => void;
 	hasTabs?: boolean;
 	tabs?: EditorTabModel[];
 	initialContent?: string;
+	className?: string;
 };
 
 export type EditorTabModel = {
@@ -16,37 +18,51 @@ export type EditorTabModel = {
 };
 
 export const StyledLineInterface = styled.div`
-	flex: 1 1 auto;
+	${({ theme }: { theme: Theme }) =>
+		theme.name === 'light'
+			? 'color: var(--background-color);'
+			: 'color: var(--foreground-color);'}
 
 	.hidden-editor {
 		display: none;
 	}
 
+	.opened-editor {
+		flex: 1 1 0%;
+	}
+
 	.ace-editor {
 		font-size: large;
+		width: 100% !important;
+		height: 100% !important;
 	}
 
 	.ace-cobalt .ace_gutter {
-		background: var(--primary-color);
-		color: var(--foreground-color);
+		${({ theme }: { theme: Theme }) =>
+			theme.name === 'light'
+				? 'background-color: #013677;'
+				: 'background-color: var(--primary-color);'}
+		color: white;
 	}
-	/*.ace-cobalt .ace_print-margin {
-width: 1px;
-background: #002e66
-}*/
+
 	.ace-cobalt {
 		background-color: black;
-		color: var(--foreground-color);
 	}
+
 	.ace-cobalt .ace_scroller {
-		background-color: rgba(var(--primary-color-rgb), 0.8);
-		color: var(--foreground-color);
+		${({ theme }: { theme: Theme }) =>
+			theme.name === 'light'
+				? 'background-color: #13498F;'
+				: 'background-color: rgba(var(--primary-color-rgb), 0.8);'}
 	}
 	.ace-cobalt .ace_cursor {
 		color: var(--foreground-color);
 	}
 	.ace-cobalt .ace_marker-layer .ace_selection {
-		background: #5b8bc7;
+		${({ theme }: { theme: Theme }) =>
+			theme.name === 'light'
+				? 'background-color: #5B8BC7;'
+				: 'background-color: #5b8bc7;'}
 	}
 	.ace-cobalt.ace_multiselect .ace_selection.ace_start {
 		box-shadow: 0 0 3px 0px #272822;
@@ -59,7 +75,10 @@ background: #002e66
 		border: 1px solid #49483e;
 	}
 	.ace-cobalt .ace_marker-layer .ace_active-line {
-		background: rgba(var(--primary-color-rgb), 1);
+		${({ theme }: { theme: Theme }) =>
+			theme.name === 'light'
+				? `background-color: #013677;`
+				: `background-color: var(--primary-color);`}
 	}
 	.ace-cobalt .ace_gutter-active-line {
 		background-color: var(--contrast-color);
@@ -107,7 +126,8 @@ background: #002e66
 	}
 	.ace-cobalt .ace_storage.ace_type,
 	.ace-cobalt .ace_support.ace_type {
-		color: #536bcc;
+		${({ theme }: { theme: Theme }) =>
+			theme.name === 'light' ? 'color: #139DB9;' : 'color: #536bcc;'}
 	}
 	.ace-cobalt .ace_entity.ace_name.ace_function,
 	.ace-cobalt .ace_entity.ace_other,
@@ -120,7 +140,7 @@ background: #002e66
 		color: #fd971f;
 	}
 	.ace-cobalt .ace_string {
-		color: #e6db74;
+		color: #fffb40;
 	}
 	.ace-cobalt .ace_comment {
 		color: #fffb40;

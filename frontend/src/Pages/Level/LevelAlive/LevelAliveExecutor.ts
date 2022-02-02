@@ -6,12 +6,11 @@ import { Vector } from '../../../Components/LevelComponents/Simulation/Sketch/si
 import { BaseLayoutObj } from '../../../Components/LevelComponents/Simulation/Sketch/simulation/ts/typesSimulation';
 import { Serializer } from '../../../Components/LevelComponents/Simulation/Sketch/simulation/ts/Serializer';
 import { makeShapeEditable } from '../../../Components/LevelComponents/Simulation/Sketch/simulation/editMode';
-import { User } from '../../../Models/User/user.entity';
 import { PlaySocket } from '../PlaySocket';
 import { typeAskForUserInput } from '../levelTypes';
 
 // TODO: robotConnected
-const robotConnected = false;
+// const robotConnected = false;
 
 class LevelAliveExecutor extends LevelCodeExecutor {
 	public s: any;
@@ -35,9 +34,235 @@ class LevelAliveExecutor extends LevelCodeExecutor {
 		private editMode: boolean,
 		playSocket: PlaySocket | null,
 		askForUserInput: typeAskForUserInput,
-		creator?: User,
 	) {
-		super(levelName, askForUserInput, creator);
+		super(levelName, askForUserInput);
+
+		this.doBeforeRun(() => {
+			// Set focus
+			if (this.s.canvasCamera && this.s.car)
+				this.s.canvasCamera.setTarget(this.s.car);
+		});
+
+		this.registerActions([
+			{
+				actionId: 100,
+				action: {
+					label: 'Stop',
+					type: 'NORMAL',
+					apply: () => {
+						this.s.car.stop();
+					},
+				},
+			},
+			{
+				actionId: 101,
+				action: {
+					label: 'Forward',
+					type: 'NORMAL',
+					apply: params => {
+						if (
+							params.length > 0 &&
+							params[0] !== null &&
+							typeof params[0] == 'number'
+						) {
+							if (params[0] > 0) {
+								this.s.car.forward();
+								this.wait(() => {
+									this.s.car.stop();
+									this.perform_next();
+								}, params[0] * 1000);
+							} else {
+								this.perform_next();
+							}
+						} else {
+							this.s.car.forward();
+							this.perform_next();
+						}
+					},
+					handleNext: true,
+				},
+			},
+			{
+				actionId: 102,
+				action: {
+					label: 'Backward',
+					type: 'NORMAL',
+					apply: params => {
+						if (
+							params.length > 0 &&
+							params[0] !== null &&
+							typeof params[0] == 'number'
+						) {
+							if (params[0] > 0) {
+								this.s.car.backward();
+								this.wait(() => {
+									this.s.car.stop();
+									this.perform_next();
+								}, params[0] * 1000);
+							} else {
+								this.perform_next();
+							}
+						} else {
+							this.s.car.backward();
+							this.perform_next();
+						}
+					},
+					handleNext: true,
+				},
+			},
+			{
+				actionId: 103,
+				action: {
+					label: 'Turn',
+					type: 'NORMAL',
+					apply: params => {
+						if (params.length > 0 && typeof params[0] === 'number') {
+							this.s.car.turn(-params[0], () => {
+								this.perform_next();
+							});
+						} else {
+							this.perform_next();
+						}
+					},
+					handleNext: true,
+				},
+			},
+			{
+				actionId: 104,
+				action: {
+					label: 'Turn Right',
+					type: 'NORMAL',
+					apply: () => {
+						this.s.car.turn(90, () => {
+							this.perform_next();
+						});
+					},
+					handleNext: true,
+				},
+			},
+			{
+				actionId: 105,
+				action: {
+					label: 'Turn Left',
+					type: 'NORMAL',
+					apply: () => {
+						this.s.car.turn(-90, () => {
+							this.perform_next();
+						});
+					},
+					handleNext: true,
+				},
+			},
+			{
+				actionId: 106,
+				action: {
+					label: 'Rotate Wheels',
+					type: 'NORMAL',
+					apply: params => {
+						if (params.length >= 2) {
+							this.s.car.setDirection(
+								new Vector(
+									params[0] / 255 - params[1] / 255,
+									params[0] / 500 + params[1] / 500,
+								)
+									.normalize()
+									.multiplyScalar((params[0] / 2 + params[1] / 2) / 255),
+							);
+						}
+					},
+				},
+			},
+			{
+				actionId: 107,
+				action: {
+					label: 'Go To Angle',
+					type: 'NORMAL',
+					apply: params => {
+						if (params.length > 0 && typeof params[0] === 'number') {
+							const currentAngle = this.s.car.shape.rotation.x;
+							let angle = params[0] % 360;
+							angle = angle < 0 ? 360 - angle : angle;
+							angle = 360 - angle;
+
+							var rotationAmount: number;
+							if (
+								360 - currentAngle - angle < 180 &&
+								360 - currentAngle - angle >= 0
+							)
+								rotationAmount = -(360 - currentAngle - angle);
+							else rotationAmount = -(360 - angle - currentAngle);
+
+							this.s.car.turn(rotationAmount, () => {
+								this.perform_next();
+							});
+						}
+					},
+					handleNext: true,
+				},
+			},
+			{
+				actionId: 601,
+				action: {
+					label: 'Set Speed',
+					type: 'SET',
+					apply: params => {
+						if (params.length >= 1 && typeof params[0] === 'number')
+							this.s.car.speed = params[0];
+					},
+				},
+			},
+		]);
+
+		this.doBeforeInterrupt(() => {
+			if (!this.s) return;
+			const s = this.s;
+
+			this.playSocket && this.playSocket.stopCompile();
+			//if(!robotConnected) {
+			s.car.reset();
+			//}
+
+			// Methode qui respawn tout les collectables collecter par la voiture
+			if (s.coinsToRespawn.length > 0) {
+				for (let i = s.coinsToRespawn.length - 1; i >= 0; i--) {
+					// Fait apparaitre l'objet sur la scène
+					s.addObjectToScene(s.coinsToRespawn[i], s.coinsToRespawn[i].zIndex);
+
+					// Pousse le dernier shape modifier dans le tableau s.movableShapes
+					s.movableShapes.push(s.storeShapeData(s.coinsToRespawn[i]));
+				}
+
+				s.coinsToRespawn.splice(0, s.coinsToRespawn.length);
+			}
+
+			// Méthode qui respawn tout les objets qui ont disparu suite au event du bouton rouge
+			if (s.objectsToRespawn.length > 0) {
+				for (let i = s.objectsToRespawn.length - 1; i >= 0; i--) {
+					// Fait apparaitre l'objet sur la scène
+					s.addObjectToScene(
+						s.objectsToRespawn[i],
+						s.objectsToRespawn[i].zIndex,
+					);
+
+					// Pousse le dernier shape modifier dans le tableau s.movableShapes
+					s.movableShapes.push(s.storeShapeData(s.objectsToRespawn[i]));
+				}
+
+				s.objectsToRespawn.splice(0, s.objectsToRespawn.length);
+			}
+
+			// Méthode qui remet tout les boutons interactifs à rouge
+			for (const interactiveShape of s.interactiveObjects) {
+				if (interactiveShape.isButton) {
+					// images.red_button
+					interactiveShape.setImg(images.red_button_unpressed);
+				}
+			}
+
+			// Reset focus
+			if (s.canvasCamera != null) s.canvasCamera.setTarget(null);
+		});
+
 		this.playSocket = playSocket;
 	}
 
@@ -52,9 +277,9 @@ class LevelAliveExecutor extends LevelCodeExecutor {
 				makeShapeEditable(shape);
 			}
 
-			if (process.env.REACT_APP_DEBUG) console.log(this.s.shapes);
+			if (process.env.DEBUG) console.log(this.s.shapes);
 		}
-		if (this.creator && this.editMode) {
+		if (this.editMode) {
 			this.spawnEditorButton();
 		}
 		this.spawnRobotConnectButton();
@@ -62,327 +287,6 @@ class LevelAliveExecutor extends LevelCodeExecutor {
 
 	public init(s: any) {
 		this.s = s;
-	}
-
-	public onStop() {
-		if (!this.s) return;
-		const s = this.s;
-
-		this.playSocket && this.playSocket.stopCompile();
-		//if(!robotConnected) {
-		s.car.reset();
-		//}
-
-		// Methode qui respawn tout les collectables collecter par la voiture
-		if (s.coinsToRespawn.length > 0) {
-			for (let i = s.coinsToRespawn.length - 1; i >= 0; i--) {
-				// Fait apparaitre l'objet sur la scène
-				s.addObjectToScene(s.coinsToRespawn[i], s.coinsToRespawn[i].zIndex);
-
-				// Pousse le dernier shape modifier dans le tableau s.movableShapes
-				s.movableShapes.push(s.storeShapeData(s.coinsToRespawn[i]));
-			}
-
-			s.coinsToRespawn.splice(0, s.coinsToRespawn.length);
-		}
-
-		// Méthode qui respawn tout les objets qui ont disparu suite au event du bouton rouge
-		if (s.objectsToRespawn.length > 0) {
-			for (let i = s.objectsToRespawn.length - 1; i >= 0; i--) {
-				// Fait apparaitre l'objet sur la scène
-				s.addObjectToScene(s.objectsToRespawn[i], s.objectsToRespawn[i].zIndex);
-
-				// Pousse le dernier shape modifier dans le tableau s.movableShapes
-				s.movableShapes.push(s.storeShapeData(s.objectsToRespawn[i]));
-			}
-
-			s.objectsToRespawn.splice(0, s.objectsToRespawn.length);
-		}
-
-		// Méthode qui remet tout les boutons interactifs à rouge
-		for (const interactiveShape of s.interactiveObjects) {
-			if (interactiveShape.isButton) {
-				// images.red_button
-				interactiveShape.setImg(images.red_button_unpressed);
-			}
-		}
-
-		// Clear tous les timeouts de la simulation
-		for (let timeout of this.timeouts) {
-			clearTimeout(timeout);
-		}
-
-		// Reset focus
-		if (s.canvasCamera != null) s.canvasCamera.setTarget(null);
-	}
-
-	public async onRun() {
-		//this.s.canvasCamera.setTarget(this.s.car.shape);
-		super.onRun();
-	}
-
-	public execute(data: any) {
-		if (!this.s) return;
-		const s = this.s;
-
-		const res: any = [];
-		const ID = 'id';
-		const DODO = 'd';
-		const PARAMS = 'p';
-
-		const angleDroit = 90;
-		const car = s.car;
-		console.log(car);
-
-		s.canvasCamera.setTarget(s.car.shape);
-		console.log(s.canvasCamera);
-
-		this.playSocket && this.playSocket.compile(data);
-
-		const validDataStructure = (action: any) => {
-			return (
-				ID in action &&
-				typeof action[ID] === 'number' &&
-				DODO in action &&
-				typeof action[DODO] === 'number' &&
-				PARAMS in action &&
-				Array.isArray(action[PARAMS])
-			);
-		};
-
-		const perform_action = (i: number) => {
-			try {
-				if (i >= data.length) {
-					this.whenExecutionEnd(res);
-					return;
-				}
-				const action = data[i];
-				if (validDataStructure(action)) {
-					if (action[DODO] < 0) action[DODO] = 0;
-
-					const { [DODO]: dodo, [ID]: id, [PARAMS]: params } = action;
-
-					// Traite l'action a effectuée envoyée par le serveur
-					id_switch: switch (id) {
-						/*
-                                ----    UTILITAIRES    ----
-                        */
-						/*
-                                      ----    VOITURE    ----
-                              */
-						case 100:
-							/*----     arreter     ----*/
-							car.stop();
-							this.timeouts.push(
-								setTimeout(() => {
-									perform_action(i + 1);
-								}, dodo * 1000),
-							);
-							break;
-						case 101:
-							/*----     avancer     ----*/
-							car.forward();
-							this.timeouts.push(
-								setTimeout(() => {
-									if (dodo > 0) car.stop();
-									perform_action(i + 1);
-								}, dodo * 1000),
-							);
-							break;
-						case 102:
-							/*----     reculer     ----*/
-							car.backward();
-							this.timeouts.push(
-								setTimeout(() => {
-									if (dodo > 0) car.stop();
-									perform_action(i + 1);
-								}, dodo * 1000),
-							);
-							break;
-						case 103:
-							/*----     tourner     ----*/
-							if (!robotConnected) {
-								if (params.length > 0 && typeof params[0] === 'number') {
-									car.turn(-params[0], () => {
-										perform_action(i + 1);
-									});
-								}
-							} else {
-								perform_action(i + 1);
-							}
-							break;
-						case 104:
-							/*----     tournerDroite     ----*/
-							if (!robotConnected) {
-								car.turn(angleDroit, () => {
-									perform_action(i + 1);
-								});
-							} else {
-								let goal = (car.shape.rotation.x + angleDroit) % 360;
-								let interval = setInterval(() => {
-									if (Math.abs(goal - car.shape.rotation.x) <= 0.5) {
-										clearInterval(interval);
-										perform_action(i + 1);
-									}
-								});
-							}
-							break;
-						case 105:
-							/*----     tournerGauche     ----*/
-							if (!robotConnected) {
-								car.turn(-angleDroit, () => {
-									perform_action(i + 1);
-								});
-							} else {
-								let goal = (car.shape.rotation.x - angleDroit) % 360;
-								let interval = setInterval(() => {
-									if (Math.abs(goal - car.shape.rotation.x) <= 0.5) {
-										clearInterval(interval);
-										perform_action(i + 1);
-									}
-								}, 50);
-							}
-							break;
-						case 106:
-							/*----     rouler     ----*/
-							if (!robotConnected) {
-								if (params.length >= 2) {
-									car.setDirection(
-										new Vector(
-											params[0] / 255 - params[1] / 255,
-											params[0] / 500 + params[1] / 500,
-										)
-											.normalize()
-											.multiplyScalar((params[0] / 2 + params[1] / 2) / 255),
-									);
-								}
-							} else {
-								car.forward();
-							}
-							perform_action(i + 1);
-							break;
-						case 107:
-							/*----     goToAngle     ----*/
-							if (!robotConnected) {
-								if (params.length > 0 && typeof params[0] === 'number') {
-									const currentAngle = car.shape.rotation.x;
-									let angle = params[0] % 360;
-									angle = angle < 0 ? 360 - angle : angle;
-									angle = 360 - angle;
-									var rotationAmount: number;
-									if (
-										360 - currentAngle - angle < 180 &&
-										360 - currentAngle - angle >= 0
-									)
-										rotationAmount = -(360 - currentAngle - angle);
-									else rotationAmount = -(360 - angle - currentAngle);
-									car.turn(rotationAmount, () => {
-										perform_action(i + 1);
-									});
-								}
-							} else {
-								perform_action(i + 1);
-							}
-							break;
-						/*
-                                      ----    UTILITAIRES    ----
-                              */
-						case 300:
-							/*----     print     ----*/
-
-							if (params.length > 0 && typeof params[0] === 'string') {
-								this.cmd?.print(params[0]);
-							}
-							if (dodo === 0) perform_action(i + 1);
-							else {
-								this.timeouts.push(
-									setTimeout(() => {
-										perform_action(i + 1);
-									}, dodo * 1000),
-								);
-							}
-							break;
-						case 301:
-							/*----     attendre     ----*/
-							if (params.length > 0 && typeof params[0] === 'number') {
-								this.timeouts.push(
-									setTimeout(() => {
-										perform_action(i + 1);
-									}, params[0] * 1000),
-								);
-							}
-							break;
-						/*
-                                      ----    GET    ----
-                              */
-						case 500:
-							switch (params[0]) {
-								case 'read': {
-									/*----     lire     ----*/
-									console.log('read');
-									this.askForUserInput(params[1], inputValue => {
-										res.push(inputValue);
-										perform_action(i + 1);
-									});
-									break;
-								}
-
-								case 'car': {
-									/*----     voiture     ----*/
-									const infosCar = {
-										x: car.shape.pos.x,
-										y: car.shape.pos.y,
-										dA: this.sensors.dA,
-										dG: this.sensors.dG,
-										dD: this.sensors.dD,
-										speed: car.speed,
-									};
-									res.push(infosCar);
-									if (process.env.REACT_APP_DEBUG) console.log(res);
-									perform_action(i + 1);
-									// eslint-disable-next-line no-labels
-									break id_switch;
-								}
-							}
-							break;
-						/*
-                                      ----    SET    ----
-                              */
-						case 600:
-							break;
-
-						case 601:
-							/*----     vitesse voiture     ----*/
-							car.speed = params[0];
-							perform_action(i + 1);
-							break;
-					}
-
-					/*
-                            ----    ERREURS    ----
-                    */
-					if (id.toString()[0] === '4') {
-						if (
-							params.length > 1 &&
-							typeof params[0] === 'string' &&
-							typeof params[2] === 'number'
-						) {
-							this.cmd?.error(params[0] + ': ' + params[1], params[2]);
-							this.interrupt();
-						}
-					}
-				}
-			} catch (error) {
-				this.whenExecutionEnd(res);
-				this.interrupt();
-			}
-		};
-
-		// Check si le data est valide
-		if (Array.isArray(data) && data.length > 0) {
-			perform_action(0);
-		}
-		return res;
 	}
 
 	// TODO: typing events
@@ -419,7 +323,7 @@ class LevelAliveExecutor extends LevelCodeExecutor {
 			if (this.execution) {
 				//this.playButton.trigger('click');
 			}
-			s.toggleEditMode();
+			this.s.toggleEditMode();
 		});
 	}
 

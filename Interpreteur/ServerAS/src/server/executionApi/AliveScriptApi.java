@@ -1,12 +1,11 @@
 package server.executionApi;
 
-import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import server.BaseApi;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -82,14 +81,14 @@ public class AliveScriptApi extends BaseApi {
         if (data.has("status") && data.get("status").equals("interrupted")) {
             aliveScriptService.destroy();
 
-        } else if (data.has("response-data")) {
+        } else if (data.has("responseData")) {
             if (!aliveScriptService.isCompiled()) {
                 return aliveScriptService.notCompiledError().toString();
             }
-            if (!(data.get("response-data") instanceof JSONArray responseData)) {
+            if (!(data.get("responseData") instanceof JSONArray responseData)) {
                 return new JSONObject()
                         .put("status", AliveScriptService.ResponseStatus.FAILED)
-                        .put("message", "the field response-data must contain an array").toString();
+                        .put("message", "the field responseData must contain an array").toString();
             }
             aliveScriptService.pushDataToExecuteur(responseData);
             return aliveScriptService.execute();
@@ -105,11 +104,15 @@ public class AliveScriptApi extends BaseApi {
             } else
                 lignes = ((String) lines).split("\n");
 
-            JSONArray compileResult = aliveScriptService.compile(lignes);
+            JSONArray compileResult = data.has("context")
+                    ? aliveScriptService.compile(lignes, data.getJSONObject("context"))
+                    : aliveScriptService.compile(lignes);
 
             return compileResult.length() == 0
                     ? aliveScriptService.execute()
-                    : new JSONObject().put("result", compileResult).toString();
+                    : new JSONObject()
+                    .put("status", AliveScriptService.ResponseStatus.COMPLETE)
+                    .put("result", compileResult).toString();
         } else {
             aliveScriptService.destroy();
         }

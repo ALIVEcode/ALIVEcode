@@ -3,9 +3,14 @@ import IconButton from '../IconButton/IconButton';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useTranslation } from 'react-i18next';
-import { Badge } from 'react-bootstrap';
-import { prettyField } from '../../../Types/formatting';
+import { prettyField, formatTooLong } from '../../../Types/formatting';
 import useRoutes from '../../../state/hooks/useRoutes';
+import Badge from '../../UtilsComponents/Badge/Badge';
+import { useContext, useState, useEffect } from 'react';
+import { UserContext } from '../../../state/contexts/UserContext';
+import { Classroom } from '../../../Models/Classroom/classroom.entity';
+import api from '../../../Models/api';
+import { useNavigate } from 'react-router';
 
 /**
  * Card that shows all the information of a classroom and lets you access to it
@@ -17,37 +22,65 @@ import useRoutes from '../../../state/hooks/useRoutes';
 const ClassroomCard = ({ classroom }: ClassRoomCardProps) => {
 	const { t } = useTranslation();
 	const { routes } = useRoutes();
+	const { user } = useContext(UserContext);
+	const [userClassrooms, setUserClassrooms] = useState<Classroom[]>();
+	const navigate = useNavigate();
+
+	const isInClassroom = userClassrooms?.some(c => c.id === classroom.id);
+
+	useEffect(() => {
+		const getClassrooms = async () => {
+			setUserClassrooms(await user?.getClassrooms());
+		};
+		getClassrooms();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	return (
 		<StyledClassroomCard>
 			<div className="flip-card-inner">
 				<div className="flip-card-front text-white">
+					{isInClassroom && (
+						<div className="absolute bottom-4 text-gray-300">
+							<i>{t('classroom.already_in')}</i>
+						</div>
+					)}
 					<div className="card-body">
-						<h4>{classroom.name}</h4>
+						<div className="text-xl">{classroom.name}</div>
 						<FontAwesomeIcon icon={faAngleRight} size="5x" />
 					</div>
 				</div>
 				<div className="flip-card-back">
 					<div>
 						<h3>{classroom.name}</h3>
-						<h4>
+						<div>
 							<Badge variant="primary">{t('classroom.subject')}</Badge>
-						</h4>
+						</div>
 						{classroom.getSubjectDisplay()}
-						<h4>
+						<div>
 							<Badge variant="primary">
 								{prettyField(t('msg.description'))}
 							</Badge>
-						</h4>
-						<p className="mb-2">
-							{classroom.description
-								? classroom.description
-								: t('classroom.desc', {
-										professor: classroom.creator.getDisplayName(),
-								  })}
-						</p>
+						</div>
+						<div className="mb-2">
+							<p className="text-xs">
+								{classroom.description
+									? formatTooLong(classroom.description, 100)
+									: t('classroom.desc', {
+											professor: classroom.creator.getDisplayName(),
+									  })}
+							</p>
+						</div>
 						<IconButton
-							to={routes.auth.classroom.path.replace(':id', classroom.id)}
+							onClick={async () => {
+								if (!isInClassroom) {
+									user?.addClassroom(classroom);
+									await api.db.classrooms.join({ code: classroom.code });
+								}
+								navigate(
+									routes.auth.dashboard.path + `/classroom?id=${classroom.id}`,
+								);
+							}}
 							size="3x"
 							icon={faAngleRight}
 						/>

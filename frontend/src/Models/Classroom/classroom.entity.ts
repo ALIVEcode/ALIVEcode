@@ -1,3 +1,9 @@
+import {
+	faCalculator,
+	faCode,
+	faFlask,
+	faProjectDiagram,
+} from '@fortawesome/free-solid-svg-icons';
 import { Exclude, Type } from 'class-transformer';
 import api from '../api';
 import { Course } from '../Course/course.entity';
@@ -11,6 +17,11 @@ export enum CLASSROOM_SUBJECT {
 	SCIENCE = 'SC',
 }
 
+export enum CLASSROOM_ACCESS {
+	PUBLIC = 'PU', // can be found via a search
+	PRIVATE = 'PR', // only accessible to the creator
+}
+
 export class Classroom extends CreatedByUser {
 	@Exclude({ toPlainOnly: true })
 	@Type(() => Professor)
@@ -20,6 +31,7 @@ export class Classroom extends CreatedByUser {
 	code?: string;
 
 	subject: CLASSROOM_SUBJECT;
+	access: CLASSROOM_ACCESS;
 
 	students?: Student[];
 	courses?: Course[];
@@ -36,5 +48,19 @@ export class Classroom extends CreatedByUser {
 
 	getSubjectDisplay() {
 		return this.subject[0].toUpperCase() + this.subject.slice(1);
+	}
+
+	getSubjectIcon() {
+		switch (this.subject) {
+			case CLASSROOM_SUBJECT.INFORMATIC:
+				return faCode;
+			case CLASSROOM_SUBJECT.SCIENCE:
+				return faFlask;
+			case CLASSROOM_SUBJECT.MATH:
+				return faCalculator;
+			case CLASSROOM_SUBJECT.AI:
+				return faProjectDiagram;
+		}
+		return faCode;
 	}
 }

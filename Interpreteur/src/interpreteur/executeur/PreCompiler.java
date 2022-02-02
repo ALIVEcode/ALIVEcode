@@ -12,15 +12,21 @@ public class PreCompiler {
     public final static String DOCUMENTATION_DEBUT = "(-:";
     public final static String DOCUMENTATION_FIN = ":-)";
 
-    public final static List<String> joinLines = Arrays.asList(
+    public final static List<String> joinNextLine = Arrays.asList(
             ",",
             "(",
             "{",
             "["
     );
 
+    public final static List<String> joinPrevLine = Arrays.asList(
+            "}",
+            "]",
+            ")"
+    );
 
-    public static String[] preCompile(String[] lignes, String msgFin) {
+
+    public static String[] preCompile(String[] lignes) {
         StringBuilder lignesFinales = new StringBuilder();
 
         boolean multiligne = false;
@@ -62,17 +68,18 @@ public class PreCompiler {
             String lastChar = ligne.length() > 0 ? ligne.charAt(ligne.length() - 1) + "" : "";
 
             // if the line ends with a ',' or '(' or '[' or '{', combine it with the next line
-            ligne = joinLines.contains(lastChar) ? ligne : ligne + "\n";
+            ligne = joinNextLine.contains(lastChar) ? ligne : ligne + "\n";
 
             // if the line ends with '\', remove it and combine the line with the next line
             ligne = lastChar.equals("\\") ? ligne.substring(0, ligne.lastIndexOf(lastChar)) : ligne;
 
+            if (Arrays.stream(ligne.trim().split("")).allMatch(joinPrevLine::contains)) {
+                lignesFinales.delete(lignesFinales.length() - 1, lignesFinales.length());
+            }
+
             // adds the line to the final lines
             lignesFinales.append(ligne);
         }
-
-        // adds a line at the end
-        lignesFinales.append(msgFin);
 
         // split newlines of the final String to transform it into a String[]
         return Stream.of(lignesFinales.toString().split("\n"))

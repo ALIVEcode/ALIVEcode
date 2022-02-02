@@ -214,8 +214,13 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 *.class
-*/node_modules
+node_modules
 out/production
 out/META-INF
 */log/
+backend/uploads/
+
 node_modules
+frontend/package-lock.json
+backend/images/uploads/
+package-lock.json

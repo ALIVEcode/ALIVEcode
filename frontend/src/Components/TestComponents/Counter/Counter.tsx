@@ -1,6 +1,5 @@
 import { CounterProps } from './counterTypes';
-import { useState, useEffect } from 'react';
-import { useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const Counter = ({ msg }: CounterProps) => {
 	const [count, setCount] = useState(0);

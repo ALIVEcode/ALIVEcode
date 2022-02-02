@@ -11,6 +11,7 @@ import { ProfessorEntity } from '../user/entities/professor.entity';
 import { StudentEntity } from '../user/entities/student.entity';
 import { UserService } from '../user/user.service';
 import { LevelEntity } from '../level/entities/level.entity';
+import { CourseHistoryEntity } from '../course/entities/course_history.entity';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { LevelEntity } from '../level/entities/level.entity';
       IoTProjectEntity,
       IoTObjectEntity,
       LevelEntity,
+      CourseHistoryEntity,
     ]),
     //DefaultAdminModule,
   ],

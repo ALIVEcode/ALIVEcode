@@ -1,6 +1,5 @@
-import { RouteComponentProps } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Professor, Student } from '../../Models/User/user.entity';
-import Classroom from '../../Pages/Classroom/Classroom';
 import Course from '../../Pages/Course/Course';
 import { NotFound } from '../../Pages/Errors/NotFound/NotFound';
 import Home from '../../Pages/Home/Home';
@@ -10,13 +9,12 @@ import { USER_TYPES } from '../../Types/userTypes';
 import Level from '../../Pages/Level/Level';
 import SignUpMenu from '../../Pages/Account/SignUpMenu/SignUpMenu';
 import About from '../../Pages/About/About';
-import AliveIa from '../../Pages/ALIVEIA/AliveIa';
+import AIHome from '../../Pages/AI/AIHome/AIHome';
 import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
 import AccountPage from '../../Pages/Account/AccountInfo/AccountPage';
 import CourseForm from '../../Components/CourseComponents/CourseForm/CourseForm';
 import ClassroomForm from '../../Components/ClassroomComponents/ClassroomForm/ClassroomForm';
-import Dashboard from '../../Pages/Dashboard/Dashboard';
 import IoTHome from '../../Pages/IoT/IoTHome/IoTHome';
 import IoTProject from '../../Pages/IoT/IoTProject/IoTProject';
 import IoTProjectCreate from '../../Components/IoTComponents/IoTProject/IotProjectForm/IoTProjectCreate';
@@ -26,29 +24,42 @@ import LevelBrowse from '../../Pages/Level/LevelBrowse/LevelBrowse';
 import LevelList from '../../Pages/Level/LevelList/LevelList';
 import LevelFormMenu from '../../Pages/Level/LevelFormMenu/LevelFormMenu';
 import Test from '../../Pages/Test/Test';
-import { useHistory } from 'react-router';
 import ASDocs from '../../Components/AliveScriptComponents/ASDocs/ASDocs';
 import { MaintenanceError } from '../../Pages/Errors/MaintenanceError/MaintenanceError';
 import MaintenanceMenu from '../../Pages/SiteStatus/MaintenanceMenu/MaintenanceMenu';
 import ASBuiltinsDocs from '../../Components/AliveScriptComponents/ASDocs/ASBuiltinsDocs';
-
-type component =
-	| React.ComponentType<RouteComponentProps<any>>
-	| React.ComponentType<any>;
+import ActivityEditor from '../../Components/CourseComponents/MDEditor/ActivityEditor';
+import ForumHome from '../../Pages/Forum/ForumHome/ForumHome';
+import QuizHome from '../../Pages/Quiz/QuizHome/QuizHome';
+import QuizCategory from '../../Pages/Quiz/QuizCategory/QuizCategory';
+import QuizCreate from '../../Pages/Quiz/QuizCreate/QuizCreate';
+import QuizEdit from '../../Pages/Quiz/QuizEdit/QuizEdit';
+import QuizPlay from '../../Pages/Quiz/QuizPlay/QuizPlay';
+import ForumCategories from '../../Pages/Forum/ForumCategories/ForumCategories';
+import ForumSubjectList from '../../Pages/Forum/ForumSubjectList/ForumSubjectList';
+import ForumPostForm from '../../Pages/Forum/ForumFormQuestion/ForumFormQuestion';
+import ForumPost from '../../Pages/Forum/ForumPost/ForumPost';
+import ForumSearch from '../../Pages/Forum/ForumSearch/ForumSearch';
+import Chat from '../../Pages/Chat/Chat';
+import { LEVEL_TYPE } from '../../Models/Level/level.entity';
+import DashboardNew from '../../Pages/DashboardNew/DashboardNew';
+import ClassroomBrowse from '../../Components/ClassroomComponents/ClassroomBrowse/ClassroomBrowse';
+import { UnderDevelopment } from '../../Pages/Errors/UnderDevelopment/UnderDevelopment';
 
 export interface Route {
 	path: string;
 	exact?: boolean;
-	component?: component;
+	component?: React.ReactNode | null;
 	maintenanceExempt?: boolean;
 	adminOnly?: boolean;
+	redirect?: React.ReactNode;
 
 	// Do not set manually
 	hasAccess?: boolean;
 }
 
 export interface AuthRoute extends Route {
-	redirect?: component;
+	redirect?: React.ReactNode;
 	accountType?: typeof Professor | typeof Student;
 }
 
@@ -58,12 +69,12 @@ export interface RoutesGroup<T extends Route> {
 
 const useRoutes = () => {
 	const { user, maintenance } = useContext(UserContext);
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	const asRoutes = <T extends RoutesGroup<Route>>(routeGroup: T): T => {
 		Object.values(routeGroup).forEach(route => {
 			if (route.adminOnly && !user?.isAdmin) {
-				route.component = NotFound;
+				route.component = route.redirect ?? <NotFound></NotFound>;
 				route.hasAccess = false;
 			}
 
@@ -75,7 +86,7 @@ const useRoutes = () => {
 				!route.maintenanceExempt
 			) {
 				if (!user || !user.isAdmin) {
-					route.component = MaintenanceError;
+					route.component = <MaintenanceError></MaintenanceError>;
 					route.hasAccess = false;
 				}
 			}
@@ -84,7 +95,7 @@ const useRoutes = () => {
 	};
 
 	const asAuthRoutes = <T extends RoutesGroup<AuthRoute>>(
-		defaultRedirect: component,
+		defaultRedirect: React.ReactNode,
 		routeGroup: T,
 	): T => {
 		Object.values(routeGroup).forEach(route => {
@@ -103,7 +114,7 @@ const useRoutes = () => {
 	};
 
 	const asNonAuthRoutes = <T extends RoutesGroup<AuthRoute>>(
-		defaultRedirect: component,
+		defaultRedirect: React.ReactNode,
 		routeGroup: T,
 	): T => {
 		if (user) {
@@ -118,175 +129,249 @@ const useRoutes = () => {
 	const public_routes = asRoutes({
 		test: {
 			path: '/test',
-			component: Test,
+			component: <Test></Test>,
 			adminOnly: true,
 		},
 		home: {
 			exact: true,
 			path: '/',
-			component: Home,
+			component: <Home></Home>,
 			maintenanceExempt: true,
 		},
 		asDocs: {
 			path: '/as/doc',
-			component: ASDocs,
+			component: <ASDocs></ASDocs>,
 		},
 		asBuiltinsDocs: {
 			path: '/as/builtins',
-			component: ASBuiltinsDocs,
+			component: <ASBuiltinsDocs></ASBuiltinsDocs>,
 		},
 		ai: {
-			path: '/aliveai',
-			component: AliveIa,
+			path: '/ai',
+			component: <AIHome></AIHome>,
 			maintenanceExempt: true,
 		},
 		about: {
 			path: '/about',
-			component: About,
+			component: <About></About>,
 			maintenanceExempt: true,
 		},
 		amc: {
 			path: '/amc',
-			component: NotFound,
+			component: <NotFound></NotFound>,
 		},
 		en: {
 			// Route for switching language to english
 			path: '/en',
-			component: Home,
+			component: <Home></Home>,
 		},
 		fr: {
 			// Route for switching language to french
 			path: '/fr',
-			component: Home,
+			component: <Home></Home>,
 		},
 		iot: {
 			exact: true,
 			path: '/iot',
-			component: IoTHome,
-			adminOnly: true,
+			component: <IoTHome></IoTHome>,
+			maintenanceExempt: true,
 		},
 		level_alive: {
 			path: '/level/play/alive',
-			component: () => <Level type="ALIVE" editMode />,
+			component: <Level type={LEVEL_TYPE.ALIVE} editMode />,
 		},
 		level_code: {
 			path: '/level/play/code',
-			component: () => <Level type="code" editMode />,
+			component: <Level type={LEVEL_TYPE.CODE} editMode />,
 		},
 		maintenances: {
 			path: '/maintenances',
 			exact: true,
 			maintenanceExempt: true,
-			component: MaintenanceMenu,
+			component: <MaintenanceMenu></MaintenanceMenu>,
+		},
+		forum_post: {
+			path: '/forum/post/:id',
+			component: <ForumPost></ForumPost>,
+		},
+		forum_subject_list: {
+			path: '/forum/subjectList/:id',
+			component: <ForumSubjectList></ForumSubjectList>,
+		},
+		album: {
+			path: '/album-test',
+			exact: true,
+			component: <ActivityEditor></ActivityEditor>,
+			adminOnly: true,
+		},
+		forum: {
+			path: '/forum',
+			component: <ForumHome></ForumHome>,
+			exact: true,
+			adminOnly: true,
+		},
+		forum_search: {
+			path: '/forum/search',
+			component: <ForumSearch></ForumSearch>,
+			adminOnly: true,
+		},
+		forum_categories: {
+			path: '/forum/categories',
+			component: <ForumCategories></ForumCategories>,
+			adminOnly: true,
+		},
+		quiz: {
+			path: '/quiz',
+			component: <QuizHome></QuizHome>,
+			adminOnly: true,
+		},
+		quiz_category: {
+			path: '/quiz/category/:id',
+			component: <QuizCategory></QuizCategory>,
+			adminOnly: true,
+		},
+		quiz_play: {
+			path: '/quiz/play/:id',
+			component: <QuizPlay></QuizPlay>,
+			adminOnly: true,
 		},
 	});
 
-	const auth_routes = asAuthRoutes(SignIn, {
+	const auth_routes = asAuthRoutes(<SignIn></SignIn>, {
 		dashboard: {
 			path: '/dashboard',
-			component: Dashboard,
+			component: <DashboardNew></DashboardNew>,
 		},
 		create_classroom: {
 			accountType: Professor,
 			path: '/classroom/create',
-			component: ClassroomForm,
+			component: <ClassroomForm></ClassroomForm>,
 		},
 		join_classroom: {
 			accountType: Student,
 			path: '/classroom/join',
-			component: ClassroomForm,
+			component: <ClassroomForm></ClassroomForm>,
 		},
-		classroom: {
-			path: '/classroom/:id',
-			component: Classroom,
+		classroom_browse: {
+			accountType: Student,
+			path: '/classroom/browse',
+			component: <ClassroomBrowse></ClassroomBrowse>,
 		},
 		create_course: {
 			path: '/course/create',
-			component: CourseForm,
+			component: <CourseForm></CourseForm>,
 		},
 		course: {
 			path: '/course/:id',
-			component: Course,
+			component: <Course></Course>,
 		},
 		account: {
 			path: '/account',
-			component: AccountPage,
+			component: <AccountPage></AccountPage>,
+			adminOnly: true,
+			redirect: <UnderDevelopment></UnderDevelopment>,
+		},
+		chat: {
+			path: '/chat',
+			exact: true,
+			component: <Chat></Chat>,
+			adminOnly: true,
 		},
 		iot_dashboard: {
 			path: '/iot/dashboard',
-			component: IoTDashboard,
-			adminOnly: true,
+			component: <IoTDashboard></IoTDashboard>,
+			//adminOnly: true,
 		},
 		create_iot_project: {
 			path: '/iot/projects/create',
-			component: IoTProjectCreate,
-			adminOnly: true,
+			component: <IoTProjectCreate></IoTProjectCreate>,
+			//adminOnly: true,
 		},
 		iot_project: {
 			path: '/iot/projects/:id',
-			component: IoTProject,
-			adminOnly: true,
+			component: <IoTProject></IoTProject>,
+			//adminOnly: true,
 		},
 		level_list: {
 			path: '/level',
 			exact: true,
-			component: LevelList,
+			component: <LevelList></LevelList>,
 		},
 		level_edit: {
 			path: '/level/edit/:levelId',
-			component: () => <Level editMode />,
+			component: <Level editMode />,
 		},
 		level_browse: {
 			path: '/level/browse',
-			component: LevelBrowse,
+			component: <LevelBrowse></LevelBrowse>,
 		},
 		level_play: {
 			path: '/level/play/:levelId',
-			component: Level,
+			component: <Level editMode={false}></Level>,
 		},
 		level_create: {
 			path: '/level/create',
 			exact: true,
-			component: LevelFormMenu,
+			component: <LevelFormMenu></LevelFormMenu>,
 		},
 		level_create_alive: {
 			path: '/level/create/alive',
-			component: () => <LevelForm type="ALIVE" />,
+			component: <LevelForm type={LEVEL_TYPE.ALIVE} />,
 		},
 		level_create_code: {
 			path: '/level/create/code',
-			component: () => <LevelForm type="code" />,
+			component: <LevelForm type={LEVEL_TYPE.CODE} />,
 		},
 		level_create_ai: {
 			path: '/level/create/ai',
-			component: () => <LevelForm type="AI" />,
+			component: <LevelForm type={LEVEL_TYPE.AI} />,
+		},
+		level_create_iot: {
+			path: '/level/create/iot',
+			component: <LevelForm type={LEVEL_TYPE.IOT} />,
+		},
+		quiz_create: {
+			accountType: Professor,
+			path: '/quiz/create',
+			component: <QuizCreate></QuizCreate>,
+			adminOnly: true,
+		},
+		quiz_edit: {
+			accountType: Professor,
+			path: '/quiz/edit/:id',
+			component: <QuizEdit></QuizEdit>,
+			adminOnly: true,
+		},
+		forum_post_form: {
+			path: '/forum/post',
+			component: <ForumPostForm></ForumPostForm>,
 		},
 	});
 
-	const non_auth_routes = asNonAuthRoutes(Home, {
+	const non_auth_routes = asNonAuthRoutes(<Home></Home>, {
 		signin: {
 			path: '/signin',
-			component: SignIn,
+			component: <SignIn></SignIn>,
 			maintenanceExempt: true,
 		},
 		signup: {
 			path: '/signup',
-			component: SignUpMenu,
+			component: <SignUpMenu></SignUpMenu>,
 		},
 		signup_professor: {
 			path: '/signup-professor',
-			component: () => <SignUp userType={USER_TYPES.PROFESSOR} />,
+			component: <SignUp userType={USER_TYPES.PROFESSOR} />,
 		},
 		signup_student: {
 			path: '/signup-student',
-			component: () => <SignUp userType={USER_TYPES.STUDENT} />,
+			component: <SignUp userType={USER_TYPES.STUDENT} />,
 		},
 	});
 
 	const error_routes = asRoutes({
 		not_found: {
 			path: '*',
-			component: NotFound,
+			component: <NotFound />,
 			maintenanceExempt: true,
 		},
 	});
@@ -300,9 +385,9 @@ const useRoutes = () => {
 
 	return {
 		routes,
-		goTo: (path: string) => history.push(path),
+		goTo: (path: string) => navigate(path),
 		goToNewTab: (path: string) => window.open(path, '_blank'),
-		goBack: () => history.goBack(),
+		goBack: () => navigate(-1),
 	};
 };
 

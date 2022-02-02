@@ -1,8 +1,7 @@
-import FillContainer from '../../../Components/UtilsComponents/FillContainer/FillContainer';
 import Card from '../../../Components/UtilsComponents/Cards/Card/Card';
-import { Row } from 'react-bootstrap';
-
 import Voiture from '../../../assets/images/Voiture.gif';
+import Brain from '../../../assets/images/ai/IA.png';
+import IoT from '../../../assets/images/iot/demo_project.png';
 import Code from '../../../assets/images/icons/sandboxblanc.png';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { useTranslation } from 'react-i18next';
@@ -17,25 +16,28 @@ const LevelFormMenu = () => {
 	const { t } = useTranslation();
 
 	return (
-		<FillContainer startAtTop centered>
-			<Row style={{ justifyContent: 'center' }}>
-				<Card
-					img={Voiture}
-					to={routes.auth.level_create_alive.path}
-					title={t('menu.level.alive')}
-				/>
-				<Card
-					img={Code}
-					to={routes.auth.level_create_code.path}
-					title={t('menu.level.code')}
-				/>
-				<Card
-					img={Code}
-					to={routes.auth.level_create_ai.path}
-					title={t('menu.level.ai')}
-				/>
-			</Row>
-		</FillContainer>
+		<div className="w-full h-full items-center justify-items-center grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4">
+			<Card
+				img={Voiture}
+				to={routes.auth.level_create_alive.path}
+				title={t('menu.level.alive')}
+			/>
+			<Card
+				img={Code}
+				to={routes.auth.level_create_code.path}
+				title={t('menu.level.code')}
+			/>
+			<Card
+				img={Brain}
+				to={routes.auth.level_create_ai.path}
+				title={t('menu.level.ai')}
+			/>
+			<Card
+				img={IoT}
+				to={routes.auth.level_create_iot.path}
+				title={t('menu.level.iot')}
+			/>
+		</div>
 	);
 };
 

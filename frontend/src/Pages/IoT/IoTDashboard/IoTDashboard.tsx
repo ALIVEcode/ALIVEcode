@@ -6,14 +6,16 @@ import useRoutes from '../../../state/hooks/useRoutes';
 import styled from 'styled-components';
 import FillContainer from '../../../Components/UtilsComponents/FillContainer/FillContainer';
 import CardContainer from '../../../Components/UtilsComponents/CardContainer/CardContainer';
-import SmallCard from '../../../Components/UtilsComponents/Cards/SmallCard/SmallCard';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { useHistory } from 'react-router';
 import { IoTObject } from '../../../Models/Iot/IoTobject.entity';
 import IoTObjectCreate from '../../../Components/IoTComponents/IoTObject/IotObjectForm/IoTObjectCreate';
 import FormModal from '../../../Components/UtilsComponents/FormModal/FormModal';
 import { useTranslation } from 'react-i18next';
 import { UserContext } from '../../../state/contexts/UserContext';
+import IoTObjectLargeCard from '../../../Components/IoTComponents/IoTObject/IoTObjectLargeCard/IoTObjectLargeCard';
+import Card from '../../../Components/UtilsComponents/Cards/Card/Card';
+import { useNavigate } from 'react-router-dom';
+import IoTIcon from '../../../assets/images/icons/sandboxblanc.png';
 
 const StyledDiv = styled(FillContainer)`
 	padding: 2vw;
@@ -30,7 +32,7 @@ const IoTDashboard = (props: iotDashboardProps) => {
 	const [objects, setObjects] = useState<IoTObject[]>();
 	const { routes } = useRoutes();
 	const { t } = useTranslation();
-	const history = useHistory();
+	const navigate = useNavigate();
 	// TODO: ADD MODAL FORM GENERIC
 	const [openObjectCreate, setOpenObjectCreate] = useState(false);
 
@@ -48,23 +50,24 @@ const IoTDashboard = (props: iotDashboardProps) => {
 	return (
 		<StyledDiv>
 			<div>
-				<h1>IoT Dashboard</h1>
+				<div className="text-5xl">IoT Dashboard</div>
 			</div>
 			<div>
 				<CardContainer
 					asRow
 					icon={faPlus}
-					onIconClick={() => history.push(routes.auth.create_iot_project.path)}
+					onIconClick={() => navigate(routes.auth.create_iot_project.path)}
 					height="200px"
 					className="iot-container"
 					title="My projects"
 				>
 					{projects && projects.length > 0 ? (
 						projects.map((p, idx) => (
-							<SmallCard
+							<Card
 								key={idx}
 								title={p.name}
 								to={routes.auth.iot_project.path.replace(':id', p.id)}
+								img={IoTIcon}
 							/>
 						))
 					) : (
@@ -80,11 +83,16 @@ const IoTDashboard = (props: iotDashboardProps) => {
 					title="My connected objects"
 				>
 					{objects && objects.length > 0 ? (
-						objects.map((p, idx) => (
-							<SmallCard
+						objects.map((obj, idx) => (
+							<IoTObjectLargeCard
+								onUpdate={(iotObject: IoTObject) => {
+									setObjects(
+										objects.map(o => (o.id === iotObject.id ? iotObject : o)),
+									);
+									//forceUpdate();
+								}}
 								key={idx}
-								title={p.name}
-								to={routes.auth.iot_project.path.replace(':id', p.id)}
+								object={obj}
 							/>
 						))
 					) : (
@@ -99,11 +107,9 @@ const IoTDashboard = (props: iotDashboardProps) => {
 					setObjects([...objects, newObject]);
 					setOpenObjectCreate(false);
 				}}
-				onClose={() => setOpenObjectCreate(false)}
+				setOpen={setOpenObjectCreate}
 				title={t('form.title.create_iot_project')}
 				open={openObjectCreate}
-				closeButton={false}
-				buttonVariant="primary"
 			>
 				<IoTObjectCreate />
 			</FormModal>

@@ -1,13 +1,14 @@
 package interpreteur.ast.buildingBlocs.programmes;
 
+import interpreteur.as.Objets.ASObjet;
 import interpreteur.as.Objets.Scope;
 import interpreteur.as.erreurs.ASErreur;
-import interpreteur.as.Objets.ASObjet;
 import interpreteur.ast.buildingBlocs.Expression;
 import interpreteur.ast.buildingBlocs.Programme;
-import interpreteur.ast.buildingBlocs.expressions.*;
-
-import java.util.HashSet;
+import interpreteur.ast.buildingBlocs.expressions.BinOp;
+import interpreteur.ast.buildingBlocs.expressions.CreerListe;
+import interpreteur.ast.buildingBlocs.expressions.ValeurConstante;
+import interpreteur.ast.buildingBlocs.expressions.Var;
 
 public class Assigner extends Programme {
     //private static final HashSet<CreerSetter> waitingSetters = new HashSet<>();
@@ -62,7 +63,7 @@ public class Assigner extends Programme {
                 valeur = listeInitial.remplacerRange(debut, fin, (ASObjet.Liste) valeur);
             }
             // si l'assignement est de forme
-            // var[idx] = valeur
+            // var[idxOrKey] = valeur
             else if (expr instanceof CreerListe.SousSection.IndexSection indexSection) {
                 int idx = indexSection.getIdx();
                 if (op != null) {

@@ -1,7 +1,8 @@
-import Form from "../../../UtilsComponents/Form/Form"
+import Form from '../../../UtilsComponents/Form/Form';
 import { IOTOBJECT_LABEL } from '../../../../Models/Iot/IoTobject.entity';
 import { useAlert } from 'react-alert';
 import { IoTObjectCreateProps } from './iotObjectCreateProps';
+import { FORM_ACTION } from '../../../UtilsComponents/Form/formTypes';
 
 /**
  * Form that creates in the database an IoTObject and returns it
@@ -19,7 +20,7 @@ const IoTObjectCreate = ({ onSubmit }: IoTObjectCreateProps) => {
 			}}
 			name="iot_object"
 			url="iot/objects"
-			action="POST"
+			action={FORM_ACTION.POST}
 			inputGroups={[
 				{
 					name: 'name',
@@ -31,7 +32,7 @@ const IoTObjectCreate = ({ onSubmit }: IoTObjectCreateProps) => {
 				{
 					name: 'description',
 					required: false,
-					inputType: 'text',
+					inputType: 'textarea',
 					maxLength: 500,
 				},
 				{
@@ -39,6 +40,7 @@ const IoTObjectCreate = ({ onSubmit }: IoTObjectCreateProps) => {
 					required: true,
 					inputType: 'select',
 					selectOptions: IOTOBJECT_LABEL,
+					default: IOTOBJECT_LABEL.OTHER,
 				},
 			]}
 		/>

@@ -1,24 +1,22 @@
 package interpreteur.executeur;
 
-import java.time.LocalDateTime;
-import java.util.*;
-
-import interpreteur.as.Objets.ASObjet;
+import interpreteur.as.ASAst;
+import interpreteur.as.ASLexer;
 import interpreteur.as.Objets.ASObjet.FonctionManager;
 import interpreteur.as.Objets.Scope;
 import interpreteur.as.erreurs.ASErreur;
 import interpreteur.as.erreurs.ASErreur.*;
-import interpreteur.as.ASLexer;
 import interpreteur.as.modules.ASModuleManager;
-import interpreteur.as.ASAst;
 import interpreteur.ast.buildingBlocs.Programme;
 import interpreteur.ast.buildingBlocs.programmes.Declarer;
 import interpreteur.data_manager.Data;
 import interpreteur.data_manager.DataVoiture;
-import interpreteur.tokens.Token;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.time.LocalDateTime;
+import java.util.*;
 
 
 
@@ -72,6 +70,8 @@ public class Executeur {
 
     // data explaining the actions to do to the com.server
     private final ArrayList<Data> datas = new ArrayList<>();
+
+    private JSONObject context = null;
 
     // data stack used when the program asks the site for information
     private final Stack<Object> dataResponse = new Stack<>();
@@ -138,16 +138,12 @@ public class Executeur {
     public static void main(String[] args) {
 
 
-        String[] lines = """   
-                var nb = "12"
-                var nb2 = "74"
-                                
-                afficher((decimal(nb) + decimal(nb2)) / 2)
-                                
-                utiliser Math
-                                
-                afficher Math.sin(Math.PI)
-                                
+        String[] lines = """
+                var a = {
+                "salut": "hey!",
+                "bonjour": 122
+                }
+                afficher a
                 """.split("\n");
 
 
@@ -212,6 +208,19 @@ public class Executeur {
         }
         else
             return this.dataResponse.pop();
+    }
+
+    public void setContext(JSONObject context) {
+        if (this.context != null) {
+            throw new IllegalArgumentException("aaaaa");
+        }
+        this.context = context;
+    }
+
+    public JSONObject getContext() {
+        if (context == null)
+            throw new ASErreur.ErreurContexteAbsent("Il n'y a pas de contexte");
+        return context;
     }
 
     public Object pushDataResponse(Object item) {
@@ -356,7 +365,7 @@ public class Executeur {
         } else {
             // Si le code est different ou que la compilation est forcee, compiler les lignes
             //System.out.println(Arrays.toString(PreCompiler.preCompile(lignes)));
-            lignes = PreCompiler.preCompile(lignes, "\nafficher '[ex\u00E9cution termin\u00e9e]'");
+            lignes = PreCompiler.preCompile(lignes);
             return compiler(lignes);
         }
     }

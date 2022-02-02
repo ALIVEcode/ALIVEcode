@@ -20,6 +20,13 @@ export enum LEVEL_DIFFICULTY {
 	EXPERT = 'EX',
 }
 
+export enum LEVEL_TYPE {
+	CODE = 'LevelCodeEntity',
+	ALIVE = 'LevelAliveEntity',
+	AI = 'LevelAIEntity',
+	IOT = 'LevelIoTEntity',
+}
+
 export class Level extends CreatedByUser {
 	@Exclude({ toPlainOnly: true })
 	@Type(() => User)
@@ -34,6 +41,8 @@ export class Level extends CreatedByUser {
 	)
 	creator: User | undefined;
 
+	type: LEVEL_TYPE;
+
 	access: LEVEL_ACCESS;
 
 	difficulty: LEVEL_DIFFICULTY;
@@ -45,20 +54,11 @@ export class Level extends CreatedByUser {
 	@Type(() => ActivityLevel)
 	activities?: ActivityLevel[];
 
-	getType() {
-		if (this instanceof LevelAlive) return 'ALIVE';
-		if (this instanceof LevelCode) return 'code';
-		if (this instanceof LevelAI) return 'AI';
-		return 'code';
-	}
-
 	getTypeDisplay() {
-		if (this instanceof LevelAlive) return 'Car coding';
-		if (this instanceof LevelCode) return 'Coding';
+		if (this.type === LEVEL_TYPE.ALIVE) return 'Car coding';
+		if (this.type === LEVEL_TYPE.CODE) return 'Coding';
+		if (this.type === LEVEL_TYPE.AI) return 'Aritificial Intelligence';
+		if (this.type === LEVEL_TYPE.IOT) return 'Internet of Things';
 		return;
 	}
 }
-
-const LevelAlive = require('./levelAlive.entity').LevelAlive;
-const LevelCode = require('./levelCode.entity').LevelCode;
-const LevelAI = require('./levelAI.entity').LevelAI;

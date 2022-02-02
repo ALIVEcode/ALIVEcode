@@ -1,16 +1,28 @@
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Form as BootForm, InputGroup } from 'react-bootstrap';
-import Button from '../Button/Button';
-import { FormProps, InputGroup as InputGroupModel } from './formTypes';
+import Button from '../Buttons/Button';
+import {
+	FormProps,
+	FORM_ACTION,
+	InputGroup as InputGroupModel,
+	matches,
+} from './formTypes';
 import axios, { AxiosError } from 'axios';
 import { useAlert } from 'react-alert';
-import { useHistory } from 'react-router';
 import { prettyField } from '../../../Types/formatting';
+import InputGroup from '../InputGroup/InputGroup';
 
 /**
  * Form used to create or alter a relation in the database that auto-generates the fields depending of the arguments.
  * The fields can contain enums, error handling and auto-traduction.
+ *
+ * @param {string} name name of the form (used for the auto-applied translations)
+ * @param {string} url url pointing to where to make the request
+ * @param {string} action action of the form ("PATCH", "DELETE", "POST")
+ * @param {(res: AxiosResponse<any>) => void} onSubmit callback called when the form has been submitted and returns the axios response
+ * @param {(formValues: any) => any} alterFormValues callback called right before making the request to alter the form values (return the new values in the callback)
+ * @param {Array<InputGroup>} inputGroups input groups of the form (see the example below or the InputGroup typing for more details)
+ * @param {boolean} disabled if the fields should be all disabled
  *
  * example of a component creating a course:
  * 	<Form
@@ -35,7 +47,7 @@ import { prettyField } from '../../../Types/formatting';
  *			},
  *			{
  *				name: 'description',
- *				inputType: 'text',
+ *				inputType: 'textarea',
  *				maxLength: 200,
  *			},
  *			{
@@ -70,21 +82,20 @@ const Form = (props: FormProps) => {
 	} = useForm();
 
 	const alert = useAlert();
-	const history = useHistory();
 
 	const onFormSubmit = async (formValues: any) => {
 		if (props.alterFormValues) formValues = props.alterFormValues(formValues);
-		if (process.env.REACT_APP_DEBUG) console.log(formValues);
+		if (process.env.DEBUG) console.log(formValues);
 		try {
 			let res;
 			switch (props.action) {
-				case 'POST':
+				case FORM_ACTION.POST:
 					res = await axios.post(props.url, formValues);
 					break;
-				case 'PATCH':
+				case FORM_ACTION.PATCH:
 					res = await axios.patch(props.url, formValues);
 					break;
-				case 'DELETE':
+				case FORM_ACTION.DELETE:
 					res = await axios.delete(props.url, formValues);
 					break;
 			}
@@ -95,39 +106,106 @@ const Form = (props: FormProps) => {
 				case 500:
 					return alert.error(t('error.500'));
 				case 403:
-					return history.push('/');
+					return alert.error(t('error.403'));
 			}
 		}
 	};
 
-	const renderFormInput = (g: InputGroupModel) => {
+	const renderFormInput = (g: InputGroupModel, idx: number) => {
 		const placeholderValue = t([
 			`form.${props.name}.${props.action}.${g.name}.placeholder`,
 			`form.${props.name}.${g.name}.placeholder`,
 			prettyField(g.name),
 		]);
-		const registerOptions = {
+
+		const defaultInputOptions = {
+			style: { paddingRight: 0 },
+			key: idx,
+			placeholder: placeholderValue,
+			defaultValue: g.default,
+			disabled: g.disabled != null ? g.disabled : props.disabled,
+		};
+
+		let registerOptions: any = {
 			required: g.required,
 			minLength: g.minLength,
 			maxLength: g.maxLength,
 		};
+		if (g.customMatch) {
+			registerOptions = {
+				...registerOptions,
+				pattern: {
+					value: g.match,
+				},
+			};
+		} else if (g.match) {
+			registerOptions = {
+				...registerOptions,
+				pattern: {
+					value: matches[g.match],
+				},
+			};
+		}
 		switch (g.inputType) {
 			case 'select':
 				return (
-					<BootForm.Control
-						style={{ paddingRight: 0 }}
-						isInvalid={errors[g.name]?.type}
+					<InputGroup
+						label={t([
+							`form.${props.name}.${props.action}.${g.name}.label`,
+							`form.${props.name}.${g.name}.label`,
+							prettyField(g.name),
+						])}
+						errors={errors[g.name]}
+						messages={{
+							required: t([
+								`form.${props.name}.${props.action}.${g.name}.error.required`,
+								`form.${props.name}.${g.name}.error.required`,
+								'form.error.required',
+							]),
+							maxLength: t(
+								[
+									`form.${props.name}.${props.action}.${g.name}.error.maxLength`,
+									`form.${props.name}.${g.name}.error.maxLength`,
+									'form.error.maxLength',
+								],
+								{ max: g.maxLength },
+							),
+							minLength: t(
+								[
+									`form.${props.name}.${props.action}.${g.name}.error.minlength`,
+									`form.${props.name}.${g.name}.error.minLength`,
+									'form.error.minLength',
+								],
+								{ min: g.minLength },
+							),
+							pattern: t([
+								`form.${props.name}.${props.action}.${g.name}.error.match`,
+								`form.${props.name}.${g.name}.error.match`,
+								`form.error.match.${g.match?.toLowerCase()}`,
+								'form.error.match.name',
+							]),
+						}}
+						{...defaultInputOptions}
+						defaultValue={g.default ?? ''}
 						as="select"
-						placeholder={placeholderValue}
-						defaultValue={g.default}
 						{...register(g.name, registerOptions)}
 					>
+						<option value=""></option>
 						{Array.isArray(g.selectOptions)
-							? g.selectOptions?.map((opt: any, idx) => (
-									<option key={g.name + idx} value={opt}>
-										{opt}
-									</option>
-							  ))
+							? g.selectOptions?.map((opt: any, idx) => {
+									if ('display' in opt && 'value' in opt) {
+										return (
+											<option key={g.name + idx} value={opt.value}>
+												{opt.display}
+											</option>
+										);
+									}
+									return (
+										<option key={g.name + idx} value={opt}>
+											{opt}
+										</option>
+									);
+							  })
 							: Object.keys(g.selectOptions as { [key: string]: any })
 									.filter(k => isNaN(Number(k)))
 									.map((k, idx) => (
@@ -138,16 +216,49 @@ const Form = (props: FormProps) => {
 											{k.toLowerCase()}
 										</option>
 									))}
-					</BootForm.Control>
+					</InputGroup>
 				);
 			default:
 				return (
-					<BootForm.Control
-						style={{ paddingRight: 0 }}
-						isInvalid={errors[g.name]?.type}
+					<InputGroup
+						label={t([
+							`form.${props.name}.${props.action}.${g.name}.label`,
+							`form.${props.name}.${g.name}.label`,
+							prettyField(g.name),
+						])}
+						as={g.inputType === 'textarea' ? 'textarea' : undefined}
+						errors={errors[g.name]}
+						messages={{
+							required: t([
+								`form.${props.name}.${props.action}.${g.name}.error.required`,
+								`form.${props.name}.${g.name}.error.required`,
+								'form.error.required',
+							]),
+							maxLength: t(
+								[
+									`form.${props.name}.${props.action}.${g.name}.error.maxLength`,
+									`form.${props.name}.${g.name}.error.maxLength`,
+									'form.error.maxLength',
+								],
+								{ max: g.maxLength },
+							),
+							minLength: t(
+								[
+									`form.${props.name}.${props.action}.${g.name}.error.minlength`,
+									`form.${props.name}.${g.name}.error.minLength`,
+									'form.error.minLength',
+								],
+								{ min: g.minLength },
+							),
+							pattern: t([
+								`form.${props.name}.${props.action}.${g.name}.error.match`,
+								`form.${props.name}.${g.name}.error.match`,
+								`form.error.match.${g.match?.toLowerCase()}`,
+								'form.error.match.name',
+							]),
+						}}
+						{...defaultInputOptions}
 						type={g.inputType}
-						defaultValue={g.default}
-						placeholder={placeholderValue}
 						{...register(g.name, registerOptions)}
 					/>
 				);
@@ -155,59 +266,12 @@ const Form = (props: FormProps) => {
 	};
 
 	return (
-		<BootForm onSubmit={handleSubmit(onFormSubmit)}>
-			{props.inputGroups.map((g, idx) => (
-				<BootForm.Group key={idx}>
-					<BootForm.Label>
-						{t([
-							`form.${props.name}.${props.action}.${g.name}.label`,
-							`form.${props.name}.${g.name}.label`,
-							prettyField(g.name),
-						])}
-					</BootForm.Label>
-					<InputGroup
-						hasValidation={
-							g.maxLength != null || g.minLength != null || g.required
-						}
-					>
-						{renderFormInput(g)}
-						{(g.maxLength != null || g.minLength != null || g.required) && (
-							<BootForm.Control.Feedback
-								style={{ wordWrap: 'break-word' }}
-								type="invalid"
-							>
-								{errors[g.name]?.type === 'required' &&
-									t([
-										`form.${props.name}.${props.action}.${g.name}.error.required`,
-										`form.${props.name}.${g.name}.error.required`,
-										'form.error.required',
-									])}
-								{errors[g.name]?.type === 'maxLength' &&
-									t(
-										[
-											`form.${props.name}.${props.action}.${g.name}.error.maxLength`,
-											`form.${props.name}.${g.name}.error.maxLength`,
-											'form.error.maxLength',
-										],
-										{ max: g.maxLength },
-									)}
-								{errors[g.name]?.type === 'minLength' &&
-									t(
-										[
-											`form.${props.name}.${props.action}.${g.name}.error.minlength`,
-											`form.${props.name}.${g.name}.error.minLength`,
-											'form.error.minLength',
-										],
-										{ min: g.minLength },
-									)}
-							</BootForm.Control.Feedback>
-						)}
-					</InputGroup>
-				</BootForm.Group>
-			))}
+		<form onSubmit={handleSubmit(onFormSubmit)}>
+			{props.inputGroups.map((g, idx) => renderFormInput(g, idx))}
 			<Button
-				variant={props.action === 'DELETE' ? 'danger' : 'primary'}
+				variant={props.action === FORM_ACTION.DELETE ? 'danger' : 'secondary'}
 				type="submit"
+				disabled={props.disabled}
 			>
 				{t(
 					[
@@ -218,7 +282,7 @@ const Form = (props: FormProps) => {
 					{ name: prettyField(props.name) },
 				)}
 			</Button>
-		</BootForm>
+		</form>
 	);
 };
 

@@ -23,11 +23,12 @@ import { Auth } from '../../utils/decorators/auth.decorator';
 import { User } from '../../utils/decorators/user.decorator';
 import { ActivityEntity } from './entities/activity.entity';
 import { CreateCourseDTO } from './dtos/CreateCourseDTO';
+import { UserService } from '../user/user.service';
 
 @Controller('courses')
 @UseInterceptors(DTOInterceptor)
 export class CourseController {
-  constructor(private readonly courseService: CourseService) {}
+  constructor(private readonly courseService: CourseService, private readonly userService: UserService) {}
 
   @Post()
   @Auth(Role.PROFESSOR)
@@ -83,12 +84,23 @@ export class CourseController {
     return await this.courseService.createSection(course.id, createSectionDTO);
   }
 
+  @Delete(':id/sections/:sectionId')
+  @Auth(Role.PROFESSOR, Role.STAFF)
+  async removeSection(@User() user: UserEntity, @Param('id') id: string, @Param('sectionId') sectionId: string) {
+    const course = await this.courseService.findOne(id);
+    if (course.creator.id !== user.id && !hasRole(user, Role.STAFF))
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+
+    return await this.courseService.removeSection(id, sectionId);
+  }
+
   @Get(':id/sections')
   @Auth()
   async getSections(@User() user: UserEntity, @Param('id') id: string) {
     const course = await this.courseService.findOne(id);
     await this.courseService.filterCourseAccess(course, user);
 
+    await this.userService.accessCourse(user, course);
     return await this.courseService.getSections(id);
   }
 
@@ -144,5 +156,20 @@ export class CourseController {
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
 
     return await this.courseService.updateActivity(id, sectionId, activityId, updateActivityDTO);
+  }
+
+  @Delete(':id/sections/:sectionId/activities/:activityId')
+  @Auth()
+  async removeActivity(
+    @User() user: UserEntity,
+    @Param('id') id: string,
+    @Param('sectionId') sectionId: string,
+    @Param('activityId') activityId: string,
+  ) {
+    const course = await this.courseService.findOne(id);
+    if (course.creator.id !== user.id && !hasRole(user, Role.STAFF))
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+
+    return await this.courseService.removeActivity(id, sectionId, activityId);
   }
 }

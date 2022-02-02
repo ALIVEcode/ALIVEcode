@@ -1,16 +1,16 @@
 import FormContainer from '../../../Components/UtilsComponents/FormContainer/FormContainer';
 import { useTranslation } from 'react-i18next';
 import Form from '../../UtilsComponents/Form/Form';
-import { useHistory, useLocation } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { useAlert } from 'react-alert';
-import { CourseFormLocation } from './courseFormTypes';
 import {
 	COURSE_DIFFICULTY,
 	COURSE_SUBJECT,
 	COURSE_ACCESS,
 	Course,
 } from '../../../Models/Course/course.entity';
+import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
 
 /**
  * Form that creates a new course in the db and navigates to it
@@ -19,26 +19,27 @@ import {
  */
 const CourseForm = () => {
 	const { t } = useTranslation();
-	const history = useHistory();
+	const navigate = useNavigate();
 	const { routes } = useRoutes();
 	const alert = useAlert();
 
-	const location = useLocation<CourseFormLocation>();
-	const { classroom } = location.state;
+	const location = useLocation();
+	const state = location.state as any;
+	const { classroom } =
+		state && 'classroom' in state ? state : { classroom: undefined };
 
 	return (
 		<FormContainer title={t('form.title.create_course')}>
 			<Form
 				onSubmit={res => {
 					const course: Course = res.data;
-					history.push(routes.auth.course.path.replace(':id', course.id));
+					navigate(routes.auth.course.path.replace(':id', course.id));
 					return alert.success('Cours créé avec succès');
 				}}
 				name="course"
 				url="courses"
-				action="POST"
+				action={FORM_ACTION.POST}
 				alterFormValues={formValues => {
-					console.log(formValues);
 					if (!classroom) return { course: formValues };
 					return { classId: classroom.id, course: formValues };
 				}}
@@ -60,18 +61,21 @@ const CourseForm = () => {
 						required: true,
 						inputType: 'select',
 						selectOptions: COURSE_SUBJECT,
+						default: COURSE_SUBJECT.INFORMATIC,
 					},
 					{
 						name: 'access',
 						required: true,
 						inputType: 'select',
 						selectOptions: COURSE_ACCESS,
+						default: COURSE_ACCESS.RESTRICTED,
 					},
 					{
 						name: 'difficulty',
 						required: true,
 						inputType: 'select',
 						selectOptions: COURSE_DIFFICULTY,
+						default: COURSE_DIFFICULTY.MEDIUM,
 					},
 				]}
 			/>

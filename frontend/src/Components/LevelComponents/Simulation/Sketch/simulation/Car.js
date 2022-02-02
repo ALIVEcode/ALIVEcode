@@ -4,7 +4,7 @@ import { Road } from './ts/Road';
 import { Terrain } from './ts/Terrain';
 import { Interactive } from './ts/Interactive';
 import { Vector } from './Vector';
-import { images, unloadImages } from './assets';
+import { images } from './assets';
 
 export class Car {
 	#speed;
@@ -227,7 +227,6 @@ export class Car {
 
 				const angle = (360 - this.shape.rotation.x + 90) % 360;
 				const angleRad = (angle * Math.PI) / 180;
-				//console.log({angle});
 				const baseForce = new Vector(
 					Math.cos(angleRad) * this.currentForceModulus,
 					Math.sin(angleRad) * this.currentForceModulus,

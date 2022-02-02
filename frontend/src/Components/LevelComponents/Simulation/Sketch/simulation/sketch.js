@@ -172,10 +172,9 @@ export const sketch = s => {
 
 		// Fonction pour zoomer/dezoomer
 		const zoom = () => {
-			if (s.fullscreenDiv.css('display') === 'none') {
+			if (s.fullscreenDiv.css('display') !== 'block') {
 				previousParent = canvasDiv.parent();
 				s.fullscreenDiv.css('display', 'block');
-				canvasDiv.css('height', '100%');
 				canvasDiv.appendTo(s.fullscreenDiv);
 
 				if (s.isMobile) {
@@ -185,11 +184,8 @@ export const sketch = s => {
 					}
 					s.fullscreen = true;
 				}
-
-				s.zoomButton.attr('src', '/static/images/fullscreen-off.png');
 			} else if (!s.editorButton?.hovering) {
 				s.fullscreenDiv.css('display', 'none');
-				canvasDiv.css('height', '60vh');
 				canvasDiv.appendTo(previousParent);
 
 				if (s.isMobile) {
@@ -199,15 +195,16 @@ export const sketch = s => {
 					}
 				}
 
-				s.zoomButton.attr('src', '/static/images/fullscreen-on.png');
 				if (s.editMode) {
 					s.exitEditMode();
 				}
-				setTimeout(s.resize, 1000);
 			}
 		};
 
-		if (s.zoomButton) s.zoomButton.click(zoom);
+		if (s.zoomButton) {
+			s.zoomButton.unbind('click');
+			s.zoomButton.click(zoom);
+		}
 
 		s.maxFPS = 30;
 		s.frameRate(60);
@@ -313,7 +310,7 @@ export const sketch = s => {
 			// TODO: save
 			//Save
 			if (s.levelHasChanged) {
-				if (process.env.REACT_APP_DEBUG)
+				if (process.env.DEBUG)
 					console.log('level changed, it will be saved automatically soon...');
 				s.onChange(s);
 				s.levelHasChanged = false;
@@ -923,7 +920,6 @@ export const sketch = s => {
 
 	s.keyPressed = () => {
 		// Controller du véhicule
-
 		if (
 			s.carController &&
 			s.selectedCar != null &&
@@ -935,19 +931,19 @@ export const sketch = s => {
 				s.selectedCar = (s.selectedCar + 1) % s.cars.length;
 			}
 			// W
-			else if (s.keyCode === 87) {
+			else if (s.keyCode === 83) {
 				s.cars[s.selectedCar].dir.y = 1;
 			}
 			// S
-			else if (s.keyCode === 83) {
+			else if (s.keyCode === 88) {
 				s.cars[s.selectedCar].dir.y = -1;
 			}
 			// A
-			else if (s.keyCode === 65) {
+			else if (s.keyCode === 90) {
 				s.cars[s.selectedCar].dir.x = -1;
 			}
 			// D
-			else if (s.keyCode === 68) {
+			else if (s.keyCode === 67) {
 				s.cars[s.selectedCar].dir.x = 1;
 			}
 		}
@@ -993,19 +989,19 @@ export const sketch = s => {
 
 		if (s.carController) {
 			// W
-			if (s.keyCode === 87 && s.cars[s.selectedCar].dir.y > 0) {
+			if (s.keyCode === 83 && s.cars[s.selectedCar].dir.y > 0) {
 				s.cars[s.selectedCar].dir.y = 0;
 			}
 			// S
-			else if (s.keyCode === 83 && s.cars[s.selectedCar].dir.y < 0) {
+			else if (s.keyCode === 88 && s.cars[s.selectedCar].dir.y < 0) {
 				s.cars[s.selectedCar].dir.y = 0;
 			}
 			// A
-			else if (s.keyCode === 65 && s.cars[s.selectedCar].dir.x < 0) {
+			else if (s.keyCode === 90 && s.cars[s.selectedCar].dir.x < 0) {
 				s.cars[s.selectedCar].dir.x = 0;
 			}
 			// D
-			else if (s.keyCode === 68 && s.cars[s.selectedCar].dir.x > 0) {
+			else if (s.keyCode === 67 && s.cars[s.selectedCar].dir.x > 0) {
 				s.cars[s.selectedCar].dir.x = 0;
 			}
 		}

@@ -4,9 +4,26 @@ export type ActivityContentProps = {};
 
 export const StyledActivityContent = styled.div`
 	position: relative;
-	left: 3%;
 	height: 100%;
-	width: 97%;
+
+	transition: 0.35s;
+	width: 100%;
+	left: 0;
+	${({ navigationOpen }: { navigationOpen: boolean }) =>
+		navigationOpen &&
+		`
+			width: calc(100% - 20vw);
+			left: 20vw;
+		`}
+
+	.btn-toggle-nav {
+		position: fixed;
+		padding-top: 15px;
+		padding-bottom: 15px;
+		margin-top: calc(20% - (23px / 2));
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+	}
 
 	.activity-header {
 		border-bottom: 2px solid var(--foreground-color);

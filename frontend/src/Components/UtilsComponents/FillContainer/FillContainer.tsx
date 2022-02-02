@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useLayoutEffect, useRef } from 'react';
-import { FillContainerProps } from './fillContainerTtypes';
+import { FillContainerProps } from './fillContainerTypes';
 
 const StyledContainer = styled.div`
 	width: 100%;
@@ -62,7 +62,7 @@ const FillContainer = ({
 						const navbar = document.getElementById('navbar');
 						if (navbar)
 							styledContainerRef.current.style.height =
-								window.innerHeight - navbar.clientHeight + 'px';
+								window.innerHeight - navbar.clientHeight - 2 + 'px';
 					}
 				}
 			}

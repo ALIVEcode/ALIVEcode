@@ -1,8 +1,8 @@
-import { Type } from "class-transformer";
-import { IsNotEmpty } from "class-validator";
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { IsNotEmpty, IsEmpty } from 'class-validator';
+import { Column, Entity, ManyToOne, ManyToMany } from 'typeorm';
 import { CreatedByUser } from '../../../../generics/entities/createdByUser.entity';
 import { UserEntity } from '../../../user/entities/user.entity';
+import { IoTProjectEntity } from '../../IoTproject/entities/IoTproject.entity';
 
 export enum IoTObjectLabel {
   HOME = 'HO',
@@ -11,11 +11,15 @@ export enum IoTObjectLabel {
 
 @Entity()
 export class IoTObjectEntity extends CreatedByUser {
-  @Type(() => UserEntity)
   @ManyToOne(() => UserEntity, user => user.IoTObjects, { eager: true, onDelete: 'CASCADE' })
+  @IsEmpty()
   creator: UserEntity;
 
-  @IsNotEmpty()
   @Column({ enum: IoTObjectLabel })
+  @IsNotEmpty()
   label: IoTObjectLabel;
+
+  @ManyToMany(() => IoTProjectEntity, project => project.iotObjects, { onDelete: 'CASCADE' })
+  @IsEmpty()
+  iotProjects: IoTProjectEntity[];
 }

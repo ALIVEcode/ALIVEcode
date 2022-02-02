@@ -87,7 +87,6 @@ export class CarGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   // TODO : payload validation
   @SubscribeMessage('connect_watcher')
   connect_watcher(@ConnectedSocket() socket: WebSocket, @MessageBody() payload?: WatcherConnectPayload) {
-    console.log(payload);
     if (!payload || !Array.isArray(payload.targets)) throw new WsException('Bad payload');
     if (this.watchers.find(w => w.socket === socket)) throw new WsException('Already registered as a watcher');
 

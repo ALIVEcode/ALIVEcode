@@ -1,6 +1,7 @@
 package interpreteur.ast.buildingBlocs.expressions;
 
 import interpreteur.as.Objets.ASObjet;
+import interpreteur.as.Objets.ASPaire;
 import interpreteur.as.erreurs.ASErreur;
 import interpreteur.ast.buildingBlocs.Expression;
 
@@ -36,14 +37,14 @@ public class CreerListe implements Expression<ASObjet.Liste> {
         Expression<?> getExpr();
 
         record IndexSection(Expression<?> expr,
-                            Expression<?> idx) implements SousSection {
+                            Expression<?> idxOrKey) implements SousSection {
 
             public Expression<?> getExpr() {
                 return expr;
             }
 
             public int getIdx() {
-                Object valueIdx = this.idx.eval().getValue();
+                Object valueIdx = this.idxOrKey.eval().getValue();
                 if (!(valueIdx instanceof Integer idx)) {
                     throw new ASErreur.ErreurIndex("Un index doit \u00EAtre un nombre entier");
                 }
@@ -53,23 +54,32 @@ public class CreerListe implements Expression<ASObjet.Liste> {
             @Override
             public ASObjet<?> eval() {
                 ASObjet<?> evalExpr = this.expr.eval();
-                if (!(evalExpr instanceof ASObjet.Iterable)) {
-                    throw new ASErreur.ErreurType("L'op\u00E9ration d'index n'est pas d\u00E9finie pour " +
-                            "un \u00E9l\u00E9ment de type '" + evalExpr.obtenirNomType() + "'.");
+                if (evalExpr instanceof ASObjet.Liste liste && idxOrKey.eval() instanceof ASObjet.Texte texte) {
+                    var result = liste.get(texte);
+                    return result instanceof ASPaire paire ? paire.valeur() : result;
                 }
-                int idx = getIdx();
-                if (Math.abs(idx < 0 ? idx + 1 : idx) >= ((ASObjet.Iterable) evalExpr).taille()) {
-                    int bound = (((ASObjet.Iterable) evalExpr).taille() - 1);
+                if (evalExpr instanceof ASObjet.Iterable iterable)
+                    return indexOfIterable(iterable);
+                throw new ASErreur.ErreurType("L'op\u00E9ration d'index n'est pas d\u00E9finie pour " +
+                        "un \u00E9l\u00E9ment de type '" + evalExpr.obtenirNomType() + "'.");
+            }
+
+            private ASObjet<?> indexOfIterable(ASObjet.Iterable<?> iterable) {
+                if (!(this.idxOrKey.eval().getValue() instanceof Integer idx)) {
+                    throw new ASErreur.ErreurIndex("Un index doit \u00EAtre un nombre entier");
+                }
+                if (Math.abs(idx < 0 ? idx + 1 : idx) >= iterable.taille()) {
+                    int bound = iterable.taille() - 1;
                     throw new ASErreur.ErreurIndex("L'index " + idx + " est hors de port\u00E9 (entre " + -(bound + 1) + " et " + bound + ")");
                 }
-                return ((ASObjet.Iterable) evalExpr).get(idx);
+                return iterable.get(idx);
             }
 
             @Override
             public String toString() {
                 return "IndexListe{" +
                         "expr=" + expr +
-                        ", index=" + idx +
+                        ", index=" + idxOrKey +
                         '}';
             }
         }
@@ -93,7 +103,7 @@ public class CreerListe implements Expression<ASObjet.Liste> {
             }
 
             public int getFin() {
-                if (fin == null) return ((ASObjet.Iterable) this.expr.eval()).taille();
+                if (fin == null) return ((ASObjet.Iterable<?>) this.expr.eval()).taille();
 
                 Object valueFin = fin.eval().getValue();
 
@@ -106,11 +116,11 @@ public class CreerListe implements Expression<ASObjet.Liste> {
             @Override
             public ASObjet<?> eval() {
                 ASObjet<?> evalExpr = this.expr.eval();
-                if (!(evalExpr instanceof ASObjet.Iterable)) {
-                    throw new ASErreur.ErreurType("L'op\u00E9ration de coupe n'est pas d\u00E9finie pour " +
-                            "un \u00E9l\u00E9ment de type '" + evalExpr.obtenirNomType() + "'.");
+                if (evalExpr instanceof ASObjet.Iterable iterable) {
+                    return iterable.sousSection(getDebut(), getFin());
                 }
-                return ((ASObjet.Iterable) evalExpr).sousSection(getDebut(), getFin());
+                throw new ASErreur.ErreurType("L'op\u00E9ration de coupe n'est pas d\u00E9finie pour " +
+                        "un \u00E9l\u00E9ment de type '" + evalExpr.obtenirNomType() + "'.");
             }
 
             @Override
@@ -140,7 +150,7 @@ public class CreerListe implements Expression<ASObjet.Liste> {
             return exprs;
         }
 
-        public CreerListe build() {
+        public CreerListe buildCreerListe() {
             return new CreerListe(exprs.toArray(Expression[]::new));
         }
 

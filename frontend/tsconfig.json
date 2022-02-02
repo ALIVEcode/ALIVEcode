@@ -13,15 +13,20 @@
 		"moduleResolution": "node",
 		"resolveJsonModule": true,
 		"isolatedModules": true,
-		"noEmit": true,
 		"jsx": "react-jsx",
 		"experimentalDecorators": true,
-		"strictPropertyInitialization": false
+		"strictPropertyInitialization": false,
+		"downlevelIteration": true,
+		// Ensure that .d.ts files are created by tsc, but not .js files
+		"declaration": true,
+		"emitDeclarationOnly": true
+		// Ensure that Babel can safely transpile files in the TypeScript project
 	},
 	"include": [
 		"src",
 		"dec.d.ts",
-		"node_modules/ace-builds/src-noconflict/theme-alive.js"
+		"node_modules/ace-builds/src-noconflict/theme-alive.js",
+		"../backend/src/models/iot/IoTproject/entities/IoTLayout.dto.ts"
 	],
 	"paths": {
 		"@assets/*": ["public/Assets/*"]

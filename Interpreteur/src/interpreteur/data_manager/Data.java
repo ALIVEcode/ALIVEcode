@@ -72,6 +72,9 @@ public class Data extends JSONObject {
         AFFICHER_NUAGE(Categorie.AI),     // 2
         EVALUER(Categorie.AI),            // 3
         FONCTION_COUT(Categorie.AI),  // 4
+
+        // IoT Data Ids
+        UPDATE_COMPONENT(Categorie.IOT), // 0
         ;
 
         private final int id;
@@ -112,7 +115,8 @@ public class Data extends JSONObject {
             GET,
             SET,
             TIPS,
-            AI;
+            AI,
+            IOT;
 
             private int count = 0;
 

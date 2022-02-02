@@ -10,6 +10,11 @@ import interpreteur.executeur.Executeur;
  */
 public interface ASErreur {
 
+    enum Erreurs {
+        ErreurZeroExposantZero;
+
+    }
+
     class ErreurAliveScript extends RuntimeException {
         private final String nomErreur;
 
@@ -73,13 +78,16 @@ public interface ASErreur {
         }
     }
 
+    //--------------------------------------Erreurs compilation----------------------------------------------
+
     class StopSetInfo extends Stop {
         public StopSetInfo(Data data) {
             super(data);
         }
     }
 
-    //--------------------------------------Erreurs compilation----------------------------------------------
+
+    //-----------------------------------------------Erreurs Executions-------------------------------------------
 
     class ErreurFermeture extends ErreurAliveScript {
 
@@ -98,8 +106,11 @@ public interface ASErreur {
         }
     }
 
-
-    //-----------------------------------------------Erreurs Executions-------------------------------------------
+    class ErreurContexteAbsent extends ErreurAliveScript {
+        public ErreurContexteAbsent(String message) {
+            super(message, "ErreurContexteAbsent");
+        }
+    }
 
     class ErreurSyntaxe extends ErreurAliveScript {
         public ErreurSyntaxe(String message) {
@@ -153,6 +164,18 @@ public interface ASErreur {
         }
     }
 
+    class ErreurClef extends ErreurAliveScript {
+        public ErreurClef(String clef) {
+            super("La clef " + clef + " n'est pas pr\u00E9sente dans le dict ou la liste", "ErreurClef");
+        }
+    }
+
+    class ErreurClefDupliquee extends ErreurAliveScript {
+        public ErreurClefDupliquee(String msg) {
+            super(msg, "ErreurClef");
+        }
+    }
+
     class ErreurIndex extends ErreurAliveScript {
         public ErreurIndex(String message) {
             super(message, "ErreurIndex");
@@ -183,14 +206,14 @@ public interface ASErreur {
         }
     }
 
+
+    //-------------------------  Erreur de mathématiques  -----------------------------//
+
     class ErreurEntierInvalide extends ErreurAliveScript {
         public ErreurEntierInvalide(String message) {
             super(message, "ErreurEntierInvalide");
         }
     }
-
-
-    //-------------------------  Erreur de mathématiques  -----------------------------//
 
     class ErreurArithmetique extends ErreurAliveScript {
         public ErreurArithmetique(String message) {
@@ -214,14 +237,6 @@ public interface ASErreur {
         public ErreurZeroExposantZero(String message) {
             super(message, "ErreurExposantZero");
         }
-    }
-
-
-    enum Erreurs {
-        ErreurZeroExposantZero
-
-        ;
-
     }
 
 

@@ -88,13 +88,17 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 	//Set the data for the level
 	const [data] = useState(dataAI);
 	let func = useRef<PolyRegression>();
+
+	//The dataset of the prototype AI course
 	const mainDataset: DataTypes = {
 		type: 'scatter',
 		label: "Distance parcourue en fonction de l'énergie",
-		data,
+		data: data,
 		backgroundColor: 'var(--contrast-color)',
 		borderWidth: 1,
 	};
+
+	//The initial dataset of any course, which is no data
 	const initialDataset: DataTypes = Object.freeze({
 		type: 'scatter',
 		label: "Distance parcourue en fonction de l'énergie",
@@ -103,14 +107,10 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 		borderWidth: 1,
 	});
 	let datasets = useRef([initialDataset]);
-	let pointsOnGraph: boolean = false;
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	let regOnGraph: boolean = false;
-
-	const [chartData, setChartData] = useState({ datasets: datasets.current });
+	const [chartData, setChartData] = useState({ datasets: [initialDataset]});
 
 	/**
-	 * Resets the datasets array and the data shown on the graph.
+	 * Resets the dataset array and the data shown on the graph.
 	 */
 	function resetGraph() {
 		datasets.current = [initialDataset];
@@ -118,12 +118,18 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 	}
 
 	/**
-	 * Adds a new dataset to the datasets array.
+	 * Adds a new datasets to the dataset array.
 	 * @param newData the new dataset to add.
 	 */
 	function setDataOnGraph(newData: DataTypes): void {
-		datasets.current.push(newData);
-		setChartData({ datasets: datasets.current });
+		if (datasets.current[0] === initialDataset) {
+			console.log("dataset vide");
+			datasets.current = [newData];
+		}
+		else datasets.current.push(newData);
+		setChartData({ datasets: datasets.current});
+
+		console.log(chartData.datasets[0].data);
 	}
 	//-------------------------- Alivescript functions ----------------------------//
 
@@ -253,8 +259,7 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 					*/}
 					<div className="flex flex-col w-1/2">
 						<div
-							className="h-3/5 w-full flex flex-row"
-							className="data-section"
+							className="h-3/5 w-full flex flex-row data-section"
 						>
 							<div className="w-1/3 h-full">
 								<LevelTable
@@ -272,7 +277,7 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 								/>
 							</div>
 						</div>
-						<div className="h-2/5 flex-1" className="command">
+						<div className="h-2/5 flex-1 command">
 							<Cmd ref={cmdRef}></Cmd>
 						</div>
 					</div>

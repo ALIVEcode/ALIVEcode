@@ -65,7 +65,11 @@ const SignUp = ({ userType }: SignUpProps) => {
 
 			setUser(user);
 
-			if (location.pathname === '/signin') navigate(routes.auth.dashboard.path);
+			if (
+				location.pathname === '/signin' ||
+				location.pathname.toLowerCase().includes('signup')
+			)
+				navigate(routes.auth.dashboard.path);
 			return alert.success(t('msg.auth.signup_success'));
 		} catch (e) {
 			const err = e as AxiosError;

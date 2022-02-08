@@ -12,7 +12,7 @@ import LevelGraph from '../../../Components/LevelComponents/LevelGraph/LevelGrap
 import PolyOptimizer from './artificial_intelligence/PolyOptmizer';
 import RegressionOptimizer from './artificial_intelligence/RegressionOptimizer';
 import DataTypes from '../../../Components/LevelComponents/LevelGraph/DataTypes';
-import PolyRegression from '../../../Components/LevelComponents/LevelGraph/PolyRegression';
+import PolyRegression from './artificial_intelligence/PolyRegression';
 import { LevelContext } from '../../../state/contexts/LevelContext';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import LevelToolsBar from '../../../Components/LevelComponents/LevelToolsBar/LevelToolsBar';

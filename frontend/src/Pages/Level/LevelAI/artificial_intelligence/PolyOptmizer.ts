@@ -1,5 +1,5 @@
 import RegressionOptimizer from "./RegressionOptimizer";
-import PolyRegression from "../../../../Components/LevelComponents/LevelGraph/PolyRegression";
+import PolyRegression from "./PolyRegression";
 import DataSample from "./DataSample";
 
 /**

@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { ActivityEntity } from './activity.entity';
-import { LevelEntity } from '../../level/entities/level.entity';
+import { ActivityEntity } from '../activity.entity';
+import { LevelEntity } from '../../../level/entities/level.entity';
 
 @Entity()
 export class ActivityLevelEntity {

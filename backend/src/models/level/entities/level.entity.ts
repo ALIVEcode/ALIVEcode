@@ -3,7 +3,7 @@ import { Entity, ManyToOne, TableInheritance, Column, OneToMany } from 'typeorm'
 import { UserEntity } from '../../user/entities/user.entity';
 import { CreatedByUser } from '../../../generics/entities/createdByUser.entity';
 import { IsEmpty, IsNotEmpty, IsOptional } from 'class-validator';
-import { ActivityLevelEntity } from '../../course/entities/activity_level.entity';
+import { ActivityLevelEntity } from '../../course/entities/activities/activity_level.entity';
 
 export enum LEVEL_TAG {}
 export enum LEVEL_ACCESS {

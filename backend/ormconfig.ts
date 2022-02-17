@@ -9,13 +9,16 @@ const config: PostgresConnectionOptions = {
   database: process.env.DB_NAME,
   entities: [
     'dist/src/**/entities/*.entity.js',
+    'dist/src/**/entities/**/*.entity.js',
     'dist/src/**/**/entities/*.entity.js',
+    'dist/src/**/**/entities/**/.entity.js',
     'node_modules/nestjs-admin/**/*.entity.js',
   ],
   synchronize: process.env.SYNCHRONIZE.toLocaleLowerCase() === 'true' ? true : false,
-  migrations: ['dist/src/db/migrations/*.js'],
+  migrations: ['dist/migrations/**/*.ts'],
   cli: {
-    migrationsDir: 'src/db/migrations',
+    migrationsDir: 'migrations',
   },
+  migrationsRun: false,
 };
 export default config;

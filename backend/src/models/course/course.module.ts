@@ -14,6 +14,7 @@ import { ProfessorEntity } from '../user/entities/professor.entity';
 import { IoTProjectEntity } from '../iot/IoTproject/entities/IoTproject.entity';
 import { IoTObjectEntity } from '../iot/IoTobject/entities/IoTobject.entity';
 import { LevelEntity } from '../level/entities/level.entity';
+import { ActivityTheoryEntity } from './entities/activities/activity_theory.entity';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { LevelEntity } from '../level/entities/level.entity';
       CourseEntity,
       SectionEntity,
       ActivityEntity,
+      ActivityTheoryEntity,
       UserEntity,
       ClassroomEntity,
       StudentEntity,

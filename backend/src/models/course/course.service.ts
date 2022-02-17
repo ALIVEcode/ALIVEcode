@@ -12,6 +12,7 @@ import { UserEntity } from '../user/entities/user.entity';
 import { hasRole } from '../user/auth';
 import { Role } from '../../utils/types/roles.types';
 import { StudentEntity } from '../user/entities/student.entity';
+import { ActivityTheoryEntity } from './entities/activities/activity_theory.entity';
 
 @Injectable()
 export class CourseService {
@@ -146,7 +147,7 @@ export class CourseService {
   async getActivities(courseId: string, sectionId: string) {
     const section = await this.findSection(courseId, sectionId);
     section.activities = section.activities.map(a => {
-      delete a.content;
+      if (a instanceof ActivityTheoryEntity) delete a.content;
       return a;
     });
     return section.activities;

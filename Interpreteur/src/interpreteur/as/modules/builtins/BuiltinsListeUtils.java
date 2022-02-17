@@ -1,9 +1,11 @@
 package interpreteur.as.modules.builtins;
 
-import interpreteur.as.Objets.ASFonction;
+import interpreteur.as.lang.ASConstante;
+import interpreteur.as.lang.ASFonctionModule;
+import interpreteur.as.lang.datatype.*;
 import interpreteur.as.erreurs.ASErreur;
-import interpreteur.as.Objets.ASObjet;
-import interpreteur.as.modules.ASModule;
+import interpreteur.as.lang.ASTypeBuiltin;
+import interpreteur.as.modules.core.ASModule;
 import interpreteur.ast.buildingBlocs.expressions.Type;
 import interpreteur.executeur.Executeur;
 
@@ -11,7 +13,7 @@ import java.util.*;
 
 public class BuiltinsListeUtils {
 
-    public static ASObjet.Fonction[] fonctions = new ASObjet.Fonction[]{
+    public static ASFonctionModule[] fonctions = new ASFonctionModule[]{
             /*
              * sep:
              * 		@param t:
@@ -22,13 +24,13 @@ public class BuiltinsListeUtils {
              *
              * 		@return une liste où chaque élément est la lettre du string passé en paramètre
              */
-            new ASObjet.Fonction("liste", new ASObjet.Fonction.Parametre[]{
-                    new ASObjet.Fonction.Parametre(ASObjet.TypeBuiltin.texte.asType(), "txt", null),
+            new ASFonctionModule("liste", new ASFonctionModule.Parametre[]{
+                    new ASFonctionModule.Parametre(ASTypeBuiltin.texte.asType(), "txt", null),
             }, new Type("liste")) {
                 @Override
                 public ASObjet<?> executer() {
-                    Texte texte = (Texte) this.getParamsValeursDict().get("txt");
-                    return new Liste(texte.arrayDeLettres());
+                    ASTexte texte = (ASTexte) this.getParamsValeursDict().get("txt");
+                    return new ASListe(texte.arrayDeLettres());
                 }
             },
 
@@ -42,20 +44,20 @@ public class BuiltinsListeUtils {
              *
              * 		@return un iterable où chaque élément est inversé
              */
-            new ASObjet.Fonction("inv", new ASObjet.Fonction.Parametre[]{
-                    new ASObjet.Fonction.Parametre(ASObjet.TypeBuiltin.iterable.asType(), "iter", null),
+            new ASFonctionModule("inv", new ASFonctionModule.Parametre[]{
+                    new ASFonctionModule.Parametre(ASTypeBuiltin.iterable.asType(), "iter", null),
             }, new Type("iterable")) {
                 @Override
                 public ASObjet<?> executer() {
-                    Iterable element = (Iterable) this.getValeurParam("iter");
-                    if (element instanceof Liste) {
-                        Liste newListe = new Liste();
+                    ASIterable element = (ASIterable) this.getValeurParam("iter");
+                    if (element instanceof ASListe) {
+                        ASListe newListe = new ASListe();
                         for (int i = element.taille() - 1; i >= 0; i--) newListe.ajouterElement(element.get(i));
                         return newListe;
                     } else {
                         StringBuilder inv = new StringBuilder();
                         for (int i = element.taille() - 1; i >= 0; i--) inv.append(element.get(i).toString());
-                        return new Texte(inv.toString());
+                        return new ASTexte(inv.toString());
                     }
                 }
             },
@@ -74,23 +76,23 @@ public class BuiltinsListeUtils {
              *
              * 		@return la liste formee suite a l'application de la fonction sur chaque element de la liste
              */
-            new ASObjet.Fonction("map", new ASObjet.Fonction.Parametre[]{
-                    new ASObjet.Fonction.Parametre(new Type("fonction"), "f", null),
-                    new ASObjet.Fonction.Parametre(new Type("liste"), "lst", null)
+            new ASFonctionModule("map", new ASFonctionModule.Parametre[]{
+                    new ASFonctionModule.Parametre(new Type("fonction"), "f", null),
+                    new ASFonctionModule.Parametre(new Type("liste"), "lst", null)
             }, new Type("liste")) {
                 @Override
                 public ASObjet<?> executer() {
-                    Liste liste = (Liste) this.getParamsValeursDict().get("lst");
-                    Liste nouvelleListe;
+                    ASListe liste = (ASListe) this.getParamsValeursDict().get("lst");
+                    ASListe nouvelleListe;
                     ASObjet<?> f = this.getParamsValeursDict().get("f");
                     if (f instanceof ASFonction fonction) {
-                        nouvelleListe = new Liste(liste.getValue().stream().map(element -> fonction
+                        nouvelleListe = new ASListe(liste.getValue().stream().map(element -> fonction
                                         .makeInstance()
                                         .executer(new ArrayList<>(List.of((ASObjet<?>) element))))
                                 .toArray(ASObjet[]::new));
 
                     } else {
-                        nouvelleListe = new Liste(liste.getValue().stream().map(element -> ((ASObjet.Fonction) f)
+                        nouvelleListe = new ASListe(liste.getValue().stream().map(element -> ((ASFonctionModule) f)
                                         .setParamPuisExecute(new ArrayList<>(List.of((ASObjet<?>) element))))
                                 .toArray(ASObjet[]::new));
                     }
@@ -112,25 +114,25 @@ public class BuiltinsListeUtils {
              *
              * 		@return la liste formee des elements de la liste initiale pour lesquels la fonction f a retourne vrai
              */
-            new ASObjet.Fonction("filtrer", new ASObjet.Fonction.Parametre[]{
-                    new ASObjet.Fonction.Parametre(ASObjet.TypeBuiltin.fonctionType.asType(), "f", null),
-                    new ASObjet.Fonction.Parametre(ASObjet.TypeBuiltin.liste.asType(), "lst", null)
+            new ASFonctionModule("filtrer", new ASFonctionModule.Parametre[]{
+                    new ASFonctionModule.Parametre(ASTypeBuiltin.fonctionType.asType(), "f", null),
+                    new ASFonctionModule.Parametre(ASTypeBuiltin.liste.asType(), "lst", null)
             }, new Type("liste")) {
                 @Override
                 public ASObjet<?> executer() {
-                    Liste liste = (Liste) this.getParamsValeursDict().get("lst");
-                    Liste nouvelleListe;
+                    ASListe liste = (ASListe) this.getParamsValeursDict().get("lst");
+                    ASListe nouvelleListe;
                     ASObjet<?> f = this.getParamsValeursDict().get("f");
 
                     if (f instanceof ASFonction fonction) {
-                        nouvelleListe = new Liste(liste.getValue().stream().filter(element -> fonction
+                        nouvelleListe = new ASListe(liste.getValue().stream().filter(element -> fonction
                                         .makeInstance()
                                         .executer(new ArrayList<>(List.of((ASObjet<?>) element)))
                                         .boolValue())
                                 .toArray(ASObjet[]::new));
 
                     } else {
-                        nouvelleListe = new Liste(liste.getValue().stream().filter(element -> ((ASObjet.Fonction) f)
+                        nouvelleListe = new ASListe(liste.getValue().stream().filter(element -> ((ASFonctionModule) f)
                                         .setParamPuisExecute(new ArrayList<>(List.of((ASObjet<?>) element)))
                                         .boolValue())
                                 .toArray(ASObjet[]::new));
@@ -153,15 +155,15 @@ public class BuiltinsListeUtils {
              *
              * 		@return le texte forme en joignant chaque elements de la liste initiale avec le separateur entre chaque element
              */
-            new ASObjet.Fonction("joindre", new ASObjet.Fonction.Parametre[]{
-                    new ASObjet.Fonction.Parametre(ASObjet.TypeBuiltin.liste.asType(), "lst", null),
-                    new ASObjet.Fonction.Parametre(ASObjet.TypeBuiltin.texte.asType(), "separateur", new ASObjet.Texte(""))
+            new ASFonctionModule("joindre", new ASFonctionModule.Parametre[]{
+                    new ASFonctionModule.Parametre(ASTypeBuiltin.liste.asType(), "lst", null),
+                    new ASFonctionModule.Parametre(ASTypeBuiltin.texte.asType(), "separateur", new ASTexte(""))
             }, new Type("texte")) {
                 @Override
                 public ASObjet<?> executer() {
-                    Liste liste = (Liste) this.getParamsValeursDict().get("lst");
-                    Texte separateur = (Texte) this.getParamsValeursDict().get("separateur");
-                    return new Texte(
+                    ASListe liste = (ASListe) this.getParamsValeursDict().get("lst");
+                    ASTexte separateur = (ASTexte) this.getParamsValeursDict().get("separateur");
+                    return new ASTexte(
                             String.join(
                                     separateur.getValue(),
                                     liste.getValue().stream().map(Object::toString).toArray(String[]::new)
@@ -170,57 +172,57 @@ public class BuiltinsListeUtils {
                 }
             },
 
-            new ASObjet.Fonction("somme", new ASObjet.Fonction.Parametre[]{
-                    new ASObjet.Fonction.Parametre(new Type("liste"), "lst", null)
+            new ASFonctionModule("somme", new ASFonctionModule.Parametre[]{
+                    new ASFonctionModule.Parametre(new Type("liste"), "lst", null)
             }, new Type("nombre")) {
                 @Override
                 public ASObjet<?> executer() {
-                    Liste liste = (Liste) this.getParamsValeursDict().get("lst");
+                    ASListe liste = (ASListe) this.getParamsValeursDict().get("lst");
                     double somme = liste.getValue().stream().mapToDouble(e -> ((Number) e.getValue()).doubleValue()).sum();
-                    return new Decimal(somme);
+                    return new ASDecimal(somme);
                 }
             },
 
-            new ASObjet.Fonction("max", new ASObjet.Fonction.Parametre[]{
-                    new ASObjet.Fonction.Parametre(new Type("liste"), "lst", null)
+            new ASFonctionModule("max", new ASFonctionModule.Parametre[]{
+                    new ASFonctionModule.Parametre(new Type("liste"), "lst", null)
             }, new Type("nombre")) {
                 @Override
                 public ASObjet<?> executer() {
-                    Liste liste = (Liste) this.getParamsValeursDict().get("lst");
+                    ASListe liste = (ASListe) this.getParamsValeursDict().get("lst");
                     OptionalDouble somme = liste.getValue().stream().mapToDouble(e -> ((Number) e.getValue()).doubleValue()).max();
                     if (somme.isEmpty()) {
                         throw new ASErreur.ErreurComparaison("tous les \u00E9l\u00E9ments de la liste doivent être des nombres pour pouvoir obtenir le maximum");
                     }
-                    return new Decimal(somme.getAsDouble());
+                    return new ASDecimal(somme.getAsDouble());
                 }
             },
 
-            new ASObjet.Fonction("min", new ASObjet.Fonction.Parametre[]{
-                    new ASObjet.Fonction.Parametre(new Type("liste"), "lst", null)
+            new ASFonctionModule("min", new ASFonctionModule.Parametre[]{
+                    new ASFonctionModule.Parametre(new Type("liste"), "lst", null)
             }, new Type("nombre")) {
                 @Override
                 public ASObjet<?> executer() {
-                    Liste liste = (Liste) this.getParamsValeursDict().get("lst");
+                    ASListe liste = (ASListe) this.getParamsValeursDict().get("lst");
                     OptionalDouble somme = liste.getValue().stream().mapToDouble(e -> ((Number) e.getValue()).doubleValue()).min();
                     if (somme.isEmpty()) {
                         throw new ASErreur.ErreurComparaison("tous les \u00E9l\u00E9ments de la liste doivent être des nombres pour pouvoir obtenir le minimum");
                     }
-                    return new Decimal(somme.getAsDouble());
+                    return new ASDecimal(somme.getAsDouble());
                 }
             },
 
             /*
              * Agit comme un addAll
              */
-            new ASObjet.Fonction("unir", new ASObjet.Fonction.Parametre[]{
-                    new ASObjet.Fonction.Parametre(new Type("liste"), "lst1", null),
-                    new ASObjet.Fonction.Parametre(new Type("liste"), "lst2", null)
+            new ASFonctionModule("unir", new ASFonctionModule.Parametre[]{
+                    new ASFonctionModule.Parametre(new Type("liste"), "lst1", null),
+                    new ASFonctionModule.Parametre(new Type("liste"), "lst2", null)
             }, new Type("liste")) {
                 @Override
                 public ASObjet<?> executer() {
-                    Liste liste1 = (Liste) this.getParamsValeursDict().get("lst1");
-                    Liste liste2 = (Liste) this.getParamsValeursDict().get("lst2");
-                    Liste newListe = new Liste();
+                    ASListe liste1 = (ASListe) this.getParamsValeursDict().get("lst1");
+                    ASListe liste2 = (ASListe) this.getParamsValeursDict().get("lst2");
+                    ASListe newListe = new ASListe();
                     return newListe.ajouterTout(liste1).ajouterTout(liste2);
                 }
             },
@@ -236,40 +238,40 @@ public class BuiltinsListeUtils {
              * 		@return -> si "choix" est de type liste: le nombre d'element dans la liste
              * 				-> si "choix" est de type texte: le nombre de caractere dans le texte
              */
-            new ASObjet.Fonction("tailleDe", new ASObjet.Fonction.Parametre[]{
-                    new ASObjet.Fonction.Parametre(ASObjet.TypeBuiltin.iterable.asType(), "iter", null)
+            new ASFonctionModule("tailleDe", new ASFonctionModule.Parametre[]{
+                    new ASFonctionModule.Parametre(ASTypeBuiltin.iterable.asType(), "iter", null)
             }, new Type("entier")) {
                 @Override
                 public ASObjet<?> executer() {
-                    Iterable val = (Iterable) this.getParamsValeursDict().get("iter");
-                    return new Entier(val.taille());
+                    ASIterable val = (ASIterable) this.getParamsValeursDict().get("iter");
+                    return new ASEntier(val.taille());
                 }
             },
 
-            new ASObjet.Fonction("indexDe", new ASObjet.Fonction.Parametre[]{
-                    new ASObjet.Fonction.Parametre(ASObjet.TypeBuiltin.tout.asType(), "valeur", null),
-                    new ASObjet.Fonction.Parametre(ASObjet.TypeBuiltin.iterable.asType(), "iter", null)
+            new ASFonctionModule("indexDe", new ASFonctionModule.Parametre[]{
+                    new ASFonctionModule.Parametre(ASTypeBuiltin.tout.asType(), "valeur", null),
+                    new ASFonctionModule.Parametre(ASTypeBuiltin.iterable.asType(), "iter", null)
             }, new Type("entier")) {
                 @Override
                 public ASObjet<?> executer() {
-                    Iterable iter = (Iterable) this.getParamsValeursDict().get("iter");
+                    ASIterable iter = (ASIterable) this.getParamsValeursDict().get("iter");
                     ASObjet<?> val = this.getParamsValeursDict().get("valeur");
                     int idx;
-                    if (iter instanceof Texte txt && val instanceof Texte txtVal) {
+                    if (iter instanceof ASTexte txt && val instanceof ASTexte txtVal) {
                         idx = txt.getValue().indexOf(txtVal.getValue());
-                    } else if (iter instanceof Liste lst) {
+                    } else if (iter instanceof ASListe lst) {
                         idx = lst.getValue().indexOf(val);
                     } else {
                         throw new ASErreur.ErreurType("La valeur doit \u00EAtre de type texte lorsque l'on recherche " +
                                 "l'index d'un \u00E9l\u00E9ment de type texte");
                     }
-                    return idx != -1 ? new Entier(idx) : new Nul();
+                    return idx != -1 ? new ASEntier(idx) : new ASNul();
                 }
             }
     };
 
 
-    public static List<ASObjet.Constante> constantes = Collections.emptyList();
+    public static List<ASConstante> constantes = Collections.emptyList();
 
 
     public ASModule charger(Executeur executeurInstance) {

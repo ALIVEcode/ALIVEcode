@@ -1,6 +1,8 @@
 package interpreteur.ast.buildingBlocs.expressions;
 
-import interpreteur.as.Objets.ASObjet;
+import interpreteur.as.lang.datatype.ASBooleen;
+import interpreteur.as.lang.datatype.ASIterable;
+import interpreteur.as.lang.datatype.ASObjet;
 import interpreteur.as.erreurs.ASErreur;
 import interpreteur.ast.buildingBlocs.Expression;
 
@@ -9,10 +11,10 @@ import java.util.function.BiFunction;
 
 public record BinComp(Expression<?> gauche,
                       Comparateur op,
-                      Expression<?> droite) implements Expression<ASObjet.Booleen> {
+                      Expression<?> droite) implements Expression<ASBooleen> {
 
     @Override
-    public ASObjet.Booleen eval() {
+    public ASBooleen eval() {
         return this.op.apply(this.gauche, this.droite);
     }
 
@@ -29,12 +31,12 @@ public record BinComp(Expression<?> gauche,
         /**
          * Gere x == y
          */
-        EGAL((gauche, droite) -> new ASObjet.Booleen(gauche.equals(droite))),
+        EGAL((gauche, droite) -> new ASBooleen(gauche.equals(droite))),
 
         /**
          * Gere x != y
          */
-        PAS_EGAL((gauche, droite) -> new ASObjet.Booleen(!gauche.equals(droite))),
+        PAS_EGAL((gauche, droite) -> new ASBooleen(!gauche.equals(droite))),
 
         /**
          * Gere x > y
@@ -43,7 +45,7 @@ public record BinComp(Expression<?> gauche,
             if (!(gauche.getValue() instanceof Number numG && droite.getValue() instanceof Number numD)) {
                 throw new ASErreur.ErreurComparaison("Il est impossible de comparer autre chose que des nombres");
             }
-            return new ASObjet.Booleen(numG.doubleValue() > numD.doubleValue());
+            return new ASBooleen(numG.doubleValue() > numD.doubleValue());
         }),
 
         /**
@@ -53,7 +55,7 @@ public record BinComp(Expression<?> gauche,
             if (!(gauche.getValue() instanceof Number numG && droite.getValue() instanceof Number numD)) {
                 throw new ASErreur.ErreurComparaison("Il est impossible de comparer autre chose que des nombres");
             }
-            return new ASObjet.Booleen(numG.doubleValue() < numD.doubleValue());
+            return new ASBooleen(numG.doubleValue() < numD.doubleValue());
         }),
 
         /**
@@ -63,7 +65,7 @@ public record BinComp(Expression<?> gauche,
             if (!(gauche.getValue() instanceof Number numG && droite.getValue() instanceof Number numD)) {
                 throw new ASErreur.ErreurComparaison("Il est impossible de comparer autre chose que des nombres");
             }
-            return new ASObjet.Booleen(numG.doubleValue() >= numD.doubleValue());
+            return new ASBooleen(numG.doubleValue() >= numD.doubleValue());
         }),
 
         /**
@@ -73,30 +75,30 @@ public record BinComp(Expression<?> gauche,
             if (!(gauche.getValue() instanceof Number numG && droite.getValue() instanceof Number numD)) {
                 throw new ASErreur.ErreurComparaison("Il est impossible de comparer autre chose que des nombres");
             }
-            return new ASObjet.Booleen(numG.doubleValue() <= numD.doubleValue());
+            return new ASBooleen(numG.doubleValue() <= numD.doubleValue());
         }),
 
         DANS((gauche, droite) -> {
-            if (!(droite instanceof ASObjet.Iterable iterD)) {
+            if (!(droite instanceof ASIterable iterD)) {
                 throw new ASErreur.ErreurComparaison("L'op\u00E9rateur 'dans' ne s'applique que sur les \u00E9l\u00E9ments de type 'iterable'");
             }
-            return new ASObjet.Booleen(iterD.contient(gauche));
+            return new ASBooleen(iterD.contient(gauche));
         }),
 
         PAS_DANS((gauche, droite) -> {
-            if (!(droite instanceof ASObjet.Iterable iterD)) {
+            if (!(droite instanceof ASIterable iterD)) {
                 throw new ASErreur.ErreurComparaison("L'op\u00E9rateur 'dans' ne s'applique que sur les \u00E9l\u00E9ments de type 'iterable'");
             }
-            return new ASObjet.Booleen(!iterD.contient(gauche));
+            return new ASBooleen(!iterD.contient(gauche));
         });
 
-        private final BiFunction<ASObjet<?>, ASObjet<?>, ASObjet.Booleen> eval;
+        private final BiFunction<ASObjet<?>, ASObjet<?>, ASBooleen> eval;
 
-        Comparateur(BiFunction<ASObjet<?>, ASObjet<?>, ASObjet.Booleen> eval) {
+        Comparateur(BiFunction<ASObjet<?>, ASObjet<?>, ASBooleen> eval) {
             this.eval = eval;
         }
 
-        public ASObjet.Booleen apply(Expression<?> gauche, Expression<?> droite) {
+        public ASBooleen apply(Expression<?> gauche, Expression<?> droite) {
             ASObjet<?> g = gauche.eval();
             ASObjet<?> d = droite.eval();
             return this.eval.apply(g, d);

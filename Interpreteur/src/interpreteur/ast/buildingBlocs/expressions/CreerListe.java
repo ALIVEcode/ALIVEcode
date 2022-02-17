@@ -1,7 +1,6 @@
 package interpreteur.ast.buildingBlocs.expressions;
 
-import interpreteur.as.Objets.ASObjet;
-import interpreteur.as.Objets.ASPaire;
+import interpreteur.as.lang.datatype.*;
 import interpreteur.as.erreurs.ASErreur;
 import interpreteur.ast.buildingBlocs.Expression;
 
@@ -9,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class CreerListe implements Expression<ASObjet.Liste> {
+public class CreerListe implements Expression<ASListe> {
 
     private final ArrayList<Expression<?>> exprs;
 
@@ -18,8 +17,8 @@ public class CreerListe implements Expression<ASObjet.Liste> {
     }
 
     @Override
-    public ASObjet.Liste eval() {
-        return new ASObjet.Liste(exprs.stream().map(Expression::eval).toArray(ASObjet[]::new));
+    public ASListe eval() {
+        return new ASListe(exprs.stream().map(Expression::eval).toArray(ASObjet[]::new));
     }
 
     public ArrayList<Expression<?>> getExprs() {
@@ -54,17 +53,17 @@ public class CreerListe implements Expression<ASObjet.Liste> {
             @Override
             public ASObjet<?> eval() {
                 ASObjet<?> evalExpr = this.expr.eval();
-                if (evalExpr instanceof ASObjet.Liste liste && idxOrKey.eval() instanceof ASObjet.Texte texte) {
+                if (evalExpr instanceof ASListe liste && idxOrKey.eval() instanceof ASTexte texte) {
                     var result = liste.get(texte);
                     return result instanceof ASPaire paire ? paire.valeur() : result;
                 }
-                if (evalExpr instanceof ASObjet.Iterable iterable)
+                if (evalExpr instanceof ASIterable iterable)
                     return indexOfIterable(iterable);
                 throw new ASErreur.ErreurType("L'op\u00E9ration d'index n'est pas d\u00E9finie pour " +
                         "un \u00E9l\u00E9ment de type '" + evalExpr.obtenirNomType() + "'.");
             }
 
-            private ASObjet<?> indexOfIterable(ASObjet.Iterable<?> iterable) {
+            private ASObjet<?> indexOfIterable(ASIterable<?> iterable) {
                 if (!(this.idxOrKey.eval().getValue() instanceof Integer idx)) {
                     throw new ASErreur.ErreurIndex("Un index doit \u00EAtre un nombre entier");
                 }
@@ -103,7 +102,7 @@ public class CreerListe implements Expression<ASObjet.Liste> {
             }
 
             public int getFin() {
-                if (fin == null) return ((ASObjet.Iterable<?>) this.expr.eval()).taille();
+                if (fin == null) return ((ASIterable<?>) this.expr.eval()).taille();
 
                 Object valueFin = fin.eval().getValue();
 
@@ -116,7 +115,7 @@ public class CreerListe implements Expression<ASObjet.Liste> {
             @Override
             public ASObjet<?> eval() {
                 ASObjet<?> evalExpr = this.expr.eval();
-                if (evalExpr instanceof ASObjet.Iterable iterable) {
+                if (evalExpr instanceof ASIterable iterable) {
                     return iterable.sousSection(getDebut(), getFin());
                 }
                 throw new ASErreur.ErreurType("L'op\u00E9ration de coupe n'est pas d\u00E9finie pour " +

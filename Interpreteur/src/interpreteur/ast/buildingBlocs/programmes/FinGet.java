@@ -1,8 +1,8 @@
 package interpreteur.ast.buildingBlocs.programmes;
 
-import interpreteur.as.Objets.Scope;
+import interpreteur.as.lang.ASScope;
 import interpreteur.as.erreurs.ASErreur;
-import interpreteur.as.Objets.ASObjet;
+import interpreteur.as.lang.datatype.ASNul;
 import interpreteur.ast.buildingBlocs.Programme;
 import interpreteur.executeur.Coordonnee;
 import interpreteur.executeur.Executeur;
@@ -14,12 +14,12 @@ public class FinGet extends Programme {
 
     public FinGet(Executeur executeurInstance) {
         super(executeurInstance);
-        Scope.popCurrentScope();
+        ASScope.popCurrentScope();
     }
 
     @Override
-    public ASObjet.Nul execute() {
-        return new ASObjet.Nul();
+    public ASNul execute() {
+        return new ASNul();
     }
 
     @Override

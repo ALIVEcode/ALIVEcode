@@ -2,9 +2,9 @@ import { Exclude } from 'class-transformer';
 import { IsEmpty, IsNotEmpty } from 'class-validator';
 import { Column, Entity, ManyToOne, OneToMany, ManyToMany } from 'typeorm';
 import { CreatedByUser } from '../../../generics/entities/createdByUser.entity';
+import { ProfessorEntity } from '../../user/entities/professor.entity';
 import { SectionEntity } from './section.entity';
 import { ClassroomEntity } from '../../classroom/entities/classroom.entity';
-import { ProfessorEntity } from '../../user/entities/professor.entity';
 import { CourseContent } from './course_content.entity';
 
 export enum COURSE_DIFFICULTY {

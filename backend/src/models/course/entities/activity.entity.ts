@@ -1,8 +1,8 @@
 import { Exclude } from 'class-transformer';
-import { Entity, PrimaryGeneratedColumn, TableInheritance, ManyToOne, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, TableInheritance, Column, OneToMany, OneToOne } from 'typeorm';
 import { IsEmpty, IsNotEmpty, Length } from 'class-validator';
-import { SectionEntity } from './section.entity';
 import { ActivityLevelEntity } from './activities/activity_level.entity';
+import { CourseContent } from './course_content.entity';
 
 export class ActivityContent {
   body: string;
@@ -40,4 +40,7 @@ export class ActivityEntity {
 
   @OneToMany(() => ActivityLevelEntity, actLevel => actLevel.activity)
   levels: ActivityLevelEntity[];
+
+  @OneToOne(() => CourseContent)
+  course_content: CourseContent;
 }

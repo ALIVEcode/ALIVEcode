@@ -1,6 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { IsEmpty, IsNotEmpty, Length } from 'class-validator';
-import { Entity, Column, ManyToOne, PrimaryGeneratedColumn, JoinTable, OneToMany, ManyToMany } from 'typeorm';
+import { Entity, Column, ManyToOne, PrimaryGeneratedColumn, JoinTable, OneToMany, ManyToMany, OneToOne } from 'typeorm';
 import { ActivityEntity } from './activity.entity';
 import { CourseEntity } from './course.entity';
 import { CourseContent } from './course_content.entity';
@@ -37,4 +37,7 @@ export class SectionEntity {
 
   @OneToMany(() => CourseContent, content => content.sectionParent)
   contents: CourseContent[];
+
+  @OneToOne(() => CourseContent)
+  course_content: CourseContent;
 }

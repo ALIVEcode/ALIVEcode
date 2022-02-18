@@ -109,7 +109,6 @@ export class CourseController {
   async getActivities(@User() user: UserEntity, @Param('id') id: string, @Param('sectionId') sectionId: string) {
     const course = await this.courseService.findOne(id);
     await this.courseService.filterCourseAccess(course, user);
-
     return await this.courseService.getActivities(id, sectionId);
   }
 

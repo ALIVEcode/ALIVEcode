@@ -2,9 +2,10 @@ import { Exclude } from 'class-transformer';
 import { IsEmpty, IsNotEmpty } from 'class-validator';
 import { Column, Entity, ManyToOne, OneToMany, ManyToMany } from 'typeorm';
 import { CreatedByUser } from '../../../generics/entities/createdByUser.entity';
+import { ProfessorEntity } from '../../user/entities/professor.entity';
 import { SectionEntity } from './section.entity';
 import { ClassroomEntity } from '../../classroom/entities/classroom.entity';
-import { ProfessorEntity } from '../../user/entities/professor.entity';
+import { CourseContent } from './course_content.entity';
 
 export enum COURSE_DIFFICULTY {
   BEGINNER = 1,
@@ -52,6 +53,9 @@ export class CourseEntity extends CreatedByUser {
   @IsNotEmpty()
   @Column({ enum: COURSE_SUBJECT, nullable: false })
   subject: COURSE_SUBJECT;
+
+  @OneToMany(() => CourseContent, content => content.course)
+  contents: CourseContent[];
 
   @OneToMany(() => SectionEntity, section => section.course)
   sections: SectionEntity[];

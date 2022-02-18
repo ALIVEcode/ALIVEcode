@@ -1,6 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { ActivityEntity } from '../activity.entity';
-import { LevelEntity } from '../../../level/entities/level.entity';
 
 @Entity()
 export class ActivityLevelEntity {
@@ -12,7 +11,4 @@ export class ActivityLevelEntity {
 
   @ManyToOne(() => ActivityEntity, activity => activity.levels)
   activity: ActivityEntity;
-
-  @ManyToOne(() => LevelEntity, level => level.activities, { eager: true })
-  level: LevelEntity;
 }

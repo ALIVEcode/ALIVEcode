@@ -1,7 +1,5 @@
 package interpreteur.as.lang.datatype;
 
-import interpreteur.as.lang.ASObjet;
-
 import javax.lang.model.type.NullType;
 
 public class ASNul implements ASObjet<NullType> {

@@ -1,9 +1,5 @@
-import ClassroomHeader from "../../Components/ClassroomComponents/ClassroomHeader/ClassroomHeader"
 import CardContainer from '../../Components/UtilsComponents/CardContainer/CardContainer';
-import { ClassroomProps } from './classroomTypes';
-import { Row, Container, Badge } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { Col } from 'react-bootstrap';
 import styled from 'styled-components';
 import { useState, useEffect, useContext } from 'react';
 import { Classroom as ClassroomModel } from '../../Models/Classroom/classroom.entity';
@@ -15,14 +11,25 @@ import { UserContext } from '../../state/contexts/UserContext';
 import { prettyField } from '../../Types/formatting';
 import useRoutes from '../../state/hooks/useRoutes';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { useHistory } from 'react-router-dom';
+import { useParams } from 'react-router';
+import { useForceUpdate } from '../../state/hooks/useForceUpdate';
+import { useNavigate } from 'react-router-dom';
+import { ClassroomProps } from './classroomTypes';
+import ClassroomHeader from '../../Components/ClassroomComponents/ClassroomHeader/ClassroomHeader';
 import CourseCard from '../../Components/CourseComponents/CourseCard/CourseCard';
+import Badge from '../../Components/UtilsComponents/Badge/Badge';
 
 const StyledDiv = styled.div`
+	background-color: var(--background-color);
+
 	.classroom-content {
 		width: 80%;
 		margin-top: 50px;
 		padding-bottom: 25px;
+	}
+
+	.classroom-header {
+		margin-bottom: 60px;
 	}
 `;
 
@@ -32,23 +39,34 @@ const StyledDiv = styled.div`
  * @param id (as a url parameter)
  * @returns tsx element
  */
-const Classroom = (props: ClassroomProps) => {
+const Classroom = ({ classroomProp, ...props }: ClassroomProps) => {
 	const { t } = useTranslation();
 	const { user } = useContext(UserContext);
-	const [classroom, setClassroom] = useState<ClassroomModel>();
+	const [classroom, setClassroom] = useState<ClassroomModel | undefined>(
+		classroomProp ?? undefined,
+	);
+	const { id } = useParams<{ id: string }>();
 	const { goBack, routes } = useRoutes();
-	const history = useHistory();
+	const navigate = useNavigate();
 	const alert = useAlert();
+	const forceUpdate = useForceUpdate();
 
 	useEffect(() => {
 		const getClassroom = async () => {
 			try {
-				const classroom = await api.db.classrooms.get({
-					id: props.match.params.id,
-				});
+				let classroom = classroomProp;
+
+				if (!classroom) {
+					if (!id) return;
+					classroom = await api.db.classrooms.get({
+						id,
+					});
+				}
+
 				await classroom.getStudents();
 				await classroom.getCourses();
 				setClassroom(classroom);
+				forceUpdate();
 			} catch (err) {
 				goBack();
 				return alert.error(t('error.not_found', { obj: t('msg.course') }));
@@ -56,7 +74,7 @@ const Classroom = (props: ClassroomProps) => {
 		};
 		getClassroom();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [props.match.params.id]);
+	}, [id, classroomProp]);
 
 	if (!classroom || !user) {
 		return <LoadingScreen />;
@@ -65,18 +83,14 @@ const Classroom = (props: ClassroomProps) => {
 	return (
 		<StyledDiv>
 			<ClassroomHeader classroom={classroom} />
-			<Container className="classroom-content">
-				{console.log(classroom)}
+			<div className="px-2 tablet:px-10 laptop:px-12">
 				<CardContainer
 					asRow
 					title={t('classroom.container.courses.title')}
 					height="60px"
 					icon={classroom.creator.id === user.id ? faPlus : undefined}
 					onIconClick={() =>
-						history.push({
-							pathname: routes.auth.create_course.path,
-							state: { classroom },
-						})
+						navigate(routes.auth.create_course.path, { state: { classroom } })
 					}
 				>
 					{classroom.courses && classroom.courses.length > 0 ? (
@@ -87,16 +101,16 @@ const Classroom = (props: ClassroomProps) => {
 						<p>{t('classroom.container.courses.empty')}</p>
 					)}
 				</CardContainer>
-				<Row>
-					<Col lg>
+				<div>
+					<div>
 						<CardContainer title={t('classroom.container.details.title')}>
 							<div>
 								<h4>
-									<Badge variant="primary">{t('classroom.subject')}</Badge>
+									<Badge variant="third">{t('classroom.subject')}</Badge>
 								</h4>
 								{classroom.getSubjectDisplay()}
 								<h4>
-									<Badge variant="primary">
+									<Badge variant="third">
 										{prettyField(t('msg.description'))}
 									</Badge>
 								</h4>
@@ -109,8 +123,8 @@ const Classroom = (props: ClassroomProps) => {
 								</p>
 							</div>
 						</CardContainer>
-					</Col>
-					<Col lg>
+					</div>
+					<div>
 						<CardContainer
 							scrollY
 							title={t('classroom.container.students.title')}
@@ -124,9 +138,9 @@ const Classroom = (props: ClassroomProps) => {
 								<p>{t('classroom.container.students.empty')}</p>
 							)}
 						</CardContainer>
-					</Col>
-				</Row>
-			</Container>
+					</div>
+				</div>
+			</div>
 		</StyledDiv>
 	);
 };

@@ -50,7 +50,9 @@ const FormContainer = ({ children, title }: FormContainerProps) => {
 	return (
 		<FillContainer centered>
 			<StyledCenteredContainer>
-				<label className="title">{title}</label>
+				<div className="mb-4">
+					<label className="title ">{title}</label>
+				</div>
 				{children}
 			</StyledCenteredContainer>
 		</FillContainer>

@@ -1,10 +1,7 @@
-
 import { useContext, useEffect, useMemo } from 'react';
 import LoadingScreen from '../../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
-import { Col, Row } from 'react-bootstrap';
-import IoTProjectBody from '../../../Components/IoTComponents/IoTProject/IoTProjectBody/IotProjectBody';
+import IoTProjectInterface from '../../../Components/IoTComponents/IoTProject/IoTProjectInterface/IotProjectInterface';
 import { IoTProjectContext } from '../../../state/contexts/IoTProjectContext';
-import { StyledIoTLevel } from './levelIoTTypes';
 import FillContainer from '../../../Components/UtilsComponents/FillContainer/FillContainer';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import useCmd from '../../../state/hooks/useCmd';
@@ -72,54 +69,53 @@ const IoTLevel = ({ initialCode }: { initialCode: string }) => {
 	if (!level || !project) return <LoadingScreen></LoadingScreen>;
 
 	return (
-		<StyledIoTLevel>
-			<FillContainer className="project-container" relative>
-				<Row className="h-100">
-					<Col className="left-col" md={6}>
-						<LevelToolsBar />
-						{editMode ? (
-							<LineInterface
-								hasTabs
-								tabs={[
-									{
-										title: 'Initial Code',
-										open: true,
-										defaultContent: level.initialCode,
-										onChange: content => {
-											level.initialCode = content;
-											saveLevelTimed();
-										},
+		<FillContainer>
+			<div className="h-full flex flex-row">
+				{/* Left Side of screen */}
+				<div className="w-1/2 h-full flex flex-col">
+					<LevelToolsBar />
+					{editMode ? (
+						<LineInterface
+							hasTabs
+							tabs={[
+								{
+									title: 'Initial Code',
+									open: true,
+									defaultContent: level.initialCode,
+									onChange: content => {
+										level.initialCode = content;
+										saveLevelTimed();
 									},
-									{
-										title: 'Solution',
-										open: false,
-										defaultContent: level.solution,
-										onChange: content => {
-											level.solution = content;
-											saveLevelTimed();
-										},
+								},
+								{
+									title: 'Solution',
+									open: false,
+									defaultContent: level.solution,
+									onChange: content => {
+										level.solution = content;
+										saveLevelTimed();
 									},
-								]}
-								handleChange={lineInterfaceContentChanges}
-							/>
-						) : (
-							<LineInterface
-								initialContent={initialCode}
-								handleChange={lineInterfaceContentChanges}
-							/>
-						)}
-					</Col>
-					<Col sm="6" className="right-col">
-						<Row style={{ height: '60vh' }}>
-							<IoTProjectBody noTopRow />
-						</Row>
-						<Row style={{ height: '40vh' }}>
-							<Cmd ref={cmdRef}></Cmd>
-						</Row>
-					</Col>
-				</Row>
-			</FillContainer>
-		</StyledIoTLevel>
+								},
+							]}
+							handleChange={lineInterfaceContentChanges}
+						/>
+					) : (
+						<LineInterface
+							initialContent={initialCode}
+							handleChange={lineInterfaceContentChanges}
+						/>
+					)}
+				</div>
+				<div className="flex flex-col w-1/2">
+					<div className="h-2/3 w-full">
+						<IoTProjectInterface noTopRow />
+					</div>
+					<div className="h-1/3">
+						<Cmd ref={cmdRef}></Cmd>
+					</div>
+				</div>
+			</div>
+		</FillContainer>
 	);
 };
 

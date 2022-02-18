@@ -1,17 +1,20 @@
-package interpreteur.as.lang;
+package interpreteur.ast.buildingBlocs.expressions;
 
+import interpreteur.as.lang.ASScope;
 import interpreteur.as.erreurs.ASErreur;
+import interpreteur.as.lang.ASVariable;
+import interpreteur.as.lang.datatype.ASObjet;
 import interpreteur.ast.buildingBlocs.Expression;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class ASType implements Expression<ASObjet<?>> {
+public class Type implements Expression<ASObjet<?>> {
 
     private String nom;
 
-    public ASType(String nom) {
+    public Type(String nom) {
         this.nom = nom;
     }
 
@@ -29,7 +32,7 @@ public class ASType implements Expression<ASObjet<?>> {
         return this.getNom() == null ? null : Arrays.asList(this.getNom().split("\\|"));
     }
 
-    public void union(ASType type) {
+    public void union(Type type) {
         if (type.getNom() == null)
             this.nom = "tout";
         else if (this.noMatch(type)) {
@@ -52,7 +55,7 @@ public class ASType implements Expression<ASObjet<?>> {
         if (o instanceof String s) {
             List<String> type = Arrays.asList(s.split("\\|"));
             return this.getNom() != null && !type.contains("tout") && !type.contains("nulType") && this.getNomAsList().stream().noneMatch(type::contains);
-        } else if (o instanceof ASType t) {
+        } else if (o instanceof Type t) {
             List<String> type = t.getNomAsList();
             return this.getNom() != null && type != null && this.getNomAsList().stream().noneMatch(type::contains);
 

@@ -1,10 +1,10 @@
-import Button from '../../../UtilsComponents/Button/Button';
+import Button from '../../../UtilsComponents/Buttons/Button';
 import { IoTButtonComponentProps } from './IoTButtonComponentTypes';
 
 const IoTButtonComponent = ({ component }: IoTButtonComponentProps) => {
 	return (
-		<Button onClick={() => component.onClick()} variant="primary">
-			{component.value}
+		<Button onClick={() => component.onClick()} variant="third">
+			{component.displayedValue}
 		</Button>
 	);
 };

@@ -1,7 +1,6 @@
 package interpreteur.as.lang.datatype;
 
 import interpreteur.as.erreurs.ASErreur;
-import interpreteur.as.lang.ASObjet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -109,8 +108,8 @@ public class ASListe implements ASIterable<Object> {
     @Override
     public boolean contient(ASObjet<?> element) {
         return this.valeur.contains(element)
-                ||
-                (element instanceof ASTexte texte && this.valeur.stream().anyMatch(val -> val instanceof ASPaire pair && pair.clef().equals(texte)));
+               ||
+               (element instanceof ASTexte texte && this.valeur.stream().anyMatch(val -> val instanceof ASPaire pair && pair.clef().equals(texte)));
     }
 
     @Override

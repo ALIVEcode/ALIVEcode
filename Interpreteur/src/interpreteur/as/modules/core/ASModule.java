@@ -1,10 +1,10 @@
 package interpreteur.as.modules.core;
 
 import interpreteur.as.lang.ASFonctionModule;
-import interpreteur.as.lang.managers.ASFonctionManager;
-import interpreteur.as.lang.ASScope;
 import interpreteur.as.lang.ASVariable;
-import interpreteur.as.lang.ASType;
+import interpreteur.as.lang.ASScope;
+import interpreteur.as.lang.managers.ASFonctionManager;
+import interpreteur.ast.buildingBlocs.expressions.Type;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,11 +13,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
-public final record ASModule(ASFonctionModule[] fonctionModules,
+public record ASModule(ASFonctionModule[] fonctions,
                              ASVariable[] variables) {
 
-    public ASModule(ASFonctionModule[] fonctionModules) {
-        this(fonctionModules, new ASVariable[]{});
+    public ASModule(ASFonctionModule[] fonctions) {
+        this(fonctions, new ASVariable[]{});
     }
 
     public ASModule(ASVariable[] variables) {
@@ -26,8 +26,8 @@ public final record ASModule(ASFonctionModule[] fonctionModules,
 
     public void utiliser(String prefix) {
         ASFonctionManager.ajouterStructure(prefix);
-        for (ASFonctionModule fonctionModule : fonctionModules) {
-            ASScope.getCurrentScope().declarerVariable(new ASVariable(fonctionModule.getNom(), fonctionModule, new ASType(fonctionModule.obtenirNomType())));
+        for (ASFonctionModule fonction : fonctions) {
+            ASScope.getCurrentScope().declarerVariable(new ASVariable(fonction.getNom(), fonction, new Type(fonction.obtenirNomType())));
         }
         for (ASVariable variable : variables) {
             ASScope.getCurrentScope().declarerVariable(variable.clone());
@@ -36,9 +36,9 @@ public final record ASModule(ASFonctionModule[] fonctionModules,
     }
 
     public void utiliser(List<String> nomMethodes) {
-        for (ASFonctionModule fonctionModule : fonctionModules) {
-            if (nomMethodes.contains(fonctionModule.getNom()))
-                ASFonctionManager.ajouterFonction(fonctionModule);
+        for (ASFonctionModule fonction : fonctions) {
+            if (nomMethodes.contains(fonction.getNom()))
+                ASFonctionManager.ajouterFonction(fonction);
         }
         for (ASVariable variable : variables) {
             if (nomMethodes.contains(variable.obtenirNom())) {
@@ -51,7 +51,7 @@ public final record ASModule(ASFonctionModule[] fonctionModules,
      * @return un array contenant toutes les fonctions du module
      */
     public ASFonctionModule[] getFonctions() {
-        return fonctionModules;
+        return fonctions;
     }
 
     /**
@@ -65,8 +65,8 @@ public final record ASModule(ASFonctionModule[] fonctionModules,
      * @return la liste des noms des fonctions du module
      */
     public List<String> getNomsFonctions() {
-        if (fonctionModules.length == 0) return new ArrayList<>();
-        return Stream.of(fonctionModules).map(ASFonctionModule::getNom).collect(Collectors.toList());
+        if (fonctions.length == 0) return new ArrayList<>();
+        return Stream.of(fonctions).map(ASFonctionModule::getNom).collect(Collectors.toList());
     }
 
     /**
@@ -89,7 +89,7 @@ public final record ASModule(ASFonctionModule[] fonctionModules,
     @Override
     public String toString() {
         return "Module{\n" +
-                "fonctions=" + Arrays.toString(fonctionModules) + "\n" +
+                "fonctions=" + Arrays.toString(fonctions) + "\n" +
                 ", variables=" + Arrays.toString(variables) + "\n" +
                 '}';
     }

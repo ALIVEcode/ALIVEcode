@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { CourseProps } from './courseTypes';
 import CourseNavigation from '../../Components/CourseComponents/CourseNavigation/CourseNavigation';
 import FillContainer from '../../Components/UtilsComponents/FillContainer/FillContainer';
 import { useContext, useEffect, useState } from 'react';
@@ -13,10 +12,11 @@ import { Course as CourseModel } from '../../Models/Course/course.entity';
 import api from '../../Models/api';
 import { useTranslation } from 'react-i18next';
 import { useAlert } from 'react-alert';
-import { useHistory } from 'react-router-dom';
 import { Section } from '../../Models/Course/section.entity';
 import { plainToClass } from 'class-transformer';
 import { Activity } from '../../Models/Course/activity.entity';
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 const StyledDiv = styled.div`
 	display: flex;
@@ -31,16 +31,17 @@ const StyledDiv = styled.div`
  * @param id (as a url parameter)
  * @author MoSk3
  */
-const Course = (props: CourseProps) => {
+const Course = () => {
 	const { user } = useContext(UserContext);
 	const [course, setCourse] = useState<CourseModel>();
 	const [section, setSection] = useState<Section>();
 	const [activity, setActivity] = useState<Activity>();
 	const [isNavigationOpen, setIsNavigationOpen] = useState(true);
+	const { id } = useParams<{ id: string }>();
 
 	const { t } = useTranslation();
 	const alert = useAlert();
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	const setTitle = async (newTitle: string) => {
 		if (!course) return;
@@ -179,21 +180,22 @@ const Course = (props: CourseProps) => {
 	};
 
 	useEffect(() => {
+		if (!id) return;
 		const getCourse = async () => {
 			try {
 				const course: CourseModel = await api.db.courses.get({
-					id: props.match.params.id,
+					id,
 				});
 				await course.getSections();
 				setCourse(course);
 			} catch (err) {
-				history.push('/');
+				navigate('/');
 				return alert.error(t('error.not_found', { obj: t('msg.course') }));
 			}
 		};
 		getCourse();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [props.match.params.id, user]);
+	}, [id, user]);
 
 	useState();
 

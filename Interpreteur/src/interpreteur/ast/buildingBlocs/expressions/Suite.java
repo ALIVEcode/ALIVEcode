@@ -1,8 +1,7 @@
 package interpreteur.ast.buildingBlocs.expressions;
 
-import interpreteur.as.lang.*;
-import interpreteur.as.erreurs.ASErreur;
 import interpreteur.as.lang.datatype.*;
+import interpreteur.as.erreurs.ASErreur;
 import interpreteur.ast.buildingBlocs.Expression;
 
 public record Suite(Expression<?> debut,

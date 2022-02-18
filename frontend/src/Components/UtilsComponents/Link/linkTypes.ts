@@ -1,4 +1,3 @@
-
 export type StyledLinkProps = {
 	dark?: boolean;
 	pale?: boolean;
@@ -16,4 +15,6 @@ export type LinkProps = {
 	bold?: boolean;
 	block?: boolean;
 	pale?: boolean;
+	outsideLink?: boolean;
+	openInNewTab?: boolean;
 };

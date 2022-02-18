@@ -1,22 +1,20 @@
-import { Col, Row } from 'react-bootstrap';
-import CardContainer from '../../UtilsComponents/CardContainer/CardContainer';
 import Card from '../../UtilsComponents/Cards/Card/Card';
 import { useTranslation } from 'react-i18next';
 const NewActivityContentModal = () => {
 	const { t } = useTranslation();
 
 	return (
-		<Row lg={5}>
-			<Col style={{ margin: '0px' }}>
-				<Card
+		<div>
+			<div style={{ margin: '0px' }}>
+				<div
 					style={{ fontSize: 'small' }}
 					title={t('activity.content.editor')}
 				/>
-			</Col>
-			<Col>
+			</div>
+			<div>
 				<Card style={{}} />
-			</Col>
-		</Row>
+			</div>
+		</div>
 	);
 };
 

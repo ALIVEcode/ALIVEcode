@@ -1,6 +1,9 @@
 package interpreteur.ast.buildingBlocs.programmes;
 
-import interpreteur.as.lang.*;
+import interpreteur.as.lang.ASConstante;
+import interpreteur.as.lang.ASVariable;
+import interpreteur.as.lang.datatype.ASObjet;
+import interpreteur.as.lang.ASScope;
 import interpreteur.as.erreurs.ASErreur;
 import interpreteur.ast.buildingBlocs.Expression;
 import interpreteur.ast.buildingBlocs.Programme;
@@ -14,10 +17,10 @@ public class Declarer extends Programme {
 
     private final Expression<?> valeur;
     private final boolean constante;
-    private final ASType type;
+    private final Type type;
     private final Var var;
 
-    public Declarer(Expression<?> expr, Expression<?> valeur, ASType type, boolean constante) {
+    public Declarer(Expression<?> expr, Expression<?> valeur, Type type, boolean constante) {
         // get la variable
         if (expr instanceof Var) {
             var = (Var) expr;
@@ -27,7 +30,7 @@ public class Declarer extends Programme {
 
         this.valeur = valeur;
         this.constante = constante;
-        this.type = type == null ? new ASType("tout") : type;
+        this.type = type == null ? new Type("tout") : type;
         addVariable();
     }
 

@@ -1,8 +1,8 @@
 package interpreteur.ast.buildingBlocs.expressions;
 
-import interpreteur.as.lang.ASObjet;
 import interpreteur.as.lang.datatype.ASBooleen;
 import interpreteur.as.lang.datatype.ASIterable;
+import interpreteur.as.lang.datatype.ASObjet;
 import interpreteur.as.erreurs.ASErreur;
 import interpreteur.ast.buildingBlocs.Expression;
 

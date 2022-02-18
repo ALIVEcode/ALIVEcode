@@ -1,12 +1,10 @@
 package interpreteur.as.modules;
 
-import interpreteur.as.modules.core.ASModule;
-import interpreteur.as.lang.*;
+import interpreteur.as.lang.ASFonctionModule;
+import interpreteur.as.lang.datatype.*;
 import interpreteur.as.erreurs.ASErreur;
-import interpreteur.as.lang.datatype.ASBooleen;
-import interpreteur.as.lang.datatype.ASNombre;
-import interpreteur.as.lang.datatype.ASTexte;
-import interpreteur.as.lang.datatype.ASNul;
+import interpreteur.as.lang.ASTypeBuiltin;
+import interpreteur.as.modules.core.ASModule;
 import interpreteur.data_manager.Data;
 import interpreteur.executeur.Executeur;
 
@@ -14,23 +12,23 @@ public class ModuleIoT {
     static ASModule charger(Executeur executeurInstance) {
         return new ASModule(new ASFonctionModule[] {
                 new ASFonctionModule("update",
-                        ASTypeBuiltin.nombre.asType(), new ASParametre[] {
-                            new ASParametre(
+                        new ASFonctionModule.Parametre[] {
+                            new ASFonctionModule.Parametre(
                                     ASTypeBuiltin.texte.asType(),
                                     "projectId",
                                     null
                             ),
-                            new ASParametre(
+                            new ASFonctionModule.Parametre(
                                     ASTypeBuiltin.texte.asType(),
                                     "id",
                                     null
                             ),
-                            new ASParametre(
+                            new ASFonctionModule.Parametre(
                                     ASTypeBuiltin.tout.asType(),
                                     "value",
                                     null
                             )
-                        }) {
+                        }, ASTypeBuiltin.nombre.asType()) {
                     @Override
                     public ASObjet<?> executer() {
                         ASTexte projectId = (ASTexte) this.getValeurParam("projectId");
@@ -42,13 +40,13 @@ public class ModuleIoT {
                     }
                 },
                 new ASFonctionModule("get",
-                        ASTypeBuiltin.nombre.asType(), new ASParametre[] {
-                                new ASParametre(
+                        new ASFonctionModule.Parametre[] {
+                                new ASFonctionModule.Parametre(
                                         ASTypeBuiltin.texte.asType(),
                                         "key",
                                         new ASNul()
                                 )
-                        }) {
+                        }, ASTypeBuiltin.nombre.asType()) {
                     @Override
                     public ASObjet<?> executer() {
                         ASObjet<?> uncastedKey = (ASObjet<?>) this.getValeurParam("key");
@@ -75,18 +73,18 @@ public class ModuleIoT {
                     }
                 },
                 new ASFonctionModule("getComponentValue",
-                        ASTypeBuiltin.nombre.asType(), new ASParametre[] {
-                                new ASParametre(
+                        new ASFonctionModule.Parametre[] {
+                                new ASFonctionModule.Parametre(
                                         ASTypeBuiltin.texte.asType(),
                                         "projectId",
                                         null
                                 ),
-                                new ASParametre(
+                                new ASFonctionModule.Parametre(
                                         ASTypeBuiltin.texte.asType(),
                                         "id",
                                         null
                                 )
-                        }) {
+                        }, ASTypeBuiltin.nombre.asType()) {
                     @Override
                     public ASObjet<?> executer() {
                         return new ASNul();

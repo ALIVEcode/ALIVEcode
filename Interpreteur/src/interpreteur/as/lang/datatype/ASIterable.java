@@ -1,7 +1,6 @@
 package interpreteur.as.lang.datatype;
 
 import interpreteur.as.erreurs.ASErreur;
-import interpreteur.as.lang.ASObjet;
 
 import java.util.Iterator;
 import java.util.List;
@@ -9,7 +8,7 @@ import java.util.List;
 public interface ASIterable<T> extends ASObjet<T> {
     boolean contient(ASObjet<?> element);
 
-    ASIterable<T> sousSection(int debut, int fin);
+    interpreteur.as.lang.datatype.ASIterable<T> sousSection(int debut, int fin);
 
     ASObjet<?> get(int index);
 

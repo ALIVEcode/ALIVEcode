@@ -2,7 +2,7 @@ package interpreteur.ast.buildingBlocs.expressions;
 
 import interpreteur.as.lang.ASScope;
 import interpreteur.as.erreurs.ASErreur;
-import interpreteur.as.lang.ASObjet;
+import interpreteur.as.lang.datatype.ASObjet;
 import interpreteur.ast.buildingBlocs.Expression;
 
 import java.util.Objects;

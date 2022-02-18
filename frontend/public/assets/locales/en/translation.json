@@ -10,6 +10,7 @@
 		"signin_first_time": "Something went wrong when automatically logging into your new account",
 		"500": "Something went wrong, please try again.",
 		"page404": "This page does not exist.",
+		"page501": "This page is under construction.",
 		"maintenance": {
 			"ongoing": "The website is under maintenance since {{startDate}} and will finish at {{finishDate}}, this page could not be loaded.",
 			"short": "The request could not be made, the website is currently under maintenance."
@@ -22,9 +23,12 @@
 			"DELETE": "Delete {{name}}"
 		},
 		"error": {
+			"generic": "This field is wrong",
 			"required": "This field is required",
 			"maxLength": "This field exceeds {{max}} characters",
 			"minLength": "This field should be at least {{min}} characters",
+			"too_long": "This field is too long",
+			"too_short": "This field is too short",
 			"match": {
 				"alphabetic": "This field should only contains alphabetic characters",
 				"alphabetic_lower": "This field should only contains lowercase alphabetic characters",
@@ -93,7 +97,7 @@
 	},
 	"modal": {
 		"close": "Close",
-		"save": "Save Changes",
+		"save": "Save",
 		"confirm": "Confirm",
 		"cancel": "Cancel"
 	},
@@ -105,8 +109,11 @@
 		"description": "description",
 		"deleted_user": "Deleted user",
 		"search": "Search",
+		"community_levels": "Community levels",
+		"public_classrooms": "Public classrooms",
 		"creation_date": "Creation date",
 		"update_date": "Update date",
+		"see_links": "See links",
 		"time": {
 			"format": "{{dayName}}, {{day}} {{monthName}} {{year}} {{hour}}:{{minute}}",
 			"day": {
@@ -144,15 +151,15 @@
 			"signup_professor": "Professor account",
 			"signup_student": "Student account",
 			"signout": "Sign out",
-			"already_registered": "Already have an account?",
+			"already_registered": "Already have an account ?",
 			"account_required": "You need an account to do that"
 		},
 		"section": {
 			"alive": "ALIVE Play",
 			"dashboard": "Dashboard",
 			"iot": "Internet of Things",
-			"amc": "ALIVE Mind Controller",
-			"ai": "ALIVE Artificial Intelligence",
+			"amc": "Mind Control",
+			"ai": "Artificial Intelligence",
 			"about": "About",
 			"avp": "Augmented Vehicle Perception",
 			"lrima": "LRIMA's research laboratory",
@@ -161,7 +168,7 @@
 		"maintenance": {
 			"more_info": "More info",
 			"no_desc": "No description available.",
-			"ongoing": "The website is currently undergoing a maintenance from {{startDate}} to {{finishDate}}. You cannot use your account or see other users' levels during this period of time. Sorry for the incovenience.",
+			"ongoing": "The website is currently undergoing a maintenance from {{startDate}} to {{finishDate}}. You cannot use your account or see other users' levels during this period of time. Sorry for the inconvenience.",
 			"upcoming": "The website will be undergoing a maintenance from {{startDate}} to {{finishDate}}. You will not be able to use your account or see other users' levels during this period of time. Sorry for the inconvenience.",
 			"status": {
 				"ongoing": "Ongoing",
@@ -171,30 +178,38 @@
 		}
 	},
 	"dashboard": {
-		"classrooms": {
-			"title": "My classrooms",
+		"recents": {
+			"title": "Recent Courses",
 			"empty": {
-				"student": "You are not part of any classroom",
-				"professor": "You do not have any classroom"
+				"student": "You have no recent activity. Join a public or private classroom to get started",
+				"professor": "You have no recent activity. Create a classroom to get started"
 			}
 		},
 		"levels": {
 			"title": "Levels",
-			"my_levels": "My levels",
+			"browse_levels": "Explore the community levels",
 			"create_level": "Create a level",
-			"browse_levels": "Browse levels"
+			"empty": "You have no level"
 		},
-		"quizzes": {
-			"title": "Quizzes",
-			"my_quizzes": "My quizzes",
-			"create_quiz": "Create a quiz",
-			"browse_quizzes": "Browse quizzes"
+		"classrooms": {
+			"title": "Classrooms",
+			"no_courses": "No courses",
+			"browse_public": "Browse public classrooms",
+			"empty": {
+				"student": "You are not part of any classroom",
+				"professor": "You do not have any classroom"
+			},
+			"add": {
+				"student": "Join a classroom",
+				"professor": "Create a classroom"
+			}
 		}
 	},
 	"classroom": {
 		"add_students": "Add students",
 		"delete": "Delete classroom",
 		"leave": "Leave classroom",
+		"already_in": "Already in classroom",
 		"container": {
 			"courses": {
 				"title": "Courses",
@@ -212,7 +227,7 @@
 		"subject": "Subject",
 		"code": {
 			"title": "Code of the classroom",
-			"desc": "Give this code to your students so that they can join the classroom from the website!"
+			"desc": "Give this code to your students so that they can join the classroom from their dashboard!"
 		}
 	},
 	"course": {
@@ -243,25 +258,54 @@
 		}
 	},
 	"home": {
-		"msg1": "Learn programming",
-		"msg2": "Learn while playing",
-		"msg3": "Learn the concepts of AI",
+		"msg1": "code",
+		"msg2": "ai",
+		"msg3": "iot",
+		"desc": "Learn Programming",
+		"get_started": "Get Started!",
+		"see_trainings": "See Trainings",
+		"about": "About",
+		"trainings": "Trainings",
+		"news": "News",
+		"iot": {
+			"desc": "IoT has never been easier",
+			"to_dashboard": "To Dashboard",
+			"to_trainings": "To Trainings",
+			"section": {
+				"develop": {
+					"title": "Start Developping",
+					"desc": "Practice your notions of the Internet of Things by developing IoT Projects. Register your IoT Objects. Create a network of connected devices and establish communications between them. Collect and share data between those objects. Show in real-time your data in a graphical user interface."
+				},
+				"learn": {
+					"title": "Start Learning",
+					"desc": "$t(home.section.training_iot.desc)"
+				}
+			}
+		},
 		"section": {
-			"alive": {
-				"title": "$t(msg.section.alive)",
-				"description": "In this section, you will be able to create your own levels or play hundreds of levels created by other people!"
+			"mission": {
+				"title": "Our mission",
+				"desc": "Facilitate access, sharing, and discussions about new technologies. Give anyone the chance to accomplish anything."
 			},
-			"amc": {
-				"title": "$t(msg.section.amc)",
-				"description": "In this section, you'll be able to use the power of your mind to control a small version of car and learn the secrets of your brain!"
+			"us": {
+				"title": "Who are we ?",
+				"desc": "We are researchers of the informatics research lab LRIMa, a laboratory part of the Maisonneuve College. Each year we aim to innovate in the informatic industry by conducting research that we share and publish at conferences across the globe. Visit the LRIMa's website for more details and the about section to learn about all the researchers."
 			},
-			"avp": {
-				"title": "$t(msg.section.avc)",
-				"description": "In making..."
+			"story": {
+				"title": "Our story",
+				"desc": "ALIVEcode comes from way back in time. Three years from now we thought of making miniature autonomous vehicles for researchs' purposes. A year later, we had the idea to use those robots to teach programming to young students. Fast-forward one year and we decided to create ALIVEcode to make our teaching more accessible to the mass. It's now been over a year that the website exists and keeps expanding."
 			},
-			"lrima": {
-				"title": "$t(msg.section.lrima)",
-				"description": "Offical website of Maisonneuve LRIMA's informatic research laboratory"
+			"training_ai": {
+				"title": "Artificial Intelligence Training",
+				"desc": "Learn the theory and current usage of AI in society. Follow one or multiple complete pieces of training offered by ALIVEcode that will teach you all there is to know about AI. Such as linear regressions, classification, decisional trees, neural networks, etc."
+			},
+			"training_iot": {
+				"title": "Internet of Things Training",
+				"desc": "Learn the theory and usage of IoT. Follow one or multiple complete pieces of training offered by ALIVEcode that will teach you everything required to start developing your own IoT projects. The electronics, the communication protocols, the databases, artificial intelligence, setting up a GUI, etc."
+			},
+			"training_code": {
+				"title": "Basic of Code Training",
+				"desc": "Learn the basics of coding. Follow one or multiple complete pieces of training offered by ALIVEcode that will transform you into a fine programmer. Learn programming by controlling a motorized vehicle, solving challenges, and publishing your challenges/projects to the community."
 			}
 		},
 		"navbar": {
@@ -275,8 +319,8 @@
 			"msg": {
 				"auth": "Hello, {{name}}",
 				"non_auth": {
-					"label": "You are not authenticated, ",
-					"link": "$t(msg.auth.signin) to your account?"
+					"label": "You are not logged in, ",
+					"link": "$t(msg.auth.signin) ?"
 				}
 			}
 		},
@@ -288,7 +332,7 @@
 			"categories": "Categories",
 			"links": "Useful links",
 			"copyright_1": "Copyright",
-			"copyright_2": " 2021 All Rights Reserved by"
+			"copyright_2": " 2022 All Rights Reserved by"
 		}
 	},
 	"input": {
@@ -334,6 +378,14 @@
 		"object": {
 			"name": "IoT Object"
 		}
+	},
+	"user": {
+		"quiz": "Quiz :",
+		"status": "Status :",
+		"posts": "Posts :",
+		"reward": "Reward :",
+		"rank": "Rank :",
+		"rewardTitle": "Reward"
 	},
 	"simulation": {
 		"modal": {

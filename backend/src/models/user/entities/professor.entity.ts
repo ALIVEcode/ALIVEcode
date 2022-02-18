@@ -4,6 +4,7 @@ import { ChildEntity, Column, OneToMany, RelationId } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { ClassroomEntity } from '../../classroom/entities/classroom.entity';
 import { CourseEntity } from '../../course/entities/course.entity';
+import { ResourceEntity } from '../../../resource/entities/resource.entity';
 
 @ChildEntity()
 export class ProfessorEntity extends UserEntity {
@@ -26,4 +27,8 @@ export class ProfessorEntity extends UserEntity {
   @Exclude({ toClassOnly: true })
   @OneToMany(() => CourseEntity, course => course.creator, { cascade: true })
   courses: CourseEntity[];
+
+  @Exclude({ toClassOnly: true })
+  @OneToMany(() => ResourceEntity, resource => resource.creator)
+  resources: ResourceEntity[];
 }

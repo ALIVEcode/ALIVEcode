@@ -1,6 +1,8 @@
 package interpreteur.as.lang;
 
 import interpreteur.as.erreurs.ASErreur;
+import interpreteur.as.lang.datatype.ASObjet;
+import interpreteur.ast.buildingBlocs.expressions.Type;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -8,12 +10,12 @@ import java.util.function.Supplier;
 public class ASConstante extends ASVariable {
 
     public ASConstante(String nom, ASObjet<?> valeur) {
-        super(nom, valeur, new ASType("tout"));
+        super(nom, valeur, new Type("tout"));
     }
 
     @Override
     public ASVariable clone() {
-        return new ASConstante(obtenirNom(), this.getValeur());
+        return new interpreteur.as.lang.ASConstante(obtenirNom(), this.getValeur());
     }
 
     @Override

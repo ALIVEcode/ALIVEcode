@@ -13,7 +13,6 @@ export class SocketAdapter extends IoAdapter {
     if (port === 8888) {
       console.log(`PORT 8888 ADAPTING TO WEBSOCKET`);
       //server.adapter(new Adapter(this.app));
-      console.log('awdawd');
     }
 
     return server;

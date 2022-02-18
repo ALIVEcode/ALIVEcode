@@ -227,7 +227,6 @@ export class Car {
 
 				const angle = (360 - this.shape.rotation.x + 90) % 360;
 				const angleRad = (angle * Math.PI) / 180;
-				//console.log({angle});
 				const baseForce = new Vector(
 					Math.cos(angleRad) * this.currentForceModulus,
 					Math.sin(angleRad) * this.currentForceModulus,

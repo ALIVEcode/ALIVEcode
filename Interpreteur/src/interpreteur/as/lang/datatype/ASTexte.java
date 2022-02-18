@@ -1,6 +1,5 @@
 package interpreteur.as.lang.datatype;
 
-import interpreteur.as.lang.ASObjet;
 import interpreteur.as.lang.ASTypeBuiltin;
 import interpreteur.tokens.Token;
 

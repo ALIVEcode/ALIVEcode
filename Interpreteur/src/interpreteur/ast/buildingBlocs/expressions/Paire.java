@@ -1,8 +1,8 @@
 package interpreteur.ast.buildingBlocs.expressions;
 
 import interpreteur.as.lang.datatype.ASPaire;
-import interpreteur.as.lang.datatype.ASTexte;
 import interpreteur.as.erreurs.ASErreur;
+import interpreteur.as.lang.datatype.ASTexte;
 import interpreteur.ast.buildingBlocs.Expression;
 
 public record Paire(Expression<?> clef, Expression<?> valeur) implements Expression<ASPaire> {

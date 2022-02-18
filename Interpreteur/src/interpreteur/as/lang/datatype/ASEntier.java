@@ -13,7 +13,7 @@ public class ASEntier implements ASNombre {
             this.valeur = Integer.parseInt(valeur.obtenirValeur());
         } catch (NumberFormatException e) {
             throw new ASErreur.ErreurEntierInvalide("Les nombres entiers doivent avoir une valeur entre "
-                    + Integer.MIN_VALUE + " et " + Integer.MAX_VALUE);
+                                                    + Integer.MIN_VALUE + " et " + Integer.MAX_VALUE);
         }
     }
 
@@ -22,7 +22,7 @@ public class ASEntier implements ASNombre {
             this.valeur = valeur.intValue();
         } catch (NumberFormatException e) {
             throw new ASErreur.ErreurEntierInvalide("Les nombres entiers doivent avoir une valeur entre "
-                    + Integer.MIN_VALUE + " et " + Integer.MAX_VALUE);
+                                                    + Integer.MIN_VALUE + " et " + Integer.MAX_VALUE);
         }
     }
 

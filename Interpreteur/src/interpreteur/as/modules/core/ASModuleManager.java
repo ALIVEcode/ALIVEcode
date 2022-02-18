@@ -1,11 +1,14 @@
 package interpreteur.as.modules.core;
 
 
-import interpreteur.as.modules.EnumModule;
-import interpreteur.as.lang.*;
-import interpreteur.as.erreurs.ASErreur;
+import interpreteur.as.lang.ASConstante;
 import interpreteur.as.lang.datatype.ASListe;
+import interpreteur.as.lang.ASScope;
+import interpreteur.as.erreurs.ASErreur;
 import interpreteur.as.lang.datatype.ASTexte;
+import interpreteur.as.modules.EnumModule;
+import interpreteur.as.modules.core.ASModule;
+import interpreteur.as.modules.core.ASModuleFactory;
 import interpreteur.executeur.Executeur;
 
 import java.util.*;

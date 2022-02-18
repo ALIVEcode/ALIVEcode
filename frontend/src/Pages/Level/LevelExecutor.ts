@@ -24,7 +24,7 @@ export abstract class LevelExecutor {
 				await axios({
 					method: 'POST',
 					url: '/compile/',
-					baseURL: process.env.REACT_APP_AS_URL,
+					baseURL: process.env.AS_URL,
 					data,
 				})
 			).data;
@@ -84,17 +84,17 @@ export abstract class LevelExecutor {
 					this.interrupt();
 					return;
 				}
-				if (process.env.REACT_APP_DEBUG) console.log(data);
+				if (process.env.DEBUG) console.log(data);
 				if (data.status === 'complete') {
 					this.execute(data.result);
 					return;
 				}
 				this.idToken = data.idToken;
-				if (process.env.REACT_APP_DEBUG) console.log(this.idToken, data.data);
+				if (process.env.DEBUG) console.log(this.idToken, data.data);
 				this.execute(data.result);
 			};
 
-			if (process.env.REACT_APP_DEBUG) console.log(data);
+			if (process.env.DEBUG) console.log(data);
 			if (data.status === 'complete') {
 				this.execute(data.result);
 				return;
@@ -102,7 +102,7 @@ export abstract class LevelExecutor {
 
 			this.idToken = data.idToken;
 
-			if (process.env.REACT_APP_DEBUG) console.log(this.idToken, data.result);
+			if (process.env.DEBUG) console.log(this.idToken, data.result);
 
 			this.execute(data.result);
 		} catch (err) {

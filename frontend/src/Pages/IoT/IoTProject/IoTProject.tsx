@@ -1,12 +1,18 @@
 import { IoTProjectProps } from './iotProjectTypes';
-import { useEffect, useContext, useMemo, useCallback, useRef } from 'react';
+import {
+	useEffect,
+	useContext,
+	useMemo,
+	useCallback,
+	useRef,
+	useState,
+} from 'react';
 import {
 	IoTProject as ProjectModel,
 	IOTPROJECT_ACCESS,
 	IOTPROJECT_INTERACT_RIGHTS,
 } from '../../../Models/Iot/IoTproject.entity';
 import api from '../../../Models/api';
-import { useHistory } from 'react-router-dom';
 import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
 import { UserContext } from '../../../state/contexts/UserContext';
@@ -22,6 +28,10 @@ import { useParams } from 'react-router';
 import IoTProjectPage from '../IoTProjectPage/IoTProjectPage';
 import IoTLevel from '../../Level/LevelIoT/LevelIoT';
 import { AsScript } from '../../../Models/AsScript/as-script.entity';
+import { useNavigate } from 'react-router-dom';
+import { IoTProjectDocument } from '../../../../../backend/src/models/iot/IoTproject/entities/IoTproject.entity';
+import { IoTSocket } from '../../../Models/Iot/IoTProjectClasses/IoTSocket';
+import { instanceToPlain } from 'class-transformer';
 
 /**
  * IoTProject. On this page are all the components essential in the functionning of an IoTProject.
@@ -35,7 +45,7 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 	const projectRef = useRef<ProjectModel | null>(level?.project ?? null);
 	const project = projectRef.current;
 
-	const history = useHistory();
+	const navigate = useNavigate();
 	const alert = useAlert();
 	const { t } = useTranslation();
 	const { user } = useContext(UserContext);
@@ -46,6 +56,47 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 
 	const isLevel = level ? true : false;
 	const canEdit = user?.id === projectRef.current?.creator?.id && !isLevel;
+
+	const saveTimeout = useRef<any>(null);
+	const [lastSaved, setLastSaved] = useState<number>(Date.now() - 4000);
+
+	const saveComponents = useCallback(async () => {
+		if (!canEdit || !project) return;
+		setLastSaved(Date.now());
+		const plainProject = instanceToPlain(project);
+		await api.db.iot.projects.updateLayout(project.id, plainProject.layout);
+	}, [project, canEdit]);
+
+	const saveComponentsTimed = useCallback(async () => {
+		if (!canEdit) return;
+		if (Date.now() - lastSaved < 1000) {
+			saveTimeout.current && clearTimeout(saveTimeout.current);
+			saveTimeout.current = setTimeout(saveComponents, 1000);
+			return;
+		}
+
+		saveComponents();
+	}, [lastSaved, saveComponents, canEdit]);
+
+	const onRequestRender = useCallback(
+		(saveLayout: boolean) => {
+			forceUpdate();
+			saveLayout && saveComponentsTimed();
+		},
+		[forceUpdate, saveComponentsTimed],
+	);
+
+	const socket = useMemo(() => {
+		if (!project) return;
+
+		return new IoTSocket(project.id, project, project.name, onRequestRender);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [project]);
+
+	useEffect(() => {
+		if (!socket) return;
+		socket.setOnRender(onRequestRender);
+	}, [socket, onRequestRender]);
 
 	useEffect(() => {
 		if (!id || level?.project) return;
@@ -58,7 +109,7 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 				projectRef.current = project;
 				forceUpdate();
 			} catch (err) {
-				history.push('/');
+				navigate('/');
 				return alert.error(t('error.not_found', { obj: t('msg.course') }));
 			}
 		};
@@ -142,12 +193,24 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 		[forceUpdate, project?.routes],
 	);
 
+	const updateDocument = useCallback(
+		async (doc: IoTProjectDocument) => {
+			if (!project) return;
+			project.document = (
+				await api.db.iot.projects.updateDocument(project.id, doc)
+			).document;
+			forceUpdate();
+		},
+		[forceUpdate, project],
+	);
+
 	const providerValues: IoTProjectContextValues = useMemo(() => {
 		return {
 			project: project ?? null,
 			canEdit,
 			updateId: updateId ? updateId : project ? project.id : '',
 			isLevel,
+			socket: socket ?? null,
 			addRoute,
 			deleteRoute,
 			updateRoute,
@@ -155,12 +218,14 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 			loadIoTObjects,
 			updateProjectData,
 			updateScript,
+			updateDocument,
 		};
 	}, [
 		project,
 		canEdit,
 		updateId,
 		isLevel,
+		socket,
 		addRoute,
 		deleteRoute,
 		updateRoute,
@@ -168,6 +233,7 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 		loadIoTObjects,
 		updateProjectData,
 		updateScript,
+		updateDocument,
 	]);
 
 	if (!project) {

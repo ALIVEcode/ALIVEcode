@@ -1,32 +1,94 @@
 import { WsException } from '@nestjs/websockets';
 import { WebSocket } from 'ws';
+import { IoTProjectDocument, IoTProjectLayout, JsonObj } from '../../models/iot/IoTproject/entities/IoTproject.entity';
 
-export type IoTSocketToObjectRequest = {
-  targetId: string;
-  actionId: number;
-  value: any;
+// REQUESTS FROM OBJECT
+
+export type IoTUpdateDocumentRequestFromObject = {
+  projectId: string;
+  fields: JsonObj;
 };
 
-export type IoTSocketToObjectRequestObject = {
-  id: number;
-  value: any;
+export type IoTGetDocRequestFromObject = {
+  projectId: string;
+  objectId: string;
 };
 
-export type IoTSocketUpdateRequest = {
+export type IoTGetFieldRequestFromObject = {
+  projectId: string;
+  objectId: string;
+  field: string;
+};
+
+export type IoTListenRequestFromObject = {
+  projectId: string;
+  fields: string[];
+};
+
+export type IoTUpdateRequestFromObject = {
   id: string;
   value: any;
   projectId: string;
 };
 
-export type IoTSocketRouteRequest = {
+export type IoTRouteRequestFromObject = {
   routePath: string;
   data: any;
   projectId: string;
 };
 
-export type IoTSocketUpdateRequestWatcher = {
+export type IoTBroadcastRequestFromBoth = {
+  projectId: string;
+  data: any;
+};
+
+// REQUESTS TO OBJECTS
+
+export type IoTSendActionRequestToObject = {
+  event: 'action';
+  data: {
+    id: string;
+    value: any;
+  };
+};
+
+export type IoTListenRequestToObject = {
+  event: 'listen';
+  data: {
+    projectId: string;
+    fields: { [key: string]: any };
+  };
+};
+
+export type IoTBroadcastRequestToObject = {
+  event: 'broadcast';
+  data: {
+    projectId: string;
+    data: any;
+  };
+};
+
+// REQUESTS FROM WATCHER
+
+export type IoTActionRequestFromWatcher = {
+  targetId: string;
+  actionId: string;
+  value: any;
+};
+
+// REQUESTS TO THE WATCHER
+
+export type IoTUpdateRequestToWatcher = {
   id: string;
   value: any;
+};
+
+export type IoTUpdateDocumentRequestToWatcher = {
+  doc: IoTProjectDocument;
+};
+
+export type IoTUpdateLayoutRequestToWatcher = {
+  layout: IoTProjectLayout;
 };
 
 export class Client {
@@ -42,8 +104,12 @@ export class Client {
     return this.socket;
   }
 
-  sendCustom(event: string, data: any) {
-    this.socket.send(JSON.stringify({ event, data }));
+  send(data: any) {
+    this.socket.send(JSON.stringify(data));
+  }
+
+  sendEvent(event: string, data: any) {
+    this.send({ event, data });
   }
 
   removeSocket() {
@@ -86,16 +152,19 @@ export class WatcherClient extends Client {
     return WatcherClient.watchers.find(w => w.getSocket() === socket) != null;
   }
 
-  sendToObject(updateData: IoTSocketToObjectRequest) {
+  sendActionToObject(updateData: IoTActionRequestFromWatcher) {
     const object = ObjectClient.getClientById(updateData.targetId);
     if (!object) throw new WsException('No matching object');
 
-    const data: IoTSocketToObjectRequestObject = {
-      id: updateData.actionId,
-      value: updateData.value,
+    const data: IoTSendActionRequestToObject = {
+      event: 'action',
+      data: {
+        id: updateData.actionId,
+        value: updateData.value,
+      },
     };
 
-    object.getSocket().send(JSON.stringify(data));
+    object.send(data);
   }
 }
 
@@ -103,6 +172,7 @@ export class ObjectClient extends Client {
   static objects: ObjectClient[] = [];
   private id: string;
   private projectRights: string[];
+  private listeners: { [key: string]: string[] } = {};
 
   constructor(socket: WebSocket, id: string, projectRigths: string[]) {
     super(socket);
@@ -119,6 +189,31 @@ export class ObjectClient extends Client {
     return this.projectRights.includes(projectId);
   }
 
+  listen(projectId: string, fields: string[]) {
+    if (!(projectId in this.listeners)) this.listeners[projectId] = fields;
+    else this.listeners[projectId] = [...this.listeners[projectId], ...fields];
+  }
+
+  static sendToListeners(projectId: string, fieldsUpdated: { [key: string]: any }) {
+    ObjectClient.objects.forEach(o => {
+      if (projectId in o.listeners) {
+        const fieldsToSendNotification: { [key: string]: any } = {};
+        Object.entries(fieldsUpdated).forEach(entry => {
+          if (o.listeners[projectId].includes(entry[0])) fieldsToSendNotification[entry[0]] = entry[1];
+        });
+
+        const data: IoTListenRequestToObject = {
+          event: 'listen',
+          data: {
+            projectId,
+            fields: fieldsToSendNotification,
+          },
+        };
+        o.send(data);
+      }
+    });
+  }
+
   static getClientBySocket(socket: WebSocket) {
     return ObjectClient.objects.find(w => {
       return w.getSocket() === socket;
@@ -131,19 +226,23 @@ export class ObjectClient extends Client {
     });
   }
 
+  static getClientsByProject(projectId: string) {
+    return ObjectClient.objects.filter(o => o.projectRights.includes(projectId));
+  }
+
   static isSocketAlreadyWatcher(socket: WebSocket) {
     return ObjectClient.objects.find(w => w.getSocket() === socket) != null;
   }
 
-  sendUpdate(updateData: IoTSocketUpdateRequest) {
+  sendUpdate(updateData: IoTUpdateRequestFromObject) {
     const watchers = WatcherClient.getClientsByProject(updateData.projectId);
 
-    const data: IoTSocketUpdateRequestWatcher = {
+    const data: IoTUpdateRequestToWatcher = {
       id: updateData.id,
       value: updateData.value,
     };
 
-    watchers.forEach(w => w.sendCustom('update', data));
+    watchers.forEach(w => w.sendEvent('update', data));
   }
 }
 

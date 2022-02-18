@@ -3,7 +3,7 @@ package interpreteur.as.lang.managers;
 import interpreteur.as.lang.ASFonctionModule;
 import interpreteur.as.lang.ASScope;
 import interpreteur.as.lang.ASVariable;
-import interpreteur.as.lang.ASType;
+import interpreteur.ast.buildingBlocs.expressions.Type;
 
 public class ASFonctionManager {
 
@@ -11,8 +11,8 @@ public class ASFonctionManager {
 
     // met la fonction dans le dictionnaire de fonction et cree enregistre la fonction dans une Variable
     // pour que le code puisse la retrouver plus tard
-    public static void ajouterFonction(ASFonctionModule fonctionModule) {
-        ASScope.getCurrentScope().declarerVariable(new ASVariable(fonctionModule.getNom(), fonctionModule, new ASType(fonctionModule.obtenirNomType())));
+    public static void ajouterFonction(ASFonctionModule fonction) {
+        ASScope.getCurrentScope().declarerVariable(new ASVariable(fonction.getNom(), fonction, new Type(fonction.obtenirNomType())));
         //VariableManager.ajouterConstante(new Constante(fonction.getNom(), fonction));
         //fonction.nom = ajouterDansStructure(fonction.getNom());
     }

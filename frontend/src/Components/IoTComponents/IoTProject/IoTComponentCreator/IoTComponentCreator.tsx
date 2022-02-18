@@ -1,4 +1,3 @@
-import { Row } from 'react-bootstrap';
 import { useMemo } from 'react';
 import { createDefaultIoTProgressBar } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTProgressBar';
 import { createDefaultIoTLogs } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTLogs';
@@ -27,15 +26,16 @@ export const IoTComponentCreator = ({ onSelect }: IoTComponentCreatorProps) => {
 
 	return (
 		<StyledIoTComponentCreator>
-			<Row>
-				{components.map(c => (
+			<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
+				{components.map((c, idx) => (
 					<IoTGenericComponent
+						key={idx}
 						selectable
 						onSelect={() => onSelect(c)}
 						component={c}
 					/>
 				))}
-			</Row>
+			</div>
 		</StyledIoTComponentCreator>
 	);
 };

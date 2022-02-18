@@ -1,7 +1,6 @@
 package interpreteur.as.lang.datatype;
 
 import interpreteur.as.erreurs.ASErreur;
-import interpreteur.as.lang.ASObjet;
 import interpreteur.tokens.Token;
 
 import java.util.Objects;

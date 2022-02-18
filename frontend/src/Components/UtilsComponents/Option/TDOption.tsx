@@ -2,10 +2,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { OptionProps, StyledPopup, TDOptionProps } from './tdoptionType';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { Popup } from 'reactjs-popup';
-import { Card } from 'react-bootstrap';
-import IconButton from '../../DashboardComponents/IconButton/IconButton';
-import InfoBox from '../../ALIVEIAComponents/InfoBox/InfoBox';
-import CardContainer from '../CardContainer/CardContainer';
 
 export const TDOption = ({ children, color, ...other }: TDOptionProps) => {
 	// <p style={{ margin: '2px', marginRight: '5px', cursor: 'pointer' }}>

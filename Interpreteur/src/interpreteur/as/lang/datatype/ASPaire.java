@@ -1,7 +1,5 @@
 package interpreteur.as.lang.datatype;
 
-import interpreteur.as.lang.ASObjet;
-
 import java.util.Map;
 
 public record ASPaire(ASTexte clef, ASObjet<?> valeur) implements ASObjet<Map.Entry<ASTexte, ASObjet<?>>> {

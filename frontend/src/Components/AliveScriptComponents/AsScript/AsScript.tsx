@@ -1,5 +1,4 @@
 import LineInterface from '../../LevelComponents/LineInterface/LineInterface';
-import { Col, Row } from 'react-bootstrap';
 import { useState, useRef, useEffect } from 'react';
 import api from '../../../Models/api';
 import { AsScriptProps } from './asScriptTypes';
@@ -31,15 +30,11 @@ export const AsScript = ({ asScript, onSave }: AsScriptProps) => {
 
 	return (
 		<>
-			<div style={{ height: '500px' }}>
-				<Row className="h-100">
-					<Col style={{ padding: '0' }}>
-						<LineInterface
-							handleChange={handleChange}
-							initialContent={asScript.content}
-						/>
-					</Col>
-				</Row>
+			<div className="flex flex-col h-[500px] relative">
+				<LineInterface
+					handleChange={handleChange}
+					initialContent={asScript.content}
+				/>
 			</div>
 			{saving && 'Saving...'}
 		</>

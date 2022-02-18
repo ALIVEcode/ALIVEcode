@@ -1,18 +1,23 @@
 import { Injectable, HttpException, HttpStatus, Inject, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IoTProjectEntity, IoTProjectLayout } from './entities/IoTproject.entity';
+import { IoTProjectEntity, IoTProjectLayout, IoTProjectDocument, JsonObj } from './entities/IoTproject.entity';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../../user/entities/user.entity';
 import { IoTRouteEntity } from '../IoTroute/entities/IoTroute.entity';
 import { IoTObjectEntity } from '../IoTobject/entities/IoTobject.entity';
-import { IoTSocketUpdateRequestWatcher, WatcherClient } from '../../../socket/iotSocket/iotSocket.types';
+import {
+  IoTUpdateDocumentRequestToWatcher,
+  IoTUpdateRequestToWatcher,
+  WatcherClient,
+} from '../../../socket/iotSocket/iotSocket.types';
 import { validUUID } from '../../../utils/types/validation.types';
 import { IoTProjectAddScriptDTO } from './dto/addScript.dto';
 import { AsScriptEntity } from '../../as-script/entities/as-script.entity';
 import { AsScriptService } from '../../as-script/as-script.service';
 import { LevelService } from '../../level/level.service';
-import { IoTLayoutManager } from './IoTLayoutManager';
-import { LevelIoTProgressionData, LevelProgressionEntity } from '../../level/entities/levelProgression.entity';
+import { LevelProgressionEntity } from '../../level/entities/levelProgression.entity';
+import { IoTProjectUpdateDTO } from './dto/updateProject.dto';
+import { IoTUpdateLayoutRequestToWatcher, ObjectClient } from '../../../socket/iotSocket/iotSocket.types';
 
 @Injectable()
 export class IoTProjectService {
@@ -24,6 +29,26 @@ export class IoTProjectService {
     private levelService: LevelService,
     @Inject(forwardRef(() => AsScriptService)) private asScriptService: AsScriptService,
   ) {}
+
+  getDocumentEntries(document: IoTProjectDocument, getAllCombinationEntries = false): { [key: string]: any } {
+    const res: { [key: string]: any } = {};
+
+    if (getAllCombinationEntries) res['/document'] = document;
+
+    const getEntriesDeep = (entries: [string, any][], path: string) => {
+      entries.forEach(entry => {
+        const key = entry[0];
+        const val = entry[1];
+        if (typeof val === 'object') {
+          getEntriesDeep(Object.entries(val), path + key + '/');
+          if (getAllCombinationEntries) res[path + key] = val;
+        } else res[path + key] = val;
+      }, []);
+    };
+
+    getEntriesDeep(Object.entries(document), '/document/');
+    return res;
+  }
 
   async create(user: UserEntity, createIoTprojectDto: IoTProjectEntity) {
     const project = this.projectRepository.create(createIoTprojectDto);
@@ -38,7 +63,7 @@ export class IoTProjectService {
   async findOne(id: string) {
     if (!id || !validUUID(id)) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     const project = await this.projectRepository.findOne(id);
-    if (!project) throw new HttpException('IoTProject not found', HttpStatus.NOT_FOUND);
+    if (!project) throw new HttpException(`IoTProject with id "${id}" found`, HttpStatus.NOT_FOUND);
     return project;
   }
 
@@ -53,7 +78,7 @@ export class IoTProjectService {
     return { route, project };
   }
 
-  async update(id: string, updateIoTprojectDto: IoTProjectEntity) {
+  async update(id: string, updateIoTprojectDto: IoTProjectUpdateDTO) {
     return await this.projectRepository.save({ id, ...updateIoTprojectDto });
   }
 
@@ -66,8 +91,56 @@ export class IoTProjectService {
 
     layout.components = layout.components.filter((c: any) => c != null && JSON.stringify(c) != '{}');
 
+    const watchers = WatcherClient.getClientsByProject(id);
+
+    const data: IoTUpdateLayoutRequestToWatcher = {
+      layout,
+    };
+    watchers.forEach(w => w.sendEvent('layout_update', data));
+
     return await this.projectRepository.save({ ...project, layout });
   }
+
+  async setDocument(id: string, document: IoTProjectDocument, oldDocument?: IoTProjectDocument) {
+    if (!oldDocument) {
+      const project = await this.findOne(id);
+      oldDocument = project.document;
+    }
+
+    // SEND TO WATCHERS
+    const watchers = WatcherClient.getClientsByProject(id);
+
+    const data: IoTUpdateDocumentRequestToWatcher = {
+      doc: document,
+    };
+    watchers.forEach(w => w.sendEvent('document_update', data));
+
+    // DETECT CHANGES IN DOCUMENT
+    const entriesOld = this.getDocumentEntries(oldDocument, true);
+    const entriesNew = this.getDocumentEntries(document, true);
+
+    const updatedFields = {};
+
+    Object.entries(entriesNew).forEach(entry => {
+      const key = entry[0];
+      const val = entry[1];
+      if (!(key in entriesOld) || (typeof val !== 'object' && !Array.isArray(val) && entriesOld[key] !== val)) {
+        const pathParts = key.split('/');
+        for (let i = 2; i < pathParts.length; i++) {
+          const path = pathParts.slice(0, i).join('/');
+          updatedFields[path] = entriesNew[path];
+        }
+        updatedFields[key] = val;
+      }
+    });
+
+    // SEND CHANGES DETECTED TO OBJECTS LISTENING
+    ObjectClient.sendToListeners(id, updatedFields);
+
+    // SAVE PROJECT
+    return await this.projectRepository.save({ id, document });
+  }
+
   async getRoutes(project: IoTProjectEntity) {
     return (await this.projectRepository.findOne(project.id, { relations: ['routes'] })).routes;
   }
@@ -126,6 +199,50 @@ export class IoTProjectService {
     await this.asScriptService.compileBackend({ lines: route.asScript.content }, data);
   }
 
+  async updateDocument(id: string, fields: JsonObj) {
+    const project = await this.findOne(id);
+    const document = { ...project.document, ...fields };
+
+    return await this.setDocument(id, document, project.document);
+  }
+
+  async updateDocumentFields(id: string, fields: JsonObj) {
+    const project = await this.findOne(id);
+    const oldDocument = { ...project.document };
+    let newDoc = project.document;
+
+    Object.entries(fields).forEach(entry => {
+      const path = entry[0];
+      const value = entry[1];
+
+      const pathParts = path.split('/');
+      let ref = { ...newDoc };
+      for (let i = 2; i < pathParts.length; i++) {
+        const subpath = pathParts[i];
+
+        console.log(newDoc);
+        if (!(subpath in newDoc)) break;
+
+        if (i + 1 == pathParts.length) {
+          ref[subpath] = value;
+        } else ref = ref[subpath];
+      }
+    });
+
+    return await this.setDocument(id, newDoc, oldDocument);
+  }
+
+  async getDocument(projectId: string) {
+    return (await this.findOne(projectId)).document;
+  }
+
+  async getField(projectId: string, field: string) {
+    const doc = await this.getDocument(projectId);
+    const entries = this.getDocumentEntries(doc, true);
+
+    return field in entries ? entries[field] : null;
+  }
+
   async updateComponent(id: string, componentId: string, value: any, sendUpdate = false): Promise<void> {
     const projectOrProgression = await this.getProjectOrProgression(id);
 
@@ -141,12 +258,12 @@ export class IoTProjectService {
     if (sendUpdate) {
       const watchers = WatcherClient.getClientsByProject(id);
 
-      const data: IoTSocketUpdateRequestWatcher = {
+      const data: IoTUpdateRequestToWatcher = {
         id: componentId,
         value,
       };
 
-      watchers.forEach(w => w.sendCustom('update', data));
+      watchers.forEach(w => w.sendEvent('update', data));
     }
   }
 

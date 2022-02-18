@@ -31,6 +31,7 @@ import { LevelProgressionEntity } from '../../models/level/entities/levelProgres
       LevelProgressionEntity,
     ]),
   ],
+  controllers: [IoTGateway],
   providers: [IoTObjectService, IoTProjectService, IoTGateway, AsScriptService, LevelService],
 })
 export class IoTModule {}

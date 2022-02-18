@@ -1,11 +1,7 @@
 import { CourseCardProps, StyledCourseCard } from './courseCardTypes';
-import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import IconButton from '../../DashboardComponents/IconButton/IconButton';
-import { Badge } from 'react-bootstrap';
-import { prettyField } from '../../../Types/formatting';
-import { useTranslation } from 'react-i18next';
 import useRoutes from '../../../state/hooks/useRoutes';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { formatTooLong } from '../../../Types/formatting';
 
 /**
  * Card that shows all the information of a course and lets you access to it
@@ -15,45 +11,17 @@ import useRoutes from '../../../state/hooks/useRoutes';
  * @author MoSk3
  */
 const CourseCard = ({ course }: CourseCardProps) => {
-	const { t } = useTranslation();
-	const { routes } = useRoutes();
+	const { routes, goTo } = useRoutes();
 
 	return (
-		<StyledCourseCard>
-			<div className="flip-card-inner">
-				<div className="flip-card-front text-white">
-					<div className="card-body">
-						<h4>{course.name}</h4>
-						<FontAwesomeIcon icon={faAngleRight} size="5x" />
-					</div>
-				</div>
-				<div className="flip-card-back">
-					<div>
-						<h3>{course.name}</h3>
-						<h4>
-							<Badge variant="primary">{t('course.subject')}</Badge>
-						</h4>
-						{course.getSubjectDisplay()}
-						<h4>
-							<Badge variant="primary">
-								{prettyField(t('msg.description'))}
-							</Badge>
-						</h4>
-						<p className="mb-2">
-							{course.description
-								? course.description
-								: t('course.desc', {
-										professor: course.creator.getDisplayName(),
-								  })}
-						</p>
-						<IconButton
-							to={routes.auth.course.path.replace(':id', course.id)}
-							size="3x"
-							icon={faAngleRight}
-						/>
-					</div>
-				</div>
+		<StyledCourseCard
+			onClick={() => goTo(routes.auth.course.path.replace(':id', course.id))}
+			className="shadow-lg"
+		>
+			<div className="top-card">
+				<FontAwesomeIcon icon={course.getSubjectIcon()} />
 			</div>
+			<div className="bottom-card">{formatTooLong(course.name, 30)}</div>
 		</StyledCourseCard>
 	);
 };

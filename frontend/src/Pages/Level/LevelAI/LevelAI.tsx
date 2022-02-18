@@ -2,7 +2,6 @@ import { LevelAIProps, StyledAliveLevel } from './levelAITypes';
 import { useEffect, useState, useContext, useRef, useMemo } from 'react';
 import LineInterface from '../../../Components/LevelComponents/LineInterface/LineInterface';
 import { UserContext } from '../../../state/contexts/UserContext';
-import { Row, Col } from 'react-bootstrap';
 import Cmd from '../../../Components/LevelComponents/Cmd/Cmd';
 import LevelAIExecutor from './LevelAIExecutor';
 import useCmd from '../../../state/hooks/useCmd';
@@ -89,13 +88,17 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 	//Set the data for the level
 	const [data] = useState(dataAI);
 	let func = useRef<PolyRegression>();
+
+	//The dataset of the prototype AI course
 	const mainDataset: DataTypes = {
 		type: 'scatter',
 		label: "Distance parcourue en fonction de l'énergie",
-		data,
+		data: data,
 		backgroundColor: 'var(--contrast-color)',
 		borderWidth: 1,
 	};
+
+	//The initial dataset of any course, which is no data
 	const initialDataset: DataTypes = Object.freeze({
 		type: 'scatter',
 		label: "Distance parcourue en fonction de l'énergie",
@@ -104,14 +107,10 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 		borderWidth: 1,
 	});
 	let datasets = useRef([initialDataset]);
-	let pointsOnGraph: boolean = false;
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	let regOnGraph: boolean = false;
-
-	const [chartData, setChartData] = useState({ datasets: datasets.current });
+	const [chartData, setChartData] = useState({ datasets: [initialDataset]});
 
 	/**
-	 * Resets the datasets array and the data shown on the graph.
+	 * Resets the dataset array and the data shown on the graph.
 	 */
 	function resetGraph() {
 		datasets.current = [initialDataset];
@@ -119,12 +118,18 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 	}
 
 	/**
-	 * Adds a new dataset to the datasets array.
+	 * Adds a new datasets to the dataset array.
 	 * @param newData the new dataset to add.
 	 */
 	function setDataOnGraph(newData: DataTypes): void {
-		datasets.current.push(newData);
-		setChartData({ datasets: datasets.current });
+		if (datasets.current[0] === initialDataset) {
+			console.log("dataset vide");
+			datasets.current = [newData];
+		}
+		else datasets.current.push(newData);
+		setChartData({ datasets: datasets.current});
+
+		console.log(chartData.datasets[0].data);
 	}
 	//-------------------------- Alivescript functions ----------------------------//
 
@@ -132,7 +137,6 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 	 * Sets the data of the graph to the level's data and displays it on the screen
 	 */
 	function showDataCloud(): void {
-		pointsOnGraph = true;
 		setDataOnGraph(mainDataset);
 	}
 
@@ -172,7 +176,7 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 	 * @returns the calculated cost.
 	 */
 	function costMSE(): string {
-		if (pointsOnGraph) setDataOnGraph(mainDataset);
+		setDataOnGraph(mainDataset);
 		showRegression();
 		return 'Erreur du modèle : ' + func.current!.computeMSE(data);
 	}
@@ -201,7 +205,7 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 	 * @returns the output of the model.
 	 */
 	function evaluate(x: number): number {
-		if (pointsOnGraph) setDataOnGraph(mainDataset);
+		setDataOnGraph(mainDataset);
 		showRegression();
 		return func.current!.compute(x);
 	}
@@ -209,9 +213,9 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 	return (
 		<>
 			<StyledAliveLevel>
-				<Row className="h-100">
+				<div className="h-full flex flex-row">
 					{/* Left Side of screen */}
-					<Col className="left-col" md={6}>
+					<div className="w-1/2 h-full flex flex-col">
 						{/* Barre d'infos du niveau */}
 						<LevelToolsBar />
 						{/* Interface de code */}
@@ -248,36 +252,36 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 								handleChange={lineInterfaceContentChanges}
 							/>
 						)}
-					</Col>
+					</div>
 
 					{/* Right Side of screen 
 							Contains the graph and the console
 					*/}
-					<Col md={6} style={{ resize: 'both', padding: '0' }}>
-						<Row className="data-section">
-							<Col md={3}>
+					<div className="flex flex-col w-1/2">
+						<div
+							className="h-3/5 w-full flex flex-row data-section"
+						>
+							<div className="w-1/3 h-full">
 								<LevelTable
 									data={data}
 									xData="Énergie utilisée (kWh)"
 									yData="Distance parcourue (km)"
 								/>
-							</Col>
-							<Col md={8} style={{ padding: '0' }}>
-								<div className="graph-container">
-									<LevelGraph
-										data={chartData}
-										title="Distance parcourue selon l'énergie utilisée"
-										xAxis="Énergie utilisée (kWh)"
-										yAxis="Distance parcourue (km)"
-									/>
-								</div>
-							</Col>
-						</Row>
-						<Row className="command">
+							</div>
+							<div className="w-2/3 h-full">
+								<LevelGraph
+									data={chartData}
+									title="Distance parcourue selon l'énergie utilisée"
+									xAxis="Énergie utilisée (kWh)"
+									yAxis="Distance parcourue (km)"
+								/>
+							</div>
+						</div>
+						<div className="h-2/5 flex-1 command">
 							<Cmd ref={cmdRef}></Cmd>
-						</Row>
-					</Col>
-				</Row>
+						</div>
+					</div>
+				</div>
 			</StyledAliveLevel>
 		</>
 	);

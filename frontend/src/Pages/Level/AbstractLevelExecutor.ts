@@ -90,7 +90,6 @@ export class LevelExecutor {
 	}
 
 	public stop() {
-		console.log('STOP');
 		this._beforeStop && this._beforeStop();
 		this.execution && this.onToggleExecution && this.onToggleExecution(this);
 		// Clear all the timouts of the execution
@@ -131,7 +130,7 @@ export class LevelExecutor {
 			this.interrupt();
 			return;
 		}
-		if (process.env.REACT_APP_DEBUG) console.log(data);
+		if (process.env.DEBUG) console.log(data);
 		if (data.status === 'failed') {
 			return this.cmd?.error('Internal Error', 0);
 		}

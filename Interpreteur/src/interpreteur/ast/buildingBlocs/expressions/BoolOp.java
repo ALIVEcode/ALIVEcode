@@ -1,7 +1,7 @@
 package interpreteur.ast.buildingBlocs.expressions;
 
-import interpreteur.as.lang.ASObjet;
 import interpreteur.as.lang.datatype.ASBooleen;
+import interpreteur.as.lang.datatype.ASObjet;
 import interpreteur.ast.buildingBlocs.Expression;
 
 import java.util.function.BiFunction;

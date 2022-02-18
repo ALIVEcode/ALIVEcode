@@ -1,14 +1,16 @@
 package interpreteur.as.lang;
 
 import interpreteur.as.erreurs.ASErreur;
+import interpreteur.as.lang.datatype.ASObjet;
 import interpreteur.as.lang.managers.ASFonctionManager;
+import interpreteur.ast.buildingBlocs.expressions.Type;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class ASVariable implements ASObjet<Object> {
     private final String nom;
-    private final ASType type;
+    private final Type type;
     private ASObjet<?> valeur;
     private boolean readOnly = false;
 
@@ -16,21 +18,21 @@ public class ASVariable implements ASObjet<Object> {
     private Function<ASObjet<?>, ASObjet<?>> setter = null;
 
 
-    public ASVariable(String nom, ASObjet<?> valeur, ASType type) {
-        this.type = type == null ? new ASType("tout") : type;
+    public ASVariable(String nom, ASObjet<?> valeur, Type type) {
+        this.type = type == null ? new Type("tout") : type;
         this.nom = ASFonctionManager.ajouterDansStructure(nom);
-        this.valeur = valeur instanceof ASVariable var ? var.getValeurApresGetter() : valeur;
+        this.valeur = valeur instanceof interpreteur.as.lang.ASVariable var ? var.getValeurApresGetter() : valeur;
     }
 
     private boolean nouvelleValeurValide(ASObjet<?> nouvelleValeur) {
         if (getType().noMatch(nouvelleValeur.obtenirNomType())) {
             throw new ASErreur.ErreurAssignement("La variable '" +
-                    nom +
-                    "' est de type *" +
-                    obtenirNomType() +
-                    "*. Elle ne peut pas prendre une valeur de type *" +
-                    nouvelleValeur.obtenirNomType() +
-                    "*.");
+                                                 nom +
+                                                 "' est de type *" +
+                                                 obtenirNomType() +
+                                                 "*. Elle ne peut pas prendre une valeur de type *" +
+                                                 nouvelleValeur.obtenirNomType() +
+                                                 "*.");
         }
         return true;
     }
@@ -51,15 +53,15 @@ public class ASVariable implements ASObjet<Object> {
     }
 
     @Override
-    public ASVariable clone() {
-        return new ASVariable(nom, this.valeur, this.type).setGetter(this.getter).setSetter(this.setter);
+    public interpreteur.as.lang.ASVariable clone() {
+        return new interpreteur.as.lang.ASVariable(nom, this.valeur, this.type).setGetter(this.getter).setSetter(this.setter);
     }
 
     public String obtenirNom() {
         return this.nom;
     }
 
-    public ASType getType() {
+    public Type getType() {
         return type;
     }
 
@@ -67,17 +69,17 @@ public class ASVariable implements ASObjet<Object> {
         return this.valeur == null;
     }
 
-    public ASVariable setGetter(Supplier<ASObjet<?>> getter) {
+    public interpreteur.as.lang.ASVariable setGetter(Supplier<ASObjet<?>> getter) {
         this.getter = getter;
         return this;
     }
 
-    public ASVariable setSetter(Function<ASObjet<?>, ASObjet<?>> setter) {
+    public interpreteur.as.lang.ASVariable setSetter(Function<ASObjet<?>, ASObjet<?>> setter) {
         this.setter = setter;
         return this;
     }
 
-    public ASVariable setReadOnly() {
+    public interpreteur.as.lang.ASVariable setReadOnly() {
         this.setter = (valeur) -> {
             throw new ASErreur.ErreurAssignement("Cette variable est en lecture seule: elle ne peut pas \u00EAtre modifi\u00E9e");
         };
@@ -92,12 +94,12 @@ public class ASVariable implements ASObjet<Object> {
     @Override
     public String toString() {
         return "Variable{" +
-                "nom='" + nom + '\'' +
-                ", type='" + type + '\'' +
-                ", valeur=" + valeur +
-                ", getter=" + getter +
-                ", setter=" + setter +
-                '}';
+               "nom='" + nom + '\'' +
+               ", type='" + type + '\'' +
+               ", valeur=" + valeur +
+               ", getter=" + getter +
+               ", setter=" + setter +
+               '}';
     }
 
     /* différentes manières de get la valeur stockée dans la variable */

@@ -1,4 +1,3 @@
-
 export type TypeWriterProps = {
 	lines: Array<string>;
 	typeSpeed?: number;
@@ -7,4 +6,7 @@ export type TypeWriterProps = {
 	delayAfterErase?: number;
 	delayAfterWrite?: number;
 	shadow?: boolean;
+	startWithText?: boolean;
+	typeTime?: number;
+	eraseTime?: number;
 };

@@ -1,13 +1,12 @@
 package interpreteur.as.modules.builtins;
 
-import interpreteur.as.lang.*;
+import interpreteur.as.lang.ASConstante;
+import interpreteur.as.lang.ASFonctionModule;
+import interpreteur.as.lang.datatype.*;
 import interpreteur.as.erreurs.ASErreur;
+import interpreteur.as.lang.ASTypeBuiltin;
 import interpreteur.as.modules.core.ASModule;
-import interpreteur.as.lang.datatype.ASDecimal;
-import interpreteur.as.lang.datatype.ASEntier;
-import interpreteur.as.lang.datatype.ASNombre;
-import interpreteur.as.lang.datatype.ASTexte;
-import interpreteur.as.lang.ASType;
+import interpreteur.ast.buildingBlocs.expressions.Type;
 import interpreteur.executeur.Executeur;
 
 import java.util.Collections;
@@ -15,11 +14,11 @@ import java.util.List;
 
 public class BuiltinsNombreUtils {
 
-    public static ASFonctionModule[] fonctionModules = new ASFonctionModule[]{
-            new ASFonctionModule("entier", new ASType("entier"), new ASParametre[]{
-                    new ASParametre(ASTypeBuiltin.texte.asType(), "txt", null),
-                    new ASParametre(ASTypeBuiltin.entier.asType(), "base", new ASEntier(10))
-            }) {
+    public static ASFonctionModule[] fonctions = new ASFonctionModule[]{
+            new ASFonctionModule("entier", new ASFonctionModule.Parametre[]{
+                    new ASFonctionModule.Parametre(ASTypeBuiltin.texte.asType(), "txt", null),
+                    new ASFonctionModule.Parametre(ASTypeBuiltin.entier.asType(), "base", new ASEntier(10))
+            }, new Type("entier")) {
                 @Override
                 public ASEntier executer() {
                     String valeur = this.getParamsValeursDict().get("txt").toString();
@@ -32,18 +31,18 @@ public class BuiltinsNombreUtils {
                 }
             },
 
-            new ASFonctionModule("abs", new ASType("nombre"), new ASParametre[]{
-                    new ASParametre(new ASType("nombre"), "x", null)
-            }) {
+            new ASFonctionModule("abs", new ASFonctionModule.Parametre[]{
+                    new ASFonctionModule.Parametre(new Type("nombre"), "x", null)
+            }, new Type("nombre")) {
                 @Override
                 public ASObjet<?> executer() {
                     return new ASDecimal(Math.abs(((Number) this.getValeurParam("x").getValue()).doubleValue()));
                 }
             },
 
-            new ASFonctionModule("decimal", new ASType("decimal"), new ASParametre[]{
-                    new ASParametre(ASTypeBuiltin.texte.asType(), "txt", null)
-            }) {
+            new ASFonctionModule("decimal", new ASFonctionModule.Parametre[]{
+                    new ASFonctionModule.Parametre(ASTypeBuiltin.texte.asType(), "txt", null)
+            }, new Type("decimal")) {
                 @Override
                 public ASDecimal executer() {
                     try {
@@ -55,9 +54,9 @@ public class BuiltinsNombreUtils {
             },
 
 
-            new ASFonctionModule("nombre", new ASType("decimal"), new ASParametre[]{
-                    new ASParametre(ASTypeBuiltin.texte.asType(), "txt", null)
-            }) {
+            new ASFonctionModule("nombre", new ASFonctionModule.Parametre[]{
+                    new ASFonctionModule.Parametre(ASTypeBuiltin.texte.asType(), "txt", null)
+            }, new Type("decimal")) {
                 @Override
                 public ASNombre executer() {
                     String nb = this.getParamsValeursDict().get("txt").toString();
@@ -71,9 +70,9 @@ public class BuiltinsNombreUtils {
             },
 
 
-            new ASFonctionModule("bin", new ASType("texte"), new ASParametre[]{
-                    new ASParametre(new ASType("entier"), "nb", null)
-            }) {
+            new ASFonctionModule("bin", new ASFonctionModule.Parametre[]{
+                    new ASFonctionModule.Parametre(new Type("entier"), "nb", null)
+            }, new Type("texte")) {
                 @Override
                 public ASTexte executer() {
                     return new ASTexte(Integer.toBinaryString((Integer) this.getValeurParam("nb").getValue()));

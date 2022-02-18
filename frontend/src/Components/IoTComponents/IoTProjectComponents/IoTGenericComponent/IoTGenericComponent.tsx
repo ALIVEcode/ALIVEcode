@@ -1,4 +1,7 @@
-import { IoTGenericComponentProps, StyledIoTGenericComponent } from './iotGenericComponentTypes';
+import {
+	IoTGenericComponentProps,
+	StyledIoTGenericComponent,
+} from './iotGenericComponentTypes';
 import { IOT_COMPONENT_TYPE } from '../../../../Models/Iot/IoTProjectClasses/IoTComponent';
 import IoTButtonComponent from '../IoTButtonComponent/IoTButtonComponent';
 import IoTProgressBarComponent from '../IoTProgressBarComponent/IoTProgressBarComponent';

@@ -1,58 +1,38 @@
 import { Course } from '../../../Models/Course/course.entity';
 import styled from 'styled-components';
+import CourseCardImage from '../../../assets/images/bg/courseCardBg.png';
 
 export type CourseCardProps = {
 	course: Course;
 };
 
 export const StyledCourseCard = styled.div`
-	/* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
-	background-color: transparent;
-	margin: auto;
-	width: 25em;
-	height: 20em;
-	perspective: 1000px; /* Remove this if you don't want the 3D effect */
-	margin-bottom: 20px;
+	box-sizing: border-box;
+	width: 180px;
+	height: 145px;
+	background-color: var(--background-color);
+	border-radius: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	cursor: pointer;
 
-	/* This container is needed to position the front and back side */
-	.flip-card-inner {
+	.top-card {
+		width: 100%;
+		height: 95px;
 		position: relative;
-		width: 100%;
-		height: 100%;
-		text-align: center;
-		transition: transform 0.8s;
-		transform-style: preserve-3d;
+		background-image: url(${CourseCardImage});
+		background-size: contain;
+		//background: linear-gradient(118.46deg, #3fdfff 0%, #1e6aff 100%);
+		border-radius: inherit;
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
+		padding: 10px;
 	}
 
-	/* Do an horizontal flip when you move the mouse over the flip box container */
-	&:hover .flip-card-inner {
-		transform: rotateY(180deg);
-	}
-
-	/* Position the front and back side */
-	.flip-card-front,
-	.flip-card-back {
-		position: absolute;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 100%;
-		height: 100%;
-		-webkit-backface-visibility: hidden; /* Safari */
-		backface-visibility: hidden;
-		border-radius: 25px;
-	}
-
-	/* Style the front side (fallback if image is missing) */
-	.flip-card-front {
-		background-color: var(--primary-color);
-		color: black;
-	}
-
-	/* Style the back side */
-	.flip-card-back {
-		background-color: var(--secondary-color);
-		color: white;
-		transform: rotateY(180deg);
+	.bottom-card {
+		font-size: 0.8em;
+		height: 50px;
+		padding: 5px 10px 5px 10px;
+		overflow-wrap: break-word;
 	}
 `;

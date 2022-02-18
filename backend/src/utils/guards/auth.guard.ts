@@ -8,10 +8,12 @@ import { hasRole } from '../../models/user/auth';
 import { Role } from '../types/roles.types';
 import { ClassroomEntity } from '../../models/classroom/entities/classroom.entity';
 import { UserEntity } from '../../models/user/entities/user.entity';
+import { CourseEntity } from '../../models/course/entities/course.entity';
 
 export interface MyRequest extends Request {
   user: UserEntity;
   classroom?: ClassroomEntity;
+  course?: CourseEntity;
   expiredToken?: boolean;
 }
 
@@ -39,5 +41,4 @@ export class RolesGuard implements CanActivate {
     }
     return true;
   }
-
 }

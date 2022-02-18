@@ -1,5 +1,5 @@
 import { Exclude } from 'class-transformer';
-import { IsEmpty, IsNotEmpty, Validate, ValidateIf } from 'class-validator';
+import { IsEmpty, IsNotEmpty, ValidateIf } from 'class-validator';
 import { Column, Entity, ManyToOne, OneToMany, ManyToMany } from 'typeorm';
 import { CreatedByUser } from '../../../generics/entities/createdByUser.entity';
 import { ClassroomEntity } from '../../classroom/entities/classroom.entity';

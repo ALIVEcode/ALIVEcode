@@ -10,6 +10,7 @@ import {
   HttpException,
   HttpStatus,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { CourseEntity } from './entities/course.entity';
@@ -24,6 +25,8 @@ import { User } from '../../utils/decorators/user.decorator';
 import { CreateCourseDTO } from './dtos/CreateCourseDTO';
 import { UserService } from '../user/user.service';
 import { ActivityEntity } from './entities/activity.entity';
+import { Course } from '../../utils/decorators/course.decorator';
+import { CourseProfessor, CourseAccess } from '../../utils/guards/course.guard';
 
 @Controller('courses')
 @UseInterceptors(DTOInterceptor)
@@ -46,129 +49,96 @@ export class CourseController {
   // is denied by saying not found?)
   @Get(':id')
   @Auth()
-  async findOne(@User() user: UserEntity, @Param('id') id: string, @Query('code') code: string) {
-    const course = await this.courseService.findOne(id);
-    await this.courseService.filterCourseAccess(course, user);
-
+  @UseGuards(CourseAccess)
+  async findOne(@Course() course: CourseEntity) {
     return course;
   }
 
-  // TODO : add repetive code as a guard
   @Patch(':id')
   @Auth(Role.PROFESSOR, Role.STAFF)
-  async update(@User() user: UserEntity, @Param('id') id: string, @Body() updateCourseDto: CourseEntity) {
-    const course = await this.courseService.findOne(id);
-    if (course.creator.id !== user.id && !hasRole(user, Role.STAFF))
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-
-    return await this.courseService.update(id, updateCourseDto);
+  @UseGuards(CourseProfessor)
+  async update(@Course() course: CourseEntity, @Body() updateCourseDto: CourseEntity) {
+    return await this.courseService.update(course.id, updateCourseDto);
   }
 
   @Delete(':id')
   @Auth(Role.PROFESSOR, Role.STAFF)
-  async remove(@User() user: UserEntity, @Param('id') id: string) {
-    const course = await this.courseService.findOne(id);
-    if (course.creator.id !== user.id && !hasRole(user, Role.STAFF))
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-
+  @UseGuards(CourseProfessor)
+  async remove(@Course() course: CourseEntity) {
     return await this.courseService.remove(course);
   }
 
   @Post(':id/sections')
-  @Auth(Role.PROFESSOR)
-  async createSection(@User() user: ProfessorEntity, @Param('id') id: string, @Body() createSectionDTO: SectionEntity) {
-    const course = await this.courseService.findOne(id);
-    if (course.creator.id !== user.id && !hasRole(user, Role.STAFF))
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-
+  @Auth(Role.PROFESSOR, Role.STAFF)
+  @UseGuards(CourseProfessor)
+  async createSection(@Course() course: CourseEntity, @Body() createSectionDTO: SectionEntity) {
     return await this.courseService.createSection(course.id, createSectionDTO);
   }
 
   @Delete(':id/sections/:sectionId')
   @Auth(Role.PROFESSOR, Role.STAFF)
-  async removeSection(@User() user: UserEntity, @Param('id') id: string, @Param('sectionId') sectionId: string) {
-    const course = await this.courseService.findOne(id);
-    if (course.creator.id !== user.id && !hasRole(user, Role.STAFF))
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-
-    return await this.courseService.removeSection(id, sectionId);
+  @UseGuards(CourseProfessor)
+  async removeSection(@Course() course: CourseEntity, @Param('sectionId') sectionId: string) {
+    return await this.courseService.removeSection(course.id, sectionId);
   }
 
   @Get(':id/sections')
   @Auth()
-  async getSections(@User() user: UserEntity, @Param('id') id: string) {
-    const course = await this.courseService.findOne(id);
-    await this.courseService.filterCourseAccess(course, user);
-
+  @UseGuards(CourseAccess)
+  async getSections(@Course() course: CourseEntity, @User() user: UserEntity) {
     await this.userService.accessCourse(user, course);
-    return await this.courseService.getSections(id);
+    return await this.courseService.getSections(course.id);
   }
 
   @Get(':id/sections/:sectionId/activities')
   @Auth()
-  async getActivities(@User() user: UserEntity, @Param('id') id: string, @Param('sectionId') sectionId: string) {
-    const course = await this.courseService.findOne(id);
-    await this.courseService.filterCourseAccess(course, user);
-    return await this.courseService.getActivities(id, sectionId);
+  @UseGuards(CourseAccess)
+  async getActivities(@Course() course: CourseEntity, @Param('sectionId') sectionId: string) {
+    return await this.courseService.getActivities(course.id, sectionId);
   }
 
   @Post(':id/sections/:sectionId/activities')
-  @Auth(Role.PROFESSOR)
+  @Auth(Role.PROFESSOR, Role.STAFF)
+  @UseGuards(CourseProfessor)
   async addActivity(
-    @User() user: UserEntity,
-    @Param('id') id: string,
+    @Course() course: CourseEntity,
     @Param('sectionId') sectionId: string,
     @Body() createActivityDTO: ActivityEntity,
   ) {
-    const course = await this.courseService.findOne(id);
-    if (course.creator.id !== user.id && !hasRole(user, Role.STAFF))
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-
-    return await this.courseService.addActivity(id, sectionId, createActivityDTO);
+    return await this.courseService.addActivity(course.id, sectionId, createActivityDTO);
   }
 
   @Get(':id/sections/:sectionId/activities/:activityId/content')
   @Auth()
+  @UseGuards(CourseAccess)
   async getActivityContent(
-    @User() user: UserEntity,
-    @Param('id') id: string,
+    @Course() course: CourseEntity,
     @Param('sectionId') sectionId: string,
     @Param('activityId') activityId: string,
   ) {
-    const course = await this.courseService.findOne(id);
-    await this.courseService.filterCourseAccess(course, user);
-
-    return await this.courseService.findActivity(id, sectionId, activityId);
+    return await this.courseService.findActivity(course.id, sectionId, activityId);
   }
 
   @Patch(':id/sections/:sectionId/activities/:activityId/content')
-  @Auth(Role.PROFESSOR)
+  @Auth(Role.PROFESSOR, Role.STAFF)
+  @UseGuards(CourseProfessor)
   async updateActivity(
-    @User() user: UserEntity,
-    @Param('id') id: string,
+    @Course() course: CourseEntity,
     @Param('sectionId') sectionId: string,
     @Param('activityId') activityId: string,
     @Body() updateActivityDTO: Partial<ActivityEntity>,
   ) {
-    const course = await this.courseService.findOne(id);
-    if (course.creator.id !== user.id && !hasRole(user, Role.STAFF))
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-
-    return await this.courseService.updateActivity(id, sectionId, activityId, updateActivityDTO);
+    return await this.courseService.updateActivity(course.id, sectionId, activityId, updateActivityDTO);
   }
 
   @Delete(':id/sections/:sectionId/activities/:activityId')
-  @Auth()
+  @Auth(Role.PROFESSOR, Role.STAFF)
+  @UseGuards(CourseProfessor)
   async removeActivity(
-    @User() user: UserEntity,
-    @Param('id') id: string,
+    @Course() course: CourseEntity,
     @Param('sectionId') sectionId: string,
     @Param('activityId') activityId: string,
   ) {
-    const course = await this.courseService.findOne(id);
-    if (course.creator.id !== user.id && !hasRole(user, Role.STAFF))
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-
-    return await this.courseService.removeActivity(id, sectionId, activityId);
+    return await this.courseService.removeActivity(course.id, sectionId, activityId);
   }
 }

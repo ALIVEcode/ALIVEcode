@@ -23,7 +23,7 @@ import { ChildEntity, ManyToMany } from 'typeorm';
 import { CourseEntity } from '../../course/entities/course.entity';
 import { ClassroomEntity } from '../../classroom/entities/classroom.entity';
 import { ResourceEntity } from '../../../resource/entities/resource.entity';
-import { Optional } from '@nestjs/common';
+import { Optional, Param } from '@nestjs/common';
 
 export enum USER_TYPES {
   STUDENT = 0,

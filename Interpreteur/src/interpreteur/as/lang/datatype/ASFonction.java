@@ -3,7 +3,7 @@ package interpreteur.as.lang.datatype;
 import interpreteur.as.lang.ASFonctionModule;
 import interpreteur.as.lang.ASScope;
 import interpreteur.as.erreurs.ASErreur;
-import interpreteur.ast.buildingBlocs.expressions.Type;
+import interpreteur.as.lang.ASType;
 import interpreteur.ast.buildingBlocs.programmes.Boucle;
 import interpreteur.executeur.Coordonnee;
 import interpreteur.executeur.Executeur;
@@ -14,7 +14,7 @@ import java.util.function.Function;
 
 public class ASFonction implements ASObjet<Object> {
 
-    private final Type typeRetour;
+    private final ASType typeRetour;
     private final ASFonctionModule.Parametre[] parametres;
     private final String nom;
     private ASScope scope;
@@ -37,7 +37,7 @@ public class ASFonction implements ASObjet<Object> {
      *                   Mettre <b>null</b> si le type du retour n'a pas de type forcee
      *                   </li>
      */
-    public ASFonction(String nom, Type typeRetour, Executeur executeurInstance) {
+    public ASFonction(String nom, ASType typeRetour, Executeur executeurInstance) {
         this.nom = nom;
         this.coordBlocName = "fonc_";
         this.typeRetour = typeRetour;
@@ -62,7 +62,7 @@ public class ASFonction implements ASObjet<Object> {
      *                   Mettre <b>null</b> si le type du retour n'a pas de type forcee
      *                   </li>
      */
-    public ASFonction(String nom, ASFonctionModule.Parametre[] parametres, Type typeRetour, Executeur executeurInstance) {
+    public ASFonction(String nom, ASFonctionModule.Parametre[] parametres, ASType typeRetour, Executeur executeurInstance) {
         this.nom = nom;
         this.coordBlocName = "fonc_";
         this.parametres = parametres;
@@ -74,7 +74,7 @@ public class ASFonction implements ASObjet<Object> {
         return nom;
     }
 
-    public Type getTypeRetour() {
+    public ASType getTypeRetour() {
         return this.typeRetour;
     }
 

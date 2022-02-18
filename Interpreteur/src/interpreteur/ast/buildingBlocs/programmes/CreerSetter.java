@@ -6,7 +6,7 @@ import interpreteur.as.lang.datatype.ASFonction;
 import interpreteur.as.lang.ASScope;
 import interpreteur.as.lang.managers.ASFonctionManager;
 import interpreteur.ast.buildingBlocs.Programme;
-import interpreteur.ast.buildingBlocs.expressions.Type;
+import interpreteur.as.lang.ASType;
 import interpreteur.ast.buildingBlocs.expressions.Var;
 import interpreteur.executeur.Coordonnee;
 import interpreteur.executeur.Executeur;
@@ -19,10 +19,10 @@ import java.util.List;
 public class CreerSetter extends Programme {
     private final Var var;
     private final Var nomArg;
-    private final Type type;
+    private final ASType type;
     private final ASScope scope;
 
-    public CreerSetter(Var var, Var nomArg, Type type, Executeur executeurInstance) {
+    public CreerSetter(Var var, Var nomArg, ASType type, Executeur executeurInstance) {
         super(executeurInstance);
         this.var = var;
         this.nomArg = nomArg;

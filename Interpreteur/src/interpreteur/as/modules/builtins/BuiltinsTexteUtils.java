@@ -8,7 +8,7 @@ import interpreteur.as.lang.datatype.ASObjet;
 import interpreteur.as.lang.ASTypeBuiltin;
 import interpreteur.as.lang.datatype.ASTexte;
 import interpreteur.as.modules.core.ASModule;
-import interpreteur.ast.buildingBlocs.expressions.Type;
+import interpreteur.as.lang.ASType;
 import interpreteur.executeur.Executeur;
 
 import java.util.Iterator;
@@ -36,7 +36,7 @@ public class BuiltinsTexteUtils {
 
             new ASFonctionModule("minus", new ASFonctionModule.Parametre[]{
                     new ASFonctionModule.Parametre(ASTypeBuiltin.texte.asType(), "txt", null)
-            }, new Type("texte")) {
+            }, new ASType("texte")) {
                 @Override
                 public ASTexte executer() {
                     return new ASTexte(this.getParamsValeursDict().get("txt").getValue().toString().toLowerCase());

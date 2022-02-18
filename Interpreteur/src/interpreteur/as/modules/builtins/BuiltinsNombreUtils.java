@@ -6,7 +6,7 @@ import interpreteur.as.lang.datatype.*;
 import interpreteur.as.erreurs.ASErreur;
 import interpreteur.as.lang.ASTypeBuiltin;
 import interpreteur.as.modules.core.ASModule;
-import interpreteur.ast.buildingBlocs.expressions.Type;
+import interpreteur.as.lang.ASType;
 import interpreteur.executeur.Executeur;
 
 import java.util.Collections;
@@ -18,7 +18,7 @@ public class BuiltinsNombreUtils {
             new ASFonctionModule("entier", new ASFonctionModule.Parametre[]{
                     new ASFonctionModule.Parametre(ASTypeBuiltin.texte.asType(), "txt", null),
                     new ASFonctionModule.Parametre(ASTypeBuiltin.entier.asType(), "base", new ASEntier(10))
-            }, new Type("entier")) {
+            }, new ASType("entier")) {
                 @Override
                 public ASEntier executer() {
                     String valeur = this.getParamsValeursDict().get("txt").toString();
@@ -32,8 +32,8 @@ public class BuiltinsNombreUtils {
             },
 
             new ASFonctionModule("abs", new ASFonctionModule.Parametre[]{
-                    new ASFonctionModule.Parametre(new Type("nombre"), "x", null)
-            }, new Type("nombre")) {
+                    new ASFonctionModule.Parametre(new ASType("nombre"), "x", null)
+            }, new ASType("nombre")) {
                 @Override
                 public ASObjet<?> executer() {
                     return new ASDecimal(Math.abs(((Number) this.getValeurParam("x").getValue()).doubleValue()));
@@ -42,7 +42,7 @@ public class BuiltinsNombreUtils {
 
             new ASFonctionModule("decimal", new ASFonctionModule.Parametre[]{
                     new ASFonctionModule.Parametre(ASTypeBuiltin.texte.asType(), "txt", null)
-            }, new Type("decimal")) {
+            }, new ASType("decimal")) {
                 @Override
                 public ASDecimal executer() {
                     try {
@@ -56,7 +56,7 @@ public class BuiltinsNombreUtils {
 
             new ASFonctionModule("nombre", new ASFonctionModule.Parametre[]{
                     new ASFonctionModule.Parametre(ASTypeBuiltin.texte.asType(), "txt", null)
-            }, new Type("decimal")) {
+            }, new ASType("decimal")) {
                 @Override
                 public ASNombre executer() {
                     String nb = this.getParamsValeursDict().get("txt").toString();
@@ -71,8 +71,8 @@ public class BuiltinsNombreUtils {
 
 
             new ASFonctionModule("bin", new ASFonctionModule.Parametre[]{
-                    new ASFonctionModule.Parametre(new Type("entier"), "nb", null)
-            }, new Type("texte")) {
+                    new ASFonctionModule.Parametre(new ASType("entier"), "nb", null)
+            }, new ASType("texte")) {
                 @Override
                 public ASTexte executer() {
                     return new ASTexte(Integer.toBinaryString((Integer) this.getValeurParam("nb").getValue()));

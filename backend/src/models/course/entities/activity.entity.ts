@@ -1,6 +1,7 @@
-import { Exclude, Type } from 'class-transformer';
+import { Exclude } from 'class-transformer';
+import { Entity, PrimaryGeneratedColumn, TableInheritance, ManyToOne, Column, OneToMany } from 'typeorm';
 import { IsEmpty, IsNotEmpty, Length } from 'class-validator';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, TableInheritance } from 'typeorm';
+import { SectionEntity } from './section.entity';
 import { ActivityLevelEntity } from './activities/activity_level.entity';
 
 export class ActivityContent {
@@ -8,9 +9,9 @@ export class ActivityContent {
 }
 
 export enum ACTIVIY_TYPE {
-  VIDEO,
   THEORY,
   LEVEL,
+  VIDEO,
 }
 
 @Entity()
@@ -20,6 +21,12 @@ export class ActivityEntity {
   @Exclude({ toClassOnly: true })
   @IsEmpty()
   id: number;
+
+  /*
+  @ManyToOne(() => SectionEntity, section => section.activities)
+  @IsEmpty()
+  section: SectionEntity;
+  */
 
   @Exclude({ toClassOnly: true })
   @IsEmpty()

@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 import { SectionEntity } from './entities/section.entity';
 import { generate } from 'randomstring';
 import { ProfessorEntity } from '../user/entities/professor.entity';
-import { ActivityEntity } from './entities/activity.entity';
 import { CreateCourseDTO } from './dtos/CreateCourseDTO';
 import { ClassroomEntity } from '../classroom/entities/classroom.entity';
 import { UserEntity } from '../user/entities/user.entity';
@@ -13,6 +12,8 @@ import { hasRole } from '../user/auth';
 import { Role } from '../../utils/types/roles.types';
 import { StudentEntity } from '../user/entities/student.entity';
 import { ActivityTheoryEntity } from './entities/activities/activity_theory.entity';
+import { ActivityEntity, ACTIVIY_TYPE } from './entities/activity.entity';
+import { ActivityLevelEntity } from './entities/activities/activity_level.entity';
 
 @Injectable()
 export class CourseService {
@@ -20,6 +21,8 @@ export class CourseService {
     @InjectRepository(CourseEntity) private courseRepository: Repository<CourseEntity>,
     @InjectRepository(SectionEntity) private sectionRepository: Repository<SectionEntity>,
     @InjectRepository(ActivityEntity) private activityRepository: Repository<ActivityEntity>,
+    @InjectRepository(ActivityTheoryEntity) private actTheoryRepo: Repository<ActivityTheoryEntity>,
+    @InjectRepository(ActivityLevelEntity) private actLevelRepo: Repository<ActivityLevelEntity>,
     @InjectRepository(ClassroomEntity) private classroomRepo: Repository<ClassroomEntity>,
     @InjectRepository(StudentEntity) private studentRepo: Repository<StudentEntity>,
   ) {}
@@ -154,8 +157,8 @@ export class CourseService {
   }
 
   async addActivity(courseId: string, sectionId: string, activity: ActivityEntity) {
-    activity = this.activityRepository.create(activity);
-    await this.activityRepository.save(activity);
+    activity = this.actTheoryRepo.create(activity);
+    await this.actTheoryRepo.save(activity);
 
     const section = await this.findSection(courseId, sectionId);
     section.activities.push(activity);

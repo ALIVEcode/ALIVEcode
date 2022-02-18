@@ -5,7 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CourseEntity } from './entities/course.entity';
 import { SectionEntity } from './entities/section.entity';
 import { UserEntity } from '../user/entities/user.entity';
-import { ActivityEntity } from './entities/activity.entity';
 import { ClassroomEntity } from '../classroom/entities/classroom.entity';
 import { StudentEntity } from '../user/entities/student.entity';
 import { CourseHistoryEntity } from './entities/course_history.entity';
@@ -15,6 +14,8 @@ import { IoTProjectEntity } from '../iot/IoTproject/entities/IoTproject.entity';
 import { IoTObjectEntity } from '../iot/IoTobject/entities/IoTobject.entity';
 import { LevelEntity } from '../level/entities/level.entity';
 import { ActivityTheoryEntity } from './entities/activities/activity_theory.entity';
+import { ActivityEntity } from './entities/activity.entity';
+import { ActivityLevelEntity } from './entities/activities/activity_level.entity';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ActivityTheoryEntity } from './entities/activities/activity_theory.enti
       SectionEntity,
       ActivityEntity,
       ActivityTheoryEntity,
+      ActivityLevelEntity,
       UserEntity,
       ClassroomEntity,
       StudentEntity,

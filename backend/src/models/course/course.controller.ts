@@ -21,9 +21,9 @@ import { hasRole } from '../user/auth';
 import { Role } from '../../utils/types/roles.types';
 import { Auth } from '../../utils/decorators/auth.decorator';
 import { User } from '../../utils/decorators/user.decorator';
-import { ActivityEntity } from './entities/activity.entity';
 import { CreateCourseDTO } from './dtos/CreateCourseDTO';
 import { UserService } from '../user/user.service';
+import { ActivityEntity } from './entities/activity.entity';
 
 @Controller('courses')
 @UseInterceptors(DTOInterceptor)

@@ -12,6 +12,7 @@ import { Role } from '../../utils/types/roles.types';
 import { ActivityTheoryEntity } from './entities/activities/activity_theory.entity';
 import { ActivityEntity } from './entities/activity.entity';
 import { ActivityLevelEntity } from './entities/activities/activity_level.entity';
+import { CreateActivityLevelDTO, CreateActivityTheoryDTO, CreateActivityVideoDTO } from './dtos/CreateActivitiesDTO';
 
 @Injectable()
 export class CourseService {
@@ -65,7 +66,7 @@ export class CourseService {
   }
 
   async removeSection(courseId: string, sectionId: string) {
-    const section = await this.findSection(courseId, sectionId);
+    const section = await this.findSectionWithElements(courseId, sectionId);
     return await this.sectionRepository.remove(section);
   }
 
@@ -76,8 +77,8 @@ export class CourseService {
     return await this.activityRepository.remove(activity);*/
   }
 
-  async findOneWithSections(courseId) {
-    const course = await this.courseRepository.findOne(courseId, { relations: ['sections'] });
+  async findOneWithElements(courseId: string) {
+    const course = await this.courseRepository.findOne(courseId, { relations: ['elements'] });
     if (!course) throw new HttpException('Course not found', HttpStatus.NOT_FOUND);
     return course;
   }
@@ -112,19 +113,11 @@ export class CourseService {
     throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
   }
 
-  async getSections(courseId: string) {
-    throw new HttpException('Not implmented', HttpStatus.NOT_IMPLEMENTED);
-    /*
-    const course = await this.findOneWithSections(courseId);
-    return course.sections;
-    */
-  }
-
-  async findSection(courseId: string, sectionId: string) {
+  async findSectionWithElements(courseId: string, sectionId: string) {
     const course = await this.findOne(courseId);
     const section = await this.sectionRepository.findOne({
       where: { id: sectionId, course },
-      relations: ['activities'],
+      relations: ['elements'],
     });
     if (!section) throw new HttpException('Section not found', HttpStatus.NOT_FOUND);
     return section;
@@ -157,20 +150,11 @@ export class CourseService {
     return await this.activityRepository.save({ id: activity.id, ...updateActivityDTO });*/
   }
 
-  async getActivities(courseId: string, sectionId: string) {
-    throw new HttpException('Not implmented', HttpStatus.NOT_IMPLEMENTED);
-
-    /*
-    const section = await this.findSection(courseId, sectionId);
-    section.activities = section.activities.map(a => {
-      if (a instanceof ActivityTheoryEntity) delete a.content;
-      return a;
-    });
-    return section.activities;
-    */
-  }
-
-  async addActivity(courseId: string, sectionId: string, activity: ActivityEntity) {
+  async addActivity(
+    courseId: string,
+    sectionId: string,
+    activity: CreateActivityLevelDTO | CreateActivityTheoryDTO | CreateActivityVideoDTO,
+  ) {
     throw new HttpException('Not implmented', HttpStatus.NOT_IMPLEMENTED);
     /*
     throw new HttpException('Not implmented', HttpStatus.NOT_IMPLEMENTED);

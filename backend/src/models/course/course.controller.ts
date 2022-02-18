@@ -1,24 +1,10 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseInterceptors,
-  HttpException,
-  HttpStatus,
-  Query,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UseGuards } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { CourseEntity } from './entities/course.entity';
 import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
 import { SectionEntity } from './entities/section.entity';
 import { ProfessorEntity } from '../user/entities/user.entity';
 import { UserEntity } from '../user/entities/user.entity';
-import { hasRole } from '../user/auth';
 import { Role } from '../../utils/types/roles.types';
 import { Auth } from '../../utils/decorators/auth.decorator';
 import { User } from '../../utils/decorators/user.decorator';
@@ -27,6 +13,7 @@ import { UserService } from '../user/user.service';
 import { ActivityEntity } from './entities/activity.entity';
 import { Course } from '../../utils/decorators/course.decorator';
 import { CourseProfessor, CourseAccess } from '../../utils/guards/course.guard';
+import { CreateActivityLevelDTO, CreateActivityTheoryDTO, CreateActivityVideoDTO } from './dtos/CreateActivitiesDTO';
 
 @Controller('courses')
 @UseInterceptors(DTOInterceptor)
@@ -82,28 +69,28 @@ export class CourseController {
     return await this.courseService.removeSection(course.id, sectionId);
   }
 
-  @Get(':id/sections')
+  @Get(':id/elements')
   @Auth()
   @UseGuards(CourseAccess)
   async getSections(@Course() course: CourseEntity, @User() user: UserEntity) {
     await this.userService.accessCourse(user, course);
-    return await this.courseService.getSections(course.id);
+    return (await this.courseService.findOneWithElements(course.id)).elements;
   }
 
-  @Get(':id/sections/:sectionId/activities')
+  @Get(':id/sections/:sectionId/elements')
   @Auth()
   @UseGuards(CourseAccess)
   async getActivities(@Course() course: CourseEntity, @Param('sectionId') sectionId: string) {
-    return await this.courseService.getActivities(course.id, sectionId);
+    return (await this.courseService.findSectionWithElements(course.id, sectionId)).elements;
   }
 
-  @Post(':id/sections/:sectionId/activities')
+  @Post(':id/sections/:sectionId/elements')
   @Auth(Role.PROFESSOR, Role.STAFF)
   @UseGuards(CourseProfessor)
   async addActivity(
     @Course() course: CourseEntity,
     @Param('sectionId') sectionId: string,
-    @Body() createActivityDTO: ActivityEntity,
+    @Body() createActivityDTO: CreateActivityLevelDTO | CreateActivityTheoryDTO | CreateActivityVideoDTO,
   ) {
     return await this.courseService.addActivity(course.id, sectionId, createActivityDTO);
   }

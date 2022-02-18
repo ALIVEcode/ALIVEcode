@@ -15,11 +15,11 @@ export class CourseElement {
   /*****---Parents (only one at a time)---*****/
 
   /** If the section is at top level, it contains a course parent */
-  @ManyToOne(() => CourseEntity, course => course.elements)
+  @ManyToOne(() => CourseEntity, course => course.elements, { eager: true })
   courseParent: CourseEntity;
 
   /** If the section is not at top level (inside another section), it contains that parent section */
-  @ManyToOne(() => SectionEntity, section => section.elements)
+  @ManyToOne(() => SectionEntity, section => section.elements, { eager: true })
   sectionParent: SectionEntity;
 
   /*****---------------------------------*****/
@@ -27,12 +27,12 @@ export class CourseElement {
   /*****---Elements (only one at a time)---*****/
 
   /** If the element is an activity **/
-  @OneToOne(() => ActivityEntity, act => act.course_element)
+  @OneToOne(() => ActivityEntity, act => act.course_element, { eager: true })
   @JoinColumn()
   activity: ActivityEntity;
 
   /** If the element is a section **/
-  @OneToOne(() => SectionEntity, sect => sect.course_element)
+  @OneToOne(() => SectionEntity, sect => sect.course_element, { eager: true })
   @JoinColumn()
   section: SectionEntity;
 

@@ -1,7 +1,7 @@
 import { Exclude } from 'class-transformer';
 import { IsEmpty, IsNotEmpty, Length, ValidateIf } from 'class-validator';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne } from 'typeorm';
-import { CourseElementEntity } from './course_content.entity';
+import { CourseElementEntity } from './course_element.entity';
 
 @Entity()
 export class SectionEntity {

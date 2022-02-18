@@ -3,7 +3,7 @@ import { IsEmpty, IsNotEmpty, ValidateIf } from 'class-validator';
 import { Column, Entity, ManyToOne, OneToMany, ManyToMany } from 'typeorm';
 import { CreatedByUser } from '../../../generics/entities/createdByUser.entity';
 import { ClassroomEntity } from '../../classroom/entities/classroom.entity';
-import { CourseElementEntity } from './course_content.entity';
+import { CourseElementEntity } from './course_element.entity';
 import { ProfessorEntity } from '../../user/entities/user.entity';
 
 export enum COURSE_DIFFICULTY {

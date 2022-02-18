@@ -6,7 +6,7 @@ import { CourseEntity } from './course.entity';
 import { SectionEntity } from './section.entity';
 
 @Entity()
-export class CourseElement {
+export class CourseElementEntity {
   @PrimaryGeneratedColumn('increment')
   @Exclude({ toClassOnly: true })
   @IsEmpty()

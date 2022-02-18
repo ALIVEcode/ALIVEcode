@@ -3,7 +3,7 @@ import { IsEmpty, IsNotEmpty, ValidateIf } from 'class-validator';
 import { Column, Entity, ManyToOne, OneToMany, ManyToMany } from 'typeorm';
 import { CreatedByUser } from '../../../generics/entities/createdByUser.entity';
 import { ClassroomEntity } from '../../classroom/entities/classroom.entity';
-import { CourseElement } from './course_content.entity';
+import { CourseElementEntity } from './course_content.entity';
 import { ProfessorEntity } from '../../user/entities/user.entity';
 
 export enum COURSE_DIFFICULTY {
@@ -53,8 +53,8 @@ export class CourseEntity extends CreatedByUser {
   @Column({ enum: COURSE_SUBJECT, nullable: false })
   subject: COURSE_SUBJECT;
 
-  @OneToMany(() => CourseElement, content => content.courseParent)
-  elements: CourseElement[];
+  @OneToMany(() => CourseElementEntity, content => content.courseParent)
+  elements: CourseElementEntity[];
 
   @ValidateIf((lst: any) => Array.isArray(lst) && lst.every(el => Number.isInteger(el)))
   @Column({ type: 'json', default: [] })

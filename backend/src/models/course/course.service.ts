@@ -4,15 +4,13 @@ import { CourseEntity } from './entities/course.entity';
 import { Repository } from 'typeorm';
 import { SectionEntity } from './entities/section.entity';
 import { generate } from 'randomstring';
-import { ProfessorEntity } from '../user/entities/professor.entity';
 import { CreateCourseDTO } from './dtos/CreateCourseDTO';
 import { ClassroomEntity } from '../classroom/entities/classroom.entity';
-import { UserEntity } from '../user/entities/user.entity';
+import { ProfessorEntity, StudentEntity, UserEntity } from '../user/entities/user.entity';
 import { hasRole } from '../user/auth';
 import { Role } from '../../utils/types/roles.types';
-import { StudentEntity } from '../user/entities/student.entity';
 import { ActivityTheoryEntity } from './entities/activities/activity_theory.entity';
-import { ActivityEntity, ACTIVIY_TYPE } from './entities/activity.entity';
+import { ActivityEntity } from './entities/activity.entity';
 import { ActivityLevelEntity } from './entities/activities/activity_level.entity';
 
 @Injectable()
@@ -72,8 +70,10 @@ export class CourseService {
   }
 
   async removeActivity(courseId: string, sectionId: string, activityId: string) {
+    throw new HttpException('Not implmented', HttpStatus.NOT_IMPLEMENTED);
+    /*
     const activity = await this.findActivity(courseId, sectionId, activityId);
-    return await this.activityRepository.remove(activity);
+    return await this.activityRepository.remove(activity);*/
   }
 
   async findOneWithSections(courseId) {
@@ -126,12 +126,15 @@ export class CourseService {
   }
 
   async findActivity(courseId: string, sectionId: string, activityId: string) {
+    throw new HttpException('Not implmented', HttpStatus.NOT_IMPLEMENTED);
+    /*
     const section = await this.findSection(courseId, sectionId);
     let activity = section.activities.find(a => a.id.toString() === activityId);
     if (!activity) throw new HttpException('Activity not found', HttpStatus.NOT_FOUND);
 
     activity = await this.activityRepository.findOne(activity.id, { relations: ['levels'] });
     return activity;
+    */
   }
 
   async updateActivity(
@@ -140,29 +143,38 @@ export class CourseService {
     activityId: string,
     updateActivityDTO: Partial<ActivityEntity>,
   ) {
+    throw new HttpException('Not implmented', HttpStatus.NOT_IMPLEMENTED);
+    /*
     const section = await this.findSection(courseId, sectionId);
     const activity = section.activities.find(a => a.id.toString() === activityId);
     if (!activity) throw new HttpException('Activity not found', HttpStatus.NOT_FOUND);
 
-    return await this.activityRepository.save({ id: activity.id, ...updateActivityDTO });
+    return await this.activityRepository.save({ id: activity.id, ...updateActivityDTO });*/
   }
 
   async getActivities(courseId: string, sectionId: string) {
+    throw new HttpException('Not implmented', HttpStatus.NOT_IMPLEMENTED);
+
+    /*
     const section = await this.findSection(courseId, sectionId);
     section.activities = section.activities.map(a => {
       if (a instanceof ActivityTheoryEntity) delete a.content;
       return a;
     });
     return section.activities;
+    */
   }
 
   async addActivity(courseId: string, sectionId: string, activity: ActivityEntity) {
+    throw new HttpException('Not implmented', HttpStatus.NOT_IMPLEMENTED);
+    /*
+    throw new HttpException('Not implmented', HttpStatus.NOT_IMPLEMENTED);
     activity = this.actTheoryRepo.create(activity);
     await this.actTheoryRepo.save(activity);
 
     const section = await this.findSection(courseId, sectionId);
-    section.activities.push(activity);
+    //section.activities.push(activity);
     await this.sectionRepository.save(section);
-    return activity;
+    return activity;*/
   }
 }

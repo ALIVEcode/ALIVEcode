@@ -15,7 +15,7 @@ import { CourseService } from './course.service';
 import { CourseEntity } from './entities/course.entity';
 import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
 import { SectionEntity } from './entities/section.entity';
-import { ProfessorEntity } from '../user/entities/professor.entity';
+import { ProfessorEntity } from '../user/entities/user.entity';
 import { UserEntity } from '../user/entities/user.entity';
 import { hasRole } from '../user/auth';
 import { Role } from '../../utils/types/roles.types';

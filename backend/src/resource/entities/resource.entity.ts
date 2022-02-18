@@ -5,13 +5,12 @@ import {
   Entity,
   TableInheritance,
   ManyToOne,
-  ManyToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { IsNotEmpty, MinLength, IsEmpty } from 'class-validator';
 import { Exclude } from 'class-transformer';
-import { ProfessorEntity } from '../../models/user/entities/professor.entity';
 import { SUBJECTS } from '../../generics/types/sharedTypes';
+import { ProfessorEntity } from '../../models/user/entities/user.entity';
 
 export enum RESOURCE_TYPE {
   VIDEO,
@@ -50,11 +49,12 @@ export class ResourceEntity {
   @IsEmpty()
   creator: ProfessorEntity;
 
-  @ManyToMany(() => ResourceEntity, resource => resource.original, {
+  /* @ManyToMany(() => ResourceEntity, resource => resource.original, {
     onDelete: 'SET NULL',
     nullable: true,
   })
   @Exclude({ toClassOnly: true })
-  @IsEmpty()
+  @IsEmpty()*/
+
   original: ResourceEntity;
 }

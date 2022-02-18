@@ -1,9 +1,7 @@
 import { Injectable, HttpException, HttpStatus, Scope, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ILike, Repository } from 'typeorm';
-import { ProfessorEntity } from './entities/professor.entity';
-import { StudentEntity } from './entities/student.entity';
-import { UserEntity } from './entities/user.entity';
+import { ProfessorEntity, StudentEntity, UserEntity } from './entities/user.entity';
 import { compare, hash } from 'bcryptjs';
 import { Response } from 'express';
 import { createAccessToken, setRefreshToken, createRefreshToken } from './auth';

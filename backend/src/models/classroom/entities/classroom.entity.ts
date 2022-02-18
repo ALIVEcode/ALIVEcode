@@ -2,9 +2,8 @@ import { Entity, JoinTable, ManyToMany, ManyToOne, Column } from 'typeorm';
 import { CreatedByUser } from '../../../generics/entities/createdByUser.entity';
 import { Exclude } from 'class-transformer';
 import { IsEmpty, IsNotEmpty } from 'class-validator';
-import { ProfessorEntity } from '../../user/entities/professor.entity';
-import { StudentEntity } from '../../user/entities/student.entity';
 import { CourseEntity } from '../../course/entities/course.entity';
+import { ProfessorEntity, StudentEntity } from '../../user/entities/user.entity';
 
 export enum CLASSROOM_SUBJECT {
   INFORMATIC = 'IN',

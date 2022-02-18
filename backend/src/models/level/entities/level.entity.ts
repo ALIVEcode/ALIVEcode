@@ -1,7 +1,8 @@
 import { Exclude } from 'class-transformer';
-import { Entity, ManyToOne, TableInheritance, Column, OneToMany } from 'typeorm';
-import { UserEntity } from '../../user/entities/user.entity';
+import { Entity, ManyToOne, TableInheritance, Column } from 'typeorm';
 import { CreatedByUser } from '../../../generics/entities/createdByUser.entity';
+import { ActivityLevelEntity } from '../../course/entities/activities/activity_level.entity';
+import { UserEntity } from '../../user/entities/user.entity';
 import { IsEmpty, IsNotEmpty, IsOptional } from 'class-validator';
 
 export enum LEVEL_TAG {}
@@ -54,4 +55,7 @@ export class LevelEntity extends CreatedByUser {
   @Column({ enum: LEVEL_TAG, type: 'jsonb', default: () => "'[]'" })
   @IsOptional()
   tags: LEVEL_TAG[] = [];
+
+  @ManyToOne(() => ActivityLevelEntity, act => act.level)
+  activities: ActivityLevelEntity;
 }

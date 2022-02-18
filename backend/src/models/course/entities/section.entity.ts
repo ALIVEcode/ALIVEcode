@@ -2,7 +2,7 @@ import { Exclude } from 'class-transformer';
 import { IsEmpty, IsNotEmpty, Length } from 'class-validator';
 import { Entity, Column, ManyToOne, PrimaryGeneratedColumn, OneToMany, OneToOne } from 'typeorm';
 import { CourseEntity } from './course.entity';
-import { CourseContent } from './course_content.entity';
+import { CourseElement } from './course_content.entity';
 
 @Entity()
 export class SectionEntity {
@@ -25,13 +25,9 @@ export class SectionEntity {
   @IsEmpty()
   sectionParent?: SectionEntity;*/
 
-  @ManyToOne(() => CourseEntity, course => course.sections, { onDelete: 'CASCADE' })
-  @IsEmpty()
-  course: CourseEntity;
+  @OneToMany(() => CourseElement, content => content.sectionParent)
+  elements: CourseElement[];
 
-  @OneToMany(() => CourseContent, content => content.sectionParent)
-  contents: CourseContent[];
-
-  @OneToOne(() => CourseContent)
-  course_content: CourseContent;
+  @OneToOne(() => CourseElement)
+  course_elements: CourseElement;
 }

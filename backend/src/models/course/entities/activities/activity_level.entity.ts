@@ -1,4 +1,4 @@
-import { Column, ChildEntity, OneToMany } from 'typeorm';
+import { ChildEntity, OneToMany } from 'typeorm';
 import { ACTIVIY_TYPE, ActivityEntity } from '../activity.entity';
 import { LevelEntity } from '../../../level/entities/level.entity';
 

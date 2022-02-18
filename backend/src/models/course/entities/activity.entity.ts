@@ -1,7 +1,7 @@
 import { Exclude } from 'class-transformer';
-import { Entity, PrimaryGeneratedColumn, TableInheritance, Column, OneToMany, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, TableInheritance, Column, OneToOne } from 'typeorm';
 import { IsEmpty, IsNotEmpty, Length } from 'class-validator';
-import { CourseContent } from './course_content.entity';
+import { CourseElement } from './course_content.entity';
 
 export class ActivityContent {
   body: string;
@@ -37,6 +37,6 @@ export class ActivityEntity {
   @Length(1, 100)
   name: string;
 
-  @OneToOne(() => CourseContent)
-  course_content: CourseContent;
+  @OneToOne(() => CourseElement)
+  course_element: CourseElement;
 }

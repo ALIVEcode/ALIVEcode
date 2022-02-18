@@ -6,23 +6,35 @@ import { CourseEntity } from './course.entity';
 import { SectionEntity } from './section.entity';
 
 @Entity()
-export class CourseContent {
+export class CourseElement {
   @PrimaryGeneratedColumn('increment')
   @Exclude({ toClassOnly: true })
   @IsEmpty()
   id: number;
 
-  @ManyToOne(() => CourseEntity, course => course.contents)
-  course: CourseEntity;
+  /*****---Parents (only one at a time)---*****/
 
-  @ManyToOne(() => SectionEntity, section => section.contents)
+  /** If the section is at top level, it contains a course parent */
+  @ManyToOne(() => CourseEntity, course => course.elements)
+  courseParent: CourseEntity;
+
+  /** If the section is not at top level (inside another section), it contains that parent section */
+  @ManyToOne(() => SectionEntity, section => section.elements)
   sectionParent: SectionEntity;
 
-  @OneToOne(() => ActivityEntity, act => act.course_content)
+  /*****---------------------------------*****/
+
+  /*****---Elements (only one at a time)---*****/
+
+  /** If the element is an activity **/
+  @OneToOne(() => ActivityEntity, act => act.course_element)
   @JoinColumn()
   activity: ActivityEntity;
 
-  @OneToOne(() => SectionEntity, sect => sect.course_content)
+  /** If the element is a section **/
+  @OneToOne(() => SectionEntity, sect => sect.course_elements)
   @JoinColumn()
   section: SectionEntity;
+
+  /*****-----------------------------------*****/
 }

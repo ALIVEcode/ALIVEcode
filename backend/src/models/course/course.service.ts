@@ -83,6 +83,8 @@ export class CourseService {
   }
 
   async createSection(courseId: string, createSectionDTO: SectionEntity) {
+    throw new HttpException('Not implmented', HttpStatus.NOT_IMPLEMENTED);
+    /*
     const course = await this.findOneWithSections(courseId);
 
     const section = this.sectionRepository.create(createSectionDTO);
@@ -90,7 +92,7 @@ export class CourseService {
 
     course.sections.push(section);
     this.courseRepository.save(course);
-    return section;
+    return section;*/
   }
 
   async filterCourseAccess(course: CourseEntity, user: UserEntity) {
@@ -111,8 +113,11 @@ export class CourseService {
   }
 
   async getSections(courseId: string) {
+    throw new HttpException('Not implmented', HttpStatus.NOT_IMPLEMENTED);
+    /*
     const course = await this.findOneWithSections(courseId);
     return course.sections;
+    */
   }
 
   async findSection(courseId: string, sectionId: string) {

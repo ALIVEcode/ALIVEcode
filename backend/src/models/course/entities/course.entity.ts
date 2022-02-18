@@ -4,7 +4,7 @@ import { Column, Entity, ManyToOne, OneToMany, ManyToMany } from 'typeorm';
 import { CreatedByUser } from '../../../generics/entities/createdByUser.entity';
 import { SectionEntity } from './section.entity';
 import { ClassroomEntity } from '../../classroom/entities/classroom.entity';
-import { CourseContent } from './course_content.entity';
+import { CourseElement } from './course_content.entity';
 import { ProfessorEntity } from '../../user/entities/user.entity';
 
 export enum COURSE_DIFFICULTY {
@@ -54,11 +54,8 @@ export class CourseEntity extends CreatedByUser {
   @Column({ enum: COURSE_SUBJECT, nullable: false })
   subject: COURSE_SUBJECT;
 
-  @OneToMany(() => CourseContent, content => content.course)
-  contents: CourseContent[];
-
-  @OneToMany(() => SectionEntity, section => section.course)
-  sections: SectionEntity[];
+  @OneToMany(() => CourseElement, content => content.courseParent)
+  elements: CourseElement[];
 
   @Exclude({ toClassOnly: true })
   @ManyToMany(() => ClassroomEntity, classroom => classroom.courses)

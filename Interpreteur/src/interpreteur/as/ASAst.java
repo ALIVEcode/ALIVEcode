@@ -1,6 +1,6 @@
 package interpreteur.as;
 
-import interpreteur.as.Objets.ASObjet.*;
+import interpreteur.as.lang.datatype.*;
 import interpreteur.as.erreurs.ASErreur.ErreurAssignement;
 import interpreteur.as.erreurs.ASErreur.ErreurInputOutput;
 import interpreteur.as.erreurs.ASErreur.ErreurSyntaxe;
@@ -52,7 +52,7 @@ public class ASAst extends AstGenerator {
                 new Ast<Utiliser>() {
                     @Override
                     public Utiliser apply(List<Object> p) {
-                        if (p.get(1) instanceof ValeurConstante valeurConstante && valeurConstante.eval() instanceof Texte texte) {
+                        if (p.get(1) instanceof ValeurConstante valeurConstante && valeurConstante.eval() instanceof ASTexte texte) {
                             String msg = texte.getValue();
                             if (msg.equalsIgnoreCase("experimental")) {
                                 //executeurInstance.setAst(new ASAstExperimental(executeurInstance));
@@ -145,7 +145,7 @@ public class ASAst extends AstGenerator {
                         if (p.get(0) instanceof Token token) {
                             boolean estConst = token.obtenirNom().equals("CONSTANTE");
                             if (p.size() == 2) {
-                                return new Declarer((Expression<?>) p.get(1), new ValeurConstante(new Nul()), null, false);
+                                return new Declarer((Expression<?>) p.get(1), new ValeurConstante(new ASNul()), null, false);
                             }
                             if (p.size() == 4 && p.get(2) instanceof Token token2 && token2.obtenirNom().equals("DEUX_POINTS")) {
                                 // si le type précisisé n'est pas un type
@@ -154,7 +154,7 @@ public class ASAst extends AstGenerator {
                                             (estConst ? "constante" : "variable") +
                                             ", les deux points doivent \u00EAtre suivi d'un type valide");
 
-                                return new Declarer((Expression<?>) p.get(1), new ValeurConstante(new Nul()), type, false);
+                                return new Declarer((Expression<?>) p.get(1), new ValeurConstante(new ASNul()), type, false);
                             }
                             Type type = null;
                             // si la précision du type est présente
@@ -378,7 +378,7 @@ public class ASAst extends AstGenerator {
                     public Retourner apply(List<Object> p) {
                         if (p.size() > 1 && p.get(1) instanceof CreerListe.Enumeration enumeration)
                             p.set(1, enumeration.buildCreerListe());
-                        return new Retourner(p.size() > 1 ? (Expression<?>) p.get(1) : new ValeurConstante(new Nul()));
+                        return new Retourner(p.size() > 1 ? (Expression<?>) p.get(1) : new ValeurConstante(new ASNul()));
                     }
                 });
 
@@ -540,11 +540,11 @@ public class ASAst extends AstGenerator {
                         Token valeur = (Token) p.get(0);
                         String nom = valeur.obtenirNom();
                         return new ValeurConstante(switch (nom) {
-                            case "ENTIER" -> new Entier(valeur);
-                            case "DECIMAL" -> new Decimal(valeur);
-                            case "TEXTE" -> new Texte(valeur);
-                            case "BOOLEEN" -> new Booleen(valeur);
-                            case "NUL" -> new Nul();
+                            case "ENTIER" -> new ASEntier(valeur);
+                            case "DECIMAL" -> new ASDecimal(valeur);
+                            case "TEXTE" -> new ASTexte(valeur);
+                            case "BOOLEEN" -> new ASBooleen(valeur);
+                            case "NUL" -> new ASNul();
                             default -> throw new ErreurType("Type de donnee invalide");
                         });
                     }

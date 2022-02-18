@@ -1,6 +1,6 @@
 package interpreteur.ast.buildingBlocs.programmes;
 
-import interpreteur.as.Objets.Scope;
+import interpreteur.as.lang.ASScope;
 import interpreteur.ast.buildingBlocs.Expression;
 import interpreteur.executeur.Coordonnee;
 import interpreteur.executeur.Executeur;
@@ -13,32 +13,32 @@ public class BoucleTantQue extends Boucle {
     public static boolean sortir = false;
     private final Expression<?> condition;
     private final boolean isBoucleFaire;
-    private final Scope scope;
+    private final ASScope scope;
     private boolean firstTime = true;
 
     public BoucleTantQue(Expression<?> condition, Executeur executeurInstance) {
         super("tant que", executeurInstance);
         this.condition = condition;
         this.isBoucleFaire = executeurInstance.obtenirCoordRunTime().getBlocActuel().equals("faire");
-        this.scope = Scope.makeNewCurrentScope();
+        this.scope = ASScope.makeNewCurrentScope();
     }
 
     public void sortir() {
         sortir = false;
         firstTime = true;
         if (isBoucleFaire) executeurInstance.obtenirCoordRunTime().finBloc();
-        Scope.popCurrentScopeInstance();
+        ASScope.popCurrentScopeInstance();
     }
 
     @Override
     public NullType execute() {
         if (firstTime) {
             firstTime = false;
-            Scope.pushCurrentScopeInstance(scope.makeScopeInstanceFromCurrentScope());
+            ASScope.pushCurrentScopeInstance(scope.makeScopeInstanceFromCurrentScope());
         }
         if (condition.eval().boolValue() && !sortir) {
-            Scope.popCurrentScopeInstance();
-            Scope.pushCurrentScopeInstance(scope.makeScopeInstanceFromCurrentScope());
+            ASScope.popCurrentScopeInstance();
+            ASScope.pushCurrentScopeInstance(scope.makeScopeInstanceFromCurrentScope());
             if (isBoucleFaire)
                 executeurInstance.obtenirCoordRunTime().recommencerLeBlocActuel();
             else

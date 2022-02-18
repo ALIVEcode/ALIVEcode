@@ -1,51 +1,52 @@
 package interpreteur.as.modules.builtins;
 
-import interpreteur.as.Objets.Nombre;
+import interpreteur.as.lang.ASConstante;
+import interpreteur.as.lang.ASFonctionModule;
+import interpreteur.as.lang.datatype.*;
 import interpreteur.as.erreurs.ASErreur;
-import interpreteur.as.Objets.ASObjet;
-import interpreteur.as.modules.ASModule;
+import interpreteur.as.lang.ASTypeBuiltin;
+import interpreteur.as.modules.core.ASModule;
 import interpreteur.ast.buildingBlocs.expressions.Type;
 import interpreteur.executeur.Executeur;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class BuiltinsNombreUtils {
 
-    public static ASObjet.Fonction[] fonctions = new ASObjet.Fonction[]{
-            new ASObjet.Fonction("entier", new ASObjet.Fonction.Parametre[]{
-                    new ASObjet.Fonction.Parametre(ASObjet.TypeBuiltin.texte.asType(), "txt", null),
-                    new ASObjet.Fonction.Parametre(ASObjet.TypeBuiltin.entier.asType(), "base", new ASObjet.Entier(10))
+    public static ASFonctionModule[] fonctions = new ASFonctionModule[]{
+            new ASFonctionModule("entier", new ASFonctionModule.Parametre[]{
+                    new ASFonctionModule.Parametre(ASTypeBuiltin.texte.asType(), "txt", null),
+                    new ASFonctionModule.Parametre(ASTypeBuiltin.entier.asType(), "base", new ASEntier(10))
             }, new Type("entier")) {
                 @Override
-                public Entier executer() {
+                public ASEntier executer() {
                     String valeur = this.getParamsValeursDict().get("txt").toString();
                     int base = (Integer) this.getParamsValeursDict().get("base").getValue();
                     try {
-                        return new Entier(Integer.parseInt(valeur, base));
+                        return new ASEntier(Integer.parseInt(valeur, base));
                     } catch (NumberFormatException ignored) {
                         throw new ASErreur.ErreurType("impossible de convertir '" + valeur + "' en nombre entier de base " + base);
                     }
                 }
             },
 
-            new ASObjet.Fonction("abs", new ASObjet.Fonction.Parametre[]{
-                    new ASObjet.Fonction.Parametre(new Type("nombre"), "x", null)
+            new ASFonctionModule("abs", new ASFonctionModule.Parametre[]{
+                    new ASFonctionModule.Parametre(new Type("nombre"), "x", null)
             }, new Type("nombre")) {
                 @Override
                 public ASObjet<?> executer() {
-                    return new Decimal(Math.abs(((Number) this.getValeurParam("x").getValue()).doubleValue()));
+                    return new ASDecimal(Math.abs(((Number) this.getValeurParam("x").getValue()).doubleValue()));
                 }
             },
 
-            new ASObjet.Fonction("decimal", new ASObjet.Fonction.Parametre[]{
-                    new ASObjet.Fonction.Parametre(ASObjet.TypeBuiltin.texte.asType(), "txt", null)
+            new ASFonctionModule("decimal", new ASFonctionModule.Parametre[]{
+                    new ASFonctionModule.Parametre(ASTypeBuiltin.texte.asType(), "txt", null)
             }, new Type("decimal")) {
                 @Override
-                public Decimal executer() {
+                public ASDecimal executer() {
                     try {
-                        return new Decimal(Double.parseDouble(this.getParamsValeursDict().get("txt").toString()));
+                        return new ASDecimal(Double.parseDouble(this.getParamsValeursDict().get("txt").toString()));
                     } catch (NumberFormatException ignored) {
                         throw new ASErreur.ErreurType("impossible de convertir '" + this.getParamsValeursDict().get("element").toString() + "' en nombre decimal");
                     }
@@ -53,32 +54,32 @@ public class BuiltinsNombreUtils {
             },
 
 
-            new ASObjet.Fonction("nombre", new ASObjet.Fonction.Parametre[]{
-                    new ASObjet.Fonction.Parametre(ASObjet.TypeBuiltin.texte.asType(), "txt", null)
+            new ASFonctionModule("nombre", new ASFonctionModule.Parametre[]{
+                    new ASFonctionModule.Parametre(ASTypeBuiltin.texte.asType(), "txt", null)
             }, new Type("decimal")) {
                 @Override
-                public Nombre executer() {
+                public ASNombre executer() {
                     String nb = this.getParamsValeursDict().get("txt").toString();
-                    if (!Nombre.estNumerique(nb))
+                    if (!ASNombre.estNumerique(nb))
                         throw new ASErreur.ErreurType("Impossible de convertir " + nb + " en nombre entier ou d\u00E9cimal.");
 
                     boolean estDecimal = nb.contains(".");
-                    if (estDecimal) return new Decimal(Double.parseDouble(nb));
-                    else return new Entier(Integer.parseInt(nb));
+                    if (estDecimal) return new ASDecimal(Double.parseDouble(nb));
+                    else return new ASEntier(Integer.parseInt(nb));
                 }
             },
 
 
-            new ASObjet.Fonction("bin", new ASObjet.Fonction.Parametre[]{
-                    new ASObjet.Fonction.Parametre(new Type("entier"), "nb", null)
+            new ASFonctionModule("bin", new ASFonctionModule.Parametre[]{
+                    new ASFonctionModule.Parametre(new Type("entier"), "nb", null)
             }, new Type("texte")) {
                 @Override
-                public Texte executer() {
-                    return new Texte(Integer.toBinaryString((Integer) this.getValeurParam("nb").getValue()));
+                public ASTexte executer() {
+                    return new ASTexte(Integer.toBinaryString((Integer) this.getValeurParam("nb").getValue()));
                 }
             }
     };
-    public static List<ASObjet.Constante> constantes = Collections.emptyList();
+    public static List<ASConstante> constantes = Collections.emptyList();
 
     public ASModule charger(Executeur executeurInstance) {
         return null;

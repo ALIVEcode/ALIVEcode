@@ -1,8 +1,7 @@
 package interpreteur.ast.buildingBlocs.programmes;
 
-import interpreteur.as.Objets.Scope;
+import interpreteur.as.lang.ASScope;
 import interpreteur.ast.buildingBlocs.Expression;
-import interpreteur.ast.buildingBlocs.Programme;
 import interpreteur.executeur.Coordonnee;
 import interpreteur.executeur.Executeur;
 import interpreteur.tokens.Token;
@@ -16,33 +15,33 @@ public class BoucleRepeter extends Boucle {
     private final Expression<?> nbFois;
     private Integer end = null;
     private int current = 0;
-    private final Scope scope;
+    private final ASScope scope;
 
     public BoucleRepeter(Expression<?> nbFois, Executeur executeurInstance) {
         super("repeter", executeurInstance);
         this.nbFois = nbFois;
-        this.scope = Scope.makeNewCurrentScope();
+        this.scope = ASScope.makeNewCurrentScope();
     }
 
     public void sortir() {
         current = 0;
         end = null;
         sortir = false;
-        Scope.popCurrentScopeInstance();
+        ASScope.popCurrentScopeInstance();
     }
 
     @Override
     public NullType execute() {
         // first time
         if (end == null) {
-            Scope.pushCurrentScopeInstance(this.scope.makeScopeInstanceFromCurrentScope());
+            ASScope.pushCurrentScopeInstance(this.scope.makeScopeInstanceFromCurrentScope());
             end = (Integer) nbFois.eval().getValue();
         }
 
         // other times
         if (current++ < end && !sortir) {
-            Scope.popCurrentScopeInstance();
-            Scope.pushCurrentScopeInstance(this.scope.makeScopeInstanceFromCurrentScope());
+            ASScope.popCurrentScopeInstance();
+            ASScope.pushCurrentScopeInstance(this.scope.makeScopeInstanceFromCurrentScope());
             executeurInstance.obtenirCoordRunTime().nouveauBloc("repeter");
         }
         else sortir();

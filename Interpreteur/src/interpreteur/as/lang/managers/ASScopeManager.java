@@ -1,10 +1,12 @@
-package interpreteur.as.Objets;
+package interpreteur.as.lang.managers;
+
+import interpreteur.as.lang.ASScope;
 
 import java.util.Stack;
 
-public class ScopeManager {
-    private final Stack<Scope> scopeStack = new Stack<>();
-    private final Stack<Scope.ScopeInstance> scopeInstanceStack = new Stack<>();
+public class ASScopeManager {
+    private final Stack<ASScope> scopeStack = new Stack<>();
+    private final Stack<ASScope.ScopeInstance> scopeInstanceStack = new Stack<>();
 
 
     /**
@@ -12,21 +14,21 @@ public class ScopeManager {
      *
      * @return the new scope
      */
-    public Scope makeNewCurrentScope() {
-        Scope scope = new Scope();
+    public ASScope makeNewCurrentScope() {
+        ASScope scope = new ASScope();
         updateCurrentScope(scope);
         return scope;
     }
 
-    public Stack<Scope> getScopeStack() {
+    public Stack<ASScope> getScopeStack() {
         return scopeStack;
     }
 
-    public Scope getCurrentScope() {
+    public ASScope getCurrentScope() {
         return scopeStack.peek();
     }
 
-    public void updateCurrentScope(Scope scope) {
+    public void updateCurrentScope(ASScope scope) {
         scopeStack.push(scope);
     }
 
@@ -35,15 +37,15 @@ public class ScopeManager {
     }
 
 
-    public Stack<Scope.ScopeInstance> getScopeInstanceStack() {
+    public Stack<ASScope.ScopeInstance> getScopeInstanceStack() {
         return scopeInstanceStack;
     }
 
-    public Scope.ScopeInstance getCurrentScopeInstance() {
+    public ASScope.ScopeInstance getCurrentScopeInstance() {
         return scopeInstanceStack.peek();
     }
 
-    public void pushCurrentScopeInstance(Scope.ScopeInstance scopeInstance) {
+    public void pushCurrentScopeInstance(ASScope.ScopeInstance scopeInstance) {
         scopeInstanceStack.push(scopeInstance);
     }
 

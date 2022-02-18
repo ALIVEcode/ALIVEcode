@@ -1,6 +1,6 @@
 package interpreteur.ast.buildingBlocs.programmes;
 
-import interpreteur.as.Objets.Nombre;
+import interpreteur.as.lang.datatype.ASNombre;
 import interpreteur.as.erreurs.ASErreur;
 import interpreteur.ast.buildingBlocs.Expression;
 import interpreteur.ast.buildingBlocs.Programme;
@@ -19,7 +19,7 @@ public class MethodeMoteur extends Programme {
 
     @Override
     public Data execute() {
-        if (this.valeur != null && !(this.valeur.eval() instanceof Nombre)) {
+        if (this.valeur != null && !(this.valeur.eval() instanceof ASNombre)) {
             throw new ASErreur.ErreurType("Le param\u00E8tres 'temps' est de type 'nombre'," +
                     " mais l'argument pass\u00E9 est de type '" + this.valeur.eval().obtenirNomType() + "'.");
         }

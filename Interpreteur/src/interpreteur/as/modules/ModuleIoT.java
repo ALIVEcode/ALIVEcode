@@ -1,91 +1,93 @@
 package interpreteur.as.modules;
 
-import interpreteur.as.Objets.ASObjet;
-import interpreteur.as.Objets.Nombre;
+import interpreteur.as.lang.ASFonctionModule;
+import interpreteur.as.lang.datatype.*;
 import interpreteur.as.erreurs.ASErreur;
+import interpreteur.as.lang.ASTypeBuiltin;
+import interpreteur.as.modules.core.ASModule;
 import interpreteur.data_manager.Data;
 import interpreteur.executeur.Executeur;
 
 public class ModuleIoT {
     static ASModule charger(Executeur executeurInstance) {
-        return new ASModule(new ASObjet.Fonction[] {
-                new ASObjet.Fonction("update",
-                        new ASObjet.Fonction.Parametre[] {
-                            new ASObjet.Fonction.Parametre(
-                                    ASObjet.TypeBuiltin.texte.asType(),
+        return new ASModule(new ASFonctionModule[] {
+                new ASFonctionModule("update",
+                        new ASFonctionModule.Parametre[] {
+                            new ASFonctionModule.Parametre(
+                                    ASTypeBuiltin.texte.asType(),
                                     "projectId",
                                     null
                             ),
-                            new ASObjet.Fonction.Parametre(
-                                    ASObjet.TypeBuiltin.texte.asType(),
+                            new ASFonctionModule.Parametre(
+                                    ASTypeBuiltin.texte.asType(),
                                     "id",
                                     null
                             ),
-                            new ASObjet.Fonction.Parametre(
-                                    ASObjet.TypeBuiltin.tout.asType(),
+                            new ASFonctionModule.Parametre(
+                                    ASTypeBuiltin.tout.asType(),
                                     "value",
                                     null
                             )
-                        }, ASObjet.TypeBuiltin.nombre.asType()) {
+                        }, ASTypeBuiltin.nombre.asType()) {
                     @Override
                     public ASObjet<?> executer() {
-                        Texte projectId = (Texte) this.getValeurParam("projectId");
-                        Texte id = (Texte) this.getValeurParam("id");
+                        ASTexte projectId = (ASTexte) this.getValeurParam("projectId");
+                        ASTexte id = (ASTexte) this.getValeurParam("id");
                         ASObjet<?> valueAs = (ASObjet<?>) this.getValeurParam("value");
 
                         executeurInstance.addData(new Data(Data.Id.UPDATE_COMPONENT).addParam(projectId).addParam(id).addParam(valueAs.getValue()));
-                        return new Nul();
+                        return new ASNul();
                     }
                 },
-                new ASObjet.Fonction("get",
-                        new ASObjet.Fonction.Parametre[] {
-                                new ASObjet.Fonction.Parametre(
-                                        ASObjet.TypeBuiltin.texte.asType(),
+                new ASFonctionModule("get",
+                        new ASFonctionModule.Parametre[] {
+                                new ASFonctionModule.Parametre(
+                                        ASTypeBuiltin.texte.asType(),
                                         "key",
-                                        new ASObjet.Nul()
+                                        new ASNul()
                                 )
-                        }, ASObjet.TypeBuiltin.nombre.asType()) {
+                        }, ASTypeBuiltin.nombre.asType()) {
                     @Override
                     public ASObjet<?> executer() {
                         ASObjet<?> uncastedKey = (ASObjet<?>) this.getValeurParam("key");
-                        if(uncastedKey instanceof Nul) {
-                            return new Texte(executeurInstance.getContext().toString());
+                        if(uncastedKey instanceof ASNul) {
+                            return new ASTexte(executeurInstance.getContext().toString());
                         }
 
-                        Texte key = (Texte) uncastedKey;
+                        ASTexte key = (ASTexte) uncastedKey;
 
                         Object obj = executeurInstance.getContext().get(key.toString());
                         if(obj == null) {
                             throw new ModuleIoT.KeyNotPresent("Erreur, la clé " + key + " n'est pas présente dans l'objet de réponse.");
                         }
                         if(obj instanceof String) {
-                            return new Texte(obj);
+                            return new ASTexte(obj);
                         }
                         if(obj instanceof Number) {
-                            return Nombre.cast((Number) obj);
+                            return ASNombre.cast((Number) obj);
                         }
                         if(obj instanceof Boolean) {
-                            return new Booleen((Boolean) obj);
+                            return new ASBooleen((Boolean) obj);
                         }
-                        return new Nul();
+                        return new ASNul();
                     }
                 },
-                new ASObjet.Fonction("getComponentValue",
-                        new ASObjet.Fonction.Parametre[] {
-                                new ASObjet.Fonction.Parametre(
-                                        ASObjet.TypeBuiltin.texte.asType(),
+                new ASFonctionModule("getComponentValue",
+                        new ASFonctionModule.Parametre[] {
+                                new ASFonctionModule.Parametre(
+                                        ASTypeBuiltin.texte.asType(),
                                         "projectId",
                                         null
                                 ),
-                                new ASObjet.Fonction.Parametre(
-                                        ASObjet.TypeBuiltin.texte.asType(),
+                                new ASFonctionModule.Parametre(
+                                        ASTypeBuiltin.texte.asType(),
                                         "id",
                                         null
                                 )
-                        }, ASObjet.TypeBuiltin.nombre.asType()) {
+                        }, ASTypeBuiltin.nombre.asType()) {
                     @Override
                     public ASObjet<?> executer() {
-                        return new Nul();
+                        return new ASNul();
                     }
                 }
         });

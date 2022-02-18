@@ -1,5 +1,5 @@
 import { Exclude } from 'class-transformer';
-import { IsEmpty, IsNotEmpty } from 'class-validator';
+import { IsEmpty, IsNotEmpty, Validate, ValidateIf } from 'class-validator';
 import { Column, Entity, ManyToOne, OneToMany, ManyToMany } from 'typeorm';
 import { CreatedByUser } from '../../../generics/entities/createdByUser.entity';
 import { ClassroomEntity } from '../../classroom/entities/classroom.entity';
@@ -55,6 +55,10 @@ export class CourseEntity extends CreatedByUser {
 
   @OneToMany(() => CourseElement, content => content.courseParent)
   elements: CourseElement[];
+
+  @ValidateIf((lst: any) => Array.isArray(lst) && lst.every(el => Number.isInteger(el)))
+  @Column({ type: 'json', default: [] })
+  elements_order: number[];
 
   @Exclude({ toClassOnly: true })
   @ManyToMany(() => ClassroomEntity, classroom => classroom.courses)

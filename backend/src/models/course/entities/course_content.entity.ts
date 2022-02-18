@@ -32,7 +32,7 @@ export class CourseElement {
   activity: ActivityEntity;
 
   /** If the element is a section **/
-  @OneToOne(() => SectionEntity, sect => sect.course_elements)
+  @OneToOne(() => SectionEntity, sect => sect.course_element)
   @JoinColumn()
   section: SectionEntity;
 

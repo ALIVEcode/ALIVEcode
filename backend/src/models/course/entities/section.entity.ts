@@ -1,5 +1,5 @@
 import { Exclude } from 'class-transformer';
-import { IsEmpty, IsNotEmpty, Length } from 'class-validator';
+import { IsEmpty, IsNotEmpty, Length, ValidateIf } from 'class-validator';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne } from 'typeorm';
 import { CourseElement } from './course_content.entity';
 
@@ -27,6 +27,10 @@ export class SectionEntity {
   @OneToMany(() => CourseElement, content => content.sectionParent)
   elements: CourseElement[];
 
+  @ValidateIf((lst: any) => Array.isArray(lst) && lst.every(el => Number.isInteger(el)))
+  @Column({ type: 'json', default: [] })
+  elements_order: number[];
+
   @OneToOne(() => CourseElement)
-  course_elements: CourseElement;
+  course_element: CourseElement;
 }

@@ -2,7 +2,6 @@ import { Exclude } from 'class-transformer';
 import { IsEmpty, IsNotEmpty } from 'class-validator';
 import { Column, Entity, ManyToOne, OneToMany, ManyToMany } from 'typeorm';
 import { CreatedByUser } from '../../../generics/entities/createdByUser.entity';
-import { SectionEntity } from './section.entity';
 import { ClassroomEntity } from '../../classroom/entities/classroom.entity';
 import { CourseElement } from './course_content.entity';
 import { ProfessorEntity } from '../../user/entities/user.entity';

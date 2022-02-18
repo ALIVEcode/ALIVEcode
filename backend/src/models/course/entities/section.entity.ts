@@ -1,7 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { IsEmpty, IsNotEmpty, Length } from 'class-validator';
-import { Entity, Column, ManyToOne, PrimaryGeneratedColumn, OneToMany, OneToOne } from 'typeorm';
-import { CourseEntity } from './course.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne } from 'typeorm';
 import { CourseElement } from './course_content.entity';
 
 @Entity()

@@ -6,7 +6,7 @@ import interpreteur.as.lang.datatype.*;
 import interpreteur.as.erreurs.ASErreur;
 import interpreteur.as.lang.ASTypeBuiltin;
 import interpreteur.as.modules.core.ASModule;
-import interpreteur.ast.buildingBlocs.expressions.Type;
+import interpreteur.as.lang.ASType;
 import interpreteur.executeur.Executeur;
 
 import java.util.*;
@@ -26,7 +26,7 @@ public class BuiltinsListeUtils {
              */
             new ASFonctionModule("liste", new ASFonctionModule.Parametre[]{
                     new ASFonctionModule.Parametre(ASTypeBuiltin.texte.asType(), "txt", null),
-            }, new Type("liste")) {
+            }, new ASType("liste")) {
                 @Override
                 public ASObjet<?> executer() {
                     ASTexte texte = (ASTexte) this.getParamsValeursDict().get("txt");
@@ -46,7 +46,7 @@ public class BuiltinsListeUtils {
              */
             new ASFonctionModule("inv", new ASFonctionModule.Parametre[]{
                     new ASFonctionModule.Parametre(ASTypeBuiltin.iterable.asType(), "iter", null),
-            }, new Type("iterable")) {
+            }, new ASType("iterable")) {
                 @Override
                 public ASObjet<?> executer() {
                     ASIterable element = (ASIterable) this.getValeurParam("iter");
@@ -77,9 +77,9 @@ public class BuiltinsListeUtils {
              * 		@return la liste formee suite a l'application de la fonction sur chaque element de la liste
              */
             new ASFonctionModule("map", new ASFonctionModule.Parametre[]{
-                    new ASFonctionModule.Parametre(new Type("fonction"), "f", null),
-                    new ASFonctionModule.Parametre(new Type("liste"), "lst", null)
-            }, new Type("liste")) {
+                    new ASFonctionModule.Parametre(new ASType("fonction"), "f", null),
+                    new ASFonctionModule.Parametre(new ASType("liste"), "lst", null)
+            }, new ASType("liste")) {
                 @Override
                 public ASObjet<?> executer() {
                     ASListe liste = (ASListe) this.getParamsValeursDict().get("lst");
@@ -117,7 +117,7 @@ public class BuiltinsListeUtils {
             new ASFonctionModule("filtrer", new ASFonctionModule.Parametre[]{
                     new ASFonctionModule.Parametre(ASTypeBuiltin.fonctionType.asType(), "f", null),
                     new ASFonctionModule.Parametre(ASTypeBuiltin.liste.asType(), "lst", null)
-            }, new Type("liste")) {
+            }, new ASType("liste")) {
                 @Override
                 public ASObjet<?> executer() {
                     ASListe liste = (ASListe) this.getParamsValeursDict().get("lst");
@@ -158,7 +158,7 @@ public class BuiltinsListeUtils {
             new ASFonctionModule("joindre", new ASFonctionModule.Parametre[]{
                     new ASFonctionModule.Parametre(ASTypeBuiltin.liste.asType(), "lst", null),
                     new ASFonctionModule.Parametre(ASTypeBuiltin.texte.asType(), "separateur", new ASTexte(""))
-            }, new Type("texte")) {
+            }, new ASType("texte")) {
                 @Override
                 public ASObjet<?> executer() {
                     ASListe liste = (ASListe) this.getParamsValeursDict().get("lst");
@@ -173,8 +173,8 @@ public class BuiltinsListeUtils {
             },
 
             new ASFonctionModule("somme", new ASFonctionModule.Parametre[]{
-                    new ASFonctionModule.Parametre(new Type("liste"), "lst", null)
-            }, new Type("nombre")) {
+                    new ASFonctionModule.Parametre(new ASType("liste"), "lst", null)
+            }, new ASType("nombre")) {
                 @Override
                 public ASObjet<?> executer() {
                     ASListe liste = (ASListe) this.getParamsValeursDict().get("lst");
@@ -184,8 +184,8 @@ public class BuiltinsListeUtils {
             },
 
             new ASFonctionModule("max", new ASFonctionModule.Parametre[]{
-                    new ASFonctionModule.Parametre(new Type("liste"), "lst", null)
-            }, new Type("nombre")) {
+                    new ASFonctionModule.Parametre(new ASType("liste"), "lst", null)
+            }, new ASType("nombre")) {
                 @Override
                 public ASObjet<?> executer() {
                     ASListe liste = (ASListe) this.getParamsValeursDict().get("lst");
@@ -198,8 +198,8 @@ public class BuiltinsListeUtils {
             },
 
             new ASFonctionModule("min", new ASFonctionModule.Parametre[]{
-                    new ASFonctionModule.Parametre(new Type("liste"), "lst", null)
-            }, new Type("nombre")) {
+                    new ASFonctionModule.Parametre(new ASType("liste"), "lst", null)
+            }, new ASType("nombre")) {
                 @Override
                 public ASObjet<?> executer() {
                     ASListe liste = (ASListe) this.getParamsValeursDict().get("lst");
@@ -215,9 +215,9 @@ public class BuiltinsListeUtils {
              * Agit comme un addAll
              */
             new ASFonctionModule("unir", new ASFonctionModule.Parametre[]{
-                    new ASFonctionModule.Parametre(new Type("liste"), "lst1", null),
-                    new ASFonctionModule.Parametre(new Type("liste"), "lst2", null)
-            }, new Type("liste")) {
+                    new ASFonctionModule.Parametre(new ASType("liste"), "lst1", null),
+                    new ASFonctionModule.Parametre(new ASType("liste"), "lst2", null)
+            }, new ASType("liste")) {
                 @Override
                 public ASObjet<?> executer() {
                     ASListe liste1 = (ASListe) this.getParamsValeursDict().get("lst1");
@@ -240,7 +240,7 @@ public class BuiltinsListeUtils {
              */
             new ASFonctionModule("tailleDe", new ASFonctionModule.Parametre[]{
                     new ASFonctionModule.Parametre(ASTypeBuiltin.iterable.asType(), "iter", null)
-            }, new Type("entier")) {
+            }, new ASType("entier")) {
                 @Override
                 public ASObjet<?> executer() {
                     ASIterable val = (ASIterable) this.getParamsValeursDict().get("iter");
@@ -251,7 +251,7 @@ public class BuiltinsListeUtils {
             new ASFonctionModule("indexDe", new ASFonctionModule.Parametre[]{
                     new ASFonctionModule.Parametre(ASTypeBuiltin.tout.asType(), "valeur", null),
                     new ASFonctionModule.Parametre(ASTypeBuiltin.iterable.asType(), "iter", null)
-            }, new Type("entier")) {
+            }, new ASType("entier")) {
                 @Override
                 public ASObjet<?> executer() {
                     ASIterable iter = (ASIterable) this.getParamsValeursDict().get("iter");

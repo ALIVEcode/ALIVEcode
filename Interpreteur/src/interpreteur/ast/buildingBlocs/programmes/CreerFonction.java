@@ -8,7 +8,7 @@ import interpreteur.as.lang.managers.ASFonctionManager;
 import interpreteur.ast.buildingBlocs.Programme;
 import interpreteur.ast.buildingBlocs.expressions.Argument;
 import interpreteur.ast.buildingBlocs.expressions.Var;
-import interpreteur.ast.buildingBlocs.expressions.Type;
+import interpreteur.as.lang.ASType;
 import interpreteur.executeur.Coordonnee;
 import interpreteur.executeur.Executeur;
 import interpreteur.tokens.Token;
@@ -22,15 +22,15 @@ public class CreerFonction extends Programme {
     private final ASScope scope;
     private final Var var;
     private final List<Argument> args;
-    private final Type typeRetour;
+    private final ASType typeRetour;
 
-    public CreerFonction(Var var, Argument[] args, Type typeRetour, Executeur executeurInstance) {
+    public CreerFonction(Var var, Argument[] args, ASType typeRetour, Executeur executeurInstance) {
         super(executeurInstance);
         this.var = var;
         this.args = Arrays.asList(args);
         this.typeRetour = typeRetour;
         // declare fonction
-        ASScope.getCurrentScope().declarerVariable(new ASVariable(var.getNom(), null, new Type("fonctionType")));
+        ASScope.getCurrentScope().declarerVariable(new ASVariable(var.getNom(), null, new ASType("fonctionType")));
         this.scope = ASScope.makeNewCurrentScope();
     }
 

@@ -1,22 +1,22 @@
+import { faCheckCircle, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { plainToClass } from 'class-transformer';
+import { useContext, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Section } from '../../../Models/Course/section.entity';
+import { CourseContext } from '../../../state/contexts/CourseContext';
+import { ThemeContext } from '../../../state/contexts/ThemeContext';
+import useRoutes from '../../../state/hooks/useRoutes';
+import IconButton from '../../DashboardComponents/IconButton/IconButton';
 import CenteredContainer from '../../UtilsComponents/CenteredContainer/CenteredContainer';
+import Form from '../../UtilsComponents/Form/Form';
+import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
+import FormModal from '../../UtilsComponents/FormModal/FormModal';
+import Link from '../../UtilsComponents/Link/Link';
+import CourseSection from '../CourseSection/CourseSection';
 import {
 	CourseNavigationProps,
 	StyledCourseNavigation,
 } from './courseNavigationTypes';
-import { useContext, useRef, useState } from 'react';
-import { CourseContext } from '../../../state/contexts/CourseContext';
-import CourseSection from '../CourseSection/CourseSection';
-import useRoutes from '../../../state/hooks/useRoutes';
-import { ThemeContext } from '../../../state/contexts/ThemeContext';
-import Link from '../../UtilsComponents/Link/Link';
-import FormModal from '../../UtilsComponents/FormModal/FormModal';
-import Form from '../../UtilsComponents/Form/Form';
-import { Section } from '../../../Models/Course/section.entity';
-import { plainToClass } from 'class-transformer';
-import { useTranslation } from 'react-i18next';
-import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
-import IconButton from '../../DashboardComponents/IconButton/IconButton';
-import { faCheckCircle, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Navigation menu of a course containing all the sections and activities
@@ -24,7 +24,7 @@ import { faCheckCircle, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
  * @author MoSk3
  */
 const CourseNavigation = (props: CourseNavigationProps) => {
-	const { course, addSection, canEdit, isNavigationOpen, setTitle } =
+	const { course, canEdit, isNavigationOpen, setTitle } =
 		useContext(CourseContext);
 	const { theme } = useContext(ThemeContext);
 	const { routes, goTo } = useRoutes();
@@ -120,7 +120,6 @@ const CourseNavigation = (props: CourseNavigationProps) => {
 				setOpen={setOpenModalSection}
 				onSubmit={res => {
 					const section: Section = plainToClass(Section, res.data);
-					addSection(section);
 					setOpenModalSection(false);
 				}}
 			>

@@ -1,39 +1,45 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import axios from 'axios';
-import { loadObj } from './utils';
 import { ClassConstructor, plainToClass } from 'class-transformer';
+import { CourseElement } from '../state/contexts/CourseContext';
+import { CompileDTO } from './ASModels';
+import { AsScript } from './AsScript/as-script.entity';
+import { Classroom } from './Classroom/classroom.entity';
+import { Activity } from './Course/activity.entity';
 import { Course } from './Course/course.entity';
 import { Section } from './Course/section.entity';
-import { Classroom } from './Classroom/classroom.entity';
-import { Professor, Student, User } from './User/user.entity';
+import { CategorySubject } from './Forum/categorySubject.entity';
+import { Post } from './Forum/post.entity';
+import { IoTObject } from './Iot/IoTobject.entity';
 import {
 	IoTProject,
 	IoTProjectDocument,
 	IoTProjectLayout,
 } from './Iot/IoTproject.entity';
 import { IotRoute } from './Iot/IoTroute.entity';
+import { ClassroomQueryDTO } from './Level/dto/ClassroomQueryDTO';
+import { LevelQueryDTO } from './Level/dto/LevelQuery.dto';
 import { Level, LEVEL_TYPE } from './Level/level.entity';
+import { LevelAI } from './Level/levelAI.entity';
 import { LevelAlive } from './Level/levelAlive.entity';
 import { LevelCode } from './Level/levelCode.entity';
-import { LevelProgression } from './Level/levelProgression';
-import { LevelAI } from './Level/levelAI.entity';
-import { IoTObject } from './Iot/IoTobject.entity';
-import { Category } from './Quiz/categories-quiz.entity';
-import { QuizForm } from './Quiz/quizForm.entity';
-import { QuestionForm } from './Quiz/questionForm.entity';
-import { Answer } from './Quiz/answer.entity';
-import { CategorySubject } from './Forum/categorySubject.entity';
-import { Activity } from './Course/activity.entity';
-import { Maintenance } from './Maintenance/maintenance.entity';
-import { Result } from './Social/result.entity';
-import { CompileDTO } from './ASModels';
-import { AsScript } from './AsScript/as-script.entity';
 import { LevelIoT } from './Level/levelIoT.entity';
+import { LevelProgression } from './Level/levelProgression';
+import { Maintenance } from './Maintenance/maintenance.entity';
+import { Answer } from './Quiz/answer.entity';
+import { Category } from './Quiz/categories-quiz.entity';
+import { QuestionForm } from './Quiz/questionForm.entity';
 import { Quiz } from './Quiz/quiz.entity';
+import { QuizForm } from './Quiz/quizForm.entity';
+import { Result } from './Social/result.entity';
 import { Topics } from './Social/topics.entity';
-import { Post } from './Forum/post.entity';
-import { LevelQueryDTO } from './Level/dto/LevelQuery.dto';
-import { ClassroomQueryDTO } from './Level/dto/ClassroomQueryDTO';
+import { Professor, Student } from './User/user.entity';
+import { loadObj } from './utils';
+
+export type ResultElementCreated = {
+	element: CourseElement;
+	newOrder: number[];
+};
 
 type urlArgType<S extends string> = S extends `${infer _}:${infer A}/${infer B}`
 	? A | urlArgType<B>
@@ -223,19 +229,36 @@ const api = {
 				);
 			},
 			addActivity: async (
-				courseId: string,
-				sectionId: number,
+				course_id: string,
 				activity: Activity,
+				sectionParent_id?: number,
 			) => {
-				return plainToClass(
-					Activity,
-					(
-						await axios.post(
-							`courses/${courseId}/sections/${sectionId}/activities`,
-							activity,
-						)
-					).data,
-				);
+				const contentAndOrder = (
+					await axios.post(`courses/${course_id}/addcontent`, {
+						activity,
+						sectionParent_id,
+					})
+				).data;
+				return {
+					element: plainToClass(CourseElement, contentAndOrder.element),
+					newOrder: contentAndOrder.newOrder,
+				} as ResultElementCreated;
+			},
+			addSection: async (
+				course_id: string,
+				section: Section,
+				sectionParent_id?: number,
+			) => {
+				const contentAndOrder = (
+					await axios.post(`courses/${course_id}/addcontent`, {
+						section,
+						sectionParent_id,
+					})
+				).data;
+				return {
+					element: plainToClass(CourseElement, contentAndOrder.element),
+					newOrder: contentAndOrder.newOrder,
+				} as ResultElementCreated;
 			},
 			updateActivity: apiUpdate(
 				'courses/:courseId/sections/:sectionId/activities/:activityId/content',

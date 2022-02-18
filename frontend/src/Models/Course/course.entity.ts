@@ -1,14 +1,14 @@
-import { Exclude, Type } from 'class-transformer';
-import { CreatedByUser } from '../Generics/createdByUser.entity';
-import { Professor } from '../User/user.entity';
-import api from '../api';
-import { Section } from './section.entity';
 import {
 	faCalculator,
 	faCode,
 	faFlask,
 	faProjectDiagram,
 } from '@fortawesome/free-solid-svg-icons';
+import { Exclude, Type } from 'class-transformer';
+import api from '../api';
+import { CreatedByUser } from '../Generics/createdByUser.entity';
+import { Professor } from '../User/user.entity';
+import { Section } from './section.entity';
 
 export enum COURSE_DIFFICULTY {
 	BEGINNER = 1,

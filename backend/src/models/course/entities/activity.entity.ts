@@ -1,7 +1,7 @@
 import { Exclude } from 'class-transformer';
 import { Entity, PrimaryGeneratedColumn, TableInheritance, Column, OneToOne } from 'typeorm';
 import { IsEmpty, IsNotEmpty, Length } from 'class-validator';
-import { CourseElementEntity } from './course_content.entity';
+import { CourseElementEntity } from './course_element.entity';
 
 export class ActivityContent {
   body: string;

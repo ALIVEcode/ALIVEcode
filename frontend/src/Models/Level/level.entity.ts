@@ -1,7 +1,7 @@
 import { Exclude, Transform, Type, plainToClass } from 'class-transformer';
+import { Activity } from '../Course/activity.entity';
 import { CreatedByUser } from '../Generics/createdByUser.entity';
 import { User, Professor, Student } from '../User/user.entity';
-import { ActivityLevel } from '../Course/activity_level.entity';
 
 export enum LEVEL_TAG {}
 export enum LEVEL_ACCESS {
@@ -51,8 +51,8 @@ export class Level extends CreatedByUser {
 
 	tags: LEVEL_TAG[];
 
-	@Type(() => ActivityLevel)
-	activities?: ActivityLevel[];
+	@Type(() => Activity)
+	activities?: Activity[];
 
 	getTypeDisplay() {
 		if (this.type === LEVEL_TYPE.ALIVE) return 'Car coding';

@@ -38,23 +38,16 @@ export class Course extends CreatedByUser {
 	@Type(() => Professor)
 	creator: Professor;
 
-	// The code consists of letters from a-z and numbers from 0-9 | case non-senstive
 	code: string;
 
 	difficulty: COURSE_DIFFICULTY;
-
 	access: COURSE_ACCESS;
 
 	subject: COURSE_SUBJECT;
 
-	@Type(() => Section)
-	sections: Section[];
+	//elements: CourseElement[];
 
-	async getSections() {
-		if (this.sections) return this.sections;
-		this.sections = await api.db.courses.getSections({ id: this.id });
-		return this.sections;
-	}
+	elements_order: number[];
 
 	getSubjectDisplay() {
 		return this.subject[0].toUpperCase() + this.subject.slice(1);

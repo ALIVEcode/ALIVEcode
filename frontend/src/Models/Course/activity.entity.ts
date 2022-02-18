@@ -1,32 +1,19 @@
 import { Exclude, Type } from 'class-transformer';
-import api from '../api';
-import { ActivityLevel } from './activity_level.entity';
+import { CourseElement } from './course_element.entity';
 
-export class ActivityContent {
-	data: string;
+export enum ACTIVIY_TYPE {
+	THEORY,
+	LEVEL,
+	VIDEO,
 }
 
 export class Activity {
 	@Exclude({ toPlainOnly: true })
 	id: number;
-
 	name: string;
 
-	@Type(() => ActivityContent)
-	content?: ActivityContent;
+	readonly type: ACTIVIY_TYPE;
 
-	@Type(() => ActivityLevel)
-	levels?: ActivityLevel[];
-
-	async getContent(courseId: string, sectionId: number) {
-		if (this.content) return this.content;
-		const { content, levels } = await api.db.courses.getActivityContent(
-			courseId,
-			sectionId,
-			this.id,
-		);
-		this.content = content;
-		this.levels = levels;
-		return this;
-	}
+	@Type(() => CourseElement)
+	course_element: CourseElement;
 }

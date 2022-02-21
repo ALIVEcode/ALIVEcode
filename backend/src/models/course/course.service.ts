@@ -87,8 +87,9 @@ export class CourseService {
     return course;
   }
 
-  async createCourseElement(parent: CourseEntity | SectionEntity, content: CourseContent) {
-    const dto = { ...(parent instanceof CourseEntity ? { courseParent: parent } : { sectionParent: parent }) };
+  async createCourseElement(course: CourseEntity, content: CourseContent, sectionParent?: SectionEntity) {
+    const dto = { course, sectionParent };
+    const parent = sectionParent || course;
     let courseElement: CourseElementEntity;
 
     if (content instanceof SectionEntity) courseElement = await this.courseElRepo.save({ ...dto, section: content });
@@ -165,12 +166,10 @@ export class CourseService {
   }
 
   async createActivity(
-    parentId: string,
+    course: CourseEntity,
     activity: CreateActivityLevelDTO | CreateActivityTheoryDTO | CreateActivityVideoDTO,
+    section?: SectionEntity,
   ) {
-    const parent = validUUID(parentId)
-      ? await this.findOneWithElements(parentId)
-      : await this.findSectionWithElements(parentId);
-    return await this.createCourseElement(parent, activity);
+    return await this.createCourseElement(course, activity, section);
   }
 }

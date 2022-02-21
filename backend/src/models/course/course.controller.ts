@@ -92,7 +92,8 @@ export class CourseController {
     @Param('sectionId') sectionId: string,
     @Body() createActivityDTO: CreateActivityLevelDTO | CreateActivityTheoryDTO | CreateActivityVideoDTO,
   ) {
-    return await this.courseService.createActivity(sectionId, createActivityDTO);
+    const section = await this.courseService.findSectionWithElements(sectionId);
+    return await this.courseService.createActivity(course, createActivityDTO, section);
   }
 
   @Get(':id/sections/:sectionId/activities/:activityId/content')

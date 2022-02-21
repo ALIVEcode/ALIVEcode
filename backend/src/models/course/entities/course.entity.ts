@@ -57,7 +57,7 @@ export class CourseEntity extends CreatedByUser {
   @Column({ enum: COURSE_SUBJECT, nullable: false })
   subject: COURSE_SUBJECT;
 
-  @OneToMany(() => CourseElementEntity, content => content.courseParent)
+  @OneToMany(() => CourseElementEntity, content => content.course)
   elements: CourseElementEntity[];
 
   @ValidateIf((lst: any) => Array.isArray(lst) && lst.every(el => Number.isInteger(el)))

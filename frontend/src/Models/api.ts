@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import axios from 'axios';
 import { ClassConstructor, plainToClass } from 'class-transformer';
-import { CourseElement } from '../state/contexts/CourseContext';
 import { CompileDTO } from './ASModels';
 import { AsScript } from './AsScript/as-script.entity';
 import { Classroom } from './Classroom/classroom.entity';
 import { Activity } from './Course/activity.entity';
 import { Course } from './Course/course.entity';
+import { CourseElement } from './Course/course_element.entity';
 import { Section } from './Course/section.entity';
 import { CategorySubject } from './Forum/categorySubject.entity';
 import { Post } from './Forum/post.entity';

@@ -1,16 +1,8 @@
 import { createContext } from 'react';
 import { Activity } from '../../Models/Course/activity.entity';
 import { Course } from '../../Models/Course/course.entity';
+import { CourseElement } from '../../Models/Course/course_element.entity';
 import { Section } from '../../Models/Course/section.entity';
-
-export declare class CourseElement {
-	id: number;
-	courseParent?: Course;
-	sectionParent?: Section;
-
-	activity?: Activity;
-	section?: Section;
-}
 
 export type CourseContextValues = {
 	course?: Course;

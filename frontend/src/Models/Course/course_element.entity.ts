@@ -5,23 +5,23 @@ import { Section } from './section.entity';
 export class CourseElement {
 	id: number;
 
-	/*****---Parents (only one at a time)---*****/
+	/*****---Parents ---*****/
 
-	/** If the section is at top level, it contains a course parent */
-	courseParent: Course;
+	/** The course that the element belongs to */
+	course: Course;
 
 	/** If the section is not at top level (inside another section), it contains that parent section */
-	sectionParent: Section;
+	sectionParent?: Section;
 
 	/*****---------------------------------*****/
 
 	/*****---Elements (only one at a time)---*****/
 
 	/** If the element is an activity **/
-	activity: Activity;
+	activity?: Activity;
 
 	/** If the element is a section **/
-	section: Section;
+	section?: Section;
 
 	/*****-----------------------------------*****/
 }

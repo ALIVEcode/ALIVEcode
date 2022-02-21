@@ -15,11 +15,11 @@ export class CourseElementEntity {
   /*****---Parents---*****/
 
   /** The course that the element belongs to */
-  @ManyToOne(() => CourseEntity, course => course.elements, { eager: true })
+  @ManyToOne(() => CourseEntity, course => course.elements)
   course: CourseEntity;
 
   /** If the section is not at top level (inside another section), it contains that parent section */
-  @ManyToOne(() => SectionEntity, section => section.elements, { eager: true })
+  @ManyToOne(() => SectionEntity, section => section.elements)
   sectionParent: SectionEntity;
 
   /*****---------------------------------*****/

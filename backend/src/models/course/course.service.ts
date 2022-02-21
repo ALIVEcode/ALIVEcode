@@ -12,10 +12,8 @@ import { Role } from '../../utils/types/roles.types';
 import { ActivityTheoryEntity } from './entities/activities/activity_theory.entity';
 import { ActivityEntity } from './entities/activity.entity';
 import { ActivityLevelEntity } from './entities/activities/activity_level.entity';
-import { CreateActivityLevelDTO, CreateActivityTheoryDTO, CreateActivityVideoDTO } from './dtos/CreateActivitiesDTO';
+import { CreateActivityDTO, CreateActivityTheoryDTO, CreateActivityVideoDTO } from './dtos/CreateActivitiesDTO';
 import { CourseElementEntity } from './entities/course_element.entity';
-import { isUUID } from 'class-validator';
-import { validUUID } from '../../utils/types/validation.types';
 
 @Injectable()
 export class CourseService {
@@ -70,7 +68,7 @@ export class CourseService {
   }
 
   async removeSection(sectionId: string) {
-    const section = await this.findSectionWithElements(sectionId);
+    const section = await this.findSection(sectionId);
     return await this.sectionRepository.remove(section);
   }
 
@@ -85,6 +83,10 @@ export class CourseService {
     const course = await this.courseRepository.findOne(courseId, { relations: ['elements'] });
     if (!course) throw new HttpException('Course not found', HttpStatus.NOT_FOUND);
     return course;
+  }
+
+  async removeCourseElement(course: CourseEntity, content: CourseContent) {
+    return;
   }
 
   async createCourseElement(course: CourseEntity, content: CourseContent, sectionParent?: SectionEntity) {
@@ -103,13 +105,12 @@ export class CourseService {
       ? await this.courseRepository.save(parent)
       : await this.sectionRepository.save(parent);
 
-    return courseElement;
+    return { courseElement, newOrder: parent.elements_order };
   }
 
-  async createSection(courseId: string, createSectionDTO: SectionEntity) {
-    const course = await this.findOneWithElements(courseId);
+  async addSection(course: CourseEntity, createSectionDTO: SectionEntity, sectionParent?: SectionEntity) {
     const section = await this.sectionRepository.save(createSectionDTO);
-    return await this.createCourseElement(course, section);
+    return await this.createCourseElement(course, section, sectionParent);
   }
 
   async filterCourseAccess(course: CourseEntity, user: UserEntity) {
@@ -133,6 +134,14 @@ export class CourseService {
     const section = await this.sectionRepository.findOne({
       where: { id: sectionId },
       relations: ['elements'],
+    });
+    if (!section) throw new HttpException('Section not found', HttpStatus.NOT_FOUND);
+    return section;
+  }
+
+  async findSection(sectionId: string) {
+    const section = await this.sectionRepository.findOne({
+      where: { id: sectionId },
     });
     if (!section) throw new HttpException('Section not found', HttpStatus.NOT_FOUND);
     return section;
@@ -165,11 +174,7 @@ export class CourseService {
     return await this.activityRepository.save({ id: activity.id, ...updateActivityDTO });*/
   }
 
-  async createActivity(
-    course: CourseEntity,
-    activity: CreateActivityLevelDTO | CreateActivityTheoryDTO | CreateActivityVideoDTO,
-    section?: SectionEntity,
-  ) {
-    return await this.createCourseElement(course, activity, section);
+  async addActivity(course: CourseEntity, activity: ActivityEntity, sectionParent?: SectionEntity) {
+    return await this.createCourseElement(course, activity, sectionParent);
   }
 }

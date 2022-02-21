@@ -5,8 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import ActivityContent from '../../Components/CourseComponents/ActivityContent/ActivityContent';
-import CourseNavigation from '../../Components/CourseComponents/CourseNavigation/CourseNavigation';
+import CourseTester from '../../Components/CourseComponents/CourseStructure/CourseTester';
 import FillContainer from '../../Components/UtilsComponents/FillContainer/FillContainer';
 import api from '../../Models/api';
 import { Activity } from '../../Models/Course/activity.entity';
@@ -276,8 +275,9 @@ const Course = () => {
 		<CourseContext.Provider value={contextValue}>
 			<StyledDiv>
 				<FillContainer className="course-body">
-					<CourseNavigation />
-					<ActivityContent />
+					{/*<CourseNavigation />
+					<ActivityContent />*/}
+					<CourseTester />
 				</FillContainer>
 			</StyledDiv>
 		</CourseContext.Provider>

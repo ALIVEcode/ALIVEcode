@@ -66,7 +66,7 @@ export class CourseController {
   @Auth(Role.PROFESSOR, Role.STAFF)
   @UseGuards(CourseProfessor)
   async removeSection(@Course() course: CourseEntity, @Param('sectionId') sectionId: string) {
-    return await this.courseService.removeSection(course.id, sectionId);
+    return await this.courseService.removeSection(sectionId);
   }
 
   @Get(':id/elements')
@@ -81,7 +81,7 @@ export class CourseController {
   @Auth()
   @UseGuards(CourseAccess)
   async getActivities(@Course() course: CourseEntity, @Param('sectionId') sectionId: string) {
-    return (await this.courseService.findSectionWithElements(course.id, sectionId)).elements;
+    return (await this.courseService.findSectionWithElements(sectionId)).elements;
   }
 
   @Post(':id/sections/:sectionId/elements')
@@ -92,7 +92,7 @@ export class CourseController {
     @Param('sectionId') sectionId: string,
     @Body() createActivityDTO: CreateActivityLevelDTO | CreateActivityTheoryDTO | CreateActivityVideoDTO,
   ) {
-    return await this.courseService.addActivity(course.id, sectionId, createActivityDTO);
+    return await this.courseService.createActivity(sectionId, createActivityDTO);
   }
 
   @Get(':id/sections/:sectionId/activities/:activityId/content')
@@ -126,6 +126,6 @@ export class CourseController {
     @Param('sectionId') sectionId: string,
     @Param('activityId') activityId: string,
   ) {
-    return await this.courseService.removeActivity(course.id, sectionId, activityId);
+    return await this.courseService.removeActivity(activityId);
   }
 }

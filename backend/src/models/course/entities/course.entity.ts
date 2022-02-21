@@ -5,6 +5,8 @@ import { CreatedByUser } from '../../../generics/entities/createdByUser.entity';
 import { ClassroomEntity } from '../../classroom/entities/classroom.entity';
 import { CourseElementEntity } from './course_element.entity';
 import { ProfessorEntity } from '../../user/entities/user.entity';
+import { ActivityEntity } from './activity.entity';
+import { SectionEntity } from './section.entity';
 
 export enum COURSE_DIFFICULTY {
   BEGINNER = 1,
@@ -28,6 +30,8 @@ export enum COURSE_SUBJECT {
   MATH = 'MA',
   SCIENCE = 'SC',
 }
+
+export type CourseContent = ActivityEntity | SectionEntity;
 
 @Entity()
 export class CourseEntity extends CreatedByUser {

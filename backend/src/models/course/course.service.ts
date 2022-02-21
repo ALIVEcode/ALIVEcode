@@ -1,6 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CourseEntity } from './entities/course.entity';
+import { CourseContent, CourseEntity } from './entities/course.entity';
 import { Repository } from 'typeorm';
 import { SectionEntity } from './entities/section.entity';
 import { generate } from 'randomstring';
@@ -13,6 +13,9 @@ import { ActivityTheoryEntity } from './entities/activities/activity_theory.enti
 import { ActivityEntity } from './entities/activity.entity';
 import { ActivityLevelEntity } from './entities/activities/activity_level.entity';
 import { CreateActivityLevelDTO, CreateActivityTheoryDTO, CreateActivityVideoDTO } from './dtos/CreateActivitiesDTO';
+import { CourseElementEntity } from './entities/course_element.entity';
+import { isUUID } from 'class-validator';
+import { validUUID } from '../../utils/types/validation.types';
 
 @Injectable()
 export class CourseService {
@@ -23,6 +26,7 @@ export class CourseService {
     @InjectRepository(ActivityTheoryEntity) private actTheoryRepo: Repository<ActivityTheoryEntity>,
     @InjectRepository(ActivityLevelEntity) private actLevelRepo: Repository<ActivityLevelEntity>,
     @InjectRepository(ClassroomEntity) private classroomRepo: Repository<ClassroomEntity>,
+    @InjectRepository(CourseElementEntity) private courseElRepo: Repository<CourseElementEntity>,
     @InjectRepository(StudentEntity) private studentRepo: Repository<StudentEntity>,
   ) {}
 
@@ -65,12 +69,12 @@ export class CourseService {
     return await this.courseRepository.remove(course);
   }
 
-  async removeSection(courseId: string, sectionId: string) {
-    const section = await this.findSectionWithElements(courseId, sectionId);
+  async removeSection(sectionId: string) {
+    const section = await this.findSectionWithElements(sectionId);
     return await this.sectionRepository.remove(section);
   }
 
-  async removeActivity(courseId: string, sectionId: string, activityId: string) {
+  async removeActivity(activityId: string) {
     throw new HttpException('Not implmented', HttpStatus.NOT_IMPLEMENTED);
     /*
     const activity = await this.findActivity(courseId, sectionId, activityId);
@@ -83,17 +87,28 @@ export class CourseService {
     return course;
   }
 
+  async createCourseElement(parent: CourseEntity | SectionEntity, content: CourseContent) {
+    const dto = { ...(parent instanceof CourseEntity ? { courseParent: parent } : { sectionParent: parent }) };
+    let courseElement: CourseElementEntity;
+
+    if (content instanceof SectionEntity) courseElement = await this.courseElRepo.save({ ...dto, section: content });
+    else if (content instanceof ActivityEntity)
+      courseElement = await this.courseElRepo.save({ ...dto, activity: content });
+    else throw new HttpException('Invalid course content', HttpStatus.INTERNAL_SERVER_ERROR);
+
+    parent.elements.push(courseElement);
+    parent.elements_order.push(courseElement.id);
+    parent instanceof CourseEntity
+      ? await this.courseRepository.save(parent)
+      : await this.sectionRepository.save(parent);
+
+    return courseElement;
+  }
+
   async createSection(courseId: string, createSectionDTO: SectionEntity) {
-    throw new HttpException('Not implmented', HttpStatus.NOT_IMPLEMENTED);
-    /*
-    const course = await this.findOneWithSections(courseId);
-
-    const section = this.sectionRepository.create(createSectionDTO);
-    await this.sectionRepository.save(section);
-
-    course.sections.push(section);
-    this.courseRepository.save(course);
-    return section;*/
+    const course = await this.findOneWithElements(courseId);
+    const section = await this.sectionRepository.save(createSectionDTO);
+    return await this.createCourseElement(course, section);
   }
 
   async filterCourseAccess(course: CourseEntity, user: UserEntity) {
@@ -113,10 +128,9 @@ export class CourseService {
     throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
   }
 
-  async findSectionWithElements(courseId: string, sectionId: string) {
-    const course = await this.findOne(courseId);
+  async findSectionWithElements(sectionId: string) {
     const section = await this.sectionRepository.findOne({
-      where: { id: sectionId, course },
+      where: { id: sectionId },
       relations: ['elements'],
     });
     if (!section) throw new HttpException('Section not found', HttpStatus.NOT_FOUND);
@@ -150,20 +164,13 @@ export class CourseService {
     return await this.activityRepository.save({ id: activity.id, ...updateActivityDTO });*/
   }
 
-  async addActivity(
-    courseId: string,
-    sectionId: string,
+  async createActivity(
+    parentId: string,
     activity: CreateActivityLevelDTO | CreateActivityTheoryDTO | CreateActivityVideoDTO,
   ) {
-    throw new HttpException('Not implmented', HttpStatus.NOT_IMPLEMENTED);
-    /*
-    throw new HttpException('Not implmented', HttpStatus.NOT_IMPLEMENTED);
-    activity = this.actTheoryRepo.create(activity);
-    await this.actTheoryRepo.save(activity);
-
-    const section = await this.findSection(courseId, sectionId);
-    //section.activities.push(activity);
-    await this.sectionRepository.save(section);
-    return activity;*/
+    const parent = validUUID(parentId)
+      ? await this.findOneWithElements(parentId)
+      : await this.findSectionWithElements(parentId);
+    return await this.createCourseElement(parent, activity);
   }
 }

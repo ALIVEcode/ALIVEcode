@@ -16,11 +16,13 @@ import { LevelEntity } from '../level/entities/level.entity';
 import { ActivityTheoryEntity } from './entities/activities/activity_theory.entity';
 import { ActivityEntity } from './entities/activity.entity';
 import { ActivityLevelEntity } from './entities/activities/activity_level.entity';
+import { CourseElementEntity } from './entities/course_element.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       CourseEntity,
+      CourseElementEntity,
       SectionEntity,
       ActivityEntity,
       ActivityTheoryEntity,

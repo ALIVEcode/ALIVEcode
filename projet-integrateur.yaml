@@ -1,3 +1,5 @@
 # Ce document présente les différents fichiers modifiés dans le cadre du projet
 
 - frontend\src\state\contexts\CourseContext.ts
+- frontend\src\Models\api.ts
+- frontend\src\Pages\Course\Course.tsx

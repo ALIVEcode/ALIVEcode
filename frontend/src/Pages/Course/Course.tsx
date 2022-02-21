@@ -1,22 +1,22 @@
+import { plainToClass } from 'class-transformer';
+import { useContext, useEffect, useState } from 'react';
+import { useAlert } from 'react-alert';
+import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import ActivityContent from '../../Components/CourseComponents/ActivityContent/ActivityContent';
 import CourseNavigation from '../../Components/CourseComponents/CourseNavigation/CourseNavigation';
 import FillContainer from '../../Components/UtilsComponents/FillContainer/FillContainer';
-import { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../../state/contexts/UserContext';
+import api from '../../Models/api';
+import { Activity } from '../../Models/Course/activity.entity';
+import { Course as CourseModel } from '../../Models/Course/course.entity';
+import { Section } from '../../Models/Course/section.entity';
 import {
 	CourseContext,
-	CourseContentValues,
+	CourseContextValues,
 } from '../../state/contexts/CourseContext';
-import ActivityContent from '../../Components/CourseComponents/ActivityContent/ActivityContent';
-import { Course as CourseModel } from '../../Models/Course/course.entity';
-import api from '../../Models/api';
-import { useTranslation } from 'react-i18next';
-import { useAlert } from 'react-alert';
-import { Section } from '../../Models/Course/section.entity';
-import { plainToClass } from 'class-transformer';
-import { Activity } from '../../Models/Course/activity.entity';
-import { useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router';
+import { UserContext } from '../../state/contexts/UserContext';
 
 const StyledDiv = styled.div`
 	display: flex;
@@ -29,7 +29,7 @@ const StyledDiv = styled.div`
  * Course page that shows the content of a course
  *
  * @param id (as a url parameter)
- * @author MoSk3
+ * @author Enric, Mathis
  */
 const Course = () => {
 	const { user } = useContext(UserContext);
@@ -54,6 +54,42 @@ const Course = () => {
 		course.name = updatedCourse.name;
 
 		setCourse(course);
+	};
+
+	const add = async (element: Activity | Section, sectionParent?: Section) => {
+		if (!course) return;
+
+		const { element: courseElement, newOrder } =
+			element instanceof Section
+				? await api.db.courses.addSection(
+						course?.id,
+						element,
+						sectionParent?.id,
+				  )
+				: await api.db.courses.addActivity(
+						course?.id,
+						element,
+						sectionParent?.id,
+				  );
+
+		if (!sectionParent) {
+			// course.elements_order = newOrder
+			//
+			// setCourse(CourseModel, course);
+		}
+		/*
+		🤷‍♂️ maybe unecessary 🤷‍♂️
+		
+		const sectionFound = course?.sections.find(s => s.id === section.id);
+		if (!sectionFound || !course) return;
+
+		course.sections = course?.sections.map(s => {
+			if (s.id === sectionFound.id)
+				s.activities ? s.activities.push(newAct) : (s.activities = [newAct]);
+			return s;
+		});
+		*/
+		// loadActivity(section, newAct);
 	};
 
 	const saveActivity = async (activity: Activity) => {
@@ -124,19 +160,17 @@ const Course = () => {
 	};
 
 	const addActivity = async (section: Section, newAct: Activity) => {
-		if (!course) return;
-		newAct = await api.db.courses.addActivity(course?.id, section.id, newAct);
-
-		const sectionFound = course?.sections.find(s => s.id === section.id);
-		if (!sectionFound || !course) return;
-
-		course.sections = course?.sections.map(s => {
-			if (s.id === sectionFound.id)
-				s.activities ? s.activities.push(newAct) : (s.activities = [newAct]);
-			return s;
-		});
-		loadActivity(section, newAct);
-		setCourse(plainToClass(CourseModel, course));
+		// if (!course) return;
+		// newAct = await api.db.courses.addActivity(course?.id, section.id, newAct);
+		// const sectionFound = course?.sections.find(s => s.id === section.id);
+		// if (!sectionFound || !course) return;
+		// course.sections = course?.sections.map(s => {
+		// 	if (s.id === sectionFound.id)
+		// 		s.activities ? s.activities.push(newAct) : (s.activities = [newAct]);
+		// 	return s;
+		// });
+		// loadActivity(section, newAct);
+		// setCourse(plainToClass(CourseModel, course));
 	};
 
 	const deleteActivity = async (section: Section, _activity: Activity) => {
@@ -161,22 +195,21 @@ const Course = () => {
 
 	const canEdit = course?.creator.id === user?.id;
 
-	const contextValue: CourseContentValues = {
+	const contextValue: CourseContextValues = {
 		course,
 		section,
 		activity,
 		canEdit,
 		isNavigationOpen,
 		setTitle,
+		add,
 		loadActivity,
 		closeCurrentActivity,
-		addSection,
-		addActivity,
-		deleteActivity,
-		deleteSection,
 		saveActivity,
 		saveActivityContent,
 		setIsNavigationOpen,
+		delete: (..._) => {},
+		move: (..._) => {},
 	};
 
 	useEffect(() => {

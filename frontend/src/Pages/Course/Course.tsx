@@ -96,10 +96,11 @@ const Course = () => {
 			course_id: course.id,
 			element_id: element.id.toString(),
 		});
-		if (element.courseParent) {
-			element.courseParent.elements_order =
-				element.courseParent.elements_order.filter(el => el !== element.id);
-			element.courseParent.elements = element.courseParent.elements.filter(
+		if (element.course) {
+			element.course.elements_order = element.course.elements_order.filter(
+				el => el !== element.id,
+			);
+			element.course.elements = element.course.elements.filter(
 				el => el.id !== element.id,
 			);
 			setCourse(plainToClass(CourseModel, course));

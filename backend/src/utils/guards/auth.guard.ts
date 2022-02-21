@@ -29,7 +29,6 @@ export class RolesGuard implements CanActivate {
     try {
       let roles = this.reflector.get<Role[]>('roles', context.getHandler());
       if (!roles) roles = [];
-
       const user = this.req.user;
       if (!user || this.req.expiredToken) throw new HttpException('Not Authenticated', HttpStatus.UNAUTHORIZED);
 

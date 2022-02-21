@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Exclude, plainToClass } from 'class-transformer';
-import { BackendUser } from '../../Types/userTypes';
+import { BackendUser, USER_TYPES } from '../../Types/userTypes';
 import { Classroom } from '../Classroom/classroom.entity';
 import { IoTObject } from '../Iot/IoTobject.entity';
 import { IoTProject } from '../Iot/IoTproject.entity';
@@ -74,9 +74,10 @@ export class User {
 	static async loadUser() {
 		const backendUser: BackendUser = (await axios.get('/users/me')).data;
 		try {
-			if (backendUser.firstName && backendUser.lastName)
+			if (backendUser.type === USER_TYPES.PROFESSOR)
 				return plainToClass(Professor, backendUser);
-			if (backendUser.name) return plainToClass(Student, backendUser);
+			if (backendUser.type === USER_TYPES.STUDENT)
+				return plainToClass(Student, backendUser);
 
 			throw new Error('Could not load user');
 		} catch (err) {

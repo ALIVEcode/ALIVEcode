@@ -17,7 +17,7 @@ import { UserService } from './user.service';
 import { Param } from '@nestjs/common';
 import { Response } from 'express';
 import { Auth } from '../../utils/decorators/auth.decorator';
-import { ProfessorEntity, StudentEntity, UserEntity } from './entities/user.entity';
+import { ProfessorEntity, StudentEntity, UserEntity, USER_TYPES } from './entities/user.entity';
 import { hasRole } from './auth';
 import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
 import { Group } from '../../utils/decorators/group.decorator';

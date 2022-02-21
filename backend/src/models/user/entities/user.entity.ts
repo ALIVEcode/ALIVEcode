@@ -23,11 +23,11 @@ import { ChildEntity, ManyToMany } from 'typeorm';
 import { CourseEntity } from '../../course/entities/course.entity';
 import { ClassroomEntity } from '../../classroom/entities/classroom.entity';
 import { ResourceEntity } from '../../../resource/entities/resource.entity';
-import { Optional, Param } from '@nestjs/common';
+import { Optional } from '@nestjs/common';
 
 export enum USER_TYPES {
-  STUDENT = 0,
-  PROFESSOR = 1,
+  STUDENT = 'S',
+  PROFESSOR = 'P',
 }
 
 @Entity()
@@ -39,7 +39,7 @@ export class UserEntity extends BaseEntity {
 
   @Exclude({ toClassOnly: true })
   @IsEmpty()
-  @Column({ type: 'enum', name: 'type', enum: USER_TYPES, default: USER_TYPES.STUDENT })
+  @Column({ type: 'enum', enum: USER_TYPES, name: 'type', default: USER_TYPES.STUDENT })
   readonly type: USER_TYPES;
 
   @Column({ nullable: false })

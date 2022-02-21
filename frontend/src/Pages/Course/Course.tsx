@@ -11,6 +11,10 @@ import FillContainer from '../../Components/UtilsComponents/FillContainer/FillCo
 import api from '../../Models/api';
 import { Activity } from '../../Models/Course/activity.entity';
 import { Course as CourseModel } from '../../Models/Course/course.entity';
+import {
+	CourseContent,
+	CourseElement,
+} from '../../Models/Course/course_element.entity';
 import { Section } from '../../Models/Course/section.entity';
 import {
 	CourseContext,
@@ -34,6 +38,9 @@ const StyledDiv = styled.div`
 const Course = () => {
 	const { user } = useContext(UserContext);
 	const [course, setCourse] = useState<CourseModel>();
+	const [courseElements, setCourseElements] = useState<{
+		[id: number]: CourseElement;
+	}>();
 	const [section, setSection] = useState<Section>();
 	const [activity, setActivity] = useState<Activity>();
 	const [isNavigationOpen, setIsNavigationOpen] = useState(true);
@@ -56,142 +63,163 @@ const Course = () => {
 		setCourse(course);
 	};
 
-	const add = async (element: Activity | Section, sectionParent?: Section) => {
-		if (!course) return;
+	const addContent = async (
+		content: CourseContent,
+		sectionParent?: Section,
+	) => {
+		if (!course || !courseElements) return;
 
-		const { element: courseElement, newOrder } =
-			element instanceof Section
-				? await api.db.courses.addSection(
-						course?.id,
-						element,
-						sectionParent?.id,
-				  )
-				: await api.db.courses.addActivity(
-						course?.id,
-						element,
-						sectionParent?.id,
-				  );
+		const { courseElement, parent, newOrder } = await api.db.courses.addContent(
+			course.id,
+			content,
+			sectionParent?.id,
+		);
+		parent.elements_order = newOrder;
+		parent.elements.push(courseElement);
 
-		if (!sectionParent) {
-			// course.elements_order = newOrder
-			//
-			// setCourse(CourseModel, course);
+		// if the content is added directly at the level of the course
+		if (parent instanceof CourseModel) {
+			setCourse(plainToClass(CourseModel, course));
 		}
-		/*
-		🤷‍♂️ maybe unecessary 🤷‍♂️
-		
-		const sectionFound = course?.sections.find(s => s.id === section.id);
-		if (!sectionFound || !course) return;
-
-		course.sections = course?.sections.map(s => {
-			if (s.id === sectionFound.id)
-				s.activities ? s.activities.push(newAct) : (s.activities = [newAct]);
-			return s;
-		});
-		*/
-		// loadActivity(section, newAct);
-	};
-
-	const saveActivity = async (activity: Activity) => {
-		if (!course || !activity || !section) return;
-		const { content, ...actWithoutContent } = activity;
-		(actWithoutContent as any).levels = undefined;
-
-		const updatedAct = await api.db.courses.updateActivity(
-			{
-				courseId: course.id,
-				sectionId: section.id.toString(),
-				activityId: activity.id.toString(),
-			},
-			actWithoutContent,
-		);
-		activity.name = updatedAct.name;
-		activity.content = updatedAct.content;
-		setActivity(activity);
-	};
-
-	const saveActivityContent = async (data: string) => {
-		if (!course || !activity || !section) return;
-		const activityDTO = { ...activity, content: { data } };
-		(activityDTO as any).levels = undefined;
-
-		const updatedAct = await api.db.courses.updateActivity(
-			{
-				courseId: course.id,
-				sectionId: section.id.toString(),
-				activityId: activity.id.toString(),
-			},
-			activityDTO,
-		);
-
-		activity.name = updatedAct.name;
-		activity.content = updatedAct.content;
-		setActivity(activity);
-	};
-
-	const loadActivity = async (section: Section, activity: Activity) => {
-		if (!course) return;
-		await activity.getContent(course?.id, section.id);
-		setActivity(activity);
-		setSection(section);
-	};
-
-	const closeCurrentActivity = () => {
-		setActivity(undefined);
-	};
-
-	const addSection = (section: Section) => {
-		if (!course) return;
-		course.sections.push(section);
-		setCourse(plainToClass(CourseModel, course));
-	};
-
-	const deleteSection = async (section: Section) => {
-		if (!course) return;
-
-		await api.db.courses.deleteSection({
-			courseId: course.id,
-			sectionId: section.id.toString(),
-		});
-		course.sections = course.sections.filter(
-			_section => _section.id !== section.id,
-		);
-		setCourse(plainToClass(CourseModel, course));
-	};
-
-	const addActivity = async (section: Section, newAct: Activity) => {
-		// if (!course) return;
-		// newAct = await api.db.courses.addActivity(course?.id, section.id, newAct);
-		// const sectionFound = course?.sections.find(s => s.id === section.id);
-		// if (!sectionFound || !course) return;
-		// course.sections = course?.sections.map(s => {
-		// 	if (s.id === sectionFound.id)
-		// 		s.activities ? s.activities.push(newAct) : (s.activities = [newAct]);
-		// 	return s;
-		// });
-		// loadActivity(section, newAct);
-		// setCourse(plainToClass(CourseModel, course));
-	};
-
-	const deleteActivity = async (section: Section, _activity: Activity) => {
-		if (!(course && course.sections)) return;
-
-		await api.db.courses.deleteActivity({
-			courseId: course.id,
-			sectionId: section.id.toString(),
-			activityId: _activity.id.toString(),
-		});
-		const idx = course.sections.indexOf(section);
-
-		course.sections[idx].activities = (
-			await section.getActivities(course.id)
-		)?.filter(_activity_ => _activity_.id !== _activity.id);
-		if (_activity.id === activity?.id) {
-			setActivity(undefined);
+		// if the content is added in a section
+		else if (parent instanceof Section) {
+			setCourseElements({
+				...courseElements,
+				[parent.id]: parent.course_element,
+			});
 		}
-
-		setCourse(plainToClass(CourseModel, course));
 	};
+
+	const deleteElement = async (element: CourseElement) => {
+		if (!course || !courseElements) return;
+
+		await api.db.courses.deleteElement({
+			course_id: course.id,
+			element_id: element.id.toString(),
+		});
+		if (element.courseParent) {
+			element.courseParent.elements_order =
+				element.courseParent.elements_order.filter(el => el !== element.id);
+			element.courseParent.elements = element.courseParent.elements.filter(
+				el => el.id !== element.id,
+			);
+			setCourse(plainToClass(CourseModel, course));
+		} else if (element.sectionParent) {
+			element.sectionParent.elements_order =
+				element.sectionParent.elements_order.filter(el => el !== element.id);
+			element.sectionParent.elements = element.sectionParent.elements.filter(
+				el => el.id !== element.id,
+			);
+			setCourseElements(
+				Object.fromEntries(
+					Object.entries(courseElements).filter(
+						([_, el]) => el.id !== element.id,
+					),
+				),
+			);
+		}
+	};
+
+	// const saveActivity = async (activity: Activity) => {
+	// 	if (!course || !activity || !section) return;
+	// 	const { course_element, ...actWithoutContent } = activity;
+	// 	(actWithoutContent as any).levels = undefined;
+
+	// 	const updatedAct = await api.db.courses.updateActivity(
+	// 		{
+	// 			courseId: course.id,
+	// 			sectionId: section.id.toString(),
+	// 			activityId: activity.id.toString(),
+	// 		},
+	// 		actWithoutContent,
+	// 	);
+	// 	activity.name = updatedAct.name;
+	// 	activity.course_element = updatedAct.course_element;
+	// 	setActivity(activity);
+	// };
+
+	// const saveActivityContent = async (data: string) => {
+	// 	if (!course || !activity || !section) return;
+	// 	const activityDTO = { ...activity, content: { data } };
+	// 	(activityDTO as any).levels = undefined;
+
+	// 	const updatedAct = await api.db.courses.updateActivity(
+	// 		{
+	// 			courseId: course.id,
+	// 			sectionId: section.id.toString(),
+	// 			activityId: activity.id.toString(),
+	// 		},
+	// 		activityDTO,
+	// 	);
+
+	// 	activity.name = updatedAct.name;
+	// 	activity.course_element = updatedAct.course_element;
+	// 	setActivity(activity);
+	// };
+
+	// const loadActivity = async (section: Section, activity: Activity) => {
+	// 	if (!course) return;
+	// 	await activity.getContent(course?.id, section.id);
+	// 	setActivity(activity);
+	// 	setSection(section);
+	// };
+
+	// const closeCurrentActivity = () => {
+	// 	setActivity(undefined);
+	// };
+
+	// const addSection = (section: Section) => {
+	// 	if (!course) return;
+	// 	course.sections.push(section);
+	// 	setCourse(plainToClass(CourseModel, course));
+	// };
+
+	// const deleteSection = async (section: Section) => {
+	// 	if (!course) return;
+
+	// 	await api.db.courses.deleteSection({
+	// 		courseId: course.id,
+	// 		sectionId: section.id.toString(),
+	// 	});
+	// 	course.sections = course.sections.filter(
+	// 		_section => _section.id !== section.id,
+	// 	);
+	// 	setCourse(plainToClass(CourseModel, course));
+	// };
+
+	// const addActivity = async (section: Section, newAct: Activity) => {
+	// if (!course) return;
+	// newAct = await api.db.courses.addActivity(course?.id, section.id, newAct);
+	// const sectionFound = course?.sections.find(s => s.id === section.id);
+	// if (!sectionFound || !course) return;
+	// course.sections = course?.sections.map(s => {
+	// 	if (s.id === sectionFound.id)
+	// 		s.activities ? s.activities.push(newAct) : (s.activities = [newAct]);
+	// 	return s;
+	// });
+	// loadActivity(section, newAct);
+	// setCourse(plainToClass(CourseModel, course));
+	// };
+
+	// const deleteActivity = async (section: Section, _activity: Activity) => {
+	// 	if (!(course && course.sections)) return;
+
+	// 	await api.db.courses.deleteActivity({
+	// 		courseId: course.id,
+	// 		sectionId: section.id.toString(),
+	// 		activityId: _activity.id.toString(),
+	// 	});
+	// 	const idx = course.sections.indexOf(section);
+
+	// 	course.sections[idx].activities = (
+	// 		await section.getActivities(course.id)
+	// 	)?.filter(_activity_ => _activity_.id !== _activity.id);
+	// 	if (_activity.id === activity?.id) {
+	// 		setActivity(undefined);
+	// 	}
+
+	// 	setCourse(plainToClass(CourseModel, course));
+	// };
 
 	const canEdit = course?.creator.id === user?.id;
 
@@ -199,17 +227,30 @@ const Course = () => {
 		course,
 		section,
 		activity,
+		courseElements,
 		canEdit,
 		isNavigationOpen,
 		setTitle,
-		add,
-		loadActivity,
-		closeCurrentActivity,
-		saveActivity,
-		saveActivityContent,
+		addContent,
+		// loadActivity,
+		// closeCurrentActivity,
+		// saveActivity,
+		// saveActivityContent,
 		setIsNavigationOpen,
-		delete: (..._) => {},
-		move: (..._) => {},
+		deleteElement,
+		moveElement: (..._) => {},
+		loadActivity: (section: Section, activity: Activity) => {
+			throw new Error('Function not implemented.');
+		},
+		closeCurrentActivity: () => {
+			throw new Error('Function not implemented.');
+		},
+		saveActivity: (activity: Activity) => {
+			throw new Error('Function not implemented.');
+		},
+		saveActivityContent: (data: string) => {
+			throw new Error('Function not implemented.');
+		},
 	};
 
 	useEffect(() => {
@@ -219,7 +260,7 @@ const Course = () => {
 				const course: CourseModel = await api.db.courses.get({
 					id,
 				});
-				await course.getSections();
+				// await course.getSections();
 				setCourse(course);
 			} catch (err) {
 				navigate('/');
@@ -229,8 +270,6 @@ const Course = () => {
 		getCourse();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [id, user]);
-
-	useState();
 
 	if (!course) return <></>;
 	return (

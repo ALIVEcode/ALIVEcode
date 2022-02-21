@@ -2,6 +2,13 @@ import { Activity } from './activity.entity';
 import { Course } from './course.entity';
 import { Section } from './section.entity';
 
+export type CourseContent = Activity | Section;
+
+export type CourseParent = Course | Section;
+
+/**
+ * @author Enric Soldevila
+ */
 export class CourseElement {
 	id: number;
 
@@ -24,4 +31,24 @@ export class CourseElement {
 	section?: Section;
 
 	/*****-----------------------------------*****/
+
+	/**
+	 * @author Mathis Laroche
+	 */
+	getContent(): CourseContent {
+		if (!(this.activity && this.section))
+			throw new TypeError(
+				"The CourseElement doesn't have an activity or a section",
+			);
+		return this.activity || this.section;
+	}
+
+	/**
+	 * @author Mathis Laroche
+	 */
+	getParent(): CourseParent {
+		if (!(this.courseParent && this.sectionParent))
+			throw new TypeError("The CourseElement doesn't have a parent");
+		return this.courseParent || this.sectionParent;
+	}
 }

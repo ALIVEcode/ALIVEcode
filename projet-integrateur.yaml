@@ -3,3 +3,5 @@
 - frontend\src\state\contexts\CourseContext.ts
 - frontend\src\Models\api.ts
 - frontend\src\Pages\Course\Course.tsx
+- frontend\src\Models\Course\course_element.entity.ts
+- frontend\src\Models\api.ts

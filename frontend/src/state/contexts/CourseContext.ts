@@ -1,13 +1,17 @@
 import { createContext } from 'react';
 import { Activity } from '../../Models/Course/activity.entity';
 import { Course } from '../../Models/Course/course.entity';
-import { CourseElement } from '../../Models/Course/course_element.entity';
+import {
+	CourseContent,
+	CourseElement,
+} from '../../Models/Course/course_element.entity';
 import { Section } from '../../Models/Course/section.entity';
 
 export type CourseContextValues = {
 	course?: Course;
 	section?: Section;
 	activity?: Activity;
+	courseElements?: { [id: number]: CourseElement };
 	isNavigationOpen: boolean;
 	canEdit: boolean;
 	setTitle: (newTitle: string) => void;
@@ -16,9 +20,9 @@ export type CourseContextValues = {
 	saveActivity: (activity: Activity) => void;
 	saveActivityContent: (data: string) => void;
 	setIsNavigationOpen: (bool: boolean) => void;
-	add: (element: Activity | Section, sectionParent?: Section) => void;
-	delete: (element: Activity | Section) => void;
-	move: (
+	addContent: (content: CourseContent, sectionParent?: Section) => void;
+	deleteElement: (element: CourseElement) => void;
+	moveElement: (
 		element: CourseElement,
 		newIdx: number,
 		newParent: CourseElement,
@@ -34,9 +38,9 @@ export const CourseContext = createContext<CourseContextValues>({
 	saveActivity: (activity: Activity) => {},
 	saveActivityContent: (data: string) => {},
 	setIsNavigationOpen: (bool: boolean) => {},
-	add: (element: Activity | Section, sectionParent?: Section) => {},
-	delete: (element: Activity | Section) => {},
-	move: (
+	addContent: (content: CourseContent, sectionParent?: Section) => {},
+	deleteElement: (element: CourseElement) => {},
+	moveElement: (
 		element: CourseElement,
 		newIdx: number,
 		newParent: CourseElement,

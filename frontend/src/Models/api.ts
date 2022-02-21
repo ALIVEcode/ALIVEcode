@@ -6,7 +6,11 @@ import { AsScript } from './AsScript/as-script.entity';
 import { Classroom } from './Classroom/classroom.entity';
 import { Activity } from './Course/activity.entity';
 import { Course } from './Course/course.entity';
-import { CourseElement } from './Course/course_element.entity';
+import {
+	CourseContent,
+	CourseElement,
+	CourseParent,
+} from './Course/course_element.entity';
 import { Section } from './Course/section.entity';
 import { CategorySubject } from './Forum/categorySubject.entity';
 import { Post } from './Forum/post.entity';
@@ -37,7 +41,8 @@ import { Professor, Student } from './User/user.entity';
 import { loadObj } from './utils';
 
 export type ResultElementCreated = {
-	element: CourseElement;
+	courseElement: CourseElement;
+	parent: CourseParent;
 	newOrder: number[];
 };
 
@@ -228,38 +233,31 @@ const api = {
 					).data,
 				);
 			},
-			addActivity: async (
+			getElement: apiGet(
+				'courses/:course_id/elements/:element_id',
+				CourseElement,
+				false,
+			),
+			addContent: async (
 				course_id: string,
-				activity: Activity,
+				courseContent: CourseContent,
 				sectionParent_id?: number,
 			) => {
 				const contentAndOrder = (
 					await axios.post(`courses/${course_id}/addcontent`, {
-						activity,
+						courseContent,
 						sectionParent_id,
 					})
 				).data;
 				return {
-					element: plainToClass(CourseElement, contentAndOrder.element),
+					courseElement: plainToClass(CourseElement, contentAndOrder.element),
+					parent: sectionParent_id
+						? plainToClass(Section, contentAndOrder.parent)
+						: plainToClass(Course, contentAndOrder.parent),
 					newOrder: contentAndOrder.newOrder,
 				} as ResultElementCreated;
 			},
-			addSection: async (
-				course_id: string,
-				section: Section,
-				sectionParent_id?: number,
-			) => {
-				const contentAndOrder = (
-					await axios.post(`courses/${course_id}/addcontent`, {
-						section,
-						sectionParent_id,
-					})
-				).data;
-				return {
-					element: plainToClass(CourseElement, contentAndOrder.element),
-					newOrder: contentAndOrder.newOrder,
-				} as ResultElementCreated;
-			},
+			deleteElement: apiDelete('courses/:course_id/elements/:element_id'),
 			updateActivity: apiUpdate(
 				'courses/:courseId/sections/:sectionId/activities/:activityId/content',
 				Activity,

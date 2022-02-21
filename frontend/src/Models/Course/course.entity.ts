@@ -5,10 +5,9 @@ import {
 	faProjectDiagram,
 } from '@fortawesome/free-solid-svg-icons';
 import { Exclude, Type } from 'class-transformer';
-import api from '../api';
 import { CreatedByUser } from '../Generics/createdByUser.entity';
 import { Professor } from '../User/user.entity';
-import { Section } from './section.entity';
+import { CourseElement } from './course_element.entity';
 
 export enum COURSE_DIFFICULTY {
 	BEGINNER = 1,
@@ -45,7 +44,7 @@ export class Course extends CreatedByUser {
 
 	subject: COURSE_SUBJECT;
 
-	//elements: CourseElement[];
+	elements: CourseElement[];
 
 	elements_order: number[];
 

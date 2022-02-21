@@ -1,18 +1,14 @@
-import { Exclude, Type } from "class-transformer";
-import { Activity } from './activity.entity';
-import api from '../api';
+import { Exclude } from 'class-transformer';
+import { CourseElement } from './course_element.entity';
 
 export class Section {
 	@Exclude({ toPlainOnly: true })
 	id: number;
 	name: string;
 
-	@Type(() => Activity)
-	activities?: Activity[];
+	elements: CourseElement[];
 
-	async getActivities(courseId: string) {
-		if (this.activities) return this.activities;
-		this.activities = await api.db.courses.getActivities(courseId, this.id);
-		return this.activities;
-	}
+	elements_order: number[];
+
+	course_element: CourseElement;
 }

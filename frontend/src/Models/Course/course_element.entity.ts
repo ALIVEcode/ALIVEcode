@@ -47,8 +47,8 @@ export class CourseElement {
 	 * @author Mathis Laroche
 	 */
 	getParent(): CourseParent {
-		if (!(this.courseParent && this.sectionParent))
+		if (!(this.course && this.sectionParent))
 			throw new TypeError("The CourseElement doesn't have a parent");
-		return this.courseParent || this.sectionParent;
+		return this.course || this.sectionParent;
 	}
 }

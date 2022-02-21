@@ -49,6 +49,15 @@ export class CourseElement {
 	getParent(): CourseParent {
 		if (!(this.course && this.sectionParent))
 			throw new TypeError("The CourseElement doesn't have a parent");
-		return this.course || this.sectionParent;
+		return this.sectionParent || this.course;
+	}
+	/**
+	 * Gets the name of the element, that is either the name of the section or the name of the activity
+	 * @returns the name of the element
+	 *
+	 * @author Mathis Laroche
+	 */
+	getName(): string {
+		return this.activity?.name || this.section!.name;
 	}
 }

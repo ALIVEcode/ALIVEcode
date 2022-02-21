@@ -6,11 +6,7 @@ import { AsScript } from './AsScript/as-script.entity';
 import { Classroom } from './Classroom/classroom.entity';
 import { Activity } from './Course/activity.entity';
 import { Course } from './Course/course.entity';
-import {
-	CourseContent,
-	CourseElement,
-	CourseParent,
-} from './Course/course_element.entity';
+import { CourseContent, CourseElement } from './Course/course_element.entity';
 import { Section } from './Course/section.entity';
 import { CategorySubject } from './Forum/categorySubject.entity';
 import { Post } from './Forum/post.entity';
@@ -42,7 +38,6 @@ import { loadObj } from './utils';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;
-	parent: CourseParent;
 	newOrder: number[];
 };
 
@@ -234,30 +229,33 @@ const api = {
 				);
 			},
 			getElement: apiGet(
-				'courses/:course_id/elements/:element_id',
+				'courses/:courseId/elements/:elementId',
 				CourseElement,
 				false,
 			),
 			addContent: async (
 				course_id: string,
 				courseContent: CourseContent,
-				sectionParent_id?: number,
+				sectionParentId?: number,
 			) => {
+				//TODO remove the need for a parent to be returned
 				const contentAndOrder = (
-					await axios.post(`courses/${course_id}/addcontent`, {
-						courseContent,
-						sectionParent_id,
-					})
+					await axios.post(
+						`courses/${course_id}/${
+							courseContent instanceof Activity ? 'activities' : 'sections'
+						}`,
+						{
+							courseContent,
+							sectionParentId,
+						},
+					)
 				).data;
 				return {
 					courseElement: plainToClass(CourseElement, contentAndOrder.element),
-					parent: sectionParent_id
-						? plainToClass(Section, contentAndOrder.parent)
-						: plainToClass(Course, contentAndOrder.parent),
 					newOrder: contentAndOrder.newOrder,
 				} as ResultElementCreated;
 			},
-			deleteElement: apiDelete('courses/:course_id/elements/:element_id'),
+			deleteElement: apiDelete('courses/:courseId/elements/:elementId'),
 			updateActivity: apiUpdate(
 				'courses/:courseId/sections/:sectionId/activities/:activityId/content',
 				Activity,

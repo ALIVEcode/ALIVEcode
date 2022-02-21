@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import CourseTester from '../../Components/CourseComponents/CourseStructure/CourseTester';
+import CourseLayout from '../../Components/CourseComponents/CourseLayout/CourseLayout';
 import FillContainer from '../../Components/UtilsComponents/FillContainer/FillContainer';
 import api from '../../Models/api';
 import { Activity } from '../../Models/Course/activity.entity';
@@ -68,17 +68,18 @@ const Course = () => {
 	) => {
 		if (!course || !courseElements) return;
 
-		const { courseElement, parent, newOrder } = await api.db.courses.addContent(
+		const { courseElement, newOrder } = await api.db.courses.addContent(
 			course.id,
 			content,
 			sectionParent?.id,
 		);
+		const parent = courseElement.getParent();
 		parent.elements_order = newOrder;
 		parent.elements.push(courseElement);
 
 		// if the content is added directly at the level of the course
 		if (parent instanceof CourseModel) {
-			setCourse(plainToClass(CourseModel, course));
+			setCourse(plainToClass(CourseModel, parent));
 		}
 		// if the content is added in a section
 		else if (parent instanceof Section) {
@@ -93,18 +94,10 @@ const Course = () => {
 		if (!course || !courseElements) return;
 
 		await api.db.courses.deleteElement({
-			course_id: course.id,
-			element_id: element.id.toString(),
+			courseId: course.id,
+			elementId: element.id.toString(),
 		});
-		if (element.course) {
-			element.course.elements_order = element.course.elements_order.filter(
-				el => el !== element.id,
-			);
-			element.course.elements = element.course.elements.filter(
-				el => el.id !== element.id,
-			);
-			setCourse(plainToClass(CourseModel, course));
-		} else if (element.sectionParent) {
+		if (element.sectionParent) {
 			element.sectionParent.elements_order =
 				element.sectionParent.elements_order.filter(el => el !== element.id);
 			element.sectionParent.elements = element.sectionParent.elements.filter(
@@ -117,6 +110,14 @@ const Course = () => {
 					),
 				),
 			);
+		} else {
+			element.course.elements_order = element.course.elements_order.filter(
+				el => el !== element.id,
+			);
+			element.course.elements = element.course.elements.filter(
+				el => el.id !== element.id,
+			);
+			setCourse(plainToClass(CourseModel, course));
 		}
 	};
 
@@ -278,7 +279,7 @@ const Course = () => {
 				<FillContainer className="course-body">
 					{/*<CourseNavigation />
 					<ActivityContent />*/}
-					<CourseTester />
+					<CourseLayout />
 				</FillContainer>
 			</StyledDiv>
 		</CourseContext.Provider>

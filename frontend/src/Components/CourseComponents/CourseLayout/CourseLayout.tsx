@@ -14,7 +14,7 @@ import FormModal from '../../UtilsComponents/FormModal/FormModal';
 import Link from '../../UtilsComponents/Link/Link';
 import { StyledCourseNavigation } from '../CourseNavigation/courseNavigationTypes';
 
-const CourseTester = () => {
+const CourseLayout = () => {
 	const { course, canEdit, isNavigationOpen, setTitle, addContent } =
 		useContext(CourseContext);
 	const { theme } = useContext(ThemeContext);
@@ -121,4 +121,4 @@ const CourseTester = () => {
 	);
 };
 
-export default CourseTester;
+export default CourseLayout;

@@ -10,7 +10,7 @@ import AlertConfirm from '../../UtilsComponents/Alert/AlertConfirm/AlertConfirm'
 import Link from '../../UtilsComponents/Link/Link';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import { Option, TDOption } from '../../UtilsComponents/Option/TDOption';
-import { CourseSectionProps } from './courseSectionTypes';
+import { CourseSectionProps } from '../CourseSection/courseSectionTypes';
 /**
  * Component that shows the section in the navigation and handles different actions like adding in an activity onto the section
  *
@@ -23,11 +23,11 @@ const CourseSection = ({ section, editMode }: CourseSectionProps) => {
 	const [loading, setLoading] = useState(false);
 	const {
 		loadActivity,
-		addActivity,
+		deleteElement,
+		addContent,
+		courseElements,
 		course,
 		canEdit,
-		deleteSection,
-		deleteActivity,
 		activity,
 		closeCurrentActivity,
 	} = useContext(CourseContext);
@@ -41,7 +41,7 @@ const CourseSection = ({ section, editMode }: CourseSectionProps) => {
 		setOpen(!open);
 		if (!open) {
 			setLoading(true);
-			await section.getActivities(course.id);
+			await section.elements;
 			setLoading(false);
 		}
 	};
@@ -74,18 +74,17 @@ const CourseSection = ({ section, editMode }: CourseSectionProps) => {
 				<div id={`section-${section.name}`} className="course-section-body">
 					{loading && open && <LoadingScreen size="3x" relative />}
 
-					{canEdit &&
-					(!section.activities || section.activities?.length === 0) ? (
+					{canEdit && (!section.elements || section.elements?.length === 0) ? (
 						<Link
 							dark
 							onClick={() => {
-								addActivity(
-									section,
+								addContent(
 									plainToClass(Activity, {
 										name: `Activity #${
-											section.activities ? section.activities.length + 1 : 1
+											section.elements ? section.elements.length + 1 : 1
 										}`,
 									}),
+									section,
 								);
 							}}
 						>
@@ -93,39 +92,14 @@ const CourseSection = ({ section, editMode }: CourseSectionProps) => {
 						</Link>
 					) : (
 						<>
-							{section.activities?.map((a, idx) => (
-								<div
-									onClick={() =>
-										a.id === activity?.id
-											? closeCurrentActivity()
-											: loadActivity(section, a)
-									}
-									key={idx}
-									className="course-activity"
-								>
+							{section.elements?.map((a, idx) => (
+								<div key={idx} className="course-activity">
 									{a.id === activity?.id ? (
-										<b style={{ color: 'var(--contrast-color)' }}>{a.name}</b>
+										<b style={{ color: 'var(--contrast-color)' }}>
+											{a.getName()}
+										</b>
 									) : (
-										a.name
-									)}
-									{canEdit && editMode && (
-										<TDOption color="black" size="1x">
-											<Option
-												name="Rename"
-												icon={faPenFancy}
-												onClick={() => {}}
-											/>
-											<Option name="Move" icon={faDropbox} onClick={() => {}} />
-											<Option
-												name="Delete"
-												icon={faTrash}
-												onClick={() => {
-													currentActivity.current = a;
-													setConfirmActivityDelete(true);
-												}}
-												hoverColor="red"
-											/>
-										</TDOption>
+										a.getName()
 									)}
 								</div>
 							))}
@@ -133,15 +107,15 @@ const CourseSection = ({ section, editMode }: CourseSectionProps) => {
 								<Link
 									dark
 									onClick={() => {
-										addActivity(
-											section,
+										addContent(
 											plainToClass(Activity, {
 												name: t('course.activity.new_name', {
-													num: section.activities
-														? section.activities.length + 1
+													num: section.elements
+														? section.elements.length + 1
 														: 1,
 												}),
 											}),
+											section,
 										);
 									}}
 								>
@@ -158,7 +132,7 @@ const CourseSection = ({ section, editMode }: CourseSectionProps) => {
 				setOpen={setConfirmSectionDelete}
 				onConfirm={() => {
 					if (!(course && section)) return;
-					deleteSection(section);
+					deleteElement(section.course_element);
 				}}
 				hideFooter
 			></AlertConfirm>
@@ -168,7 +142,7 @@ const CourseSection = ({ section, editMode }: CourseSectionProps) => {
 				setOpen={setConfirmActivityDelete}
 				onConfirm={() => {
 					if (!(course && section && currentActivity.current)) return;
-					deleteActivity(section, currentActivity.current);
+					deleteElement(currentActivity.current.course_element);
 				}}
 				hideFooter
 			></AlertConfirm>

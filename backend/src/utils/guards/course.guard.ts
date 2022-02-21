@@ -11,7 +11,7 @@ import { UserService } from '../../models/user/user.service';
 export class CourseAccess implements CanActivate {
   constructor(
     public courseService: CourseService,
-    public studentService: UserService,
+    public userService: UserService,
     @Inject(REQUEST) public req: MyRequest,
   ) {}
 
@@ -39,7 +39,7 @@ export class CourseAccess implements CanActivate {
     //if (course.access === COURSE_ACCESS.PRIVATE) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
 
     if (user instanceof StudentEntity) {
-      const classrooms = await this.studentService.getClassrooms(user);
+      const classrooms = await this.userService.getClassrooms(user);
       if (!classrooms.some(classroom => classroom.courses.some(c => c.id === course.id)))
         throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
       this.req.course = course;
@@ -51,18 +51,34 @@ export class CourseAccess implements CanActivate {
 }
 
 @Injectable()
-export class CourseProfessor extends CourseAccess implements CanActivate {
-  constructor(courseService: CourseService, studentService: UserService, @Inject(REQUEST) req: MyRequest) {
-    super(courseService, studentService, req);
-  }
+export class CourseProfessor implements CanActivate {
+  constructor(
+    public courseService: CourseService,
+    public userService: UserService,
+    @Inject(REQUEST) public req: MyRequest,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    if (!super.canActivate(context)) return false;
+    if (this.req.course != null) return true;
 
-    if (hasRole(this.req.user, Role.STAFF)) return true;
+    const courseId = this.req.params.id;
+    if (!courseId) throw new HttpException('Bad payload', HttpStatus.BAD_REQUEST);
 
-    if (this.req.user.id !== this.req.user.id) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    const user = this.req.user;
+    if (!user) throw new HttpException('You are not logged in', HttpStatus.UNAUTHORIZED);
 
-    return true;
+    const course = await this.courseService.findOne(courseId);
+
+    if (hasRole(user, Role.STAFF)) {
+      this.req.course = course;
+      return true;
+    }
+
+    if (course.creator.id === user.id) {
+      this.req.course = course;
+      return true;
+    }
+
+    throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
   }
 }

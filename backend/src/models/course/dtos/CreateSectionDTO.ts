@@ -1,11 +1,12 @@
 import { Type } from 'class-transformer';
-import { IsNotEmpty } from 'class-validator';
+import { IsOptional, ValidateNested } from 'class-validator';
 import { SectionEntity } from '../entities/section.entity';
 
 export class CreateSectionDTO {
+  @ValidateNested()
   @Type(() => SectionEntity)
   courseContent: SectionEntity;
 
-  @IsNotEmpty()
-  sectionParentId: string;
+  @IsOptional()
+  sectionParentId?: string;
 }

@@ -99,17 +99,17 @@ export class CourseService {
       courseElement = await this.courseElRepo.save({ ...dto, activity: content });
     else throw new HttpException('Invalid course content', HttpStatus.INTERNAL_SERVER_ERROR);
 
-    parent.elements.push(courseElement);
-    parent.elements_order.push(courseElement.id);
+    /*parent.elements.push(courseElement);
+    parent.elementsOrder.push(courseElement.id);
     parent instanceof CourseEntity
       ? await this.courseRepository.save(parent)
-      : await this.sectionRepository.save(parent);
+      : await this.sectionRepository.save(parent);*/
 
-    return { courseElement, newOrder: parent.elements_order };
+    return { courseElement, newOrder: parent.elementsOrder };
   }
 
-  async addSection(course: CourseEntity, createSectionDTO: SectionEntity, sectionParent?: SectionEntity) {
-    const section = await this.sectionRepository.save(createSectionDTO);
+  async addSection(course: CourseEntity, sectionDTO: SectionEntity, sectionParent?: SectionEntity) {
+    const section = await this.sectionRepository.save(sectionDTO);
     return await this.createCourseElement(course, section, sectionParent);
   }
 
@@ -174,7 +174,8 @@ export class CourseService {
     return await this.activityRepository.save({ id: activity.id, ...updateActivityDTO });*/
   }
 
-  async addActivity(course: CourseEntity, activity: ActivityEntity, sectionParent?: SectionEntity) {
+  async addActivity(course: CourseEntity, activityDTO: ActivityEntity, sectionParent?: SectionEntity) {
+    const activity = await this.activityRepository.save(activityDTO);
     return await this.createCourseElement(course, activity, sectionParent);
   }
 }

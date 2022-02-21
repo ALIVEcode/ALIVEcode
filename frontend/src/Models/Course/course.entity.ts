@@ -44,9 +44,11 @@ export class Course extends CreatedByUser {
 
 	subject: COURSE_SUBJECT;
 
+	@Type(() => CourseElement)
 	elements: CourseElement[];
 
-	elements_order: number[];
+	@Type(() => Number)
+	elementsOrder: number[];
 
 	getSubjectDisplay() {
 		return this.subject[0].toUpperCase() + this.subject.slice(1);

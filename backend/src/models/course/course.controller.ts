@@ -56,9 +56,10 @@ export class CourseController {
   }
 
   @Post(':id/sections')
-  @Auth(Role.PROFESSOR, Role.STAFF)
   @UseGuards(CourseProfessor)
+  @Auth(Role.PROFESSOR, Role.STAFF)
   async addSection(@Course() course: CourseEntity, @Body() createSectionDTO: CreateSectionDTO) {
+    course = await this.courseService.findOneWithElements(course.id);
     if (createSectionDTO.sectionParentId) {
       const section = await this.courseService.findSectionWithElements(createSectionDTO.sectionParentId);
       return await this.courseService.addSection(course, createSectionDTO.courseContent, section);
@@ -67,7 +68,7 @@ export class CourseController {
     return await this.courseService.addSection(course, createSectionDTO.courseContent);
   }
 
-  @Get(':id/sections')
+  @Get(':id/elements')
   @Auth()
   @UseGuards(CourseAccess)
   async getSections(@Course() course: CourseEntity, @User() user: UserEntity) {
@@ -96,6 +97,7 @@ export class CourseController {
     @Course() course: CourseEntity,
     @Body() createActivityDTO: CreateActivityLevelDTO | CreateActivityTheoryDTO | CreateActivityVideoDTO,
   ) {
+    course = await this.courseService.findOneWithElements(course.id);
     if (createActivityDTO.sectionParentId) {
       const section = await this.courseService.findSectionWithElements(createActivityDTO.sectionParentId);
       return await this.courseService.addActivity(course, createActivityDTO.courseContent, section);

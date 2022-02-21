@@ -1,12 +1,13 @@
 import { Type } from 'class-transformer';
-import { IsNotEmpty } from 'class-validator';
+import { IsOptional, ValidateNested } from 'class-validator';
 import { ActivityEntity } from '../entities/activity.entity';
 
 export class CreateActivityDTO {
-  @IsNotEmpty()
-  sectionParentId: string;
+  @IsOptional()
+  sectionParentId?: string;
 
   @Type(() => ActivityEntity)
+  @ValidateNested()
   courseContent: ActivityEntity;
 }
 

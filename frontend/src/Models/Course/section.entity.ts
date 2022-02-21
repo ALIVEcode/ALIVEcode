@@ -1,4 +1,4 @@
-import { Exclude } from 'class-transformer';
+import { Exclude, Type } from 'class-transformer';
 import { CourseElement } from './course_element.entity';
 
 export class Section {
@@ -6,9 +6,12 @@ export class Section {
 	id: number;
 	name: string;
 
+	@Type(() => CourseElement)
 	elements: CourseElement[];
 
-	elements_order: number[];
+	@Type(() => Number)
+	elementsOrder: number[];
 
-	course_element: CourseElement;
+	@Type(() => CourseElement)
+	courseElement: CourseElement;
 }

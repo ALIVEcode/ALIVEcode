@@ -67,14 +67,13 @@ const Course = () => {
 		sectionParent?: Section,
 	) => {
 		if (!course || !courseElements) return;
-
 		const { courseElement, newOrder } = await api.db.courses.addContent(
 			course.id,
 			content,
 			sectionParent?.id,
 		);
 		const parent = courseElement.getParent();
-		parent.elements_order = newOrder;
+		parent.elementsOrder = newOrder;
 		parent.elements.push(courseElement);
 
 		// if the content is added directly at the level of the course
@@ -85,7 +84,7 @@ const Course = () => {
 		else if (parent instanceof Section) {
 			setCourseElements({
 				...courseElements,
-				[parent.id]: parent.course_element,
+				[parent.id]: parent.courseElement,
 			});
 		}
 	};
@@ -98,8 +97,8 @@ const Course = () => {
 			elementId: element.id.toString(),
 		});
 		if (element.sectionParent) {
-			element.sectionParent.elements_order =
-				element.sectionParent.elements_order.filter(el => el !== element.id);
+			element.sectionParent.elementsOrder =
+				element.sectionParent.elementsOrder.filter(el => el !== element.id);
 			element.sectionParent.elements = element.sectionParent.elements.filter(
 				el => el.id !== element.id,
 			);
@@ -111,7 +110,7 @@ const Course = () => {
 				),
 			);
 		} else {
-			element.course.elements_order = element.course.elements_order.filter(
+			element.course.elementsOrder = element.course.elementsOrder.filter(
 				el => el !== element.id,
 			);
 			element.course.elements = element.course.elements.filter(
@@ -263,6 +262,7 @@ const Course = () => {
 				});
 				// await course.getSections();
 				setCourse(course);
+				setCourseElements([]);
 			} catch (err) {
 				navigate('/');
 				return alert.error(t('error.not_found', { obj: t('msg.course') }));

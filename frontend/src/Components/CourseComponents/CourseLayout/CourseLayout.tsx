@@ -91,21 +91,16 @@ const CourseLayout = () => {
 				open={openModalSection}
 				title="Create section"
 				setOpen={setOpenModalSection}
-				onSubmit={res => {
-					const section: Section = plainToClass(Section, {
-						name: res.data,
-						elements: [],
-						elements_order: [],
-						course_element: course,
-					});
-					addContent(section);
-					setOpenModalSection(false);
-				}}
 			>
 				<Form
 					name="section"
 					url={`courses/${course.id}/sections`}
 					action={FORM_ACTION.POST}
+					customSubmit={(formValues: any) => {
+						const section: Section = plainToClass(Section, formValues);
+						addContent(section);
+						setOpenModalSection(false);
+					}}
 					inputGroups={[
 						{
 							name: 'name',

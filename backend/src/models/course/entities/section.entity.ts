@@ -25,12 +25,16 @@ export class SectionEntity {
   sectionParent?: SectionEntity;*/
 
   @OneToMany(() => CourseElementEntity, content => content.sectionParent)
+  @IsEmpty()
   elements: CourseElementEntity[];
 
   @ValidateIf((lst: any) => Array.isArray(lst) && lst.every(el => Number.isInteger(el)))
   @Column({ type: 'json', default: [] })
-  elements_order: number[];
+  @Exclude({ toClassOnly: true })
+  @IsEmpty()
+  elementsOrder: number[];
 
   @OneToOne(() => CourseElementEntity)
-  course_element: CourseElementEntity;
+  @IsEmpty()
+  courseElement: CourseElementEntity;
 }

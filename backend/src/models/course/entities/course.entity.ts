@@ -62,7 +62,7 @@ export class CourseEntity extends CreatedByUser {
 
   @ValidateIf((lst: any) => Array.isArray(lst) && lst.every(el => Number.isInteger(el)))
   @Column({ type: 'json', default: [] })
-  elements_order: number[];
+  elementsOrder: number[];
 
   @Exclude({ toClassOnly: true })
   @ManyToMany(() => ClassroomEntity, classroom => classroom.courses)

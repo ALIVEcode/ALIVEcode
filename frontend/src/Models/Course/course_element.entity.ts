@@ -1,6 +1,7 @@
 import { Activity } from './activity.entity';
 import { Course } from './course.entity';
 import { Section } from './section.entity';
+import { Type } from 'class-transformer';
 
 export type CourseContent = Activity | Section;
 
@@ -15,9 +16,11 @@ export class CourseElement {
 	/*****---Parents ---*****/
 
 	/** The course that the element belongs to */
+	@Type(() => Course)
 	course: Course;
 
 	/** If the section is not at top level (inside another section), it contains that parent section */
+	@Type(() => Section)
 	sectionParent?: Section;
 
 	/*****---------------------------------*****/
@@ -25,9 +28,11 @@ export class CourseElement {
 	/*****---Elements (only one at a time)---*****/
 
 	/** If the element is an activity **/
+	@Type(() => Activity)
 	activity?: Activity;
 
 	/** If the element is a section **/
+	@Type(() => Section)
 	section?: Section;
 
 	/*****-----------------------------------*****/

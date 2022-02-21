@@ -132,7 +132,7 @@ const CourseSection = ({ section, editMode }: CourseSectionProps) => {
 				setOpen={setConfirmSectionDelete}
 				onConfirm={() => {
 					if (!(course && section)) return;
-					deleteElement(section.course_element);
+					deleteElement(section.courseElement);
 				}}
 				hideFooter
 			></AlertConfirm>

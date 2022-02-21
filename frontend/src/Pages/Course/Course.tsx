@@ -262,7 +262,8 @@ const Course = () => {
 				});
 				// await course.getSections();
 				setCourse(course);
-				setCourseElements([]);
+				const elements = await api.db.courses.getElements({ courseId: id });
+				setCourseElements(Object.fromEntries(elements.map(el => [el.id, el])));
 			} catch (err) {
 				navigate('/');
 				return alert.error(t('error.not_found', { obj: t('msg.course') }));

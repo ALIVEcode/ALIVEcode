@@ -65,4 +65,20 @@ export class CourseElement {
 	getName(): string {
 		return this.activity?.name || this.section!.name;
 	}
+
+	/**
+	 *
+	 * @returns if the element is a section
+	 */
+	isSection(): boolean {
+		return this.section !== undefined;
+	}
+
+	/**
+	 *
+	 * @returns if the element is an activity
+	 */
+	isActivity(): boolean {
+		return this.activity !== undefined;
+	}
 }

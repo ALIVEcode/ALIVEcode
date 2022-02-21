@@ -13,10 +13,17 @@ import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
 import FormModal from '../../UtilsComponents/FormModal/FormModal';
 import Link from '../../UtilsComponents/Link/Link';
 import { StyledCourseNavigation } from '../CourseNavigation/courseNavigationTypes';
+import CourseLayoutElement from './CourseLayoutElement';
 
 const CourseLayout = () => {
-	const { course, canEdit, isNavigationOpen, setTitle, addContent } =
-		useContext(CourseContext);
+	const {
+		course,
+		canEdit,
+		isNavigationOpen,
+		setTitle,
+		addContent,
+		courseElements,
+	} = useContext(CourseContext);
 	const { theme } = useContext(ThemeContext);
 	const { routes, goTo } = useRoutes();
 	const { t } = useTranslation();
@@ -84,6 +91,12 @@ const CourseLayout = () => {
 								{t('course.section.new')}
 							</Link>
 						)}
+						{course.elementsOrder.map(id => (
+							<CourseLayoutElement
+								element={courseElements![id]}
+								editMode={editMode}
+							/>
+						))}
 					</div>
 				</div>
 			</CenteredContainer>
@@ -91,6 +104,18 @@ const CourseLayout = () => {
 				open={openModalSection}
 				title="Create section"
 				setOpen={setOpenModalSection}
+				onSubmit={res => {
+					const section: Section = plainToClass(Section, {
+						name: res.data,
+						elements: [],
+						elements_order: [],
+						courseElement: course,
+					});
+					console.log(section);
+
+					addContent(section);
+					setOpenModalSection(false);
+				}}
 			>
 				<Form
 					name="section"

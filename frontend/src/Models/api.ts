@@ -228,6 +228,7 @@ const api = {
 					).data,
 				);
 			},
+			getElements: apiGet('courses/:courseId/elements', CourseElement, true),
 			getElement: apiGet(
 				'courses/:courseId/elements/:elementId',
 				CourseElement,
@@ -238,7 +239,6 @@ const api = {
 				courseContent: CourseContent,
 				sectionParentId?: number,
 			) => {
-				//TODO remove the need for a parent to be returned
 				const contentAndOrder = (
 					await axios.post(
 						`courses/${course_id}/${

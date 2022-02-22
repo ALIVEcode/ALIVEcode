@@ -1,9 +1,7 @@
 import { Response } from "express";
 import { sign } from "jsonwebtoken"
 import { Role } from '../../utils/types/roles.types';
-import { ProfessorEntity } from './entities/professor.entity';
-import { StudentEntity } from './entities/student.entity';
-import { UserEntity } from './entities/user.entity';
+import { UserEntity, ProfessorEntity, StudentEntity } from './entities/user.entity';
 
 // TODO: Add secret key
 export const createAccessToken = (user: UserEntity) => {

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Exclude, plainToClass } from 'class-transformer';
-import { BackendUser } from '../../Types/userTypes';
+import { BackendUser, USER_TYPES } from '../../Types/userTypes';
 import { Classroom } from '../Classroom/classroom.entity';
 import { IoTObject } from '../Iot/IoTobject.entity';
 import { IoTProject } from '../Iot/IoTproject.entity';
@@ -14,6 +14,9 @@ import { Level } from '../Level/level.entity';
 export class User {
 	@Exclude({ toPlainOnly: true })
 	id: string;
+
+	firstName: string;
+	lastName: string;
 
 	@Exclude({ toPlainOnly: true })
 	password?: string;
@@ -39,8 +42,8 @@ export class User {
 
 	private classrooms?: Classroom[];
 
-	public getDisplayName() {
-		return this.email;
+	public getDisplayName(): string {
+		return `${this.firstName} ${this.lastName}`;
 	}
 
 	public isProfessor() {
@@ -74,9 +77,10 @@ export class User {
 	static async loadUser() {
 		const backendUser: BackendUser = (await axios.get('/users/me')).data;
 		try {
-			if (backendUser.firstName && backendUser.lastName)
+			if (backendUser.type === USER_TYPES.PROFESSOR)
 				return plainToClass(Professor, backendUser);
-			if (backendUser.name) return plainToClass(Student, backendUser);
+			if (backendUser.name === USER_TYPES.STUDENT)
+				return plainToClass(Student, backendUser);
 
 			throw new Error('Could not load user');
 		} catch (err) {
@@ -86,12 +90,8 @@ export class User {
 }
 
 export class Student extends User {
-	name: string;
+	oldStudentName: string;
 	image: string;
-
-	getDisplayName() {
-		return this.name;
-	}
 
 	getDisplayImage() {
 		return this.image;
@@ -99,17 +99,12 @@ export class Student extends User {
 }
 
 export class Professor extends User {
-	firstName: string;
-	lastName: string;
 	image: string;
 
 	getCourses() {
 		return api.db.users.getCourses(this.id);
 	}
 
-	getDisplayName(): string {
-		return `${this.firstName} ${this.lastName}`;
-	}
 	getDisplayImage() {
 		return this.image;
 	}

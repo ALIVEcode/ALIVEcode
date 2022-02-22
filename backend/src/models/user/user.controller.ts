@@ -14,12 +14,10 @@ import {
   Request,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { ProfessorEntity } from './entities/professor.entity';
-import { StudentEntity } from './entities/student.entity';
 import { Param } from '@nestjs/common';
 import { Response } from 'express';
 import { Auth } from '../../utils/decorators/auth.decorator';
-import { UserEntity } from './entities/user.entity';
+import { UserEntity, StudentEntity, ProfessorEntity } from './entities/user.entity';
 import { hasRole } from './auth';
 import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
 import { Group } from '../../utils/decorators/group.decorator';

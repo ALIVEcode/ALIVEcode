@@ -89,15 +89,25 @@ export class CourseService {
 
     parent.elements.push(courseElement);
     parent.elementsOrder.push(courseElement.id);
-    parent instanceof CourseEntity
-      ? await this.courseRepository.save(parent)
-      : await this.sectionRepository.save(parent);
+    await this.saveParent(parent);
 
     return { courseElement, newOrder: parent.elementsOrder };
   }
 
-  async deleteCourseElement(courseElement: CourseElementEntity) {
-    return await this.courseElRepo.delete(courseElement);
+  async saveParent(parent: CourseEntity | SectionEntity) {
+    parent instanceof CourseEntity
+      ? await this.courseRepository.save(parent)
+      : await this.sectionRepository.save(parent);
+  }
+
+  async deleteCourseElement(courseElementWithParent: CourseElementEntity) {
+    const res = await this.courseElRepo.delete(courseElementWithParent);
+
+    const parent = courseElementWithParent.sectionParent || courseElementWithParent.course;
+    parent.elementsOrder = parent.elementsOrder.filter((elementId: number) => elementId !== courseElementWithParent.id);
+    await this.saveParent(parent);
+
+    return res;
   }
 
   /*****-------End of Course Elements-------*****/

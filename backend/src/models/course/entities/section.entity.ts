@@ -34,7 +34,7 @@ export class SectionEntity {
   @IsEmpty()
   elementsOrder: number[];
 
-  @OneToOne(() => CourseElementEntity)
+  @OneToOne(() => CourseElementEntity, el => el.section)
   @IsEmpty()
   courseElement: CourseElementEntity;
 }

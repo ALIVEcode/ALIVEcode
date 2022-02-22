@@ -37,6 +37,6 @@ export class ActivityEntity {
   @Length(1, 100)
   name: string;
 
-  @OneToOne(() => CourseElementEntity)
-  course_element: CourseElementEntity;
+  @OneToOne(() => CourseElementEntity, el => el.activity)
+  courseElement: CourseElementEntity;
 }

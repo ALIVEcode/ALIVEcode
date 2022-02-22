@@ -27,7 +27,7 @@ export class CourseElementEntity {
   /*****---Elements (only one at a time)---*****/
 
   /** If the element is an activity **/
-  @OneToOne(() => ActivityEntity, act => act.course_element, { eager: true })
+  @OneToOne(() => ActivityEntity, act => act.courseElement, { eager: true })
   @JoinColumn()
   activity: ActivityEntity;
 

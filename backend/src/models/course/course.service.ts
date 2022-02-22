@@ -12,7 +12,6 @@ import { Role } from '../../utils/types/roles.types';
 import { ActivityTheoryEntity } from './entities/activities/activity_theory.entity';
 import { ActivityEntity } from './entities/activity.entity';
 import { ActivityLevelEntity } from './entities/activities/activity_level.entity';
-import { CreateActivityDTO, CreateActivityTheoryDTO, CreateActivityVideoDTO } from './dtos/CreateActivitiesDTO';
 import { CourseElementEntity } from './entities/course_element.entity';
 
 @Injectable()
@@ -90,22 +89,21 @@ export class CourseService {
   }
 
   async createCourseElement(course: CourseEntity, content: CourseContent, sectionParent?: SectionEntity) {
-    const dto = { course, sectionParent };
     const parent = sectionParent || course;
-    let courseElement: CourseElementEntity;
 
-    if (content instanceof SectionEntity) courseElement = await this.courseElRepo.save({ ...dto, section: content });
-    else if (content instanceof ActivityEntity)
-      courseElement = await this.courseElRepo.save({ ...dto, activity: content });
-    else throw new HttpException('Invalid course content', HttpStatus.INTERNAL_SERVER_ERROR);
+    const courseElement = this.courseElRepo.create({ sectionParent });
 
-    /*parent.elements.push(courseElement);
-    parent.elementsOrder.push(courseElement.id);
+    if (content instanceof SectionEntity) courseElement.section = content;
+    else if (content instanceof ActivityEntity) courseElement.activity = content;
+    const savedElement = await this.courseElRepo.save(courseElement);
+
+    parent.elements.push(savedElement);
+    parent.elementsOrder.push(savedElement.id);
     parent instanceof CourseEntity
       ? await this.courseRepository.save(parent)
-      : await this.sectionRepository.save(parent);*/
+      : await this.sectionRepository.save(parent);
 
-    return { courseElement, newOrder: parent.elementsOrder };
+    return { savedElement, newOrder: parent.elementsOrder };
   }
 
   async addSection(course: CourseEntity, sectionDTO: SectionEntity, sectionParent?: SectionEntity) {

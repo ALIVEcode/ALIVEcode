@@ -91,19 +91,19 @@ export class CourseService {
   async createCourseElement(course: CourseEntity, content: CourseContent, sectionParent?: SectionEntity) {
     const parent = sectionParent || course;
 
-    const courseElement = this.courseElRepo.create({ sectionParent });
+    const createdElement = this.courseElRepo.create({ sectionParent });
 
-    if (content instanceof SectionEntity) courseElement.section = content;
-    else if (content instanceof ActivityEntity) courseElement.activity = content;
-    const savedElement = await this.courseElRepo.save(courseElement);
+    if (content instanceof SectionEntity) createdElement.section = content;
+    else if (content instanceof ActivityEntity) createdElement.activity = content;
+    const courseElement = await this.courseElRepo.save(createdElement);
 
-    parent.elements.push(savedElement);
-    parent.elementsOrder.push(savedElement.id);
+    parent.elements.push(courseElement);
+    parent.elementsOrder.push(courseElement.id);
     parent instanceof CourseEntity
       ? await this.courseRepository.save(parent)
       : await this.sectionRepository.save(parent);
 
-    return { savedElement, newOrder: parent.elementsOrder };
+    return { courseElement, newOrder: parent.elementsOrder };
   }
 
   async addSection(course: CourseEntity, sectionDTO: SectionEntity, sectionParent?: SectionEntity) {

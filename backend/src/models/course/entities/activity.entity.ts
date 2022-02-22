@@ -1,5 +1,5 @@
 import { Exclude } from 'class-transformer';
-import { Entity, PrimaryGeneratedColumn, TableInheritance, Column, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, TableInheritance, Column, OneToOne, JoinColumn } from 'typeorm';
 import { IsEmpty, IsNotEmpty, Length } from 'class-validator';
 import { CourseElementEntity } from './course_element.entity';
 
@@ -37,6 +37,7 @@ export class ActivityEntity {
   @Length(1, 100)
   name: string;
 
-  @OneToOne(() => CourseElementEntity, el => el.activity)
+  @OneToOne(() => CourseElementEntity, el => el.activity, { onDelete: 'CASCADE' })
+  @JoinColumn()
   courseElement: CourseElementEntity;
 }

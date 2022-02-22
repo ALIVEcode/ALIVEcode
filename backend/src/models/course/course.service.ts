@@ -66,17 +66,7 @@ export class CourseService {
     return await this.courseRepository.remove(course);
   }
 
-  async removeSection(sectionId: string) {
-    const section = await this.findSection(sectionId);
-    return await this.sectionRepository.remove(section);
-  }
-
-  async removeActivity(activityId: string) {
-    throw new HttpException('Not implmented', HttpStatus.NOT_IMPLEMENTED);
-    /*
-    const activity = await this.findActivity(courseId, sectionId, activityId);
-    return await this.activityRepository.remove(activity);*/
-  }
+  /*****-------Course Elements-------*****/
 
   async findOneWithElements(courseId: string) {
     const course = await this.courseRepository.findOne(courseId, { relations: ['elements'] });
@@ -84,8 +74,8 @@ export class CourseService {
     return course;
   }
 
-  async removeCourseElement(course: CourseEntity, content: CourseContent) {
-    return;
+  async findCourseElement(course: CourseEntity, courseElementId: string) {
+    return await this.courseElRepo.findOne({ where: { id: courseElementId, course } });
   }
 
   async createCourseElement(course: CourseEntity, content: CourseContent, sectionParent?: SectionEntity) {
@@ -106,26 +96,20 @@ export class CourseService {
     return { courseElement, newOrder: parent.elementsOrder };
   }
 
-  async addSection(course: CourseEntity, sectionDTO: SectionEntity, sectionParent?: SectionEntity) {
-    const section = await this.sectionRepository.save(sectionDTO);
-    return await this.createCourseElement(course, section, sectionParent);
+  async deleteCourseElement(courseElement: CourseElementEntity) {
+    return await this.courseElRepo.delete(courseElement);
   }
 
-  async filterCourseAccess(course: CourseEntity, user: UserEntity) {
-    if (hasRole(user, Role.STAFF)) return true;
-    if (course.creator.id === user.id) return true;
-    // TODO: Better managing of course access private
-    //if (course.access === COURSE_ACCESS.PRIVATE) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+  /*****-------End of Course Elements-------*****/
 
-    if (user instanceof StudentEntity) {
-      const student = await this.studentRepo.findOne(user.id, { relations: ['classrooms', 'classrooms.courses'] });
-      if (!student) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-      if (!student.classrooms.some(classroom => classroom.courses.some(c => c.id === course.id)))
-        throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-      return true;
-    }
+  /*****-------Section methods-------*****/
 
-    throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+  async findSection(sectionId: string) {
+    const section = await this.sectionRepository.findOne({
+      where: { id: sectionId },
+    });
+    if (!section) throw new HttpException('Section not found', HttpStatus.NOT_FOUND);
+    return section;
   }
 
   async findSectionWithElements(sectionId: string) {
@@ -137,43 +121,36 @@ export class CourseService {
     return section;
   }
 
-  async findSection(sectionId: string) {
-    const section = await this.sectionRepository.findOne({
-      where: { id: sectionId },
-    });
-    if (!section) throw new HttpException('Section not found', HttpStatus.NOT_FOUND);
-    return section;
+  async addSection(course: CourseEntity, sectionDTO: SectionEntity, sectionParent?: SectionEntity) {
+    const section = await this.sectionRepository.save(sectionDTO);
+    return await this.createCourseElement(course, section, sectionParent);
   }
 
-  async findActivity(courseId: string, sectionId: string, activityId: string) {
-    throw new HttpException('Not implmented', HttpStatus.NOT_IMPLEMENTED);
-    /*
-    const section = await this.findSection(courseId, sectionId);
-    let activity = section.activities.find(a => a.id.toString() === activityId);
-    if (!activity) throw new HttpException('Activity not found', HttpStatus.NOT_FOUND);
+  /*****-------End of Section methods-------*****/
 
-    activity = await this.activityRepository.findOne(activity.id, { relations: ['levels'] });
+  /*****-------Activities methods-------*****/
+
+  async findActivity(courseId: string, id: string) {
+    const activity = await this.activityRepository
+      .createQueryBuilder('activity')
+      .where('activity.id = :id', { id })
+      .innerJoinAndSelect('activity.courseElement', 'element')
+      .innerJoinAndSelect('element.course', 'course')
+      .andWhere('course.id = :courseId', { courseId })
+      .getOne();
+
+    if (!activity) throw new HttpException('Activity not found', HttpStatus.NOT_FOUND);
     return activity;
-    */
-  }
-
-  async updateActivity(
-    courseId: string,
-    sectionId: string,
-    activityId: string,
-    updateActivityDTO: Partial<ActivityEntity>,
-  ) {
-    throw new HttpException('Not implmented', HttpStatus.NOT_IMPLEMENTED);
-    /*
-    const section = await this.findSection(courseId, sectionId);
-    const activity = section.activities.find(a => a.id.toString() === activityId);
-    if (!activity) throw new HttpException('Activity not found', HttpStatus.NOT_FOUND);
-
-    return await this.activityRepository.save({ id: activity.id, ...updateActivityDTO });*/
   }
 
   async addActivity(course: CourseEntity, activityDTO: ActivityEntity, sectionParent?: SectionEntity) {
     const activity = await this.activityRepository.save(activityDTO);
     return await this.createCourseElement(course, activity, sectionParent);
   }
+
+  async updateActivity(activity: ActivityEntity, updateActivityDTO: Partial<ActivityEntity>) {
+    return await this.activityRepository.save({ id: activity.id, ...updateActivityDTO });
+  }
+
+  /*****-------End of Activity methods-------*****/
 }

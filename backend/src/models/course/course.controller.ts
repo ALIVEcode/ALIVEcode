@@ -71,23 +71,9 @@ export class CourseController {
   @Get(':id/elements')
   @Auth()
   @UseGuards(CourseAccess)
-  async getSections(@Course() course: CourseEntity, @User() user: UserEntity) {
+  async getElements(@Course() course: CourseEntity, @User() user: UserEntity) {
     await this.userService.accessCourse(user, course);
     return (await this.courseService.findOneWithElements(course.id)).elements;
-  }
-
-  @Delete(':id/sections/:sectionId')
-  @Auth(Role.PROFESSOR, Role.STAFF)
-  @UseGuards(CourseProfessor)
-  async removeSection(@Course() course: CourseEntity, @Param('sectionId') sectionId: string) {
-    return await this.courseService.removeSection(sectionId);
-  }
-
-  @Get(':id/activities')
-  @Auth()
-  @UseGuards(CourseAccess)
-  async getActivities(@Course() course: CourseEntity, @Param('sectionId') sectionId: string) {
-    return (await this.courseService.findSectionWithElements(sectionId)).elements;
   }
 
   @Post(':id/activities')
@@ -106,37 +92,30 @@ export class CourseController {
     return await this.courseService.addActivity(course, createActivityDTO.courseContent);
   }
 
-  @Get(':id/sections/:sectionId/activities/:activityId/content')
+  @Get(':id/activities/:activityId/content')
   @Auth()
   @UseGuards(CourseAccess)
-  async getActivityContent(
-    @Course() course: CourseEntity,
-    @Param('sectionId') sectionId: string,
-    @Param('activityId') activityId: string,
-  ) {
-    return await this.courseService.findActivity(course.id, sectionId, activityId);
+  async getActivityContent(@Course() course: CourseEntity, @Param('activityId') activityId: string) {
+    return await this.courseService.findActivity(course.id, activityId);
   }
 
-  @Patch(':id/sections/:sectionId/activities/:activityId/content')
+  @Patch(':id/activities/:activityId')
   @Auth(Role.PROFESSOR, Role.STAFF)
   @UseGuards(CourseProfessor)
   async updateActivity(
     @Course() course: CourseEntity,
-    @Param('sectionId') sectionId: string,
     @Param('activityId') activityId: string,
     @Body() updateActivityDTO: Partial<ActivityEntity>,
   ) {
-    return await this.courseService.updateActivity(course.id, sectionId, activityId, updateActivityDTO);
+    const activity = await this.courseService.findActivity(course.id, activityId);
+    return await this.courseService.updateActivity(activity, updateActivityDTO);
   }
 
-  @Delete(':id/sections/:sectionId/activities/:activityId')
+  @Delete(':id/elements/:courseElementId')
   @Auth(Role.PROFESSOR, Role.STAFF)
   @UseGuards(CourseProfessor)
-  async removeActivity(
-    @Course() course: CourseEntity,
-    @Param('sectionId') sectionId: string,
-    @Param('activityId') activityId: string,
-  ) {
-    return await this.courseService.removeActivity(activityId);
+  async deleteCourseElement(@Course() course: CourseEntity, @Param('courseElementId') courseElementId: string) {
+    const courseElement = await this.courseService.findCourseElement(course, courseElementId);
+    return await this.courseService.deleteCourseElement(courseElement);
   }
 }

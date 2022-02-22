@@ -257,7 +257,7 @@ const api = {
 			},
 			deleteElement: apiDelete('courses/:courseId/elements/:elementId'),
 			updateActivity: apiUpdate(
-				'courses/:courseId/sections/:sectionId/activities/:activityId/content',
+				'courses/:courseId/activities/:activityId',
 				Activity,
 			),
 		},

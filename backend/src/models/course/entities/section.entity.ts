@@ -1,6 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { IsEmpty, IsNotEmpty, Length, ValidateIf } from 'class-validator';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 import { CourseElementEntity } from './course_element.entity';
 
 @Entity()
@@ -34,7 +34,8 @@ export class SectionEntity {
   @IsEmpty()
   elementsOrder: number[];
 
-  @OneToOne(() => CourseElementEntity, el => el.section)
+  @OneToOne(() => CourseElementEntity, el => el.section, { onDelete: 'CASCADE' })
+  @JoinColumn()
   @IsEmpty()
   courseElement: CourseElementEntity;
 }

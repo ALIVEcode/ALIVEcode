@@ -4,14 +4,12 @@ import { CourseEntity } from './entities/course.entity';
 import { Repository } from 'typeorm';
 import { SectionEntity } from './entities/section.entity';
 import { generate } from 'randomstring';
-import { ProfessorEntity } from '../user/entities/professor.entity';
 import { ActivityEntity } from './entities/activity.entity';
 import { CreateCourseDTO } from './dtos/CreateCourseDTO';
 import { ClassroomEntity } from '../classroom/entities/classroom.entity';
-import { UserEntity } from '../user/entities/user.entity';
+import { UserEntity, ProfessorEntity, StudentEntity } from '../user/entities/user.entity';
 import { hasRole } from '../user/auth';
 import { Role } from '../../utils/types/roles.types';
-import { StudentEntity } from '../user/entities/student.entity';
 
 @Injectable()
 export class CourseService {

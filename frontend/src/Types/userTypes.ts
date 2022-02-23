@@ -5,8 +5,8 @@ export enum GRADES {
 }
 
 export enum USER_TYPES {
-	STUDENT = 0,
-	PROFESSOR = 1,
+	STUDENT = 'S',
+	PROFESSOR = 'P',
 }
 
 export interface ProfessorInterface {
@@ -32,4 +32,5 @@ export type BackendUser = {
 	scholarity: GRADES;
 	firstName: string;
 	lastName: string;
+	type: USER_TYPES;
 };

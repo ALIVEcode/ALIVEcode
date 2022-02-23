@@ -3,8 +3,7 @@ import { CreatedByUser } from '../../../generics/entities/createdByUser.entity';
 import { Exclude } from 'class-transformer';
 import { IsEmpty, IsNotEmpty } from 'class-validator';
 import { CourseEntity } from '../../course/entities/course.entity';
-import { StudentEntity } from '../../user/entities/student.entity';
-import { ProfessorEntity } from '../../user/entities/professor.entity';
+import { StudentEntity, ProfessorEntity } from '../../user/entities/user.entity';
 
 export enum CLASSROOM_SUBJECT {
   INFORMATIC = 'IN',

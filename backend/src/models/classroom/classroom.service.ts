@@ -3,9 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ClassroomEntity, CLASSROOM_ACCESS } from './entities/classroom.entity';
 import { ILike, Repository } from 'typeorm';
 import { generate } from 'randomstring';
-import { ProfessorEntity } from '../user/entities/professor.entity';
-import { UserEntity } from '../user/entities/user.entity';
-import { StudentEntity } from '../user/entities/student.entity';
+import { UserEntity, StudentEntity, ProfessorEntity } from '../user/entities/user.entity';
 import { CourseEntity } from '../course/entities/course.entity';
 import { ClassroomQueryDTO } from './dto/ClassroomQuery.dto';
 

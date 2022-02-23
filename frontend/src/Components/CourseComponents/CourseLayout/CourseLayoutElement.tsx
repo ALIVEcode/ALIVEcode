@@ -5,11 +5,16 @@ import { CourseLayoutElementProps } from './courseLayoutTypes';
 const CourseLayoutElement = ({
 	element,
 	editMode,
+	depth = 0,
 }: CourseLayoutElementProps) => {
 	return (
-		<div>
-			{element.isSection() ? (
-				<CourseLayoutSection section={element.section!} editMode={editMode} />
+		<div style={{ marginLeft: `${20 * depth}px` }}>
+			{element?.isSection() ? (
+				<CourseLayoutSection
+					section={element.section!}
+					editMode={editMode}
+					depth={depth}
+				/>
 			) : (
 				<CourseLayoutActivity />
 			)}

@@ -1,19 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UseGuards } from '@nestjs/common';
-import { CourseService } from './course.service';
-import { CourseEntity } from './entities/course.entity';
-import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
-import { ProfessorEntity } from '../user/entities/user.entity';
-import { UserEntity } from '../user/entities/user.entity';
-import { Role } from '../../utils/types/roles.types';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 import { Auth } from '../../utils/decorators/auth.decorator';
-import { User } from '../../utils/decorators/user.decorator';
-import { CreateCourseDTO } from './dtos/CreateCourseDTO';
-import { UserService } from '../user/user.service';
-import { ActivityEntity } from './entities/activity.entity';
 import { Course } from '../../utils/decorators/course.decorator';
-import { CourseProfessor, CourseAccess } from '../../utils/guards/course.guard';
-import { CreateActivityTheoryDTO, CreateActivityVideoDTO, CreateActivityLevelDTO } from './dtos/CreateActivitiesDTO';
+import { User } from '../../utils/decorators/user.decorator';
+import { CourseAccess, CourseProfessor } from '../../utils/guards/course.guard';
+import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
+import { Role } from '../../utils/types/roles.types';
+import { ProfessorEntity, UserEntity } from '../user/entities/user.entity';
+import { UserService } from '../user/user.service';
+import { CourseService } from './course.service';
+import { CreateActivityLevelDTO, CreateActivityTheoryDTO, CreateActivityVideoDTO } from './dtos/CreateActivitiesDTO';
+import { CreateCourseDTO } from './dtos/CreateCourseDTO';
 import { CreateSectionDTO } from './dtos/CreateSectionDTO';
+import { ActivityEntity } from './entities/activity.entity';
+import { CourseEntity } from './entities/course.entity';
 
 @Controller('courses')
 @UseInterceptors(DTOInterceptor)
@@ -74,6 +73,18 @@ export class CourseController {
   async getElements(@Course() course: CourseEntity, @User() user: UserEntity) {
     await this.userService.accessCourse(user, course);
     return (await this.courseService.findOneWithElements(course.id)).elements;
+  }
+
+  @Get(':id/sections/:sectionId/elements')
+  @Auth()
+  @UseGuards(CourseAccess)
+  async getElementsInSection(
+    @Course() course: CourseEntity,
+    @Param('sectionId') sectionId: string,
+    @User() user: UserEntity,
+  ) {
+    await this.userService.accessCourse(user, course);
+    return (await this.courseService.findSectionWithElements(sectionId)).elements;
   }
 
   @Post(':id/activities')

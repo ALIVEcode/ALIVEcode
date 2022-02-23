@@ -1,16 +1,18 @@
 import { faDropbox } from '@fortawesome/free-brands-svg-icons';
 import { faPenFancy, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Disclosure } from '@headlessui/react';
-import { plainToClass } from 'class-transformer';
-import { useContext, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Activity } from '../../../Models/Course/activity.entity';
+import { Section } from '../../../Models/Course/section.entity';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import AlertConfirm from '../../UtilsComponents/Alert/AlertConfirm/AlertConfirm';
 import Link from '../../UtilsComponents/Link/Link';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import { Option, TDOption } from '../../UtilsComponents/Option/TDOption';
 import { CourseSectionProps } from '../CourseSection/courseSectionTypes';
+import CourseLayoutElement from './CourseLayoutElement';
+import CreateSectionForm from './CreateSectionForm';
 /**
  * Component that shows the section in the navigation and handles different actions like adding in an activity onto the section
  *
@@ -18,23 +20,25 @@ import { CourseSectionProps } from '../CourseSection/courseSectionTypes';
  * @author MoSk3
  * @author Ecoral360
  */
-const CourseSection = ({ section, editMode }: CourseSectionProps) => {
+const CourseSection = ({
+	section,
+	editMode,
+	depth = 0,
+}: CourseSectionProps) => {
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const {
-		loadActivity,
 		deleteElement,
-		addContent,
 		courseElements,
 		course,
 		canEdit,
-		activity,
-		closeCurrentActivity,
+		loadSectionElements,
 	} = useContext(CourseContext);
 	const { t } = useTranslation();
 	const [confirmSectionDelete, setConfirmSectionDelete] = useState(false);
 	const [confirmActivityDelete, setConfirmActivityDelete] = useState(false);
 	const currentActivity = useRef<Activity>();
+	const [openModalSection, setOpenModalSection] = useState(false);
 
 	const toggleOpenSection = async () => {
 		if (!course) return;
@@ -45,6 +49,11 @@ const CourseSection = ({ section, editMode }: CourseSectionProps) => {
 			setLoading(false);
 		}
 	};
+
+	useEffect(() => {
+		loadSectionElements(section);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [section]);
 
 	return (
 		<Disclosure as="div" className="course-section">
@@ -78,48 +87,30 @@ const CourseSection = ({ section, editMode }: CourseSectionProps) => {
 						<Link
 							dark
 							onClick={() => {
-								addContent(
-									plainToClass(Activity, {
-										name: `Activity #${
-											section.elements ? section.elements.length + 1 : 1
-										}`,
-									}),
-									section,
-								);
+								setOpenModalSection(true);
 							}}
 						>
-							Add an activity
+							{t('course.section.new')}
 						</Link>
 					) : (
 						<>
-							{section.elements?.map((a, idx) => (
-								<div key={idx} className="course-activity">
-									{a.id === activity?.id ? (
-										<b style={{ color: 'var(--contrast-color)' }}>
-											{a.getName()}
-										</b>
-									) : (
-										a.getName()
-									)}
+							{section.elementsOrder?.map(id => (
+								<div key={id} className="course-activity">
+									<CourseLayoutElement
+										element={courseElements![id]}
+										editMode={editMode}
+										depth={depth + 1}
+									/>
 								</div>
 							))}
 							{canEdit && (
 								<Link
 									dark
 									onClick={() => {
-										addContent(
-											plainToClass(Activity, {
-												name: t('course.activity.new_name', {
-													num: section.elements
-														? section.elements.length + 1
-														: 1,
-												}),
-											}),
-											section,
-										);
+										setOpenModalSection(true);
 									}}
 								>
-									{t('course.activity.new')}
+									{t('course.section.new')}
 								</Link>
 							)}
 						</>
@@ -146,6 +137,11 @@ const CourseSection = ({ section, editMode }: CourseSectionProps) => {
 				}}
 				hideFooter
 			></AlertConfirm>
+			<CreateSectionForm
+				openModalSection={openModalSection}
+				setOpenModalSection={setOpenModalSection}
+				sectionParent={section}
+			/>
 		</Disclosure>
 	);
 };

@@ -72,19 +72,27 @@ const Course = () => {
 			content,
 			sectionParent?.id,
 		);
-		const parent = courseElement.getParent();
+		const parent = sectionParent ?? course;
 		parent.elementsOrder = newOrder;
 		parent.elements.push(courseElement);
 
 		// if the content is added directly at the level of the course
+		console.log(courseElement);
+
 		if (parent instanceof CourseModel) {
 			setCourse(plainToClass(CourseModel, parent));
+			setCourseElements({
+				...courseElements,
+				[courseElement.id]: courseElement,
+			});
 		}
 		// if the content is added in a section
 		else if (parent instanceof Section) {
+			setCourse(plainToClass(CourseModel, courseElement.course));
 			setCourseElements({
 				...courseElements,
 				[parent.id]: parent.courseElement,
+				[courseElement.id]: courseElement,
 			});
 		}
 	};
@@ -118,6 +126,23 @@ const Course = () => {
 			);
 			setCourse(plainToClass(CourseModel, course));
 		}
+	};
+
+	const loadSectionElements = async (section: Section) => {
+		if (!course || !section) return;
+
+		const elements = await api.db.courses.getElementsInSection({
+			courseId: course.id,
+			sectionId: section.id.toString(),
+		});
+		setCourseElements({
+			...courseElements,
+			...Object.fromEntries(elements.map(el => [el.id, el])),
+		});
+		console.log(elements);
+		console.log(courseElements);
+
+		section.elements = elements;
 	};
 
 	// const saveActivity = async (activity: Activity) => {
@@ -232,6 +257,7 @@ const Course = () => {
 		isNavigationOpen,
 		setTitle,
 		addContent,
+		loadSectionElements,
 		// loadActivity,
 		// closeCurrentActivity,
 		// saveActivity,
@@ -261,9 +287,10 @@ const Course = () => {
 					id,
 				});
 				// await course.getSections();
-				setCourse(course);
+				course.elements = course.elements ?? [];
 				const elements = await api.db.courses.getElements({ courseId: id });
 				setCourseElements(Object.fromEntries(elements.map(el => [el.id, el])));
+				setCourse(course);
 			} catch (err) {
 				navigate('/');
 				return alert.error(t('error.not_found', { obj: t('msg.course') }));

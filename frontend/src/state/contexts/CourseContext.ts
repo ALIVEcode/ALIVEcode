@@ -16,6 +16,7 @@ export type CourseContextValues = {
 	canEdit: boolean;
 	setTitle: (newTitle: string) => void;
 	loadActivity: (section: Section, activity: Activity) => any;
+	loadSectionElements: (section: Section) => any;
 	closeCurrentActivity: () => void;
 	saveActivity: (activity: Activity) => void;
 	saveActivityContent: (data: string) => void;
@@ -45,4 +46,5 @@ export const CourseContext = createContext<CourseContextValues>({
 		newIdx: number,
 		newParent: CourseElement,
 	) => {},
+	loadSectionElements: (section: Section) => {},
 });

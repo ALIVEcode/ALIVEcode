@@ -229,6 +229,11 @@ const api = {
 				);
 			},
 			getElements: apiGet('courses/:courseId/elements', CourseElement, true),
+			getElementsInSection: apiGet(
+				'courses/:courseId/sections/:sectionId/elements',
+				CourseElement,
+				true,
+			),
 			getElement: apiGet(
 				'courses/:courseId/elements/:elementId',
 				CourseElement,
@@ -251,7 +256,10 @@ const api = {
 					)
 				).data;
 				return {
-					courseElement: plainToClass(CourseElement, contentAndOrder.element),
+					courseElement: plainToClass(
+						CourseElement,
+						contentAndOrder.courseElement,
+					),
 					newOrder: contentAndOrder.newOrder,
 				} as ResultElementCreated;
 			},

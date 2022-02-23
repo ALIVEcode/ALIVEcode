@@ -107,7 +107,7 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 		borderWidth: 1,
 	});
 	let datasets = useRef([initialDataset]);
-	const [chartData, setChartData] = useState({ datasets: [initialDataset]});
+	const [chartData, setChartData] = useState({ datasets: [initialDataset] });
 
 	/**
 	 * Resets the dataset array and the data shown on the graph.
@@ -123,11 +123,10 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 	 */
 	function setDataOnGraph(newData: DataTypes): void {
 		if (datasets.current[0] === initialDataset) {
-			console.log("dataset vide");
+			console.log('dataset vide');
 			datasets.current = [newData];
-		}
-		else datasets.current.push(newData);
-		setChartData({ datasets: datasets.current});
+		} else datasets.current.push(newData);
+		setChartData({ datasets: datasets.current });
 
 		console.log(chartData.datasets[0].data);
 	}
@@ -222,6 +221,7 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 						{editMode ? (
 							/* Interface du code avec les tabs */
 							<LineInterface
+								key="edit-mode"
 								hasTabs
 								tabs={[
 									{
@@ -248,6 +248,7 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 						) : (
 							/* Interface de code sans les tabs */
 							<LineInterface
+								key="play-mode"
 								initialContent={initialCode}
 								handleChange={lineInterfaceContentChanges}
 							/>
@@ -258,9 +259,7 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 							Contains the graph and the console
 					*/}
 					<div className="flex flex-col w-1/2">
-						<div
-							className="h-3/5 w-full flex flex-row data-section"
-						>
+						<div className="h-3/5 w-full flex flex-row data-section">
 							<div className="w-1/3 h-full">
 								<LevelTable
 									data={data}

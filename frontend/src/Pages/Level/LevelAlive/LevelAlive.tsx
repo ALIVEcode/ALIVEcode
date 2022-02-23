@@ -88,6 +88,7 @@ const LevelAlive = ({ initialCode }: LevelAliveProps) => {
 					{editMode ? (
 						/* Interface du code avec les tabs */
 						<LineInterface
+							key="edit-mode"
 							className="flex-1"
 							hasTabs
 							tabs={[
@@ -115,6 +116,7 @@ const LevelAlive = ({ initialCode }: LevelAliveProps) => {
 					) : (
 						/* Interface de code sans les tabs */
 						<LineInterface
+							key="play-mode"
 							initialContent={initialCode}
 							handleChange={lineInterfaceContentChanges}
 						/>

@@ -147,7 +147,13 @@
 			"signup_student": "Compte étudiant",
 			"signout": "Se déconnecter",
 			"already_registered": "Tu as déjà un compte ?",
-			"account_required": "Il te faut un compte pour faire ça"
+			"account_required": "Il te faut un compte pour faire ça",
+			"name_migration": {
+				"title": "Changement de la façon dont les étudiants sont identifiés",
+				"desc": "Chaque étudiant doit maintenant posséder un prénom ainsi qu'un nom de famille afin d'être plus facilement identifié. De plus, votre nom n'est plus unique.",
+				"please": "Veuillez s'il vous plait prendre le temps de choisir un nouveau nom.",
+				"submit": "Confirmer votre nouveau nom"
+			}
 		},
 		"section": {
 			"alive": "ALIVE Play",

@@ -147,7 +147,13 @@
 			"signup_student": "Student account",
 			"signout": "Sign out",
 			"already_registered": "Already have an account ?",
-			"account_required": "You need an account to do that"
+			"account_required": "You need an account to do that",
+			"name_migration": {
+				"title": "Changing the way students are identified",
+				"desc": "Every student must now have a first name and last name to help better identify the student. Also, your name is not unique anymore.",
+				"please": "Please take the time to choose a new name.",
+				"submit": "Confirm your new account name"
+			}
 		},
 		"section": {
 			"alive": "ALIVE Play",

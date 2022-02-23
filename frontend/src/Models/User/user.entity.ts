@@ -79,7 +79,7 @@ export class User {
 		try {
 			if (backendUser.type === USER_TYPES.PROFESSOR)
 				return plainToClass(Professor, backendUser);
-			if (backendUser.name === USER_TYPES.STUDENT)
+			if (backendUser.type === USER_TYPES.STUDENT)
 				return plainToClass(Student, backendUser);
 
 			throw new Error('Could not load user');
@@ -90,11 +90,17 @@ export class User {
 }
 
 export class Student extends User {
-	oldStudentName: string;
+	oldStudentName?: string;
 	image: string;
 
 	getDisplayImage() {
 		return this.image;
+	}
+
+	getDisplayName() {
+		if (!this.firstName || !this.lastName)
+			return this.oldStudentName || 'Unnamed';
+		return super.getDisplayName();
 	}
 }
 

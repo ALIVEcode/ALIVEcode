@@ -6,6 +6,7 @@ export interface ModalProps {
 	open: boolean;
 	setOpen: (bool: boolean) => void;
 	size?: 'sm' | 'lg' | 'xl';
+	unclosable?: boolean;
 	submitButtonVariant?: ButtonVariants;
 	closeButtonVariant?: ButtonVariants;
 	hideCloseButton?: boolean;

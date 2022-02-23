@@ -77,8 +77,6 @@ const SignUp = ({ userType }: SignUpProps) => {
 			const statusCode = err.response?.status;
 
 			if (statusCode === HttpStatusCode.CONFLICT) {
-				if (err.response.data.message.includes('username'))
-					return setError('name', { type: 'taken' });
 				if (err.response.data.message.includes('email'))
 					return setError('email', { type: 'taken' });
 			}

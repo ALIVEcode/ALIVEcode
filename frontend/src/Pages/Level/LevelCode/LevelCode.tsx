@@ -76,6 +76,7 @@ const LevelCode = ({ initialCode }: LevelCodeProps) => {
 						<LevelToolsBar />
 						{editMode ? (
 							<LineInterface
+								key="edit-mode"
 								hasTabs
 								tabs={[
 									{
@@ -101,6 +102,7 @@ const LevelCode = ({ initialCode }: LevelCodeProps) => {
 							/>
 						) : (
 							<LineInterface
+								key="play-mode"
 								initialContent={initialCode}
 								handleChange={lineInterfaceContentChanges}
 							/>

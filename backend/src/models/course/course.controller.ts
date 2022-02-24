@@ -15,8 +15,6 @@ import { CourseService } from './course.service';
 import { CourseEntity } from './entities/course.entity';
 import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
 import { SectionEntity } from './entities/section.entity';
-import { ProfessorEntity } from '../user/entities/professor.entity';
-import { UserEntity } from '../user/entities/user.entity';
 import { hasRole } from '../user/auth';
 import { Role } from '../../utils/types/roles.types';
 import { Auth } from '../../utils/decorators/auth.decorator';
@@ -24,6 +22,7 @@ import { User } from '../../utils/decorators/user.decorator';
 import { ActivityEntity } from './entities/activity.entity';
 import { CreateCourseDTO } from './dtos/CreateCourseDTO';
 import { UserService } from '../user/user.service';
+import { UserEntity, ProfessorEntity } from '../user/entities/user.entity';
 
 @Controller('courses')
 @UseInterceptors(DTOInterceptor)

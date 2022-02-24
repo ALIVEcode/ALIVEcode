@@ -19,13 +19,39 @@ import { Result } from 'src/models/social/results/entities/result.entity';
 import { AsScriptEntity } from 'src/models/as-script/entities/as-script.entity';
 import { CommentairesForum as Comment_Table } from 'src/models/social/commentaires-forum/entities/commentaires-forum.entity';
 import Messages from 'src/models/social/messages/entities/messages.entity';
+import { Optional } from '@nestjs/common';
+import { ChildEntity, ManyToMany } from 'typeorm';
+import { ClassroomEntity } from '../../classroom/entities/classroom.entity';
+import { CourseEntity } from '../../course/entities/course.entity';
+
+export enum USER_TYPES {
+  STUDENT = 'S',
+  PROFESSOR = 'P',
+}
 
 @Entity()
-@TableInheritance({ column: { type: 'varchar', name: 'type' } })
+@TableInheritance({ column: 'type' })
 export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   @Exclude({ toClassOnly: true })
   id: string;
+
+  @Column({ nullable: true })
+  @IsNotEmpty()
+  @Length(3, 25)
+  @Matches(/^[-\p{L}]{3,}$/u, { message: 'form.firstName.error.match' })
+  firstName: string;
+
+  @Column({ nullable: true })
+  @IsNotEmpty()
+  @Length(3, 25)
+  @Matches(/^[A-Za-z]*$/, { message: 'form.lastName.error.match' })
+  lastName: string;
+
+  @Exclude({ toClassOnly: true })
+  @IsEmpty()
+  @Column({ type: 'enum', enum: USER_TYPES, name: 'type', default: USER_TYPES.STUDENT })
+  readonly type: USER_TYPES;
 
   @Column({ nullable: false })
   @Exclude({ toPlainOnly: true })
@@ -96,4 +122,26 @@ export class UserEntity extends BaseEntity {
 
   @Column({ type: 'varchar', default: '' })
   image: string;
-} 
+}
+
+@ChildEntity(USER_TYPES.STUDENT)
+export class StudentEntity extends UserEntity {
+  @Column()
+  @IsEmpty()
+  oldStudentName: string;
+
+  @Optional()
+  @ManyToMany(() => ClassroomEntity, classroom => classroom.students, { onDelete: 'CASCADE' })
+  classrooms: ClassroomEntity[];
+}
+
+@ChildEntity(USER_TYPES.PROFESSOR)
+export class ProfessorEntity extends UserEntity {
+  @Exclude({ toClassOnly: true })
+  @OneToMany(() => ClassroomEntity, classroom => classroom.creator, { cascade: true })
+  classrooms: ClassroomEntity[];
+
+  @Exclude({ toClassOnly: true })
+  @OneToMany(() => CourseEntity, course => course.creator, { cascade: true })
+  courses: CourseEntity[];
+}

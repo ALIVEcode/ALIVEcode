@@ -8,6 +8,7 @@ export enum IOT_COMPONENT_TYPE {
 	LED,
 	LABEL,
 	BUZZER,
+	TRAFFIC_LIGHT,
 }
 
 @Exclude()

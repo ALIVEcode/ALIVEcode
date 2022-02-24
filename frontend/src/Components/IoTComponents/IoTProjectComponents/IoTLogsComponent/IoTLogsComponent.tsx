@@ -15,7 +15,8 @@ const IoTLogsComponent = ({ component }: { component: IoTLogs }) => {
 			<div className="log-row">
 				<div className="log-content">
 					<div className="log-entries">
-						{component.displayedValue.length <= 0 ? (
+						{component.displayedValue &&
+						component.displayedValue.length <= 0 ? (
 							<label>No logs available</label>
 						) : (
 							component.displayedValue.map((l: IoTLogModel, idx: number) => (

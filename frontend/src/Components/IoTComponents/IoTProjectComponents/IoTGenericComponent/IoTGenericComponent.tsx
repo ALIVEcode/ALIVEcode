@@ -60,10 +60,16 @@ const IoTGenericComponent = ({
 			selectable={selectable ? 1 : 0}
 			onMouseOver={() => !isHovering && setIsHovering(true)}
 			onMouseLeave={() => isHovering && setIsHovering(false)}
+			error={!component.isRefValueValid()}
 			onClick={() => selectable && onSelect && onSelect()}
 		>
 			<div className="component">
 				<label className="component-name">{component.name}</label>
+				{!component.isRefValueValid() && (
+					<i>
+						<div className="font-bold text-red-600">ERROR</div>
+					</i>
+				)}
 				{renderSpecificComponent()}
 				{setEditingComponent && (
 					<FontAwesomeIcon

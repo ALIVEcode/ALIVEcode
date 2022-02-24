@@ -48,7 +48,12 @@ const IoTComponentEditor = ({
 
 		getIoTObjects();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [component.type]);
+	}, [component?.type]);
+
+	if (!component) {
+		onClose();
+		return <></>;
+	}
 
 	const removeComponent = () => {
 		component.getComponentManager()?.removeComponent(component);
@@ -91,6 +96,11 @@ const IoTComponentEditor = ({
 						{')'}
 					</option>
 				))}
+				{!component.isRefValueValid() && (
+					<option value={component.value}>
+						{component.value} (INVALID VALUE)
+					</option>
+				)}
 			</>
 		);
 	};
@@ -401,9 +411,11 @@ const IoTComponentEditor = ({
 			<InputGroup
 				label="Ref"
 				as="select"
+				errors={
+					!component.isRefValueValid() ? [{ type: 'Invalid ref' }] : undefined
+				}
 				value={component.isRef() ? component.value : 'static'}
 				onChange={(e: any) => {
-					console.log(e.target.value);
 					if (e.target.value === 'static') component.reset();
 					else component.setValue(e.target.value);
 				}}

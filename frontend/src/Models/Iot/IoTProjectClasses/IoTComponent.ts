@@ -28,7 +28,7 @@ export abstract class IoTComponent {
 		if (Array.isArray(value)) {
 			value = value.map(v => {
 				// Transform dates
-				if (v.date) v.date = new Date(v.date);
+				if ('date' in v) v.date = new Date(v.date);
 				return v;
 			});
 		}
@@ -63,6 +63,11 @@ export abstract class IoTComponent {
 			typeof this.value === 'string' &&
 			this.value.match(/^\/document([^\s]+)$/) != null
 		);
+	}
+
+	public isRefValueValid() {
+		if (!this.isRef()) return true;
+		return this.validate(this.displayedValue);
 	}
 
 	public getValueByRef = () => {

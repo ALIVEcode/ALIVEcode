@@ -18,13 +18,15 @@ const IoTLogsComponent = ({ component }: { component: IoTLogs }) => {
 						{component.displayedValue &&
 						component.displayedValue.length <= 0 ? (
 							<label>No logs available</label>
-						) : (
+						) : component.displayedValue ? (
 							component.displayedValue.map((l: IoTLogModel, idx: number) => (
 								<label key={idx}>
 									<span style={{ color: 'gray' }}>{formatDate(l.date, t)}</span>{' '}
 									: {l.text}
 								</label>
 							))
+						) : (
+							<i className="font-bold text-red-600">ERROR</i>
 						)}
 					</div>
 				</div>

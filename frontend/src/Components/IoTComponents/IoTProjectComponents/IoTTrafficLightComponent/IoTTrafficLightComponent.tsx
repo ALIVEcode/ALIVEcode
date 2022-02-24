@@ -7,7 +7,7 @@ import { TRAFFIC_LIGHT_STATE } from '../../../../Models/Iot/IoTProjectClasses/Co
 
 const IoTTrafficLightComponent = ({ component }: IoTLedComponentProps) => {
 	const getImage = () => {
-		if (!component.displayedValue) return TRAFFIC_LIGHT_STATE.OFF;
+		if (!component.displayedValue) return ledOffImg;
 		switch (component.displayedValue.toUpperCase()) {
 			case TRAFFIC_LIGHT_STATE.OFF:
 				return ledOffImg;
@@ -17,6 +17,8 @@ const IoTTrafficLightComponent = ({ component }: IoTLedComponentProps) => {
 				return ledYellowImg;
 			case TRAFFIC_LIGHT_STATE.RED:
 				return ledRedImg;
+			default:
+				return ledOffImg;
 		}
 	};
 

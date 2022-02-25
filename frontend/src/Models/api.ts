@@ -182,6 +182,12 @@ const api = {
 			createProfessor: apiCreate('users/professors', Professor),
 			createStudent: apiCreate('users/students', Student),
 			delete: apiDelete('users/:id'),
+			nameMigration: async (firstName: string, lastName: string) => {
+				return await axios.patch('users/nameMigration', {
+					firstName,
+					lastName,
+				});
+			},
 		},
 		classrooms: {
 			all: apiGet('classrooms', Classroom, true),

@@ -13,10 +13,10 @@ import { ProfessorEntity } from '../user/entities/user.entity';
 import { IoTProjectEntity } from '../iot/IoTproject/entities/IoTproject.entity';
 import { IoTObjectEntity } from '../iot/IoTobject/entities/IoTobject.entity';
 import { LevelEntity } from '../level/entities/level.entity';
-import { ActivityTheoryEntity } from './entities/activities/activity_theory.entity';
 import { ActivityEntity } from './entities/activity.entity';
-import { ActivityLevelEntity } from './entities/activities/activity_level.entity';
+import { ActivityTheoryEntity } from './entities/activities/activity_theory.entity';
 import { CourseElementEntity } from './entities/course_element.entity';
+import { ActivityLevelEntity } from './entities/activities/activity_level.entity';
 
 @Module({
   imports: [

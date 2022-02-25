@@ -15,6 +15,9 @@ export class User {
 	@Exclude({ toPlainOnly: true })
 	id: string;
 
+	firstName: string;
+	lastName: string;
+
 	@Exclude({ toPlainOnly: true })
 	password?: string;
 
@@ -39,8 +42,8 @@ export class User {
 
 	private classrooms?: Classroom[];
 
-	public getDisplayName() {
-		return this.email;
+	public getDisplayName(): string {
+		return `${this.firstName} ${this.lastName}`;
 	}
 
 	public isProfessor() {
@@ -87,30 +90,27 @@ export class User {
 }
 
 export class Student extends User {
-	name: string;
+	oldStudentName?: string;
 	image: string;
-
-	getDisplayName() {
-		return this.name;
-	}
 
 	getDisplayImage() {
 		return this.image;
 	}
+
+	getDisplayName() {
+		if (!this.firstName || !this.lastName)
+			return this.oldStudentName || 'Unnamed';
+		return super.getDisplayName();
+	}
 }
 
 export class Professor extends User {
-	firstName: string;
-	lastName: string;
 	image: string;
 
 	getCourses() {
 		return api.db.users.getCourses(this.id);
 	}
 
-	getDisplayName(): string {
-		return `${this.firstName} ${this.lastName}`;
-	}
 	getDisplayImage() {
 		return this.image;
 	}

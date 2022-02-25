@@ -22,8 +22,8 @@ import Messages from 'src/models/social/messages/entities/messages.entity';
 import { ChildEntity, ManyToMany } from 'typeorm';
 import { CourseEntity } from '../../course/entities/course.entity';
 import { ClassroomEntity } from '../../classroom/entities/classroom.entity';
-import { ResourceEntity } from '../../../resource/entities/resource.entity';
 import { Optional } from '@nestjs/common';
+import { ResourceEntity } from '../../../resource/entities/resource.entity';
 
 export enum USER_TYPES {
   STUDENT = 'S',
@@ -36,6 +36,18 @@ export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   @Exclude({ toClassOnly: true })
   id: string;
+
+  @Column({ nullable: true })
+  @IsNotEmpty()
+  @Length(3, 25)
+  @Matches(/^[-\p{L}]{3,}$/u, { message: 'form.firstName.error.match' })
+  firstName: string;
+
+  @Column({ nullable: true })
+  @IsNotEmpty()
+  @Length(3, 25)
+  @Matches(/^[A-Za-z]*$/, { message: 'form.lastName.error.match' })
+  lastName: string;
 
   @Exclude({ toClassOnly: true })
   @IsEmpty()
@@ -113,20 +125,19 @@ export class UserEntity extends BaseEntity {
   image: string;
 }
 
+@ChildEntity(USER_TYPES.STUDENT)
+export class StudentEntity extends UserEntity {
+  @Column()
+  @IsEmpty()
+  oldStudentName: string;
+
+  @Optional()
+  @ManyToMany(() => ClassroomEntity, classroom => classroom.students, { onDelete: 'CASCADE' })
+  classrooms: ClassroomEntity[];
+}
+
 @ChildEntity(USER_TYPES.PROFESSOR)
 export class ProfessorEntity extends UserEntity {
-  @Column()
-  @IsNotEmpty()
-  @Length(3, 25)
-  @Matches(/^[A-Za-z]*$/, { message: 'form.firstName.error.match' })
-  firstName: string;
-
-  @Column()
-  @IsNotEmpty()
-  @Length(3, 25)
-  @Matches(/^[A-Za-z]*$/, { message: 'form.lastName.error.match' })
-  lastName: string;
-
   @Exclude({ toClassOnly: true })
   @OneToMany(() => ClassroomEntity, classroom => classroom.creator, { cascade: true })
   classrooms: ClassroomEntity[];
@@ -138,17 +149,4 @@ export class ProfessorEntity extends UserEntity {
   @Exclude({ toClassOnly: true })
   @OneToMany(() => ResourceEntity, resource => resource.creator)
   resources: ResourceEntity[];
-}
-
-@ChildEntity(USER_TYPES.STUDENT)
-export class StudentEntity extends UserEntity {
-  @Column({ unique: true })
-  @IsNotEmpty()
-  @Length(3, 20)
-  @Matches(/^[a-zA-Z0-9_]*$/, { message: 'form.name.error.match' })
-  name: string;
-
-  @Optional()
-  @ManyToMany(() => ClassroomEntity, classroom => classroom.students, { onDelete: 'CASCADE' })
-  classrooms: ClassroomEntity[];
 }

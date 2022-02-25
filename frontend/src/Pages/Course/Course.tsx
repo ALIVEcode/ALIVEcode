@@ -1,5 +1,4 @@
-import { plainToClass } from 'class-transformer';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
@@ -36,8 +35,8 @@ const StyledDiv = styled.div`
  */
 const Course = () => {
 	const { user } = useContext(UserContext);
-	const [course, setCourse] = useState<CourseModel>();
-	const [courseElements, setCourseElements] = useState<{
+	const course = useRef<CourseModel>();
+	const courseElements = useRef<{
 		[id: number]: CourseElement;
 	}>();
 	const [section, setSection] = useState<Section>();
@@ -56,16 +55,16 @@ const Course = () => {
 	 * @author Mathis
 	 */
 	const setTitle = async (newTitle: string) => {
-		if (!course) return;
+		if (!course.current) return;
 		const courseDTO = { ...course, name: newTitle, code: undefined };
 
 		const updatedCourse = await api.db.courses.update(
-			{ id: course.id },
+			{ id: course.current.id },
 			courseDTO,
 		);
-		course.name = updatedCourse.name;
+		course.current.name = updatedCourse.name;
 
-		setCourse(course);
+		course.current = updatedCourse;
 	};
 
 	/**
@@ -79,13 +78,13 @@ const Course = () => {
 		content: CourseContent,
 		sectionParent?: Section,
 	) => {
-		if (!course || !courseElements) return;
+		if (!course.current || !courseElements.current) return;
 		const { courseElement, newOrder } = await api.db.courses.addContent(
-			course.id,
+			course.current.id,
 			content,
 			sectionParent?.id,
 		);
-		const parent = sectionParent ?? course;
+		const parent = sectionParent ?? course.current;
 		parent.elementsOrder = newOrder;
 		parent.elements.push(courseElement);
 
@@ -93,20 +92,14 @@ const Course = () => {
 		console.log(courseElement);
 
 		if (parent instanceof CourseModel) {
-			setCourse(plainToClass(CourseModel, parent));
-			setCourseElements({
-				...courseElements,
-				[courseElement.id]: courseElement,
-			});
+			course.current = parent;
+			courseElements.current[courseElement.id] = courseElement;
 		}
 		// if the content is added in a section
 		else if (parent instanceof Section) {
-			setCourse(plainToClass(CourseModel, courseElement.course));
-			setCourseElements({
-				...courseElements,
-				[parent.id]: parent.courseElement,
-				[courseElement.id]: courseElement,
-			});
+			course.current = courseElement.course;
+			courseElements.current[parent.id] = parent.courseElement;
+			courseElements.current[courseElement.id] = courseElement;
 		}
 	};
 
@@ -117,10 +110,10 @@ const Course = () => {
 	 * @author Mathis
 	 */
 	const deleteElement = async (element: CourseElement) => {
-		if (!course || !courseElements) return;
+		if (!course.current || !courseElements) return;
 
 		await api.db.courses.deleteElement({
-			courseId: course.id,
+			courseId: course.current.id,
 			elementId: element.id.toString(),
 		});
 		if (element.sectionParent) {
@@ -129,11 +122,9 @@ const Course = () => {
 			element.sectionParent.elements = element.sectionParent.elements.filter(
 				el => el.id !== element.id,
 			);
-			setCourseElements(
-				Object.fromEntries(
-					Object.entries(courseElements).filter(
-						([_, el]) => el.id !== element.id,
-					),
+			courseElements.current = Object.fromEntries(
+				Object.entries(courseElements).filter(
+					([_, el]) => el.id !== element.id,
 				),
 			);
 		} else {
@@ -143,7 +134,6 @@ const Course = () => {
 			element.course.elements = element.course.elements.filter(
 				el => el.id !== element.id,
 			);
-			setCourse(plainToClass(CourseModel, course));
 		}
 	};
 
@@ -154,16 +144,15 @@ const Course = () => {
 	 * @author Mathis
 	 */
 	const loadSectionElements = async (section: Section) => {
-		if (!course || !section) return;
+		if (!course.current || !section) return;
 
 		const elements = await api.db.courses.getElementsInSection({
-			courseId: course.id,
+			courseId: course.current.id,
 			sectionId: section.id.toString(),
 		});
-		setCourseElements({
-			...courseElements,
-			...Object.fromEntries(elements.map(el => [el.id, el])),
-		});
+		console.log(elements);
+
+		elements.forEach(el => (courseElements.current![el.id] = el));
 		console.log(elements);
 		console.log(courseElements);
 
@@ -271,13 +260,13 @@ const Course = () => {
 	// 	setCourse(plainToClass(CourseModel, course));
 	// };
 
-	const canEdit = course?.creator.id === user?.id;
+	const canEdit = course.current?.creator.id === user?.id;
 
 	const contextValue: CourseContextValues = {
-		course,
+		course: course.current,
 		section,
 		activity,
-		courseElements,
+		courseElements: courseElements.current,
 		canEdit,
 		isNavigationOpen,
 		setTitle,
@@ -311,13 +300,16 @@ const Course = () => {
 		if (!id) return;
 		const getCourse = async () => {
 			try {
-				const course: CourseModel = await api.db.courses.get({
+				const courseLoaded: CourseModel = await api.db.courses.get({
 					id,
 				});
-				course.elements = course.elements ?? [];
+				courseLoaded.elements = courseLoaded.elements ?? [];
 				const elements = await api.db.courses.getElements({ courseId: id });
-				setCourseElements(Object.fromEntries(elements.map(el => [el.id, el])));
-				setCourse(course);
+
+				courseElements.current = Object.fromEntries(
+					elements.map(el => [el.id, el]),
+				);
+				course.current = courseLoaded;
 			} catch (err) {
 				navigate('/');
 				return alert.error(t('error.not_found', { obj: t('msg.course') }));
@@ -327,7 +319,7 @@ const Course = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [id, user]);
 
-	if (!course) return <></>;
+	if (!course.current) return <></>;
 	return (
 		<CourseContext.Provider value={contextValue}>
 			<StyledDiv>

@@ -209,7 +209,7 @@ export class CourseService {
     const section = await this.sectionRepository
       .createQueryBuilder('section')
       .where('section.id = :id', { id: sectionId })
-      .leftJoinAndSelect('section.elements', 'elements')
+      .leftJoin('section.elements', 'elements')
       .leftJoinAndSelect('section.courseElement', 'element')
       .andWhere('element.courseId = :courseId', { courseId: course.id })
       .getOne();

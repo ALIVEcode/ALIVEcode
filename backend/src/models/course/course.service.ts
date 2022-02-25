@@ -188,9 +188,12 @@ export class CourseService {
    * @throws HttpException Section not found
    */
   async findSection(course: CourseEntity, sectionId: string) {
-    const section = await this.sectionRepository.findOne({
-      where: { id: sectionId, course },
-    });
+    const section = await this.sectionRepository
+      .createQueryBuilder('section')
+      .where('section.id = :id', { id: sectionId })
+      .leftJoinAndSelect('section.courseElement', 'element')
+      .andWhere('element.courseId = :courseId', { courseId: course.id })
+      .getOne();
     if (!section) throw new HttpException('Section not found', HttpStatus.NOT_FOUND);
     return section;
   }
@@ -203,10 +206,13 @@ export class CourseService {
    * @throws HttpException Section not found
    */
   async findSectionWithElements(course: CourseEntity, sectionId: string) {
-    const section = await this.sectionRepository.findOne({
-      where: { id: sectionId, course },
-      relations: ['elements'],
-    });
+    const section = await this.sectionRepository
+      .createQueryBuilder('section')
+      .where('section.id = :id', { id: sectionId })
+      .leftJoin('section.courseElements', 'elements')
+      .leftJoinAndSelect('section.courseElement', 'element')
+      .andWhere('element.courseId = :courseId', { courseId: course.id })
+      .getOne();
     if (!section) throw new HttpException('Section not found', HttpStatus.NOT_FOUND);
     return section;
   }
@@ -239,9 +245,8 @@ export class CourseService {
     const activity = await this.activityRepository
       .createQueryBuilder('activity')
       .where('activity.id = :id', { id })
-      .innerJoinAndSelect('activity.courseElement', 'element')
-      .innerJoinAndSelect('element.course', 'course')
-      .andWhere('course.id = :courseId', { courseId })
+      .leftJoinAndSelect('activity.courseElement', 'element')
+      .andWhere('element.courseId = :courseId', { courseId })
       .getOne();
 
     if (!activity) throw new HttpException('Activity not found', HttpStatus.NOT_FOUND);

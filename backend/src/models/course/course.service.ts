@@ -188,9 +188,12 @@ export class CourseService {
    * @throws HttpException Section not found
    */
   async findSection(course: CourseEntity, sectionId: string) {
-    const section = await this.sectionRepository.findOne({
-      where: { id: sectionId, course },
-    });
+    const section = await this.sectionRepository
+      .createQueryBuilder('section')
+      .where('section.id = :id', { id: sectionId })
+      .leftJoinAndSelect('section.courseElement', 'element')
+      .andWhere('element.courseId = :courseId', { courseId: course.id })
+      .getOne();
     if (!section) throw new HttpException('Section not found', HttpStatus.NOT_FOUND);
     return section;
   }

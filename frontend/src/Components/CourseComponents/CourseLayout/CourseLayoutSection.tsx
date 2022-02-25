@@ -133,7 +133,7 @@ const CourseSection = ({
 				setOpen={setConfirmActivityDelete}
 				onConfirm={() => {
 					if (!(course && section && currentActivity.current)) return;
-					deleteElement(currentActivity.current.course_element);
+					deleteElement(currentActivity.current.courseElement);
 				}}
 				hideFooter
 			></AlertConfirm>

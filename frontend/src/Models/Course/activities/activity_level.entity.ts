@@ -7,7 +7,12 @@ import { LevelCode } from '../../Level/levelCode.entity';
 import { LevelAI } from '../../Level/levelAI.entity';
 import { LevelIoT } from '../../Level/levelIoT.entity';
 
+/**
+ * Activity of type Level model in the database
+ * @author Enric Solevila
+ */
 export class ActivityLevel extends Activity {
+	/** Reference to the level to display */
 	@Transform(({ value: level }: { value: Level }) => {
 		if (level.type === LEVEL_TYPE.ALIVE) return plainToClass(LevelAlive, level);
 		if (level.type === LEVEL_TYPE.CODE) return plainToClass(LevelCode, level);

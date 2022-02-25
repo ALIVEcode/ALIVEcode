@@ -8,9 +8,12 @@ export type CourseContent = Activity | Section;
 export type CourseParent = Course | Section;
 
 /**
+ * CourseElement model in the database
  * @author Enric Soldevila
+ * @author Mathis Laroche
  */
 export class CourseElement {
+	/** Id of the CourseElement (0, 1, 2, ..., n) */
 	id: number;
 
 	/*****---Parents ---*****/
@@ -38,6 +41,8 @@ export class CourseElement {
 	/*****-----------------------------------*****/
 
 	/**
+	 * Get the content of the element (section or activity)
+	 * @returns The content of the activity
 	 * @author Mathis Laroche
 	 */
 	getContent(): CourseContent {
@@ -49,6 +54,8 @@ export class CourseElement {
 	}
 
 	/**
+	 * Get the parent of the element (course or section)
+	 * @returns The parent of the element
 	 * @author Mathis Laroche
 	 */
 	getParent(): CourseParent {
@@ -56,10 +63,10 @@ export class CourseElement {
 			throw new TypeError("The CourseElement doesn't have a parent");
 		return this.sectionParent || this.course;
 	}
+
 	/**
 	 * Gets the name of the element, that is either the name of the section or the name of the activity
 	 * @returns the name of the element
-	 *
 	 * @author Mathis Laroche
 	 */
 	getName(): string {
@@ -67,16 +74,18 @@ export class CourseElement {
 	}
 
 	/**
-	 *
+	 * Check if the element is a section
 	 * @returns if the element is a section
+	 * @author Mathis Laroche
 	 */
 	isSection(): boolean {
 		return this.section !== undefined;
 	}
 
 	/**
-	 *
+	 * Check if the element is an activity
 	 * @returns if the element is an activity
+	 * @author Mathis Laroche
 	 */
 	isActivity(): boolean {
 		return this.activity !== undefined;

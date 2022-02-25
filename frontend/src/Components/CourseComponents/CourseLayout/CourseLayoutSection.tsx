@@ -1,7 +1,7 @@
 import { faDropbox } from '@fortawesome/free-brands-svg-icons';
 import { faPenFancy, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Disclosure } from '@headlessui/react';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Activity } from '../../../Models/Course/activity.entity';
 import { Section } from '../../../Models/Course/section.entity';
@@ -11,8 +11,8 @@ import Link from '../../UtilsComponents/Link/Link';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import { Option, TDOption } from '../../UtilsComponents/Option/TDOption';
 import { CourseSectionProps } from '../CourseSection/courseSectionTypes';
+import CreateSectionForm from '../CourseSection/CreateSectionForm';
 import CourseLayoutElement from './CourseLayoutElement';
-import CreateSectionForm from './CreateSectionForm';
 /**
  * Component that shows the section in the navigation and handles different actions like adding in an activity onto the section
  *
@@ -49,11 +49,6 @@ const CourseSection = ({
 			setLoading(false);
 		}
 	};
-
-	useEffect(() => {
-		loadSectionElements(section);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [section]);
 
 	return (
 		<Disclosure as="div" className="course-section">

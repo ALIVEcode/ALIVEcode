@@ -1,16 +1,16 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CourseContent, CourseEntity } from './entities/course.entity';
-import { Repository } from 'typeorm';
-import { SectionEntity } from './entities/section.entity';
 import { generate } from 'randomstring';
-import { CreateCourseDTO } from './dtos/CreateCourseDTO';
+import { Repository } from 'typeorm';
 import { ClassroomEntity } from '../classroom/entities/classroom.entity';
 import { ProfessorEntity, StudentEntity } from '../user/entities/user.entity';
+import { CreateCourseDTO } from './dtos/CreateCourseDTO';
+import { ActivityLevelEntity } from './entities/activities/activity_level.entity';
 import { ActivityTheoryEntity } from './entities/activities/activity_theory.entity';
 import { ActivityEntity } from './entities/activity.entity';
-import { ActivityLevelEntity } from './entities/activities/activity_level.entity';
+import { CourseContent, CourseEntity } from './entities/course.entity';
 import { CourseElementEntity } from './entities/course_element.entity';
+import { SectionEntity } from './entities/section.entity';
 
 /**
  * All the methods to communicate to the database. To create/update/delete/get

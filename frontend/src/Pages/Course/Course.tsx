@@ -49,6 +49,12 @@ const Course = () => {
 	const alert = useAlert();
 	const navigate = useNavigate();
 
+	/**
+	 * Sets the course's title to a new one
+	 *
+	 * @param newTitle The new title of the course
+	 * @author Mathis
+	 */
 	const setTitle = async (newTitle: string) => {
 		if (!course) return;
 		const courseDTO = { ...course, name: newTitle, code: undefined };
@@ -62,6 +68,13 @@ const Course = () => {
 		setCourse(course);
 	};
 
+	/**
+	 * Adds a new content ({@link Activity} or {@link Section}) to the course.
+	 *
+	 * @param content the content to add to the course
+	 * @param sectionParent where to add the content (if undefined, added to the course top level)
+	 * @author Mathis
+	 */
 	const addContent = async (
 		content: CourseContent,
 		sectionParent?: Section,
@@ -97,6 +110,12 @@ const Course = () => {
 		}
 	};
 
+	/**
+	 * Deletes and removes an element in the course
+	 *
+	 * @param element the element to delete from the course
+	 * @author Mathis
+	 */
 	const deleteElement = async (element: CourseElement) => {
 		if (!course || !courseElements) return;
 
@@ -128,6 +147,12 @@ const Course = () => {
 		}
 	};
 
+	/**
+	 * Loads the elements contained in a section
+	 *
+	 * @param section the section you want to load the elements
+	 * @author Mathis
+	 */
 	const loadSectionElements = async (section: Section) => {
 		if (!course || !section) return;
 
@@ -279,6 +304,9 @@ const Course = () => {
 		},
 	};
 
+	/**
+	 * This is where the course is loaded from the database
+	 */
 	useEffect(() => {
 		if (!id) return;
 		const getCourse = async () => {
@@ -286,7 +314,6 @@ const Course = () => {
 				const course: CourseModel = await api.db.courses.get({
 					id,
 				});
-				// await course.getSections();
 				course.elements = course.elements ?? [];
 				const elements = await api.db.courses.getElements({ courseId: id });
 				setCourseElements(Object.fromEntries(elements.map(el => [el.id, el])));

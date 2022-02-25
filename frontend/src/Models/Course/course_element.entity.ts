@@ -1,7 +1,7 @@
+import { Type } from 'class-transformer';
 import { Activity } from './activity.entity';
 import { Course } from './course.entity';
 import { Section } from './section.entity';
-import { Type } from 'class-transformer';
 
 export type CourseContent = Activity | Section;
 
@@ -39,6 +39,10 @@ export class CourseElement {
 	section?: Section;
 
 	/*****-----------------------------------*****/
+
+	get name() {
+		return this.getName();
+	}
 
 	/**
 	 * Get the content of the element (section or activity)

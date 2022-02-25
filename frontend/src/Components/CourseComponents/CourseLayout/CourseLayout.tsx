@@ -7,9 +7,9 @@ import useRoutes from '../../../state/hooks/useRoutes';
 import IconButton from '../../DashboardComponents/IconButton/IconButton';
 import CenteredContainer from '../../UtilsComponents/CenteredContainer/CenteredContainer';
 import Link from '../../UtilsComponents/Link/Link';
+import CreateSectionForm from '../CourseSection/CreateSectionForm';
 import CourseLayoutElement from './CourseLayoutElement';
 import { StyledCourseLayout } from './courseLayoutTypes';
-import CreateSectionForm from './CreateSectionForm';
 
 const CourseLayout = () => {
 	const {

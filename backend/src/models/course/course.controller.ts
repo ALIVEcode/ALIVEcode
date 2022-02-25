@@ -8,11 +8,11 @@ import { Role } from '../../utils/types/roles.types';
 import { ProfessorEntity, UserEntity } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
 import { CourseService } from './course.service';
+import { CreateActivityLevelDTO, CreateActivityTheoryDTO, CreateActivityVideoDTO } from './dtos/CreateActivitiesDTO';
 import { CreateCourseDTO } from './dtos/CreateCourseDTO';
+import { CreateSectionDTO } from './dtos/CreateSectionDTO';
 import { ActivityEntity } from './entities/activity.entity';
 import { CourseEntity } from './entities/course.entity';
-import { CreateSectionDTO } from './dtos/CreateSectionDTO';
-import { CreateActivityTheoryDTO, CreateActivityLevelDTO, CreateActivityVideoDTO } from './dtos/CreateActivitiesDTO';
 import { CourseElementEntity } from './entities/course_element.entity';
 
 /**

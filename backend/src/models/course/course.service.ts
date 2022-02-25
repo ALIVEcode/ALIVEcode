@@ -192,9 +192,12 @@ export class CourseService {
       .createQueryBuilder('section')
       .where('section.id = :id', { id: sectionId })
       .leftJoinAndSelect('section.courseElement', 'element')
+      .leftJoinAndSelect('element.section', 'section')
+      .leftJoinAndSelect('element.activity', 'activity')
       .andWhere('element.courseId = :courseId', { courseId: course.id })
       .getOne();
     if (!section) throw new HttpException('Section not found', HttpStatus.NOT_FOUND);
+
     return section;
   }
 
@@ -207,21 +210,15 @@ export class CourseService {
    */
   async findSectionWithElements(course: CourseEntity, sectionId: string) {
     const section = await this.sectionRepository
-      .createQueryBuilder('section')
-      .where('section.id = :id', { id: sectionId })
-      .leftJoinAndSelect('section.elements', 'elements')
-      .leftJoinAndSelect('section.courseElement', 'element')
+      .createQueryBuilder('sectionParent')
+      .where('sectionParent.id = :id', { id: sectionId })
+      .leftJoinAndSelect('sectionParent.elements', 'elements')
+      .leftJoinAndSelect('sectionParent.courseElement', 'element')
+      .leftJoinAndSelect('elements.activity', 'activity')
+      .leftJoinAndSelect('elements.section', 'section')
       .andWhere('element.courseId = :courseId', { courseId: course.id })
       .getOne();
     if (!section) throw new HttpException('Section not found', HttpStatus.NOT_FOUND);
-    console.log(section.elements);
-    section.elements.forEach(
-      el =>
-        (el.section = {
-          ...section,
-          elements: undefined,
-        }),
-    );
     return section;
   }
 

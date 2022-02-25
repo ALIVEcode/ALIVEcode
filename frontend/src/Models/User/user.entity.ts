@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Exclude, plainToClass } from 'class-transformer';
 import { BackendUser, USER_TYPES } from '../../Types/userTypes';
 import { Classroom } from '../Classroom/classroom.entity';
+import { Course } from '../Course/course.entity';
 import { IoTObject } from '../Iot/IoTobject.entity';
 import { IoTProject } from '../Iot/IoTproject.entity';
 import { Level } from '../Level/level.entity';
@@ -42,6 +43,8 @@ export class User {
 
 	private classrooms?: Classroom[];
 
+	private courses?: Course[];
+
 	public getDisplayName(): string {
 		return `${this.firstName} ${this.lastName}`;
 	}
@@ -62,6 +65,16 @@ export class User {
 			return fetchedClassrooms;
 		}
 		return this.classrooms;
+	}
+
+	public async getCourses() {
+		if (!this.courses) {
+			const fetchedCourses: Course[] =
+				(await api.db.users.getCourses({ id: this.id })) ?? [];
+			this.courses = fetchedCourses;
+			return fetchedCourses;
+		}
+		return this.courses;
 	}
 
 	public async addClassroom(classroom: Classroom) {

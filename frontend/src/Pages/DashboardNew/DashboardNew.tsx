@@ -80,6 +80,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 	const [tabSelected, setTabSelected] = useReducer(SwitchTabReducer, {
 		index: 0,
 	});
+	const [recentCourses, setRecentCourses] = useState<Course[]>();
 	const [courses, setCourses] = useState<Course[]>();
 	const [levels, setLevels] = useState<Level[]>();
 
@@ -108,9 +109,13 @@ const DashboardNew = (props: DashboardNewProps) => {
 		if (!user) return;
 		const getClassrooms = async () => {
 			setClassrooms(await user.getClassrooms());
+			if (user.isProfessor()) {
+				setCourses(await user.getCourses());
+			}
 		};
 		getClassrooms();
-	});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const openRecents = () => {
 		query.delete('id');
@@ -153,10 +158,10 @@ const DashboardNew = (props: DashboardNewProps) => {
 		}
 	};
 
-	const loadCourses = useCallback(async () => {
+	const loadRecentCourses = useCallback(async () => {
 		if (!user) return;
 		const courses = await api.db.users.getRecentCourses({ id: user.id });
-		setCourses(courses);
+		setRecentCourses(courses);
 	}, [user]);
 
 	const loadLevels = useCallback(async () => {
@@ -168,11 +173,11 @@ const DashboardNew = (props: DashboardNewProps) => {
 	const ctx: DashboardContextValues = useMemo(() => {
 		return {
 			getCourses: () => {
-				if (!courses) {
-					loadCourses();
+				if (!recentCourses) {
+					loadRecentCourses();
 					return [];
 				}
-				return courses;
+				return recentCourses;
 			},
 			getClassrooms: () => {
 				return classrooms;
@@ -186,7 +191,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 			},
 			setFormJoinClassOpen,
 		};
-	}, [classrooms, courses, levels, loadCourses, loadLevels]);
+	}, [classrooms, recentCourses, levels, loadRecentCourses, loadLevels]);
 
 	return (
 		<StyledDashboard>

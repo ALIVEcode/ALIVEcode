@@ -41,7 +41,7 @@ export class CourseController {
    * Route that returns all the courses in the database. Staff only
    * @returns All the courses in the database
    */
-  @Get()
+  @Get('all')
   @Auth(Role.STAFF)
   async findAll() {
     return await this.courseService.findAll();

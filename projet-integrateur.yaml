@@ -5,3 +5,18 @@
 - frontend\src\Pages\Course\Course.tsx
 - frontend\src\Models\Course\course_element.entity.ts
 - frontend\src\Models\api.ts
+- frontend\src\Models\course\activities\*.entity.ts
+- frontend\src\Models\course\dtos\*.dto.ts
+- frontend\src\Models\course\activity.entity.ts
+- frontend\src\Models\course\section.entity.ts
+- frontend\src\Models\course\course.entity.ts
+- frontend\src\Models\course\course_element.entity.ts
+
+- backend\src\models\course\dtos\*.dto.ts
+- backend\src\models\course\entites\activities\*.entity.ts
+- backend\src\models\course\entites\activity.entity.ts
+- backend\src\models\course\entites\section.entity.ts
+- backend\src\models\course\entites\course.entity.ts
+- backend\src\models\course\entites\course_element.entity.ts
+- backend\src\models\course\course.controller.ts
+- backend\src\models\course\course.service.ts

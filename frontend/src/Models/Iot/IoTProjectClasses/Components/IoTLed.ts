@@ -28,10 +28,9 @@ export class IoTLed extends IoTComponent {
 }
 
 export const createDefaultIoTLed = () => {
-	const progress = new IoTLed();
-	progress.value = false;
-	progress.name = 'Default LED';
-	progress.id = '';
+	const led = new IoTLed();
+	led.value = false;
+	led.name = 'Default LED';
 
-	return progress;
+	return led;
 };

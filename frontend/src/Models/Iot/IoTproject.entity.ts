@@ -20,6 +20,7 @@ import { IoTLed } from './IoTProjectClasses/Components/IoTLed';
 import { IoTLabel } from './IoTProjectClasses/Components/IoTLabel';
 import { IoTBuzzer } from './IoTProjectClasses/Components/IoTBuzzer';
 import { isArray } from 'tone';
+import { IoTTrafficLight } from './IoTProjectClasses/Components/IoTTrafficLight';
 
 export enum IOTPROJECT_INTERACT_RIGHTS {
 	ANYONE = 'AN',
@@ -44,6 +45,8 @@ export const parseIoTProjectLayout = (layout: IoTProjectLayout) => {
 		if (c.type === IOT_COMPONENT_TYPE.LED) c = plainToClass(IoTLed, c);
 		if (c.type === IOT_COMPONENT_TYPE.LABEL) c = plainToClass(IoTLabel, c);
 		if (c.type === IOT_COMPONENT_TYPE.BUZZER) c = plainToClass(IoTBuzzer, c);
+		if (c.type === IOT_COMPONENT_TYPE.TRAFFIC_LIGHT)
+			c = plainToClass(IoTTrafficLight, c);
 
 		c && parsedComponents.push(c);
 	});

@@ -51,11 +51,11 @@ const IoTProjectInterface = ({ noTopRow }: { noTopRow?: boolean }) => {
 					{project.layout.components.map((c, idx) => (
 						<IoTGenericComponent
 							key={idx}
-							setEditingComponent={c =>
+							setEditingComponent={c => {
 								setEditingComponent(
 									componentManager?.getComponents().indexOf(c),
-								)
-							}
+								);
+							}}
 							component={c}
 						/>
 					))}
@@ -72,7 +72,7 @@ const IoTProjectInterface = ({ noTopRow }: { noTopRow?: boolean }) => {
 						<IoTComponentEditor
 							onClose={() => setEditingComponent(undefined)}
 							component={componentManager.getComponents()[editingComponent]}
-						></IoTComponentEditor>
+						/>
 					)}
 				</Modal>
 				<Modal

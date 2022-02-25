@@ -174,7 +174,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   @UseFilters(new IoTExceptionFilter())
   @SubscribeMessage('send_object')
   send_object(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTActionRequestFromWatcher) {
-    if (!payload.targetId || !payload.actionId || !payload.value) throw new WsException('Bad payload');
+    if (!payload.targetId || payload.actionId == null || payload.value == null) throw new WsException('Bad payload');
 
     const watcher = WatcherClient.getClientBySocket(socket);
     if (!watcher) throw new WsException('Forbidden');

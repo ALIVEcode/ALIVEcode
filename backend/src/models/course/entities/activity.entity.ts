@@ -13,9 +13,14 @@ export enum ACTIVIY_TYPE {
   VIDEO,
 }
 
+/**
+ * Activity model in the database
+ * @author Enric Soldevila
+ */
 @Entity()
 @TableInheritance({ column: 'type' })
 export class ActivityEntity {
+  /** Id of the activity (0, 1, 2, ..., n) */
   @PrimaryGeneratedColumn('increment')
   @Exclude({ toClassOnly: true })
   @IsEmpty()
@@ -27,16 +32,19 @@ export class ActivityEntity {
   section: SectionEntity;
   */
 
+  /** Type of the activity */
   @Exclude({ toClassOnly: true })
   @IsEmpty()
   @Column({ type: 'enum', name: 'type', enum: ACTIVIY_TYPE, default: ACTIVIY_TYPE.THEORY })
   readonly type: ACTIVIY_TYPE;
 
+  /** Name of the activity */
   @IsNotEmpty()
   @Column({ nullable: false })
   @Length(1, 100)
   name: string;
 
+  /** CourseElement attached to the activity */
   @OneToOne(() => CourseElementEntity, el => el.activity, { onDelete: 'CASCADE' })
   @JoinColumn()
   courseElement: CourseElementEntity;

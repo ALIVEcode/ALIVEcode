@@ -81,13 +81,14 @@ const CourseLayout = () => {
 						{course.elementsOrder.length === 0 && (
 							<label>{t('course.empty')}</label>
 						)}
-						{course.elementsOrder.map(id => (
-							<CourseLayoutElement
-								key={id}
-								element={courseElements![id]}
-								editMode={editMode}
-							/>
-						))}
+						{courseElements?.current &&
+							course.elementsOrder.map(id => (
+								<CourseLayoutElement
+									key={id}
+									element={courseElements.current![id]}
+									editMode={editMode}
+								/>
+							))}
 						{canEdit && (
 							<Link onClick={() => setOpenModalSection(true)} dark block>
 								{t('course.section.new')}

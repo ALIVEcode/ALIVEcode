@@ -17,17 +17,23 @@ const CourseLayoutElement = ({
 	depth = 0,
 }: CourseLayoutElementProps) => {
 	const { loadSectionElements, courseElements } = useContext(CourseContext);
+
 	useEffect(() => {
-		if (!element.section || !courseElements) return;
-		const needReload = element.section.elementsOrder.every(id => {
+		console.log(element);
+
+		if (!element?.section || !courseElements?.current) return;
+
+		const noReload = element.section.elementsOrder.every(id => {
 			return id in courseElements;
 		});
-		if (!needReload) return;
+
+		if (noReload) return;
 
 		console.debug(`reloading section ${element.name}`);
 		loadSectionElements(element.section);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [element]);
+	}, [element, courseElements]);
+
 	return (
 		<div style={{ marginLeft: `${20 * depth}px` }}>
 			{element?.section ? (

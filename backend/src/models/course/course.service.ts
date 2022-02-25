@@ -11,7 +11,6 @@ import { ActivityEntity } from './entities/activity.entity';
 import { CourseContent, CourseEntity } from './entities/course.entity';
 import { CourseElementEntity } from './entities/course_element.entity';
 import { SectionEntity } from './entities/section.entity';
-import { plainToInstance } from 'class-transformer';
 
 /**
  * All the methods to communicate to the database. To create/update/delete/get
@@ -210,11 +209,12 @@ export class CourseService {
     const section = await this.sectionRepository
       .createQueryBuilder('section')
       .where('section.id = :id', { id: sectionId })
-      .leftJoin('section.elements', 'elements')
+      .leftJoinAndSelect('section.elements', 'elements')
       .leftJoinAndSelect('section.courseElement', 'element')
       .andWhere('element.courseId = :courseId', { courseId: course.id })
       .getOne();
     if (!section) throw new HttpException('Section not found', HttpStatus.NOT_FOUND);
+    console.log(section.elements);
     section.elements.forEach(
       el =>
         (el.section = {

@@ -19,6 +19,7 @@ import {
 	CourseContextValues,
 } from '../../state/contexts/CourseContext';
 import { UserContext } from '../../state/contexts/UserContext';
+import { useForceUpdate } from '../../state/hooks/useForceUpdate';
 
 const StyledDiv = styled.div`
 	display: flex;
@@ -38,15 +39,16 @@ const Course = () => {
 	const course = useRef<CourseModel>();
 	const courseElements = useRef<{
 		[id: number]: CourseElement;
-	}>();
-	const [section, setSection] = useState<Section>();
-	const [activity, setActivity] = useState<Activity>();
+	}>({});
+	const section = useRef<Section>();
+	const activity = useRef<Activity>();
 	const [isNavigationOpen, setIsNavigationOpen] = useState(true);
 	const { id } = useParams<{ id: string }>();
 
 	const { t } = useTranslation();
 	const alert = useAlert();
 	const navigate = useNavigate();
+	const update = useForceUpdate();
 
 	/**
 	 * Sets the course's title to a new one
@@ -101,6 +103,7 @@ const Course = () => {
 			courseElements.current[parent.id] = parent.courseElement;
 			courseElements.current[courseElement.id] = courseElement;
 		}
+		update();
 	};
 
 	/**
@@ -144,19 +147,19 @@ const Course = () => {
 	 * @author Mathis
 	 */
 	const loadSectionElements = async (section: Section) => {
-		if (!course.current || !section) return;
+		if (!course.current || !section || !courseElements?.current) return;
 
 		const elements = await api.db.courses.getElementsInSection({
 			courseId: course.current.id,
 			sectionId: section.id.toString(),
 		});
-		console.log(elements);
 
-		elements.forEach(el => (courseElements.current![el.id] = el));
+		elements.forEach(el => (courseElements.current[el.id] = el));
 		console.log(elements);
 		console.log(courseElements);
 
 		section.elements = elements;
+		update();
 	};
 
 	// const saveActivity = async (activity: Activity) => {
@@ -266,7 +269,7 @@ const Course = () => {
 		course: course.current,
 		section,
 		activity,
-		courseElements: courseElements.current,
+		courseElements: courseElements,
 		canEdit,
 		isNavigationOpen,
 		setTitle,
@@ -303,13 +306,14 @@ const Course = () => {
 				const courseLoaded: CourseModel = await api.db.courses.get({
 					id,
 				});
-				courseLoaded.elements = courseLoaded.elements ?? [];
+				course.current = courseLoaded;
 				const elements = await api.db.courses.getElements({ courseId: id });
 
+				course.current.elements = elements;
 				courseElements.current = Object.fromEntries(
 					elements.map(el => [el.id, el]),
 				);
-				course.current = courseLoaded;
+				update();
 			} catch (err) {
 				navigate('/');
 				return alert.error(t('error.not_found', { obj: t('msg.course') }));

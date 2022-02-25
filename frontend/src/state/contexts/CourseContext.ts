@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, MutableRefObject } from 'react';
 import { Activity } from '../../Models/Course/activity.entity';
 import { Course } from '../../Models/Course/course.entity';
 import {
@@ -9,9 +9,9 @@ import { Section } from '../../Models/Course/section.entity';
 
 export type CourseContextValues = {
 	course?: Course;
-	section?: Section;
-	activity?: Activity;
-	courseElements?: { [id: number]: CourseElement };
+	section?: MutableRefObject<Section | undefined>;
+	activity?: MutableRefObject<Activity | undefined>;
+	courseElements?: MutableRefObject<{ [id: number]: CourseElement }>;
 	isNavigationOpen: boolean;
 	canEdit: boolean;
 	setTitle: (newTitle: string) => void;

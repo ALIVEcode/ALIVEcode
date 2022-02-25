@@ -11,6 +11,7 @@ import { ActivityEntity } from './entities/activity.entity';
 import { CourseContent, CourseEntity } from './entities/course.entity';
 import { CourseElementEntity } from './entities/course_element.entity';
 import { SectionEntity } from './entities/section.entity';
+import { plainToInstance } from 'class-transformer';
 
 /**
  * All the methods to communicate to the database. To create/update/delete/get
@@ -137,7 +138,7 @@ export class CourseService {
   async createCourseElement(course: CourseEntity, content: CourseContent, sectionParent?: SectionEntity) {
     const parent = sectionParent || course;
 
-    const createdElement = this.courseElRepo.create({ sectionParent });
+    const createdElement = this.courseElRepo.create({ course, sectionParent });
 
     if (content instanceof SectionEntity) createdElement.section = content;
     else if (content instanceof ActivityEntity) createdElement.activity = content;
@@ -214,6 +215,13 @@ export class CourseService {
       .andWhere('element.courseId = :courseId', { courseId: course.id })
       .getOne();
     if (!section) throw new HttpException('Section not found', HttpStatus.NOT_FOUND);
+    section.elements.forEach(
+      el =>
+        (el.section = {
+          ...section,
+          elements: undefined,
+        }),
+    );
     return section;
   }
 

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Exclude, plainToClass } from 'class-transformer';
-import { BackendUser } from '../../Types/userTypes';
+import { BackendUser, USER_TYPES } from '../../Types/userTypes';
+import { Classroom } from '../Classroom/classroom.entity';
 import { IoTObject } from '../Iot/IoTobject.entity';
 import { IoTProject } from '../Iot/IoTproject.entity';
 import { Level } from '../Level/level.entity';
@@ -13,6 +14,9 @@ import { Level } from '../Level/level.entity';
 export class User {
 	@Exclude({ toPlainOnly: true })
 	id: string;
+
+	firstName: string;
+	lastName: string;
 
 	@Exclude({ toPlainOnly: true })
 	password?: string;
@@ -36,11 +40,11 @@ export class User {
 
 	collabIoTProjects?: IoTProject[];
 
+	private classrooms?: Classroom[];
 
-	public getDisplayName() {
-		return this.email;
+	public getDisplayName(): string {
+		return `${this.firstName} ${this.lastName}`;
 	}
-
 
 	public isProfessor() {
 		return this instanceof Professor;
@@ -50,12 +54,33 @@ export class User {
 		return this instanceof Student;
 	}
 
+	public async getClassrooms() {
+		if (!this.classrooms) {
+			const fetchedClassrooms: Classroom[] =
+				(await api.db.users.getClassrooms({ id: this.id })) ?? [];
+			this.classrooms = fetchedClassrooms;
+			return fetchedClassrooms;
+		}
+		return this.classrooms;
+	}
+
+	public async addClassroom(classroom: Classroom) {
+		(await this.getClassrooms()).push(classroom);
+	}
+
+	public async removeClassroom(classroom: Classroom) {
+		this.classrooms = (await this.getClassrooms()).filter(
+			c => c.id !== classroom.id,
+		);
+	}
+
 	static async loadUser() {
 		const backendUser: BackendUser = (await axios.get('/users/me')).data;
 		try {
-			if (backendUser.firstName && backendUser.lastName)
+			if (backendUser.type === USER_TYPES.PROFESSOR)
 				return plainToClass(Professor, backendUser);
-			if (backendUser.name) return plainToClass(Student, backendUser);
+			if (backendUser.type === USER_TYPES.STUDENT)
+				return plainToClass(Student, backendUser);
 
 			throw new Error('Could not load user');
 		} catch (err) {
@@ -65,41 +90,30 @@ export class User {
 }
 
 export class Student extends User {
-	name: string;
+	oldStudentName?: string;
 	image: string;
-	async getClassrooms() {
-		return await api.db.users.getClassrooms(this.id);
-	}
-
-	getDisplayName() {
-		return this.name;
-	}
 
 	getDisplayImage() {
 		return this.image;
 	}
+
+	getDisplayName() {
+		if (!this.firstName || !this.lastName)
+			return this.oldStudentName || 'Unnamed';
+		return super.getDisplayName();
+	}
 }
 
 export class Professor extends User {
-	firstName: string;
-	lastName: string;
 	image: string;
-
 
 	getCourses() {
 		return api.db.users.getCourses(this.id);
 	}
 
-	getClassrooms() {
-		return api.db.users.getClassrooms(this.id);
-	}
-
-	getDisplayName(): string {
-		return `${this.firstName} ${this.lastName}`;
-	}
 	getDisplayImage() {
 		return this.image;
 	}
 }
 // DONT REMOVE THIS HERE (prevents class used before referenced)
-const api = require('../api');
+const api = require('../api').default;

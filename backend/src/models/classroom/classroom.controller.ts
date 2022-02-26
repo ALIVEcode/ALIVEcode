@@ -16,9 +16,7 @@ import { ClassroomEntity } from './entities/classroom.entity';
 import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ProfessorEntity } from '../user/entities/professor.entity';
-import { StudentEntity } from '../user/entities/student.entity';
-import { UserEntity } from '../user/entities/user.entity';
+import { UserEntity, ProfessorEntity, StudentEntity } from '../user/entities/user.entity';
 import { hasRole } from '../user/auth';
 import { JoinClassroomDTO } from './dto/joinClassroom.dto';
 import { UseGuards } from '@nestjs/common';
@@ -27,6 +25,7 @@ import { Auth } from '../../utils/decorators/auth.decorator';
 import { User } from '../../utils/decorators/user.decorator';
 import { Role } from '../../utils/types/roles.types';
 import { Classroom } from '../../utils/decorators/classroom.decorator';
+import { ClassroomQueryDTO } from './dto/ClassroomQuery.dto';
 
 @Controller('classrooms')
 @UseInterceptors(DTOInterceptor)
@@ -47,6 +46,12 @@ export class ClassroomController {
   @Auth(Role.STAFF)
   findAll() {
     return this.classroomService.findAll();
+  }
+
+  @Post('query')
+  @Auth()
+  async findQuery(@Body() query: ClassroomQueryDTO) {
+    return await this.classroomService.findQuery(query);
   }
 
   @Get(':id/courses')
@@ -96,14 +101,22 @@ export class ClassroomController {
   }
 
   @Patch(':id')
-  @Auth(Role.STAFF)
-  update(@Param('id') id: string, @Body() updateClassroomDto: ClassroomEntity) {
+  @Auth(Role.PROFESSOR)
+  async update(
+    @User() professor: ProfessorEntity,
+    @Param('id') id: string,
+    @Body() updateClassroomDto: ClassroomEntity,
+  ) {
+    const classroom = await this.classroomService.findOne(id);
+    if (!classroom || classroom.creator.id !== professor.id) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     return this.classroomService.update(id, updateClassroomDto);
   }
 
   @Delete(':id')
   @Auth(Role.PROFESSOR)
-  remove(@Param('id') id: string) {
-    return this.classroomService.remove(id);
+  async remove(@User() user: ProfessorEntity, @Param('id') id: string) {
+    const classroom = await this.classroomService.findOne(id);
+    if (!classroom || classroom.creator.id !== user.id) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    return this.classroomService.remove(classroom);
   }
 }

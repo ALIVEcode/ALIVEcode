@@ -1,13 +1,13 @@
 import { IoTProjectLayout, IOT_COMPONENT_TYPE } from './entities/IoTproject.entity';
 
-class IoTError extends Error {}
+export class IoTError extends Error {}
 
 export class IoTLayoutManager {
   constructor(private layout: IoTProjectLayout) {}
 
   getComponent(componentId: string) {
     const component = this.layout.components.find(c => c.id === componentId);
-    if (!component) throw new IoTError(`No component with id ${componentId}`);
+    if (!component) throw new IoTError(`No component with id "${componentId}"`);
 
     return component;
   }

@@ -125,7 +125,7 @@ const IoTHome = (props: iotHomeProps) => {
 					img={DemoProject}
 					imgAlt="ALIVEcode's internet of things interface"
 					button={t('home.iot.to_trainings')}
-					to={routes.auth.dashboard.path}
+					to={routes.auth.classroom_browse.path}
 					imgOpacity={0.8}
 				/>
 			</div>

@@ -3,14 +3,18 @@ import { CreatedByUser } from '../../../generics/entities/createdByUser.entity';
 import { Exclude } from 'class-transformer';
 import { IsEmpty, IsNotEmpty } from 'class-validator';
 import { CourseEntity } from '../../course/entities/course.entity';
-import { StudentEntity } from '../../user/entities/student.entity';
-import { ProfessorEntity } from '../../user/entities/professor.entity';
+import { StudentEntity, ProfessorEntity } from '../../user/entities/user.entity';
 
 export enum CLASSROOM_SUBJECT {
   INFORMATIC = 'IN',
   AI = 'AI',
   MATH = 'MA',
   SCIENCE = 'SC',
+}
+
+export enum CLASSROOM_ACCESS {
+  PUBLIC = 'PU', // can be found via a search
+  PRIVATE = 'PR', // only accessible to the creator
 }
 
 @Entity()
@@ -28,6 +32,10 @@ export class ClassroomEntity extends CreatedByUser {
   @IsNotEmpty()
   @Column({ enum: CLASSROOM_SUBJECT, nullable: false })
   subject: CLASSROOM_SUBJECT;
+
+  @IsNotEmpty()
+  @Column({ enum: CLASSROOM_ACCESS, default: CLASSROOM_ACCESS.PRIVATE, nullable: false })
+  access: CLASSROOM_ACCESS;
 
   @Exclude({ toClassOnly: true })
   @ManyToMany(() => StudentEntity, student => student.classrooms, { onDelete: 'CASCADE' })

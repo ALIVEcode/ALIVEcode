@@ -61,18 +61,21 @@ const CourseForm = () => {
 						required: true,
 						inputType: 'select',
 						selectOptions: COURSE_SUBJECT,
+						default: COURSE_SUBJECT.INFORMATIC,
 					},
 					{
 						name: 'access',
 						required: true,
 						inputType: 'select',
 						selectOptions: COURSE_ACCESS,
+						default: COURSE_ACCESS.RESTRICTED,
 					},
 					{
 						name: 'difficulty',
 						required: true,
 						inputType: 'select',
 						selectOptions: COURSE_DIFFICULTY,
+						default: COURSE_DIFFICULTY.MEDIUM,
 					},
 				]}
 			/>

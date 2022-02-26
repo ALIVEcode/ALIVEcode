@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UserEntity } from './models/user/entities/user.entity';
-import { ProfessorEntity } from './models/user/entities/professor.entity';
-import { StudentEntity } from './models/user/entities/student.entity';
+import { UserEntity, ProfessorEntity, StudentEntity } from './models/user/entities/user.entity';
 
 @Injectable()
 export class AppService {
@@ -9,7 +7,7 @@ export class AppService {
     if (user instanceof ProfessorEntity) {
       return `Hello ${user.firstName} ${user.lastName} !`;
     } else if (user instanceof StudentEntity) {
-      return `Hello ${user.name} !`;
+      return `Hello ${user.firstName} !`;
     }
     return `Hello !`;
   }

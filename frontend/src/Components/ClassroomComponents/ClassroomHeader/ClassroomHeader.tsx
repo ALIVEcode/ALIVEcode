@@ -12,6 +12,12 @@ import { prettyField } from '../../../Types/formatting';
 import { ThemeContext } from '../../../state/contexts/ThemeContext';
 import { useNavigate } from 'react-router-dom';
 import Badge from '../../UtilsComponents/Badge/Badge';
+import AlertConfirm from '../../UtilsComponents/Alert/AlertConfirm/AlertConfirm';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCog } from '@fortawesome/free-solid-svg-icons';
+import FormModal from '../../UtilsComponents/FormModal/FormModal';
+import ClassroomSettings from '../ClassroomSettings/ClassroomSettings';
+import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 
 /**
  * Classroom header that displays the className, the professor and
@@ -34,6 +40,9 @@ const ClassroomHeader: React.FC<
 	const { theme } = useContext(ThemeContext);
 	const alert = useAlert();
 	const [codeModalOpen, setCodeModalOpen] = useState(false);
+	const [openClassroomDelete, setOpenClassroomDelete] = useState(false);
+	const [openSettings, setOpenSettings] = useState(false);
+	const forceUpdate = useForceUpdate();
 	const navigate = useNavigate();
 
 	const leaveClassroom = async () => {
@@ -43,8 +52,7 @@ const ClassroomHeader: React.FC<
 				classroomId: classroom.id,
 				studentId: user.id,
 			});
-			navigate(routes.auth.dashboard.path);
-		} catch {
+		} catch (err) {
 			return alert.error(t('error.505'));
 		}
 	};
@@ -54,7 +62,7 @@ const ClassroomHeader: React.FC<
 			className="bg-[color:var(--primary-color)] text-white text-center tablet:text-left"
 			{...other}
 		>
-			<div className="h-full flex flex-col tablet:flex-row justify-between p-10 pb-0 gap-6">
+			<div className="h-full relative z-10 flex flex-col tablet:flex-row justify-between p-10 pb-0 gap-6">
 				<div className="mt-10">
 					<div className="text-4xl tablet:text-3xl laptop:text-4xl desktop:text-5xl mb-4">
 						{classroom.name}
@@ -67,17 +75,39 @@ const ClassroomHeader: React.FC<
 					</label>
 				</div>
 
-				<div className="flex flex-row tablet:flex-col gap-4 mt-10">
+				<div className="flex flex-row tablet:flex-col justify-center gap-2 tablet:gap-4 mt-10">
 					{user instanceof Professor ? (
 						<>
-							<Button onClick={() => setCodeModalOpen(true)} variant="third">
+							<Button
+								className="!text-xs tablet:!text-sm laptop:!text-base"
+								onClick={() => setCodeModalOpen(true)}
+								variant="third"
+							>
 								{t('classroom.add_students')}
 							</Button>
-							<Button variant="danger">{t('classroom.delete')}</Button>
+							<Button
+								className="!text-xs tablet:!text-sm laptop:!text-base"
+								variant="danger"
+								onClick={() => setOpenClassroomDelete(true)}
+							>
+								{t('classroom.delete')}
+							</Button>
+							<div className="flex justify-end">
+								<Button
+									className="!text-xs tablet:!text-sm laptop:!text-base"
+									variant="secondary"
+									onClick={() => setOpenSettings(true)}
+								>
+									<FontAwesomeIcon size="lg" icon={faCog}></FontAwesomeIcon>
+								</Button>
+							</div>
 						</>
 					) : (
 						<div>
-							<Button onClick={leaveClassroom} variant="danger">
+							<Button
+								onClick={() => setOpenClassroomDelete(true)}
+								variant="danger"
+							>
 								{t('classroom.leave')}
 							</Button>
 						</div>
@@ -90,6 +120,7 @@ const ClassroomHeader: React.FC<
 				xmlns="http://www.w3.org/2000/svg"
 				xmlnsXlink="http://www.w3.org/1999/xlink"
 				version="1.1"
+				className="relative z-0 mt-0 tablet:mt-[-1rem] laptop:mt-[-3rem] desktop:mt-[-5rem]"
 			>
 				<rect
 					x="0"
@@ -101,8 +132,8 @@ const ClassroomHeader: React.FC<
 				<path
 					d="M0 172L40 165.2C80 158.3 160 144.7 240 138.2C320 131.7 400 132.3 480 143.7C560 155 640 177 720 186.7C800 196.3 880 193.7 920 192.3L960 191L960 0L920 0C880 0 800 0 720 0C640 0 560 0 480 0C400 0 320 0 240 0C160 0 80 0 40 0L0 0Z"
 					fill={theme.color.primary}
-					stroke-linecap="round"
-					stroke-linejoin="miter"
+					strokeLinecap="round"
+					strokeLinejoin="miter"
 				></path>
 			</svg>
 			<Modal
@@ -119,12 +150,40 @@ const ClassroomHeader: React.FC<
 				{t('classroom.code.desc')}
 				<Badge
 					variant="third"
-					className="mt-4 text-4xl px-6 py-6"
+					className="!mt-4 !bg-green-500 !text-4xl !px-6 !py-6"
 					style={{ fontSize: '3em', textAlign: 'center' }}
 				>
 					{classroom.code}
 				</Badge>
 			</Modal>
+			<AlertConfirm
+				title={
+					user?.isProfessor() ? t('classroom.delete') : t('classroom.leave')
+				}
+				setOpen={setOpenClassroomDelete}
+				open={openClassroomDelete}
+				onConfirm={async () => {
+					user?.isProfessor()
+						? await api.db.classrooms.delete({ id: classroom.id })
+						: leaveClassroom();
+					await user?.removeClassroom(classroom);
+					navigate(routes.auth.dashboard.path + '/recents');
+				}}
+			/>
+			<FormModal
+				onSubmit={res => {
+					classroom.name = res.data.name;
+					classroom.description = res.data.description;
+					classroom.subject = res.data.subject;
+					classroom.access = res.data.access;
+					forceUpdate();
+				}}
+				setOpen={setOpenSettings}
+				title={t('form.title.update_classroom')}
+				open={openSettings}
+			>
+				<ClassroomSettings classroom={classroom} />
+			</FormModal>
 		</div>
 	);
 };

@@ -1,8 +1,7 @@
 import { Injectable, HttpException, HttpStatus, Scope, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ILike, Repository } from 'typeorm';
-import { ProfessorEntity } from './entities/professor.entity';
-import { StudentEntity } from './entities/student.entity';
+import { StudentEntity, ProfessorEntity } from './entities/user.entity';
 import { UserEntity } from './entities/user.entity';
 import { compare, hash } from 'bcryptjs';
 import { Response } from 'express';
@@ -17,6 +16,7 @@ import { LevelEntity } from '../level/entities/level.entity';
 import { CourseEntity } from '../course/entities/course.entity';
 import { MyRequest } from '../../utils/guards/auth.guard';
 import { CourseHistoryEntity } from '../course/entities/course_history.entity';
+import { NameMigrationDTO } from './dto/name_migration.dto';
 
 @Injectable({ scope: Scope.REQUEST })
 export class UserService {
@@ -39,13 +39,10 @@ export class UserService {
     createStudentDto.password = hashedPassword;
 
     try {
-      const student = await this.studentRepository.save(this.studentRepository.create(createStudentDto));
-      return student;
+      return await this.studentRepository.save(createStudentDto);
     } catch (err) {
-      if ((err as any).detail.includes('Key (name)='))
-        throw new HttpException('This username is already in use', HttpStatus.CONFLICT);
-
-      throw new HttpException('This email is already in use', HttpStatus.CONFLICT);
+      if ((err as any).detail.includes('Key (email)='))
+        throw new HttpException('This email is already in use', HttpStatus.CONFLICT);
     }
   }
 
@@ -54,10 +51,11 @@ export class UserService {
     createProfessorDto.password = hashedPassword;
 
     try {
-      const professor = await this.professorRepository.save(this.professorRepository.create(createProfessorDto));
+      const professor = await this.professorRepository.save(createProfessorDto);
       return professor;
-    } catch {
-      throw new HttpException('This email is already in use', HttpStatus.CONFLICT);
+    } catch (err) {
+      if ((err as any).detail.includes('Key (email)='))
+        throw new HttpException('This email is already in use', HttpStatus.CONFLICT);
     }
   }
 
@@ -132,8 +130,12 @@ export class UserService {
     return user;
   }
 
+  async nameMigration(userId: string, nameMigrationDto: NameMigrationDTO) {
+    return await this.studentRepository.save({ id: userId, oldStudentName: null, ...nameMigrationDto });
+  }
+
   async update(userId: string, updateUserDto: UserEntity) {
-    return await this.userRepository.update(userId, updateUserDto);
+    return await this.userRepository.save({ id: userId, ...updateUserDto });
   }
 
   remove(user: UserEntity) {

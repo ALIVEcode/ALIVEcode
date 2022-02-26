@@ -1,10 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import api from '../../../Models/api';
 import { useForm } from 'react-hook-form';
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useContext } from 'react';
 import Button from '../../UtilsComponents/Buttons/Button';
 import useRoutes from '../../../state/hooks/useRoutes';
 import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
+import Link from '../../UtilsComponents/Link/Link';
+import { UserContext } from '../../../state/contexts/UserContext';
 
 /**
  * Component used to join a classroom with a provided classroom code
@@ -21,6 +23,7 @@ const JoinClassroomForm = () => {
 		clearErrors,
 		formState: { errors },
 	} = useForm();
+	const { user } = useContext(UserContext);
 	const timeout = useRef<NodeJS.Timeout>();
 
 	// Cleanup of timeouts
@@ -33,8 +36,11 @@ const JoinClassroomForm = () => {
 	const SubmitForm = async (formValues: { code: string }) => {
 		try {
 			const classroom = await api.db.classrooms.join({ code: formValues.code });
-			goTo(routes.auth.classroom.path.replace(':id', classroom.id));
-			clearErrors('code');
+			if (classroom) {
+				await user?.addClassroom(classroom);
+				goTo(routes.auth.dashboard.path + `/classroom?id=${classroom.id}`);
+				clearErrors('code');
+			}
 		} catch {
 			setError('code', {
 				type: 'notFound',
@@ -65,6 +71,9 @@ const JoinClassroomForm = () => {
 			<Button type="submit" variant="third">
 				{t('form.join_classroom.submit')}
 			</Button>
+			<Link className="ml-2" dark to={routes.auth.classroom_browse.path}>
+				{t('dashboard.classrooms.browse_public')}
+			</Link>
 		</form>
 	);
 };

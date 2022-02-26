@@ -88,13 +88,17 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 	//Set the data for the level
 	const [data] = useState(dataAI);
 	let func = useRef<PolyRegression>();
+
+	//The dataset of the prototype AI course
 	const mainDataset: DataTypes = {
 		type: 'scatter',
 		label: "Distance parcourue en fonction de l'énergie",
-		data,
+		data: data,
 		backgroundColor: 'var(--contrast-color)',
 		borderWidth: 1,
 	};
+
+	//The initial dataset of any course, which is no data
 	const initialDataset: DataTypes = Object.freeze({
 		type: 'scatter',
 		label: "Distance parcourue en fonction de l'énergie",
@@ -103,14 +107,10 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 		borderWidth: 1,
 	});
 	let datasets = useRef([initialDataset]);
-	let pointsOnGraph: boolean = false;
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	let regOnGraph: boolean = false;
-
-	const [chartData, setChartData] = useState({ datasets: datasets.current });
+	const [chartData, setChartData] = useState({ datasets: [initialDataset] });
 
 	/**
-	 * Resets the datasets array and the data shown on the graph.
+	 * Resets the dataset array and the data shown on the graph.
 	 */
 	function resetGraph() {
 		datasets.current = [initialDataset];
@@ -118,12 +118,17 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 	}
 
 	/**
-	 * Adds a new dataset to the datasets array.
+	 * Adds a new datasets to the dataset array.
 	 * @param newData the new dataset to add.
 	 */
 	function setDataOnGraph(newData: DataTypes): void {
-		datasets.current.push(newData);
+		if (datasets.current[0] === initialDataset) {
+			console.log('dataset vide');
+			datasets.current = [newData];
+		} else datasets.current.push(newData);
 		setChartData({ datasets: datasets.current });
+
+		console.log(chartData.datasets[0].data);
 	}
 	//-------------------------- Alivescript functions ----------------------------//
 
@@ -131,7 +136,6 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 	 * Sets the data of the graph to the level's data and displays it on the screen
 	 */
 	function showDataCloud(): void {
-		pointsOnGraph = true;
 		setDataOnGraph(mainDataset);
 	}
 
@@ -171,7 +175,7 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 	 * @returns the calculated cost.
 	 */
 	function costMSE(): string {
-		if (pointsOnGraph) setDataOnGraph(mainDataset);
+		setDataOnGraph(mainDataset);
 		showRegression();
 		return 'Erreur du modèle : ' + func.current!.computeMSE(data);
 	}
@@ -200,7 +204,7 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 	 * @returns the output of the model.
 	 */
 	function evaluate(x: number): number {
-		if (pointsOnGraph) setDataOnGraph(mainDataset);
+		setDataOnGraph(mainDataset);
 		showRegression();
 		return func.current!.compute(x);
 	}
@@ -217,6 +221,7 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 						{editMode ? (
 							/* Interface du code avec les tabs */
 							<LineInterface
+								key="edit-mode"
 								hasTabs
 								tabs={[
 									{
@@ -243,6 +248,7 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 						) : (
 							/* Interface de code sans les tabs */
 							<LineInterface
+								key="play-mode"
 								initialContent={initialCode}
 								handleChange={lineInterfaceContentChanges}
 							/>
@@ -253,10 +259,7 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 							Contains the graph and the console
 					*/}
 					<div className="flex flex-col w-1/2">
-						<div
-							className="h-3/5 w-full flex flex-row"
-							className="data-section"
-						>
+						<div className="h-3/5 w-full flex flex-row data-section">
 							<div className="w-1/3 h-full">
 								<LevelTable
 									data={data}
@@ -273,7 +276,7 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 								/>
 							</div>
 						</div>
-						<div className="h-2/5 flex-1" className="command">
+						<div className="h-2/5 flex-1 command">
 							<Cmd ref={cmdRef}></Cmd>
 						</div>
 					</div>

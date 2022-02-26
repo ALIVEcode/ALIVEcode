@@ -18,7 +18,6 @@ import { LevelCode } from './Level/levelCode.entity';
 import { LevelProgression } from './Level/levelProgression';
 import { LevelAI } from './Level/levelAI.entity';
 import { IoTObject } from './Iot/IoTobject.entity';
-import { QueryDTO } from '../../../backend/src/models/level/dto/query.dto';
 import { Category } from './Quiz/categories-quiz.entity';
 import { QuizForm } from './Quiz/quizForm.entity';
 import { QuestionForm } from './Quiz/questionForm.entity';
@@ -33,6 +32,8 @@ import { LevelIoT } from './Level/levelIoT.entity';
 import { Quiz } from './Quiz/quiz.entity';
 import { Topics } from './Social/topics.entity';
 import { Post } from './Forum/post.entity';
+import { LevelQueryDTO } from './Level/dto/LevelQuery.dto';
+import { ClassroomQueryDTO } from './Level/dto/ClassroomQueryDTO';
 
 type urlArgType<S extends string> = S extends `${infer _}:${infer A}/${infer B}`
 	? A | urlArgType<B>
@@ -175,6 +176,12 @@ const api = {
 			createProfessor: apiCreate('users/professors', Professor),
 			createStudent: apiCreate('users/students', Student),
 			delete: apiDelete('users/:id'),
+			nameMigration: async (firstName: string, lastName: string) => {
+				return await axios.patch('users/nameMigration', {
+					firstName,
+					lastName,
+				});
+			},
 		},
 		classrooms: {
 			all: apiGet('classrooms', Classroom, true),
@@ -185,6 +192,11 @@ const api = {
 			delete: apiDelete('classrooms/:id'),
 			join: apiCreate('classrooms/students', Classroom),
 			leave: apiDelete('classrooms/:classroomId/students/:studentId'),
+			async query(body: ClassroomQueryDTO) {
+				return (await axios.post('classrooms/query', body)).data.map((d: any) =>
+					plainToClass(Classroom, d),
+				);
+			},
 		},
 		courses: {
 			get: apiGet('courses/:id', Course, false),
@@ -259,7 +271,7 @@ const api = {
 				if (level.type === LEVEL_TYPE.IOT) return plainToClass(LevelIoT, level);
 				return plainToClass(LevelCode, level);
 			}),
-			async query(body: QueryDTO) {
+			async query(body: LevelQueryDTO) {
 				return (await axios.post('levels/query', body)).data.map((d: any) =>
 					plainToClass(Level, d),
 				);

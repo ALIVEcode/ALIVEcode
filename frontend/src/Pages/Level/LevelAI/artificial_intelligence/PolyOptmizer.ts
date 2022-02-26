@@ -11,6 +11,12 @@ import DataSample from "./DataSample";
  */
 export default class PolyOptimizer extends RegressionOptimizer {
 
+  /**
+   * Computes and returns the derivative of the cost function for a regression model.
+   * @param predicted the predicted data from the model
+   * @param real the real data that the model tries to predict
+   * @returns the cost derivative
+   */
   protected costDerivative(predicted: number[], real: number[]): number {
     let sum: number = 0;
     for (let i: number = 0; i < predicted.length; i++) {
@@ -20,6 +26,13 @@ export default class PolyOptimizer extends RegressionOptimizer {
     return sum / predicted.length;
   }
 
+  /**
+   * Computes and returns the derivative of the polynomial regression for the specified parameter.
+   * @param param the parameter of the regression to derivate from, either 'a', 'b', 'c' or 'd'.
+   * @param costDeriv the cost derivative of the model. Computable with the costDerivative function. 
+   * @param inputs
+   * @returns the parameter's corresponding derivative.
+   */
   protected paramDerivative(param: string, costDeriv: number, inputs: number[]): number {
     let sum: number = 0;
     let pow: number = 0;

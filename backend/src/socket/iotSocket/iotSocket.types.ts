@@ -31,10 +31,15 @@ export type IoTUpdateRequestFromObject = {
   projectId: string;
 };
 
-export type IoTSocketRouteRequestFromObject = {
+export type IoTRouteRequestFromObject = {
   routePath: string;
   data: any;
   projectId: string;
+};
+
+export type IoTBroadcastRequestFromBoth = {
+  projectId: string;
+  data: any;
 };
 
 // REQUESTS TO OBJECTS
@@ -52,6 +57,14 @@ export type IoTListenRequestToObject = {
   data: {
     projectId: string;
     fields: { [key: string]: any };
+  };
+};
+
+export type IoTBroadcastRequestToObject = {
+  event: 'broadcast';
+  data: {
+    projectId: string;
+    data: any;
   };
 };
 
@@ -95,8 +108,8 @@ export class Client {
     this.socket.send(JSON.stringify(data));
   }
 
-  sendCustom(event: string, data: any) {
-    this.socket.send(JSON.stringify({ event, data }));
+  sendEvent(event: string, data: any) {
+    this.send({ event, data });
   }
 
   removeSocket() {
@@ -151,7 +164,7 @@ export class WatcherClient extends Client {
       },
     };
 
-    object.getSocket().send(data);
+    object.send(data);
   }
 }
 
@@ -213,6 +226,10 @@ export class ObjectClient extends Client {
     });
   }
 
+  static getClientsByProject(projectId: string) {
+    return ObjectClient.objects.filter(o => o.projectRights.includes(projectId));
+  }
+
   static isSocketAlreadyWatcher(socket: WebSocket) {
     return ObjectClient.objects.find(w => w.getSocket() === socket) != null;
   }
@@ -225,7 +242,7 @@ export class ObjectClient extends Client {
       value: updateData.value,
     };
 
-    watchers.forEach(w => w.sendCustom('update', data));
+    watchers.forEach(w => w.sendEvent('update', data));
   }
 }
 

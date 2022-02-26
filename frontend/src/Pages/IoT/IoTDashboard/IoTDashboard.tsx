@@ -50,7 +50,7 @@ const IoTDashboard = (props: iotDashboardProps) => {
 	return (
 		<StyledDiv>
 			<div>
-				<h1>IoT Dashboard</h1>
+				<div className="text-5xl">IoT Dashboard</div>
 			</div>
 			<div>
 				<CardContainer

@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { LinkProps, StyledLinkProps } from './linkTypes';
-import { useNavigate } from 'react-router-dom';
 import { Link as RouterLink } from 'react-router-dom';
 
 /**
@@ -27,15 +26,35 @@ const Link = ({
 	bold,
 	block,
 	pale,
+	openInNewTab,
+	outsideLink,
 	onClick,
 }: LinkProps) => {
-	const navigate = useNavigate();
-
-	if (to)
+	if (to && !outsideLink)
 		return (
 			<RouterLink className={className} style={style} to={to ?? '#'}>
 				{children}
 			</RouterLink>
+		);
+
+	if (to && openInNewTab)
+		return (
+			<a
+				href={to}
+				rel="noreferrer"
+				target="_blank"
+				style={style}
+				className={className}
+			>
+				{children}
+			</a>
+		);
+
+	if (to && !openInNewTab)
+		return (
+			<a href={to} style={style} className={className}>
+				{children}
+			</a>
 		);
 
 	return (

@@ -47,7 +47,7 @@ import InputGroup from '../InputGroup/InputGroup';
  *			},
  *			{
  *				name: 'description',
- *				inputType: 'text',
+ *				inputType: 'textarea',
  *				maxLength: 200,
  *			},
  *			{
@@ -226,6 +226,7 @@ const Form = (props: FormProps) => {
 							`form.${props.name}.${g.name}.label`,
 							prettyField(g.name),
 						])}
+						as={g.inputType === 'textarea' ? 'textarea' : undefined}
 						errors={errors[g.name]}
 						messages={{
 							required: t([

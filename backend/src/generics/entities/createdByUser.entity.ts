@@ -30,9 +30,4 @@ export abstract class CreatedByUser extends BaseEntity {
   @IsOptional()
   @MaxLength(500)
   description: string;
-
-  @Column({ nullable: true })
-  @IsOptional()
-  image: string;
-  
 }

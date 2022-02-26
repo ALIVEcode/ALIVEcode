@@ -63,7 +63,7 @@ export class IoTProjectService {
   async findOne(id: string) {
     if (!id || !validUUID(id)) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     const project = await this.projectRepository.findOne(id);
-    if (!project) throw new HttpException('IoTProject not found', HttpStatus.NOT_FOUND);
+    if (!project) throw new HttpException(`IoTProject with id "${id}" found`, HttpStatus.NOT_FOUND);
     return project;
   }
 
@@ -96,7 +96,7 @@ export class IoTProjectService {
     const data: IoTUpdateLayoutRequestToWatcher = {
       layout,
     };
-    watchers.forEach(w => w.sendCustom('layout_update', data));
+    watchers.forEach(w => w.sendEvent('layout_update', data));
 
     return await this.projectRepository.save({ ...project, layout });
   }
@@ -113,7 +113,7 @@ export class IoTProjectService {
     const data: IoTUpdateDocumentRequestToWatcher = {
       doc: document,
     };
-    watchers.forEach(w => w.sendCustom('document_update', data));
+    watchers.forEach(w => w.sendEvent('document_update', data));
 
     // DETECT CHANGES IN DOCUMENT
     const entriesOld = this.getDocumentEntries(oldDocument, true);
@@ -133,10 +133,6 @@ export class IoTProjectService {
         updatedFields[key] = val;
       }
     });
-
-    console.log('\n\n\n');
-    console.log(updatedFields);
-    console.log('\n\n\n');
 
     // SEND CHANGES DETECTED TO OBJECTS LISTENING
     ObjectClient.sendToListeners(id, updatedFields);
@@ -207,7 +203,33 @@ export class IoTProjectService {
     const project = await this.findOne(id);
     const document = { ...project.document, ...fields };
 
-    this.setDocument(id, document, project.document);
+    return await this.setDocument(id, document, project.document);
+  }
+
+  async updateDocumentFields(id: string, fields: JsonObj) {
+    const project = await this.findOne(id);
+    const oldDocument = { ...project.document };
+    let newDoc = project.document;
+
+    Object.entries(fields).forEach(entry => {
+      const path = entry[0];
+      const value = entry[1];
+
+      const pathParts = path.split('/');
+      let ref = { ...newDoc };
+      for (let i = 2; i < pathParts.length; i++) {
+        const subpath = pathParts[i];
+
+        console.log(newDoc);
+        if (!(subpath in newDoc)) break;
+
+        if (i + 1 == pathParts.length) {
+          ref[subpath] = value;
+        } else ref = ref[subpath];
+      }
+    });
+
+    return await this.setDocument(id, newDoc, oldDocument);
   }
 
   async getDocument(projectId: string) {
@@ -241,7 +263,7 @@ export class IoTProjectService {
         value,
       };
 
-      watchers.forEach(w => w.sendCustom('update', data));
+      watchers.forEach(w => w.sendEvent('update', data));
     }
   }
 

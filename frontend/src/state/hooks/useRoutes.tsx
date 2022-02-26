@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import { Professor, Student } from '../../Models/User/user.entity';
-import Classroom from '../../Pages/Classroom/Classroom';
 import Course from '../../Pages/Course/Course';
 import { NotFound } from '../../Pages/Errors/NotFound/NotFound';
 import Home from '../../Pages/Home/Home';
@@ -46,6 +45,8 @@ import { LEVEL_TYPE } from '../../Models/Level/level.entity';
 import DashboardNew from '../../Pages/DashboardNew/DashboardNew';
 import DevHome from '../../Pages/Dev/DevHome';
 import DevWeb from '../../Pages/Dev/DevWeb';
+import ClassroomBrowse from '../../Components/ClassroomComponents/ClassroomBrowse/ClassroomBrowse';
+import { UnderDevelopment } from '../../Pages/Errors/UnderDevelopment/UnderDevelopment';
 
 export interface Route {
 	path: string;
@@ -53,6 +54,7 @@ export interface Route {
 	component?: React.ReactNode | null;
 	maintenanceExempt?: boolean;
 	adminOnly?: boolean;
+	redirect?: React.ReactNode;
 
 	// Do not set manually
 	hasAccess?: boolean;
@@ -74,7 +76,7 @@ const useRoutes = () => {
 	const asRoutes = <T extends RoutesGroup<Route>>(routeGroup: T): T => {
 		Object.values(routeGroup).forEach(route => {
 			if (route.adminOnly && !user?.isAdmin) {
-				route.component = <NotFound></NotFound>;
+				route.component = route.redirect ?? <NotFound></NotFound>;
 				route.hasAccess = false;
 			}
 
@@ -174,7 +176,7 @@ const useRoutes = () => {
 			exact: true,
 			path: '/iot',
 			component: <IoTHome></IoTHome>,
-			//adminOnly: true,
+			maintenanceExempt: true,
 		},
 		level_alive: {
 			path: '/level/play/alive',
@@ -252,9 +254,10 @@ const useRoutes = () => {
 			path: '/classroom/join',
 			component: <ClassroomForm></ClassroomForm>,
 		},
-		classroom: {
-			path: '/classroom/:id',
-			component: <Classroom></Classroom>,
+		classroom_browse: {
+			accountType: Student,
+			path: '/classroom/browse',
+			component: <ClassroomBrowse></ClassroomBrowse>,
 		},
 		create_course: {
 			path: '/course/create',
@@ -267,6 +270,8 @@ const useRoutes = () => {
 		account: {
 			path: '/account',
 			component: <AccountPage></AccountPage>,
+			adminOnly: true,
+			redirect: <UnderDevelopment></UnderDevelopment>,
 		},
 		chat: {
 			path: '/chat',

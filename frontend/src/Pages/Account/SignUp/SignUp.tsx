@@ -65,7 +65,11 @@ const SignUp = ({ userType }: SignUpProps) => {
 
 			setUser(user);
 
-			if (location.pathname === '/signin') navigate(routes.auth.dashboard.path);
+			if (
+				location.pathname === '/signin' ||
+				location.pathname.toLowerCase().includes('signup')
+			)
+				navigate(routes.auth.dashboard.path);
 			return alert.success(t('msg.auth.signup_success'));
 		} catch (e) {
 			const err = e as AxiosError;
@@ -73,8 +77,6 @@ const SignUp = ({ userType }: SignUpProps) => {
 			const statusCode = err.response?.status;
 
 			if (statusCode === HttpStatusCode.CONFLICT) {
-				if (err.response.data.message.includes('username'))
-					return setError('name', { type: 'taken' });
 				if (err.response.data.message.includes('email'))
 					return setError('email', { type: 'taken' });
 			}
@@ -100,75 +102,44 @@ const SignUp = ({ userType }: SignUpProps) => {
 					}}
 					{...register('email', { required: true })}
 				/>
-				{userType === USER_TYPES.PROFESSOR ? (
-					<div className="flex flex-row gap-3">
-						<InputGroup
-							label={t('form.firstName.label')}
-							placeholder={t('form.firstName.placeholder')}
-							autoComplete="on"
-							errors={errors.firstName}
-							messages={{
-								required: t('form.firstName.required'),
-							}}
-							minLength={3}
-							maxLength={25}
-							{...register('firstName', {
-								required: true,
-								minLength: 3,
-								maxLength: 25,
-							})}
-						/>
-						<InputGroup
-							label={t('form.lastName.label')}
-							placeholder="Soldevila"
-							autoComplete="on"
-							errors={errors.lastName}
-							messages={{
-								required: t('form.lastName.required'),
-							}}
-							minLength={3}
-							maxLength={25}
-							{...register('lastName', {
-								required: true,
-								minLength: 3,
-								maxLength: 25,
-							})}
-						/>
-					</div>
-				) : (
-					<>
-						<InputGroup
-							label={t('form.name.label')}
-							placeholder={t('form.name.placeholder')}
-							errors={errors.name}
-							messages={{
-								required: t('form.name.required'),
-								taken: t('form.name.taken'),
-								pattern: t('form.name.pattern'),
-							}}
-							minLength={3}
-							maxLength={20}
-							{...register('name', {
-								required: true,
-								minLength: 3,
-								maxLength: 20,
-								pattern: /^[a-zA-Z0-9_]*$/,
-							})}
-						/>
-						{/*
-						<Form.Group>
-							<Form.Label>{t('form.scholarity.label')}</Form.Label>
-							<Form.Control
-								placeholder={t('form.scholarity.placeholder')}
-								autoComplete="on"
-								{...register('scholarity', { required: true })}
-							/>
-							{errors.scholarity?.type === 'required' &&
-								t('form.scholarity.required')}
-						</Form.Group>
-						*/}
-					</>
-				)}
+				<div className="flex flex-row gap-3">
+					<InputGroup
+						label={t('form.firstName.label')}
+						placeholder={t('form.firstName.placeholder')}
+						autoComplete="on"
+						errors={errors.firstName}
+						messages={{
+							required: t('form.firstName.required'),
+							pattern: t('form.firstName.pattern'),
+						}}
+						minLength={3}
+						maxLength={25}
+						{...register('firstName', {
+							required: true,
+							minLength: 3,
+							maxLength: 25,
+							pattern: /^[-\p{L}]{3,}$/u,
+						})}
+					/>
+					<InputGroup
+						label={t('form.lastName.label')}
+						placeholder="Soldevila"
+						autoComplete="on"
+						errors={errors.lastName}
+						messages={{
+							required: t('form.lastName.required'),
+							pattern: t('form.lastName.pattern'),
+						}}
+						minLength={3}
+						maxLength={25}
+						{...register('lastName', {
+							required: true,
+							minLength: 3,
+							maxLength: 25,
+							pattern: /^[-\p{L}]{3,}$/u,
+						})}
+					/>
+				</div>
 				<InputGroup
 					label={t('form.pwd.label')}
 					type="password"

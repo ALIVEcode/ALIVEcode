@@ -152,7 +152,9 @@ export class UserService {
   async getCourses(user: UserEntity) {
     if (user instanceof ProfessorEntity) return await this.courseRepository.find({ where: { creator: user } });
     if (user instanceof StudentEntity)
-      return (await this.studentRepository.findOne(user.id, { relations: ['courses'] })).classrooms;
+      return (
+        await this.studentRepository.findOne(user.id, { relations: ['classrooms', 'classrooms.courses'] })
+      ).classrooms.flatMap(c => c.courses);
     return [];
   }
 

@@ -39,9 +39,8 @@ export class CourseAccess implements CanActivate {
     //if (course.access === COURSE_ACCESS.PRIVATE) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
 
     if (user instanceof StudentEntity) {
-      const classrooms = await this.userService.getClassrooms(user);
-      if (!classrooms.some(classroom => classroom.courses.some(c => c.id === course.id)))
-        throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+      const courses = await this.userService.getCourses(user);
+      if (!courses.some(c => c.id === course.id)) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
       this.req.course = course;
       return true;
     }

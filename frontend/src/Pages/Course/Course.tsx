@@ -107,15 +107,18 @@ const Course = () => {
 	const deleteElement = async (element: CourseElement) => {
 		if (!course.current || !courseElements) return;
 
-		await api.db.courses.deleteElement({
+		const res = await api.db.courses.deleteElement({
 			courseId: course.current.id,
 			elementId: element.id.toString(),
 		});
+		console.log(res);
+
 		const parent = element.getParent();
 
 		parent.elementsOrder = parent.elementsOrder.filter(el => el !== element.id);
 		parent.elements = parent.elements.filter(el => el.id !== element.id);
 		delete courseElements.current[element.id];
+		update();
 	};
 
 	/**

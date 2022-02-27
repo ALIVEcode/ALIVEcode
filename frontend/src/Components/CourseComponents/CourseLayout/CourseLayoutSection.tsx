@@ -107,8 +107,8 @@ const CourseSection = ({
 				title={t('couse.section.delete')}
 				setOpen={setConfirmSectionDelete}
 				onConfirm={() => {
-					if (!(course && section)) return;
-					deleteElement(section.courseElement);
+					if (!(course && section && courseElements?.current)) return;
+					deleteElement(courseElements.current[section.id]);
 				}}
 				hideFooter
 			></AlertConfirm>

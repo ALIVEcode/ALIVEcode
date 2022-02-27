@@ -1,4 +1,4 @@
-import DataSample from './DataSample';
+import { DataSample } from './AIUtils';
 import DataTypes from '../../../../Components/LevelComponents/LevelGraph/DataTypes';
 import RegressionOptimizer from './RegressionOptimizer';
 

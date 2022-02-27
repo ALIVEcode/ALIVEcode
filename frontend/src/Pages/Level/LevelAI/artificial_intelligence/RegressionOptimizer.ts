@@ -1,5 +1,5 @@
 import PolyRegression from './PolyRegression';
-import DataSample from './DataSample';
+import { DataSample } from './AIUtils';
 
 /**
  * Superclass for every Optimizer class. It contains all usefull static and abstract methods 

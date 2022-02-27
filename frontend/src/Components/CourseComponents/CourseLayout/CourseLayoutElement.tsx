@@ -1,5 +1,3 @@
-import { useContext, useEffect } from 'react';
-import { CourseContext } from '../../../state/contexts/CourseContext';
 import CourseLayoutActivity from './CourseLayoutActivity';
 import CourseLayoutSection from './CourseLayoutSection';
 import { CourseLayoutElementProps } from './courseLayoutTypes';
@@ -16,29 +14,27 @@ const CourseLayoutElement = ({
 	editMode,
 	depth = 0,
 }: CourseLayoutElementProps) => {
-	const { loadSectionElements, courseElements } = useContext(CourseContext);
+	// const { loadSectionElements, courseElements } = useContext(CourseContext);
 
-	useEffect(() => {
-		console.log(element);
+	// useEffect(() => {
+	// 	if (!element?.section || !courseElements?.current) return;
 
-		if (!element?.section || !courseElements?.current) return;
+	// 	const noReload = element.section.elementsOrder.every(id => {
+	// 		return id in courseElements.current;
+	// 	});
 
-		const noReload = element.section.elementsOrder.every(id => {
-			return id in courseElements;
-		});
+	// 	if (noReload) return;
 
-		if (noReload) return;
-
-		console.debug(`reloading section ${element.name}`);
-		loadSectionElements(element.section);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [element, courseElements]);
+	// 	console.log(`reloading section ${element.name}`);
+	// 	loadSectionElements(element.section);
+	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// }, [element, courseElements]);
 
 	return (
 		<div style={{ marginLeft: `${20 * depth}px` }}>
 			{element?.section ? (
 				<CourseLayoutSection
-					section={element.section!}
+					section={element.section}
 					editMode={editMode}
 					depth={depth}
 				/>

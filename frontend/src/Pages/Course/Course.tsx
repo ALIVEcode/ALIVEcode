@@ -93,16 +93,8 @@ const Course = () => {
 		// if the content is added directly at the level of the course
 		console.log(courseElement);
 
-		if (parent instanceof CourseModel) {
-			course.current = parent;
-			courseElements.current[courseElement.id] = courseElement;
-		}
-		// if the content is added in a section
-		else if (parent instanceof Section) {
-			course.current = courseElement.course;
-			courseElements.current[parent.id] = parent.courseElement;
-			courseElements.current[courseElement.id] = courseElement;
-		}
+		courseElements.current[courseElement.id] = courseElement;
+
 		update();
 	};
 
@@ -119,25 +111,11 @@ const Course = () => {
 			courseId: course.current.id,
 			elementId: element.id.toString(),
 		});
-		if (element.sectionParent) {
-			element.sectionParent.elementsOrder =
-				element.sectionParent.elementsOrder.filter(el => el !== element.id);
-			element.sectionParent.elements = element.sectionParent.elements.filter(
-				el => el.id !== element.id,
-			);
-			courseElements.current = Object.fromEntries(
-				Object.entries(courseElements).filter(
-					([_, el]) => el.id !== element.id,
-				),
-			);
-		} else {
-			element.course.elementsOrder = element.course.elementsOrder.filter(
-				el => el !== element.id,
-			);
-			element.course.elements = element.course.elements.filter(
-				el => el.id !== element.id,
-			);
-		}
+		const parent = element.getParent();
+
+		parent.elementsOrder = parent.elementsOrder.filter(el => el !== element.id);
+		parent.elements = parent.elements.filter(el => el.id !== element.id);
+		delete courseElements.current[element.id];
 	};
 
 	/**
@@ -147,16 +125,19 @@ const Course = () => {
 	 * @author Mathis
 	 */
 	const loadSectionElements = async (section: Section) => {
-		if (!course.current || !section || !courseElements?.current) return;
+		if (!course.current || !section || !courseElements.current) return;
 
 		const elements = await api.db.courses.getElementsInSection({
 			courseId: course.current.id,
 			sectionId: section.id.toString(),
 		});
 
-		elements.forEach(el => (courseElements.current[el.id] = el));
+		elements.forEach(el => {
+			el.sectionParent = section;
+			course.current && (el.course = course.current);
+			courseElements.current[el.id] = el;
+		});
 		console.log(elements);
-		console.log(courseElements);
 
 		section.elements = elements;
 		update();
@@ -263,6 +244,25 @@ const Course = () => {
 	// 	setCourse(plainToClass(CourseModel, course));
 	// };
 
+	const deleteSectionRecursivelly = async (element: CourseElement) => {
+		// TODO add a route that deletes all the elements of a section
+		if (!element) return;
+		if (element.section) {
+			element.section.elements.forEach(
+				async el => await deleteSectionRecursivelly(el),
+			);
+		}
+		await deleteElement(element);
+	};
+
+	const loadSectionRecursivelly = async (element: CourseElement) => {
+		if (!element.section) return;
+		await loadSectionElements(element.section);
+		element.section.elements.forEach(
+			async el => await loadSectionRecursivelly(el),
+		);
+	};
+
 	const canEdit = course.current?.creator.id === user?.id;
 
 	const contextValue: CourseContextValues = {
@@ -280,7 +280,7 @@ const Course = () => {
 		// saveActivity,
 		// saveActivityContent,
 		setIsNavigationOpen,
-		deleteElement,
+		deleteElement: deleteSectionRecursivelly,
 		moveElement: (..._) => {},
 		loadActivity: (section: Section, activity: Activity) => {
 			throw new Error('Function not implemented.');
@@ -309,10 +309,12 @@ const Course = () => {
 				course.current = courseLoaded;
 				const elements = await api.db.courses.getElements({ courseId: id });
 
+				elements.forEach(async el => {
+					course.current && (el.course = course.current);
+					courseElements.current[el.id] = el;
+					await loadSectionRecursivelly(el);
+				});
 				course.current.elements = elements;
-				courseElements.current = Object.fromEntries(
-					elements.map(el => [el.id, el]),
-				);
 				update();
 			} catch (err) {
 				navigate('/');

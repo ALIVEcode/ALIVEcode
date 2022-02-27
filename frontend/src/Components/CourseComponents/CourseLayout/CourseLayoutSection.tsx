@@ -25,7 +25,7 @@ const CourseSection = ({
 	editMode,
 	depth = 0,
 }: CourseSectionProps) => {
-	const [open, setOpen] = useState(false);
+	const [open, setOpen] = useState(true);
 	const [loading, setLoading] = useState(false);
 	const {
 		deleteElement,
@@ -43,15 +43,15 @@ const CourseSection = ({
 	const toggleOpenSection = async () => {
 		if (!course) return;
 		setOpen(!open);
-		if (!open) {
-			setLoading(true);
-			await section.elements;
-			setLoading(false);
-		}
+		// if (!open) {
+		// 	setLoading(true);
+		// 	await section.elements;
+		// 	setLoading(false);
+		// }
 	};
 
 	return (
-		<Disclosure as="div" className="course-section">
+		<Disclosure as="div" className="course-section" defaultOpen>
 			<Disclosure.Button
 				as="div"
 				className="course-section-header"
@@ -78,37 +78,27 @@ const CourseSection = ({
 				<div id={`section-${section.name}`} className="course-section-body">
 					{loading && open && <LoadingScreen size="3x" relative />}
 
-					{canEdit && (!section.elements || section.elements?.length === 0) ? (
+					{section.elementsOrder?.map(
+						id =>
+							courseElements?.current && (
+								<CourseLayoutElement
+									key={id}
+									element={courseElements.current[id]}
+									editMode={editMode}
+									depth={depth + 1}
+								/>
+							),
+					)}
+					{canEdit && (
 						<Link
 							dark
 							onClick={() => {
 								setOpenModalSection(true);
 							}}
+							style={{ marginLeft: `${20 * (depth + 1)}px` }}
 						>
 							{t('course.section.new')}
 						</Link>
-					) : (
-						<>
-							{section.elementsOrder?.map(id => (
-								<div key={id} className="course-activity">
-									<CourseLayoutElement
-										element={courseElements![id]}
-										editMode={editMode}
-										depth={depth + 1}
-									/>
-								</div>
-							))}
-							{canEdit && (
-								<Link
-									dark
-									onClick={() => {
-										setOpenModalSection(true);
-									}}
-								>
-									{t('course.section.new')}
-								</Link>
-							)}
-						</>
 					)}
 				</div>
 			</Disclosure.Panel>

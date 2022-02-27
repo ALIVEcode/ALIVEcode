@@ -66,6 +66,7 @@ export const StyledCourseLayout = styled.div`
 
 	.course-section {
 		padding-bottom: 15px;
+		padding-top: 15px;
 	}
 
 	.course-section-header,

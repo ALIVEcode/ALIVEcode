@@ -38,13 +38,13 @@ const CourseLayoutSection = ({
 		courseElements,
 		course,
 		canEdit,
-		loadSectionElements,
+		openActivityForm,
+		openSectionForm,
 	} = useContext(CourseContext);
 	const { t } = useTranslation();
 	const [confirmSectionDelete, setConfirmSectionDelete] = useState(false);
 	const [confirmActivityDelete, setConfirmActivityDelete] = useState(false);
 	const currentActivity = useRef<Activity>();
-	const [openModalSection, setOpenModalSection] = useState(false);
 
 	const toggleOpenSection = async () => {
 		if (!course) return;
@@ -102,15 +102,23 @@ const CourseLayoutSection = ({
 						)}
 					</div>
 					{canEdit && (
-						<Link
-							dark
-							onClick={() => {
-								setOpenModalSection(true);
-							}}
-							style={{ marginLeft: `${20 * (depth + 1)}px` }}
-						>
-							{t('course.section.new')}
-						</Link>
+						<>
+							<Link
+								dark
+								onClick={() => openSectionForm(section)}
+								style={{ marginLeft: `${20 * (depth + 1)}px` }}
+							>
+								{t('course.section.new')}
+							</Link>
+							<Link
+								onClick={() => openActivityForm(section)}
+								dark
+								block
+								style={{ marginLeft: `${20 * (depth + 1)}px` }}
+							>
+								{t('course.activity.new')}
+							</Link>
+						</>
 					)}
 				</div>
 			</Disclosure.Panel>
@@ -134,11 +142,6 @@ const CourseLayoutSection = ({
 				}}
 				hideFooter
 			></AlertConfirm>
-			<CreateSectionForm
-				openModalSection={openModalSection}
-				setOpenModalSection={setOpenModalSection}
-				sectionParent={section}
-			/>
 		</Disclosure>
 	);
 };

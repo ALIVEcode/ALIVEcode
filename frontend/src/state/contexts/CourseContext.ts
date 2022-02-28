@@ -14,37 +14,44 @@ export type CourseContextValues = {
 	courseElements?: MutableRefObject<{ [id: number]: CourseElement }>;
 	isNavigationOpen: boolean;
 	canEdit: boolean;
-	setTitle: (newTitle: string) => void;
-	loadActivity: (section: Section, activity: Activity) => any;
-	loadSectionElements: (section: Section) => any;
+	setTitle: (newTitle: string) => Promise<void>;
+	loadActivity: (section: Section, activity: Activity) => Promise<any>;
+	loadSectionElements: (section: Section) => Promise<any>;
 	closeCurrentActivity: () => void;
-	saveActivity: (activity: Activity) => void;
-	saveActivityContent: (data: string) => void;
+	saveActivity: (activity: Activity) => Promise<void>;
+	saveActivityContent: (data: string) => Promise<void>;
 	setIsNavigationOpen: (bool: boolean) => void;
-	addContent: (content: CourseContent, sectionParent?: Section) => void;
-	deleteElement: (element: CourseElement) => void;
+	addContent: (
+		content: CourseContent,
+		sectionParent?: Section,
+	) => Promise<void>;
+	deleteElement: (element: CourseElement) => Promise<void>;
 	moveElement: (
 		element: CourseElement,
 		newIdx: number,
 		newParent: CourseElement,
-	) => void;
+	) => Promise<void>;
+	openSectionForm: (sectionParent?: Section) => void;
+	openActivityForm: (sectionParent?: Section) => void;
 };
 
 export const CourseContext = createContext<CourseContextValues>({
 	canEdit: false,
 	isNavigationOpen: true,
-	setTitle: (newTitle: string) => {},
-	loadActivity: (section: Section, activity: Activity) => {},
+	setTitle: async (newTitle: string) => {},
+	loadActivity: async (section: Section, activity: Activity) => {},
 	closeCurrentActivity: () => {},
-	saveActivity: (activity: Activity) => {},
-	saveActivityContent: (data: string) => {},
-	setIsNavigationOpen: (bool: boolean) => {},
-	addContent: (content: CourseContent, sectionParent?: Section) => {},
-	deleteElement: (element: CourseElement) => {},
-	moveElement: (
+	saveActivity: async (activity: Activity) => {},
+	saveActivityContent: async (data: string) => {},
+	setIsNavigationOpen: async (bool: boolean) => {},
+	addContent: async (content: CourseContent, sectionParent?: Section) => {},
+	deleteElement: async (element: CourseElement) => {},
+	moveElement: async (
 		element: CourseElement,
 		newIdx: number,
 		newParent: CourseElement,
 	) => {},
-	loadSectionElements: (section: Section) => {},
+	loadSectionElements: async (section: Section) => {},
+	openSectionForm: () => {},
+	openActivityForm: () => {},
 });

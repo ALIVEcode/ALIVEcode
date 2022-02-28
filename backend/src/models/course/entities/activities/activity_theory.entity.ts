@@ -1,6 +1,6 @@
 import { Type } from 'class-transformer';
 import { Column, ChildEntity } from 'typeorm';
-import { ActivityEntity, ACTIVIY_TYPE } from '../activity.entity';
+import { ACTIVITY_TYPE, ActivityEntity } from '../activity.entity';
 
 export class ActivityContent {
   body: string;
@@ -11,7 +11,7 @@ export class ActivityContent {
  * @deprecated Needs to be redone
  * @author Enric Solevila
  */
-@ChildEntity(ACTIVIY_TYPE.THEORY)
+@ChildEntity(ACTIVITY_TYPE.THEORY)
 export class ActivityTheoryEntity extends ActivityEntity {
   /** Content inside the theory activity (markdown) */
   @Column({ type: 'json', default: {} })

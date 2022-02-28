@@ -20,6 +20,8 @@ import {
 } from '../../state/contexts/CourseContext';
 import { UserContext } from '../../state/contexts/UserContext';
 import { useForceUpdate } from '../../state/hooks/useForceUpdate';
+import CreateSectionForm from '../../Components/CourseComponents/CourseSection/CreateSectionForm';
+import CreationActivityMenu from '../../Components/CourseComponents/CreationActivityMenu/CreationActivityMenu';
 
 const StyledDiv = styled.div`
 	display: flex;
@@ -50,6 +52,10 @@ const Course = () => {
 	const navigate = useNavigate();
 	const update = useForceUpdate();
 
+	const [openModalSection, setOpenModalSection] = useState(false);
+	const [openModalActivity, setOpenModalActivity] = useState(false);
+	const [sectionParent, setSectionParent] = useState<Section>();
+
 	/**
 	 * Sets the course's title to a new one
 	 *
@@ -67,6 +73,16 @@ const Course = () => {
 		course.current.name = updatedCourse.name;
 
 		course.current = updatedCourse;
+	};
+
+	const openSectionForm = (sectionParent?: Section) => {
+		setSectionParent(sectionParent);
+		setOpenModalSection(true);
+	};
+
+	const openActivityForm = (sectionParent?: Section) => {
+		setSectionParent(sectionParent);
+		setOpenModalActivity(true);
 	};
 
 	/**
@@ -92,9 +108,6 @@ const Course = () => {
 		parent.elementsOrder = newOrder;
 		parent.elements.push(courseElement);
 
-		// if the content is added directly at the level of the course
-		console.log(courseElement);
-
 		courseElements.current[courseElement.id] = courseElement;
 
 		update();
@@ -112,7 +125,6 @@ const Course = () => {
 			courseId: course.current.id,
 			elementId: element.id.toString(),
 		});
-		console.log(res);
 
 		const parent = element.getParent();
 
@@ -142,7 +154,6 @@ const Course = () => {
 			el.initialize();
 			courseElements.current[el.id] = el;
 		});
-		console.log(elements);
 
 		section.elements = elements;
 		update();
@@ -166,20 +177,6 @@ const Course = () => {
 	// 	setActivity(activity);
 	// };
 
-	// const saveActivityContent = async (data: string) => {
-	// 	if (!course || !activity || !section) return;
-	// 	const activityDTO = { ...activity, content: { data } };
-	// 	(activityDTO as any).levels = undefined;
-
-	// 	const updatedAct = await api.db.courses.updateActivity(
-	// 		{
-	// 			courseId: course.id,
-	// 			sectionId: section.id.toString(),
-	// 			activityId: activity.id.toString(),
-	// 		},
-	// 		activityDTO,
-	// 	);
-
 	// 	activity.name = updatedAct.name;
 	// 	activity.course_element = updatedAct.course_element;
 	// 	setActivity(activity);
@@ -194,59 +191,6 @@ const Course = () => {
 
 	// const closeCurrentActivity = () => {
 	// 	setActivity(undefined);
-	// };
-
-	// const addSection = (section: Section) => {
-	// 	if (!course) return;
-	// 	course.sections.push(section);
-	// 	setCourse(plainToClass(CourseModel, course));
-	// };
-
-	// const deleteSection = async (section: Section) => {
-	// 	if (!course) return;
-
-	// 	await api.db.courses.deleteSection({
-	// 		courseId: course.id,
-	// 		sectionId: section.id.toString(),
-	// 	});
-	// 	course.sections = course.sections.filter(
-	// 		_section => _section.id !== section.id,
-	// 	);
-	// 	setCourse(plainToClass(CourseModel, course));
-	// };
-
-	// const addActivity = async (section: Section, newAct: Activity) => {
-	// if (!course) return;
-	// newAct = await api.db.courses.addActivity(course?.id, section.id, newAct);
-	// const sectionFound = course?.sections.find(s => s.id === section.id);
-	// if (!sectionFound || !course) return;
-	// course.sections = course?.sections.map(s => {
-	// 	if (s.id === sectionFound.id)
-	// 		s.activities ? s.activities.push(newAct) : (s.activities = [newAct]);
-	// 	return s;
-	// });
-	// loadActivity(section, newAct);
-	// setCourse(plainToClass(CourseModel, course));
-	// };
-
-	// const deleteActivity = async (section: Section, _activity: Activity) => {
-	// 	if (!(course && course.sections)) return;
-
-	// 	await api.db.courses.deleteActivity({
-	// 		courseId: course.id,
-	// 		sectionId: section.id.toString(),
-	// 		activityId: _activity.id.toString(),
-	// 	});
-	// 	const idx = course.sections.indexOf(section);
-
-	// 	course.sections[idx].activities = (
-	// 		await section.getActivities(course.id)
-	// 	)?.filter(_activity_ => _activity_.id !== _activity.id);
-	// 	if (_activity.id === activity?.id) {
-	// 		setActivity(undefined);
-	// 	}
-
-	// 	setCourse(plainToClass(CourseModel, course));
 	// };
 
 	const deleteSectionRecursivelly = async (element: CourseElement) => {
@@ -286,7 +230,7 @@ const Course = () => {
 		// saveActivityContent,
 		setIsNavigationOpen,
 		deleteElement,
-		moveElement: (..._) => {},
+		moveElement: async (..._) => {},
 		loadActivity: (section: Section, activity: Activity) => {
 			throw new Error('Function not implemented.');
 		},
@@ -299,6 +243,8 @@ const Course = () => {
 		saveActivityContent: (data: string) => {
 			throw new Error('Function not implemented.');
 		},
+		openActivityForm,
+		openSectionForm,
 	};
 
 	/**
@@ -340,6 +286,16 @@ const Course = () => {
 					<CourseLayout />
 				</FillContainer>
 			</StyledDiv>
+			<CreateSectionForm
+				openModalSection={openModalSection}
+				setOpenModalSection={setOpenModalSection}
+				sectionParent={sectionParent}
+			/>
+			<CreationActivityMenu
+				open={openModalActivity}
+				setOpen={setOpenModalActivity}
+				sectionParent={sectionParent}
+			/>
 		</CourseContext.Provider>
 	);
 };

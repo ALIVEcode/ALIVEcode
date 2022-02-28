@@ -109,6 +109,11 @@
 		"creation_date": "Date de création",
 		"update_date": "Date de modification",
 		"see_links": "Voir les liens",
+		"activity_type": {
+			"level": "Niveau",
+			"video": "Visionnement",
+			"theory": "Théorie"
+		},
 		"time": {
 			"format": "{{dayName}}, {{day}} {{monthName}} {{year}} - {{hour}}:{{minute}}",
 			"day": {

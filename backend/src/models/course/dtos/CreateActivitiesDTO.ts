@@ -1,6 +1,22 @@
 import { Type } from 'class-transformer';
-import { IsOptional, ValidateNested } from 'class-validator';
-import { ActivityEntity } from '../entities/activity.entity';
+import { IsNotEmpty, IsOptional, ValidateNested, ValidateIf, Length } from 'class-validator';
+import { ACTIVITY_TYPE } from '../entities/activity.entity';
+
+export class CreateActivityCourseContent {
+  /** Type of the activity */
+  @IsNotEmpty()
+  @ValidateIf((val: any) => {
+    const bool = Object.values(ACTIVITY_TYPE).includes(val);
+    console.log(bool);
+    return bool;
+  })
+  readonly type: ACTIVITY_TYPE;
+
+  /** Name of the activity */
+  @IsNotEmpty()
+  @Length(1, 100)
+  name: string;
+}
 
 /**
  * DTO to create a generic activity (Data Transfer Object)
@@ -12,9 +28,9 @@ export class CreateActivityDTO {
   sectionParentId?: string;
 
   /** Activity object to create */
-  @Type(() => ActivityEntity)
   @ValidateNested()
-  courseContent: ActivityEntity;
+  @Type(() => CreateActivityCourseContent)
+  courseContent: CreateActivityCourseContent;
 }
 
 /**

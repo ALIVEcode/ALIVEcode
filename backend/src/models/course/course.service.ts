@@ -7,10 +7,12 @@ import { ProfessorEntity, StudentEntity } from '../user/entities/user.entity';
 import { CreateCourseDTO } from './dtos/CreateCourseDTO';
 import { ActivityLevelEntity } from './entities/activities/activity_level.entity';
 import { ActivityTheoryEntity } from './entities/activities/activity_theory.entity';
-import { ActivityEntity } from './entities/activity.entity';
+import { ActivityEntity, ACTIVITY_TYPE } from './entities/activity.entity';
 import { CourseContent, CourseEntity } from './entities/course.entity';
 import { CourseElementEntity } from './entities/course_element.entity';
 import { SectionEntity } from './entities/section.entity';
+import { ActivityVideoEntity } from './entities/activities/activity_video.entity';
+import { CreateActivityCourseContent } from './dtos/CreateActivitiesDTO';
 
 /**
  * All the methods to communicate to the database. To create/update/delete/get
@@ -25,7 +27,8 @@ export class CourseService {
     @InjectRepository(SectionEntity) private sectionRepository: Repository<SectionEntity>,
     @InjectRepository(ActivityEntity) private activityRepository: Repository<ActivityEntity>,
     @InjectRepository(ActivityTheoryEntity) private actTheoryRepo: Repository<ActivityTheoryEntity>,
-    @InjectRepository(ActivityLevelEntity) private actLevelRepo: Repository<ActivityLevelEntity>,
+    @InjectRepository(ActivityVideoEntity) private actLevelRepo: Repository<ActivityLevelEntity>,
+    @InjectRepository(ActivityLevelEntity) private actVideoRepo: Repository<ActivityLevelEntity>,
     @InjectRepository(ClassroomEntity) private classroomRepo: Repository<ClassroomEntity>,
     @InjectRepository(CourseElementEntity) private courseElRepo: Repository<CourseElementEntity>,
     @InjectRepository(StudentEntity) private studentRepo: Repository<StudentEntity>,
@@ -156,7 +159,7 @@ export class CourseService {
     const createdElement = this.courseElRepo.create({ course, sectionParent });
 
     if (content instanceof SectionEntity) createdElement.section = content;
-    else if (content instanceof ActivityEntity) createdElement.activity = content;
+    else createdElement.activity = content;
     const courseElement = await this.courseElRepo.save(createdElement);
 
     parent.elements.push(courseElement);
@@ -284,8 +287,21 @@ export class CourseService {
    *                      If not specified, add the Section is directly added inside the course
    * @returns the created CourseElement containing the activity and the new order of elements in its parent
    */
-  async addActivity(course: CourseEntity, activityDTO: ActivityEntity, sectionParent?: SectionEntity) {
-    const activity = await this.activityRepository.save(activityDTO);
+  async addActivity(course: CourseEntity, activityDTO: CreateActivityCourseContent, sectionParent?: SectionEntity) {
+    let activity: ActivityEntity;
+    switch (activityDTO.type) {
+      case ACTIVITY_TYPE.LEVEL:
+        activity = await this.actLevelRepo.save(activityDTO);
+        break;
+      case ACTIVITY_TYPE.THEORY:
+        activity = await this.actTheoryRepo.save(activityDTO);
+        break;
+      case ACTIVITY_TYPE.VIDEO:
+        activity = await this.actVideoRepo.save(activityDTO);
+        break;
+      default:
+        throw new HttpException('Invalid activity type', HttpStatus.BAD_REQUEST);
+    }
     return await this.createCourseElement(course, activity, sectionParent);
   }
 

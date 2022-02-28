@@ -7,7 +7,6 @@ import { ThemeContext } from '../../../state/contexts/ThemeContext';
 import useRoutes from '../../../state/hooks/useRoutes';
 import CenteredContainer from '../../UtilsComponents/CenteredContainer/CenteredContainer';
 import Link from '../../UtilsComponents/Link/Link';
-import CreateSectionForm from '../CourseSection/CreateSectionForm';
 import CourseLayoutElement from './CourseLayoutElement';
 import { StyledCourseLayout } from './courseLayoutTypes';
 
@@ -17,8 +16,9 @@ const CourseLayout = () => {
 		canEdit,
 		isNavigationOpen,
 		setTitle,
-		addContent,
 		courseElements,
+		openSectionForm,
+		openActivityForm,
 	} = useContext(CourseContext);
 	const { theme } = useContext(ThemeContext);
 	const { routes, goTo } = useRoutes();
@@ -27,7 +27,6 @@ const CourseLayout = () => {
 
 	const [courseTitle, setCourseTitle] = useState(course?.name);
 
-	const [openModalSection, setOpenModalSection] = useState(false);
 	const [editMode, setEditMode] = useState(false);
 	const [editTitle, setEditTitle] = useState(false);
 
@@ -105,17 +104,18 @@ const CourseLayout = () => {
 									),
 							)}
 						{canEdit && (
-							<Link onClick={() => setOpenModalSection(true)} dark block>
-								{t('course.section.new')}
-							</Link>
+							<>
+								<Link onClick={openSectionForm} dark block>
+									{t('course.section.new')}
+								</Link>
+								<Link onClick={openActivityForm} dark block>
+									{t('course.activity.new')}
+								</Link>
+							</>
 						)}
 					</div>
 				</div>
 			</CenteredContainer>
-			<CreateSectionForm
-				openModalSection={openModalSection}
-				setOpenModalSection={setOpenModalSection}
-			/>
 		</StyledCourseLayout>
 	);
 };

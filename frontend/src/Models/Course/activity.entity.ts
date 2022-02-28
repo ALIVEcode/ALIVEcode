@@ -20,7 +20,7 @@ export class Activity {
 	name: string;
 
 	/** Type of the activity */
-	readonly type: ACTIVIY_TYPE;
+	type: ACTIVIY_TYPE;
 
 	/** CourseElement attached to the activity */
 	@Type(() => CourseElement)

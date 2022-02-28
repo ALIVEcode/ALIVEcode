@@ -17,6 +17,7 @@ import { ActivityEntity } from './entities/activity.entity';
 import { ActivityTheoryEntity } from './entities/activities/activity_theory.entity';
 import { CourseElementEntity } from './entities/course_element.entity';
 import { ActivityLevelEntity } from './entities/activities/activity_level.entity';
+import { ActivityVideoEntity } from './entities/activities/activity_video.entity';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { ActivityLevelEntity } from './entities/activities/activity_level.entity
       SectionEntity,
       ActivityEntity,
       ActivityTheoryEntity,
+      ActivityVideoEntity,
       ActivityLevelEntity,
       UserEntity,
       ClassroomEntity,

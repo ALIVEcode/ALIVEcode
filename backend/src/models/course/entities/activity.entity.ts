@@ -7,7 +7,7 @@ export class ActivityContent {
   body: string;
 }
 
-export enum ACTIVIY_TYPE {
+export enum ACTIVITY_TYPE {
   THEORY,
   LEVEL,
   VIDEO,
@@ -35,8 +35,8 @@ export class ActivityEntity {
   /** Type of the activity */
   @Exclude({ toClassOnly: true })
   @IsEmpty()
-  @Column({ type: 'enum', name: 'type', enum: ACTIVIY_TYPE, default: ACTIVIY_TYPE.THEORY })
-  readonly type: ACTIVIY_TYPE;
+  @Column({ type: 'enum', name: 'type', enum: ACTIVITY_TYPE, default: ACTIVITY_TYPE.THEORY })
+  readonly type: ACTIVITY_TYPE;
 
   /** Name of the activity */
   @IsNotEmpty()
@@ -45,7 +45,7 @@ export class ActivityEntity {
   name: string;
 
   /** CourseElement attached to the activity */
-  @OneToOne(() => CourseElementEntity, el => el.activity, { onDelete: 'CASCADE' })
+  @OneToOne(() => CourseElementEntity, el => el.activity, { onDelete: 'CASCADE', cascade: true })
   @JoinColumn()
   courseElement: CourseElementEntity;
 }

@@ -32,14 +32,6 @@ export const StyledCourseLayout = styled.div`
 	border-top-right-radius: 10px;
 	border-bottom-right-radius: 10px;
 	transition: all 0.35s;
-	background-color: ${({ theme }) => {
-		if (theme.name === themes.light.name) return 'var(--background-color)';
-		if (theme.name === themes.dark.name) return 'var(--fourth-color)';
-	}};
-	color: ${({ theme }) => {
-		if (theme.name === themes.light.name) return 'var(--background-color)';
-		if (theme.name === themes.dark.name) return 'var(--foreground-color)';
-	}};
 	overflow-y: auto;
 	touch-action: auto;
 	z-index: 10;
@@ -107,7 +99,7 @@ export const StyledCourseLayout = styled.div`
 	}
 
 	.course-section-body {
-		width: 80%;
+		width: 100%;
 	}
 
 	.course-section-header:hover,

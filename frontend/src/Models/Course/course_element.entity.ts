@@ -44,6 +44,19 @@ export class CourseElement {
 		return this.getName();
 	}
 
+	get parent() {
+		return this.getParent();
+	}
+
+	/**
+	 * Check if the element is a section
+	 * @returns if the element is a section
+	 * @author Mathis Laroche
+	 */
+	get isSection() {
+		return this.section !== undefined;
+	}
+
 	initialize() {
 		if (this.section) {
 			this.section.elements || (this.section.elements = []);
@@ -85,15 +98,6 @@ export class CourseElement {
 	 */
 	getName(): string {
 		return this.activity?.name || this.section!.name;
-	}
-
-	/**
-	 * Check if the element is a section
-	 * @returns if the element is a section
-	 * @author Mathis Laroche
-	 */
-	isSection(): boolean {
-		return this.section !== undefined;
 	}
 
 	/**

@@ -1,10 +1,10 @@
-import { faCheckCircle, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import { ThemeContext } from '../../../state/contexts/ThemeContext';
 import useRoutes from '../../../state/hooks/useRoutes';
-import IconButton from '../../DashboardComponents/IconButton/IconButton';
 import CenteredContainer from '../../UtilsComponents/CenteredContainer/CenteredContainer';
 import Link from '../../UtilsComponents/Link/Link';
 import CreateSectionForm from '../CourseSection/CreateSectionForm';
@@ -37,11 +37,15 @@ const CourseLayout = () => {
 	}
 
 	return (
-		<StyledCourseLayout options={{ isNavigationOpen, editMode }} theme={theme}>
-			<CenteredContainer horizontally>
-				<div className="course-nav-header">
+		<StyledCourseLayout
+			options={{ isNavigationOpen, editMode }}
+			theme={theme}
+			className="bg-[color:var(--background-color)]"
+		>
+			<CenteredContainer horizontally className="">
+				<div className="border-2 border-[color:var(--bg-shade-four-color)]">
 					{canEdit ? (
-						<div className="course-nav-title">
+						<div className="text-4xl text-left text-[color:var(--foreground-color)] pl-5 pt-3 pb-3">
 							<div className="course-edit-button">
 								{editMode && editTitle ? (
 									<input
@@ -64,19 +68,26 @@ const CourseLayout = () => {
 										{courseTitle}
 									</span>
 								)}
-								<IconButton
+								{/* <IconButton
 									icon={editMode ? faCheckCircle : faPencilAlt}
 									onClick={() => {
 										setEditMode(!editMode);
 									}}
-								/>
+								/> */}
 							</div>
 						</div>
 					) : (
 						<div className="course-nav-title">{courseTitle}</div>
 					)}
 				</div>
-				<div className="course-nav-body">
+
+				<div className="pl-52 pr-52 relative pt-10">
+					<FontAwesomeIcon
+						icon={faArrowLeft}
+						color="black"
+						size="4x"
+						className="pl-5 absolute top-0 left-0"
+					/>
 					<div style={{ textAlign: 'left' }}>
 						{course.elementsOrder.length === 0 && (
 							<label>{t('course.empty')}</label>

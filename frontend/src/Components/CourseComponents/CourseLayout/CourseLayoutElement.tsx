@@ -34,7 +34,7 @@ const CourseLayoutElement = ({
 		<div style={{ marginLeft: `${20 * depth}px` }}>
 			{element?.section ? (
 				<CourseLayoutSection
-					section={element.section}
+					courseElement={element}
 					editMode={editMode}
 					depth={depth}
 				/>

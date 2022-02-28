@@ -106,7 +106,6 @@ const Course = () => {
 	 */
 	const deleteElement = async (element: CourseElement) => {
 		if (!course.current || !courseElements) return;
-
 		const res = await api.db.courses.deleteElement({
 			courseId: course.current.id,
 			elementId: element.id.toString(),
@@ -283,7 +282,7 @@ const Course = () => {
 		// saveActivity,
 		// saveActivityContent,
 		setIsNavigationOpen,
-		deleteElement: deleteSectionRecursivelly,
+		deleteElement,
 		moveElement: (..._) => {},
 		loadActivity: (section: Section, activity: Activity) => {
 			throw new Error('Function not implemented.');

@@ -20,11 +20,12 @@ import CourseLayoutElement from './CourseLayoutElement';
  * @author MoSk3
  * @author Ecoral360
  */
-const CourseSection = ({
-	section,
+const CourseLayoutSection = ({
+	courseElement,
 	editMode,
 	depth = 0,
 }: CourseSectionProps) => {
+	const section = courseElement.section as Section;
 	const [open, setOpen] = useState(true);
 	const [loading, setLoading] = useState(false);
 	const {
@@ -108,7 +109,7 @@ const CourseSection = ({
 				setOpen={setConfirmSectionDelete}
 				onConfirm={() => {
 					if (!(course && section && courseElements?.current)) return;
-					deleteElement(courseElements.current[section.id]);
+					deleteElement(courseElements.current[courseElement.id]);
 				}}
 				hideFooter
 			></AlertConfirm>
@@ -131,4 +132,4 @@ const CourseSection = ({
 	);
 };
 
-export default CourseSection;
+export default CourseLayoutSection;

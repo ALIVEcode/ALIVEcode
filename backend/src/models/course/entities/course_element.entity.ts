@@ -24,7 +24,7 @@ export class CourseElementEntity {
   course: CourseEntity;
 
   /** If the section is not at top level (inside another section), it contains that parent section */
-  @ManyToOne(() => SectionEntity, section => section.elements)
+  @ManyToOne(() => SectionEntity, section => section.elements, { onDelete: 'CASCADE' })
   sectionParent: SectionEntity;
 
   /*****---------------------------------*****/

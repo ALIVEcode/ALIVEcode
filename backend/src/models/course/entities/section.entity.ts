@@ -34,7 +34,7 @@ export class SectionEntity {
   elementsOrder: number[];
 
   /** CourseElement attached to the section */
-  @OneToOne(() => CourseElementEntity, el => el.section, { onDelete: 'CASCADE' })
+  @OneToOne(() => CourseElementEntity, el => el.section, { onDelete: 'CASCADE', cascade: true })
   @JoinColumn()
   @IsEmpty()
   courseElement: CourseElementEntity;

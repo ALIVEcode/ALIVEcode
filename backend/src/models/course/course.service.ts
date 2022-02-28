@@ -127,6 +127,22 @@ export class CourseService {
   }
 
   /**
+   * Finds a course element by id inside a course with the parent loaded.
+   * @param course Course to get the element from
+   * @param courseElementId id of the CourseElement to get
+   * @returns The CourseElement found
+   * @throws HttpException CourseElement not found
+   */
+  async findCourseElementWithParent(course: CourseEntity, courseElementId: string) {
+    const courseElement = await this.courseElRepo.findOne({
+      where: { id: courseElementId, course },
+      relations: ['course', 'sectionParent'],
+    });
+    if (!courseElement) throw new HttpException('CourseElement not found', HttpStatus.NOT_FOUND);
+    return courseElement;
+  }
+
+  /**
    * Creates a CourseElement directly in a course or in section with an activity or section inside it
    * @param course Course to create the CourseElement in
    * @param content The activity or section to add inside the CourseElement
@@ -167,10 +183,12 @@ export class CourseService {
    * @returns the deletion query result
    */
   async deleteCourseElement(courseElementWithParent: CourseElementEntity) {
-    const res = await this.courseElRepo.delete(courseElementWithParent);
+    const elId = courseElementWithParent.id;
+    const res = await this.courseElRepo.remove(courseElementWithParent);
 
+    // Changing parent order
     const parent = courseElementWithParent.sectionParent || courseElementWithParent.course;
-    parent.elementsOrder = parent.elementsOrder.filter((elementId: number) => elementId !== courseElementWithParent.id);
+    parent.elementsOrder = parent.elementsOrder.filter(elementId => elementId !== elId);
     await this.saveParent(parent);
 
     return res;

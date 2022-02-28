@@ -207,7 +207,7 @@ export class CourseController {
   @Auth(Role.PROFESSOR, Role.STAFF)
   @UseGuards(CourseProfessor)
   async deleteCourseElement(@Course() course: CourseEntity, @Param('courseElementId') courseElementId: string) {
-    const courseElement = await this.courseService.findCourseElement(course, courseElementId);
+    const courseElement = await this.courseService.findCourseElementWithParent(course, courseElementId);
     return await this.courseService.deleteCourseElement(courseElement);
   }
 }

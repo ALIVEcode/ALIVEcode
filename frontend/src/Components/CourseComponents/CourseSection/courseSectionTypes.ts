@@ -1,7 +1,7 @@
-import { Section } from '../../../Models/Course/section.entity';
+import { CourseElement } from '../../../Models/Course/course_element.entity';
 
 export type CourseSectionProps = {
-	section: Section;
+	courseElement: CourseElement;
 	editMode: boolean;
 	depth?: number;
 };

@@ -1,10 +1,10 @@
 import { Exclude, Type } from 'class-transformer';
 import { CourseElement } from './course_element.entity';
 
-export enum ACTIVIY_TYPE {
-	THEORY,
-	LEVEL,
-	VIDEO,
+export enum ACTIVITY_TYPE {
+	THEORY = 'TH',
+	LEVEL = 'LE',
+	VIDEO = 'VI',
 }
 
 /**
@@ -20,7 +20,7 @@ export class Activity {
 	name: string;
 
 	/** Type of the activity */
-	type: ACTIVIY_TYPE;
+	type: ACTIVITY_TYPE;
 
 	/** CourseElement attached to the activity */
 	@Type(() => CourseElement)

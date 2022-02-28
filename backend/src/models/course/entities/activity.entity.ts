@@ -8,9 +8,9 @@ export class ActivityContent {
 }
 
 export enum ACTIVITY_TYPE {
-  THEORY,
-  LEVEL,
-  VIDEO,
+  THEORY = 'TH',
+  LEVEL = 'LE',
+  VIDEO = 'VI',
 }
 
 /**

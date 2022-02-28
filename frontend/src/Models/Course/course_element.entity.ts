@@ -44,6 +44,16 @@ export class CourseElement {
 		return this.getName();
 	}
 
+	initialize() {
+		if (this.section) {
+			this.section.elements || (this.section.elements = []);
+			this.section.elementsOrder || (this.section.elementsOrder = []);
+			this.section.courseElement = this;
+		} else if (this.activity) {
+			this.activity.courseElement = this;
+		}
+	}
+
 	/**
 	 * Get the content of the element (section or activity)
 	 * @returns The content of the activity

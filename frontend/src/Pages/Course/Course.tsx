@@ -86,6 +86,8 @@ const Course = () => {
 			content,
 			sectionParent?.id,
 		);
+
+		courseElement.initialize();
 		const parent = sectionParent ?? course.current;
 		parent.elementsOrder = newOrder;
 		parent.elements.push(courseElement);
@@ -137,6 +139,7 @@ const Course = () => {
 		elements.forEach(el => {
 			el.sectionParent = section;
 			course.current && (el.course = course.current);
+			el.initialize();
 			courseElements.current[el.id] = el;
 		});
 		console.log(elements);

@@ -156,7 +156,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
       throw new WsException('Bad payload');
     this.objectPermissionFilter(socket, payload.projectId);
 
-    await this.iotProjectService.updateDocument(payload.projectId, payload.fields);
+    await this.iotProjectService.updateDocumentFields(payload.projectId, payload.fields);
   }
 
   @UseFilters(new IoTExceptionFilter())

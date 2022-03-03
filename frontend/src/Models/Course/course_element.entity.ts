@@ -1,4 +1,4 @@
-import { Type } from 'class-transformer';
+import { Type, Exclude, Expose } from 'class-transformer';
 import { Activity } from './activity.entity';
 import { Course } from './course.entity';
 import { Section } from './section.entity';
@@ -12,17 +12,21 @@ export type CourseParent = Course | Section;
  * @author Enric Soldevila
  * @author Mathis Laroche
  */
+@Exclude()
 export class CourseElement {
 	/** Id of the CourseElement (0, 1, 2, ..., n) */
+	@Expose({ toClassOnly: true })
 	id: number;
 
 	/*****---Parents ---*****/
 
 	/** The course that the element belongs to */
+	@Expose({ toClassOnly: true })
 	@Type(() => Course)
 	course: Course;
 
 	/** If the section is not at top level (inside another section), it contains that parent section */
+	@Expose({ toClassOnly: true })
 	@Type(() => Section)
 	sectionParent?: Section;
 
@@ -31,10 +35,12 @@ export class CourseElement {
 	/*****---Elements (only one at a time)---*****/
 
 	/** If the element is an activity **/
+	@Expose({ toClassOnly: true })
 	@Type(() => Activity)
 	activity?: Activity;
 
 	/** If the element is a section **/
+	@Expose({ toClassOnly: true })
 	@Type(() => Section)
 	section?: Section;
 

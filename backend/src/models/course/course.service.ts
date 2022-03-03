@@ -90,7 +90,7 @@ export class CourseService {
    * @returns The updated course
    */
   async update(id: string, updateCourseDto: CourseEntity) {
-    return await this.courseRepository.update(id, updateCourseDto);
+    return await this.courseRepository.save({ ...updateCourseDto, id });
   }
 
   /**

@@ -3,11 +3,9 @@ import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import CourseLayout from '../../Components/CourseComponents/CourseLayout/CourseLayout';
 import CreateSectionMenu from '../../Components/CourseComponents/CourseSection/CreateSectionMenu';
 import CreationActivityMenu from '../../Components/CourseComponents/CreationActivityMenu/CreationActivityMenu';
-import FillContainer from '../../Components/UtilsComponents/FillContainer/FillContainer';
 import api from '../../Models/api';
 import { Activity } from '../../Models/Course/activity.entity';
 import { Course as CourseModel } from '../../Models/Course/course.entity';
@@ -22,13 +20,7 @@ import {
 } from '../../state/contexts/CourseContext';
 import { UserContext } from '../../state/contexts/UserContext';
 import { useForceUpdate } from '../../state/hooks/useForceUpdate';
-
-const StyledDiv = styled.div`
-	display: flex;
-	width: 100%;
-	.course-body {
-	}
-`;
+import { UpdateCourseDTO } from '../../Models/Course/dtos/UpdateCourse.dto';
 
 /**
  * Course page that shows the content of a course
@@ -49,7 +41,6 @@ const Course = () => {
 		'navigation' | 'layout'
 	>('layout');
 	const { id } = useParams<{ id: string }>();
-	const [isEditMode, setEditMode] = useState(false);
 
 	const { t } = useTranslation();
 	const alert = useAlert();
@@ -60,6 +51,12 @@ const Course = () => {
 	const [openModalActivity, setOpenModalActivity] = useState(false);
 	const [sectionParent, setSectionParent] = useState<Section>();
 
+	const titleRef = useRef<HTMLInputElement>(null);
+
+	const [courseTitle, setCourseTitle] = useState(course.current?.name);
+
+	const [editTitle, setEditTitle] = useState(false);
+
 	/**
 	 * Sets the course's title to a new one
 	 *
@@ -68,15 +65,18 @@ const Course = () => {
 	 */
 	const setTitle = async (newTitle: string) => {
 		if (!course.current) return;
-		const courseDTO = { ...course, name: newTitle, code: undefined };
+		const updateCourseDTO: UpdateCourseDTO = {
+			name: newTitle,
+			difficulty: course.current.difficulty,
+			access: course.current.access,
+			subject: course.current.subject,
+		};
 
 		const updatedCourse = await api.db.courses.update(
 			{ id: course.current.id },
-			courseDTO,
+			updateCourseDTO,
 		);
 		course.current.name = updatedCourse.name;
-
-		course.current = updatedCourse;
 	};
 
 	const openSectionForm = (sectionParent?: Section) => {
@@ -230,9 +230,7 @@ const Course = () => {
 		canEdit,
 		isNavigationOpen,
 		courseEditorMode,
-		isEditMode,
 		renameElement,
-		setEditMode,
 		setCourseEditorMode,
 		setTitle,
 		addContent,
@@ -279,6 +277,7 @@ const Course = () => {
 					await loadSectionRecursivelly(el);
 				});
 				course.current.elements = elements;
+				setCourseTitle(course.current.name);
 				update();
 			} catch (err) {
 				navigate('/');
@@ -292,17 +291,52 @@ const Course = () => {
 	if (!course.current) return <></>;
 	return (
 		<CourseContext.Provider value={contextValue}>
-			<StyledDiv>
-				<FillContainer className="course-body">
-					{/*<CourseNavigation />
-					<ActivityContent />*/}
-					{courseEditorMode === 'layout' ? (
-						<CourseLayout />
+			<div className="w-full h-full bg-[color:var(--background-color)]">
+				<div className="border-2 border-[color:var(--bg-shade-four-color)]">
+					{canEdit ? (
+						<div className="text-4xl text-left text-[color:var(--foreground-color)] pl-5 pt-3 pb-3">
+							<div className="course-edit-button">
+								{editTitle ? (
+									<input
+										ref={titleRef}
+										type="text"
+										autoFocus
+										onBlur={event => {
+											if (!titleRef.current) return;
+											setTitle(titleRef.current.value);
+											setCourseTitle(titleRef.current.value);
+											setEditTitle(false);
+										}}
+										defaultValue={courseTitle}
+									/>
+								) : (
+									<span
+										style={{ cursor: canEdit ? 'pointer' : 'auto' }}
+										onClick={() => canEdit && setEditTitle(true)}
+									>
+										{courseTitle}
+									</span>
+								)}
+								{/* <IconButton
+									icon={editMode ? faCheckCircle : faPencilAlt}
+									onClick={() => {
+										setEditMode(!editMode);
+									}}
+								/> */}
+							</div>
+						</div>
 					) : (
-						<>COURSE NAV UNDER CONSTRUCTION</>
+						<div className="course-nav-title">{courseTitle}</div>
 					)}
-				</FillContainer>
-			</StyledDiv>
+				</div>
+				{/*<CourseNavigation />
+				<ActivityContent />*/}
+				{courseEditorMode === 'layout' ? (
+					<CourseLayout />
+				) : (
+					<>COURSE NAV UNDER CONSTRUCTION</>
+				)}
+			</div>
 			<CreateSectionMenu
 				openModalSection={openModalSection}
 				setOpenModalSection={setOpenModalSection}

@@ -55,17 +55,20 @@ export class Course extends CreatedByUser {
 	subject: COURSE_SUBJECT;
 
 	/** CourseElements inside the course */
+	@Exclude({ toPlainOnly: true })
 	@Type(() => CourseElement)
 	elements: CourseElement[];
 
 	/** Display order of the CourseElements */
 	@Type(() => Number)
+	@Exclude({ toPlainOnly: true })
 	elementsOrder: number[];
 
 	/**
 	 * Gets the display in a short version, for example: (INFORMATIC => IN)
 	 * @returns the subject display
 	 */
+	@Exclude()
 	getSubjectDisplay() {
 		return this.subject[0].toUpperCase() + this.subject.slice(1);
 	}
@@ -74,6 +77,7 @@ export class Course extends CreatedByUser {
 	 * Gets an icon depending on the subject of the course
 	 * @returns The icon
 	 */
+	@Exclude()
 	getSubjectIcon() {
 		switch (this.subject) {
 			case COURSE_SUBJECT.INFORMATIC:

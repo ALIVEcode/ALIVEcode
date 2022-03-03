@@ -69,6 +69,7 @@ export class CourseController {
   @Auth(Role.PROFESSOR, Role.STAFF)
   @UseGuards(CourseProfessor)
   async update(@Course() course: CourseEntity, @Body() updateCourseDto: CourseEntity) {
+    console.log('HEREEE');
     return await this.courseService.update(course.id, updateCourseDto);
   }
 

@@ -15,8 +15,6 @@ export type CourseContextValues = {
 	courseEditorMode: 'navigation' | 'layout';
 	isNavigationOpen: boolean;
 	canEdit: boolean;
-	isEditMode: boolean;
-	setEditMode: (value: boolean) => void;
 	setCourseEditorMode: (value: 'navigation' | 'layout') => void;
 	setTitle: (newTitle: string) => Promise<void>;
 	loadActivity: (section: Section, activity: Activity) => Promise<any>;
@@ -44,8 +42,6 @@ export const CourseContext = createContext<CourseContextValues>({
 	canEdit: false,
 	isNavigationOpen: true,
 	courseEditorMode: 'navigation',
-	isEditMode: false,
-	setEditMode: (..._) => {},
 	setCourseEditorMode: (..._) => {},
 	setTitle: async (newTitle: string) => {},
 	loadActivity: async (section: Section, activity: Activity) => {},

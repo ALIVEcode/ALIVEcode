@@ -5,6 +5,8 @@ import { useParams } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import CourseLayout from '../../Components/CourseComponents/CourseLayout/CourseLayout';
+import CreateSectionMenu from '../../Components/CourseComponents/CourseSection/CreateSectionMenu';
+import CreationActivityMenu from '../../Components/CourseComponents/CreationActivityMenu/CreationActivityMenu';
 import FillContainer from '../../Components/UtilsComponents/FillContainer/FillContainer';
 import api from '../../Models/api';
 import { Activity } from '../../Models/Course/activity.entity';
@@ -20,8 +22,6 @@ import {
 } from '../../state/contexts/CourseContext';
 import { UserContext } from '../../state/contexts/UserContext';
 import { useForceUpdate } from '../../state/hooks/useForceUpdate';
-import CreateSectionForm from '../../Components/CourseComponents/CourseSection/CreateSectionForm';
-import CreationActivityMenu from '../../Components/CourseComponents/CreationActivityMenu/CreationActivityMenu';
 
 const StyledDiv = styled.div`
 	display: flex;
@@ -45,7 +45,11 @@ const Course = () => {
 	const section = useRef<Section>();
 	const activity = useRef<Activity>();
 	const [isNavigationOpen, setIsNavigationOpen] = useState(true);
+	const [courseEditorMode, setCourseEditorMode] = useState<
+		'navigation' | 'layout'
+	>('layout');
 	const { id } = useParams<{ id: string }>();
+	const [isEditMode, setEditMode] = useState(false);
 
 	const { t } = useTranslation();
 	const alert = useAlert();
@@ -159,6 +163,10 @@ const Course = () => {
 		update();
 	};
 
+	const renameElement = async (element: CourseElement, newName: string) => {
+		element.name = newName;
+	};
+
 	// const saveActivity = async (activity: Activity) => {
 	// 	if (!course || !activity || !section) return;
 	// 	const { course_element, ...actWithoutContent } = activity;
@@ -221,6 +229,11 @@ const Course = () => {
 		courseElements: courseElements,
 		canEdit,
 		isNavigationOpen,
+		courseEditorMode,
+		isEditMode,
+		renameElement,
+		setEditMode,
+		setCourseEditorMode,
 		setTitle,
 		addContent,
 		loadSectionElements,
@@ -283,10 +296,14 @@ const Course = () => {
 				<FillContainer className="course-body">
 					{/*<CourseNavigation />
 					<ActivityContent />*/}
-					<CourseLayout />
+					{courseEditorMode === 'layout' ? (
+						<CourseLayout />
+					) : (
+						<>COURSE NAV UNDER CONSTRUCTION</>
+					)}
 				</FillContainer>
 			</StyledDiv>
-			<CreateSectionForm
+			<CreateSectionMenu
 				openModalSection={openModalSection}
 				setOpenModalSection={setOpenModalSection}
 				sectionParent={sectionParent}

@@ -12,11 +12,16 @@ export type CourseContextValues = {
 	section?: MutableRefObject<Section | undefined>;
 	activity?: MutableRefObject<Activity | undefined>;
 	courseElements?: MutableRefObject<{ [id: number]: CourseElement }>;
+	courseEditorMode: 'navigation' | 'layout';
 	isNavigationOpen: boolean;
 	canEdit: boolean;
+	isEditMode: boolean;
+	setEditMode: (value: boolean) => void;
+	setCourseEditorMode: (value: 'navigation' | 'layout') => void;
 	setTitle: (newTitle: string) => Promise<void>;
 	loadActivity: (section: Section, activity: Activity) => Promise<any>;
 	loadSectionElements: (section: Section) => Promise<any>;
+	renameElement: (element: CourseElement, newName: string) => void;
 	closeCurrentActivity: () => void;
 	saveActivity: (activity: Activity) => Promise<void>;
 	saveActivityContent: (data: string) => Promise<void>;
@@ -38,6 +43,10 @@ export type CourseContextValues = {
 export const CourseContext = createContext<CourseContextValues>({
 	canEdit: false,
 	isNavigationOpen: true,
+	courseEditorMode: 'navigation',
+	isEditMode: false,
+	setEditMode: (..._) => {},
+	setCourseEditorMode: (..._) => {},
 	setTitle: async (newTitle: string) => {},
 	loadActivity: async (section: Section, activity: Activity) => {},
 	closeCurrentActivity: () => {},
@@ -45,6 +54,7 @@ export const CourseContext = createContext<CourseContextValues>({
 	saveActivityContent: async (data: string) => {},
 	setIsNavigationOpen: async (bool: boolean) => {},
 	addContent: async (content: CourseContent, sectionParent?: Section) => {},
+	renameElement: (element: CourseElement, newName: string) => {},
 	deleteElement: async (element: CourseElement) => {},
 	moveElement: async (
 		element: CourseElement,

@@ -44,6 +44,11 @@ export class CourseElement {
 		return this.getName();
 	}
 
+	set name(value: string) {
+		if (this.section) this.section.name = value;
+		else if (this.activity) this.activity.name = value;
+	}
+
 	get parent() {
 		return this.getParent();
 	}

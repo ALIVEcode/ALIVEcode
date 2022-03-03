@@ -242,7 +242,7 @@
 		"empty": "Ce cours est vide.",
 		"section": {
 			"empty": "Cette section ne possède aucune activité",
-			"new": "Nouvelle section"
+			"new": "Ajouter une section"
 		},
 		"activity": {
 			"empty": "Cette activité est vide.",

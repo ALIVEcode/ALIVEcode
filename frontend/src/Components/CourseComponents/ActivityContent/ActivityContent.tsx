@@ -1,26 +1,26 @@
 import {
-	ActivityContentProps,
-	StyledActivityContent,
-} from './activityContentTypes';
-import { useContext, useState, useEffect } from 'react';
-import { CourseContext } from '../../../state/contexts/CourseContext';
-import { ThemeContext } from '../../../state/contexts/ThemeContext';
-import CenteredContainer from '../../UtilsComponents/CenteredContainer/CenteredContainer';
-import Level from '../../../Pages/Level/Level';
-import IconButton from '../../DashboardComponents/IconButton/IconButton';
-import {
 	faAngleRight,
 	faCheckCircle,
 	faPencilAlt,
 } from '@fortawesome/free-solid-svg-icons';
-import MDEditor from '../MDEditor/MDEditor';
-import Button from '../../UtilsComponents/Buttons/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Modal from '../../UtilsComponents/Modal/Modal';
-import NewActivityContentModal from './NewActivityContentModal';
 import ReactMarkdown from 'react-markdown';
+import Level from '../../../Pages/Level/Level';
+import { CourseContext } from '../../../state/contexts/CourseContext';
+import { ThemeContext } from '../../../state/contexts/ThemeContext';
+import IconButton from '../../DashboardComponents/IconButton/IconButton';
+import Button from '../../UtilsComponents/Buttons/Button';
+import CenteredContainer from '../../UtilsComponents/CenteredContainer/CenteredContainer';
 import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
+import Modal from '../../UtilsComponents/Modal/Modal';
+import MDEditor from '../MDEditor/MDEditor';
+import {
+	ActivityContentProps,
+	StyledActivityContent,
+} from './activityContentTypes';
+import NewActivityContentModal from './NewActivityContentModal';
 
 /**
  * Displays the content of the activity in the CourseContext

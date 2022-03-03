@@ -6,7 +6,7 @@ import Form from '../../UtilsComponents/Form/Form';
 import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
 import FormModal from '../../UtilsComponents/FormModal/FormModal';
 
-const CreateSectionForm = ({
+const CreateSectionMenu = ({
 	openModalSection,
 	setOpenModalSection,
 	sectionParent,
@@ -56,4 +56,4 @@ const CreateSectionForm = ({
 	);
 };
 
-export default CreateSectionForm;
+export default CreateSectionMenu;

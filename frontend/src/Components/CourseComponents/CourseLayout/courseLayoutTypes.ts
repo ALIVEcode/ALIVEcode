@@ -1,16 +1,27 @@
 import styled from 'styled-components';
 import { CourseElement } from '../../../Models/Course/course_element.entity';
+import { Section } from '../../../Models/Course/section.entity';
 import { themes } from '../../../state/contexts/ThemeContext';
 
 export type CourseLayoutElementProps = {
 	element: CourseElement;
-	editMode: boolean;
-	depth?: number;
 };
 
 type NavigationOptions = {
 	isNavigationOpen: boolean;
 	editMode: boolean;
+};
+
+export type CourseLayoutSectionProps = {
+	courseElement: CourseElement;
+};
+
+export type CourseLayoutActivityProps = {
+	courseElement: CourseElement;
+};
+
+export type ButtonAddCourseElementProps = {
+	section?: Section;
 };
 
 export const StyledCourseLayout = styled.div`

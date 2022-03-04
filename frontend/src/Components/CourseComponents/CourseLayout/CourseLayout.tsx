@@ -9,7 +9,7 @@ import ButtonAddCourseElement from './ButtonAddCourseElement';
 import CourseLayoutElement from './CourseLayoutElement';
 
 const CourseLayout = () => {
-	const { course, canEdit, courseElements, setCourseEditorMode } =
+	const { course, canEdit, courseElements, setTabSelected } =
 		useContext(CourseContext);
 	const { routes, goTo } = useRoutes();
 	const { t } = useTranslation();
@@ -25,7 +25,7 @@ const CourseLayout = () => {
 				icon={faArrowLeft}
 				size="4x"
 				className="pl-5 md:sticky z-[1000] left-0 top-14 hover:cursor-pointer [color:var(--foreground-color)]"
-				onClick={() => setCourseEditorMode('navigation')}
+				onClick={() => setTabSelected({ tab: 'navigation' })}
 			/>
 
 			<CenteredContainer

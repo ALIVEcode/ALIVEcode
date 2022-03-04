@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useReducer, useRef, useState } from 'react';
 import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
@@ -24,6 +24,7 @@ import { UpdateCourseDTO } from '../../Models/Course/dtos/UpdateCourse.dto';
 import CourseNavigation from '../../Components/CourseComponents/CourseNavigation/CourseNavigation';
 import CourseBody from '../../Components/CourseComponents/CourseBody/CourseBody';
 import FormInput from '../../Components/UtilsComponents/FormInput/FormInput';
+import { SwitchCourseTabActions, SwitchCourseTabReducer } from './courseTypes';
 
 /**
  * Course page that shows the content of a course
@@ -40,9 +41,9 @@ const Course = () => {
 	const section = useRef<Section>();
 	const activity = useRef<Activity>();
 	const [isNavigationOpen, setIsNavigationOpen] = useState(true);
-	const [courseEditorMode, setCourseEditorMode] = useState<
-		'navigation' | 'layout'
-	>('navigation');
+	const [tabSelected, setTabSelected] = useReducer(SwitchCourseTabReducer, {
+		tab: 'navigation',
+	});
 	const { id } = useParams<{ id: string }>();
 
 	const { t } = useTranslation();
@@ -232,9 +233,9 @@ const Course = () => {
 		courseElements: courseElements,
 		canEdit,
 		isNavigationOpen,
-		courseEditorMode,
+		tabSelected,
+		setTabSelected,
 		renameElement,
-		setCourseEditorMode,
 		setTitle,
 		addContent,
 		loadSectionElements,
@@ -326,7 +327,7 @@ const Course = () => {
 				</div>
 				{/*<CourseNavigation />
 				<ActivityContent />*/}
-				{courseEditorMode === 'layout' ? (
+				{tabSelected.tab === 'layout' ? (
 					<CourseLayout />
 				) : (
 					<div className="flex h-full">

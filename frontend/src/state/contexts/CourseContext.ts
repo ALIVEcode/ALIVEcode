@@ -6,16 +6,20 @@ import {
 	CourseElement,
 } from '../../Models/Course/course_element.entity';
 import { Section } from '../../Models/Course/section.entity';
+import {
+	CourseTabs,
+	SwitchCourseTabActions,
+} from '../../Pages/Course/courseTypes';
 
 export type CourseContextValues = {
 	course?: Course;
 	section?: MutableRefObject<Section | undefined>;
 	activity?: MutableRefObject<Activity | undefined>;
 	courseElements?: MutableRefObject<{ [id: number]: CourseElement }>;
-	courseEditorMode: 'navigation' | 'layout';
 	isNavigationOpen: boolean;
 	canEdit: boolean;
-	setCourseEditorMode: (value: 'navigation' | 'layout') => void;
+	tabSelected: { tab: CourseTabs };
+	setTabSelected: React.Dispatch<SwitchCourseTabActions>;
 	setTitle: (newTitle: string) => Promise<void>;
 	loadActivity: (section: Section, activity: Activity) => Promise<any>;
 	loadSectionElements: (section: Section) => Promise<any>;
@@ -41,8 +45,8 @@ export type CourseContextValues = {
 export const CourseContext = createContext<CourseContextValues>({
 	canEdit: false,
 	isNavigationOpen: true,
-	courseEditorMode: 'navigation',
-	setCourseEditorMode: (..._) => {},
+	tabSelected: { tab: 'navigation' },
+	setTabSelected: (..._) => {},
 	setTitle: async (newTitle: string) => {},
 	loadActivity: async (section: Section, activity: Activity) => {},
 	closeCurrentActivity: () => {},

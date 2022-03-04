@@ -1,4 +1,4 @@
-import { ChildEntity, OneToMany } from 'typeorm';
+import { ChildEntity, JoinColumn, JoinTable, ManyToOne, OneToMany } from 'typeorm';
 import { LevelEntity } from '../../level/entities/level.entity';
 import { ResourceEntity, RESOURCE_TYPE } from './resource.entity';
 import { ActivityLevelEntity } from '../../course/entities/activities/activity_level.entity';
@@ -10,7 +10,7 @@ import { ActivityLevelEntity } from '../../course/entities/activities/activity_l
 @ChildEntity(RESOURCE_TYPE.LEVEL)
 export class ResourceLevelEntity extends ResourceEntity {
   /** Reference to the level to display */
-  @OneToMany(() => LevelEntity, level => level.resources)
+  @ManyToOne(() => LevelEntity, level => level.resources)
   level: LevelEntity;
 
   @OneToMany(() => ActivityLevelEntity, act => act.resource)

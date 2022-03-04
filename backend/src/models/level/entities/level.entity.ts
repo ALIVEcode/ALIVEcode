@@ -1,5 +1,5 @@
 import { Exclude } from 'class-transformer';
-import { Entity, ManyToOne, TableInheritance, Column } from 'typeorm';
+import { Entity, ManyToOne, TableInheritance, Column, OneToMany } from 'typeorm';
 import { CreatedByUser } from '../../../generics/entities/createdByUser.entity';
 import { ActivityLevelEntity } from '../../course/entities/activities/activity_level.entity';
 import { UserEntity } from '../../user/entities/user.entity';
@@ -57,6 +57,6 @@ export class LevelEntity extends CreatedByUser {
   @IsOptional()
   tags: LEVEL_TAG[] = [];
 
-  @ManyToOne(() => ResourceLevelEntity, res => res.level)
+  @OneToMany(() => ResourceLevelEntity, res => res.level)
   resources: ActivityLevelEntity;
 }

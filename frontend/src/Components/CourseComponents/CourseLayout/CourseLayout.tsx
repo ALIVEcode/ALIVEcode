@@ -4,7 +4,6 @@ import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import useRoutes from '../../../state/hooks/useRoutes';
-import CenteredContainer from '../../UtilsComponents/CenteredContainer/CenteredContainer';
 import ButtonAddCourseElement from './ButtonAddCourseElement';
 import CourseLayoutElement from './CourseLayoutElement';
 
@@ -21,7 +20,7 @@ const CourseLayout = () => {
 
 	return (
 		<div className="w-full h-full overflow-y-auto relative">
-			<div className="sticky z-40 left-0 top-0">
+			<div className="sticky z-10 left-0 top-0">
 				<FontAwesomeIcon
 					icon={faArrowLeft}
 					size="4x"

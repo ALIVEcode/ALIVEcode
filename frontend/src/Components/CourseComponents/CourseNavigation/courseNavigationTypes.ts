@@ -3,11 +3,11 @@ import { themes } from '../../../state/contexts/ThemeContext';
 import { CourseElement } from '../../../Models/Course/course_element.entity';
 
 export type CourseNavigationSectionProps = {
-	courseElement: CourseElement;
+	element: CourseElement;
 };
 
 export type CourseNavigationActivityProps = {
-	courseElement: CourseElement;
+	element: CourseElement;
 };
 
 type NavigationOptions = {

@@ -1,6 +1,6 @@
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useContext, useRef, useState } from 'react';
+import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import useRoutes from '../../../state/hooks/useRoutes';
@@ -20,18 +20,17 @@ const CourseLayout = () => {
 	}
 
 	return (
-		<div className="relative pt-3">
-			<FontAwesomeIcon
-				icon={faArrowLeft}
-				size="4x"
-				className="pl-5 md:sticky z-[1000] left-0 top-14 hover:cursor-pointer [color:var(--foreground-color)]"
-				onClick={() => setTabSelected({ tab: 'navigation' })}
-			/>
-
-			<CenteredContainer
-				horizontally
-				className="md:px-52 pl-3 pr-12 min-w-fit w-[100%] whitespace-nowrap"
-			>
+		<div className="w-full h-full overflow-y-auto relative">
+			<div className="sticky z-40 left-0 top-0">
+				<FontAwesomeIcon
+					icon={faArrowLeft}
+					size="4x"
+					className="pl-5 hover:cursor-pointer [color:var(--foreground-color)]"
+					onClick={() => setTabSelected({ tab: 'navigation' })}
+				/>
+			</div>
+			<div className="flex flex-col justify-center md:px-52 pl-3 pr-12 min-w-fit w-[100%] whitespace-nowrap">
+				<div className="text-center text-2xl mb-4">Course Layout</div>
 				<div className="text-left ">
 					{course.elementsOrder.length === 0 && (
 						<label>{t('course.empty')}</label>
@@ -49,7 +48,7 @@ const CourseLayout = () => {
 						)}
 				</div>
 				<div className="pb-5">{canEdit && <ButtonAddCourseElement />}</div>
-			</CenteredContainer>
+			</div>
 		</div>
 	);
 };

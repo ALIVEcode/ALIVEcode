@@ -1,11 +1,11 @@
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Disclosure } from '@headlessui/react';
 import { useContext, useRef, useState } from 'react';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import CourseLayoutActivity from './CourseLayoutActivity';
 import CourseLayoutSection from './CourseLayoutSection';
 import { CourseLayoutElementProps } from './courseLayoutTypes';
+import FormInput from '../../UtilsComponents/FormInput/FormInput';
 
 /**
  *
@@ -43,32 +43,32 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 	};
 
 	return (
-		<div className="pb-[15px] pt-[15px] lg:pl-[30px] md:pl-[20px] sm:pl-[10px]">
+		<div className="py-2 pl-2 laptop:pl-3 desktop:pl-4">
 			<div className="group text-base flex items-center">
 				<FontAwesomeIcon
 					icon={faBars}
 					size="lg"
-					className="[color:var(--foreground-color)] opacity-50 group-hover:cursor-grab group-hover:visible invisible"
+					className="text-[color:var(--foreground-color)] transition-all duration-75 group-hover:cursor-grab group-hover:opacity-50 opacity-0"
 				/>
-				<div className="ml-2 border-2 p-[0.2rem] border-[color:var(--bg-shade-four-color)] text-[color:var(--foreground-color)] flex items-center w-[100%]">
+				<div className="ml-2 py-3 rounded-sm border p-[0.2rem] border-[color:var(--bg-shade-four-color)] text-[color:var(--foreground-color)] flex items-center w-full">
 					{!isRenaming ? (
 						<span
 							onDoubleClick={() => setIsRenaming(true)}
-							className="pl-2 w-[100%]"
+							className="pl-2 cursor-pointer"
 						>
 							{element.name}
 						</span>
 					) : (
-						<input
+						<FormInput
 							ref={inputRef as any}
 							type="text"
 							autoFocus
-							onKeyPress={event =>
+							onKeyPress={(event: KeyboardEvent) =>
 								event.key.toLowerCase() === 'enter' && rename()
 							}
 							onBlur={rename}
 							onDoubleClick={rename}
-							className="pl-2 bg-[color:var(--background-color)] w-[100%]"
+							className="pl-2 bg-[color:var(--background-color)] w-full"
 							defaultValue={element.name}
 						/>
 					)}

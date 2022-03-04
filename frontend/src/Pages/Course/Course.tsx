@@ -24,7 +24,7 @@ import { UpdateCourseDTO } from '../../Models/Course/dtos/UpdateCourse.dto';
 import CourseNavigation from '../../Components/CourseComponents/CourseNavigation/CourseNavigation';
 import CourseBody from '../../Components/CourseComponents/CourseBody/CourseBody';
 import FormInput from '../../Components/UtilsComponents/FormInput/FormInput';
-import { SwitchCourseTabActions, SwitchCourseTabReducer } from './courseTypes';
+import { SwitchCourseTabReducer } from './courseTypes';
 
 /**
  * Course page that shows the content of a course
@@ -315,7 +315,7 @@ const Course = () => {
 							) : (
 								<span
 									style={{ cursor: canEdit ? 'pointer' : 'auto' }}
-									onClick={() => canEdit && setEditTitle(true)}
+									onDoubleClick={() => canEdit && setEditTitle(true)}
 								>
 									{courseTitle}
 								</span>

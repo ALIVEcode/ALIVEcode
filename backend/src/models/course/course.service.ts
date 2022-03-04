@@ -12,8 +12,9 @@ import { CourseContent, CourseEntity } from './entities/course.entity';
 import { CourseElementEntity } from './entities/course_element.entity';
 import { SectionEntity } from './entities/section.entity';
 import { ActivityVideoEntity } from './entities/activities/activity_video.entity';
-import { CreateActivityCourseContent } from './dtos/CreateActivitiesDTO';
+import { CreateActivityDTO } from './dtos/CreateActivitiesDTO';
 import { UpdateCourseElementDTO } from './dtos/UpdateCourseElement.dto';
+import { CreateSectionDTO } from './dtos/CreateSectionDTO';
 
 /**
  * All the methods to communicate to the database. To create/update/delete/get
@@ -154,10 +155,10 @@ export class CourseService {
    *                      If not specified, add the CourseElement directly inside the course
    * @returns The created CourseElement containing the section or activity
    */
-  async createCourseElement(course: CourseEntity, content: CourseContent, sectionParent?: SectionEntity) {
+  async createCourseElement(course: CourseEntity, name: string, content: CourseContent, sectionParent?: SectionEntity) {
     const parent = sectionParent || course;
 
-    const createdElement = this.courseElRepo.create({ course, sectionParent });
+    const createdElement = this.courseElRepo.create({ course, sectionParent, name });
 
     if (content instanceof SectionEntity) createdElement.section = content;
     else createdElement.activity = content;
@@ -262,9 +263,9 @@ export class CourseService {
    *                      If not specified, add the Section is directly added inside the course
    * @returns the created CourseElement containing the section and the new order of elements in its parent
    */
-  async addSection(course: CourseEntity, sectionDTO: SectionEntity, sectionParent?: SectionEntity) {
-    const section = await this.sectionRepository.save(sectionDTO);
-    return await this.createCourseElement(course, section, sectionParent);
+  async addSection(course: CourseEntity, sectionDTO: CreateSectionDTO, sectionParent?: SectionEntity) {
+    const section = await this.sectionRepository.save(sectionDTO.courseContent);
+    return await this.createCourseElement(course, sectionDTO.name, section, sectionParent);
   }
 
   /*****-------End of Section methods-------*****/
@@ -298,9 +299,9 @@ export class CourseService {
    *                      If not specified, add the Section is directly added inside the course
    * @returns the created CourseElement containing the activity and the new order of elements in its parent
    */
-  async addActivity(course: CourseEntity, activityDTO: CreateActivityCourseContent, sectionParent?: SectionEntity) {
+  async addActivity(course: CourseEntity, activityDTO: CreateActivityDTO, sectionParent?: SectionEntity) {
     let activity: ActivityEntity;
-    switch (activityDTO.type) {
+    switch (activityDTO.courseContent.type) {
       case ACTIVITY_TYPE.LEVEL:
         activity = await this.actLevelRepo.save(activityDTO);
         break;
@@ -313,7 +314,7 @@ export class CourseService {
       default:
         throw new HttpException('Invalid activity type', HttpStatus.BAD_REQUEST);
     }
-    return await this.createCourseElement(course, activity, sectionParent);
+    return await this.createCourseElement(course, activityDTO.name, activity, sectionParent);
   }
 
   /**

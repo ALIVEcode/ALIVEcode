@@ -102,10 +102,10 @@ export class CourseController {
     course = await this.courseService.findOneWithElements(course.id);
     if (createSectionDTO.sectionParentId) {
       const section = await this.courseService.findSectionWithElements(course, createSectionDTO.sectionParentId);
-      return await this.courseService.addSection(course, createSectionDTO.courseContent, section);
+      return await this.courseService.addSection(course, createSectionDTO, section);
     }
 
-    return await this.courseService.addSection(course, createSectionDTO.courseContent);
+    return await this.courseService.addSection(course, createSectionDTO);
   }
 
   /**
@@ -158,10 +158,10 @@ export class CourseController {
     course = await this.courseService.findOneWithElements(course.id);
     if (createActivityDTO.sectionParentId) {
       const section = await this.courseService.findSectionWithElements(course, createActivityDTO.sectionParentId);
-      return await this.courseService.addActivity(course, createActivityDTO.courseContent, section);
+      return await this.courseService.addActivity(course, createActivityDTO, section);
     }
 
-    return await this.courseService.addActivity(course, createActivityDTO.courseContent);
+    return await this.courseService.addActivity(course, createActivityDTO);
   }
 
   /**

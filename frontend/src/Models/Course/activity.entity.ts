@@ -16,13 +16,15 @@ export class Activity {
 	@Exclude({ toPlainOnly: true })
 	id: number;
 
-	/** Name of the activity */
-	name: string;
-
 	/** Type of the activity */
 	type: ACTIVITY_TYPE;
 
 	/** CourseElement attached to the activity */
 	@Type(() => CourseElement)
 	courseElement: CourseElement;
+
+	/** Name of the activity */
+	get name() {
+		return this.courseElement.name;
+	}
 }

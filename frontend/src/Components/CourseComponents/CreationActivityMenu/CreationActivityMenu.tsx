@@ -1,15 +1,15 @@
-import Modal from '../../UtilsComponents/Modal/Modal';
-import CreationMenu from '../CreationMenu/CreationMenu';
-import TypeCard from '../../UtilsComponents/Cards/TypeCard/TypeCard';
 import { faBook, faCode, faVideo } from '@fortawesome/free-solid-svg-icons';
-import { CreationActivityMenuProps } from './creationActivityMenuTypes';
+import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-	ACTIVITY_TYPE,
 	Activity,
+	ACTIVITY_TYPE,
 } from '../../../Models/Course/activity.entity';
-import { useContext } from 'react';
 import { CourseContext } from '../../../state/contexts/CourseContext';
+import TypeCard from '../../UtilsComponents/Cards/TypeCard/TypeCard';
+import Modal from '../../UtilsComponents/Modal/Modal';
+import CreationMenu from '../CreationMenu/CreationMenu';
+import { CreationActivityMenuProps } from './creationActivityMenuTypes';
 
 const CreationActivityMenu = ({
 	open,
@@ -21,9 +21,8 @@ const CreationActivityMenu = ({
 
 	const onSelect = async (type: ACTIVITY_TYPE) => {
 		const activity = new Activity();
-		activity.name = 'Default Activity';
 		activity.type = type;
-		await addContent(activity, sectionParent);
+		await addContent(activity, 'Default Activity', sectionParent);
 		setOpen(false);
 	};
 

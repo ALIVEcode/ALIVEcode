@@ -1,4 +1,4 @@
-import { Type, Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose, Type } from 'class-transformer';
 import { Activity } from './activity.entity';
 import { Course } from './course.entity';
 import { Section } from './section.entity';
@@ -19,6 +19,8 @@ export class CourseElement {
 	id: number;
 
 	/*****---Parents ---*****/
+	@Expose({ toClassOnly: true })
+	name: string;
 
 	/** The course that the element belongs to */
 	@Expose({ toClassOnly: true })
@@ -46,15 +48,6 @@ export class CourseElement {
 
 	/*****-----------------------------------*****/
 
-	get name() {
-		return this.getName();
-	}
-
-	set name(value: string) {
-		if (this.section) this.section.name = value;
-		else if (this.activity) this.activity.name = value;
-	}
-
 	get parent() {
 		return this.getParent();
 	}
@@ -66,6 +59,14 @@ export class CourseElement {
 	 */
 	get isSection() {
 		return this.section !== undefined;
+	}
+	/**
+	 * Check if the element is an activity
+	 * @returns if the element is an activity
+	 * @author Mathis Laroche
+	 */
+	get isActivity(): boolean {
+		return this.activity !== undefined;
 	}
 
 	initialize() {
@@ -97,9 +98,9 @@ export class CourseElement {
 	 * @author Mathis Laroche
 	 */
 	getParent(): CourseParent {
-		if (!(this.course && this.sectionParent))
+		if (!(this.course || this.sectionParent))
 			throw new TypeError("The CourseElement doesn't have a parent");
-		return this.sectionParent || this.course;
+		return this.sectionParent ?? this.course;
 	}
 
 	/**
@@ -109,14 +110,5 @@ export class CourseElement {
 	 */
 	getName(): string {
 		return this.activity?.name || this.section!.name;
-	}
-
-	/**
-	 * Check if the element is an activity
-	 * @returns if the element is an activity
-	 * @author Mathis Laroche
-	 */
-	isActivity(): boolean {
-		return this.activity !== undefined;
 	}
 }

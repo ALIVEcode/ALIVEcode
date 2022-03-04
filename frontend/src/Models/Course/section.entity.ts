@@ -10,9 +10,6 @@ export class Section {
 	@Exclude({ toPlainOnly: true })
 	id: number;
 
-	/** Name of the section */
-	name: string;
-
 	/** CourseElements inside the section */
 	@Type(() => CourseElement)
 	elements: CourseElement[];
@@ -24,4 +21,9 @@ export class Section {
 	/** CourseElement attached to the section */
 	@Type(() => CourseElement)
 	courseElement: CourseElement;
+
+	/** Name of the section */
+	get name() {
+		return this.courseElement.name;
+	}
 }

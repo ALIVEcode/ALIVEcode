@@ -9,6 +9,7 @@ import CourseNavigation from '../../Components/CourseComponents/CourseNavigation
 import CreateSectionMenu from '../../Components/CourseComponents/CourseSection/CreateSectionMenu';
 import CreationActivityMenu from '../../Components/CourseComponents/CreationActivityMenu/CreationActivityMenu';
 import FormInput from '../../Components/UtilsComponents/FormInput/FormInput';
+import LoadingScreen from '../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
 import api from '../../Models/api';
 import { Activity } from '../../Models/Course/activity.entity';
 import { Course as CourseModel } from '../../Models/Course/course.entity';
@@ -45,7 +46,7 @@ const Course = () => {
 		tab: 'navigation',
 	});
 	const { id } = useParams<{ id: string }>();
-
+	const [loading, setLoading] = useState(true);
 	const { t } = useTranslation();
 	const alert = useAlert();
 	const navigate = useNavigate();
@@ -102,12 +103,14 @@ const Course = () => {
 	 */
 	const addContent = async (
 		content: CourseContent,
+		name: string,
 		sectionParent?: Section,
 	) => {
 		if (!course.current || !courseElements.current) return;
 		const { courseElement, newOrder } = await api.db.courses.addContent(
 			course.current.id,
 			content,
+			name,
 			sectionParent?.id,
 		);
 
@@ -133,12 +136,7 @@ const Course = () => {
 			courseId: course.current.id,
 			elementId: element.id.toString(),
 		});
-
-		const parent = element.getParent();
-
-		parent.elementsOrder = parent.elementsOrder.filter(el => el !== element.id);
-		parent.elements = parent.elements.filter(el => el.id !== element.id);
-		delete courseElements.current[element.id];
+		deleteSectionRecursively(element);
 		update();
 	};
 
@@ -159,8 +157,8 @@ const Course = () => {
 		elements.forEach(el => {
 			el.sectionParent = section;
 			course.current && (el.course = course.current);
-			el.initialize();
 			courseElements.current[el.id] = el;
+			el.initialize();
 		});
 
 		section.elements = elements;
@@ -206,22 +204,42 @@ const Course = () => {
 	// 	setActivity(undefined);
 	// };
 
-	const deleteSectionRecursivelly = async (element: CourseElement) => {
-		// TODO add a route that deletes all the elements of a section
-		if (!element) return;
-		if (element.section) {
-			element.section.elements.forEach(
-				async el => await deleteSectionRecursivelly(el),
-			);
+	const deleteElementAndChildren = (element: CourseElement) => {
+		// if we dont have to delete anything, we skip the computation
+		if (!(element.id in courseElements.current) && !element.isSection) {
+			return;
 		}
-		await deleteElement(element);
+
+		const parent = element.parent;
+
+		const toDelete = [element.id].concat(
+			element.section ? element.section.elementsOrder : [],
+		);
+
+		parent.elementsOrder = parent.elementsOrder.filter(
+			el => !toDelete.includes(el),
+		);
+		parent.elements = parent.elements.filter(el => !toDelete.includes(el.id));
+		for (const id of toDelete) delete courseElements.current[id];
 	};
 
-	const loadSectionRecursivelly = async (element: CourseElement) => {
+	const deleteSectionRecursively = (element: CourseElement) => {
+		// TODO add a route that deletes all the elements of a section
+		if (!element?.parent) return;
+		deleteElementAndChildren(element);
+		if (element.section) {
+			element.section.elements.forEach(
+				// we don't pass in an activity since it will have been deleted already
+				el => el.isSection && deleteSectionRecursively(el),
+			);
+		}
+	};
+
+	const loadSectionRecursively = async (element: CourseElement) => {
 		if (!element.section) return;
 		await loadSectionElements(element.section);
 		element.section.elements.forEach(
-			async el => await loadSectionRecursivelly(el),
+			async el => await loadSectionRecursively(el),
 		);
 	};
 
@@ -277,13 +295,19 @@ const Course = () => {
 				const elements = await api.db.courses.getElements({ courseId: id });
 
 				elements.forEach(async el => {
-					course.current && (el.course = course.current);
+					if (!course.current) {
+						console.error('Something went wrong, not loading element ' + el);
+						return;
+					}
+					el.course = course.current;
 					courseElements.current[el.id] = el;
-					await loadSectionRecursivelly(el);
+					el.initialize();
+					await loadSectionRecursively(el);
 				});
 				course.current.elements = elements;
 				setCourseTitle(course.current.name);
 				update();
+				setLoading(false);
 			} catch (err) {
 				navigate('/');
 				return alert.error(t('error.not_found', { obj: t('msg.course') }));
@@ -326,7 +350,10 @@ const Course = () => {
 						)}
 					</div>
 				</div>
-				{tabSelected.tab === 'layout' ? (
+
+				{loading ? (
+					<LoadingScreen />
+				) : tabSelected.tab === 'layout' ? (
 					<CourseLayout />
 				) : (
 					<div className="flex h-full">

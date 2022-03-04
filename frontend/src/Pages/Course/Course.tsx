@@ -55,6 +55,7 @@ const Course = () => {
 	const [openModalSection, setOpenModalSection] = useState(false);
 	const [openModalActivity, setOpenModalActivity] = useState(false);
 	const [sectionParent, setSectionParent] = useState<Section>();
+	const [openedActivity, setOpenedActivity] = useState<Activity>();
 
 	const titleRef = useRef<HTMLInputElement>(null);
 
@@ -170,6 +171,14 @@ const Course = () => {
 		//TODO add call to an update route in api
 	};
 
+	const openActivity = async (activity: Activity) => {
+		setOpenedActivity(activity);
+	};
+
+	const closeOpenedActivity = () => {
+		setOpenedActivity(undefined);
+	};
+
 	// const saveActivity = async (activity: Activity) => {
 	// 	if (!course || !activity || !section) return;
 	// 	const { course_element, ...actWithoutContent } = activity;
@@ -198,10 +207,6 @@ const Course = () => {
 	// 	await activity.getContent(course?.id, section.id);
 	// 	setActivity(activity);
 	// 	setSection(section);
-	// };
-
-	// const closeCurrentActivity = () => {
-	// 	setActivity(undefined);
 	// };
 
 	const deleteElementAndChildren = (element: CourseElement) => {
@@ -258,19 +263,12 @@ const Course = () => {
 		setTitle,
 		addContent,
 		loadSectionElements,
-		// loadActivity,
 		// closeCurrentActivity,
 		// saveActivity,
 		// saveActivityContent,
 		setIsNavigationOpen,
 		deleteElement,
 		moveElement: async (..._) => {},
-		loadActivity: (section: Section, activity: Activity) => {
-			throw new Error('Function not implemented.');
-		},
-		closeCurrentActivity: () => {
-			throw new Error('Function not implemented.');
-		},
 		saveActivity: (activity: Activity) => {
 			throw new Error('Function not implemented.');
 		},
@@ -279,6 +277,9 @@ const Course = () => {
 		},
 		openActivityForm,
 		openSectionForm,
+		openActivity,
+		closeOpenedActivity,
+		openedActivity,
 	};
 
 	/**

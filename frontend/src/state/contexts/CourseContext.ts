@@ -21,10 +21,11 @@ export type CourseContextValues = {
 	tabSelected: { tab: CourseTabs };
 	setTabSelected: React.Dispatch<SwitchCourseTabActions>;
 	setTitle: (newTitle: string) => Promise<void>;
-	loadActivity: (section: Section, activity: Activity) => Promise<any>;
+	openedActivity?: Activity;
+	openActivity: (activity: Activity) => Promise<any>;
+	closeOpenedActivity: () => any;
 	loadSectionElements: (section: Section) => Promise<any>;
 	renameElement: (element: CourseElement, newName: string) => void;
-	closeCurrentActivity: () => void;
 	saveActivity: (activity: Activity) => Promise<void>;
 	saveActivityContent: (data: string) => Promise<void>;
 	setIsNavigationOpen: (bool: boolean) => void;
@@ -49,8 +50,8 @@ export const CourseContext = createContext<CourseContextValues>({
 	tabSelected: { tab: 'navigation' },
 	setTabSelected: (..._) => {},
 	setTitle: async (newTitle: string) => {},
-	loadActivity: async (section: Section, activity: Activity) => {},
-	closeCurrentActivity: () => {},
+	openActivity: async (..._) => {},
+	closeOpenedActivity: () => {},
 	saveActivity: async (activity: Activity) => {},
 	saveActivityContent: async (data: string) => {},
 	setIsNavigationOpen: async (bool: boolean) => {},

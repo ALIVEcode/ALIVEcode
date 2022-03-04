@@ -22,7 +22,7 @@ const CourseSection = ({ section, editMode }: CourseSectionProps) => {
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const {
-		loadActivity,
+		openActivity: loadActivity,
 		addActivity,
 		course,
 		canEdit,

@@ -43,11 +43,7 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 	};
 
 	return (
-		<Disclosure
-			as="div"
-			className="pb-[15px] pt-[15px] lg:pl-[30px] md:pl-[20px] sm:pl-[10px]"
-			defaultOpen
-		>
+		<div className="pb-[15px] pt-[15px] lg:pl-[30px] md:pl-[20px] sm:pl-[10px]">
 			<div className="group text-base flex items-center">
 				<FontAwesomeIcon
 					icon={faBars}
@@ -85,7 +81,7 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 			) : (
 				<div>ERREUR</div>
 			)}
-		</Disclosure>
+		</div>
 	);
 };
 

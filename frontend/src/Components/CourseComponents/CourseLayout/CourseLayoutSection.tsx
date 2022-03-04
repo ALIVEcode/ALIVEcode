@@ -28,7 +28,7 @@ const CourseLayoutSection = ({ courseElement }: CourseLayoutSectionProps) => {
 	const currentActivity = useRef<Activity>();
 
 	return (
-		<>
+		<Disclosure as="div" defaultOpen>
 			<Disclosure.Panel className="border-opacity-20 border-[color:grey] border-l-[2px] ml-7 text-sm  border-double ">
 				<div id={`section-${section.name}`}>
 					{loading && open && <LoadingScreen size="3x" relative />}
@@ -64,7 +64,7 @@ const CourseLayoutSection = ({ courseElement }: CourseLayoutSectionProps) => {
 				}}
 				hideFooter
 			></AlertConfirm>
-		</>
+		</Disclosure>
 	);
 };
 

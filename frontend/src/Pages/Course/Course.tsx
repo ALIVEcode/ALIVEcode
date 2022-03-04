@@ -21,6 +21,9 @@ import {
 import { UserContext } from '../../state/contexts/UserContext';
 import { useForceUpdate } from '../../state/hooks/useForceUpdate';
 import { UpdateCourseDTO } from '../../Models/Course/dtos/UpdateCourse.dto';
+import CourseNavigation from '../../Components/CourseComponents/CourseNavigation/CourseNavigation';
+import CourseBody from '../../Components/CourseComponents/CourseBody/CourseBody';
+import FormInput from '../../Components/UtilsComponents/FormInput/FormInput';
 
 /**
  * Course page that shows the content of a course
@@ -39,7 +42,7 @@ const Course = () => {
 	const [isNavigationOpen, setIsNavigationOpen] = useState(true);
 	const [courseEditorMode, setCourseEditorMode] = useState<
 		'navigation' | 'layout'
-	>('layout');
+	>('navigation');
 	const { id } = useParams<{ id: string }>();
 
 	const { t } = useTranslation();
@@ -291,50 +294,49 @@ const Course = () => {
 	if (!course.current) return <></>;
 	return (
 		<CourseContext.Provider value={contextValue}>
-			<div className="w-full h-full bg-[color:var(--background-color)]">
-				<div className="border-2 border-[color:var(--bg-shade-four-color)]">
-					{canEdit ? (
-						<div className="text-4xl text-left text-[color:var(--foreground-color)] pl-5 pt-3 pb-3">
-							<div className="course-edit-button">
-								{editTitle ? (
-									<input
-										ref={titleRef}
-										type="text"
-										autoFocus
-										onBlur={event => {
-											if (!titleRef.current) return;
-											setTitle(titleRef.current.value);
-											setCourseTitle(titleRef.current.value);
-											setEditTitle(false);
-										}}
-										defaultValue={courseTitle}
-									/>
-								) : (
-									<span
-										style={{ cursor: canEdit ? 'pointer' : 'auto' }}
-										onClick={() => canEdit && setEditTitle(true)}
-									>
-										{courseTitle}
-									</span>
-								)}
-								{/* <IconButton
-									icon={editMode ? faCheckCircle : faPencilAlt}
-									onClick={() => {
-										setEditMode(!editMode);
+			<div className="w-full h-full flex flex-col bg-[color:var(--background-color)] text-[color:var(--foreground-color)]">
+				<div className="border-b border-[color:var(--bg-shade-four-color)]">
+					<div className="text-4xl text-left text-[color:var(--foreground-color)] pl-5 pt-3 pb-3">
+						{canEdit ? (
+							editTitle ? (
+								<FormInput
+									ref={titleRef}
+									type="text"
+									autoFocus
+									onBlur={() => {
+										if (!titleRef.current) return;
+										setTitle(titleRef.current.value);
+										setCourseTitle(titleRef.current.value);
+										setEditTitle(false);
 									}}
-								/> */}
-							</div>
-						</div>
-					) : (
-						<div className="course-nav-title">{courseTitle}</div>
-					)}
+									defaultValue={courseTitle}
+								/>
+							) : (
+								<span
+									style={{ cursor: canEdit ? 'pointer' : 'auto' }}
+									onClick={() => canEdit && setEditTitle(true)}
+								>
+									{courseTitle}
+								</span>
+							)
+						) : (
+							courseTitle
+						)}
+					</div>
 				</div>
 				{/*<CourseNavigation />
 				<ActivityContent />*/}
 				{courseEditorMode === 'layout' ? (
 					<CourseLayout />
 				) : (
-					<>COURSE NAV UNDER CONSTRUCTION</>
+					<div className="flex h-full">
+						<div className="w-1/4 h-full">
+							<CourseNavigation></CourseNavigation>
+						</div>
+						<div className="w-3/4 h-full">
+							<CourseBody></CourseBody>
+						</div>
+					</div>
 				)}
 			</div>
 			<CreateSectionMenu

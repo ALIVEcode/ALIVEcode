@@ -5,7 +5,7 @@ import AboutCard from '../../Components/UtilsComponents/Cards/AboutCard/AboutCar
 import CenteredContainer from '../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
 
 import Jihene from '../../assets/images/creators/Jihene.jpg';
-import Enric from '../../assets/images/creators/Enric.jpg';
+import Enric from '../../assets/images/creators/Enric_Soldevila.jpg';
 import Mathis from '../../assets/images/creators/Mathis.jpg';
 import Zarine from '../../assets/images/creators/Zarine.jpg';
 import Felix from '../../assets/images/creators/Felix.jpg';

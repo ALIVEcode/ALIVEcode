@@ -45,7 +45,7 @@ import { MessagesModule } from './models/social/messages/messages.module';
 import { ChatModule } from './socket/chatSocket/chatSocket.module';
 import { TopicsModule } from './models/social/topics/topics.module';
 import { AdminModule } from '@adminjs/nestjs';
-import { ResourceModule } from './resource/resource.module';
+import { ResourceModule } from './models/resource/resource.module';
 
 adminjs.registerAdapter({ Database, Resource });
 

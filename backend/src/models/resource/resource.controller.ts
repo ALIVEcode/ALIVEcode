@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ResourceService } from './resource.service';
 import { ResourceEntity } from './entities/resource.entity';
-import { Auth } from '../utils/decorators/auth.decorator';
-import { Role } from '../utils/types/roles.types';
+import { Auth } from '../../utils/decorators/auth.decorator';
+import { Role } from '../../utils/types/roles.types';
 
 @Controller('resource')
 export class ResourceController {

@@ -9,18 +9,18 @@ import {
 } from 'typeorm';
 import { IsNotEmpty, MinLength, IsEmpty } from 'class-validator';
 import { Exclude } from 'class-transformer';
-import { SUBJECTS } from '../../generics/types/sharedTypes';
-import { ProfessorEntity } from '../../models/user/entities/user.entity';
+import { SUBJECTS } from '../../../generics/types/sharedTypes';
+import { ProfessorEntity } from '../../user/entities/user.entity';
 
 export enum RESOURCE_TYPE {
-  VIDEO,
-  FILE,
-  IMAGE,
-  LEVEL,
+  VIDEO = 'VI',
+  FILE = 'FI',
+  IMAGE = 'IM',
+  LEVEL = 'LE',
 }
 
 @Entity()
-@TableInheritance({ column: { type: 'enum', name: 'type', enum: RESOURCE_TYPE } })
+@TableInheritance({ column: 'type' })
 export class ResourceEntity {
   @PrimaryGeneratedColumn('uuid')
   @Exclude({ toClassOnly: true })
@@ -32,7 +32,13 @@ export class ResourceEntity {
   @MinLength(1)
   name: string;
 
-  @Column({ default: SUBJECTS.OTHER, enum: SUBJECTS })
+  /** Type of the resource */
+  @Exclude({ toClassOnly: true })
+  @IsEmpty()
+  @Column({ type: 'enum', name: 'type', enum: RESOURCE_TYPE, default: RESOURCE_TYPE.FILE })
+  readonly type: RESOURCE_TYPE;
+
+  @Column({ type: 'enum', enum: SUBJECTS, default: SUBJECTS.OTHER })
   category: SUBJECTS;
 
   @CreateDateColumn()
@@ -40,9 +46,6 @@ export class ResourceEntity {
 
   @UpdateDateColumn()
   updateDate: Date;
-
-  @Column({ nullable: false, enum: RESOURCE_TYPE })
-  type: RESOURCE_TYPE;
 
   @ManyToOne(() => ProfessorEntity, user => user.resources, { eager: true, onDelete: 'SET NULL' })
   @Exclude({ toClassOnly: true })
@@ -56,5 +59,5 @@ export class ResourceEntity {
   @Exclude({ toClassOnly: true })
   @IsEmpty()*/
 
-  original: ResourceEntity;
+  //original: ResourceEntity;
 }

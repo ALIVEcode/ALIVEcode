@@ -1,6 +1,6 @@
 export enum SUBJECTS {
-  CODE,
-  IOT,
-  AI,
-  OTHER,
+  CODE = 'CO',
+  IOT = 'IOT',
+  AI = 'AI',
+  OTHER = 'OT',
 }

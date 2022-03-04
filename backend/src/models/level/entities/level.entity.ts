@@ -4,6 +4,7 @@ import { CreatedByUser } from '../../../generics/entities/createdByUser.entity';
 import { ActivityLevelEntity } from '../../course/entities/activities/activity_level.entity';
 import { UserEntity } from '../../user/entities/user.entity';
 import { IsEmpty, IsNotEmpty, IsOptional } from 'class-validator';
+import { ResourceLevelEntity } from '../../resource/entities/resource_level.entity';
 
 export enum LEVEL_TAG {}
 export enum LEVEL_ACCESS {
@@ -56,6 +57,6 @@ export class LevelEntity extends CreatedByUser {
   @IsOptional()
   tags: LEVEL_TAG[] = [];
 
-  @ManyToOne(() => ActivityLevelEntity, act => act.level)
-  activities: ActivityLevelEntity;
+  @ManyToOne(() => ResourceLevelEntity, res => res.level)
+  resources: ActivityLevelEntity;
 }

@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsOptional, ValidateNested } from 'class-validator';
+import { IsNotEmpty, IsOptional, ValidateNested } from 'class-validator';
 import { SectionEntity } from '../entities/section.entity';
 
 /**
@@ -10,6 +10,9 @@ export class CreateSectionDTO {
   /** (Optional) Section to create the activity in */
   @IsOptional()
   sectionParentId?: string;
+
+  @IsNotEmpty()
+  name: string;
 
   /** Section object to create */
   @ValidateNested()

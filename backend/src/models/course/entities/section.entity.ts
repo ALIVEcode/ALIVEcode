@@ -15,12 +15,6 @@ export class SectionEntity {
   @IsEmpty()
   id: number;
 
-  /** Name of the section */
-  @IsNotEmpty()
-  @Column({ nullable: false })
-  @Length(3, 100)
-  name: string;
-
   /** CourseElements inside the section */
   @OneToMany(() => CourseElementEntity, content => content.sectionParent)
   @IsEmpty()

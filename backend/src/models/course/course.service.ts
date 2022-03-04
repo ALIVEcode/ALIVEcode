@@ -13,6 +13,7 @@ import { CourseElementEntity } from './entities/course_element.entity';
 import { SectionEntity } from './entities/section.entity';
 import { ActivityVideoEntity } from './entities/activities/activity_video.entity';
 import { CreateActivityCourseContent } from './dtos/CreateActivitiesDTO';
+import { UpdateCourseElementDTO } from './dtos/UpdateCourseElement.dto';
 
 /**
  * All the methods to communicate to the database. To create/update/delete/get
@@ -195,6 +196,16 @@ export class CourseService {
     await this.saveParent(parent);
 
     return res;
+  }
+
+  /**
+   * Deletes a CourseElement alongside its content (Activity or Section).
+   * Also reorder the elementsOrder inside its parent
+   * @param courseElement CourseElement with its the parent loaded
+   * @returns the deletion query result
+   */
+  async updateCourseElement(courseElement: CourseElementEntity, dto: UpdateCourseElementDTO) {
+    return await this.courseElRepo.save({ id: courseElement.id, ...dto });
   }
 
   /*****-------End of Course Elements-------*****/

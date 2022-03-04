@@ -27,6 +27,9 @@ export class CreateActivityDTO {
   @IsOptional()
   sectionParentId?: string;
 
+  @IsNotEmpty()
+  name: string;
+
   /** Activity object to create */
   @ValidateNested()
   @Type(() => CreateActivityCourseContent)
@@ -39,6 +42,7 @@ export class CreateActivityDTO {
  */
 export class CreateActivityLevelDTO extends CreateActivityDTO {
   /** Id of the level to show inside the actvity */
+  @IsNotEmpty()
   levelId: string;
 }
 

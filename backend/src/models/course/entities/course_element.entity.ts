@@ -1,6 +1,6 @@
 import { Exclude } from 'class-transformer';
-import { IsEmpty } from 'class-validator';
-import { Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { IsEmpty, IsNotEmpty, Length } from 'class-validator';
+import { Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { ActivityEntity } from './activity.entity';
 import { CourseEntity } from './course.entity';
 import { SectionEntity } from './section.entity';
@@ -16,6 +16,12 @@ export class CourseElementEntity {
   @Exclude({ toClassOnly: true })
   @IsEmpty()
   id: number;
+
+  /** Name of the element */
+  @IsNotEmpty()
+  @Column({ nullable: false })
+  @Length(3, 100)
+  name: string;
 
   /*****---Parents---*****/
 

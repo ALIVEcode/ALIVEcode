@@ -14,6 +14,7 @@ import { CreateSectionDTO } from './dtos/CreateSectionDTO';
 import { ActivityEntity } from './entities/activity.entity';
 import { CourseEntity } from './entities/course.entity';
 import { CourseElementEntity } from './entities/course_element.entity';
+import { UpdateCourseElementDTO } from './dtos/UpdateCourseElement.dto';
 
 /**
  * All the routes to create/update/delete/get a course or it's content (CourseElements)
@@ -69,7 +70,6 @@ export class CourseController {
   @Auth(Role.PROFESSOR, Role.STAFF)
   @UseGuards(CourseProfessor)
   async update(@Course() course: CourseEntity, @Body() updateCourseDto: CourseEntity) {
-    console.log('HEREEE');
     return await this.courseService.update(course.id, updateCourseDto);
   }
 
@@ -210,5 +210,23 @@ export class CourseController {
   async deleteCourseElement(@Course() course: CourseEntity, @Param('courseElementId') courseElementId: string) {
     const courseElement = await this.courseService.findCourseElementWithParent(course, courseElementId);
     return await this.courseService.deleteCourseElement(courseElement);
+  }
+
+  /**
+   * Route to update a CourseElement by it's id.
+   * @param course Course found with the id in the url
+   * @param courseElementId Id of the CourseElement to delete
+   * @returns The result of the deletion
+   */
+  @Delete(':id/elements/:courseElementId')
+  @Auth(Role.PROFESSOR, Role.STAFF)
+  @UseGuards(CourseProfessor)
+  async updateCourseElement(
+    @Course() course: CourseEntity,
+    @Param('courseElementId') courseElementId: string,
+    @Body() dto: UpdateCourseElementDTO,
+  ) {
+    const courseElement = await this.courseService.findCourseElement(course, courseElementId);
+    return await this.courseService.updateCourseElement(courseElement, dto);
   }
 }

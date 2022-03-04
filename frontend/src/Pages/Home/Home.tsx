@@ -62,7 +62,10 @@ const Home = (props: HomeProps) => {
 	return (
 		<StyledHome
 			className={classNames(
-				'bg-[color:rgba(var(--background-color-rgb),0.7)] relative w-full overflow-x-hidden',
+				'relative w-full overflow-x-hidden',
+				theme.name === 'light' &&
+					'bg-[color:rgba(var(--background-color-rgb),0.7)]',
+				theme.name === 'dark' && 'bg-[color:#18181fda]',
 			)}
 		>
 			<div
@@ -191,7 +194,7 @@ const Home = (props: HomeProps) => {
 					imgAlt="The story of how ALIVEcode was created"
 				/>
 			</div>
-			<div className="mt-[-32rem] mb-[-16rem] z-0 relative w-full">
+			<div className="mt-[-32rem] mb-[-28rem] tablet:mb-[-20rem] laptop:mb-[-16rem] z-0 relative w-full">
 				<svg
 					className="w-full"
 					preserveAspectRatio={view.screenType === 'desktop' ? 'none' : 'width'}
@@ -292,13 +295,15 @@ const Home = (props: HomeProps) => {
 					to={routes.auth.classroom_browse.path}
 				/>
 			</div>
-			<div className="mt-32">
+			<div className="mt-32 w-full">
 				<svg
+					className="w-full h-full"
 					width="1615"
 					height="595"
 					viewBox="0 0 1615 595"
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
+					preserveAspectRatio={view.screenType === 'desktop' ? 'none' : 'width'}
 				>
 					<path
 						d="M-1 9.86679L28.9858 10.9835C58.792 12.1001 118.764 14.3335 178.556 16.1201C238.348 18.1301 298.319 19.4701 358.111 22.8201C417.903 26.1701 477.875 31.5301 537.667 33.9868C597.459 36.6668 657.43 36.6668 717.222 30.6368C777.014 24.8301 836.986 12.7701 896.778 6.07013C956.57 -0.629868 1016.54 -1.96987 1076.33 4.28346C1136.13 10.5368 1196.1 24.8301 1255.89 26.1701C1315.68 27.7335 1375.65 16.5668 1435.44 18.1301C1495.24 19.4701 1555.21 33.7635 1585.01 40.6868L1615 47.8335V597.233H1585.01C1555.21 597.233 1495.24 597.233 1435.44 597.233C1375.65 597.233 1315.68 597.233 1255.89 597.233C1196.1 597.233 1136.13 597.233 1076.33 597.233C1016.54 597.233 956.57 597.233 896.778 597.233C836.986 597.233 777.014 597.233 717.222 597.233C657.43 597.233 597.459 597.233 537.667 597.233C477.875 597.233 417.903 597.233 358.111 597.233C298.319 597.233 238.348 597.233 178.556 597.233C118.764 597.233 58.792 597.233 28.9858 597.233H-1V9.86679Z"

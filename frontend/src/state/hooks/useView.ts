@@ -36,8 +36,6 @@ const useView = () => {
 		return 'phone';
 	};
 
-	console.log(getScreenType());
-
 	return {
 		width: viewWidth,
 		height: viewHeight,

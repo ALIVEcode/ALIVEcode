@@ -2,6 +2,7 @@ import { Exclude } from 'class-transformer';
 import { IsEmpty, IsNotEmpty, ValidateIf } from 'class-validator';
 import { Column, Entity, ManyToOne, OneToMany, ManyToMany } from 'typeorm';
 import { CreatedByUser } from '../../../generics/entities/createdByUser.entity';
+import { SUBJECTS } from '../../../generics/types/sharedTypes';
 import { ClassroomEntity } from '../../classroom/entities/classroom.entity';
 import { ProfessorEntity } from '../../user/entities/user.entity';
 import { ActivityEntity } from './activity.entity';
@@ -22,13 +23,6 @@ export enum COURSE_ACCESS {
   UNLISTED = 'UN', // must be shared via a url
   RESTRICTED = 'RE', // limited to certain classes
   PRIVATE = 'PR', // only accessible to the creator
-}
-
-export enum COURSE_SUBJECT {
-  INFORMATIC = 'IN',
-  AI = 'AI',
-  MATH = 'MA',
-  SCIENCE = 'SC',
 }
 
 export type CourseContent = ActivityEntity | SectionEntity;
@@ -53,18 +47,18 @@ export class CourseEntity extends CreatedByUser {
 
   /** Difficulty of the course */
   @IsNotEmpty()
-  @Column({ enum: COURSE_DIFFICULTY, nullable: false })
+  @Column({ type: 'enum', enum: COURSE_DIFFICULTY, default: COURSE_DIFFICULTY.EASY, nullable: false })
   difficulty: COURSE_DIFFICULTY;
 
   /** Access to the course */
   @IsNotEmpty()
-  @Column({ enum: COURSE_ACCESS, nullable: false })
+  @Column({ type: 'enum', enum: COURSE_ACCESS, default: COURSE_ACCESS.PRIVATE, nullable: false })
   access: COURSE_ACCESS;
 
   /** The subject of the course */
   @IsNotEmpty()
-  @Column({ enum: COURSE_SUBJECT, nullable: false })
-  subject: COURSE_SUBJECT;
+  @Column({ type: 'enum', enum: SUBJECTS, default: SUBJECTS.CODE, nullable: false })
+  subject: SUBJECTS;
 
   /** CourseElements inside the course */
   @OneToMany(() => CourseElementEntity, content => content.course)

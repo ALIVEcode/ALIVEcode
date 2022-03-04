@@ -23,13 +23,18 @@ const CourseNavigation = () => {
 
 	return (
 		<div className="w-full h-full border-r border-[color:var(--bg-shade-four-color)]">
-			<div className="w-full py-3 text-2xl text-center flex content-center">
-				<span className="w-full">Sections </span>
-				<FontAwesomeIcon
-					className="cursor-pointer mt-1 mr-2"
-					icon={faLayerGroup}
-					onClick={() => setTabSelected({ tab: 'layout' })}
-				></FontAwesomeIcon>
+			<div className="w-full py-3 text-2xl text-center flex justify-between">
+				<div></div>
+				<div className="w-full">
+					<span>Sections</span>
+				</div>
+				<div>
+					<FontAwesomeIcon
+						className="cursor-pointer mt-1 mr-2"
+						icon={faLayerGroup}
+						onClick={() => setTabSelected({ tab: 'layout' })}
+					/>
+				</div>
 			</div>
 			<div className="course-nav-body">
 				{course.elementsOrder.length === 0 && (

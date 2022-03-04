@@ -56,10 +56,16 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 				/>
 				<div className="ml-2 py-3 rounded-sm border p-[0.2rem] border-[color:var(--bg-shade-four-color)] text-[color:var(--foreground-color)] flex items-center w-full justify-between">
 					<div className="">
+						{element?.icon && (
+							<FontAwesomeIcon
+								icon={element.icon}
+								className="[color:var(--bg-shade-four-color)] mr-3 ml-2"
+							/>
+						)}
 						{!isRenaming ? (
 							<span
 								onDoubleClick={() => setIsRenaming(true)}
-								className="pl-2 cursor-pointer"
+								className=" cursor-pointer"
 							>
 								{element.name}
 							</span>
@@ -73,7 +79,7 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 								}
 								onBlur={rename}
 								onDoubleClick={rename}
-								className="pl-2 bg-[color:var(--background-color)] w-full"
+								className="bg-[color:var(--background-color)] w-full"
 								defaultValue={element.name}
 							/>
 						)}

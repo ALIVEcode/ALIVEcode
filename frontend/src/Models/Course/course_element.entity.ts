@@ -52,6 +52,10 @@ export class CourseElement {
 		return this.getParent();
 	}
 
+	get icon() {
+		return this.activity?.icon ?? this.section?.icon;
+	}
+
 	/**
 	 * Check if the element is a section
 	 * @returns if the element is a section

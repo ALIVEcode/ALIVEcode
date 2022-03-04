@@ -1,3 +1,4 @@
+import { faFolder } from '@fortawesome/free-solid-svg-icons';
 import { Exclude, Type } from 'class-transformer';
 import { CourseElement } from './course_element.entity';
 
@@ -25,5 +26,9 @@ export class Section {
 	/** Name of the section */
 	get name() {
 		return this.courseElement.name;
+	}
+
+	get icon() {
+		return faFolder;
 	}
 }

@@ -30,11 +30,10 @@ const CourseLayout = () => {
 			</div>
 			<div className="flex flex-col justify-center md:px-52 pl-3 pr-12 min-w-fit w-[100%] whitespace-nowrap">
 				<div className="text-center text-2xl mb-4">Course Layout</div>
+				{course.elements.length === 0 && (
+					<label className="text-center">{t('course.empty')}</label>
+				)}
 				<div className="text-left ">
-					{course.elementsOrder.length === 0 && (
-						<label>{t('course.empty')}</label>
-					)}
-
 					{courseElements?.current &&
 						course.elementsOrder.map(
 							id =>

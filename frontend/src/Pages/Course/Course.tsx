@@ -3,9 +3,12 @@ import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 import { useNavigate } from 'react-router-dom';
+import CourseBody from '../../Components/CourseComponents/CourseBody/CourseBody';
 import CourseLayout from '../../Components/CourseComponents/CourseLayout/CourseLayout';
+import CourseNavigation from '../../Components/CourseComponents/CourseNavigation/CourseNavigation';
 import CreateSectionMenu from '../../Components/CourseComponents/CourseSection/CreateSectionMenu';
 import CreationActivityMenu from '../../Components/CourseComponents/CreationActivityMenu/CreationActivityMenu';
+import FormInput from '../../Components/UtilsComponents/FormInput/FormInput';
 import api from '../../Models/api';
 import { Activity } from '../../Models/Course/activity.entity';
 import { Course as CourseModel } from '../../Models/Course/course.entity';
@@ -13,6 +16,7 @@ import {
 	CourseContent,
 	CourseElement,
 } from '../../Models/Course/course_element.entity';
+import { UpdateCourseDTO } from '../../Models/Course/dtos/UpdateCourse.dto';
 import { Section } from '../../Models/Course/section.entity';
 import {
 	CourseContext,
@@ -20,10 +24,6 @@ import {
 } from '../../state/contexts/CourseContext';
 import { UserContext } from '../../state/contexts/UserContext';
 import { useForceUpdate } from '../../state/hooks/useForceUpdate';
-import { UpdateCourseDTO } from '../../Models/Course/dtos/UpdateCourse.dto';
-import CourseNavigation from '../../Components/CourseComponents/CourseNavigation/CourseNavigation';
-import CourseBody from '../../Components/CourseComponents/CourseBody/CourseBody';
-import FormInput from '../../Components/UtilsComponents/FormInput/FormInput';
 import { SwitchCourseTabReducer } from './courseTypes';
 
 /**
@@ -169,6 +169,7 @@ const Course = () => {
 
 	const renameElement = async (element: CourseElement, newName: string) => {
 		element.name = newName;
+		//TODO add call to an update route in api
 	};
 
 	// const saveActivity = async (activity: Activity) => {
@@ -325,8 +326,6 @@ const Course = () => {
 						)}
 					</div>
 				</div>
-				{/*<CourseNavigation />
-				<ActivityContent />*/}
 				{tabSelected.tab === 'layout' ? (
 					<CourseLayout />
 				) : (

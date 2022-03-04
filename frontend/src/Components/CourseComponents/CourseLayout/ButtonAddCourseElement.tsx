@@ -15,7 +15,7 @@ const ButtonAddCourseElement = ({ section }: ButtonAddCourseElementProps) => {
 		<Popup
 			trigger={
 				<div
-					className="border p-2 border-[color:var(--bg-shade-four-color)] text-[color:var(--foreground-color)] mt-2 border-opacity-25 w-24 hover:cursor-pointer"
+					className="border p-2 ml-10 desktop:ml-11 border-[color:var(--bg-shade-four-color)] text-[color:var(--foreground-color)] mt-2 border-opacity-25 w-24 hover:cursor-pointer"
 					style={{
 						display: 'flex',
 						justifyContent: 'center',

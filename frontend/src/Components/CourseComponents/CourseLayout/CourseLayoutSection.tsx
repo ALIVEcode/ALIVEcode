@@ -18,8 +18,6 @@ import { CourseLayoutSectionProps } from './courseLayoutTypes';
  */
 const CourseLayoutSection = ({ courseElement }: CourseLayoutSectionProps) => {
 	const section = courseElement.section as Section;
-	const [open, setOpen] = useState(true);
-	const [loading, setLoading] = useState(false);
 	const { deleteElement, courseElements, course, canEdit } =
 		useContext(CourseContext);
 	const { t } = useTranslation();
@@ -29,9 +27,13 @@ const CourseLayoutSection = ({ courseElement }: CourseLayoutSectionProps) => {
 
 	return (
 		<Disclosure as="div" defaultOpen>
-			<Disclosure.Panel className="border-opacity-20 border-[color:grey] border-l ml-7 text-sm ">
+			<Disclosure.Panel className="border-opacity-20 border-[color:grey] border-l ml-7 text-sm border-b">
 				<div id={`section-${section.name}`}>
-					{loading && open && <LoadingScreen size="3x" relative />}
+					{section.elementsOrder === undefined ? (
+						<LoadingScreen size="3x" relative />
+					) : (
+						<></>
+					)}
 					{section.elementsOrder?.map(
 						id =>
 							courseElements?.current && (

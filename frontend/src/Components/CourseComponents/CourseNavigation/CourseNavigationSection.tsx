@@ -1,12 +1,12 @@
+import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Disclosure } from '@headlessui/react';
 import { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Section } from '../../../Models/Course/section.entity';
 import { CourseContext } from '../../../state/contexts/CourseContext';
-import { CourseNavigationSectionProps } from './courseNavigationTypes';
 import CourseNavigationElement from './CourseNavigationElement';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
-import { useTranslation } from 'react-i18next';
+import { CourseNavigationSectionProps } from './courseNavigationTypes';
 /**
  * Component that shows the section in the navigation and handles different actions like adding in an activity onto the section
  *
@@ -23,19 +23,17 @@ const CourseNavigationSection = ({ element }: CourseNavigationSectionProps) => {
 		<Disclosure as="div">
 			{({ open }) => (
 				<>
-					<div className="flex justify-between p-3 border-t border-l border-b border-[color:var(--bg-shade-four-color)]">
-						<div>
+					<Disclosure.Button as="div" className="cursor-pointer group">
+						<div className="flex justify-between p-3 border-t border-l border-b border-[color:var(--bg-shade-four-color)]">
 							<span>{element.name}</span>
-						</div>
-						<Disclosure.Button as="div">
 							<FontAwesomeIcon
-								className="cursor-pointer"
+								className="group-hover:visible invisible opacity-40 mt-1"
 								icon={open ? faChevronDown : faChevronUp}
 							/>
-						</Disclosure.Button>
-					</div>
-					<Disclosure.Panel className="border-opacity-20 border-[color:grey] ml-7 text-sm  border-double ">
-						<div>
+						</div>
+					</Disclosure.Button>
+					<Disclosure.Panel className="border-opacity-20 border-[color:grey] ml-7 text-sm border-double ">
+						<>
 							{section.elementsOrder.length === 0 && (
 								<div className="py-2">
 									<i>{t('course.section.empty')}</i>
@@ -50,7 +48,7 @@ const CourseNavigationSection = ({ element }: CourseNavigationSectionProps) => {
 										/>
 									),
 							)}
-						</div>
+						</>
 					</Disclosure.Panel>
 				</>
 			)}

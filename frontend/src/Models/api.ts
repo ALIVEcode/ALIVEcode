@@ -245,6 +245,10 @@ const api = {
 				CourseElement,
 				false,
 			),
+			updateElement: apiUpdate(
+				'courses/:courseId/elements/:elementId',
+				CourseElement,
+			),
 			addContent: async (
 				course_id: string,
 				courseContent: CourseContent,

@@ -155,4 +155,12 @@ export class CourseElement {
 	getName(): string {
 		return this.activity?.name || this.section!.name;
 	}
+
+	delete() {
+		if (!this.parent) return;
+		this.parent.elementsOrder = this.parent.elementsOrder.filter(
+			id => this.id !== id,
+		);
+		this.parent.elements = this.parent.elements.filter(el => el.id !== this.id);
+	}
 }

@@ -136,6 +136,7 @@ const Course = () => {
 			elementId: element.id.toString(),
 		});
 		deleteSectionRecursively(element);
+
 		update();
 	};
 
@@ -170,11 +171,6 @@ const Course = () => {
 	};
 
 	const openActivity = async (activity: Activity) => {
-		/*if (!course.current) return;
-		activity = await api.db.courses.getActivityContent({
-			id: course.current.id,
-			activityId: activity.id.toString(),
-		});*/
 		setOpenedActivity(activity);
 	};
 
@@ -214,33 +210,35 @@ const Course = () => {
 
 	const deleteElementAndChildren = (element: CourseElement) => {
 		// if we dont have to delete anything, we skip the computation
-		if (!(element.id in courseElements.current) && !element.isSection) {
+		if (!(element.id in courseElements.current)) {
 			return;
 		}
 
 		const parent = element.parent;
 
 		const toDelete = [element.id].concat(
-			element.section ? element.section.elementsOrder : [],
+			element.section?.elementsOrder ? element.section.elementsOrder : [],
 		);
 
 		parent.elementsOrder = parent.elementsOrder.filter(
-			el => !toDelete.includes(el),
+			id => !toDelete.includes(id),
 		);
 		parent.elements = parent.elements.filter(el => !toDelete.includes(el.id));
+
 		for (const id of toDelete) delete courseElements.current[id];
 	};
 
 	const deleteSectionRecursively = (element: CourseElement) => {
-		// TODO add a route that deletes all the elements of a section
-		if (!element?.parent) return;
-		deleteElementAndChildren(element);
 		if (element.section) {
-			element.section.elements.forEach(
-				// we don't pass in an activity since it will have been deleted already
-				el => el.isSection && deleteSectionRecursively(el),
-			);
+			[...element.section.elements].forEach(el => deleteSectionRecursively(el));
 		}
+		element.delete();
+		delete courseElements.current[element.id];
+		// courseElements.current = Object.fromEntries(
+		// 	Object.entries(courseElements.current).filter(
+		// 		([id, _]) => id !== element.id.toString(),
+		// 	),
+		// );
 	};
 
 	const loadSectionRecursively = async (element: CourseElement) => {

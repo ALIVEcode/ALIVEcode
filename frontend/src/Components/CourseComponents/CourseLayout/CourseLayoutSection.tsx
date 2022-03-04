@@ -27,7 +27,7 @@ const CourseLayoutSection = ({ courseElement }: CourseLayoutSectionProps) => {
 						<FontAwesomeIcon
 							icon={open ? faCaretDown : faCaretUp}
 							size="lg"
-							className="mb-5 ml-6 [color:grey] "
+							className="pb-1 ml-6 [color:grey]"
 						/>
 					</Disclosure.Button>
 					<Disclosure.Panel className="border-opacity-20 border-[color:grey] border-l ml-7 text-sm border-b">
@@ -39,7 +39,8 @@ const CourseLayoutSection = ({ courseElement }: CourseLayoutSectionProps) => {
 							)}
 							{section.elementsOrder?.map(
 								id =>
-									courseElements?.current && (
+									courseElements &&
+									id in courseElements.current && (
 										<CourseLayoutElement
 											key={id}
 											element={courseElements.current[id]}

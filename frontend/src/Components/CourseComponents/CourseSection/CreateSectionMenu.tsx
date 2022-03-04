@@ -23,13 +23,12 @@ const CreateSectionMenu = ({
 			setOpen={setOpenModalSection}
 			onSubmit={res => {
 				const section: Section = plainToClass(Section, {
-					name: res.data,
 					elements: [],
 					elementsOrder: [],
 					courseElement: course,
 				});
 
-				addContent(section, sectionParent);
+				addContent(section, res.data, sectionParent);
 				setOpenModalSection(false);
 			}}
 		>
@@ -38,8 +37,8 @@ const CreateSectionMenu = ({
 				url={`courses/${course!.id}/sections`}
 				action={FORM_ACTION.POST}
 				customSubmit={(formValues: any) => {
-					const section: Section = plainToClass(Section, formValues);
-					addContent(section, sectionParent);
+					const section: Section = plainToClass(Section, {});
+					addContent(section, formValues.name, sectionParent);
 					setOpenModalSection(false);
 				}}
 				inputGroups={[

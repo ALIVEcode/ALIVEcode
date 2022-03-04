@@ -30,6 +30,7 @@ export type CourseContextValues = {
 	setIsNavigationOpen: (bool: boolean) => void;
 	addContent: (
 		content: CourseContent,
+		name: string,
 		sectionParent?: Section,
 	) => Promise<void>;
 	deleteElement: (element: CourseElement) => Promise<void>;
@@ -53,7 +54,11 @@ export const CourseContext = createContext<CourseContextValues>({
 	saveActivity: async (activity: Activity) => {},
 	saveActivityContent: async (data: string) => {},
 	setIsNavigationOpen: async (bool: boolean) => {},
-	addContent: async (content: CourseContent, sectionParent?: Section) => {},
+	addContent: async (
+		content: CourseContent,
+		name: string,
+		sectionParent?: Section,
+	) => {},
 	renameElement: (element: CourseElement, newName: string) => {},
 	deleteElement: async (element: CourseElement) => {},
 	moveElement: async (

@@ -252,6 +252,7 @@ const api = {
 			addContent: async (
 				course_id: string,
 				courseContent: CourseContent,
+				name: string,
 				sectionParentId?: number,
 			) => {
 				const contentAndOrder = (
@@ -261,6 +262,7 @@ const api = {
 						}`,
 						{
 							courseContent,
+							name,
 							sectionParentId,
 						},
 					)

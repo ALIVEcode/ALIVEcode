@@ -1,11 +1,13 @@
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { CourseContext } from '../../../state/contexts/CourseContext';
+import AlertConfirm from '../../UtilsComponents/Alert/AlertConfirm/AlertConfirm';
+import FormInput from '../../UtilsComponents/FormInput/FormInput';
 import CourseLayoutActivity from './CourseLayoutActivity';
 import CourseLayoutSection from './CourseLayoutSection';
 import { CourseLayoutElementProps } from './courseLayoutTypes';
-import FormInput from '../../UtilsComponents/FormInput/FormInput';
 
 /**
  *
@@ -15,7 +17,9 @@ import FormInput from '../../UtilsComponents/FormInput/FormInput';
  * @author Mathis Laroche
  */
 const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
-	const { renameElement } = useContext(CourseContext);
+	const { renameElement, deleteElement } = useContext(CourseContext);
+	const { t } = useTranslation();
+	const [confirmDelete, setConfirmDelete] = useState(false);
 	const [isRenaming, setIsRenaming] = useState(false);
 	const inputRef = useRef<HTMLInputElement>();
 
@@ -50,28 +54,38 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 					size="lg"
 					className="text-[color:var(--foreground-color)] transition-all duration-75 group-hover:cursor-grab group-hover:opacity-50 opacity-0"
 				/>
-				<div className="ml-2 py-3 rounded-sm border p-[0.2rem] border-[color:var(--bg-shade-four-color)] text-[color:var(--foreground-color)] flex items-center w-full">
-					{!isRenaming ? (
-						<span
-							onDoubleClick={() => setIsRenaming(true)}
-							className="pl-2 cursor-pointer"
-						>
-							{element.name}
-						</span>
-					) : (
-						<FormInput
-							ref={inputRef as any}
-							type="text"
-							autoFocus
-							onKeyPress={(event: KeyboardEvent) =>
-								event.key.toLowerCase() === 'enter' && rename()
-							}
-							onBlur={rename}
-							onDoubleClick={rename}
-							className="pl-2 bg-[color:var(--background-color)] w-full"
-							defaultValue={element.name}
+				<div className="ml-2 py-3 rounded-sm border p-[0.2rem] border-[color:var(--bg-shade-four-color)] text-[color:var(--foreground-color)] flex items-center w-full justify-between">
+					<div className="">
+						{!isRenaming ? (
+							<span
+								onDoubleClick={() => setIsRenaming(true)}
+								className="pl-2 cursor-pointer"
+							>
+								{element.name}
+							</span>
+						) : (
+							<FormInput
+								ref={inputRef as any}
+								type="text"
+								autoFocus
+								onKeyPress={(event: KeyboardEvent) =>
+									event.key.toLowerCase() === 'enter' && rename()
+								}
+								onBlur={rename}
+								onDoubleClick={rename}
+								className="pl-2 bg-[color:var(--background-color)] w-full"
+								defaultValue={element.name}
+							/>
+						)}
+					</div>
+					<div>
+						<FontAwesomeIcon
+							icon={faTrash}
+							size="lg"
+							className="[color:var(--bg-shade-four-color)] mr-2 hover:[color:red] cursor-pointer invisible group-hover:visible transition-all duration-75 ease-in"
+							onClick={() => setConfirmDelete(true)}
 						/>
-					)}
+					</div>
 				</div>
 			</div>
 			{element?.section ? (
@@ -81,6 +95,15 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 			) : (
 				<div>ERREUR</div>
 			)}
+			<AlertConfirm
+				open={confirmDelete}
+				title={t('couse.section.delete')}
+				setOpen={setConfirmDelete}
+				onConfirm={() => {
+					deleteElement(element);
+				}}
+				hideFooter
+			></AlertConfirm>
 		</div>
 	);
 };

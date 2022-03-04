@@ -1,8 +1,5 @@
-import {
-	COURSE_ACCESS,
-	COURSE_DIFFICULTY,
-	COURSE_SUBJECT,
-} from '../course.entity';
+import { SUBJECTS } from '../../../Types/sharedTypes';
+import { COURSE_ACCESS, COURSE_DIFFICULTY } from '../course.entity';
 
 export class UpdateCourseDTO {
 	/** Name of the course */
@@ -18,5 +15,5 @@ export class UpdateCourseDTO {
 	access: COURSE_ACCESS;
 
 	/** The subject of the course */
-	subject: COURSE_SUBJECT;
+	subject: SUBJECTS;
 }

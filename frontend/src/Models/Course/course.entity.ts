@@ -1,10 +1,11 @@
+import { faCloudsmith } from '@fortawesome/free-brands-svg-icons';
 import {
-	faCalculator,
+	faBrain,
+	faClipboardList,
 	faCode,
-	faFlask,
-	faProjectDiagram,
 } from '@fortawesome/free-solid-svg-icons';
 import { Exclude, Type } from 'class-transformer';
+import { SUBJECTS } from '../../Types/sharedTypes';
 import { CreatedByUser } from '../Generics/createdByUser.entity';
 import { Professor } from '../User/user.entity';
 import { CourseElement } from './course_element.entity';
@@ -23,13 +24,6 @@ export enum COURSE_ACCESS {
 	UNLISTED = 'UN', // must be shared via a url
 	RESTRICTED = 'RE', // limited to certain classes
 	PRIVATE = 'PR', // only accessible to the creator
-}
-
-export enum COURSE_SUBJECT {
-	INFORMATIC = 'IN',
-	AI = 'AI',
-	MATH = 'MA',
-	SCIENCE = 'SC',
 }
 
 /**
@@ -52,7 +46,7 @@ export class Course extends CreatedByUser {
 	access: COURSE_ACCESS;
 
 	/** The subject of the course */
-	subject: COURSE_SUBJECT;
+	subject: SUBJECTS;
 
 	/** CourseElements inside the course */
 	@Exclude({ toPlainOnly: true })
@@ -70,7 +64,7 @@ export class Course extends CreatedByUser {
 	 */
 	@Exclude()
 	getSubjectDisplay() {
-		return this.subject[0].toUpperCase() + this.subject.slice(1);
+		return this.subject[0].toUpperCase();
 	}
 
 	/**
@@ -80,14 +74,14 @@ export class Course extends CreatedByUser {
 	@Exclude()
 	getSubjectIcon() {
 		switch (this.subject) {
-			case COURSE_SUBJECT.INFORMATIC:
+			case SUBJECTS.CODE:
 				return faCode;
-			case COURSE_SUBJECT.SCIENCE:
-				return faFlask;
-			case COURSE_SUBJECT.MATH:
-				return faCalculator;
-			case COURSE_SUBJECT.AI:
-				return faProjectDiagram;
+			case SUBJECTS.IOT:
+				return faCloudsmith;
+			case SUBJECTS.AI:
+				return faBrain;
+			case SUBJECTS.OTHER:
+				return faClipboardList;
 		}
 		return faCode;
 	}

@@ -6,11 +6,11 @@ import useRoutes from '../../../state/hooks/useRoutes';
 import { useAlert } from 'react-alert';
 import {
 	COURSE_DIFFICULTY,
-	COURSE_SUBJECT,
 	COURSE_ACCESS,
 	Course,
 } from '../../../Models/Course/course.entity';
 import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
+import { SUBJECTS } from '../../../Types/sharedTypes';
 
 /**
  * Form that creates a new course in the db and navigates to it
@@ -60,8 +60,8 @@ const CourseForm = () => {
 						name: 'subject',
 						required: true,
 						inputType: 'select',
-						selectOptions: COURSE_SUBJECT,
-						default: COURSE_SUBJECT.INFORMATIC,
+						selectOptions: SUBJECTS,
+						default: SUBJECTS.CODE,
 					},
 					{
 						name: 'access',

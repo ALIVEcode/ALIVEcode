@@ -6,6 +6,6 @@
   "tabWidth": 2,
   "useTabs": true,
   "semi": true,
-  "bracketSameLine": false
-
+  "bracketSameLine": false,
+  "jsxSingleQuote": false
 }

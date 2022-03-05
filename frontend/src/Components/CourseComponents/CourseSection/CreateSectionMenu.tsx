@@ -21,24 +21,14 @@ const CreateSectionMenu = ({
 			open={openModalSection}
 			title="Create section"
 			setOpen={setOpenModalSection}
-			onSubmit={res => {
-				const section: Section = plainToClass(Section, {
-					elements: [],
-					elementsOrder: [],
-					courseElement: course,
-				});
-
-				addContent(section, res.data, sectionParent);
-				setOpenModalSection(false);
-			}}
 		>
 			<Form
 				name="section"
 				url={`courses/${course!.id}/sections`}
 				action={FORM_ACTION.POST}
-				customSubmit={(formValues: any) => {
+				customSubmit={async (formValues: any) => {
 					const section: Section = plainToClass(Section, {});
-					addContent(section, formValues.name, sectionParent);
+					await addContent(section, `New Section`, sectionParent);
 					setOpenModalSection(false);
 				}}
 				inputGroups={[

@@ -39,6 +39,7 @@ const Course = () => {
 	const courseElements = useRef<{
 		[id: number]: CourseElement;
 	}>({});
+	const newCourseElementId = useRef<number>();
 	const [isNavigationOpen, setIsNavigationOpen] = useState(true);
 	const [tabSelected, setTabSelected] = useReducer(SwitchCourseTabReducer, {
 		tab: 'layout',
@@ -60,6 +61,18 @@ const Course = () => {
 	const [courseTitle, setCourseTitle] = useState(course.current?.name);
 
 	const [editTitle, setEditTitle] = useState(false);
+
+	const isNewCourseElement = (element: CourseElement) => {
+		return (
+			newCourseElementId.current !== undefined &&
+			element.id === newCourseElementId.current
+		);
+	};
+	const setCourseElementNotNew = (element: CourseElement) => {
+		if (isNewCourseElement(element))
+			newCourseElementId.current = undefined;
+	};
+
 
 	/**
 	 * Sets the course's title to a new one
@@ -119,7 +132,7 @@ const Course = () => {
 		parent.elements.push(courseElement);
 
 		courseElements.current[courseElement.id] = courseElement;
-
+		newCourseElementId.current = courseElement.id;
 		update();
 	};
 
@@ -130,7 +143,7 @@ const Course = () => {
 	 * @author Mathis
 	 */
 	const deleteElement = async (element: CourseElement) => {
-		if (!course.current || !courseElements) return;
+		if (!course.current || !courseElements.current) return;
 		await api.db.courses.deleteElement({
 			courseId: course.current.id,
 			elementId: element.id.toString(),
@@ -166,8 +179,14 @@ const Course = () => {
 	};
 
 	const renameElement = async (element: CourseElement, newName: string) => {
+		if (!course.current) return;
 		element.name = newName;
-		//TODO add call to an update route in api
+
+		await api.db.courses.updateElement(
+			{ elementId: element.id.toString(), courseId: course.current.id },
+			{ name: newName },
+		);
+		update();
 	};
 
 	const openActivity = async (activity: Activity) => {
@@ -208,45 +227,20 @@ const Course = () => {
 	// 	setSection(section);
 	// };
 
-	const deleteElementAndChildren = (element: CourseElement) => {
-		// if we dont have to delete anything, we skip the computation
-		if (!(element.id in courseElements.current)) {
-			return;
-		}
-
-		const parent = element.parent;
-
-		const toDelete = [element.id].concat(
-			element.section?.elementsOrder ? element.section.elementsOrder : [],
-		);
-
-		parent.elementsOrder = parent.elementsOrder.filter(
-			id => !toDelete.includes(id),
-		);
-		parent.elements = parent.elements.filter(el => !toDelete.includes(el.id));
-
-		for (const id of toDelete) delete courseElements.current[id];
-	};
-
 	const deleteSectionRecursively = (element: CourseElement) => {
 		if (element.section) {
 			[...element.section.elements].forEach(el => deleteSectionRecursively(el));
 		}
 		element.delete();
 		delete courseElements.current[element.id];
-		// courseElements.current = Object.fromEntries(
-		// 	Object.entries(courseElements.current).filter(
-		// 		([id, _]) => id !== element.id.toString(),
-		// 	),
-		// );
 	};
 
 	const loadSectionRecursively = async (element: CourseElement) => {
 		if (!element.section) return;
 		await loadSectionElements(element.section);
-		element.section.elements.forEach(
-			async el => await loadSectionRecursively(el),
-		);
+		for (const el of element.section.elements) {
+			await loadSectionRecursively(el);
+		}
 	};
 
 	const canEdit = course.current?.creator.id === user?.id;
@@ -254,6 +248,8 @@ const Course = () => {
 	const contextValue: CourseContextValues = {
 		course: course.current,
 		courseElements: courseElements,
+		setCourseElementNotNew,
+		isNewCourseElement,
 		canEdit,
 		isNavigationOpen,
 		tabSelected,
@@ -288,22 +284,21 @@ const Course = () => {
 		if (!id) return;
 		const getCourse = async () => {
 			try {
-				const courseLoaded: CourseModel = await api.db.courses.get({
+				course.current = await api.db.courses.get({
 					id,
 				});
-				course.current = courseLoaded;
 				const elements = await api.db.courses.getElements({ courseId: id });
 
-				elements.forEach(async el => {
+				for (const el of elements) {
 					if (!course.current) {
 						console.error('Something went wrong, not loading element ' + el);
-						return;
+						continue;
 					}
 					el.course = course.current;
 					courseElements.current[el.id] = el;
 					el.initialize();
 					await loadSectionRecursively(el);
-				});
+				}
 				course.current.elements = elements;
 				setCourseTitle(course.current.name);
 				update();

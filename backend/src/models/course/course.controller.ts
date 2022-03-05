@@ -218,7 +218,7 @@ export class CourseController {
    * @param courseElementId Id of the CourseElement to delete
    * @returns The result of the deletion
    */
-  @Delete(':id/elements/:courseElementId')
+  @Patch(':id/elements/:courseElementId')
   @Auth(Role.PROFESSOR, Role.STAFF)
   @UseGuards(CourseProfessor)
   async updateCourseElement(

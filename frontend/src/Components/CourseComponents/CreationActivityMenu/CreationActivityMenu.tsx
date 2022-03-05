@@ -20,10 +20,10 @@ const CreationActivityMenu = ({
 	const { addContent } = useContext(CourseContext);
 
 	const onSelect = async (type: ACTIVITY_TYPE) => {
+		setOpen(false);
 		const activity = new Activity();
 		activity.type = type;
-		await addContent(activity, 'Default Activity', sectionParent);
-		setOpen(false);
+		await addContent(activity, 'New Activity', sectionParent);
 	};
 
 	return (

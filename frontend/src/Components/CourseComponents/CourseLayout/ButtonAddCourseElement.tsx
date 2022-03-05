@@ -6,9 +6,11 @@ import Popup from 'reactjs-popup';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import Link from '../../UtilsComponents/Link/Link';
 import { ButtonAddCourseElementProps } from './courseLayoutTypes';
+import { Section } from '../../../Models/Course/section.entity';
+import { plainToClass } from 'class-transformer';
 
 const ButtonAddCourseElement = ({ section }: ButtonAddCourseElementProps) => {
-	const { openActivityForm, openSectionForm } = useContext(CourseContext);
+	const { openActivityForm, addContent } = useContext(CourseContext);
 	const { t } = useTranslation();
 	const [popupOpen, setPopupOpen] = useState(false);
 	return (
@@ -25,7 +27,6 @@ const ButtonAddCourseElement = ({ section }: ButtonAddCourseElementProps) => {
 					<FontAwesomeIcon
 						icon={faPlus}
 						className="[color:var(--contrast-color)]"
-						onMouseEnter={() => {}}
 					/>
 				</div>
 			}
@@ -52,8 +53,10 @@ const ButtonAddCourseElement = ({ section }: ButtonAddCourseElementProps) => {
 			<div className="text-[color:var(--foreground-color)] text-center">
 				<Link
 					dark
-					onClick={() => {
-						openSectionForm(section);
+					onClick={async () => {
+						//openSectionForm(section);
+						const newSection: Section = plainToClass(Section, {});
+						await addContent(newSection, 'New Section', section);
 						setPopupOpen(false);
 					}}
 				>

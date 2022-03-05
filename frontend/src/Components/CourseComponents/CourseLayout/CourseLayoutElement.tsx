@@ -1,6 +1,12 @@
 import { faBars, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useContext, useRef, useState } from 'react';
+import {
+	useContext,
+	useEffect,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import AlertConfirm from '../../UtilsComponents/Alert/AlertConfirm/AlertConfirm';
@@ -8,6 +14,7 @@ import FormInput from '../../UtilsComponents/FormInput/FormInput';
 import CourseLayoutActivity from './CourseLayoutActivity';
 import CourseLayoutSection from './CourseLayoutSection';
 import { CourseLayoutElementProps } from './courseLayoutTypes';
+import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 
 /**
  *
@@ -17,11 +24,17 @@ import { CourseLayoutElementProps } from './courseLayoutTypes';
  * @author Mathis Laroche
  */
 const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
-	const { renameElement, deleteElement } = useContext(CourseContext);
+	const {
+		renameElement,
+		deleteElement,
+		isNewCourseElement,
+		setCourseElementNotNew,
+	} = useContext(CourseContext);
 	const { t } = useTranslation();
 	const [confirmDelete, setConfirmDelete] = useState(false);
 	const [isRenaming, setIsRenaming] = useState(false);
 	const inputRef = useRef<HTMLInputElement>();
+	const update = useForceUpdate();
 
 	// useEffect(() => {
 	// 	if (!element?.section || !courseElements?.current) return;
@@ -36,8 +49,14 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 	// 	loadSectionElements(element.section);
 	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	// }, [element, courseElements]);
+
 	const rename = async () => {
-		setIsRenaming(false);
+		if (isNewCourseElement(element)) {
+			setCourseElementNotNew(element);
+		}
+		if (isRenaming) {
+			setIsRenaming(false);
+		}
 		if (
 			inputRef.current?.value &&
 			inputRef.current.value.trim() !== element.name
@@ -62,14 +81,7 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 								className="[color:var(--bg-shade-four-color)] mr-3 ml-2"
 							/>
 						)}
-						{!isRenaming ? (
-							<span
-								onDoubleClick={() => setIsRenaming(true)}
-								className=" cursor-pointer"
-							>
-								{element.name}
-							</span>
-						) : (
+						{isRenaming || isNewCourseElement(element) ? (
 							<FormInput
 								ref={inputRef as any}
 								type="text"
@@ -77,11 +89,21 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 								onKeyPress={(event: KeyboardEvent) =>
 									event.key.toLowerCase() === 'enter' && rename()
 								}
+								onFocus={() => {
+									setIsRenaming(true);
+								}}
 								onBlur={rename}
 								onDoubleClick={rename}
 								className="bg-[color:var(--background-color)] w-full"
 								defaultValue={element.name}
 							/>
+						) : (
+							<span
+								onDoubleClick={() => setIsRenaming(true)}
+								className=" cursor-pointer"
+							>
+								{element.name}
+							</span>
 						)}
 					</div>
 					<div>
@@ -105,11 +127,11 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 				open={confirmDelete}
 				title={t('couse.section.delete')}
 				setOpen={setConfirmDelete}
-				onConfirm={() => {
-					deleteElement(element);
+				onConfirm={async () => {
+					await deleteElement(element);
 				}}
 				hideFooter
-			></AlertConfirm>
+			/>
 		</div>
 	);
 };

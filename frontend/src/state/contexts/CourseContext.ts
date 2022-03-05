@@ -14,6 +14,8 @@ import {
 export type CourseContextValues = {
 	course?: Course;
 	courseElements?: MutableRefObject<{ [id: number]: CourseElement }>;
+	isNewCourseElement: (element: CourseElement) => boolean;
+	setCourseElementNotNew: (element: CourseElement) => void;
 	isNavigationOpen: boolean;
 	canEdit: boolean;
 	tabSelected: { tab: CourseTabs };
@@ -46,6 +48,8 @@ export const CourseContext = createContext<CourseContextValues>({
 	canEdit: false,
 	isNavigationOpen: true,
 	tabSelected: { tab: 'navigation' },
+	setCourseElementNotNew: (element: CourseElement) => {},
+	isNewCourseElement: (element: CourseElement) => false,
 	setTabSelected: (..._) => {},
 	setTitle: async (newTitle: string) => {},
 	openActivity: async (..._) => {},

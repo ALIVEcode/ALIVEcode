@@ -248,6 +248,7 @@ export class CourseService {
       .leftJoinAndSelect('sectionParent.elements', 'elements')
       .leftJoinAndSelect('sectionParent.courseElement', 'element')
       .leftJoinAndSelect('elements.activity', 'activity')
+      .leftJoinAndSelect('activity.resource', 'resource')
       .leftJoinAndSelect('elements.section', 'section')
       .andWhere('element.courseId = :courseId', { courseId: course.id })
       .getOne();
@@ -284,6 +285,25 @@ export class CourseService {
       .createQueryBuilder('activity')
       .where('activity.id = :id', { id })
       .leftJoinAndSelect('activity.courseElement', 'element')
+      .andWhere('element.courseId = :courseId', { courseId })
+      .getOne();
+
+    if (!activity) throw new HttpException('Activity not found', HttpStatus.NOT_FOUND);
+    return activity;
+  }
+
+  /**
+   * Loads the content of an activity (The non-generic fields of the activity)
+   * @param courseId Id of the course containing the activity
+   * @param id Id of the activity to load content from
+   * @returns The activity with the content loaded
+   */
+  async findActivityWithContentLoaded(courseId: string, id: string) {
+    const activity = await this.activityRepository
+      .createQueryBuilder('activity')
+      .where('activity.id = :id', { id })
+      .leftJoinAndSelect('activity.courseElement', 'element')
+      .leftJoinAndSelect('activity.resource', 'resource')
       .andWhere('element.courseId = :courseId', { courseId })
       .getOne();
 

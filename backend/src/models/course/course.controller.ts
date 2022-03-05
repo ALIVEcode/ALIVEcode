@@ -175,7 +175,7 @@ export class CourseController {
   @Auth()
   @UseGuards(CourseAccess)
   async getActivityContent(@Course() course: CourseEntity, @Param('activityId') activityId: string) {
-    return await this.courseService.findActivity(course.id, activityId);
+    return await this.courseService.findActivityWithContentLoaded(course.id, activityId);
   }
 
   /**

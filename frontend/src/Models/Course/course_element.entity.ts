@@ -1,7 +1,17 @@
-import { Exclude, Expose, Type } from 'class-transformer';
-import { Activity } from './activity.entity';
+import {
+	Exclude,
+	Expose,
+	Transform,
+	TransformationType,
+	Type,
+	plainToInstance,
+} from 'class-transformer';
+import { Activity, ActivityLevel, ACTIVITY_TYPE } from './activity.entity';
 import { Course } from './course.entity';
 import { Section } from './section.entity';
+import { ResourceLevel } from '../Resource/entities/resource_level.entity';
+import { ActivityTheory } from './activities/activity_theory.entity';
+import { ActivityVideo } from './activities/activity_video.entity';
 
 export type CourseContent = Activity | Section;
 
@@ -38,8 +48,38 @@ export class CourseElement {
 
 	/** If the element is an activity **/
 	@Expose({ toClassOnly: true })
-	@Type(() => Activity)
-	activity?: Activity;
+	/*
+	@Transform(({ value: activity, type }) => {
+		if (type !== TransformationType.PLAIN_TO_CLASS || !activity) {
+			return activity;
+		}
+		switch (activity.type) {
+			case ACTIVITY_TYPE.LEVEL:
+				return plainToInstance(ActivityLevel, activity, {
+					groups: ['avoidCircular'],
+				});
+			case ACTIVITY_TYPE.VIDEO:
+				return plainToInstance(ActivityVideo, activity, {
+					groups: ['avoidCircular'],
+				});
+			case ACTIVITY_TYPE.THEORY:
+				return plainToInstance(ActivityTheory, activity, {
+					groups: ['avoidCircular'],
+				});
+		}
+	})*/
+	@Transform(({ value: activity, type }) => {
+		if (type !== TransformationType.PLAIN_TO_CLASS || !activity) {
+			return activity;
+		}
+
+		if (activity.type === ACTIVITY_TYPE.LEVEL) {
+			return plainToInstance(ActivityLevel, activity);
+		}
+
+		return plainToInstance(Activity, activity);
+	})
+	activity?: ActivityLevel | ActivityTheory | ActivityVideo;
 
 	/** If the element is a section **/
 	@Expose({ toClassOnly: true })

@@ -69,6 +69,7 @@ export class User {
 
 	public async getCourses() {
 		if (!this.courses) {
+			console.log(this.id);
 			const fetchedCourses: Course[] =
 				(await api.db.users.getCourses({ id: this.id })) ?? [];
 			this.courses = fetchedCourses;
@@ -119,10 +120,6 @@ export class Student extends User {
 
 export class Professor extends User {
 	image: string;
-
-	getCourses() {
-		return api.db.users.getCourses(this.id);
-	}
 
 	getDisplayImage() {
 		return this.image;

@@ -1,5 +1,6 @@
 import { faBook, faCode, faVideo } from '@fortawesome/free-solid-svg-icons';
-import { Exclude, Type } from 'class-transformer';
+import { Exclude, Expose, Type } from 'class-transformer';
+import { ResourceLevel } from '../Resource/entities/resource_level.entity';
 import { CourseElement } from './course_element.entity';
 
 export enum ACTIVITY_TYPE {
@@ -22,9 +23,11 @@ export class Activity {
 
 	/** CourseElement attached to the activity */
 	@Type(() => CourseElement)
+	@Exclude({ toPlainOnly: true })
 	courseElement: CourseElement;
 
 	/** Name of the activity */
+	@Exclude()
 	get name() {
 		return this.courseElement.name;
 	}
@@ -40,4 +43,30 @@ export class Activity {
 				return faVideo;
 		}
 	}
+}
+
+/**
+ * Activity of type Level model in the database
+ * @author Enric Solevila
+ */
+export class ActivityLevel extends Activity {
+	/** Resource level */
+	@Type(() => ResourceLevel)
+	resource?: ResourceLevel;
+
+	/** Id of the resource level */
+	resourceId?: string;
+
+	/*@Transform(({ value: res }: { value: ResourceLevel }) => {
+		if (res.level.type === LEVEL_TYPE.ALIVE)
+			res.level = plainToClass(LevelAlive, res);
+		else if (res.level.type === LEVEL_TYPE.CODE)
+			res.level = plainToClass(LevelCode, res);
+		else if (res.level.type === LEVEL_TYPE.AI)
+			res.level = plainToClass(LevelAI, res);
+		else if (res.level.type === LEVEL_TYPE.IOT)
+			res.level = plainToClass(LevelIoT, res);
+		return res;
+	})
+	resource?: ResourceLevel[];*/
 }

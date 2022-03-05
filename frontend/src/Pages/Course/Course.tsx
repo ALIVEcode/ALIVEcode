@@ -39,8 +39,6 @@ const Course = () => {
 	const courseElements = useRef<{
 		[id: number]: CourseElement;
 	}>({});
-	const section = useRef<Section>();
-	const activity = useRef<Activity>();
 	const [isNavigationOpen, setIsNavigationOpen] = useState(true);
 	const [tabSelected, setTabSelected] = useReducer(SwitchCourseTabReducer, {
 		tab: 'layout',
@@ -133,7 +131,7 @@ const Course = () => {
 	 */
 	const deleteElement = async (element: CourseElement) => {
 		if (!course.current || !courseElements) return;
-		const res = await api.db.courses.deleteElement({
+		await api.db.courses.deleteElement({
 			courseId: course.current.id,
 			elementId: element.id.toString(),
 		});
@@ -172,6 +170,11 @@ const Course = () => {
 	};
 
 	const openActivity = async (activity: Activity) => {
+		/*if (!course.current) return;
+		activity = await api.db.courses.getActivityContent({
+			id: course.current.id,
+			activityId: activity.id.toString(),
+		});*/
 		setOpenedActivity(activity);
 	};
 
@@ -252,8 +255,6 @@ const Course = () => {
 
 	const contextValue: CourseContextValues = {
 		course: course.current,
-		section,
-		activity,
 		courseElements: courseElements,
 		canEdit,
 		isNavigationOpen,
@@ -357,11 +358,11 @@ const Course = () => {
 				) : tabSelected.tab === 'layout' ? (
 					<CourseLayout />
 				) : (
-					<div className="flex h-full">
-						<div className="w-1/4 h-full">
+					<div className="flex w-full h-full overflow-y-auto">
+						<div className="w-1/4 h-full overflow-y-auto">
 							<CourseNavigation></CourseNavigation>
 						</div>
-						<div className="w-3/4 h-full">
+						<div className="w-3/4 h-full overflow-y-auto">
 							<CourseBody></CourseBody>
 						</div>
 					</div>

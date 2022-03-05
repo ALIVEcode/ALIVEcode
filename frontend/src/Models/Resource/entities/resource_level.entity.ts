@@ -10,4 +10,7 @@ export class ResourceLevel extends Resource {
 	/** Reference to the level to display */
 	@Type(() => Level)
 	level: Level;
+
+	/** Id of the level */
+	levelId: string;
 }

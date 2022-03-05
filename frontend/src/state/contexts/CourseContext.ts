@@ -13,8 +13,6 @@ import {
 
 export type CourseContextValues = {
 	course?: Course;
-	section?: MutableRefObject<Section | undefined>;
-	activity?: MutableRefObject<Activity | undefined>;
 	courseElements?: MutableRefObject<{ [id: number]: CourseElement }>;
 	isNavigationOpen: boolean;
 	canEdit: boolean;

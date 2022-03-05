@@ -44,6 +44,20 @@ export class Matrix {
 
   // --METHODS-- //
   /**
+   * Returns one column of the Matrix as a new Matrix (row x 1).
+   * @param colNumber the column number.
+   * @returns the column as a new Matrix.
+   */
+  public getMatrixColumn(colNumber: number): Matrix {
+    let columnValues: number[][] = [];
+
+    for (let i: number = 0; i < this.rows; i++) {
+      columnValues.push([this.value[i][colNumber]]);
+    }
+
+    return new Matrix(columnValues);
+  }
+  /**
    * Returns the 2D array representing the values of the matrix. 
    * @returns the Matrix's values.
    */
@@ -65,6 +79,16 @@ export class Matrix {
    */
   public getColumns(): number {
     return this.columns;
+  }
+
+  /**
+   * Sets the value of the Matrix and adjusts the number of rows and columns.
+   * @param newValue the new value of the Matrix.
+   */
+  public setValue(newValue: number[][]) {
+    this.value = newValue;
+    this.rows = newValue.length;
+    this.columns = newValue[0].length;
   }
 }
 
@@ -131,4 +155,59 @@ export function matMul(m1: Matrix, m2: Matrix): Matrix {
   }
 
   return new Matrix(outputValue);
+}
+
+/**
+ * Apprends the second Matrix's columns at the end of the first Matrix's columns.
+ * The two Matrices have to contain the same number of rows, otherwise it's 
+ * impossible to append those Matrices.
+ * 
+ * @param m1 the Matrix to which will be appended the other Matrix.
+ * @param m2 the Matrix which will be appended to the first Matrix.
+ * @returns the resulting Matrix. If the 2 Matrices do not have the same number 
+ * of rows, returns a copy of the first Matrix.
+ */
+export function appendColumn(m1: Matrix, m2: Matrix): Matrix {
+  let outputValue: number[][] = m1.getValue();
+  const m2Value: number[][] = m2.getValue();
+  
+  if (m1.getRows() !== m2.getRows()) return new Matrix(outputValue);
+
+  for (let i: number = 0; i < outputValue.length; i++) {
+    outputValue[i].push(...m2Value[i]);
+  }
+
+  return new Matrix(outputValue);
+}
+
+/**
+ * Generates a random number using Box-Muller transform, allowing to 
+ * create a normal distribution by generating multiple samples.
+ * @return the generated number. 
+ */
+function randnBoxMuller(): number {
+  let u: number = 0 
+  let v: number = 0;
+  while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)
+  while(v === 0) v = Math.random();
+  return Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
+}
+
+/**
+ * Returns a Matrix with values generated from a normal distribution with mean of 0
+ * and standart deviation 1.
+ * @param rows the number of rows for the output Matrix.
+ * @param columns the number of columns for the output Matrix.
+ * @returns the Matrix with random values.
+ */
+export function normalMatrix(rows: number, columns: number): Matrix {
+  let randomValues: number[][] = zeros(rows, columns);
+
+  for (let i: number = 0; i < rows; i++) {
+    for (let j: number = 0; j < columns; j++) {
+      randomValues[i][j] = randnBoxMuller();
+    }
+  }
+
+  return new Matrix(randomValues);
 }

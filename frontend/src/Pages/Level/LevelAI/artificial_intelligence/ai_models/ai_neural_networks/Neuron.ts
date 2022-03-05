@@ -1,4 +1,5 @@
 import { Matrix, matMul } from "../../AIUtils";
+import { ActivationFunction } from '../../ai_functions/Function';
 
 /**
  * This class represents the core of a neuron in a neural network. 
@@ -23,13 +24,13 @@ export default class Neuron {
 
   /**
    * Computes the output of the neuron based on the given inputs and 
-   * its parameters. TODO Also applies the Activation function of its layer.
+   * its parameters. Also applies the Activation function of its layer.
    * @param inputs the inputs of the neuron.
    * @returns the computed output
    */
-  public computeOutput(inputs: Matrix): Matrix {
+  public computeOutput(inputs: Matrix, activation: ActivationFunction): Matrix {
     let output: Matrix = matMul(inputs, this.weights);
-    return output;
+    return activation.compute(output);
   }
 
 }

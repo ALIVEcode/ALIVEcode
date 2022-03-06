@@ -1,12 +1,6 @@
 import { faBars, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-	useContext,
-	useEffect,
-	useLayoutEffect,
-	useRef,
-	useState,
-} from 'react';
+import { useContext, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import AlertConfirm from '../../UtilsComponents/Alert/AlertConfirm/AlertConfirm';
@@ -14,7 +8,6 @@ import FormInput from '../../UtilsComponents/FormInput/FormInput';
 import CourseLayoutActivity from './CourseLayoutActivity';
 import CourseLayoutSection from './CourseLayoutSection';
 import { CourseLayoutElementProps } from './courseLayoutTypes';
-import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 
 /**
  *
@@ -34,7 +27,6 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 	const [confirmDelete, setConfirmDelete] = useState(false);
 	const [isRenaming, setIsRenaming] = useState(false);
 	const inputRef = useRef<HTMLInputElement>();
-	const update = useForceUpdate();
 
 	// useEffect(() => {
 	// 	if (!element?.section || !courseElements?.current) return;

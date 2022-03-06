@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { Level } from '../../Level/level.entity';
+import { Level } from '../Level/level.entity';
 import { Resource } from './resource.entity';
 
 /**

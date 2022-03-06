@@ -1,6 +1,6 @@
 import { faBook, faCode, faVideo } from '@fortawesome/free-solid-svg-icons';
 import { Exclude, Expose, Type } from 'class-transformer';
-import { ResourceLevel } from '../Resource/entities/resource_level.entity';
+import { ResourceLevel } from '../Resource/resource_level.entity';
 import { CourseElement } from './course_element.entity';
 
 export enum ACTIVITY_TYPE {

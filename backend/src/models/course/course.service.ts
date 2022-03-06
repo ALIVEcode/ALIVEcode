@@ -4,7 +4,7 @@ import { generate } from 'randomstring';
 import { Repository } from 'typeorm';
 import { ClassroomEntity } from '../classroom/entities/classroom.entity';
 import { ProfessorEntity, StudentEntity } from '../user/entities/user.entity';
-import { CreateCourseDTO } from './dtos/CreateCourseDTO';
+import { CreateCourseDTO } from './dtos/CreateCourse.dto';
 import { ActivityLevelEntity } from './entities/activities/activity_level.entity';
 import { ActivityTheoryEntity } from './entities/activities/activity_theory.entity';
 import { ActivityEntity, ACTIVITY_TYPE } from './entities/activity.entity';
@@ -12,9 +12,9 @@ import { CourseContent, CourseEntity } from './entities/course.entity';
 import { CourseElementEntity } from './entities/course_element.entity';
 import { SectionEntity } from './entities/section.entity';
 import { ActivityVideoEntity } from './entities/activities/activity_video.entity';
-import { CreateActivityDTO } from './dtos/CreateActivitiesDTO';
+import { CreateActivityDTO } from './dtos/CreateActivities.dto';
 import { UpdateCourseElementDTO } from './dtos/UpdateCourseElement.dto';
-import { CreateSectionDTO } from './dtos/CreateSectionDTO';
+import { CreateSectionDTO } from './dtos/CreateSection.dto';
 
 /**
  * All the methods to communicate to the database. To create/update/delete/get

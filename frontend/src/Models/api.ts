@@ -17,7 +17,7 @@ import {
 	IoTProjectLayout,
 } from './Iot/IoTproject.entity';
 import { IotRoute } from './Iot/IoTroute.entity';
-import { ClassroomQueryDTO } from './Level/dto/ClassroomQueryDTO';
+import { ClassroomQueryDTO } from './Level/dto/ClassroomQuery.dto';
 import { LevelQueryDTO } from './Level/dto/LevelQuery.dto';
 import { Level, LEVEL_TYPE } from './Level/level.entity';
 import { LevelAI } from './Level/levelAI.entity';

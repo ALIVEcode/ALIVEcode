@@ -9,7 +9,7 @@ import {
 import { Activity, ActivityLevel, ACTIVITY_TYPE } from './activity.entity';
 import { Course } from './course.entity';
 import { Section } from './section.entity';
-import { ResourceLevel } from '../Resource/entities/resource_level.entity';
+import { ResourceLevel } from '../Resource/resource_level.entity';
 import { ActivityTheory } from './activities/activity_theory.entity';
 import { ActivityVideo } from './activities/activity_video.entity';
 

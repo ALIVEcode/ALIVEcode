@@ -195,7 +195,7 @@
 			"title": "Niveaux",
 			"browse_levels": "Explorer les niveaux de la communauté",
 			"create_level": "Créer un niveau",
-			"empty": "Tu n'as pas de niveau"
+			"empty": "Tu ne possèdes aucun niveau"
 		},
 		"classrooms": {
 			"title": "Classes",
@@ -203,12 +203,17 @@
 			"browse_public": "Explorer les classes publiques",
 			"empty": {
 				"student": "Tu ne fais parti d'aucune classe",
-				"professor": "Tu ne possède aucune classe"
+				"professor": "Tu ne possèdes aucune classe"
 			},
 			"add": {
 				"student": "Rejoindre une classe",
 				"professor": "Créer une classe"
 			}
+		},
+		"courses": {
+			"title": "Vos cours",
+			"add": "Créer un cours",
+			"empty": "Tu ne possèdes aucun cours"
 		}
 	},
 	"classroom": {

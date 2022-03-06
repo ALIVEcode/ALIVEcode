@@ -188,14 +188,14 @@
 			"title": "Recent Courses",
 			"empty": {
 				"student": "You have no recent activity. Join a public or private classroom to get started",
-				"professor": "You have no recent activity. Create a classroom to get started"
+				"professor": "You have no recent activity. Create a classroom or a course to get started"
 			}
 		},
 		"levels": {
 			"title": "Levels",
 			"browse_levels": "Explore the community levels",
 			"create_level": "Create a level",
-			"empty": "You have no level"
+			"empty": "You do not have any level"
 		},
 		"classrooms": {
 			"title": "Classrooms",
@@ -209,6 +209,11 @@
 				"student": "Join a classroom",
 				"professor": "Create a classroom"
 			}
+		},
+		"courses": {
+			"title": "Your courses",
+			"add": "Create a course",
+			"empty": "You have do not have any course"
 		}
 	},
 	"classroom": {

@@ -23,6 +23,7 @@ import {
 	faHistory,
 	faStar,
 	faPlus,
+	faTasks,
 } from '@fortawesome/free-solid-svg-icons';
 import ClassroomSection from '../../Components/DashboardComponents/ClassroomSection/ClassroomSection';
 import Classroom from '../Classroom/Classroom';
@@ -39,6 +40,7 @@ import useRoutes from '../../state/hooks/useRoutes';
 import DashboardLevels from '../../Components/DashboardComponents/DashboardLevels/DashboardLevels';
 import { Level } from '../../Models/Level/level.entity';
 import Button from '../../Components/UtilsComponents/Buttons/Button';
+import CourseSection from '../../Components/DashboardComponents/CourseSection/CourseSection';
 
 const SwitchTabReducer = (
 	state: { index: number; classroom?: ClassroomModel },
@@ -71,8 +73,10 @@ const DashboardNew = (props: DashboardNewProps) => {
 	const { t } = useTranslation();
 	const { routes } = useRoutes();
 	const [classrooms, setClassrooms] = useState<ClassroomModel[]>([]);
+	const [courses, setCourses] = useState<Course[]>([]);
 	const [formJoinClassOpen, setFormJoinClassOpen] = useState(false);
 	const [hoveringClassroom, setHoveringClassroom] = useState(false);
+	const [hoveringCourse, setHoveringCourse] = useState(false);
 	useState<ClassroomModel | null>(null);
 	const navigate = useNavigate();
 	const query = useQuery();
@@ -81,7 +85,6 @@ const DashboardNew = (props: DashboardNewProps) => {
 		index: 0,
 	});
 	const [recentCourses, setRecentCourses] = useState<Course[]>();
-	const [courses, setCourses] = useState<Course[]>();
 	const [levels, setLevels] = useState<Level[]>();
 
 	useEffect(() => {
@@ -256,7 +259,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 									selected={tabSelected.classroom?.id === classroom.id}
 									onClick={() => openClassroom(classroom)}
 									classroom={classroom}
-								></ClassroomSection>
+								/>
 							))
 						) : (
 							<div className="!text-xs !text-[color:var(--fg-shade-four-color)] !cursor-default flex flex-col items-center sidebar-classroom">
@@ -279,6 +282,47 @@ const DashboardNew = (props: DashboardNewProps) => {
 										: t('dashboard.classrooms.add.student')}
 								</Button>
 							</div>
+						)}
+
+						{user?.isProfessor() && (
+							<>
+								<div
+									className="sidebar-header"
+									onMouseEnter={() => setHoveringCourse(true)}
+									onMouseLeave={() => setHoveringCourse(false)}
+								>
+									<FontAwesomeIcon className="sidebar-icon" icon={faTasks} />
+									<label className="sidebar-header-text">
+										{t('dashboard.courses.title')}
+									</label>
+									{hoveringCourse && (
+										<FontAwesomeIcon
+											onClick={() => navigate(routes.auth.create_course.path)}
+											className="sidebar-icon-right cursor-pointer"
+											icon={faPlus}
+										/>
+									)}
+								</div>
+
+								<hr />
+
+								{courses.length > 0 ? (
+									courses.map((course, idx) => (
+										<CourseSection key={idx} course={course} />
+									))
+								) : (
+									<div className="!text-xs !text-[color:var(--fg-shade-four-color)] !cursor-default flex flex-col items-center sidebar-classroom">
+										<i>{t('dashboard.courses.empty')}</i>
+										<Button
+											className="!text-xs mt-2"
+											onClick={() => navigate(routes.auth.create_course.path)}
+											variant="primary"
+										>
+											{t('dashboard.courses.add')}
+										</Button>
+									</div>
+								)}
+							</>
 						)}
 					</div>
 					<div className="w-3/4 table:5/6 laptop:7/8 desktop:11/12 h-full overflow-y-auto">

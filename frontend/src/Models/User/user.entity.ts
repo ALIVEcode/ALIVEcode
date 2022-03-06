@@ -82,6 +82,10 @@ export class User {
 		(await this.getClassrooms()).push(classroom);
 	}
 
+	public async addCourse(course: Course) {
+		(await this.getCourses()).push(course);
+	}
+
 	public async removeClassroom(classroom: Classroom) {
 		this.classrooms = (await this.getClassrooms()).filter(
 			c => c.id !== classroom.id,

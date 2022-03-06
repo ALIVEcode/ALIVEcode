@@ -11,6 +11,9 @@ import {
 } from '../../../Models/Course/course.entity';
 import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
 import { SUBJECTS } from '../../../Types/sharedTypes';
+import { useContext } from 'react';
+import { UserContext } from '../../../state/contexts/UserContext';
+import { plainToInstance } from 'class-transformer';
 
 /**
  * Form that creates a new course in the db and navigates to it
@@ -21,6 +24,7 @@ const CourseForm = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const { routes } = useRoutes();
+	const { user } = useContext(UserContext);
 	const alert = useAlert();
 
 	const location = useLocation();
@@ -31,8 +35,9 @@ const CourseForm = () => {
 	return (
 		<FormContainer title={t('form.title.create_course')}>
 			<Form
-				onSubmit={res => {
-					const course: Course = res.data;
+				onSubmit={async res => {
+					const course: Course = plainToInstance(Course, res.data);
+					await user?.addCourse(course);
 					navigate(routes.auth.course.path.replace(':id', course.id));
 					return alert.success('Cours créé avec succès');
 				}}

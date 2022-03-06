@@ -26,12 +26,6 @@ export class ActivityEntity {
   @IsEmpty()
   id: number;
 
-  /*
-  @ManyToOne(() => SectionEntity, section => section.activities)
-  @IsEmpty()
-  section: SectionEntity;
-  */
-
   /** Type of the activity */
   @Exclude({ toClassOnly: true })
   @IsEmpty()

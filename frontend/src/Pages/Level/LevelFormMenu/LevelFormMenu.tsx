@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 /**
  * Menu to select which type of level to create
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const LevelFormMenu = () => {
 	const { routes } = useRoutes();

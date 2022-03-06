@@ -24,7 +24,7 @@ import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
  * @param {(progression: LevelProgression) => void} setProgression callback used to modify the level progression in the parent state
  *
  * @author Ecoral360
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const LevelAlive = ({ initialCode }: LevelAliveProps) => {
 	const { user, playSocket } = useContext(UserContext);

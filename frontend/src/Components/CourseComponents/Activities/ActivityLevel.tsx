@@ -6,12 +6,22 @@ import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import api from '../../../Models/api';
 import { ActivityLevel as ActivityLevelModel } from '../../../Models/Course/activity.entity';
 
+/**
+ * Shows an activity of type Level
+ * @returns The activity of type Level
+ *
+ * @author Enric Soldevila
+ */
 const ActivityLevel = () => {
 	const { openedActivity } = useContext(CourseContext);
 	const activity = openedActivity as ActivityLevelModel;
 	const forceUpdate = useForceUpdate();
 
 	useEffect(() => {
+		/**
+		 * Loads the level contained inside the ResourceLevel with its id
+		 * @returns void
+		 */
 		const loadLevel = async () => {
 			if (!activity.resource) return;
 			activity.resource.level = await api.db.levels.get({

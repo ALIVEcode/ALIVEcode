@@ -4,6 +4,13 @@ import { useContext } from 'react';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import { classNames } from '../../../Types/utils';
 
+/**
+ * Activity element appearing in the navigation menu.
+ * Possibility to click on the element to open the activity
+ * inside the CourseBody (To the right of the navigation)
+ *
+ * @author Enric Soldevila
+ */
 const CourseNavigationActivity = ({
 	element,
 }: CourseNavigationActivityProps) => {

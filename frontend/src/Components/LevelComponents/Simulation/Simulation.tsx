@@ -20,7 +20,7 @@ import { ThemeContext } from '../../../state/contexts/ThemeContext';
  * @param {(s: any) => void} init init function that has the generated sketch as an argument
  *
  * @author Ecoral360
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const Simulation = ({
 	init,

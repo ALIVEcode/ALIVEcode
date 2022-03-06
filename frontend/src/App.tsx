@@ -16,7 +16,7 @@ import { loadThemeFromCookies, setCookie } from './Types/cookies';
 import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
 import { setAccessToken } from './Types/accessToken';
-import { User, Student, Professor } from './Models/User/user.entity';
+import { User, Student } from './Models/User/user.entity';
 import LoadingScreen from './Components/UtilsComponents/LoadingScreen/LoadingScreen';
 import background_image_light from './assets/images/backgroundImage4.png';
 import background_image_dark from './assets/images/backgroundImageDark4.png';

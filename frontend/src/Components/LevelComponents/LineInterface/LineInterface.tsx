@@ -23,7 +23,7 @@ import './mode-alivescript';
  * @param initialContent
  * @param handleChange callback function that takes as parameter the line interface's content (string)
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const LineInterface = memo(
 	({

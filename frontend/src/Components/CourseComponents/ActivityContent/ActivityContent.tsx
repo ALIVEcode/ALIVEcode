@@ -24,8 +24,8 @@ import NewActivityContentModal from './NewActivityContentModal';
 
 /**
  * Displays the content of the activity in the CourseContext
- *
- * @author MoSk3
+ * @deprecated
+ * @author Enric Soldevila
  */
 const ActivityContent = (props: ActivityContentProps) => {
 	const { theme } = useContext(ThemeContext);

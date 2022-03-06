@@ -12,7 +12,7 @@ type LabelProps = CustomProps &
 /**
  * Styled Group for label and input
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const FormLabel: React.FC<LabelProps> = ({ className, ...props }) => {
 	return (

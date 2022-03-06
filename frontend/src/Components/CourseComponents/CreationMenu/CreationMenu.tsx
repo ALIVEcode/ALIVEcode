@@ -2,11 +2,24 @@ import React from 'react';
 import { CreationMenuProps } from './creationMenuProps';
 import { isValidElement, cloneElement } from 'react';
 
+/**
+ * Generic Creation Menu for future elements creation
+ * @param children The children to render inside the component
+ * @param onClick A function to call when clicking any of the children
+ * @returns The Creation menu
+ *
+ * @author Enric Soldevila
+ */
 const CreationMenu: React.FC<CreationMenuProps> = ({ children, onClick }) => {
-	const handleOnClick = (e: any) => {
-		console.log(e);
-	};
+	/**
+	 * Handles onClick (Not yet used)
+	 */
+	const handleOnClick = (e: any) => {};
 
+	/**
+	 * Add the onClick handle on all the children elements
+	 * @returns The children elements with the custom onClick handler
+	 */
 	const makeChildrenWithProps = () => {
 		if (!onClick) return children;
 		return (

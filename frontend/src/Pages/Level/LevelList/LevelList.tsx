@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 /**
  * Browsing menu that shows all the levels of the current user sorted with a query
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const LevelList = (props: LevelBrowseProps) => {
 	const [browsingResult, setBrowsingResult] =

@@ -51,7 +51,7 @@ const StyledHome = styled.div`
 /**
  * Home of the IoT branch
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const IoTHome = (props: iotHomeProps) => {
 	const { routes } = useRoutes();

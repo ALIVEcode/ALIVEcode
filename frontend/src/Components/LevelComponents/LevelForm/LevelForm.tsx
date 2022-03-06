@@ -27,7 +27,7 @@ import { useNavigate } from 'react-router-dom';
  *
  * @param {string} type type of the level to create: ALIVE, IoT, code or AI
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const LevelForm = ({ type }: LevelFormProps) => {
 	const { routes } = useRoutes();

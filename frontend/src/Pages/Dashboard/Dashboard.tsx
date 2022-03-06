@@ -24,7 +24,7 @@ import { useNavigate } from 'react-router-dom';
 /**
  * Dashboard page that contains all the links to the different pages of the plaform
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const Dashboard = (props: DashboardProps) => {
 	const { user } = useContext(UserContext);

@@ -11,6 +11,7 @@ export class CreateSectionDTO {
   @IsOptional()
   sectionParentId?: string;
 
+  /** Name of the course element */
   @IsNotEmpty()
   name: string;
 

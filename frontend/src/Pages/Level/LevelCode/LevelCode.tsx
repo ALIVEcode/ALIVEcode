@@ -21,7 +21,7 @@ import LevelCodeExecutor from './LevelCodeExecutor';
  * @param {(level: LevelCodeModel) => void} setLevel callback used to modify the level in the parent state
  * @param {(progression: LevelProgression) => void} setProgression callback used to modify the level progression in the parent state
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const LevelCode = ({ initialCode }: LevelCodeProps) => {
 	const { user } = useContext(UserContext);

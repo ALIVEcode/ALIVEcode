@@ -19,7 +19,7 @@ import LevelIoTExecutor from './LevelIoTExecutor';
  *
  * @param {string} id id of the project (as url prop)
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const IoTLevel = ({ initialCode }: { initialCode: string }) => {
 	const { project } = useContext(IoTProjectContext);

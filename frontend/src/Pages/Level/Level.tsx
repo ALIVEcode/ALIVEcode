@@ -54,7 +54,7 @@ import FormInput from '../../Components/UtilsComponents/FormInput/FormInput';
  * @param {Level} level level to load (optional if specified in url parameters)
  * @param {string} type type of the level to load: AI, ALIVE, IoT, code
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const Level = ({ level: levelProp, type, ...props }: LevelProps) => {
 	const { levelId } = useParams<{ levelId: string }>();

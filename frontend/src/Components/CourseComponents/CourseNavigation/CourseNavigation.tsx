@@ -9,7 +9,7 @@ import CourseNavigationElement from './CourseNavigationElement';
 /**
  * Navigation menu of a course containing all the sections and activities
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const CourseNavigation = () => {
 	const { course, courseElements, setTabSelected } = useContext(CourseContext);

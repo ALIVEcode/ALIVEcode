@@ -71,7 +71,7 @@ import InputGroup from '../InputGroup/InputGroup';
  *    ]}
  * />
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const Form = (props: FormProps) => {
 	const { t } = useTranslation();

@@ -7,7 +7,7 @@ import { FORM_ACTION } from '../../../UtilsComponents/Form/formTypes';
 /**
  * Form that creates in the database an IoTObject and returns it
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const IoTObjectCreate = ({ onSubmit }: IoTObjectCreateProps) => {
 	const alert = useAlert();

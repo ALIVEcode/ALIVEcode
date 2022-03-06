@@ -12,10 +12,11 @@ import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import { Option, TDOption } from '../../UtilsComponents/Option/TDOption';
 import { CourseSectionProps } from './courseSectionTypes';
 /**
+ * @deprecated
  * Component that shows the section in the navigation and handles different actions like adding in an activity onto the section
  *
  * @param {Section} section
- * @author MoSk3
+ * @author Enric Soldevila
  * @author Ecoral360
  */
 const CourseSection = ({ section, editMode }: CourseSectionProps) => {

@@ -16,7 +16,7 @@ import { formatDate, formatTooLong } from '../../../Types/formatting';
  * @param {boolean} enterEdit if true, when the card is clicked, it goes in editMode
  * @param {LevelAlive | LevelCode | Level} level Level
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const LevelCard = ({ level, enterEdit }: LevelCardProps) => {
 	const navigate = useNavigate();

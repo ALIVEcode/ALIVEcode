@@ -9,7 +9,7 @@ import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
 /**
  * Component used to connect to a car
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const ConnectCarForm = ({ setOpen }: ConnectCarFormProps) => {
 	const { t } = useTranslation();

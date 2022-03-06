@@ -10,7 +10,7 @@ import { Level } from '../Level/level.entity';
 /**
  * Frontend user model
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 export class User {
 	@Exclude({ toPlainOnly: true })

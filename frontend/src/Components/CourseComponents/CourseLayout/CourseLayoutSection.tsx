@@ -12,7 +12,7 @@ import { CourseLayoutSectionProps } from './courseLayoutTypes';
  * Component that shows the section in the navigation and handles different actions like adding in an activity onto the section
  *
  * @param {Section} section
- * @author MoSk3
+ * @author Enric Soldevila
  * @author Ecoral360
  */
 const CourseLayoutSection = ({ courseElement }: CourseLayoutSectionProps) => {

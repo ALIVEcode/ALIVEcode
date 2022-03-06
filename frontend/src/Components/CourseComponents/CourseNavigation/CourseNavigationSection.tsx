@@ -11,7 +11,7 @@ import { CourseNavigationSectionProps } from './courseNavigationTypes';
  * Component that shows the section in the navigation and handles different actions like adding in an activity onto the section
  *
  * @param {Section} section
- * @author MoSk3
+ * @author Enric Soldevila
  * @author Ecoral360
  */
 const CourseNavigationSection = ({ element }: CourseNavigationSectionProps) => {

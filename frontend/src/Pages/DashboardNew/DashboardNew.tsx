@@ -42,6 +42,12 @@ import { Level } from '../../Models/Level/level.entity';
 import Button from '../../Components/UtilsComponents/Buttons/Button';
 import CourseSection from '../../Components/DashboardComponents/CourseSection/CourseSection';
 
+/**
+ * State reducer to change the state of the selected tab
+ * @param state Current state of the reducer
+ * @param action Action parameters to change the state of the reducer
+ * @returns The new state of the reducer
+ */
 const SwitchTabReducer = (
 	state: { index: number; classroom?: ClassroomModel },
 	action: SwitchTabActions,
@@ -66,7 +72,7 @@ const SwitchTabReducer = (
 /**
  * Dashboard page that contains all the links to the different pages of the plaform
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const DashboardNew = (props: DashboardNewProps) => {
 	const { user } = useContext(UserContext);
@@ -120,6 +126,9 @@ const DashboardNew = (props: DashboardNewProps) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	/**
+	 * Opens the recents tab
+	 */
 	const openRecents = () => {
 		query.delete('id');
 		navigate({
@@ -128,6 +137,9 @@ const DashboardNew = (props: DashboardNewProps) => {
 		});
 	};
 
+	/**
+	 * Opens the levels tab
+	 */
 	const openLevels = () => {
 		query.delete('id');
 		navigate({
@@ -136,6 +148,9 @@ const DashboardNew = (props: DashboardNewProps) => {
 		});
 	};
 
+	/**
+	 * Opens the classrooms tab
+	 */
 	const openClassroom = (classroom: ClassroomModel) => {
 		query.set('id', classroom.id);
 		navigate({
@@ -144,6 +159,9 @@ const DashboardNew = (props: DashboardNewProps) => {
 		});
 	};
 
+	/**
+	 * Renders the tab currently selected
+	 */
 	const renderTabSelected = () => {
 		switch (tabSelected.index) {
 			case 0:
@@ -161,18 +179,28 @@ const DashboardNew = (props: DashboardNewProps) => {
 		}
 	};
 
+	/**
+	 * Loads the courses of the user from the database
+	 */
 	const loadRecentCourses = useCallback(async () => {
 		if (!user) return;
 		const courses = await api.db.users.getRecentCourses({ id: user.id });
 		setRecentCourses(courses);
 	}, [user]);
 
+	/**
+	 * Loads the current levels of the user from the database
+	 */
 	const loadLevels = useCallback(async () => {
 		if (!user) return;
 		const levels = await api.db.users.getLevels({ id: user.id });
 		setLevels(levels);
 	}, [user]);
 
+	/**
+	 * Memoized version of the context values.
+	 * (Used to optimize the rendering)
+	 */
 	const ctx: DashboardContextValues = useMemo(() => {
 		return {
 			getCourses: () => {

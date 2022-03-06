@@ -77,6 +77,7 @@ export class CourseService {
    * @param id id of the course to get
    * @returns The course found
    * @throws HttpException Course not found
+   * @throws HttpException Bad request
    */
   async findOne(id: string) {
     if (!id) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
@@ -297,6 +298,7 @@ export class CourseService {
    * @param courseId Id of the course containing the activity
    * @param id Id of the activity to load content from
    * @returns The activity with the content loaded
+   * @throws HttpException Activity not found
    */
   async findActivityWithContentLoaded(courseId: string, id: string) {
     const activity = await this.activityRepository
@@ -318,6 +320,7 @@ export class CourseService {
    * @param sectionParent (OPTIONAL) Section in which to add the element
    *                      If not specified, add the Section is directly added inside the course
    * @returns the created CourseElement containing the activity and the new order of elements in its parent
+   * @throws HttpException Invalid activity type
    */
   async addActivity(course: CourseEntity, activityDTO: CreateActivityDTO, sectionParent?: SectionEntity) {
     let activity: ActivityEntity;

@@ -18,7 +18,7 @@ import { plainToInstance } from 'class-transformer';
 /**
  * Form that creates a new course in the db and navigates to it
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const CourseForm = () => {
 	const { t } = useTranslation();

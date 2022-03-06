@@ -19,7 +19,7 @@ import { FormSignInValues, SignInProps } from './signInTypes';
 /**
  * Signin page that allows the user to connect to its account
  *
- * @author MoSk3
+ * @author Enric Soldevila
  *
  */
 const SignIn = (props: SignInProps) => {

@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 /**
  * Browsing menu that shows all the levels sorted with a query
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const LevelBrowse = (props: LevelBrowseProps) => {
 	const [browsingResult, setBrowsingResult] =

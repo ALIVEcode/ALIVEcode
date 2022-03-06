@@ -21,7 +21,7 @@ import Link from '../../Components/UtilsComponents/Link/Link';
 /**
  * Home page of ALIVEcode
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const Home = (props: HomeProps) => {
 	const { t } = useTranslation();

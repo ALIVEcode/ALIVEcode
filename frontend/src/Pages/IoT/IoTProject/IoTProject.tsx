@@ -39,7 +39,7 @@ import { instanceToPlain } from 'class-transformer';
  *
  * @param {string} id id of the project (as url prop)
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 	const projectRef = useRef<ProjectModel | null>(level?.project ?? null);

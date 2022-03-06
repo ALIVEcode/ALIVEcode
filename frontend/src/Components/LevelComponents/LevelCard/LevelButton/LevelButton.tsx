@@ -47,7 +47,7 @@ const StyledButton = styled.div`
  * @param {string} left css left spacing
  * @param {() => void} onClick callback called when button is clicked
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const LevelButton = (props: LevelButtonProps) => {
 	const ref = useRef<HTMLDivElement>(null);

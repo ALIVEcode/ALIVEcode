@@ -49,7 +49,7 @@ export class CourseController {
   }
 
   /**
-   * Finds a course of a certain id. Must have access to the course
+   * Route to find a course of a certain id. Must have access to the course
    * @param course Course found with the id in the url
    * @returns The course found
    */
@@ -61,7 +61,7 @@ export class CourseController {
   }
 
   /**
-   * Update a course with a certain id, with the CourseEntity DTO. Must be the creator of the course
+   * Route to update a course with a certain id, with the CourseEntity DTO. Must be the creator of the course
    * @param course Course found with the id in the url
    * @param updateCourseDto CourseEntity DTO to update the course with
    * @returns The updated course
@@ -74,7 +74,7 @@ export class CourseController {
   }
 
   /**
-   * Removes a course with a certain id. Must be the creator of the course
+   * Route to remove a course with a certain id. Must be the creator of the course
    * @param course Course found with the id in the url
    * @returns The result of removing the course
    */
@@ -216,7 +216,7 @@ export class CourseController {
    * Route to update a CourseElement by it's id.
    * @param course Course found with the id in the url
    * @param courseElementId Id of the CourseElement to delete
-   * @returns The result of the deletion
+   * @returns The updated CourseElement
    */
   @Patch(':id/elements/:courseElementId')
   @Auth(Role.PROFESSOR, Role.STAFF)

@@ -11,6 +11,15 @@ import Modal from '../../UtilsComponents/Modal/Modal';
 import CreationMenu from '../CreationMenu/CreationMenu';
 import { CreationActivityMenuProps } from './creationActivityMenuTypes';
 
+/**
+ * Creation Menu for an activity
+ * @param open The state of the menu (false -> close, true -> opened)
+ * @param setOpen The function to change the state of the menu
+ * @param sectionParent (Optional) Section parent of the element. If undefined, the element is in the course
+ * @returns The Creation menu
+ *
+ * @author Enric Soldevila
+ */
 const CreationActivityMenu = ({
 	open,
 	setOpen,
@@ -19,11 +28,16 @@ const CreationActivityMenu = ({
 	const { t } = useTranslation();
 	const { addContent } = useContext(CourseContext);
 
+	/**
+	 * Function called when clicking a type of activity to create.
+	 * Add the activity to the CourseContent and closes the menu
+	 * @param type The type of the activity created
+	 */
 	const onSelect = async (type: ACTIVITY_TYPE) => {
+		setOpen(false);
 		const activity = new Activity();
 		activity.type = type;
 		await addContent(activity, 'New Activity', sectionParent);
-		setOpen(false);
 	};
 
 	return (

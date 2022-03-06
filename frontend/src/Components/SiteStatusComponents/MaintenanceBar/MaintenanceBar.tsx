@@ -1,4 +1,7 @@
-import { MaintenanceBarProps, StyledMaintenanceBar } from './maintenanceBarTypes';
+import {
+	MaintenanceBarProps,
+	StyledMaintenanceBar,
+} from './maintenanceBarTypes';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -12,7 +15,7 @@ import { formatDate } from '../../../Types/formatting';
  * @param {Mainteannce} maintenance maintenance object;
  * @param {() => void} onClose callback called when the maintenance box is closed
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const MaintenanceBar = ({ maintenance, onClose }: MaintenanceBarProps) => {
 	const { t } = useTranslation();

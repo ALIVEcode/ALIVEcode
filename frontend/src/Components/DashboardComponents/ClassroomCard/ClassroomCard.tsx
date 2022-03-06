@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router';
  *
  * @param {Classroom} classroom classroom object
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const ClassroomCard = ({ classroom }: ClassRoomCardProps) => {
 	const { t } = useTranslation();

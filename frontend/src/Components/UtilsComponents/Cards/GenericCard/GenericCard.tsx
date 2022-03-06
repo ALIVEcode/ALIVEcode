@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
  * @param {() => void} onClick callback called when the card is clicked
  * @param {string} className classes name of the card
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const GenericCard = ({
 	img,

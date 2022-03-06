@@ -4,6 +4,14 @@ import { useNavigate } from 'react-router';
 import { ACTIVITY_TYPE } from '../../../Models/Course/activity.entity';
 import ActivityLevel from './ActivityLevel';
 
+/**
+ * Shows the opened activity. Renders different component depending on the type of the activity opened.
+ *
+ * @returns The activity currently opened. Shows the generic component and then the specific one depending
+ *          on the type of the activity.
+ *
+ * @author Enric Soldevila
+ */
 const Activity = () => {
 	const { openedActivity: activity } = useContext(CourseContext);
 	const navigate = useNavigate();
@@ -13,6 +21,10 @@ const Activity = () => {
 		return <></>;
 	}
 
+	/**
+	 * Renders the activity depending on its type
+	 * @returns The specific activity depending on its type
+	 */
 	const renderSpecificActivity = () => {
 		switch (activity.type) {
 			case ACTIVITY_TYPE.LEVEL:

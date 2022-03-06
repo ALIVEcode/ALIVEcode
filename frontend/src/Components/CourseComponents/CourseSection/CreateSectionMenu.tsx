@@ -6,6 +6,16 @@ import Form from '../../UtilsComponents/Form/Form';
 import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
 import FormModal from '../../UtilsComponents/FormModal/FormModal';
 
+/**
+ * @deprecated
+ * Creation Menu for a section
+ * @param openModalSection The state of the menu (false -> close, true -> opened)
+ * @param setOpenModalSection The function to change the state of the menu
+ * @param sectionParent (Optional) Section parent of the element. If undefined, the element is in the course
+ * @returns The Creation menu for a section
+ *
+ * @author Enric Soldevila
+ */
 const CreateSectionMenu = ({
 	openModalSection,
 	setOpenModalSection,

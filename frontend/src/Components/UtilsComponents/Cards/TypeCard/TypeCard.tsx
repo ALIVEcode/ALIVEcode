@@ -3,6 +3,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext } from 'react';
 import { ThemeContext } from '../../../../state/contexts/ThemeContext';
 
+/**
+ * Card component used to choose between different subjects or types
+ * of activites.
+ * @param title Title of the card
+ * @param onClick Function called when clicking the Card
+ * @param alt (Optional) Alt text of the image
+ * @param img (Optional) image of the card
+ * @param icon (Optional) icon of the card if no image
+ * @returns
+ */
 const TypeCard = (props: TypeCardProps) => {
 	const { theme } = useContext(ThemeContext);
 

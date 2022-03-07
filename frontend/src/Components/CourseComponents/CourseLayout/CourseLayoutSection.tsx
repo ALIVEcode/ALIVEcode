@@ -8,12 +8,12 @@ import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import ButtonAddCourseElement from './ButtonAddCourseElement';
 import CourseLayoutElement from './CourseLayoutElement';
 import { CourseLayoutSectionProps } from './courseLayoutTypes';
+
 /**
- * Component that shows the section in the navigation and handles different actions like adding in an activity onto the section
+ * Component that shows the section in the layout view and handles different actions like collapsing or
+ * expanding its activities and subsections
  *
- * @param {Section} section
- * @author Enric Soldevila
- * @author Ecoral360
+ * @author Mathis, Enric
  */
 const CourseLayoutSection = ({ courseElement }: CourseLayoutSectionProps) => {
 	const section = courseElement.section as Section;

@@ -9,6 +9,12 @@ import { ButtonAddCourseElementProps } from './courseLayoutTypes';
 import { Section } from '../../../Models/Course/section.entity';
 import { plainToClass } from 'class-transformer';
 
+/**
+ * Component of a button that allows the creation of a new section or a new activity
+ *
+ * @param section the section in which the button lies
+ * @author Mathis
+ */
 const ButtonAddCourseElement = ({ section }: ButtonAddCourseElementProps) => {
 	const { openActivityForm, addContent } = useContext(CourseContext);
 	const { t } = useTranslation();

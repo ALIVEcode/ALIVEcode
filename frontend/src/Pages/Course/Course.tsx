@@ -30,7 +30,6 @@ import { SwitchCourseTabReducer } from './courseTypes';
 /**
  * Course page that shows the content of a course
  *
- * @param id (as a url parameter)
  * @author Enric, Mathis
  */
 const Course = () => {
@@ -62,6 +61,12 @@ const Course = () => {
 
 	const [editTitle, setEditTitle] = useState(false);
 
+	/**
+	 * Indicates if the element was just added (is new)
+	 *
+	 * @param element Element that wants to know if it is new or not
+	 * @author Mathis
+	 */
 	const isNewCourseElement = (element: CourseElement) => {
 		return (
 			newCourseElementId.current !== undefined &&
@@ -69,10 +74,8 @@ const Course = () => {
 		);
 	};
 	const setCourseElementNotNew = (element: CourseElement) => {
-		if (isNewCourseElement(element))
-			newCourseElementId.current = undefined;
+		if (isNewCourseElement(element)) newCourseElementId.current = undefined;
 	};
-
 
 	/**
 	 * Sets the course's title to a new one
@@ -96,11 +99,23 @@ const Course = () => {
 		course.current.name = updatedCourse.name;
 	};
 
+	/**
+	 * Sets the state of the section creation modal to true
+	 *
+	 * @param sectionParent the section in which we create this new section
+	 * @author Mathis
+	 */
 	const openSectionForm = (sectionParent?: Section) => {
 		setSectionParent(sectionParent);
 		setOpenModalSection(true);
 	};
 
+	/**
+	 * Sets the state of the activity creation modal to true
+	 *
+	 * @param sectionParent the section in which we create this new activity
+	 * @author Mathis
+	 */
 	const openActivityForm = (sectionParent?: Section) => {
 		setSectionParent(sectionParent);
 		setOpenModalActivity(true);
@@ -110,6 +125,7 @@ const Course = () => {
 	 * Adds a new content ({@link Activity} or {@link Section}) to the course.
 	 *
 	 * @param content the content to add to the course
+	 * @param name the name of the acitivity
 	 * @param sectionParent where to add the content (if undefined, added to the course top level)
 	 * @author Mathis
 	 */
@@ -148,7 +164,7 @@ const Course = () => {
 			courseId: course.current.id,
 			elementId: element.id.toString(),
 		});
-		deleteSectionRecursively(element);
+		deleteElementRecursively(element);
 
 		update();
 	};
@@ -178,6 +194,14 @@ const Course = () => {
 		update();
 	};
 
+	/**
+	 * Changes the name of the element passed in argument to the new name
+	 * Also changes the name of the element in the database
+	 *
+	 * @param element the element to rename
+	 * @param newName the new name of the element
+	 * @author Mathis Laroche
+	 */
 	const renameElement = async (element: CourseElement, newName: string) => {
 		if (!course.current) return;
 		element.name = newName;
@@ -189,10 +213,21 @@ const Course = () => {
 		update();
 	};
 
+	/**
+	 * Set the activity opened to the activity passed in argument
+	 *
+	 * @param activity the activity to open
+	 * @author Enric
+	 */
 	const openActivity = async (activity: Activity) => {
 		setOpenedActivity(activity);
 	};
 
+	/**
+	 * Resets the opened activity to undefined => close the current activity
+	 *
+	 * @author Enric
+	 */
 	const closeOpenedActivity = () => {
 		setOpenedActivity(undefined);
 	};
@@ -227,15 +262,30 @@ const Course = () => {
 	// 	setSection(section);
 	// };
 
-	const deleteSectionRecursively = (element: CourseElement) => {
+	/**
+	 * Deletes the element passed in argument. If the element is a section,
+	 * it will also deletes its children, and so on, recursively.
+	 *
+	 * @param element The element to delete
+	 * @author Mathis
+	 */
+	const deleteElementRecursively = (element: CourseElement) => {
 		if (element.section) {
-			[...element.section.elements].forEach(el => deleteSectionRecursively(el));
+			[...element.section.elements].forEach(el => deleteElementRecursively(el));
 		}
 		element.delete();
 		delete courseElements.current[element.id];
 	};
 
+	/**
+	 * Loads all the children elements of the section from the database, recursively
+	 *
+	 * @param element the element to load
+	 * @author Mathis
+	 */
 	const loadSectionRecursively = async (element: CourseElement) => {
+		// FIXME some elements are loaded twice
+
 		if (!element.section) return;
 		await loadSectionElements(element.section);
 		for (const el of element.section.elements) {

@@ -10,9 +10,9 @@ import CourseLayoutSection from './CourseLayoutSection';
 import { CourseLayoutElementProps } from './courseLayoutTypes';
 
 /**
+ * Component that wraps a CourseElement to show it properly on the layout view
  *
- * @param element
- * @returns
+ * @param element The element wrapped
  *
  * @author Mathis Laroche
  */
@@ -42,6 +42,11 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	// }, [element, courseElements]);
 
+	/**
+	 * Handles the renaming of an element
+	 *
+	 * @author Mathis
+	 */
 	const rename = async () => {
 		if (isNewCourseElement(element)) {
 			setCourseElementNotNew(element);

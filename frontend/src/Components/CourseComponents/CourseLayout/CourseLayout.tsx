@@ -7,6 +7,11 @@ import useRoutes from '../../../state/hooks/useRoutes';
 import ButtonAddCourseElement from './ButtonAddCourseElement';
 import CourseLayoutElement from './CourseLayoutElement';
 
+/**
+ * Component that handles the layout view of a course
+ *
+ * @author Mathis
+ */
 const CourseLayout = () => {
 	const { course, canEdit, courseElements, setTabSelected } =
 		useContext(CourseContext);

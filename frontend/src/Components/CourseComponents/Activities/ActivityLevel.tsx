@@ -30,8 +30,7 @@ const ActivityLevel = () => {
 			forceUpdate();
 		};
 		loadLevel();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [activity.resource]);
 
 	return (
 		<div className="w-full h-full">
@@ -40,10 +39,10 @@ const ActivityLevel = () => {
 					There is no level in this activity
 				</div>
 			) : !activity.resource?.level ? (
-				<LoadingScreen></LoadingScreen>
+				<LoadingScreen />
 			) : (
 				<div className="w-full h-full flex">
-					<Level level={activity.resource?.level} editMode={false}></Level>
+					<Level level={activity.resource?.level} editMode={false} />
 				</div>
 			)}
 		</div>

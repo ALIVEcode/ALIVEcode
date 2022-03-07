@@ -45,7 +45,7 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 	/**
 	 * Handles the renaming of an element
 	 *
-	 * @author Mathis
+	 * @author Mathis Laroche
 	 */
 	const rename = async () => {
 		if (isNewCourseElement(element)) {

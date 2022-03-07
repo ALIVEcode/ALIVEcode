@@ -29,7 +29,7 @@ import LevelToolsBar from '../../../Components/LevelComponents/LevelToolsBar/Lev
  *
  * @author Félix
  * @author Enric
- * @author Mathis
+ * @author Mathis Laroche
  */
 const LevelAI = ({ initialCode }: LevelAIProps) => {
 	const { user } = useContext(UserContext);

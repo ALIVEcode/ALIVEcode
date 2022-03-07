@@ -65,7 +65,7 @@ const Course = () => {
 	 * Indicates if the element was just added (is new)
 	 *
 	 * @param element Element that wants to know if it is new or not
-	 * @author Mathis
+	 * @author Mathis Laroche
 	 */
 	const isNewCourseElement = (element: CourseElement) => {
 		return (
@@ -81,7 +81,7 @@ const Course = () => {
 	 * Sets the course's title to a new one
 	 *
 	 * @param newTitle The new title of the course
-	 * @author Mathis
+	 * @author Mathis Laroche
 	 */
 	const setTitle = async (newTitle: string) => {
 		if (!course.current) return;
@@ -103,7 +103,7 @@ const Course = () => {
 	 * Sets the state of the section creation modal to true
 	 *
 	 * @param sectionParent the section in which we create this new section
-	 * @author Mathis
+	 * @author Mathis Laroche
 	 */
 	const openSectionForm = (sectionParent?: Section) => {
 		setSectionParent(sectionParent);
@@ -114,7 +114,7 @@ const Course = () => {
 	 * Sets the state of the activity creation modal to true
 	 *
 	 * @param sectionParent the section in which we create this new activity
-	 * @author Mathis
+	 * @author Mathis Laroche
 	 */
 	const openActivityForm = (sectionParent?: Section) => {
 		setSectionParent(sectionParent);
@@ -127,7 +127,7 @@ const Course = () => {
 	 * @param content the content to add to the course
 	 * @param name the name of the acitivity
 	 * @param sectionParent where to add the content (if undefined, added to the course top level)
-	 * @author Mathis
+	 * @author Mathis Laroche
 	 */
 	const addContent = async (
 		content: CourseContent,
@@ -156,7 +156,7 @@ const Course = () => {
 	 * Deletes and removes an element in the course
 	 *
 	 * @param element the element to delete from the course
-	 * @author Mathis
+	 * @author Mathis Laroche
 	 */
 	const deleteElement = async (element: CourseElement) => {
 		if (!course.current || !courseElements.current) return;
@@ -173,7 +173,7 @@ const Course = () => {
 	 * Loads the elements contained in a section
 	 *
 	 * @param section the section you want to load the elements
-	 * @author Mathis
+	 * @author Mathis Laroche
 	 */
 	const loadSectionElements = async (section: Section) => {
 		if (!course.current || !section || !courseElements.current) return;
@@ -267,7 +267,7 @@ const Course = () => {
 	 * it will also deletes its children, and so on, recursively.
 	 *
 	 * @param element The element to delete
-	 * @author Mathis
+	 * @author Mathis Laroche
 	 */
 	const deleteElementRecursively = (element: CourseElement) => {
 		if (element.section) {
@@ -281,7 +281,7 @@ const Course = () => {
 	 * Loads all the children elements of the section from the database, recursively
 	 *
 	 * @param element the element to load
-	 * @author Mathis
+	 * @author Mathis Laroche
 	 */
 	const loadSectionRecursively = async (element: CourseElement) => {
 		// FIXME some elements are loaded twice

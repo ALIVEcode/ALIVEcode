@@ -13,7 +13,8 @@ import { CourseLayoutSectionProps } from './courseLayoutTypes';
  * Component that shows the section in the layout view and handles different actions like collapsing or
  * expanding its activities and subsections
  *
- * @author Mathis, Enric
+ * @author Mathis Laroche
+ * @author Enric Soldevila
  */
 const CourseLayoutSection = ({ courseElement }: CourseLayoutSectionProps) => {
 	const section = courseElement.section as Section;

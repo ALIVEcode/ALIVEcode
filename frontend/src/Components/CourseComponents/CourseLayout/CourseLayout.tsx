@@ -10,7 +10,7 @@ import CourseLayoutElement from './CourseLayoutElement';
 /**
  * Component that handles the layout view of a course
  *
- * @author Mathis
+ * @author Mathis Laroche
  */
 const CourseLayout = () => {
 	const { course, canEdit, courseElements, setTabSelected } =

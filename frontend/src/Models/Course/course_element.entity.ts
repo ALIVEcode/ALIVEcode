@@ -19,8 +19,7 @@ export type CourseParent = Course | Section;
 
 /**
  * CourseElement model in the database
- * @author Enric Soldevila
- * @author Mathis Laroche
+ * @author Mathis Laroche, Enric Soldevila
  */
 @Exclude()
 export class CourseElement {

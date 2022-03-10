@@ -22,6 +22,6 @@ export class ResourceService {
   }
 
   async remove(id: string) {
-    await this.resRepo.delete(id);
+    return await this.resRepo.delete(id);
   }
 }

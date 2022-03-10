@@ -39,12 +39,15 @@ export class ResourceEntity {
   readonly type: RESOURCE_TYPE;
 
   @Column({ type: 'enum', enum: SUBJECTS, default: SUBJECTS.OTHER })
+  @IsEmpty()
   category: SUBJECTS;
 
   @CreateDateColumn()
+  @IsEmpty()
   creationDate: Date;
 
   @UpdateDateColumn()
+  @IsEmpty()
   updateDate: Date;
 
   @ManyToOne(() => ProfessorEntity, user => user.resources, { eager: true, onDelete: 'SET NULL' })

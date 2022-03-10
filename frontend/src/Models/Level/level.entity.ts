@@ -1,4 +1,5 @@
-import { Exclude, Transform, Type, plainToClass } from 'class-transformer';
+import { Exclude, Type } from 'class-transformer';
+import { USER_TYPES } from '../../Types/userTypes';
 import { Activity } from '../Course/activity.entity';
 import { CreatedByUser } from '../Generics/createdByUser.entity';
 import { User, Professor, Student } from '../User/user.entity';
@@ -29,17 +30,16 @@ export enum LEVEL_TYPE {
 
 export class Level extends CreatedByUser {
 	@Exclude({ toPlainOnly: true })
-	@Type(() => User)
-	@Transform(
-		({ value }) => {
-			if (!value) return value;
-			if (value.firstName) return plainToClass(Professor, value);
-			if (value.name) return plainToClass(Student, value);
-			return value;
+	@Type(() => User, {
+		discriminator: {
+			property: 'type',
+			subTypes: [
+				{ value: Professor, name: USER_TYPES.PROFESSOR },
+				{ value: Student, name: USER_TYPES.STUDENT },
+			],
 		},
-		{ toClassOnly: true },
-	)
-	creator: User | undefined;
+	})
+	creator: Professor | Student;
 
 	type: LEVEL_TYPE;
 

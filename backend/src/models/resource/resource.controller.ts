@@ -21,7 +21,7 @@ export class ResourceController {
   @Get(':id')
   @Auth()
   @UseGuards(ResourceCreator)
-  async findOne(@Resource() resource) {
+  async findOne(@Resource() resource: ResourceEntity) {
     return resource;
   }
 

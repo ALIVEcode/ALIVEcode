@@ -182,9 +182,11 @@ export class UserController {
     if (!hasRole(user, Role.MOD) && user.id !== id) throw new HttpException('You cannot do that', HttpStatus.FORBIDDEN);
 
     if (user.id === id) return this.userService.getResources(user);
+
     const target = await this.userService.findById(id);
     if (target.type === USER_TYPES.STUDENT)
       throw new HttpException('A student has no resources', HttpStatus.BAD_REQUEST);
+
     return this.userService.getResources(target as ProfessorEntity);
   }
 

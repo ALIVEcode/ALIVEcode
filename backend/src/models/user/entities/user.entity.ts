@@ -46,7 +46,7 @@ export class UserEntity extends BaseEntity {
   @Column({ nullable: true })
   @IsNotEmpty()
   @Length(3, 25)
-  @Matches(/^[A-Za-z]*$/, { message: 'form.lastName.error.match' })
+  @Matches(/^[-\p{L}]{3,}$/u, { message: 'form.lastName.error.match' })
   lastName: string;
 
   @Exclude({ toClassOnly: true })

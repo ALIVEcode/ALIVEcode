@@ -283,6 +283,9 @@ const api = {
 				Activity,
 			),
 		},
+		resources: {
+			delete: apiDelete('resources/:id'),
+		},
 		levels: {
 			progressions: {
 				get: apiGet('levels/:id/progressions/:userId', LevelProgression, false),

@@ -7,7 +7,7 @@ import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
 import { ResourceCreator } from '../../utils/guards/resource.guard';
 import { Resource } from '../../utils/decorators/resource.decorator';
 
-@Controller('resource')
+@Controller('resources')
 @UseInterceptors(DTOInterceptor)
 export class ResourceController {
   constructor(private readonly resourceService: ResourceService) {}

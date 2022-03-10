@@ -45,7 +45,7 @@ import { LEVEL_TYPE } from '../../Models/Level/level.entity';
 import DashboardNew from '../../Pages/DashboardNew/DashboardNew';
 import ClassroomBrowse from '../../Components/ClassroomComponents/ClassroomBrowse/ClassroomBrowse';
 import { UnderDevelopment } from '../../Pages/Errors/UnderDevelopment/UnderDevelopment';
-import ResourcesMenu from '../../Pages/ResourcesMenu/ResourcesMenu';
+import ResourcesMenu from '../../Pages/ResourceMenu/ResourceMenu';
 
 export interface Route {
 	path: string;

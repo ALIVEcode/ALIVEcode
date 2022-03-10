@@ -17,6 +17,7 @@ import { CourseEntity } from '../course/entities/course.entity';
 import { MyRequest } from '../../utils/guards/auth.guard';
 import { CourseHistoryEntity } from '../course/entities/course_history.entity';
 import { NameMigrationDTO } from './dto/name_migration.dto';
+import { ResourceEntity } from '../resource/entities/resource.entity';
 
 @Injectable({ scope: Scope.REQUEST })
 export class UserService {
@@ -29,6 +30,7 @@ export class UserService {
     @InjectRepository(ClassroomEntity) private classroomRepository: Repository<ClassroomEntity>,
     @InjectRepository(CourseEntity) private courseRepository: Repository<CourseEntity>,
     @InjectRepository(CourseHistoryEntity) private courseHistoryRepo: Repository<CourseHistoryEntity>,
+    @InjectRepository(ResourceEntity) private resourceRepo: Repository<ResourceEntity>,
     @InjectRepository(IoTProjectEntity) private iotProjectRepository: Repository<IoTProjectEntity>,
     @InjectRepository(IoTObjectEntity) private iotObjectRepository: Repository<IoTObjectEntity>,
     @InjectRepository(LevelEntity) private levelRepository: Repository<LevelEntity>,
@@ -188,6 +190,10 @@ export class UserService {
       courseHistory.lastInteraction = new Date();
       await this.courseHistoryRepo.save(courseHistory);
     }
+  }
+
+  async getResources(user: ProfessorEntity) {
+    return await this.resourceRepo.find({ where: { creator: user } });
   }
 
   async getIoTProjects(user: UserEntity) {

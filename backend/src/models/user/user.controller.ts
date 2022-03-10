@@ -5,6 +5,7 @@ import {
   Body,
   Patch,
   Delete,
+  Param,
   HttpException,
   HttpStatus,
   Res,
@@ -14,10 +15,9 @@ import {
   Request,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { Param } from '@nestjs/common';
 import { Response } from 'express';
 import { Auth } from '../../utils/decorators/auth.decorator';
-import { UserEntity, StudentEntity, ProfessorEntity } from './entities/user.entity';
+import { UserEntity, StudentEntity, ProfessorEntity, USER_TYPES } from './entities/user.entity';
 import { hasRole } from './auth';
 import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
 import { Group } from '../../utils/decorators/group.decorator';
@@ -161,7 +161,6 @@ export class UserController {
   @Get(':id/courses')
   @Auth()
   async getCourses(@User() user: UserEntity, @Param('id') id: string) {
-    console.log('HERE');
     if (!hasRole(user, Role.MOD) && user.id !== id) throw new HttpException('You cannot do that', HttpStatus.FORBIDDEN);
 
     if (user.id === id) return this.userService.getCourses(user);
@@ -175,6 +174,18 @@ export class UserController {
 
     if (user.id === id) return this.userService.getRecentCourses(user);
     return this.userService.getRecentCourses(await this.userService.findById(id));
+  }
+
+  @Get(':id/resources')
+  @Auth(Role.PROFESSOR, Role.MOD)
+  async getResources(@User() user: ProfessorEntity, @Param('id') id: string) {
+    if (!hasRole(user, Role.MOD) && user.id !== id) throw new HttpException('You cannot do that', HttpStatus.FORBIDDEN);
+
+    if (user.id === id) return this.userService.getResources(user);
+    const target = await this.userService.findById(id);
+    if (target.type === USER_TYPES.STUDENT)
+      throw new HttpException('A student has no resources', HttpStatus.BAD_REQUEST);
+    return this.userService.getResources(target as ProfessorEntity);
   }
 
   @Get(':id/levels')

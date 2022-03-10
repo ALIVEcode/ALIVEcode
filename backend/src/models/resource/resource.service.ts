@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { ResourceEntity } from './entities/resource.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,7 +12,9 @@ export class ResourceService {
   }
 
   async findOne(id: string) {
-    return await this.resRepo.findOne(id);
+    const res = await this.resRepo.findOne(id);
+    if (!res) throw new HttpException('Resource not found', HttpStatus.NOT_FOUND);
+    return res;
   }
 
   async update(id: string, updateResourceDto: ResourceEntity) {

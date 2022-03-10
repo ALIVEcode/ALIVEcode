@@ -12,6 +12,7 @@ import { LevelProgressionEntity } from '../level/entities/levelProgression.entit
 import { CourseHistoryEntity } from '../course/entities/course_history.entity';
 import { Quiz } from '../social/quizzes/entities/quiz.entity';
 import { Result } from '../social/results/entities/result.entity';
+import { ResourceEntity } from '../resource/entities/resource.entity';
 
 @Module({
   imports: [
@@ -21,11 +22,12 @@ import { Result } from '../social/results/entities/result.entity';
       StudentEntity,
       ClassroomEntity,
       CourseEntity,
+      CourseHistoryEntity,
+      ResourceEntity,
       IoTProjectEntity,
       IoTObjectEntity,
       LevelEntity,
       LevelProgressionEntity,
-      CourseHistoryEntity,
       Quiz,
       Result,
     ]),

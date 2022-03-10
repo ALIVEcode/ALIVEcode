@@ -31,6 +31,7 @@ import { Category } from './Quiz/categories-quiz.entity';
 import { QuestionForm } from './Quiz/questionForm.entity';
 import { Quiz } from './Quiz/quiz.entity';
 import { QuizForm } from './Quiz/quizForm.entity';
+import { Resource } from './Resource/resource.entity';
 import { Result } from './Social/result.entity';
 import { Topics } from './Social/topics.entity';
 import { Professor, Student } from './User/user.entity';
@@ -170,6 +171,7 @@ const api = {
 			getClassrooms: apiGet('users/:id/classrooms', Classroom, true),
 			getCourses: apiGet('users/:id/courses', Course, true),
 			getRecentCourses: apiGet('users/:id/courses/recents', Course, true),
+			getResources: apiGet('users/:id/resources', Resource, true),
 			getLevels: apiGet('users/:id/levels', Level, true, level => {
 				if (level.type === LEVEL_TYPE.ALIVE)
 					return plainToClass(LevelAlive, level);

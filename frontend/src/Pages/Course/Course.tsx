@@ -403,10 +403,10 @@ const Course = () => {
 				) : (
 					<div className="flex w-full h-full overflow-y-auto">
 						<div className="w-1/4 h-full overflow-y-auto">
-							<CourseNavigation></CourseNavigation>
+							<CourseNavigation />
 						</div>
 						<div className="w-3/4 h-full overflow-y-auto">
-							<CourseBody></CourseBody>
+							<CourseBody />
 						</div>
 					</div>
 				)}

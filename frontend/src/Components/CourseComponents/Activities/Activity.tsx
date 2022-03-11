@@ -28,7 +28,7 @@ const Activity = () => {
 	const renderSpecificActivity = () => {
 		switch (activity.type) {
 			case ACTIVITY_TYPE.CHALLENGE:
-				return <ActivityChallenge></ActivityChallenge>;
+				return <ActivityChallenge />;
 			default:
 				return (
 					<div className="w-full h-full flex justify-center items-center">

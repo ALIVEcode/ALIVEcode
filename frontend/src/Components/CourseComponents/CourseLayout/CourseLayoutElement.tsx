@@ -64,7 +64,7 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 
 	return (
 		<div className="py-2 pl-2 laptop:pl-3 desktop:pl-4">
-			<div className="group text-base flex items-center">
+			<div className="group text-base flex items-center" onClick={() => {}}>
 				<FontAwesomeIcon
 					icon={faBars}
 					size="lg"

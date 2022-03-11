@@ -1,7 +1,7 @@
 {
 	"error": {
 		"sorry": "Sorry.",
-		"unknown": "An unknow error occured, please try again.",
+		"unknown": "An unknown error occurred, please try again.",
 		"custom": "Error: {{error}}.",
 		"back": "Go back",
 		"home": "Back to the main page",
@@ -284,7 +284,7 @@
 			"to_trainings": "To Trainings",
 			"section": {
 				"develop": {
-					"title": "Start Developping",
+					"title": "Start Developing",
 					"desc": "Practice your notions of the Internet of Things by developing IoT Projects. Register your IoT Objects. Create a network of connected devices and establish communications between them. Collect and share data between those objects. Show in real-time your data in a graphical user interface."
 				},
 				"learn": {
@@ -304,11 +304,11 @@
 			},
 			"story": {
 				"title": "Our story",
-				"desc": "ALIVEcode comes from way back in time. Three years from now we thought of making miniature autonomous vehicles for researchs' purposes. A year later, we had the idea to use those robots to teach programming to young students. Fast-forward one year and we decided to create ALIVEcode to make our teaching more accessible to the mass. It's now been over a year that the website exists and keeps expanding."
+				"desc": "ALIVEcode comes from way back in time. Three years from now we thought of making miniature autonomous vehicles for researches' purposes. A year later, we had the idea to use those robots to teach programming to young students. Fast-forward one year and we decided to create ALIVEcode to make our teaching more accessible to the mass. It's now been over a year that the website exists and keeps expanding."
 			},
 			"training_ai": {
 				"title": "Artificial Intelligence Training",
-				"desc": "Learn the theory and current usage of AI in society. Follow one or multiple complete pieces of training offered by ALIVEcode that will teach you all there is to know about AI. Such as linear regressions, classification, decisional trees, neural networks, etc."
+				"desc": "Learn the theory and current usage of AI in society. Follow one or multiple complete pieces of training offered by ALIVEcode that will teach you all there is to know about AI. Such as linear regressions, classification, decision trees, neural networks, etc."
 			},
 			"training_iot": {
 				"title": "Internet of Things Training",
@@ -357,18 +357,18 @@
 		"section": {
 			"artificial-intelligence": {
 				"title": "The Potential of Artificial Intelligence",
-				"paragraph1": "Artificial intelligence is taking an increasingly important place in our daily lives. In fact, we can already see it today: there are smart assiistants in our phones, computers and speakers; more and more experiments with AI technologies are carried out in the fiels of transport, agriculture, medicine and more; Internet search engines and many sites use AI for buisness purposes; and there are many more examples!",
+				"paragraph1": "Artificial intelligence is taking an increasingly important place in our daily lives. In fact, we can already see it today: there are smart assistants in our phones, computers and speakers; more and more experiments with AI technologies are carried out in the fiels of transport, agriculture, medicine and more; Internet search engines and many sites use AI for business purposes; and there are many more examples!",
 				"paragraph2": "While following the courses on the different facets of artificial intelligence, you will learn how it can be used to solve a variety of problems:",
 				"point1": "How to predict the fuel consumption of a car if we vary its engine, weight, and several other characteristics?",
 				"point2": "How to develop a formula that will predict the maximum height of a person",
 				"point3": "How to find the optimal configuration for a robot to accomplish a task?",
 				"point4": "And much more!",
-				"paragraph3": "Additionnaly, even if we have covered only a few applications of artificial intelligence, the possibilities are endless, so there is still so much to discover!"
+				"paragraph3": "Additionally, even if we have covered only a few applications of artificial intelligence, the possibilities are endless, so there is still so much to discover!"
 			},
 			"machine-learning": {
 				"title": "Machine Learning and Its Place in AI",
 				"paragraph1": "If you are not familiar with the field of artificial intelligence, the first thing to know is that there are multiple major branches that focus on a more specific topic of AI. For example, the computer vision branch specializes in image recognition, while the speech recognition branch seeks more to recognize or generate human speech. Machine learning is just one of these categories, but it contains several sub-branches, including the famous neural networks.",
-				"paragraph2": "Machine learning mainly specializes in predicting values based on data relevant to the situation being analyzed. It makes predicting results possible in situations which would require extremely complex calculations to arrive at the same results. To do this, the algorithm trains on values from previous experimets and tries to predict their results with a random model. Then, we compare the prediction with the real value and we adapt the model according to the error in order to improve it. Finally, this process is repeated until a satisfactory resolt is achieved. It is this process that is used in all machine learning algorithms, whether they are regressions or even neural networks."
+				"paragraph2": "Machine learning mainly specializes in predicting values based on data relevant to the situation being analyzed. It makes predicting results possible in situations which would require extremely complex calculations to arrive at the same results. To do this, the algorithm trains on values from previous experiments and tries to predict their results with a random model. Then, we compare the prediction with the real value and we adapt the model according to the error in order to improve it. Finally, this process is repeated until a satisfactory resolt is achieved. It is this process that is used in all machine learning algorithms, whether they are regressions or even neural networks."
 			},
 			"deep-learning": {
 				"title": "Deep Neural Networks in AI",

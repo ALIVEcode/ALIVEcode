@@ -9,7 +9,6 @@ import {
 import { Activity, ActivityChallenge, ACTIVITY_TYPE } from './activity.entity';
 import { Course } from './course.entity';
 import { Section } from './section.entity';
-import { ResourceChallenge } from '../Resource/resource_level.entity';
 import { ActivityTheory } from './activities/activity_theory.entity';
 import { ActivityVideo } from './activities/activity_video.entity';
 
@@ -47,32 +46,12 @@ export class CourseElement {
 
 	/** If the element is an activity **/
 	@Expose({ toClassOnly: true })
-	/*
-	@Transform(({ value: activity, type }) => {
-		if (type !== TransformationType.PLAIN_TO_CLASS || !activity) {
-			return activity;
-		}
-		switch (activity.type) {
-			case ACTIVITY_TYPE.LEVEL:
-				return plainToInstance(ActivityLevel, activity, {
-					groups: ['avoidCircular'],
-				});
-			case ACTIVITY_TYPE.VIDEO:
-				return plainToInstance(ActivityVideo, activity, {
-					groups: ['avoidCircular'],
-				});
-			case ACTIVITY_TYPE.THEORY:
-				return plainToInstance(ActivityTheory, activity, {
-					groups: ['avoidCircular'],
-				});
-		}
-	})*/
 	@Transform(({ value: activity, type }) => {
 		if (type !== TransformationType.PLAIN_TO_CLASS || !activity) {
 			return activity;
 		}
 
-		if (activity.type === ACTIVITY_TYPE.LEVEL) {
+		if (activity.type === ACTIVITY_TYPE.CHALLENGE) {
 			return plainToInstance(ActivityChallenge, activity);
 		}
 

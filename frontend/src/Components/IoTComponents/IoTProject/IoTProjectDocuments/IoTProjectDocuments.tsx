@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import AceEditor from 'react-ace';
 import useWaitBeforeUpdate from '../../../../state/hooks/useWaitBeforeUpdate';
 import 'ace-builds/src-noconflict/mode-json';
-import { StyledLineInterface } from '../../../LevelComponents/LineInterface/lineInterfaceTypes';
+import { StyledLineInterface } from '../../../ChallengeComponents/LineInterface/lineInterfaceTypes';
 
 const IoTProjectDocuments = () => {
 	const { project, updateDocument } = useContext(IoTProjectContext);

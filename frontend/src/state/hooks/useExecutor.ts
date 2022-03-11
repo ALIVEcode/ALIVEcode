@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { CMD } from '../../Components/LevelComponents/Cmd/cmdTypes';
+import { CMD } from '../../Components/ChallengeComponents/Cmd/cmdTypes';
 import { ClassConstructor } from 'class-transformer';
-import ChallengeCodeExecutor from '../../Pages/Level/ChallengeCode/ChallengeCodeExecutor';
+import ChallengeCodeExecutor from '../../Pages/Challenge/ChallengeCode/ChallengeCodeExecutor';
 
 const useExecutor = <T extends ChallengeCodeExecutor>(
 	U: ClassConstructor<T>,

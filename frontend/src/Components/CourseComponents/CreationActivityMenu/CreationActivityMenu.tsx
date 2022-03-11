@@ -50,9 +50,9 @@ const CreationActivityMenu = ({
 		>
 			<CreationMenu>
 				<TypeCard
-					title={t('msg.activity_type.level')}
+					title={t('msg.activity_type.challenge')}
 					icon={faCode}
-					onClick={() => onSelect(ACTIVITY_TYPE.LEVEL)}
+					onClick={() => onSelect(ACTIVITY_TYPE.CHALLENGE)}
 				/>
 				<TypeCard
 					title={t('msg.activity_type.video')}

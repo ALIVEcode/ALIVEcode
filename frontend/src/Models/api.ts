@@ -17,14 +17,14 @@ import {
 	IoTProjectLayout,
 } from './Iot/IoTproject.entity';
 import { IotRoute } from './Iot/IoTroute.entity';
-import { ClassroomQueryDTO } from './Level/dto/ClassroomQuery.dto';
-import { ChallengeQueryDTO } from './Level/dto/ChallengeQuery.dto';
-import { Challenge, CHALLENGE_TYPE } from './Level/challenge.entity';
-import { ChallengeAI } from './Level/challenges/challenge_ai.entity';
-import { ChallengeAlive } from './Level/challenges/challenge_alive.entity';
-import { ChallengeCode } from './Level/challenges/challenge_code.entity';
-import { ChallengeIoT } from './Level/challenges/challenge_IoT.entity';
-import { ChallengeProgression } from './Level/challengeProgression';
+import { ClassroomQueryDTO } from './Challenge/dto/ClassroomQuery.dto';
+import { ChallengeQueryDTO } from './Challenge/dto/ChallengeQuery.dto';
+import { Challenge, CHALLENGE_TYPE } from './Challenge/challenge.entity';
+import { ChallengeAI } from './Challenge/challenges/challenge_ai.entity';
+import { ChallengeAlive } from './Challenge/challenges/challenge_alive.entity';
+import { ChallengeCode } from './Challenge/challenges/challenge_code.entity';
+import { ChallengeIoT } from './Challenge/challenges/challenge_IoT.entity';
+import { ChallengeProgression } from './Challenge/challengeProgression';
 import { Maintenance } from './Maintenance/maintenance.entity';
 import { Answer } from './Quiz/answer.entity';
 import { Category } from './Quiz/categories-quiz.entity';

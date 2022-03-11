@@ -27,7 +27,7 @@ const Activity = () => {
 	 */
 	const renderSpecificActivity = () => {
 		switch (activity.type) {
-			case ACTIVITY_TYPE.LEVEL:
+			case ACTIVITY_TYPE.CHALLENGE:
 				return <ActivityChallenge></ActivityChallenge>;
 			default:
 				return (

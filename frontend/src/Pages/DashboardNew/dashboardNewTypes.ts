@@ -3,7 +3,7 @@ import { Classroom } from '../../Models/Classroom/classroom.entity';
 export type DashboardNewProps = {};
 
 export type SwitchTabActions = {
-	type: 'recents' | 'levels' | 'classrooms';
+	type: 'recents' | 'challenges' | 'classrooms';
 	classroom?: Classroom;
 };
 

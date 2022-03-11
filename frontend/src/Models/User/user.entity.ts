@@ -5,7 +5,7 @@ import { Classroom } from '../Classroom/classroom.entity';
 import { Course } from '../Course/course.entity';
 import { IoTObject } from '../Iot/IoTobject.entity';
 import { IoTProject } from '../Iot/IoTproject.entity';
-import { Challenge } from '../Level/challenge.entity';
+import { Challenge } from '../Challenge/challenge.entity';
 
 /**
  * Frontend user model
@@ -33,7 +33,7 @@ export class User {
 	@Exclude({ toPlainOnly: true })
 	isSuperUser?: boolean;
 
-	levels?: Challenge[];
+	challenges?: Challenge[];
 
 	IoTObjects?: IoTObject[];
 

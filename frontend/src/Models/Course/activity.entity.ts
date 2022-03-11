@@ -1,11 +1,11 @@
 import { faBook, faCode, faVideo } from '@fortawesome/free-solid-svg-icons';
-import { Exclude, Expose, Type } from 'class-transformer';
-import { ResourceChallenge } from '../Resource/resource_level.entity';
+import { Exclude, Type } from 'class-transformer';
+import { ResourceChallenge } from '../Resource/resource_challenge.entity';
 import { CourseElement } from './course_element.entity';
 
 export enum ACTIVITY_TYPE {
 	THEORY = 'TH',
-	LEVEL = 'LE',
+	CHALLENGE = 'CH',
 	VIDEO = 'VI',
 }
 
@@ -35,7 +35,7 @@ export class Activity {
 	// eslint-disable-next-line getter-return
 	get icon() {
 		switch (this.type) {
-			case ACTIVITY_TYPE.LEVEL:
+			case ACTIVITY_TYPE.CHALLENGE:
 				return faCode;
 			case ACTIVITY_TYPE.THEORY:
 				return faBook;
@@ -46,27 +46,14 @@ export class Activity {
 }
 
 /**
- * Activity of type Level model in the database
+ * Activity of type Challenge model in the database
  * @author Enric Solevila
  */
 export class ActivityChallenge extends Activity {
-	/** Resource level */
+	/** Resource */
 	@Type(() => ResourceChallenge)
 	resource?: ResourceChallenge;
 
-	/** Id of the resource level */
+	/** Id of the resource resource */
 	resourceId?: string;
-
-	/*@Transform(({ value: res }: { value: ResourceLevel }) => {
-		if (res.level.type === LEVEL_TYPE.ALIVE)
-			res.level = plainToClass(LevelAlive, res);
-		else if (res.level.type === LEVEL_TYPE.CODE)
-			res.level = plainToClass(LevelCode, res);
-		else if (res.level.type === LEVEL_TYPE.AI)
-			res.level = plainToClass(LevelAI, res);
-		else if (res.level.type === LEVEL_TYPE.IOT)
-			res.level = plainToClass(LevelIoT, res);
-		return res;
-	})
-	resource?: ResourceLevel[];*/
 }

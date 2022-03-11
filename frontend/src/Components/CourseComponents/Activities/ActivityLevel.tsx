@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { CourseContext } from '../../../state/contexts/CourseContext';
-import Challenge from '../../../Pages/Level/Challenge';
+import Challenge from '../../../Pages/Challenge/Challenge';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import api from '../../../Models/api';

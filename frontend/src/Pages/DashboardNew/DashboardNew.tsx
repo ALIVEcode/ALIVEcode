@@ -37,8 +37,8 @@ import {
 import { Course } from '../../Models/Course/course.entity';
 import { useNavigate } from 'react-router-dom';
 import useRoutes from '../../state/hooks/useRoutes';
-import DashboardLevels from '../../Components/DashboardComponents/DashboardLevels/DashboardLevels';
-import { Challenge } from '../../Models/Level/challenge.entity';
+import DashboardChallenges from '../../Components/DashboardComponents/DashboardChallenges/DashboardChallenges';
+import { Challenge } from '../../Models/Challenge/challenge.entity';
 import Button from '../../Components/UtilsComponents/Buttons/Button';
 import CourseSection from '../../Components/DashboardComponents/CourseSection/CourseSection';
 
@@ -55,7 +55,7 @@ const SwitchTabReducer = (
 	switch (action.type) {
 		case 'recents':
 			return { index: 0 };
-		case 'levels':
+		case 'challenges':
 			return { index: 1 };
 		case 'classrooms':
 			if (action.classroom) {
@@ -91,13 +91,13 @@ const DashboardNew = (props: DashboardNewProps) => {
 		index: 0,
 	});
 	const [recentCourses, setRecentCourses] = useState<Course[]>();
-	const [levels, setLevels] = useState<Challenge[]>();
+	const [challenges, setChallenges] = useState<Challenge[]>();
 
 	useEffect(() => {
 		if (pathname.endsWith('recents') && tabSelected.index !== 0)
 			setTabSelected({ type: 'recents' });
-		else if (pathname.endsWith('levels') && tabSelected.index !== 1)
-			setTabSelected({ type: 'levels' });
+		else if (pathname.endsWith('challenges') && tabSelected.index !== 1)
+			setTabSelected({ type: 'challenges' });
 		else if (pathname.includes('classroom')) {
 			const classroomId = query.get('id');
 			if (tabSelected.classroom?.id === classroomId) return;
@@ -138,12 +138,12 @@ const DashboardNew = (props: DashboardNewProps) => {
 	};
 
 	/**
-	 * Opens the levels tab
+	 * Opens the challenges tab
 	 */
-	const openLevels = () => {
+	const openChallenges = () => {
 		query.delete('id');
 		navigate({
-			pathname: `/dashboard/levels`,
+			pathname: `/dashboard/challenges`,
 			search: query.toString(),
 		});
 	};
@@ -167,7 +167,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 			case 0:
 				return <DashboardRecents></DashboardRecents>;
 			case 1:
-				return <DashboardLevels></DashboardLevels>;
+				return <DashboardChallenges></DashboardChallenges>;
 			case 2:
 				if (!tabSelected.classroom) return;
 				return (
@@ -189,12 +189,12 @@ const DashboardNew = (props: DashboardNewProps) => {
 	}, [user]);
 
 	/**
-	 * Loads the current levels of the user from the database
+	 * Loads the current challenges of the user from the database
 	 */
-	const loadLevels = useCallback(async () => {
+	const loadChallenges = useCallback(async () => {
 		if (!user) return;
-		const levels = await api.db.users.getChallenges({ id: user.id });
-		setLevels(levels);
+		const challenges = await api.db.users.getChallenges({ id: user.id });
+		setChallenges(challenges);
 	}, [user]);
 
 	/**
@@ -213,16 +213,22 @@ const DashboardNew = (props: DashboardNewProps) => {
 			getClassrooms: () => {
 				return classrooms;
 			},
-			getLevels: () => {
-				if (!levels) {
-					loadLevels();
+			getChallenges: () => {
+				if (!challenges) {
+					loadChallenges();
 					return [];
 				}
-				return levels;
+				return challenges;
 			},
 			setFormJoinClassOpen,
 		};
-	}, [classrooms, recentCourses, levels, loadRecentCourses, loadLevels]);
+	}, [
+		classrooms,
+		recentCourses,
+		challenges,
+		loadRecentCourses,
+		loadChallenges,
+	]);
 
 	return (
 		<StyledDashboard>
@@ -246,11 +252,11 @@ const DashboardNew = (props: DashboardNewProps) => {
 								'sidebar-btn ' +
 								(tabSelected.index === 1 ? 'sidebar-selected' : '')
 							}
-							onClick={openLevels}
+							onClick={openChallenges}
 						>
 							<FontAwesomeIcon className="sidebar-icon" icon={faStar} />
 							<label className="sidebar-btn-text">
-								{t('dashboard.levels.title')}
+								{t('dashboard.challenges.title')}
 							</label>
 						</div>
 

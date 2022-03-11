@@ -6,7 +6,7 @@ import Home from '../../Pages/Home/Home';
 import SignIn from '../../Pages/Account/SignIn/SignIn';
 import SignUp from '../../Pages/Account/SignUp/SignUp';
 import { USER_TYPES } from '../../Types/userTypes';
-import Challenge from '../../Pages/Level/Challenge';
+import Challenge from '../../Pages/Challenge/Challenge';
 import SignUpMenu from '../../Pages/Account/SignUpMenu/SignUpMenu';
 import About from '../../Pages/About/About';
 import AIHome from '../../Pages/AI/AIHome/AIHome';
@@ -19,10 +19,10 @@ import IoTHome from '../../Pages/IoT/IoTHome/IoTHome';
 import IoTProject from '../../Pages/IoT/IoTProject/IoTProject';
 import IoTProjectCreate from '../../Components/IoTComponents/IoTProject/IotProjectForm/IoTProjectCreate';
 import IoTDashboard from '../../Pages/IoT/IoTDashboard/IoTDashboard';
-import LevelForm from '../../Components/LevelComponents/LevelForm/LevelForm';
-import LevelBrowse from '../../Pages/Level/LevelBrowse/LevelBrowse';
-import ChallengeList from '../../Pages/Level/ChallengeList/ChallengeList';
-import LevelFormMenu from '../../Pages/Level/LevelFormMenu/LevelFormMenu';
+import ChallengeForm from '../../Components/ChallengeComponents/ChallengeForm/ChallengeForm';
+import ChallengeBrowse from '../../Pages/Challenge/ChallengeBrowse/ChallengeBrowse';
+import ChallengeList from '../../Pages/Challenge/ChallengeList/ChallengeList';
+import ChallengeFormMenu from '../../Pages/Challenge/ChallengeFormMenu/ChallengeFormMenu';
 import Test from '../../Pages/Test/Test';
 import ASDocs from '../../Components/AliveScriptComponents/ASDocs/ASDocs';
 import { MaintenanceError } from '../../Pages/Errors/MaintenanceError/MaintenanceError';
@@ -41,7 +41,7 @@ import ForumPostForm from '../../Pages/Forum/ForumFormQuestion/ForumFormQuestion
 import ForumPost from '../../Pages/Forum/ForumPost/ForumPost';
 import ForumSearch from '../../Pages/Forum/ForumSearch/ForumSearch';
 import Chat from '../../Pages/Chat/Chat';
-import { CHALLENGE_TYPE } from '../../Models/Level/challenge.entity';
+import { CHALLENGE_TYPE } from '../../Models/Challenge/challenge.entity';
 import DashboardNew from '../../Pages/DashboardNew/DashboardNew';
 import ClassroomBrowse from '../../Components/ClassroomComponents/ClassroomBrowse/ClassroomBrowse';
 import { UnderDevelopment } from '../../Pages/Errors/UnderDevelopment/UnderDevelopment';
@@ -304,37 +304,37 @@ const useRoutes = () => {
 			component: <ChallengeList></ChallengeList>,
 		},
 		challenge_edit: {
-			path: '/challenge/edit/:levelId',
+			path: '/challenge/edit/:challengeId',
 			component: <Challenge editMode />,
 		},
 		challenge_browse: {
 			path: '/challenge/browse',
-			component: <LevelBrowse></LevelBrowse>,
+			component: <ChallengeBrowse></ChallengeBrowse>,
 		},
 		challenge_play: {
-			path: '/challenge/play/:levelId',
+			path: '/challenge/play/:challengeId',
 			component: <Challenge editMode={false}></Challenge>,
 		},
 		challenge_create: {
 			path: '/challenge/create',
 			exact: true,
-			component: <LevelFormMenu></LevelFormMenu>,
+			component: <ChallengeFormMenu></ChallengeFormMenu>,
 		},
 		challenge_create_alive: {
 			path: '/challenge/create/alive',
-			component: <LevelForm type={CHALLENGE_TYPE.ALIVE} />,
+			component: <ChallengeForm type={CHALLENGE_TYPE.ALIVE} />,
 		},
 		challenge_create_code: {
 			path: '/challenge/create/code',
-			component: <LevelForm type={CHALLENGE_TYPE.CODE} />,
+			component: <ChallengeForm type={CHALLENGE_TYPE.CODE} />,
 		},
 		challenge_create_ai: {
 			path: '/challenge/create/ai',
-			component: <LevelForm type={CHALLENGE_TYPE.AI} />,
+			component: <ChallengeForm type={CHALLENGE_TYPE.AI} />,
 		},
 		challenge_create_iot: {
 			path: '/challenge/create/iot',
-			component: <LevelForm type={CHALLENGE_TYPE.IOT} />,
+			component: <ChallengeForm type={CHALLENGE_TYPE.IOT} />,
 		},
 		quiz_create: {
 			accountType: Professor,

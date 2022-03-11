@@ -12,7 +12,7 @@ export enum RESOURCE_TYPE {
 	VIDEO = 'VI',
 	FILE = 'FI',
 	IMAGE = 'IM',
-	LEVEL = 'LE',
+	CHALLENGE = 'CH',
 }
 
 export class Resource {
@@ -38,7 +38,7 @@ export class Resource {
 				return faFile;
 			case RESOURCE_TYPE.IMAGE:
 				return faImage;
-			case RESOURCE_TYPE.LEVEL:
+			case RESOURCE_TYPE.CHALLENGE:
 				return faCode;
 			case RESOURCE_TYPE.VIDEO:
 				return faVideo;

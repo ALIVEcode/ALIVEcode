@@ -1,4 +1,4 @@
-import LineInterface from '../../LevelComponents/LineInterface/LineInterface';
+import LineInterface from '../../ChallengeComponents/LineInterface/LineInterface';
 import { useState, useRef, useEffect } from 'react';
 import api from '../../../Models/api';
 import { AsScriptProps } from './asScriptTypes';

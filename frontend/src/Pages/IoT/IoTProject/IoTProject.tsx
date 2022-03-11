@@ -26,7 +26,7 @@ import { IoTObject } from '../../../Models/Iot/IoTobject.entity';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import { useParams } from 'react-router';
 import IoTProjectPage from '../IoTProjectPage/IoTProjectPage';
-import IoTChallenge from '../../Level/ChallengeIoT/ChallengeIoT';
+import IoTChallenge from '../../Challenge/ChallengeIoT/ChallengeIoT';
 import { AsScript } from '../../../Models/AsScript/as-script.entity';
 import { useNavigate } from 'react-router-dom';
 import { IoTProjectDocument } from '../../../../../backend/src/models/iot/IoTproject/entities/IoTproject.entity';

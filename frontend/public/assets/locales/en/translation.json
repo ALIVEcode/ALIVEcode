@@ -216,6 +216,11 @@
 			"empty": "You have do not have any course"
 		}
 	},
+	"resources": {
+		"form": {
+			"create": "Create a resource"
+		}
+	},
 	"classroom": {
 		"add_students": "Add students",
 		"delete": "Delete classroom",

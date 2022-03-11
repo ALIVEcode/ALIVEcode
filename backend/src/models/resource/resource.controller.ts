@@ -7,6 +7,8 @@ import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
 import { ResourceCreator } from '../../utils/guards/resource.guard';
 import { Resource } from '../../utils/decorators/resource.decorator';
 import { CreateResourceDTO } from './dto/CreateResource.dto';
+import { ProfessorEntity } from '../user/entities/user.entity';
+import { User } from '../../utils/decorators/user.decorator';
 
 @Controller('resources')
 @UseInterceptors(DTOInterceptor)
@@ -15,8 +17,8 @@ export class ResourceController {
 
   @Post()
   @Auth(Role.PROFESSOR)
-  async create(@Body() createResourceDto: CreateResourceDTO) {
-    return await this.resourceService.create(createResourceDto);
+  async create(@User() user: ProfessorEntity, @Body() createResourceDto: CreateResourceDTO) {
+    return await this.resourceService.create(createResourceDto, user);
   }
 
   @Get(':id')

@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsEnum, IsNotEmpty, ValidateNested } from 'class-validator';
+import { IsDefined, IsEnum, IsNotEmpty, IsNotEmptyObject, ValidateNested } from 'class-validator';
 import { ResourceEntity, RESOURCE_TYPE, DifferentResources } from '../entities/resource.entity';
 import { ResourceChallengeEntity } from '../entities/resource_challenge.entity';
 import { ResourceFileEntity } from '../entities/resource_file.entity';
@@ -13,6 +13,8 @@ export class CreateResourceDTO {
   type: RESOURCE_TYPE;
 
   @ValidateNested()
+  @IsDefined()
+  @IsNotEmptyObject()
   @Type(() => ResourceEntity, {
     discriminator: {
       property: 'type',

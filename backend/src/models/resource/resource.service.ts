@@ -8,6 +8,7 @@ import { ResourceImageEntity } from './entities/resource_image.entity';
 import { ResourceTheoryEntity } from './entities/resource_theory.entity';
 import { ResourceVideoEntity } from './entities/resource_video.entity';
 import { CreateResourceDTO } from './dto/CreateResource.dto';
+import { ProfessorEntity } from '../user/entities/user.entity';
 
 @Injectable()
 export class ResourceService {
@@ -20,7 +21,8 @@ export class ResourceService {
     @InjectRepository(ResourceVideoEntity) private readonly resVideoRepo: Repository<ResourceVideoEntity>,
   ) {}
 
-  async create(dto: CreateResourceDTO) {
+  async create(dto: CreateResourceDTO, professor: ProfessorEntity) {
+    dto.resource.creator = professor;
     switch (dto.type) {
       case RESOURCE_TYPE.CHALLENGE:
         return await this.resChallengeRepo.save(dto.resource);

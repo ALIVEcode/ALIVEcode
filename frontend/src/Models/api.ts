@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import axios from 'axios';
-import { ClassConstructor, plainToClass } from 'class-transformer';
+import {
+	ClassConstructor,
+	plainToClass,
+	plainToInstance,
+} from 'class-transformer';
 import { CompileDTO } from './ASModels';
 import { AsScript } from './AsScript/as-script.entity';
 import { Classroom } from './Classroom/classroom.entity';
@@ -31,11 +35,17 @@ import { Category } from './Quiz/categories-quiz.entity';
 import { QuestionForm } from './Quiz/questionForm.entity';
 import { Quiz } from './Quiz/quiz.entity';
 import { QuizForm } from './Quiz/quizForm.entity';
-import { Resource } from './Resource/resource.entity';
+import {
+	DifferentResources,
+	Resource,
+	RESOURCE_TYPE,
+} from './Resource/resource.entity';
 import { Result } from './Social/result.entity';
 import { Topics } from './Social/topics.entity';
 import { Professor, Student } from './User/user.entity';
 import { loadObj } from './utils';
+import { FormCreateResourceDTO } from '../Components/Resources/FormCreateResource/formCreateResourceTypes';
+import { GenericResourceTransformer } from './Resource/transformer/GenericResourceTransformer';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;
@@ -292,6 +302,11 @@ const api = {
 		},
 		resources: {
 			delete: apiDelete('resources/:id'),
+			create: async (dto: FormCreateResourceDTO) => {
+				return plainToInstance(GenericResourceTransformer, {
+					resource: (await axios.post(`resources`, dto)).data,
+				}).resource;
+			},
 		},
 		challenges: {
 			progressions: {

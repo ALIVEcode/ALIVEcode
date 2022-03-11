@@ -38,7 +38,7 @@ export class Resource {
 
 	type: RESOURCE_TYPE;
 
-	category: SUBJECTS;
+	subject: SUBJECTS;
 
 	creationDate: Date;
 

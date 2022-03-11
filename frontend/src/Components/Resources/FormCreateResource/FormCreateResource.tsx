@@ -4,18 +4,27 @@ import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
 import { FormCreateResourceDTO } from './formCreateResourceTypes';
 import api from '../../../Models/api';
 import Button from '../../UtilsComponents/Buttons/Button';
+import { SUBJECTS } from '../../../Types/sharedTypes';
+import { useState, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
+import { UserContext } from '../../../state/contexts/UserContext';
+import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 
-const FormCreateResource = ({ type }: { type: RESOURCE_TYPE }) => {
+const FormCreateResource = ({ subject }: { subject: SUBJECTS }) => {
+	const [type, setType] = useState<RESOURCE_TYPE>(RESOURCE_TYPE.FILE);
+	const { t } = useTranslation();
+	const { setResources, resources } = useContext(UserContext);
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<FormCreateResourceDTO>();
+	} = useForm<FormCreateResourceDTO>({ defaultValues: { type } });
+	if (!resources) return <LoadingScreen></LoadingScreen>;
 
 	const onSubmit = async (formValues: FormCreateResourceDTO) => {
-		formValues.type = type;
+		formValues.resource.subject = subject;
 		const resource = await api.db.resources.create(formValues);
-		console.log(resource);
+		setResources([...resources, resource]);
 	};
 
 	const renderSpecificFields = () => {
@@ -25,9 +34,21 @@ const FormCreateResource = ({ type }: { type: RESOURCE_TYPE }) => {
 			case RESOURCE_TYPE.THEORY:
 				return <></>;
 			case RESOURCE_TYPE.VIDEO:
-				return <></>;
+				return (
+					<InputGroup
+						label="Url"
+						errors={errors.resource?.url}
+						{...register('resource.url', { required: true })}
+					/>
+				);
 			case RESOURCE_TYPE.IMAGE:
-				return <></>;
+				return (
+					<InputGroup
+						label="Url"
+						errors={errors.resource?.url}
+						{...register('resource.url', { required: true })}
+					/>
+				);
 			case RESOURCE_TYPE.FILE:
 				return <></>;
 		}
@@ -36,12 +57,31 @@ const FormCreateResource = ({ type }: { type: RESOURCE_TYPE }) => {
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
 			<InputGroup
+				as="select"
+				label="Type"
+				errors={errors.resource?.name}
+				{...register('type', { required: true })}
+				onChange={(e: any) => {
+					setType(e.target.value);
+				}}
+			>
+				<option value={RESOURCE_TYPE.FILE}>{t('resources.file.name')}</option>
+				<option value={RESOURCE_TYPE.VIDEO}>{t('resources.video.name')}</option>
+				<option value={RESOURCE_TYPE.IMAGE}>{t('resources.image.name')}</option>
+				<option value={RESOURCE_TYPE.THEORY}>
+					{t('resources.theory.name')}
+				</option>
+				<option value={RESOURCE_TYPE.CHALLENGE}>
+					{t('resources.challenge.name')}
+				</option>
+			</InputGroup>
+			<InputGroup
 				label="Name"
-				errors={errors.resource?.name?.type}
+				errors={errors.resource?.name}
 				{...register('resource.name', { required: true })}
 			/>
 			{renderSpecificFields()}
-			<Button variant="primary" type="submit">
+			<Button variant="primary" type="submit" className="mt-3">
 				Submit
 			</Button>
 		</form>

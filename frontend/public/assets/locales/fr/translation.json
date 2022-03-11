@@ -217,6 +217,21 @@
 		}
 	},
 	"resources": {
+		"video": {
+			"name": "Vidéo"
+		},
+		"file": {
+			"name": "Fichier"
+		},
+		"image": {
+			"name": "Image"
+		},
+		"challenge": {
+			"name": "Défi"
+		},
+		"theory": {
+			"name": "Théorie"
+		},
 		"form": {
 			"create": "Créer une ressource"
 		}

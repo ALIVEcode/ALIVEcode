@@ -7,6 +7,16 @@ import { ResourceImageEntity } from '../entities/resource_image.entity';
 import { ResourceTheoryEntity } from '../entities/resource_theory.entity';
 import { ResourceVideoEntity } from '../entities/resource_video.entity';
 
+export class CreateResourceDTOSimple {
+  @IsNotEmpty()
+  @IsEnum(RESOURCE_TYPE)
+  type: RESOURCE_TYPE;
+
+  @IsDefined()
+  @IsNotEmptyObject()
+  resource: DifferentResources;
+}
+
 export class CreateResourceDTO {
   @IsNotEmpty()
   @IsEnum(RESOURCE_TYPE)

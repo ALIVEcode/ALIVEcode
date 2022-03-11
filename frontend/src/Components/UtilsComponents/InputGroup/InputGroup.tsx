@@ -1,6 +1,5 @@
 import React from 'react';
 import { FieldError } from 'react-hook-form';
-import { classNames } from '../../../Types/utils';
 import { useTranslation } from 'react-i18next';
 import FormLabel from '../FormLabel/FormLabel';
 import FormInput from '../FormInput/FormInput';
@@ -90,11 +89,11 @@ const InputGroup = React.forwardRef<any, any>(
 					{...props}
 				/>
 				<p className="text-red-500 text-sm italic mt-1">
-					{errors &&
-						messages &&
-						(errors.type in messages
+					{errors && messages
+						? errors.type in messages
 							? messages[errors.type]
-							: getGenericError())}
+							: getGenericError()
+						: getGenericError()}
 				</p>
 			</div>
 		);

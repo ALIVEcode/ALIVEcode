@@ -6,6 +6,7 @@ import { Course } from '../Course/course.entity';
 import { IoTObject } from '../Iot/IoTobject.entity';
 import { IoTProject } from '../Iot/IoTproject.entity';
 import { Challenge } from '../Challenge/challenge.entity';
+import { Resource } from '../Resource/resource.entity';
 
 /**
  * Frontend user model
@@ -34,6 +35,8 @@ export class User {
 	isSuperUser?: boolean;
 
 	challenges?: Challenge[];
+
+	resources?: Resource[];
 
 	IoTObjects?: IoTObject[];
 
@@ -69,7 +72,6 @@ export class User {
 
 	public async getCourses() {
 		if (!this.courses) {
-			console.log(this.id);
 			const fetchedCourses: Course[] =
 				(await api.db.users.getCourses({ id: this.id })) ?? [];
 			this.courses = fetchedCourses;

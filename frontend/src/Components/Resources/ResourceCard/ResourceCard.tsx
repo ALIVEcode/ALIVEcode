@@ -2,14 +2,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ResourceCardProps } from './resourceCardType';
 import { faTrash, faWrench } from '@fortawesome/free-solid-svg-icons';
 import AlertConfirm from '../../UtilsComponents/Alert/AlertConfirm/AlertConfirm';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../../../Models/api';
+import { UserContext } from '../../../state/contexts/UserContext';
+import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 
 const ResourceCard = ({ resource }: ResourceCardProps) => {
 	const [deleteOpen, setDeleteOpen] = useState(false);
 	const { t } = useTranslation();
+	const { user, resources, setResources } = useContext(UserContext);
 
+	if (!resources) return <LoadingScreen />;
 	return (
 		<div className="h-auto">
 			<div className="relative flex flex-col justify-center items-center aspect-[4/3] rounded-2xl border border-[color:var(--bg-shade-four-color)] bg-[color:var(--background-color)]">
@@ -38,6 +42,7 @@ const ResourceCard = ({ resource }: ResourceCardProps) => {
 				title={t('msg.resource.delete')}
 				onConfirm={async () => {
 					await api.db.resources.delete({ id: resource.id });
+					setResources(resources?.filter(r => r.id !== resource.id));
 				}}
 				setOpen={setDeleteOpen}
 				open={deleteOpen}

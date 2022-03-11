@@ -47,12 +47,12 @@ export class ResourceEntity {
 
   /** Type of the resource */
   @Exclude({ toClassOnly: true })
-  @IsEmpty()
   @Column({ type: 'enum', name: 'type', enum: RESOURCE_TYPE, default: RESOURCE_TYPE.FILE })
-  readonly type: RESOURCE_TYPE;
+  type: RESOURCE_TYPE;
 
   @Column({ type: 'enum', enum: SUBJECTS, default: SUBJECTS.OTHER })
-  category: SUBJECTS;
+  @IsNotEmpty()
+  subject: SUBJECTS;
 
   @CreateDateColumn()
   @IsEmpty()

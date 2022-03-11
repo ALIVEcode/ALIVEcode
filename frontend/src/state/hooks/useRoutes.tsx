@@ -46,6 +46,7 @@ import DashboardNew from '../../Pages/DashboardNew/DashboardNew';
 import ClassroomBrowse from '../../Components/ClassroomComponents/ClassroomBrowse/ClassroomBrowse';
 import { UnderDevelopment } from '../../Pages/Errors/UnderDevelopment/UnderDevelopment';
 import ResourcesMenu from '../../Pages/ResourceMenu/ResourceMenu';
+import RichTextEditor from '../../Components/RichTextComponents/RichTextEditor/RichTextEditor';
 
 export interface Route {
 	path: string;
@@ -352,6 +353,10 @@ const useRoutes = () => {
 			path: '/forum/post',
 			component: <ForumPostForm></ForumPostForm>,
 		},
+		rich_text_editor: {
+			path: "/txt-edit",
+			component: <RichTextEditor />
+		}
 	});
 
 	const non_auth_routes = asNonAuthRoutes(<Home></Home>, {

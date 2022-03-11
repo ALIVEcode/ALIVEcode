@@ -2,6 +2,7 @@ import { ChildEntity, Column, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { ChallengeEntity } from '../../challenge/entities/challenge.entity';
 import { ResourceEntity, RESOURCE_TYPE } from './resource.entity';
 import { ActivityChallengeEntity } from '../../course/entities/activities/activity_challenge.entity';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 /**
  * Activity of type Challenge model in the database
@@ -16,6 +17,7 @@ export class ResourceChallengeEntity extends ResourceEntity {
 
   /** Id of the referenced challenge */
   @Column({ type: 'uuid', name: 'challengeId' })
+  @IsNotEmpty()
   challengeId: string;
 
   /** Activities containing this resource */

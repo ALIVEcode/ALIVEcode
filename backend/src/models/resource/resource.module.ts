@@ -11,6 +11,11 @@ import { IoTProjectEntity } from '../iot/IoTproject/entities/IoTproject.entity';
 import { IoTObjectEntity } from '../iot/IoTobject/entities/IoTobject.entity';
 import { ChallengeEntity } from '../challenge/entities/challenge.entity';
 import { CourseHistoryEntity } from '../course/entities/course_history.entity';
+import { ResourceChallengeEntity } from './entities/resource_challenge.entity';
+import { ResourceFileEntity } from './entities/resource_file.entity';
+import { ResourceImageEntity } from './entities/resource_image.entity';
+import { ResourceTheoryEntity } from './entities/resource_theory.entity';
+import { ResourceVideoEntity } from './entities/resource_video.entity';
 
 @Module({
   imports: [
@@ -18,6 +23,11 @@ import { CourseHistoryEntity } from '../course/entities/course_history.entity';
       CourseEntity,
       CourseHistoryEntity,
       ResourceEntity,
+      ResourceChallengeEntity,
+      ResourceFileEntity,
+      ResourceImageEntity,
+      ResourceTheoryEntity,
+      ResourceVideoEntity,
       UserEntity,
       ClassroomEntity,
       StudentEntity,

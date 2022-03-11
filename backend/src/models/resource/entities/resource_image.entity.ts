@@ -1,3 +1,4 @@
+import { IsNotEmpty } from 'class-validator';
 import { ChildEntity, Column } from 'typeorm';
 import { ResourceEntity, RESOURCE_TYPE } from './resource.entity';
 
@@ -9,5 +10,6 @@ import { ResourceEntity, RESOURCE_TYPE } from './resource.entity';
 export class ResourceImageEntity extends ResourceEntity {
   /** Url of the image */
   @Column()
+  @IsNotEmpty()
   url: string;
 }

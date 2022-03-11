@@ -7,11 +7,16 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { IsNotEmpty, MinLength, IsEmpty } from 'class-validator';
+import { IsNotEmpty, IsEmpty } from 'class-validator';
 import { Exclude } from 'class-transformer';
 import { SUBJECTS } from '../../../generics/types/sharedTypes';
 import { ProfessorEntity } from '../../user/entities/user.entity';
 import { OneToMany } from 'typeorm';
+import { ResourceChallengeEntity } from './resource_challenge.entity';
+import { ResourceFileEntity } from './resource_file.entity';
+import { ResourceImageEntity } from './resource_image.entity';
+import { ResourceTheoryEntity } from './resource_theory.entity';
+import { ResourceVideoEntity } from './resource_video.entity';
 
 export enum RESOURCE_TYPE {
   VIDEO = 'VI',
@@ -20,6 +25,13 @@ export enum RESOURCE_TYPE {
   CHALLENGE = 'CH',
   THEORY = 'TH',
 }
+
+export type DifferentResources =
+  | ResourceChallengeEntity
+  | ResourceFileEntity
+  | ResourceImageEntity
+  | ResourceTheoryEntity
+  | ResourceVideoEntity;
 
 @Entity()
 @TableInheritance({ column: 'type' })
@@ -31,7 +43,6 @@ export class ResourceEntity {
 
   @Column({ nullable: false })
   @IsNotEmpty()
-  @MinLength(1)
   name: string;
 
   /** Type of the resource */
@@ -41,7 +52,6 @@ export class ResourceEntity {
   readonly type: RESOURCE_TYPE;
 
   @Column({ type: 'enum', enum: SUBJECTS, default: SUBJECTS.OTHER })
-  @IsEmpty()
   category: SUBJECTS;
 
   @CreateDateColumn()

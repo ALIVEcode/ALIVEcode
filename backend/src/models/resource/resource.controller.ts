@@ -6,6 +6,7 @@ import { Role } from '../../utils/types/roles.types';
 import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
 import { ResourceCreator } from '../../utils/guards/resource.guard';
 import { Resource } from '../../utils/decorators/resource.decorator';
+import { CreateResourceDTO } from './dto/CreateResource.dto';
 
 @Controller('resources')
 @UseInterceptors(DTOInterceptor)
@@ -14,8 +15,8 @@ export class ResourceController {
 
   @Post()
   @Auth(Role.PROFESSOR)
-  create(@Body() createResourceDto: ResourceEntity) {
-    return this.resourceService.create(createResourceDto);
+  async create(@Body() createResourceDto: CreateResourceDTO) {
+    return await this.resourceService.create(createResourceDto);
   }
 
   @Get(':id')
@@ -27,13 +28,13 @@ export class ResourceController {
 
   @Patch(':id')
   @UseGuards(ResourceCreator)
-  update(@Param('id') id: string, @Body() updateResourceDto: ResourceEntity) {
-    return this.resourceService.update(id, updateResourceDto);
+  async update(@Param('id') id: string, @Body() updateResourceDto: ResourceEntity) {
+    return await this.resourceService.update(id, updateResourceDto);
   }
 
   @Delete(':id')
   @UseGuards(ResourceCreator)
-  remove(@Param('id') id: string) {
-    return this.resourceService.remove(id);
+  async remove(@Param('id') id: string) {
+    return await this.resourceService.remove(id);
   }
 }

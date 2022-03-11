@@ -1,3 +1,4 @@
+import { IsNotEmpty, IsOptional } from 'class-validator';
 import { ChildEntity, Column } from 'typeorm';
 import { ResourceEntity, RESOURCE_TYPE } from './resource.entity';
 
@@ -9,9 +10,11 @@ import { ResourceEntity, RESOURCE_TYPE } from './resource.entity';
 export class ResourceFileEntity extends ResourceEntity {
   /** Url of the file */
   @Column()
+  @IsNotEmpty()
   url: string;
 
   /** File extension */
   @Column()
+  @IsOptional()
   extension: string;
 }

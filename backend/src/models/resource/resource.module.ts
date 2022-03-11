@@ -9,7 +9,7 @@ import { ClassroomEntity } from '../classroom/entities/classroom.entity';
 import { CourseEntity } from '../course/entities/course.entity';
 import { IoTProjectEntity } from '../iot/IoTproject/entities/IoTproject.entity';
 import { IoTObjectEntity } from '../iot/IoTobject/entities/IoTobject.entity';
-import { LevelEntity } from '../level/entities/level.entity';
+import { ChallengeEntity } from '../challenge/entities/challenge.entity';
 import { CourseHistoryEntity } from '../course/entities/course_history.entity';
 
 @Module({
@@ -24,7 +24,7 @@ import { CourseHistoryEntity } from '../course/entities/course_history.entity';
       ProfessorEntity,
       IoTProjectEntity,
       IoTObjectEntity,
-      LevelEntity,
+      ChallengeEntity,
     ]),
   ],
   controllers: [ResourceController],

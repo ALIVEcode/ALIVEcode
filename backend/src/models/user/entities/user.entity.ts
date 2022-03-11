@@ -9,10 +9,10 @@ import {
   TableInheritance,
   CreateDateColumn,
 } from 'typeorm';
-import { LevelEntity } from '../../level/entities/level.entity';
+import { ChallengeEntity } from '../../challenge/entities/challenge.entity';
 import { IoTObjectEntity } from '../../iot/IoTobject/entities/IoTobject.entity';
 import { IoTProjectEntity } from '../../iot/IoTproject/entities/IoTproject.entity';
-import { LevelProgressionEntity } from '../../level/entities/levelProgression.entity';
+import { ChallengeProgressionEntity } from '../../challenge/entities/challenge_progression.entity';
 import { Post as Post_Table } from 'src/models/social/post/entities/post.entity';
 import { Quiz } from 'src/models/social/quizzes/entities/quiz.entity';
 import { Result } from 'src/models/social/results/entities/result.entity';
@@ -88,8 +88,8 @@ export class UserEntity extends BaseEntity {
   @Exclude({ toClassOnly: true })
   joinDate: Date;
 
-  @OneToMany(() => LevelEntity, level => level.creator, { cascade: true })
-  levels: LevelEntity[];
+  @OneToMany(() => ChallengeEntity, challenge => challenge.creator, { cascade: true })
+  challenges: ChallengeEntity[];
 
   @OneToMany(() => AsScriptEntity, asScript => asScript.creator)
   asScripts: AsScriptEntity[];
@@ -103,8 +103,8 @@ export class UserEntity extends BaseEntity {
   @OneToMany(() => IoTProjectEntity, iot => iot.creator)
   collabIoTProjects: IoTProjectEntity[];
 
-  @OneToMany(() => LevelProgressionEntity, prog => prog.user)
-  levelProgressions: LevelProgressionEntity[];
+  @OneToMany(() => ChallengeProgressionEntity, prog => prog.user)
+  challengeProgressions: ChallengeProgressionEntity[];
 
   @OneToMany(() => Post_Table, post => post.creator)
   post: Post_Table[];

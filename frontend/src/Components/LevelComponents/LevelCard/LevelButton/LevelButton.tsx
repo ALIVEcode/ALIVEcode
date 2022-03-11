@@ -5,7 +5,7 @@ import {
 import styled from 'styled-components';
 import { useLayoutEffect, useRef } from 'react';
 
-interface LevelButtonProps extends FontAwesomeIconProps {
+interface ChallengeButtonProps extends FontAwesomeIconProps {
 	bgColor?: string;
 	hoverBg?: string;
 	left?: string;
@@ -40,7 +40,7 @@ const StyledButton = styled.div`
 `;
 
 /**
- * Styled LevelButton
+ * Styled ChallengeButton
  *
  * @param {string} bgColor css background color
  * @param {string} hoverBg css background color on hover
@@ -49,7 +49,7 @@ const StyledButton = styled.div`
  *
  * @author Enric Soldevila
  */
-const LevelButton = (props: LevelButtonProps) => {
+const ChallengeButton = (props: ChallengeButtonProps) => {
 	const ref = useRef<HTMLDivElement>(null);
 	const { left, bgColor, hoverBg, onClick, ...others } = props;
 
@@ -70,7 +70,7 @@ const LevelButton = (props: LevelButtonProps) => {
 	return (
 		<StyledButton
 			onClick={onClick}
-			className="level-button"
+			className="challenge-button"
 			left={left}
 			bgColor={bgColor}
 			ref={ref}
@@ -80,4 +80,4 @@ const LevelButton = (props: LevelButtonProps) => {
 	);
 };
 
-export default LevelButton;
+export default ChallengeButton;

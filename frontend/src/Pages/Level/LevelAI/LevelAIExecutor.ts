@@ -1,9 +1,9 @@
-import LevelCodeExecutor from '../LevelCode/LevelCodeExecutor';
-import { typeAskForUserInput } from '../levelTypes';
+import ChallengeCodeExecutor from '../ChallengeCode/ChallengeCodeExecutor';
+import { typeAskForUserInput } from '../challengeTypes';
 
 // TODO: robotConnected
 
-class LevelAIExecutor extends LevelCodeExecutor {
+class LevelAIExecutor extends ChallengeCodeExecutor {
 	private executableFuncs: any;
 
 	constructor(

@@ -2,9 +2,9 @@ import { AdminJSOptions } from 'adminjs';
 import ProfessorResource from './resources/users/professor.resource';
 import StudentResource from './resources/users/student.resource';
 import UserResource from './resources/users/user.resource';
-import LevelResource from './resources/levels/level.resource';
-import LevelCodeResource from './resources/levels/levelCode.resource';
-import LevelAliveResource from './resources/levels/levelAlive.resource';
+import ChallengeResource from './resources/challenges/challenge.resource';
+import ChallengeCodeResource from './resources/challenges/challenge_code.resource';
+import ChallengeAliveResource from './resources/challenges/challenge_alive.resource';
 import ClassroomResource from './resources/classrooms/classroom.resource';
 import MaintenanceResource from './resources/siteStatus/maintenance.resource';
 import CourseResource from './resources/courses/course.resource';
@@ -26,9 +26,9 @@ export const adminOptions: AdminJSOptions = {
     UserResource,
     StudentResource,
     ProfessorResource,
-    LevelResource,
-    LevelCodeResource,
-    LevelAliveResource,
+    ChallengeResource,
+    ChallengeCodeResource,
+    ChallengeAliveResource,
     ClassroomResource,
     CourseResource,
     IoTProjectResource,

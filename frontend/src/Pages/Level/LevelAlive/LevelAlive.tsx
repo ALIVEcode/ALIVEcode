@@ -6,11 +6,11 @@ import Simulation from '../../../Components/LevelComponents/Simulation/Simulatio
 import Cmd from '../../../Components/LevelComponents/Cmd/Cmd';
 import LevelAliveExecutor from './LevelAliveExecutor';
 import useCmd from '../../../state/hooks/useCmd';
-import { LevelAlive as LevelAliveModel } from '../../../Models/Level/levelAlive.entity';
+import { ChallengeAlive as LevelAliveModel } from '../../../Models/Level/challenges/challenge_alive.entity';
 import { useAlert } from 'react-alert';
 import LoadingScreen from '../../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
-import { LevelContext } from '../../../state/contexts/LevelContext';
-import LevelToolsBar from '../../../Components/LevelComponents/LevelToolsBar/LevelToolsBar';
+import { ChallengeContext } from '../../../state/contexts/LevelContext';
+import ChallengeToolsBar from '../../../Components/LevelComponents/LevelToolsBar/LevelToolsBar';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 
 /**
@@ -29,16 +29,16 @@ import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 const LevelAlive = ({ initialCode }: LevelAliveProps) => {
 	const { user, playSocket } = useContext(UserContext);
 	const {
-		level: levelUntyped,
+		challenge: levelUntyped,
 		executor: executorUntyped,
 		editMode,
 		progression,
 		setProgression,
-		saveLevelTimed,
+		saveChallengeTimed: saveLevelTimed,
 		saveProgressionTimed,
 		setShowConfetti,
 		askForUserInput,
-	} = useContext(LevelContext);
+	} = useContext(ChallengeContext);
 	const level = levelUntyped as LevelAliveModel;
 	const executor =
 		executorUntyped as React.MutableRefObject<LevelAliveExecutor | null>;
@@ -83,7 +83,7 @@ const LevelAlive = ({ initialCode }: LevelAliveProps) => {
 				{/* Left Side of screen */}
 				<div className="w-1/2 h-full flex flex-col">
 					{/* Barre d'infos du niveau */}
-					<LevelToolsBar />
+					<ChallengeToolsBar />
 					{/* Interface de code */}
 					{editMode ? (
 						/* Interface du code avec les tabs */

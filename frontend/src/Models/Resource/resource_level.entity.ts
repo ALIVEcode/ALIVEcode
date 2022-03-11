@@ -1,16 +1,16 @@
 import { Type } from 'class-transformer';
-import { Level } from '../Level/level.entity';
+import { Challenge } from '../Level/challenge.entity';
 import { Resource } from './resource.entity';
 
 /**
  * Activity of type Level model in the database
  * @author Enric Solevila
  */
-export class ResourceLevel extends Resource {
+export class ResourceChallenge extends Resource {
 	/** Reference to the level to display */
-	@Type(() => Level)
-	level: Level;
+	@Type(() => Challenge)
+	challenge: Challenge;
 
 	/** Id of the level */
-	levelId: string;
+	challengeId: string;
 }

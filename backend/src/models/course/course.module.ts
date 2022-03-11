@@ -12,11 +12,11 @@ import { UserService } from '../user/user.service';
 import { ProfessorEntity } from '../user/entities/user.entity';
 import { IoTProjectEntity } from '../iot/IoTproject/entities/IoTproject.entity';
 import { IoTObjectEntity } from '../iot/IoTobject/entities/IoTobject.entity';
-import { LevelEntity } from '../level/entities/level.entity';
+import { ChallengeEntity } from '../challenge/entities/challenge.entity';
 import { ActivityEntity } from './entities/activity.entity';
 import { ActivityTheoryEntity } from './entities/activities/activity_theory.entity';
 import { CourseElementEntity } from './entities/course_element.entity';
-import { ActivityLevelEntity } from './entities/activities/activity_level.entity';
+import { ActivityChallengeEntity } from './entities/activities/activity_challenge.entity';
 import { ActivityVideoEntity } from './entities/activities/activity_video.entity';
 import { ResourceEntity } from '../resource/entities/resource.entity';
 
@@ -29,7 +29,7 @@ import { ResourceEntity } from '../resource/entities/resource.entity';
       ActivityEntity,
       ActivityTheoryEntity,
       ActivityVideoEntity,
-      ActivityLevelEntity,
+      ActivityChallengeEntity,
       ResourceEntity,
       UserEntity,
       ClassroomEntity,
@@ -38,7 +38,7 @@ import { ResourceEntity } from '../resource/entities/resource.entity';
       ProfessorEntity,
       IoTProjectEntity,
       IoTObjectEntity,
-      LevelEntity,
+      ChallengeEntity,
     ]),
   ],
   controllers: [CourseController],

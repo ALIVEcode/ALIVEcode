@@ -6,7 +6,7 @@ import Home from '../../Pages/Home/Home';
 import SignIn from '../../Pages/Account/SignIn/SignIn';
 import SignUp from '../../Pages/Account/SignUp/SignUp';
 import { USER_TYPES } from '../../Types/userTypes';
-import Level from '../../Pages/Level/Level';
+import Challenge from '../../Pages/Level/Challenge';
 import SignUpMenu from '../../Pages/Account/SignUpMenu/SignUpMenu';
 import About from '../../Pages/About/About';
 import AIHome from '../../Pages/AI/AIHome/AIHome';
@@ -21,7 +21,7 @@ import IoTProjectCreate from '../../Components/IoTComponents/IoTProject/IotProje
 import IoTDashboard from '../../Pages/IoT/IoTDashboard/IoTDashboard';
 import LevelForm from '../../Components/LevelComponents/LevelForm/LevelForm';
 import LevelBrowse from '../../Pages/Level/LevelBrowse/LevelBrowse';
-import LevelList from '../../Pages/Level/LevelList/LevelList';
+import ChallengeList from '../../Pages/Level/ChallengeList/ChallengeList';
 import LevelFormMenu from '../../Pages/Level/LevelFormMenu/LevelFormMenu';
 import Test from '../../Pages/Test/Test';
 import ASDocs from '../../Components/AliveScriptComponents/ASDocs/ASDocs';
@@ -41,7 +41,7 @@ import ForumPostForm from '../../Pages/Forum/ForumFormQuestion/ForumFormQuestion
 import ForumPost from '../../Pages/Forum/ForumPost/ForumPost';
 import ForumSearch from '../../Pages/Forum/ForumSearch/ForumSearch';
 import Chat from '../../Pages/Chat/Chat';
-import { LEVEL_TYPE } from '../../Models/Level/level.entity';
+import { CHALLENGE_TYPE } from '../../Models/Level/challenge.entity';
 import DashboardNew from '../../Pages/DashboardNew/DashboardNew';
 import ClassroomBrowse from '../../Components/ClassroomComponents/ClassroomBrowse/ClassroomBrowse';
 import { UnderDevelopment } from '../../Pages/Errors/UnderDevelopment/UnderDevelopment';
@@ -177,13 +177,13 @@ const useRoutes = () => {
 			component: <IoTHome></IoTHome>,
 			maintenanceExempt: true,
 		},
-		level_alive: {
-			path: '/level/play/alive',
-			component: <Level type={LEVEL_TYPE.ALIVE} editMode />,
+		challenge_alive: {
+			path: '/challenge/play/alive',
+			component: <Challenge type={CHALLENGE_TYPE.ALIVE} editMode />,
 		},
-		level_code: {
-			path: '/level/play/code',
-			component: <Level type={LEVEL_TYPE.CODE} editMode />,
+		challenge_code: {
+			path: '/challenge/play/code',
+			component: <Challenge type={CHALLENGE_TYPE.CODE} editMode />,
 		},
 		maintenances: {
 			path: '/maintenances',
@@ -298,43 +298,43 @@ const useRoutes = () => {
 			component: <IoTProject></IoTProject>,
 			//adminOnly: true,
 		},
-		level_list: {
-			path: '/level',
+		challenge_list: {
+			path: '/challenge',
 			exact: true,
-			component: <LevelList></LevelList>,
+			component: <ChallengeList></ChallengeList>,
 		},
-		level_edit: {
-			path: '/level/edit/:levelId',
-			component: <Level editMode />,
+		challenge_edit: {
+			path: '/challenge/edit/:levelId',
+			component: <Challenge editMode />,
 		},
-		level_browse: {
-			path: '/level/browse',
+		challenge_browse: {
+			path: '/challenge/browse',
 			component: <LevelBrowse></LevelBrowse>,
 		},
-		level_play: {
-			path: '/level/play/:levelId',
-			component: <Level editMode={false}></Level>,
+		challenge_play: {
+			path: '/challenge/play/:levelId',
+			component: <Challenge editMode={false}></Challenge>,
 		},
-		level_create: {
-			path: '/level/create',
+		challenge_create: {
+			path: '/challenge/create',
 			exact: true,
 			component: <LevelFormMenu></LevelFormMenu>,
 		},
-		level_create_alive: {
-			path: '/level/create/alive',
-			component: <LevelForm type={LEVEL_TYPE.ALIVE} />,
+		challenge_create_alive: {
+			path: '/challenge/create/alive',
+			component: <LevelForm type={CHALLENGE_TYPE.ALIVE} />,
 		},
-		level_create_code: {
-			path: '/level/create/code',
-			component: <LevelForm type={LEVEL_TYPE.CODE} />,
+		challenge_create_code: {
+			path: '/challenge/create/code',
+			component: <LevelForm type={CHALLENGE_TYPE.CODE} />,
 		},
-		level_create_ai: {
-			path: '/level/create/ai',
-			component: <LevelForm type={LEVEL_TYPE.AI} />,
+		challenge_create_ai: {
+			path: '/challenge/create/ai',
+			component: <LevelForm type={CHALLENGE_TYPE.AI} />,
 		},
-		level_create_iot: {
-			path: '/level/create/iot',
-			component: <LevelForm type={LEVEL_TYPE.IOT} />,
+		challenge_create_iot: {
+			path: '/challenge/create/iot',
+			component: <LevelForm type={CHALLENGE_TYPE.IOT} />,
 		},
 		quiz_create: {
 			accountType: Professor,

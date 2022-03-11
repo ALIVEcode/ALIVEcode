@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
-import Level from '../../../Pages/Level/Level';
+import Challenge from '../../../Pages/Level/Challenge';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import { ThemeContext } from '../../../state/contexts/ThemeContext';
 import IconButton from '../../DashboardComponents/IconButton/IconButton';
@@ -224,9 +224,9 @@ const ActivityContent = (props: ActivityContentProps) => {
 										{activity.levels &&
 											activity.levels.map((a, idx) => (
 												<div key={idx} className="h-64">
-													<Level
+													<Challenge
 														key={`level-${a.level.id}`}
-														level={a.level}
+														challenge={a.level}
 														editMode={false}
 													/>
 												</div>

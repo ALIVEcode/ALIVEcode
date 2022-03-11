@@ -1,8 +1,11 @@
-import { LevelBrowseProps, StyledLevelBrowse } from './levelBrowseTypes';
+import {
+	ChallengeBrowseProps,
+	StyledChallengeBrowse,
+} from './levelBrowseTypes';
 import { useState } from 'react';
-import { Level } from '../../../Models/Level/level.entity';
+import { Challenge } from '../../../Models/Level/challenge.entity';
 import LoadingScreen from '../../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
-import LevelCard from '../../../Components/LevelComponents/LevelCard/LevelCard';
+import ChallengeCard from '../../../Components/LevelComponents/LevelCard/LevelCard';
 import BrowsingMenu from '../../../Components/MainComponents/BrowsingMenu/BrowsingMenu';
 import { BrowsingResults } from '../../../Components/MainComponents/BrowsingMenu/browsingMenuTypes';
 import api from '../../../Models/api';
@@ -13,9 +16,9 @@ import { useTranslation } from 'react-i18next';
  *
  * @author Enric Soldevila
  */
-const LevelBrowse = (props: LevelBrowseProps) => {
+const LevelBrowse = (props: ChallengeBrowseProps) => {
 	const [browsingResult, setBrowsingResult] =
-		useState<BrowsingResults<Level>>();
+		useState<BrowsingResults<Challenge>>();
 	const levels = browsingResult?.results;
 
 	const { t } = useTranslation();
@@ -23,10 +26,10 @@ const LevelBrowse = (props: LevelBrowseProps) => {
 	return (
 		<div className="p-4 relative">
 			<div className="text-3xl mb-4">{t('msg.community_levels')}</div>
-			<StyledLevelBrowse>
-				<BrowsingMenu<Level>
+			<StyledChallengeBrowse>
+				<BrowsingMenu<Challenge>
 					fetchOnSubmit
-					apiRequest={api.db.levels.query}
+					apiRequest={api.db.challenges.query}
 					onChange={res => setBrowsingResult(res)}
 				/>
 				<div className="levels">
@@ -35,12 +38,12 @@ const LevelBrowse = (props: LevelBrowseProps) => {
 					) : (
 						<>
 							{levels.map((l, idx) => (
-								<LevelCard level={l} key={idx} />
+								<ChallengeCard challenge={l} key={idx} />
 							))}
 						</>
 					)}
 				</div>
-			</StyledLevelBrowse>
+			</StyledChallengeBrowse>
 		</div>
 	);
 };

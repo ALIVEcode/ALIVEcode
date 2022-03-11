@@ -38,7 +38,7 @@ import { Course } from '../../Models/Course/course.entity';
 import { useNavigate } from 'react-router-dom';
 import useRoutes from '../../state/hooks/useRoutes';
 import DashboardLevels from '../../Components/DashboardComponents/DashboardLevels/DashboardLevels';
-import { Level } from '../../Models/Level/level.entity';
+import { Challenge } from '../../Models/Level/challenge.entity';
 import Button from '../../Components/UtilsComponents/Buttons/Button';
 import CourseSection from '../../Components/DashboardComponents/CourseSection/CourseSection';
 
@@ -91,7 +91,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 		index: 0,
 	});
 	const [recentCourses, setRecentCourses] = useState<Course[]>();
-	const [levels, setLevels] = useState<Level[]>();
+	const [levels, setLevels] = useState<Challenge[]>();
 
 	useEffect(() => {
 		if (pathname.endsWith('recents') && tabSelected.index !== 0)
@@ -193,7 +193,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 	 */
 	const loadLevels = useCallback(async () => {
 		if (!user) return;
-		const levels = await api.db.users.getLevels({ id: user.id });
+		const levels = await api.db.users.getChallenges({ id: user.id });
 		setLevels(levels);
 	}, [user]);
 

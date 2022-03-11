@@ -1,6 +1,6 @@
 import { faBook, faCode, faVideo } from '@fortawesome/free-solid-svg-icons';
 import { Exclude, Expose, Type } from 'class-transformer';
-import { ResourceLevel } from '../Resource/resource_level.entity';
+import { ResourceChallenge } from '../Resource/resource_level.entity';
 import { CourseElement } from './course_element.entity';
 
 export enum ACTIVITY_TYPE {
@@ -49,10 +49,10 @@ export class Activity {
  * Activity of type Level model in the database
  * @author Enric Solevila
  */
-export class ActivityLevel extends Activity {
+export class ActivityChallenge extends Activity {
 	/** Resource level */
-	@Type(() => ResourceLevel)
-	resource?: ResourceLevel;
+	@Type(() => ResourceChallenge)
+	resource?: ResourceChallenge;
 
 	/** Id of the resource level */
 	resourceId?: string;

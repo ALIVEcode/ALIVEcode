@@ -1,17 +1,17 @@
-import { createContext } from "react";
-import { Level } from '../../Models/Level/level.entity';
-import { LevelProgression } from '../../Models/Level/levelProgression';
-import { typeAskForUserInput } from '../../Pages/Level/levelTypes';
-import { LevelExecutor } from '../../Pages/Level/AbstractLevelExecutor';
+import { createContext } from 'react';
+import { Challenge } from '../../Models/Level/challenge.entity';
+import { ChallengeProgression } from '../../Models/Level/challengeProgression';
+import { typeAskForUserInput } from '../../Pages/Level/challengeTypes';
+import { ChallengeExecutor } from '../../Pages/Level/AbstractChallengeExecutor';
 
-export type LevelContextTypes = {
+export type ChallengeContextTypes = {
 	editMode: boolean;
-	level?: Level;
-	executor: React.MutableRefObject<LevelExecutor | null>;
-	saveLevel: () => void;
-	saveLevelTimed: () => void;
-	progression?: LevelProgression;
-	setProgression: (progression: LevelProgression) => void;
+	challenge?: Challenge;
+	executor: React.MutableRefObject<ChallengeExecutor | null>;
+	saveChallenge: () => void;
+	saveChallengeTimed: () => void;
+	progression?: ChallengeProgression;
+	setProgression: (progression: ChallengeProgression) => void;
 	saveProgression: () => void;
 	saveProgressionTimed: () => void;
 	saving: boolean;
@@ -21,11 +21,11 @@ export type LevelContextTypes = {
 	setOpenSettings: (bool: boolean) => void;
 };
 
-export const LevelContext = createContext<LevelContextTypes>({
+export const ChallengeContext = createContext<ChallengeContextTypes>({
 	executor: { current: null },
 	editMode: false,
-	saveLevel: () => {},
-	saveLevelTimed: () => {},
+	saveChallenge: () => {},
+	saveChallengeTimed: () => {},
 	setProgression: () => {},
 	saveProgression: () => {},
 	saveProgressionTimed: () => {},

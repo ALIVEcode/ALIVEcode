@@ -9,7 +9,7 @@ export class ActivityContent {
 
 export enum ACTIVITY_TYPE {
   THEORY = 'TH',
-  LEVEL = 'LE',
+  CHALLENGE = 'CH',
   VIDEO = 'VI',
 }
 

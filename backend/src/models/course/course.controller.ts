@@ -8,7 +8,11 @@ import { Role } from '../../utils/types/roles.types';
 import { ProfessorEntity, UserEntity } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
 import { CourseService } from './course.service';
-import { CreateActivityLevelDTO, CreateActivityTheoryDTO, CreateActivityVideoDTO } from './dtos/CreateActivities.dto';
+import {
+  CreateActivityChallengeDTO,
+  CreateActivityTheoryDTO,
+  CreateActivityVideoDTO,
+} from './dtos/CreateActivities.dto';
 import { CreateCourseDTO } from './dtos/CreateCourse.dto';
 import { CreateSectionDTO } from './dtos/CreateSection.dto';
 import { ActivityEntity } from './entities/activity.entity';
@@ -153,7 +157,7 @@ export class CourseController {
   @UseGuards(CourseProfessor)
   async addActivity(
     @Course() course: CourseEntity,
-    @Body() createActivityDTO: CreateActivityLevelDTO | CreateActivityTheoryDTO | CreateActivityVideoDTO,
+    @Body() createActivityDTO: CreateActivityChallengeDTO | CreateActivityTheoryDTO | CreateActivityVideoDTO,
   ): Promise<{ newOrder: number[]; courseElement: CourseElementEntity }> {
     course = await this.courseService.findOneWithElements(course.id);
     if (createActivityDTO.sectionParentId) {

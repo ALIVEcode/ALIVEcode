@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-export type LevelBrowseProps = {};
+export type ChallengeBrowseProps = {};
 
-export const StyledLevelBrowse = styled.div`
+export const StyledChallengeBrowse = styled.div`
 	width: 100%;
 	position: relative;
 
-	.levels {
+	.challenges {
 		position: relative;
 		width: 100%;
 		border-bottom-right-radius: 10px;

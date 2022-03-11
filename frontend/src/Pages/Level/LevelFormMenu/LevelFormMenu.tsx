@@ -19,22 +19,22 @@ const LevelFormMenu = () => {
 		<div className="w-full h-full items-center justify-items-center grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4">
 			<Card
 				img={Voiture}
-				to={routes.auth.level_create_alive.path}
+				to={routes.auth.chalenge_create_alive.path}
 				title={t('menu.level.alive')}
 			/>
 			<Card
 				img={Code}
-				to={routes.auth.level_create_code.path}
+				to={routes.auth.challenge_create_code.path}
 				title={t('menu.level.code')}
 			/>
 			<Card
 				img={Brain}
-				to={routes.auth.level_create_ai.path}
+				to={routes.auth.challenge_create_ai.path}
 				title={t('menu.level.ai')}
 			/>
 			<Card
 				img={IoT}
-				to={routes.auth.level_create_iot.path}
+				to={routes.auth.challenge_create_iot.path}
 				title={t('menu.level.iot')}
 			/>
 		</div>

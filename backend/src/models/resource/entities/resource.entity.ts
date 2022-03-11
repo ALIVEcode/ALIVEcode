@@ -16,7 +16,7 @@ export enum RESOURCE_TYPE {
   VIDEO = 'VI',
   FILE = 'FI',
   IMAGE = 'IM',
-  LEVEL = 'LE',
+  CHALLENGE = 'CH',
 }
 
 @Entity()

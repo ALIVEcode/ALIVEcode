@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import { useNavigate } from 'react-router';
 import { ACTIVITY_TYPE } from '../../../Models/Course/activity.entity';
-import ActivityLevel from './ActivityLevel';
+import ActivityChallenge from './ActivityLevel';
 
 /**
  * Shows the opened activity. Renders different component depending on the type of the activity opened.
@@ -28,7 +28,7 @@ const Activity = () => {
 	const renderSpecificActivity = () => {
 		switch (activity.type) {
 			case ACTIVITY_TYPE.LEVEL:
-				return <ActivityLevel></ActivityLevel>;
+				return <ActivityChallenge></ActivityChallenge>;
 			default:
 				return (
 					<div className="w-full h-full flex justify-center items-center">

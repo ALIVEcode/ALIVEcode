@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { ClassroomEntity } from '../classroom/entities/classroom.entity';
 import { ProfessorEntity, StudentEntity } from '../user/entities/user.entity';
 import { CreateCourseDTO } from './dtos/CreateCourse.dto';
-import { ActivityLevelEntity } from './entities/activities/activity_level.entity';
+import { ActivityChallengeEntity } from './entities/activities/activity_challenge.entity';
 import { ActivityTheoryEntity } from './entities/activities/activity_theory.entity';
 import { ActivityEntity, ACTIVITY_TYPE } from './entities/activity.entity';
 import { CourseContent, CourseEntity } from './entities/course.entity';
@@ -29,8 +29,8 @@ export class CourseService {
     @InjectRepository(SectionEntity) private sectionRepository: Repository<SectionEntity>,
     @InjectRepository(ActivityEntity) private activityRepository: Repository<ActivityEntity>,
     @InjectRepository(ActivityTheoryEntity) private actTheoryRepo: Repository<ActivityTheoryEntity>,
-    @InjectRepository(ActivityVideoEntity) private actVideoRepo: Repository<ActivityLevelEntity>,
-    @InjectRepository(ActivityLevelEntity) private actLevelRepo: Repository<ActivityLevelEntity>,
+    @InjectRepository(ActivityVideoEntity) private actVideoRepo: Repository<ActivityChallengeEntity>,
+    @InjectRepository(ActivityChallengeEntity) private actChallengeRepo: Repository<ActivityChallengeEntity>,
     @InjectRepository(ClassroomEntity) private classroomRepo: Repository<ClassroomEntity>,
     @InjectRepository(CourseElementEntity) private courseElRepo: Repository<CourseElementEntity>,
     @InjectRepository(StudentEntity) private studentRepo: Repository<StudentEntity>,
@@ -325,8 +325,8 @@ export class CourseService {
   async addActivity(course: CourseEntity, activityDTO: CreateActivityDTO, sectionParent?: SectionEntity) {
     let activity: ActivityEntity;
     switch (activityDTO.courseContent.type) {
-      case ACTIVITY_TYPE.LEVEL:
-        activity = await this.actLevelRepo.save(activityDTO);
+      case ACTIVITY_TYPE.CHALLENGE:
+        activity = await this.actChallengeRepo.save(activityDTO);
         break;
       case ACTIVITY_TYPE.THEORY:
         activity = await this.actTheoryRepo.save(activityDTO);

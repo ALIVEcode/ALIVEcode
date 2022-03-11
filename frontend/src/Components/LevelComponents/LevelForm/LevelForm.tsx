@@ -2,20 +2,20 @@ import Form from '../../UtilsComponents/Form/Form';
 import { LevelFormProps } from './levelFormTypes';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { useAlert } from 'react-alert';
-import { LevelAlive } from '../../../Models/Level/levelAlive.entity';
+import { ChallengeAlive } from '../../../Models/Level/challenges/challenge_alive.entity';
 import { useTranslation } from 'react-i18next';
 import {
-	LEVEL_ACCESS,
-	LEVEL_DIFFICULTY,
-	LEVEL_TYPE,
-} from '../../../Models/Level/level.entity';
+	CHALLENGE_ACCESS,
+	CHALLENGE_DIFFICULTY,
+	CHALLENGE_TYPE,
+} from '../../../Models/Level/challenge.entity';
 import FormContainer from '../../UtilsComponents/FormContainer/FormContainer';
-import { LevelCode } from '../../../Models/Level/levelCode.entity';
-import { LevelAI } from '../../../Models/Level/levelAI.entity';
+import { ChallengeCode } from '../../../Models/Level/challenges/challenge_code.entity';
+import { ChallengeAI } from '../../../Models/Level/challenges/challenge_ai.entity';
 import {
-	IOT_LEVEL_TYPE,
-	LevelIoT,
-} from '../../../Models/Level/levelIoT.entity';
+	IOT_CHALLENGE_TYPE,
+	ChallengeIoT,
+} from '../../../Models/Level/challenges/challenge_IoT.entity';
 import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
 import { useState, useEffect } from 'react';
 import { IoTProject } from '../../../Models/Iot/IoTproject.entity';
@@ -38,7 +38,7 @@ const LevelForm = ({ type }: LevelFormProps) => {
 	const [projects, setProjects] = useState<IoTProject[]>([]);
 
 	useEffect(() => {
-		if (type === LEVEL_TYPE.IOT) {
+		if (type === CHALLENGE_TYPE.IOT) {
 			const getIoTProjects = async () => {
 				const projects = await api.db.users.iot.getProjects({});
 				setProjects(projects);
@@ -55,13 +55,13 @@ const LevelForm = ({ type }: LevelFormProps) => {
 		};
 
 		switch (type) {
-			case LEVEL_TYPE.ALIVE:
+			case CHALLENGE_TYPE.ALIVE:
 				return (
 					<Form
 						onSubmit={res => {
-							const level: LevelAlive = res.data;
+							const level: ChallengeAlive = res.data;
 							navigate(
-								routes.auth.level_edit.path.replace(':levelId', level.id),
+								routes.auth.challenge_edit.path.replace(':levelId', level.id),
 							);
 							return alert.success('Niveau créé avec succès');
 						}}
@@ -83,27 +83,27 @@ const LevelForm = ({ type }: LevelFormProps) => {
 								name: 'access',
 								required: true,
 								inputType: 'select',
-								selectOptions: LEVEL_ACCESS,
-								default: LEVEL_ACCESS.PRIVATE,
+								selectOptions: CHALLENGE_ACCESS,
+								default: CHALLENGE_ACCESS.PRIVATE,
 							},
 							{
 								name: 'difficulty',
 								required: true,
 								inputType: 'select',
-								selectOptions: LEVEL_DIFFICULTY,
-								default: LEVEL_DIFFICULTY.MEDIUM,
+								selectOptions: CHALLENGE_DIFFICULTY,
+								default: CHALLENGE_DIFFICULTY.MEDIUM,
 							},
 						]}
 						{...sharedProps}
 					/>
 				);
-			case LEVEL_TYPE.AI:
+			case CHALLENGE_TYPE.AI:
 				return (
 					<Form
 						onSubmit={res => {
-							const level: LevelAI = res.data;
+							const level: ChallengeAI = res.data;
 							navigate(
-								routes.auth.level_edit.path.replace(':levelId', level.id),
+								routes.auth.challenge_edit.path.replace(':levelId', level.id),
 							);
 							return alert.success('Niveau créé avec succès');
 						}}
@@ -125,27 +125,27 @@ const LevelForm = ({ type }: LevelFormProps) => {
 								name: 'access',
 								required: true,
 								inputType: 'select',
-								selectOptions: LEVEL_ACCESS,
-								default: LEVEL_ACCESS.PRIVATE,
+								selectOptions: CHALLENGE_ACCESS,
+								default: CHALLENGE_ACCESS.PRIVATE,
 							},
 							{
 								name: 'difficulty',
 								required: true,
 								inputType: 'select',
-								selectOptions: LEVEL_DIFFICULTY,
-								default: LEVEL_DIFFICULTY.MEDIUM,
+								selectOptions: CHALLENGE_DIFFICULTY,
+								default: CHALLENGE_DIFFICULTY.MEDIUM,
 							},
 						]}
 						{...sharedProps}
 					/>
 				);
-			case LEVEL_TYPE.CODE:
+			case CHALLENGE_TYPE.CODE:
 				return (
 					<Form
 						onSubmit={res => {
-							const level: LevelCode = res.data;
+							const level: ChallengeCode = res.data;
 							navigate(
-								routes.auth.level_edit.path.replace(':levelId', level.id),
+								routes.auth.challenge_edit.path.replace(':levelId', level.id),
 							);
 							return alert.success('Niveau créé avec succès');
 						}}
@@ -167,27 +167,27 @@ const LevelForm = ({ type }: LevelFormProps) => {
 								name: 'access',
 								required: true,
 								inputType: 'select',
-								selectOptions: LEVEL_ACCESS,
-								default: LEVEL_ACCESS.PRIVATE,
+								selectOptions: CHALLENGE_ACCESS,
+								default: CHALLENGE_ACCESS.PRIVATE,
 							},
 							{
 								name: 'difficulty',
 								required: true,
 								inputType: 'select',
-								selectOptions: LEVEL_DIFFICULTY,
-								default: LEVEL_DIFFICULTY.MEDIUM,
+								selectOptions: CHALLENGE_DIFFICULTY,
+								default: CHALLENGE_DIFFICULTY.MEDIUM,
 							},
 						]}
 						{...sharedProps}
 					/>
 				);
-			case LEVEL_TYPE.IOT:
+			case CHALLENGE_TYPE.IOT:
 				return (
 					<Form
 						onSubmit={res => {
-							const level: LevelIoT = res.data;
+							const level: ChallengeIoT = res.data;
 							navigate(
-								routes.auth.level_edit.path.replace(':levelId', level.id),
+								routes.auth.challenge_edit.path.replace(':levelId', level.id),
 							);
 							return alert.success('Niveau créé avec succès');
 						}}
@@ -209,15 +209,15 @@ const LevelForm = ({ type }: LevelFormProps) => {
 								name: 'access',
 								required: true,
 								inputType: 'select',
-								selectOptions: LEVEL_ACCESS,
-								default: LEVEL_ACCESS.PRIVATE,
+								selectOptions: CHALLENGE_ACCESS,
+								default: CHALLENGE_ACCESS.PRIVATE,
 							},
 							{
 								name: 'difficulty',
 								required: true,
 								inputType: 'select',
-								selectOptions: LEVEL_DIFFICULTY,
-								default: LEVEL_DIFFICULTY.MEDIUM,
+								selectOptions: CHALLENGE_DIFFICULTY,
+								default: CHALLENGE_DIFFICULTY.MEDIUM,
 							},
 							{
 								name: 'project_id',
@@ -235,8 +235,8 @@ const LevelForm = ({ type }: LevelFormProps) => {
 								name: 'iotType',
 								required: true,
 								inputType: 'select',
-								default: IOT_LEVEL_TYPE.UPDATING,
-								selectOptions: IOT_LEVEL_TYPE,
+								default: IOT_CHALLENGE_TYPE.UPDATING,
+								selectOptions: IOT_CHALLENGE_TYPE,
 							},
 						]}
 						{...sharedProps}

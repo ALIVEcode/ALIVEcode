@@ -1,5 +1,5 @@
 /* eslint-disable no-labels */
-import LevelCodeExecutor from '../LevelCode/LevelCodeExecutor';
+import ChallengeCodeExecutor from '../ChallengeCode/ChallengeCodeExecutor';
 import { images } from '../../../Components/LevelComponents/Simulation/Sketch/simulation/assets';
 import { Shape } from '../../../Components/LevelComponents/Simulation/Sketch/simulation/Shape';
 import { Vector } from '../../../Components/LevelComponents/Simulation/Sketch/simulation/Vector';
@@ -7,12 +7,12 @@ import { BaseLayoutObj } from '../../../Components/LevelComponents/Simulation/Sk
 import { Serializer } from '../../../Components/LevelComponents/Simulation/Sketch/simulation/ts/Serializer';
 import { makeShapeEditable } from '../../../Components/LevelComponents/Simulation/Sketch/simulation/editMode';
 import { PlaySocket } from '../PlaySocket';
-import { typeAskForUserInput } from '../levelTypes';
+import { typeAskForUserInput } from '../challengeTypes';
 
 // TODO: robotConnected
 // const robotConnected = false;
 
-class LevelAliveExecutor extends LevelCodeExecutor {
+class LevelAliveExecutor extends ChallengeCodeExecutor {
 	public s: any;
 
 	public editorButton: any;

@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { LevelContext } from '../../../state/contexts/LevelContext';
+import { ChallengeContext } from '../../../state/contexts/LevelContext';
 import IconButton from '../../DashboardComponents/IconButton/IconButton';
 import { UserContext } from '../../../state/contexts/UserContext';
 import {
@@ -11,13 +11,19 @@ import {
 	faQuestionCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import useRoutes from '../../../state/hooks/useRoutes';
-import { LevelToolsBarProps } from './levelToolsBarTypes';
+import { ChallengeToolsBarProps } from './levelToolsBarTypes';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 
-const LevelToolsBar = ({ onClickPlay }: LevelToolsBarProps) => {
+const ChallengeToolsBar = ({ onClickPlay }: ChallengeToolsBarProps) => {
 	const { user } = useContext(UserContext);
-	const { level, editMode, saving, saved, executor, setOpenSettings } =
-		useContext(LevelContext);
+	const {
+		challenge: level,
+		editMode,
+		saving,
+		saved,
+		executor,
+		setOpenSettings,
+	} = useContext(ChallengeContext);
 	const { routes, goToNewTab } = useRoutes();
 	const [editTitle, setEditTitle] = useState(false);
 	const forceUpdate = useForceUpdate();
@@ -50,7 +56,7 @@ const LevelToolsBar = ({ onClickPlay }: LevelToolsBarProps) => {
 			)}
 			{user && !editMode && user.id === level?.creator?.id && (
 				<IconButton
-					to={routes.auth.level_edit.path.replace(':levelId', level.id)}
+					to={routes.auth.challenge_edit.path.replace(':levelId', level.id)}
 					icon={faPencilAlt}
 					size="2x"
 				/>
@@ -81,4 +87,4 @@ const LevelToolsBar = ({ onClickPlay }: LevelToolsBarProps) => {
 	);
 };
 
-export default LevelToolsBar;
+export default ChallengeToolsBar;

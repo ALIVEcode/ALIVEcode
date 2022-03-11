@@ -1,10 +1,10 @@
 import { useContext, useEffect } from 'react';
 import { CourseContext } from '../../../state/contexts/CourseContext';
-import Level from '../../../Pages/Level/Level';
+import Challenge from '../../../Pages/Level/Challenge';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import api from '../../../Models/api';
-import { ActivityLevel as ActivityLevelModel } from '../../../Models/Course/activity.entity';
+import { ActivityChallenge as ActivityChallengeModel } from '../../../Models/Course/activity.entity';
 
 /**
  * Shows an activity of type Level
@@ -12,41 +12,44 @@ import { ActivityLevel as ActivityLevelModel } from '../../../Models/Course/acti
  *
  * @author Enric Soldevila
  */
-const ActivityLevel = () => {
+const ActivityChallenge = () => {
 	const { openedActivity } = useContext(CourseContext);
-	const activity = openedActivity as ActivityLevelModel;
+	const activity = openedActivity as ActivityChallengeModel;
 	const forceUpdate = useForceUpdate();
 
 	useEffect(() => {
 		/**
-		 * Loads the level contained inside the ResourceLevel with its id
+		 * Loads the challenge contained inside the ResourceChallenge with its id
 		 * @returns void
 		 */
-		const loadLevel = async () => {
+		const loadChallenge = async () => {
 			if (!activity.resource) return;
-			activity.resource.level = await api.db.levels.get({
-				id: activity.resource.levelId,
+			activity.resource.challenge = await api.db.challenges.get({
+				id: activity.resource.challengeId,
 			});
 			forceUpdate();
 		};
-		loadLevel();
+		loadChallenge();
 	}, [activity.resource]);
 
 	return (
 		<div className="w-full h-full">
 			{!activity.resourceId ? (
 				<div className="w-full h-full flex justify-center items-center">
-					There is no level in this activity
+					There is no challenge in this activity
 				</div>
-			) : !activity.resource?.level ? (
+			) : !activity.resource?.challenge ? (
 				<LoadingScreen />
 			) : (
 				<div className="w-full h-full flex">
-					<Level level={activity.resource?.level} editMode={false} />
+					<Challenge
+						challenge={activity.resource?.challenge}
+						editMode={false}
+					/>
 				</div>
 			)}
 		</div>
 	);
 };
 
-export default ActivityLevel;
+export default ActivityChallenge;

@@ -39,7 +39,7 @@
 				"name": "Ce champs doit contenir uniquement des lettres et des chiffres"
 			}
 		},
-		"level": {
+		"challenge": {
 			"PATCH": {
 				"title": "Paramètres du niveau"
 			}
@@ -49,7 +49,7 @@
 			"signup": "Inscription",
 			"create_classroom": "Création d'une classe",
 			"create_course": "Création d'un cours",
-			"create_level": "Création d'un niveau",
+			"create_challenge": "Création d'un niveau",
 			"create_iot_project": "Création d'un projet IoT",
 			"create_iot_object": "Création d'un objet IoT"
 		},
@@ -104,13 +104,13 @@
 		"description": "description",
 		"deleted_user": "Ancien utilisateur",
 		"search": "Rechercher",
-		"community_levels": "Niveaux de la communauté",
+		"community_challenges": "Niveaux de la communauté",
 		"public_classrooms": "Classes publiques",
 		"creation_date": "Date de création",
 		"update_date": "Date de modification",
 		"see_links": "Voir les liens",
 		"activity_type": {
-			"level": "Niveau",
+			"challenge": "Niveau",
 			"video": "Visionnement",
 			"theory": "Théorie"
 		},
@@ -191,10 +191,10 @@
 				"professor": "Tu n'as pas d'activité récente. Crée une classe pour commencer"
 			}
 		},
-		"levels": {
+		"challenges": {
 			"title": "Niveaux",
-			"browse_levels": "Explorer les niveaux de la communauté",
-			"create_level": "Créer un niveau",
+			"browse_challenges": "Explorer les niveaux de la communauté",
+			"create_challenge": "Créer un niveau",
 			"empty": "Tu ne possèdes aucun niveau"
 		},
 		"classrooms": {
@@ -261,7 +261,7 @@
 			"professor": "Compte professeur",
 			"student": "Compte étudiant"
 		},
-		"level": {
+		"challenge": {
 			"alive": "Niveau avec voiture ALIVE",
 			"code": "Niveau avec console",
 			"ai": "Niveau avec intelligence artificielle",

@@ -6,10 +6,10 @@ import {
 	Type,
 	plainToInstance,
 } from 'class-transformer';
-import { Activity, ActivityLevel, ACTIVITY_TYPE } from './activity.entity';
+import { Activity, ActivityChallenge, ACTIVITY_TYPE } from './activity.entity';
 import { Course } from './course.entity';
 import { Section } from './section.entity';
-import { ResourceLevel } from '../Resource/resource_level.entity';
+import { ResourceChallenge } from '../Resource/resource_level.entity';
 import { ActivityTheory } from './activities/activity_theory.entity';
 import { ActivityVideo } from './activities/activity_video.entity';
 
@@ -73,12 +73,12 @@ export class CourseElement {
 		}
 
 		if (activity.type === ACTIVITY_TYPE.LEVEL) {
-			return plainToInstance(ActivityLevel, activity);
+			return plainToInstance(ActivityChallenge, activity);
 		}
 
 		return plainToInstance(Activity, activity);
 	})
-	activity?: ActivityLevel | ActivityTheory | ActivityVideo;
+	activity?: ActivityChallenge | ActivityTheory | ActivityVideo;
 
 	/** If the element is a section **/
 	@Expose({ toClassOnly: true })

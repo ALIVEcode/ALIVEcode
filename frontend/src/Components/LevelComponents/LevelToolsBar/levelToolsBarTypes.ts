@@ -1,3 +1,3 @@
-export type LevelToolsBarProps = {
+export type ChallengeToolsBarProps = {
 	onClickPlay?: () => void;
 };

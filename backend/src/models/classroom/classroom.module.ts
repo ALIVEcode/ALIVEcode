@@ -10,7 +10,7 @@ import { UserEntity } from '../user/entities/user.entity';
 import { ProfessorEntity } from '../user/entities/user.entity';
 import { StudentEntity } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
-import { LevelEntity } from '../level/entities/level.entity';
+import { ChallengeEntity } from '../challenge/entities/challenge.entity';
 import { CourseHistoryEntity } from '../course/entities/course_history.entity';
 import { ResourceEntity } from '../resource/entities/resource.entity';
 
@@ -25,7 +25,7 @@ import { ResourceEntity } from '../resource/entities/resource.entity';
       ResourceEntity,
       IoTProjectEntity,
       IoTObjectEntity,
-      LevelEntity,
+      ChallengeEntity,
       CourseHistoryEntity,
     ]),
     //DefaultAdminModule,

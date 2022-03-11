@@ -18,13 +18,13 @@ import {
 } from './Iot/IoTproject.entity';
 import { IotRoute } from './Iot/IoTroute.entity';
 import { ClassroomQueryDTO } from './Level/dto/ClassroomQuery.dto';
-import { LevelQueryDTO } from './Level/dto/LevelQuery.dto';
-import { Level, LEVEL_TYPE } from './Level/level.entity';
-import { LevelAI } from './Level/levelAI.entity';
-import { LevelAlive } from './Level/levelAlive.entity';
-import { LevelCode } from './Level/levelCode.entity';
-import { LevelIoT } from './Level/levelIoT.entity';
-import { LevelProgression } from './Level/levelProgression';
+import { ChallengeQueryDTO } from './Level/dto/ChallengeQuery.dto';
+import { Challenge, CHALLENGE_TYPE } from './Level/challenge.entity';
+import { ChallengeAI } from './Level/challenges/challenge_ai.entity';
+import { ChallengeAlive } from './Level/challenges/challenge_alive.entity';
+import { ChallengeCode } from './Level/challenges/challenge_code.entity';
+import { ChallengeIoT } from './Level/challenges/challenge_IoT.entity';
+import { ChallengeProgression } from './Level/challengeProgression';
 import { Maintenance } from './Maintenance/maintenance.entity';
 import { Answer } from './Quiz/answer.entity';
 import { Category } from './Quiz/categories-quiz.entity';
@@ -172,15 +172,22 @@ const api = {
 			getCourses: apiGet('users/:id/courses', Course, true),
 			getRecentCourses: apiGet('users/:id/courses/recents', Course, true),
 			getResources: apiGet('users/:id/resources', Resource, true),
-			getLevels: apiGet('users/:id/levels', Level, true, level => {
-				if (level.type === LEVEL_TYPE.ALIVE)
-					return plainToClass(LevelAlive, level);
-				if (level.type === LEVEL_TYPE.CODE)
-					return plainToClass(LevelCode, level);
-				if (level.type === LEVEL_TYPE.AI) return plainToClass(LevelAI, level);
-				if (level.type === LEVEL_TYPE.IOT) return plainToClass(LevelIoT, level);
-				return plainToClass(LevelCode, level);
-			}),
+			getChallenges: apiGet(
+				'users/:id/challenges',
+				Challenge,
+				true,
+				challenge => {
+					if (challenge.type === CHALLENGE_TYPE.ALIVE)
+						return plainToClass(ChallengeAlive, challenge);
+					if (challenge.type === CHALLENGE_TYPE.CODE)
+						return plainToClass(ChallengeCode, challenge);
+					if (challenge.type === CHALLENGE_TYPE.AI)
+						return plainToClass(ChallengeAI, challenge);
+					if (challenge.type === CHALLENGE_TYPE.IOT)
+						return plainToClass(ChallengeIoT, challenge);
+					return plainToClass(ChallengeCode, challenge);
+				},
+			),
 			createProfessor: apiCreate('users/professors', Professor),
 			createStudent: apiCreate('users/students', Student),
 			delete: apiDelete('users/:id'),
@@ -286,32 +293,43 @@ const api = {
 		resources: {
 			delete: apiDelete('resources/:id'),
 		},
-		levels: {
+		challenges: {
 			progressions: {
-				get: apiGet('levels/:id/progressions/:userId', LevelProgression, false),
-				save: apiUpdate('levels/:id/progressions/:userId', LevelProgression),
+				get: apiGet(
+					'challenges/:id/progressions/:userId',
+					ChallengeProgression,
+					false,
+				),
+				save: apiUpdate(
+					'challenges/:id/progressions/:userId',
+					ChallengeProgression,
+				),
 			},
-			get: apiGet('levels/:id', Level, false, level => {
-				if (level.type === LEVEL_TYPE.ALIVE)
-					return plainToClass(LevelAlive, level);
-				if (level.type === LEVEL_TYPE.CODE)
-					return plainToClass(LevelCode, level);
-				if (level.type === LEVEL_TYPE.AI) return plainToClass(LevelAI, level);
-				if (level.type === LEVEL_TYPE.IOT) return plainToClass(LevelIoT, level);
-				return plainToClass(LevelCode, level);
+			get: apiGet('challenges/:id', Challenge, false, challenge => {
+				if (challenge.type === CHALLENGE_TYPE.ALIVE)
+					return plainToClass(ChallengeAlive, challenge);
+				if (challenge.type === CHALLENGE_TYPE.CODE)
+					return plainToClass(ChallengeCode, challenge);
+				if (challenge.type === CHALLENGE_TYPE.AI)
+					return plainToClass(ChallengeAI, challenge);
+				if (challenge.type === CHALLENGE_TYPE.IOT)
+					return plainToClass(ChallengeIoT, challenge);
+				return plainToClass(ChallengeCode, challenge);
 			}),
-			update: apiUpdate('levels/:id', Level, level => {
-				if (level.type === LEVEL_TYPE.ALIVE)
-					return plainToClass(LevelAlive, level);
-				if (level.type === LEVEL_TYPE.CODE)
-					return plainToClass(LevelCode, level);
-				if (level.type === LEVEL_TYPE.AI) return plainToClass(LevelAI, level);
-				if (level.type === LEVEL_TYPE.IOT) return plainToClass(LevelIoT, level);
-				return plainToClass(LevelCode, level);
+			update: apiUpdate('challenges/:id', Challenge, challenge => {
+				if (challenge.type === CHALLENGE_TYPE.ALIVE)
+					return plainToClass(ChallengeAlive, challenge);
+				if (challenge.type === CHALLENGE_TYPE.CODE)
+					return plainToClass(ChallengeCode, challenge);
+				if (challenge.type === CHALLENGE_TYPE.AI)
+					return plainToClass(ChallengeAI, challenge);
+				if (challenge.type === CHALLENGE_TYPE.IOT)
+					return plainToClass(ChallengeIoT, challenge);
+				return plainToClass(ChallengeCode, challenge);
 			}),
-			async query(body: LevelQueryDTO) {
-				return (await axios.post('levels/query', body)).data.map((d: any) =>
-					plainToClass(Level, d),
+			async query(body: ChallengeQueryDTO) {
+				return (await axios.post('challenges/query', body)).data.map((d: any) =>
+					plainToClass(Challenge, d),
 				);
 			},
 		},

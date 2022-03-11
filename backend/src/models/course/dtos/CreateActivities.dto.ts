@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsNotEmpty, IsOptional, ValidateNested, ValidateIf, Length } from 'class-validator';
+import { IsNotEmpty, IsOptional, ValidateNested, ValidateIf } from 'class-validator';
 import { ACTIVITY_TYPE } from '../entities/activity.entity';
 
 /**
@@ -33,13 +33,13 @@ export class CreateActivityDTO {
 }
 
 /**
- * DTO to create a course element of a level activity (Data Transfer Object)
+ * DTO to create a course element of a challenge activity (Data Transfer Object)
  * @author Enric Soldevila
  */
-export class CreateActivityLevelDTO extends CreateActivityDTO {
-  /** Id of the level to show inside the actvity */
+export class CreateActivityChallengeDTO extends CreateActivityDTO {
+  /** Id of the challenge to show inside the actvity */
   @IsNotEmpty()
-  levelId: string;
+  challengeId: string;
 }
 
 /**

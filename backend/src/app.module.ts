@@ -9,7 +9,7 @@ import { CourseModule } from './models/course/course.module';
 import { IoTObjectModule } from './models/iot/IoTobject/IoTobject.module';
 import { IoTProjectModule } from './models/iot/IoTproject/IoTproject.module';
 import { IoTRouteModule } from './models/iot/IoTroute/IoTroute.module';
-import { LevelModule } from './models/level/level.module';
+import { ChallengeModule } from './models/challenge/challenge.module';
 import { MaintenanceModule } from './models/maintenance/maintenance.module';
 import { MaintenanceMiddleware } from './utils/middlewares/maintenance.middleware';
 import { MaintenanceEntity } from './models/maintenance/entities/maintenance.entity';
@@ -82,7 +82,7 @@ adminjs.registerAdapter({ Database, Resource });
 
     UserModule,
     ClassroomModule,
-    LevelModule,
+    ChallengeModule,
     CourseModule,
     IoTObjectModule,
     IoTProjectModule,

@@ -1,5 +1,5 @@
-import { LEVEL_TYPE } from "../../../Models/Level/level.entity";
+import { CHALLENGE_TYPE } from '../../../Models/Level/challenge.entity';
 
 export type LevelFormProps = {
-	type: LEVEL_TYPE;
+	type: CHALLENGE_TYPE;
 };

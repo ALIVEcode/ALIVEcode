@@ -1,6 +1,6 @@
 import Button from '../../UtilsComponents/Buttons/Button';
 import useRoutes from '../../../state/hooks/useRoutes';
-import LevelList from '../../../Pages/Level/LevelList/LevelList';
+import ChallengeList from '../../../Pages/Level/ChallengeList/ChallengeList';
 import { useTranslation } from 'react-i18next';
 
 export const DashboardLevels = () => {
@@ -15,19 +15,19 @@ export const DashboardLevels = () => {
 				<Button
 					className="w-full tablet:w-[20rem]"
 					variant="primary"
-					to={routes.auth.level_browse.path}
+					to={routes.auth.challenge_browse.path}
 				>
 					{t('dashboard.levels.browse_levels')}
 				</Button>
 				<Button
 					className="w-full tablet:w-[20rem]"
 					variant="secondary"
-					to={routes.auth.level_create.path}
+					to={routes.auth.challenge_create.path}
 				>
 					{t('dashboard.levels.create_level')}
 				</Button>
 			</div>
-			<LevelList></LevelList>
+			<ChallengeList></ChallengeList>
 		</div>
 	);
 };

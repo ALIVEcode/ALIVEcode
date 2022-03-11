@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import FillContainer from '../../../Components/UtilsComponents/FillContainer/FillContainer';
-import { LevelIoT } from '../../../Models/Level/levelIoT.entity';
+import { ChallengeIoT } from '../../../Models/Level/challenges/challenge_IoT.entity';
 
 export type IoTProjectTabs = 'settings' | 'routes' | 'access';
 export interface IoTProjectProps {
-	level?: LevelIoT;
+	challenge?: ChallengeIoT;
 	initialCode?: string;
 	updateId?: string;
 }

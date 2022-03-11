@@ -92,17 +92,17 @@ const Dashboard = (props: DashboardProps) => {
 
 				<CardContainer asRow title="Niveaux">
 					<SmallCard
-						to={routes.auth.level_list.path}
+						to={routes.auth.challenge_list.path}
 						title={t('dashboard.levels.my_levels')}
 						img={List}
 					/>
 					<SmallCard
-						to={routes.auth.level_create.path}
+						to={routes.auth.challenge_create.path}
 						title={t('dashboard.levels.create_level')}
 						img={Sandbox}
 					/>
 					<SmallCard
-						to={routes.auth.level_browse.path}
+						to={routes.auth.challenge_browse.path}
 						title={t('dashboard.levels.browse_levels')}
 						img={Voiture}
 					/>

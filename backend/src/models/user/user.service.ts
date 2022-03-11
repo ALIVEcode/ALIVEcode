@@ -12,7 +12,7 @@ import { REQUEST } from '@nestjs/core';
 import { ClassroomEntity } from '../classroom/entities/classroom.entity';
 import { IoTProjectEntity } from '../iot/IoTproject/entities/IoTproject.entity';
 import { IoTObjectEntity } from '../iot/IoTobject/entities/IoTobject.entity';
-import { LevelEntity } from '../level/entities/level.entity';
+import { ChallengeEntity } from '../challenge/entities/challenge.entity';
 import { CourseEntity } from '../course/entities/course.entity';
 import { MyRequest } from '../../utils/guards/auth.guard';
 import { CourseHistoryEntity } from '../course/entities/course_history.entity';
@@ -33,7 +33,7 @@ export class UserService {
     @InjectRepository(ResourceEntity) private resourceRepo: Repository<ResourceEntity>,
     @InjectRepository(IoTProjectEntity) private iotProjectRepository: Repository<IoTProjectEntity>,
     @InjectRepository(IoTObjectEntity) private iotObjectRepository: Repository<IoTObjectEntity>,
-    @InjectRepository(LevelEntity) private levelRepository: Repository<LevelEntity>,
+    @InjectRepository(ChallengeEntity) private challengeRepo: Repository<ChallengeEntity>,
     @Inject(REQUEST) private req: MyRequest,
   ) {}
   async createStudent(createStudentDto: UserEntity) {
@@ -206,8 +206,8 @@ export class UserService {
   async getResults(user: UserEntity) {
     return await this.userRepository.find({ where: { id: user } });
   }
-  async getLevels(user: UserEntity, query: string) {
-    return await this.levelRepository.find({
+  async getChallenges(user: UserEntity, query: string) {
+    return await this.challengeRepo.find({
       where: { creator: user, name: ILike(`%${query ?? ''}%`) },
       order: {
         creationDate: 'DESC',

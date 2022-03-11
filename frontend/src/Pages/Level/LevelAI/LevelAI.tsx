@@ -5,7 +5,7 @@ import { UserContext } from '../../../state/contexts/UserContext';
 import Cmd from '../../../Components/LevelComponents/Cmd/Cmd';
 import LevelAIExecutor from './LevelAIExecutor';
 import useCmd from '../../../state/hooks/useCmd';
-import { LevelAI as LevelAIModel } from '../../../Models/Level/levelAI.entity';
+import { ChallengeAI as LevelAIModel } from '../../../Models/Level/challenges/challenge_ai.entity';
 import dataAI from './dataAI.json';
 import LevelTable from '../../../Components/LevelComponents/LevelTable/LevelTable';
 import LevelGraph from '../../../Components/LevelComponents/LevelGraph/LevelGraph';
@@ -13,16 +13,16 @@ import PolyOptimizer from './artificial_intelligence/PolyOptmizer';
 import RegressionOptimizer from './artificial_intelligence/RegressionOptimizer';
 import DataTypes from '../../../Components/LevelComponents/LevelGraph/DataTypes';
 import PolyRegression from '../../../Components/LevelComponents/LevelGraph/PolyRegression';
-import { LevelContext } from '../../../state/contexts/LevelContext';
+import { ChallengeContext } from '../../../state/contexts/LevelContext';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
-import LevelToolsBar from '../../../Components/LevelComponents/LevelToolsBar/LevelToolsBar';
+import ChallengeToolsBar from '../../../Components/LevelComponents/LevelToolsBar/LevelToolsBar';
 
 /**
  * Ai level page. Contains all the components to display and make the ai level functionnal.
  *
- * @param {LevelAIModel} level ai level object
+ * @param {ChallengeAIModel} challenge ai challenge object
  * @param {boolean} editMode if the level is in editMode or not
- * @param {LevelProgression} progression the level progression of the current user
+ * @param {ChallengeProgression} progression the level progression of the current user
  * @param {string} initialCode the initial code of the level
  * @param {(level: LevelAIModel) => void} setLevel callback used to modify the level in the parent state
  * @param {(progression: LevelProgression) => void} setProgression callback used to modify the level progression in the parent state
@@ -31,18 +31,18 @@ import LevelToolsBar from '../../../Components/LevelComponents/LevelToolsBar/Lev
  * @author Enric
  * @author Mathis Laroche
  */
-const LevelAI = ({ initialCode }: LevelAIProps) => {
+const ChallengeAI = ({ initialCode }: LevelAIProps) => {
 	const { user } = useContext(UserContext);
 	const {
-		level: levelUntyped,
+		challenge: levelUntyped,
 		executor: executorUntyped,
 		editMode,
 		progression,
 		setProgression,
-		saveLevelTimed,
+		saveChallengeTimed: saveLevelTimed,
 		saveProgressionTimed,
 		askForUserInput,
-	} = useContext(LevelContext);
+	} = useContext(ChallengeContext);
 	const level = levelUntyped as LevelAIModel;
 	const executor =
 		executorUntyped as React.MutableRefObject<LevelAIExecutor | null>;
@@ -216,7 +216,7 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 					{/* Left Side of screen */}
 					<div className="w-1/2 h-full flex flex-col">
 						{/* Barre d'infos du niveau */}
-						<LevelToolsBar />
+						<ChallengeToolsBar />
 						{/* Interface de code */}
 						{editMode ? (
 							/* Interface du code avec les tabs */
@@ -286,4 +286,4 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 	);
 };
 
-export default LevelAI;
+export default ChallengeAI;

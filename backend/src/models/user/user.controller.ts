@@ -190,13 +190,13 @@ export class UserController {
     return this.userService.getResources(target as ProfessorEntity);
   }
 
-  @Get(':id/levels')
+  @Get(':id/challenges')
   @Auth()
-  async getLevels(@User() user: UserEntity, @Param('id') id: string, @Query('search') query: string) {
+  async getChallenges(@User() user: UserEntity, @Param('id') id: string, @Query('search') query: string) {
     if (!hasRole(user, Role.MOD) && user.id !== id) throw new HttpException('You cannot do that', HttpStatus.FORBIDDEN);
 
-    if (user.id === id) return this.userService.getLevels(user, query);
-    return this.userService.getLevels(await this.userService.findById(id), query);
+    if (user.id === id) return this.userService.getChallenges(user, query);
+    return this.userService.getChallenges(await this.userService.findById(id), query);
   }
 
   @Post('upload')

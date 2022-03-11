@@ -39,7 +39,7 @@ const Footer = ({ className }: FooterProps) => {
 							</Link>
 						</li>
 						<li>
-							<Link to={routes.public.amc.path}>{t('msg.section.amc')}</Link>
+							<Link to={routes.public.iot.path}>{t('msg.section.iot')}</Link>
 						</li>
 						<li>
 							<Link to={routes.public.about.path}>
@@ -54,7 +54,7 @@ const Footer = ({ className }: FooterProps) => {
 					<ul className="footer-links">
 						<li>
 							<a
-								href="https://github.com/MoSk3/ALIVEcode/tree/dev"
+								href="https://github.com/ALIVEcode/ALIVEcode"
 								rel="noopener noreferrer"
 								target="_blank"
 							>

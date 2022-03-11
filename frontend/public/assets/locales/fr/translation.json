@@ -220,15 +220,15 @@
 				"title": "Détails"
 			},
 			"students": {
-				"title": "Élèves dans la classe",
-				"empty": "Il n'y a aucun élève dans la classe"
+				"title": "Étudiants dans la classe",
+				"empty": "Il n'y a aucun étudiant dans la classe"
 			}
 		},
 		"desc": "Classe de {{professor}}",
 		"subject": "Sujet",
 		"code": {
 			"title": "Code de la classe",
-			"desc": "Donnez ce code aux élèves afin qu'ils puissent rejoindre la classe depuis le tableau de bord!"
+			"desc": "Donnez ce code aux étudiants afin qu'ils puissent rejoindre la classe depuis le tableau de bord!"
 		}
 	},
 	"course": {
@@ -290,11 +290,11 @@
 			},
 			"us": {
 				"title": "Qui sommes-nous ?",
-				"desc": "Nous sommes des chercheurs du Laboratoire de Recherche Informatique Maisonneuve LRIMa. Chaque année nous avons comme but d'innover dans l'industrie informatique en menant des recherches et en publiant/partageant les résultats de nos recherches durant des conférences à travers le monde. Visitez le site du LRIMa pour plus de détails et la section à propos."
+				"desc": "Nous sommes des chercheurs du Laboratoire de Recherche Informatique du collège Maisonneuve LRIMa. Chaque année nous avons comme but d'innover dans l'industrie informatique en menant des recherches et en publiant/partageant les résultats de nos recherches durant des conférences à travers le monde. Visitez le site du LRIMa pour plus de détails et la section à propos."
 			},
 			"story": {
 				"title": "Notre histoire",
-				"desc": "Les origines d'ALIVEcode remontent à loin dans le temps. Il y a trois ans, nous avons eu l'idée de créer des véhicules miniatures autonomes dans le but de recherches scientifiques. Un an plus tard, nous avons eu l'idée d'utiliser ces robots afin d'apprendre la programmation à de jeunes étudiants. L'année suivante, nous avons décidé de créer ALIVEcode afin de rendre l'apprentissage de la programmation accessible à tous. Cela fait maintenant plus d'un an qu'ALIVEcode existe et continue d'être amélioré."
+				"desc": "Les origines d'ALIVEcode remontent à loin dans le temps. Il y a trois ans, nous avons eu l'idée de créer des véhicules miniatures autonomes dans le but de recherches scientifiques. Un an plus tard, nous avons eu l'idée d'utiliser ces robots afin d'apprendre la programmation à de jeunes étudiants. L'année suivante, nous avons décidé de créer ALIVEcode afin de rendre l'apprentissage de la programmation accessible à tous. Cela fait maintenant plus d'un an qu'ALIVEcode existe et continue de grandir."
 			},
 			"training_ai": {
 				"title": "Formation en Intelligence Artificielle",

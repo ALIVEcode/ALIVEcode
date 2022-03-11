@@ -23,6 +23,7 @@ import {
 	faHistory,
 	faStar,
 	faPlus,
+	faTasks,
 } from '@fortawesome/free-solid-svg-icons';
 import ClassroomSection from '../../Components/DashboardComponents/ClassroomSection/ClassroomSection';
 import Classroom from '../Classroom/Classroom';
@@ -36,10 +37,17 @@ import {
 import { Course } from '../../Models/Course/course.entity';
 import { useNavigate } from 'react-router-dom';
 import useRoutes from '../../state/hooks/useRoutes';
-import DashboardLevels from '../../Components/DashboardComponents/DashboardLevels/DashboardLevels';
-import { Level } from '../../Models/Level/level.entity';
+import DashboardChallenges from '../../Components/DashboardComponents/DashboardChallenges/DashboardChallenges';
+import { Challenge } from '../../Models/Challenge/challenge.entity';
 import Button from '../../Components/UtilsComponents/Buttons/Button';
+import CourseSection from '../../Components/DashboardComponents/CourseSection/CourseSection';
 
+/**
+ * State reducer to change the state of the selected tab
+ * @param state Current state of the reducer
+ * @param action Action parameters to change the state of the reducer
+ * @returns The new state of the reducer
+ */
 const SwitchTabReducer = (
 	state: { index: number; classroom?: ClassroomModel },
 	action: SwitchTabActions,
@@ -47,7 +55,7 @@ const SwitchTabReducer = (
 	switch (action.type) {
 		case 'recents':
 			return { index: 0 };
-		case 'levels':
+		case 'challenges':
 			return { index: 1 };
 		case 'classrooms':
 			if (action.classroom) {
@@ -64,15 +72,17 @@ const SwitchTabReducer = (
 /**
  * Dashboard page that contains all the links to the different pages of the plaform
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const DashboardNew = (props: DashboardNewProps) => {
 	const { user } = useContext(UserContext);
 	const { t } = useTranslation();
 	const { routes } = useRoutes();
 	const [classrooms, setClassrooms] = useState<ClassroomModel[]>([]);
+	const [courses, setCourses] = useState<Course[]>([]);
 	const [formJoinClassOpen, setFormJoinClassOpen] = useState(false);
 	const [hoveringClassroom, setHoveringClassroom] = useState(false);
+	const [hoveringCourse, setHoveringCourse] = useState(false);
 	useState<ClassroomModel | null>(null);
 	const navigate = useNavigate();
 	const query = useQuery();
@@ -80,14 +90,14 @@ const DashboardNew = (props: DashboardNewProps) => {
 	const [tabSelected, setTabSelected] = useReducer(SwitchTabReducer, {
 		index: 0,
 	});
-	const [courses, setCourses] = useState<Course[]>();
-	const [levels, setLevels] = useState<Level[]>();
+	const [recentCourses, setRecentCourses] = useState<Course[]>();
+	const [challenges, setChallenges] = useState<Challenge[]>();
 
 	useEffect(() => {
 		if (pathname.endsWith('recents') && tabSelected.index !== 0)
 			setTabSelected({ type: 'recents' });
-		else if (pathname.endsWith('levels') && tabSelected.index !== 1)
-			setTabSelected({ type: 'levels' });
+		else if (pathname.endsWith('challenges') && tabSelected.index !== 1)
+			setTabSelected({ type: 'challenges' });
 		else if (pathname.includes('classroom')) {
 			const classroomId = query.get('id');
 			if (tabSelected.classroom?.id === classroomId) return;
@@ -108,10 +118,17 @@ const DashboardNew = (props: DashboardNewProps) => {
 		if (!user) return;
 		const getClassrooms = async () => {
 			setClassrooms(await user.getClassrooms());
+			if (user.isProfessor()) {
+				setCourses(await user.getCourses());
+			}
 		};
 		getClassrooms();
-	});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
+	/**
+	 * Opens the recents tab
+	 */
 	const openRecents = () => {
 		query.delete('id');
 		navigate({
@@ -120,14 +137,20 @@ const DashboardNew = (props: DashboardNewProps) => {
 		});
 	};
 
-	const openLevels = () => {
+	/**
+	 * Opens the challenges tab
+	 */
+	const openChallenges = () => {
 		query.delete('id');
 		navigate({
-			pathname: `/dashboard/levels`,
+			pathname: `/dashboard/challenges`,
 			search: query.toString(),
 		});
 	};
 
+	/**
+	 * Opens the classrooms tab
+	 */
 	const openClassroom = (classroom: ClassroomModel) => {
 		query.set('id', classroom.id);
 		navigate({
@@ -136,12 +159,15 @@ const DashboardNew = (props: DashboardNewProps) => {
 		});
 	};
 
+	/**
+	 * Renders the tab currently selected
+	 */
 	const renderTabSelected = () => {
 		switch (tabSelected.index) {
 			case 0:
 				return <DashboardRecents></DashboardRecents>;
 			case 1:
-				return <DashboardLevels></DashboardLevels>;
+				return <DashboardChallenges></DashboardChallenges>;
 			case 2:
 				if (!tabSelected.classroom) return;
 				return (
@@ -153,40 +179,56 @@ const DashboardNew = (props: DashboardNewProps) => {
 		}
 	};
 
-	const loadCourses = useCallback(async () => {
+	/**
+	 * Loads the courses of the user from the database
+	 */
+	const loadRecentCourses = useCallback(async () => {
 		if (!user) return;
 		const courses = await api.db.users.getRecentCourses({ id: user.id });
-		setCourses(courses);
+		setRecentCourses(courses);
 	}, [user]);
 
-	const loadLevels = useCallback(async () => {
+	/**
+	 * Loads the current challenges of the user from the database
+	 */
+	const loadChallenges = useCallback(async () => {
 		if (!user) return;
-		const levels = await api.db.users.getLevels({ id: user.id });
-		setLevels(levels);
+		const challenges = await api.db.users.getChallenges({ id: user.id });
+		setChallenges(challenges);
 	}, [user]);
 
+	/**
+	 * Memoized version of the context values.
+	 * (Used to optimize the rendering)
+	 */
 	const ctx: DashboardContextValues = useMemo(() => {
 		return {
 			getCourses: () => {
-				if (!courses) {
-					loadCourses();
+				if (!recentCourses) {
+					loadRecentCourses();
 					return [];
 				}
-				return courses;
+				return recentCourses;
 			},
 			getClassrooms: () => {
 				return classrooms;
 			},
-			getLevels: () => {
-				if (!levels) {
-					loadLevels();
+			getChallenges: () => {
+				if (!challenges) {
+					loadChallenges();
 					return [];
 				}
-				return levels;
+				return challenges;
 			},
 			setFormJoinClassOpen,
 		};
-	}, [classrooms, courses, levels, loadCourses, loadLevels]);
+	}, [
+		classrooms,
+		recentCourses,
+		challenges,
+		loadRecentCourses,
+		loadChallenges,
+	]);
 
 	return (
 		<StyledDashboard>
@@ -210,11 +252,11 @@ const DashboardNew = (props: DashboardNewProps) => {
 								'sidebar-btn ' +
 								(tabSelected.index === 1 ? 'sidebar-selected' : '')
 							}
-							onClick={openLevels}
+							onClick={openChallenges}
 						>
 							<FontAwesomeIcon className="sidebar-icon" icon={faStar} />
 							<label className="sidebar-btn-text">
-								{t('dashboard.levels.title')}
+								{t('dashboard.challenges.title')}
 							</label>
 						</div>
 
@@ -251,7 +293,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 									selected={tabSelected.classroom?.id === classroom.id}
 									onClick={() => openClassroom(classroom)}
 									classroom={classroom}
-								></ClassroomSection>
+								/>
 							))
 						) : (
 							<div className="!text-xs !text-[color:var(--fg-shade-four-color)] !cursor-default flex flex-col items-center sidebar-classroom">
@@ -274,6 +316,47 @@ const DashboardNew = (props: DashboardNewProps) => {
 										: t('dashboard.classrooms.add.student')}
 								</Button>
 							</div>
+						)}
+
+						{user?.isProfessor() && (
+							<>
+								<div
+									className="sidebar-header"
+									onMouseEnter={() => setHoveringCourse(true)}
+									onMouseLeave={() => setHoveringCourse(false)}
+								>
+									<FontAwesomeIcon className="sidebar-icon" icon={faTasks} />
+									<label className="sidebar-header-text">
+										{t('dashboard.courses.title')}
+									</label>
+									{hoveringCourse && (
+										<FontAwesomeIcon
+											onClick={() => navigate(routes.auth.create_course.path)}
+											className="sidebar-icon-right cursor-pointer"
+											icon={faPlus}
+										/>
+									)}
+								</div>
+
+								<hr />
+
+								{courses.length > 0 ? (
+									courses.map((course, idx) => (
+										<CourseSection key={idx} course={course} />
+									))
+								) : (
+									<div className="!text-xs !text-[color:var(--fg-shade-four-color)] !cursor-default flex flex-col items-center sidebar-classroom">
+										<i>{t('dashboard.courses.empty')}</i>
+										<Button
+											className="!text-xs mt-2"
+											onClick={() => navigate(routes.auth.create_course.path)}
+											variant="primary"
+										>
+											{t('dashboard.courses.add')}
+										</Button>
+									</div>
+								)}
+							</>
 						)}
 					</div>
 					<div className="w-3/4 table:5/6 laptop:7/8 desktop:11/12 h-full overflow-y-auto">

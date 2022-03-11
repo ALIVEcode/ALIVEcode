@@ -6,7 +6,7 @@ import interpreteur.executeur.Executeur;
 /**
  * Interface des erreurs d'AliveScript
  *
- * @author Mathis
+ * @author Mathis Laroche
  */
 public interface ASErreur {
 

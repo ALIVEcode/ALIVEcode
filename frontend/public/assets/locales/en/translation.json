@@ -39,9 +39,9 @@
 				"name": "This field should only contains alphanumeric characters"
 			}
 		},
-		"level": {
+		"challenge": {
 			"PATCH": {
-				"title": "Level settings"
+				"title": "Challenge settings"
 			}
 		},
 		"title": {
@@ -49,7 +49,7 @@
 			"signup": "Sign up",
 			"create_classroom": "Creation of a classroom",
 			"create_course": "Creation of a course",
-			"create_level": "Creation of a level",
+			"create_challenge": "Creation of a Challenge",
 			"create_iot_project": "Creation of an IoT project",
 			"create_iot_object": "Creation of an IoT object"
 		},
@@ -104,11 +104,16 @@
 		"description": "description",
 		"deleted_user": "Deleted user",
 		"search": "Search",
-		"community_levels": "Community levels",
+		"community_challenges": "Community challenges",
 		"public_classrooms": "Public classrooms",
 		"creation_date": "Creation date",
 		"update_date": "Update date",
 		"see_links": "See links",
+		"activity_type": {
+			"challenge": "Challenge",
+			"video": "Video",
+			"theory": "Theory"
+		},
 		"time": {
 			"format": "{{dayName}}, {{day}} {{monthName}} {{year}} {{hour}}:{{minute}}",
 			"day": {
@@ -169,8 +174,8 @@
 		"maintenance": {
 			"more_info": "More info",
 			"no_desc": "No description available.",
-			"ongoing": "The website is currently undergoing a maintenance from {{startDate}} to {{finishDate}}. You cannot use your account or see other users' levels during this period of time. Sorry for the inconvenience.",
-			"upcoming": "The website will be undergoing a maintenance from {{startDate}} to {{finishDate}}. You will not be able to use your account or see other users' levels during this period of time. Sorry for the inconvenience.",
+			"ongoing": "The website is currently undergoing a maintenance from {{startDate}} to {{finishDate}}. You cannot use your account or see other users' challenges during this period of time. Sorry for the inconvenience.",
+			"upcoming": "The website will be undergoing a maintenance from {{startDate}} to {{finishDate}}. You will not be able to use your account or see other users' challgenes during this period of time. Sorry for the inconvenience.",
 			"status": {
 				"ongoing": "Ongoing",
 				"finished": "Finished",
@@ -183,14 +188,14 @@
 			"title": "Recent Courses",
 			"empty": {
 				"student": "You have no recent activity. Join a public or private classroom to get started",
-				"professor": "You have no recent activity. Create a classroom to get started"
+				"professor": "You have no recent activity. Create a classroom or a course to get started"
 			}
 		},
-		"levels": {
-			"title": "Levels",
-			"browse_levels": "Explore the community levels",
-			"create_level": "Create a level",
-			"empty": "You have no level"
+		"challenges": {
+			"title": "Challenges",
+			"browse_challenges": "Explore the community challenges",
+			"create_challenge": "Create a challenge",
+			"empty": "You do not have any challenge"
 		},
 		"classrooms": {
 			"title": "Classrooms",
@@ -204,6 +209,11 @@
 				"student": "Join a classroom",
 				"professor": "Create a classroom"
 			}
+		},
+		"courses": {
+			"title": "Your courses",
+			"add": "Create a course",
+			"empty": "You have do not have any course"
 		}
 	},
 	"classroom": {
@@ -251,11 +261,11 @@
 			"professor": "Professor account",
 			"student": "Student account"
 		},
-		"level": {
-			"alive": "Level with ALIVE car",
-			"code": "Level with console",
-			"ai": "Level with artificial intelligence",
-			"iot": "Level with Internet of Things"
+		"challenge": {
+			"alive": "Challenge with ALIVE car",
+			"code": "Challenge with console",
+			"ai": "Challenge with artificial intelligence",
+			"iot": "Challenge with Internet of Things"
 		}
 	},
 	"home": {

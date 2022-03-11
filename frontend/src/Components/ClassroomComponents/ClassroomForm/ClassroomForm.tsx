@@ -18,7 +18,7 @@ import { plainToInstance } from 'class-transformer';
 /**
  * Form that creates a new classroom in the db and navigates to it
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const ClassroomForm = (props: ClassroomFormProps) => {
 	const { t } = useTranslation();

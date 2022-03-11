@@ -11,7 +11,7 @@ import {
  *
  * @param {Maintenance} maintenance maintenance object
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const MaintenanceCard = ({ maintenance }: MaintenanceCardProps) => {
 	const { t } = useTranslation();

@@ -6,10 +6,13 @@ import { ClassroomEntity } from './entities/classroom.entity';
 import { CourseEntity } from '../course/entities/course.entity';
 import { IoTProjectEntity } from '../iot/IoTproject/entities/IoTproject.entity';
 import { IoTObjectEntity } from '../iot/IoTobject/entities/IoTobject.entity';
-import { UserEntity, ProfessorEntity, StudentEntity } from '../user/entities/user.entity';
+import { UserEntity } from '../user/entities/user.entity';
+import { ProfessorEntity } from '../user/entities/user.entity';
+import { StudentEntity } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
-import { LevelEntity } from '../level/entities/level.entity';
+import { ChallengeEntity } from '../challenge/entities/challenge.entity';
 import { CourseHistoryEntity } from '../course/entities/course_history.entity';
+import { ResourceEntity } from '../resource/entities/resource.entity';
 
 @Module({
   imports: [
@@ -19,9 +22,10 @@ import { CourseHistoryEntity } from '../course/entities/course_history.entity';
       ProfessorEntity,
       StudentEntity,
       CourseEntity,
+      ResourceEntity,
       IoTProjectEntity,
       IoTObjectEntity,
-      LevelEntity,
+      ChallengeEntity,
       CourseHistoryEntity,
     ]),
     //DefaultAdminModule,

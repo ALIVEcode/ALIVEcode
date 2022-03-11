@@ -7,7 +7,7 @@ import CardContainer from '../../Components/UtilsComponents/CardContainer/CardCo
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import ClassroomCard from '../../Components/DashboardComponents/ClassroomCard/ClassroomCard';
 import SmallCard from '../../Components/UtilsComponents/Cards/SmallCard/SmallCard';
-import List from '../../assets/images/icons/my_levels.png';
+import List from '../../assets/images/icons/my_challenges.png';
 import Puzzle from '../../assets/images/icons/puzzle.png';
 import Sandbox from '../../assets/images/icons/sandboxblanc.png';
 import Voiture from '../../assets/images/Voiture.gif';
@@ -24,7 +24,7 @@ import { useNavigate } from 'react-router-dom';
 /**
  * Dashboard page that contains all the links to the different pages of the plaform
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const Dashboard = (props: DashboardProps) => {
 	const { user } = useContext(UserContext);
@@ -92,18 +92,18 @@ const Dashboard = (props: DashboardProps) => {
 
 				<CardContainer asRow title="Niveaux">
 					<SmallCard
-						to={routes.auth.level_list.path}
-						title={t('dashboard.levels.my_levels')}
+						to={routes.auth.challenge_list.path}
+						title={t('dashboard.challenges.my_challenges')}
 						img={List}
 					/>
 					<SmallCard
-						to={routes.auth.level_create.path}
-						title={t('dashboard.levels.create_level')}
+						to={routes.auth.challenge_create.path}
+						title={t('dashboard.challenges.create_challenge')}
 						img={Sandbox}
 					/>
 					<SmallCard
-						to={routes.auth.level_browse.path}
-						title={t('dashboard.levels.browse_levels')}
+						to={routes.auth.challenge_browse.path}
+						title={t('dashboard.challenges.browse_challenges')}
 						img={Voiture}
 					/>
 				</CardContainer>

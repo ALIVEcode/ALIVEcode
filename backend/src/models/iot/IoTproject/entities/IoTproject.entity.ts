@@ -74,7 +74,7 @@ export class IoTProjectEntity extends CreatedByUser {
   interactRights: IOTPROJECT_INTERACT_RIGHTS;
 
   @ManyToMany(() => UserEntity, user => user.collabIoTProjects)
-  @JoinColumn()
+  @JoinTable()
   @IsEmpty()
   collaborators: UserEntity[];
 

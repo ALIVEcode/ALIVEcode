@@ -20,7 +20,7 @@ import InputGroup from '../../../Components/UtilsComponents/InputGroup/InputGrou
 /**
  * Signup page that allows the user to register a new account
  *
- * @author MoSk3
+ * @author Enric Soldevila
  *
  */
 const SignUp = ({ userType }: SignUpProps) => {

@@ -1,28 +1,29 @@
-import { CourseSectionProps } from './courseSectionTypes';
-import { useState, useContext, useRef } from 'react';
-import { CourseContext } from '../../../state/contexts/CourseContext';
-import Link from '../../UtilsComponents/Link/Link';
-import { Activity } from '../../../Models/Course/activity.entity';
-import { plainToClass } from 'class-transformer';
-import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
-import { useTranslation } from 'react-i18next';
-import AlertConfirm from '../../UtilsComponents/Alert/AlertConfirm/AlertConfirm';
-import { Option, TDOption } from '../../UtilsComponents/Option/TDOption';
-import { faPenFancy, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faDropbox } from '@fortawesome/free-brands-svg-icons';
+import { faPenFancy, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Disclosure } from '@headlessui/react';
+import { plainToClass } from 'class-transformer';
+import { useContext, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Activity } from '../../../Models/Course/activity.entity';
+import { CourseContext } from '../../../state/contexts/CourseContext';
+import AlertConfirm from '../../UtilsComponents/Alert/AlertConfirm/AlertConfirm';
+import Link from '../../UtilsComponents/Link/Link';
+import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
+import { Option, TDOption } from '../../UtilsComponents/Option/TDOption';
+import { CourseSectionProps } from './courseSectionTypes';
 /**
+ * @deprecated
  * Component that shows the section in the navigation and handles different actions like adding in an activity onto the section
  *
  * @param {Section} section
- * @author MoSk3
+ * @author Enric Soldevila
  * @author Ecoral360
  */
 const CourseSection = ({ section, editMode }: CourseSectionProps) => {
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const {
-		loadActivity,
+		openActivity: loadActivity,
 		addActivity,
 		course,
 		canEdit,

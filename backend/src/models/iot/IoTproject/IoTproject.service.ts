@@ -14,8 +14,8 @@ import { validUUID } from '../../../utils/types/validation.types';
 import { IoTProjectAddScriptDTO } from './dto/addScript.dto';
 import { AsScriptEntity } from '../../as-script/entities/as-script.entity';
 import { AsScriptService } from '../../as-script/as-script.service';
-import { LevelService } from '../../level/level.service';
-import { LevelProgressionEntity } from '../../level/entities/levelProgression.entity';
+import { ChallengeService } from '../../challenge/challenge.service';
+import { ChallengeProgressionEntity } from '../../challenge/entities/challenge_progression.entity';
 import { IoTProjectUpdateDTO } from './dto/updateProject.dto';
 import { IoTUpdateLayoutRequestToWatcher, ObjectClient } from '../../../socket/iotSocket/iotSocket.types';
 
@@ -25,8 +25,8 @@ export class IoTProjectService {
     @InjectRepository(IoTProjectEntity) private projectRepository: Repository<IoTProjectEntity>,
     @InjectRepository(IoTRouteEntity) private routeRepository: Repository<IoTRouteEntity>,
     @InjectRepository(AsScriptEntity) private scriptRepo: Repository<AsScriptEntity>,
-    @InjectRepository(LevelProgressionEntity) private progressionRepo: Repository<LevelProgressionEntity>,
-    private levelService: LevelService,
+    @InjectRepository(ChallengeProgressionEntity) private progressionRepo: Repository<ChallengeProgressionEntity>,
+    private challengeService: ChallengeService,
     @Inject(forwardRef(() => AsScriptService)) private asScriptService: AsScriptService,
   ) {}
 
@@ -181,12 +181,12 @@ export class IoTProjectService {
     return newScript;
   }
 
-  async getProjectOrProgression(id: string): Promise<IoTProjectEntity | LevelProgressionEntity> {
+  async getProjectOrProgression(id: string): Promise<IoTProjectEntity | ChallengeProgressionEntity> {
     if (id.includes('/')) {
       const split = id.split('/');
       if (split.length < 2) throw new HttpException('Bad Id', HttpStatus.BAD_REQUEST);
       try {
-        return await this.levelService.getIoTProgressionById(split[0], split[1]);
+        return await this.challengeService.getIoTProgressionById(split[0], split[1]);
       } catch {
         throw new HttpException('Project id not found', HttpStatus.NOT_FOUND);
       }

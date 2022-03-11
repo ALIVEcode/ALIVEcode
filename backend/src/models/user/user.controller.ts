@@ -5,6 +5,7 @@ import {
   Body,
   Patch,
   Delete,
+  Param,
   HttpException,
   HttpStatus,
   Res,
@@ -14,10 +15,9 @@ import {
   Request,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { Param } from '@nestjs/common';
 import { Response } from 'express';
 import { Auth } from '../../utils/decorators/auth.decorator';
-import { UserEntity, StudentEntity, ProfessorEntity } from './entities/user.entity';
+import { UserEntity, StudentEntity, ProfessorEntity, USER_TYPES } from './entities/user.entity';
 import { hasRole } from './auth';
 import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
 import { Group } from '../../utils/decorators/group.decorator';
@@ -176,13 +176,27 @@ export class UserController {
     return this.userService.getRecentCourses(await this.userService.findById(id));
   }
 
-  @Get(':id/levels')
-  @Auth()
-  async getLevels(@User() user: UserEntity, @Param('id') id: string, @Query('search') query: string) {
+  @Get(':id/resources')
+  @Auth(Role.PROFESSOR, Role.MOD)
+  async getResources(@User() user: ProfessorEntity, @Param('id') id: string) {
     if (!hasRole(user, Role.MOD) && user.id !== id) throw new HttpException('You cannot do that', HttpStatus.FORBIDDEN);
 
-    if (user.id === id) return this.userService.getLevels(user, query);
-    return this.userService.getLevels(await this.userService.findById(id), query);
+    if (user.id === id) return this.userService.getResources(user);
+
+    const target = await this.userService.findById(id);
+    if (target.type === USER_TYPES.STUDENT)
+      throw new HttpException('A student has no resources', HttpStatus.BAD_REQUEST);
+
+    return this.userService.getResources(target as ProfessorEntity);
+  }
+
+  @Get(':id/challenges')
+  @Auth()
+  async getChallenges(@User() user: UserEntity, @Param('id') id: string, @Query('search') query: string) {
+    if (!hasRole(user, Role.MOD) && user.id !== id) throw new HttpException('You cannot do that', HttpStatus.FORBIDDEN);
+
+    if (user.id === id) return this.userService.getChallenges(user, query);
+    return this.userService.getChallenges(await this.userService.findById(id), query);
   }
 
   @Post('upload')

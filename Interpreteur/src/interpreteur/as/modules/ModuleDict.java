@@ -1,6 +1,9 @@
 package interpreteur.as.modules;
 
-import interpreteur.as.Objets.ASObjet;
+import interpreteur.as.lang.ASFonctionModule;
+import interpreteur.as.lang.datatype.ASObjet;
+import interpreteur.as.lang.ASTypeBuiltin;
+import interpreteur.as.modules.core.ASModule;
 import interpreteur.executeur.Executeur;
 
 public class ModuleDict {
@@ -42,11 +45,11 @@ public class ModuleDict {
     //};
 
     static ASModule charger(Executeur executeurInstance) {
-        return new ASModule(new ASObjet.Fonction[]{
+        return new ASModule(new ASFonctionModule[]{
 
-                new ASObjet.Fonction("creer", new ASObjet.Fonction.Parametre[]{
+                new ASFonctionModule("creer", new ASFonctionModule.Parametre[]{
 
-                }, ASObjet.TypeBuiltin.fonctionType.asType()) {
+                }, ASTypeBuiltin.fonctionType.asType()) {
                     @Override
                     public ASObjet<?> executer() {
                         return null;

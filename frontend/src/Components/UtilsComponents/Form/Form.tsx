@@ -71,7 +71,7 @@ import InputGroup from '../InputGroup/InputGroup';
  *    ]}
  * />
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const Form = (props: FormProps) => {
 	const { t } = useTranslation();
@@ -84,6 +84,8 @@ const Form = (props: FormProps) => {
 	const alert = useAlert();
 
 	const onFormSubmit = async (formValues: any) => {
+		if (props.customSubmit) return props.customSubmit(formValues);
+
 		if (props.alterFormValues) formValues = props.alterFormValues(formValues);
 		if (process.env.DEBUG) console.log(formValues);
 		try {

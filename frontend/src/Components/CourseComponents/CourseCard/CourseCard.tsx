@@ -8,7 +8,7 @@ import { formatTooLong } from '../../../Types/formatting';
  *
  * @param {course} course course object
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const CourseCard = ({ course }: CourseCardProps) => {
 	const { routes, goTo } = useRoutes();

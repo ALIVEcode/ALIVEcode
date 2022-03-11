@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 import { User } from '../../Models/User/user.entity';
 import { Maintenance } from '../../Models/Maintenance/maintenance.entity';
-import { PlaySocket } from '../../Pages/Level/PlaySocket';
+import { PlaySocket } from '../../Pages/Challenge/PlaySocket';
 
 export const UserContext = createContext<{
 	user: User | null;

@@ -1,10 +1,12 @@
 package interpreteur.ast.buildingBlocs.programmes;
 
-import interpreteur.as.Objets.ASFonction;
-import interpreteur.as.Objets.ASObjet;
-import interpreteur.as.Objets.Scope;
+import interpreteur.as.lang.ASFonctionModule;
+import interpreteur.as.lang.ASVariable;
+import interpreteur.as.lang.datatype.ASFonction;
+import interpreteur.as.lang.ASScope;
+import interpreteur.as.lang.managers.ASFonctionManager;
 import interpreteur.ast.buildingBlocs.Programme;
-import interpreteur.ast.buildingBlocs.expressions.Type;
+import interpreteur.as.lang.ASType;
 import interpreteur.ast.buildingBlocs.expressions.Var;
 import interpreteur.executeur.Coordonnee;
 import interpreteur.executeur.Executeur;
@@ -17,16 +19,16 @@ import java.util.List;
 public class CreerSetter extends Programme {
     private final Var var;
     private final Var nomArg;
-    private final Type type;
-    private final Scope scope;
+    private final ASType type;
+    private final ASScope scope;
 
-    public CreerSetter(Var var, Var nomArg, Type type, Executeur executeurInstance) {
+    public CreerSetter(Var var, Var nomArg, ASType type, Executeur executeurInstance) {
         super(executeurInstance);
         this.var = var;
         this.nomArg = nomArg;
         this.type = type;
         this.addSetter();
-        this.scope = Scope.makeNewCurrentScope();
+        this.scope = ASScope.makeNewCurrentScope();
     }
 
     public Var getVar() {
@@ -34,7 +36,7 @@ public class CreerSetter extends Programme {
     }
 
     public void addSetter() {
-        ASObjet.Variable v =  Scope.getCurrentScope().getVariable(var.getNom());
+        ASVariable v =  ASScope.getCurrentScope().getVariable(var.getNom());
 
         if (v == null) {
             Declarer.addWaitingSetter(this);
@@ -42,14 +44,14 @@ public class CreerSetter extends Programme {
         }
 
         v.setSetter((valeur) -> {
-            Scope scope = new Scope(this.scope);
-            scope.setParent(Scope.getCurrentScopeInstance());
+            ASScope scope = new ASScope(this.scope);
+            scope.setParent(ASScope.getCurrentScopeInstance());
 
-            ASFonction set = new ASFonction(this.var.getNom(), new ASObjet.Fonction.Parametre[]{
-                    new ASObjet.Fonction.Parametre(this.type, this.nomArg.getNom(), null)
+            ASFonction set = new ASFonction(this.var.getNom(), new ASFonctionModule.Parametre[]{
+                    new ASFonctionModule.Parametre(this.type, this.nomArg.getNom(), null)
             }, this.type, executeurInstance);
 
-            scope.declarerVariable(new ASObjet.Variable(this.nomArg.getNom(), null, this.type));
+            scope.declarerVariable(new ASVariable(this.nomArg.getNom(), null, this.type));
 
             set.setScope(scope);
             set.setCoordBlocName("set_");
@@ -66,6 +68,6 @@ public class CreerSetter extends Programme {
     @Override
     public Coordonnee prochaineCoord(Coordonnee coord, List<Token> ligne) {
         return new Coordonnee(executeurInstance.nouveauScope("set_" +
-                (ASObjet.FonctionManager.obtenirStructure().isBlank() ? "" : ASObjet.FonctionManager.obtenirStructure() + ".") + ligne.get(1).obtenirValeur()));
+                                                             (ASFonctionManager.obtenirStructure().isBlank() ? "" : ASFonctionManager.obtenirStructure() + ".") + ligne.get(1).obtenirValeur()));
     }
 }

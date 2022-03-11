@@ -39,7 +39,7 @@
 				"name": "Ce champs doit contenir uniquement des lettres et des chiffres"
 			}
 		},
-		"level": {
+		"challenge": {
 			"PATCH": {
 				"title": "Paramètres du niveau"
 			}
@@ -49,7 +49,7 @@
 			"signup": "Inscription",
 			"create_classroom": "Création d'une classe",
 			"create_course": "Création d'un cours",
-			"create_level": "Création d'un niveau",
+			"create_challenge": "Création d'un niveau",
 			"create_iot_project": "Création d'un projet IoT",
 			"create_iot_object": "Création d'un objet IoT"
 		},
@@ -104,11 +104,16 @@
 		"description": "description",
 		"deleted_user": "Ancien utilisateur",
 		"search": "Rechercher",
-		"community_levels": "Niveaux de la communauté",
+		"community_challenges": "Niveaux de la communauté",
 		"public_classrooms": "Classes publiques",
 		"creation_date": "Date de création",
 		"update_date": "Date de modification",
 		"see_links": "Voir les liens",
+		"activity_type": {
+			"challenge": "Niveau",
+			"video": "Visionnement",
+			"theory": "Théorie"
+		},
 		"time": {
 			"format": "{{dayName}}, {{day}} {{monthName}} {{year}} - {{hour}}:{{minute}}",
 			"day": {
@@ -186,11 +191,11 @@
 				"professor": "Tu n'as pas d'activité récente. Crée une classe pour commencer"
 			}
 		},
-		"levels": {
+		"challenges": {
 			"title": "Niveaux",
-			"browse_levels": "Explorer les niveaux de la communauté",
-			"create_level": "Créer un niveau",
-			"empty": "Tu n'as pas de niveau"
+			"browse_challenges": "Explorer les niveaux de la communauté",
+			"create_challenge": "Créer un niveau",
+			"empty": "Tu ne possèdes aucun niveau"
 		},
 		"classrooms": {
 			"title": "Classes",
@@ -198,12 +203,17 @@
 			"browse_public": "Explorer les classes publiques",
 			"empty": {
 				"student": "Tu ne fais parti d'aucune classe",
-				"professor": "Tu ne possède aucune classe"
+				"professor": "Tu ne possèdes aucune classe"
 			},
 			"add": {
 				"student": "Rejoindre une classe",
 				"professor": "Créer une classe"
 			}
+		},
+		"courses": {
+			"title": "Vos cours",
+			"add": "Créer un cours",
+			"empty": "Tu ne possèdes aucun cours"
 		}
 	},
 	"classroom": {
@@ -237,7 +247,7 @@
 		"empty": "Ce cours est vide.",
 		"section": {
 			"empty": "Cette section ne possède aucune activité",
-			"new": "Nouvelle section"
+			"new": "Ajouter une section"
 		},
 		"activity": {
 			"empty": "Cette activité est vide.",
@@ -251,7 +261,7 @@
 			"professor": "Compte professeur",
 			"student": "Compte étudiant"
 		},
-		"level": {
+		"challenge": {
 			"alive": "Niveau avec voiture ALIVE",
 			"code": "Niveau avec console",
 			"ai": "Niveau avec intelligence artificielle",

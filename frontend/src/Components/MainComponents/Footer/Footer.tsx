@@ -9,7 +9,7 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons';
 /**
  * Footer of ALIVEcode home page
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const Footer = ({ className }: FooterProps) => {
 	const { t } = useTranslation();

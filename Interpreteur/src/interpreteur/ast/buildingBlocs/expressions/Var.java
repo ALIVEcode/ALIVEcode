@@ -1,10 +1,9 @@
 package interpreteur.ast.buildingBlocs.expressions;
 
-import interpreteur.as.Objets.Scope;
+import interpreteur.as.lang.ASScope;
 import interpreteur.as.erreurs.ASErreur;
-import interpreteur.as.Objets.ASObjet;
+import interpreteur.as.lang.datatype.ASObjet;
 import interpreteur.ast.buildingBlocs.Expression;
-import interpreteur.executeur.Executeur;
 
 import java.util.Objects;
 
@@ -50,7 +49,7 @@ public class Var implements Expression<ASObjet<?>> {
     public ASObjet<?> eval() {
         try {
             // return ASObjet.VariableManager.obtenirVariable(this.nom).getValeurApresGetter();
-            return Scope.getCurrentScopeInstance().getVariable(nom).getValeurApresGetter();
+            return ASScope.getCurrentScopeInstance().getVariable(nom).getValeurApresGetter();
         } catch (NullPointerException e) {
             throw new ASErreur.ErreurVariableInconnue("La variable '" + this.nom + "' n'est pas d\u00E9clar\u00E9e dans ce scope.");
         }

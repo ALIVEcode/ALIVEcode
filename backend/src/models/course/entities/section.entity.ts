@@ -1,27 +1,35 @@
 import { Exclude } from 'class-transformer';
-import { IsEmpty, IsNotEmpty, Length } from 'class-validator';
-import { Entity, Column, ManyToOne, PrimaryGeneratedColumn, ManyToMany, JoinTable } from 'typeorm';
-import { CourseEntity } from './course.entity';
-import { ActivityEntity } from './activity.entity';
+import { IsEmpty, ValidateIf } from 'class-validator';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, JoinColumn } from 'typeorm';
+import { CourseElementEntity } from './course_element.entity';
 
+/**
+ * Section model in the database
+ * @author Enric Soldevila
+ */
 @Entity()
 export class SectionEntity {
+  /** Id of the Section (0, 1, 2, ..., n) */
   @PrimaryGeneratedColumn('increment')
   @Exclude({ toClassOnly: true })
   @IsEmpty()
   id: number;
 
-  @IsNotEmpty()
-  @Column({ nullable: false })
-  @Length(3, 100)
-  name: string;
-
-  @ManyToMany(() => ActivityEntity)
-  @JoinTable()
+  /** CourseElements inside the section */
+  @OneToMany(() => CourseElementEntity, content => content.sectionParent)
   @IsEmpty()
-  activities?: ActivityEntity[];
+  elements: CourseElementEntity[];
 
-  @ManyToOne(() => CourseEntity, course => course.sections, { onDelete: 'CASCADE' })
+  /** Display order of the CourseElements */
+  @ValidateIf((lst: any) => Array.isArray(lst) && lst.every(el => Number.isInteger(el)))
+  @Column({ type: 'json', default: [] })
+  @Exclude({ toClassOnly: true })
   @IsEmpty()
-  course: CourseEntity;
+  elementsOrder: number[];
+
+  /** CourseElement attached to the section */
+  @OneToOne(() => CourseElementEntity, el => el.section, { onDelete: 'CASCADE', cascade: true })
+  @JoinColumn()
+  @IsEmpty()
+  courseElement: CourseElementEntity;
 }

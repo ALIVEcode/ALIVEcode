@@ -1,17 +1,20 @@
 import { Injectable, CanActivate, ExecutionContext, Scope, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
-import { JsonWebTokenError } from 'jsonwebtoken';
 import { Repository } from 'typeorm';
 import { Reflector, REQUEST } from '@nestjs/core';
 import { hasRole } from '../../models/user/auth';
 import { Role } from '../types/roles.types';
 import { ClassroomEntity } from '../../models/classroom/entities/classroom.entity';
 import { UserEntity } from '../../models/user/entities/user.entity';
+import { CourseEntity } from '../../models/course/entities/course.entity';
+import { ResourceEntity } from '../../models/resource/entities/resource.entity';
 
 export interface MyRequest extends Request {
   user: UserEntity;
   classroom?: ClassroomEntity;
+  course?: CourseEntity;
+  resource?: ResourceEntity;
   expiredToken?: boolean;
 }
 
@@ -27,7 +30,6 @@ export class RolesGuard implements CanActivate {
     try {
       let roles = this.reflector.get<Role[]>('roles', context.getHandler());
       if (!roles) roles = [];
-
       const user = this.req.user;
       if (!user || this.req.expiredToken) throw new HttpException('Not Authenticated', HttpStatus.UNAUTHORIZED);
 
@@ -39,5 +41,4 @@ export class RolesGuard implements CanActivate {
     }
     return true;
   }
-
 }

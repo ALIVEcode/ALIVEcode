@@ -9,7 +9,7 @@ import { CourseModule } from './models/course/course.module';
 import { IoTObjectModule } from './models/iot/IoTobject/IoTobject.module';
 import { IoTProjectModule } from './models/iot/IoTproject/IoTproject.module';
 import { IoTRouteModule } from './models/iot/IoTroute/IoTroute.module';
-import { LevelModule } from './models/level/level.module';
+import { ChallengeModule } from './models/challenge/challenge.module';
 import { MaintenanceModule } from './models/maintenance/maintenance.module';
 import { MaintenanceMiddleware } from './utils/middlewares/maintenance.middleware';
 import { MaintenanceEntity } from './models/maintenance/entities/maintenance.entity';
@@ -45,6 +45,7 @@ import { MessagesModule } from './models/social/messages/messages.module';
 import { ChatModule } from './socket/chatSocket/chatSocket.module';
 import { TopicsModule } from './models/social/topics/topics.module';
 import { AdminModule } from '@adminjs/nestjs';
+import { ResourceModule } from './models/resource/resource.module';
 
 adminjs.registerAdapter({ Database, Resource });
 
@@ -81,7 +82,7 @@ adminjs.registerAdapter({ Database, Resource });
 
     UserModule,
     ClassroomModule,
-    LevelModule,
+    ChallengeModule,
     CourseModule,
     IoTObjectModule,
     IoTProjectModule,
@@ -102,6 +103,7 @@ adminjs.registerAdapter({ Database, Resource });
     MessagesModule,
     ChatModule,
     TopicsModule,
+    ResourceModule,
   ],
   controllers: [AppController],
   providers: [AppService, MaintenanceService, UserService],

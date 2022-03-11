@@ -14,7 +14,7 @@ import { FORM_ACTION } from '../../../UtilsComponents/Form/formTypes';
 /**
  * Form that creates in the database an IoTProject and navigates to it
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const IoTProjectCreate = () => {
 	const { t } = useTranslation();

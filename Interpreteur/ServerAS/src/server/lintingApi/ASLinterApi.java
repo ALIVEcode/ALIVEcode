@@ -1,8 +1,8 @@
 package server.lintingApi;
 
 import com.sun.net.httpserver.HttpExchange;
-import interpreteur.as.modules.ASModule;
-import interpreteur.as.modules.ASModuleManager;
+import interpreteur.as.modules.core.ASModule;
+import interpreteur.as.modules.core.ASModuleManager;
 import interpreteur.as.modules.EnumModule;
 import interpreteur.generateurs.lexer.LexerLoader;
 import interpreteur.generateurs.lexer.Regle;

@@ -24,7 +24,7 @@ const StyledDiv = styled(FillContainer)`
 /**
  * IoT dashboard page that contains all the projects, objects and stuff of the user
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const IoTDashboard = (props: iotDashboardProps) => {
 	const { user } = useContext(UserContext);

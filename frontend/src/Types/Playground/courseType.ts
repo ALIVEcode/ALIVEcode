@@ -1,12 +1,6 @@
 import { User } from '../../Models/User/user.entity';
 import { Section } from '../../Models/Course/section.entity';
-
-export enum COURSE_SUBJECT {
-	INFORMATIC = 'IN',
-	AI = 'AI',
-	MATH = 'MA',
-	SCIENCE = 'SC',
-}
+import { SUBJECTS } from '../sharedTypes';
 
 export enum COURSE_DIFFICULTY {
 	BEGINNER = 1,
@@ -28,7 +22,7 @@ export interface CourseInterface {
 	id: string;
 	name: string;
 	description: string;
-	subject: COURSE_SUBJECT;
+	subject: SUBJECTS;
 	creator: User;
 	difficulty: COURSE_DIFFICULTY;
 	access: COURSE_ACCESS;

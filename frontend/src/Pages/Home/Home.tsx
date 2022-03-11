@@ -23,7 +23,7 @@ import useView from '../../state/hooks/useView';
 /**
  * Home page of ALIVEcode
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const Home = (props: HomeProps) => {
 	const { t } = useTranslation();

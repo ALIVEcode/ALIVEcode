@@ -38,7 +38,7 @@ type Props = FullSelectProps | FullInputProps;
 /**
  * Styled Group for label and input
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const InputGroup = React.forwardRef<any, any>(
 	(

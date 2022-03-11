@@ -23,7 +23,7 @@ import { classNames } from '../../../Types/utils';
  *
  * @param {() => void} handleLogout callback that logs out the user and change the global state of the app
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 	const { user } = useContext(UserContext);

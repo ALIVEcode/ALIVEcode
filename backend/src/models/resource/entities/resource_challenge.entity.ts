@@ -14,9 +14,11 @@ export class ResourceChallengeEntity extends ResourceEntity {
   @JoinColumn({ name: 'challengeId' })
   challenge: ChallengeEntity;
 
+  /** Id of the referenced challenge */
   @Column({ type: 'uuid', name: 'challengeId' })
   challengeId: string;
 
+  /** Activities containing this resource */
   @OneToMany(() => ActivityChallengeEntity, act => act.resource)
   activities: ActivityChallengeEntity[];
 }

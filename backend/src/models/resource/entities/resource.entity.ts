@@ -11,12 +11,14 @@ import { IsNotEmpty, MinLength, IsEmpty } from 'class-validator';
 import { Exclude } from 'class-transformer';
 import { SUBJECTS } from '../../../generics/types/sharedTypes';
 import { ProfessorEntity } from '../../user/entities/user.entity';
+import { OneToMany } from 'typeorm';
 
 export enum RESOURCE_TYPE {
   VIDEO = 'VI',
   FILE = 'FI',
   IMAGE = 'IM',
   CHALLENGE = 'CH',
+  THEORY = 'TH',
 }
 
 @Entity()
@@ -55,12 +57,9 @@ export class ResourceEntity {
   @IsEmpty()
   creator: ProfessorEntity;
 
-  /* @ManyToMany(() => ResourceEntity, resource => resource.original, {
-    onDelete: 'SET NULL',
-    nullable: true,
-  })
-  @Exclude({ toClassOnly: true })
-  @IsEmpty()*/
+  @ManyToOne(() => ResourceEntity, res => res.borrowed)
+  original: ResourceEntity;
 
-  //original: ResourceEntity;
+  @OneToMany(() => ResourceEntity, res => res.original)
+  borrowed: ResourceEntity[];
 }

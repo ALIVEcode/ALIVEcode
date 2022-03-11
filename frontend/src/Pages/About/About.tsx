@@ -2,7 +2,6 @@ import { AboutProps } from './aboutTypes';
 import CardContainer from '../../Components/UtilsComponents/CardContainer/CardContainer';
 import { useTranslation } from 'react-i18next';
 import AboutCard from '../../Components/UtilsComponents/Cards/AboutCard/AboutCard';
-import CenteredContainer from '../../Components/UtilsComponents/CenteredContainer/CenteredContainer';
 
 import Jihene from '../../assets/images/creators/Jihene.jpg';
 import Enric from '../../assets/images/creators/Enric_Soldevila.jpg';
@@ -18,16 +17,6 @@ import Gabriel from '../../assets/images/creators/Gabriel.jpg';
 import Simon from '../../assets/images/creators/Simon.jpg';
 import Guillaume from '../../assets/images/creators/Guillaume.jpg';
 import Emile from '../../assets/images/creators/Emile.jpg';
-import styled from 'styled-components';
-
-const StyledCenteredContainer = styled(CenteredContainer)`
-	padding: 0 10% 0 10%;
-
-	.row-prof {
-		margin-top: 10px;
-		margin-bottom: 10px;
-	}
-`;
 
 /**
  * About page that shows all the members that contributed on the ALIVE project

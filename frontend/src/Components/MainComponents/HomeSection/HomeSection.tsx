@@ -21,10 +21,10 @@ export const HomeSection = forwardRef<HTMLDivElement, HomeSectionProps>(
 		return (
 			<div
 				className={classNames(
-					'w-full h-full flex flex-col items-center font-normal mt-20 px-5 gap-8',
-					'tablet:gap-8 tablet:px-5',
-					'laptop:gap-16 laptop:px-10',
-					'desktop:px-16 desktop:gap-32',
+					'w-full h-full flex flex-col items-center font-normal mt-20 p-5 gap-8 rounded-3xl bg-[color:rgba(var(--background-color-rgb),0.6)] laptop:bg-transparent',
+					'tablet:gap-8 tablet:p-5',
+					'laptop:gap-16 laptop:p-10',
+					'desktop:gap-32 desktop:p-16',
 					reverse ? 'tablet:flex-row-reverse' : 'tablet:flex-row',
 				)}
 				ref={ref}

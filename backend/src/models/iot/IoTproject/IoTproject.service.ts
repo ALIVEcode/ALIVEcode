@@ -209,24 +209,31 @@ export class IoTProjectService {
   async updateDocumentFields(id: string, fields: JsonObj) {
     const project = await this.findOne(id);
     const oldDocument = { ...project.document };
-    let newDoc = project.document;
+    const newDoc = project.document;
 
     Object.entries(fields).forEach(entry => {
       const path = entry[0];
       const value = entry[1];
 
-      const pathParts = path.split('/');
-      let ref = { ...newDoc };
-      for (let i = 2; i < pathParts.length; i++) {
-        const subpath = pathParts[i];
+      // Cut the /document/ of the path and add in array
+      const pathParts = path.split('/').slice(2);
+      const nbPathParts = pathParts.length;
 
-        console.log(newDoc);
-        if (!(subpath in newDoc)) break;
+      const recursiveSetter = (currentDict: object, pathParts: string[], depth: number) => {
+        if (typeof currentDict !== 'object') {
+          currentDict = {};
+        }
 
-        if (i + 1 == pathParts.length) {
-          ref[subpath] = value;
-        } else ref = ref[subpath];
-      }
+        if (depth + 1 === nbPathParts) {
+          currentDict[pathParts[depth]] = value;
+          return currentDict;
+        }
+
+        currentDict[pathParts[depth]] = recursiveSetter(currentDict[pathParts[depth]], pathParts, depth + 1);
+        return currentDict;
+      };
+
+      recursiveSetter(newDoc, pathParts, 0);
     });
 
     return await this.setDocument(id, newDoc, oldDocument);

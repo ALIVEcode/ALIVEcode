@@ -65,11 +65,11 @@ export class IoTProjectEntity extends CreatedByUser {
   @IsEmpty()
   iotObjects: IoTObjectEntity[];
 
-  @Column({ enum: IOTPROJECT_ACCESS })
+  @Column({ type: 'enum', enum: IOTPROJECT_ACCESS, default: IOTPROJECT_ACCESS.PRIVATE })
   @IsNotEmpty()
   access: IOTPROJECT_ACCESS;
 
-  @Column({ enum: IOTPROJECT_INTERACT_RIGHTS })
+  @Column({ type: 'enum', enum: IOTPROJECT_INTERACT_RIGHTS, default: IOTPROJECT_INTERACT_RIGHTS.PRIVATE })
   @IsNotEmpty()
   interactRights: IOTPROJECT_INTERACT_RIGHTS;
 

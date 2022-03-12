@@ -5,7 +5,7 @@ import {
 	faCode,
 } from '@fortawesome/free-solid-svg-icons';
 import { Exclude, Type } from 'class-transformer';
-import { SUBJECTS } from '../../Types/sharedTypes';
+import { getSubjectIcon, SUBJECTS } from '../../Types/sharedTypes';
 import { CreatedByUser } from '../Generics/createdByUser.entity';
 import { Professor } from '../User/user.entity';
 import { CourseElement } from './course_element.entity';
@@ -73,16 +73,6 @@ export class Course extends CreatedByUser {
 	 */
 	@Exclude()
 	getSubjectIcon() {
-		switch (this.subject) {
-			case SUBJECTS.CODE:
-				return faCode;
-			case SUBJECTS.IOT:
-				return faCloudsmith;
-			case SUBJECTS.AI:
-				return faBrain;
-			case SUBJECTS.OTHER:
-				return faClipboardList;
-		}
-		return faCode;
+		return getSubjectIcon(this.subject);
 	}
 }

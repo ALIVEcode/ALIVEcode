@@ -45,7 +45,7 @@ import { CHALLENGE_TYPE } from '../../Models/Challenge/challenge.entity';
 import DashboardNew from '../../Pages/DashboardNew/DashboardNew';
 import ClassroomBrowse from '../../Components/ClassroomComponents/ClassroomBrowse/ClassroomBrowse';
 import { UnderDevelopment } from '../../Pages/Errors/UnderDevelopment/UnderDevelopment';
-import ResourcesMenu from '../../Pages/ResourceMenu/ResourceMenu';
+import ResourceMenu from '../../Pages/ResourceMenu/ResourceMenu';
 import RichTextEditor from '../../Components/RichTextComponents/RichTextEditor/RichTextEditor';
 
 export interface Route {
@@ -270,7 +270,7 @@ const useRoutes = () => {
 		resources_menu: {
 			accountType: Professor,
 			path: '/resources',
-			component: <ResourcesMenu></ResourcesMenu>,
+			component: <ResourceMenu></ResourceMenu>,
 		},
 		account: {
 			path: '/account',
@@ -354,9 +354,9 @@ const useRoutes = () => {
 			component: <ForumPostForm></ForumPostForm>,
 		},
 		rich_text_editor: {
-			path: "/txt-edit",
-			component: <RichTextEditor />
-		}
+			path: '/txt-edit',
+			component: <RichTextEditor />,
+		},
 	});
 
 	const non_auth_routes = asNonAuthRoutes(<Home></Home>, {

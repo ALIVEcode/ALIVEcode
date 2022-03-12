@@ -41,11 +41,11 @@ export class ChallengeEntity extends CreatedByUser {
   @IsEmpty()
   readonly type: CHALLENGE_TYPE;
 
-  @Column({ enum: CHALLENGE_ACCESS })
+  @Column({ type: 'enum', enum: CHALLENGE_ACCESS, default: CHALLENGE_ACCESS.PRIVATE, nullable: false })
   @IsNotEmpty()
   access: CHALLENGE_ACCESS;
 
-  @Column({ enum: CHALLENGE_DIFFICULTY })
+  @Column({ enum: CHALLENGE_DIFFICULTY, type: 'enum', nullable: true })
   @IsNotEmpty()
   difficulty: CHALLENGE_DIFFICULTY;
 
@@ -53,7 +53,7 @@ export class ChallengeEntity extends CreatedByUser {
   @IsOptional()
   hints: string[] = [];
 
-  @Column({ enum: CHALLENGE_TAG, type: 'jsonb', default: () => "'[]'" })
+  @Column({ type: 'jsonb', default: [] })
   @IsOptional()
   tags: CHALLENGE_TAG[] = [];
 

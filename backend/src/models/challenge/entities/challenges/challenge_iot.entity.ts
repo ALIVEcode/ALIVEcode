@@ -27,7 +27,7 @@ export class ChallengeIoTEntity extends ChallengeEntity {
   @IsOptional()
   solution?: string;
 
-  @Column({ enum: IOT_CHALLENGE_TYPE })
+  @Column({ type: 'enum', enum: IOT_CHALLENGE_TYPE, default: IOT_CHALLENGE_TYPE.UPDATING })
   @IsNotEmpty()
   @IsEnum(IOT_CHALLENGE_TYPE)
   iotType: IOT_CHALLENGE_TYPE;

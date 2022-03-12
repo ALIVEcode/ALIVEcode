@@ -16,7 +16,7 @@ export class ChallengeAliveEntity extends ChallengeEntity {
   @IsOptional()
   initialCode?: string;
 
-  @Column({ enum: CHALLENGE_RESOLUTION_MODE, default: CHALLENGE_RESOLUTION_MODE.ANY })
+  @Column({ type: 'enum', enum: CHALLENGE_RESOLUTION_MODE, default: CHALLENGE_RESOLUTION_MODE.ANY })
   @IsOptional()
   resolution: CHALLENGE_RESOLUTION_MODE;
 

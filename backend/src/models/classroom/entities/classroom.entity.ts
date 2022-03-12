@@ -4,13 +4,7 @@ import { Exclude } from 'class-transformer';
 import { IsEmpty, IsNotEmpty } from 'class-validator';
 import { CourseEntity } from '../../course/entities/course.entity';
 import { ProfessorEntity, StudentEntity } from '../../user/entities/user.entity';
-
-export enum CLASSROOM_SUBJECT {
-  INFORMATIC = 'IN',
-  AI = 'AI',
-  MATH = 'MA',
-  SCIENCE = 'SC',
-}
+import { SUBJECTS } from '../../../generics/types/sharedTypes';
 
 export enum CLASSROOM_ACCESS {
   PUBLIC = 'PU', // can be found via a search
@@ -30,11 +24,11 @@ export class ClassroomEntity extends CreatedByUser {
   code: string;
 
   @IsNotEmpty()
-  @Column({ enum: CLASSROOM_SUBJECT, nullable: false })
-  subject: CLASSROOM_SUBJECT;
+  @Column({ enum: SUBJECTS, type: 'enum', default: SUBJECTS.CODE, nullable: false })
+  subject: SUBJECTS;
 
   @IsNotEmpty()
-  @Column({ enum: CLASSROOM_ACCESS, default: CLASSROOM_ACCESS.PRIVATE, nullable: false })
+  @Column({ type: 'enum', enum: CLASSROOM_ACCESS, default: CLASSROOM_ACCESS.PRIVATE, nullable: false })
   access: CLASSROOM_ACCESS;
 
   @Exclude({ toClassOnly: true })

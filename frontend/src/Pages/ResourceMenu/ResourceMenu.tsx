@@ -9,7 +9,7 @@ import { SUBJECTS } from '../../Types/sharedTypes';
 import api from '../../Models/api';
 import LoadingScreen from '../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
 
-const ResourcesMenu = () => {
+const ResourceMenu = () => {
 	const [creationModalOpen, setCreationModalOpen] = useState(false);
 	const { t } = useTranslation();
 	const { user, resources, setResources } = useContext(UserContext);
@@ -29,6 +29,7 @@ const ResourcesMenu = () => {
 				<div className="h-20 border-b border-[color:var(--bg-shade-four-color)]">
 					YO
 				</div>
+				<div className="w-full h-full"></div>
 			</div>
 			<div className="flex flex-col w-full h-full">
 				<div className="h-20 border-b border-[color:var(--bg-shade-four-color)]">
@@ -64,4 +65,4 @@ const ResourcesMenu = () => {
 	);
 };
 
-export default ResourcesMenu;
+export default ResourceMenu;

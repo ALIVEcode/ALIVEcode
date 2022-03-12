@@ -42,7 +42,7 @@ import DashboardChallenges from '../../Components/DashboardComponents/DashboardC
 import { Challenge } from '../../Models/Challenge/challenge.entity';
 import Button from '../../Components/UtilsComponents/Buttons/Button';
 import CourseSection from '../../Components/DashboardComponents/CourseSection/CourseSection';
-import ResourcesMenu from '../ResourceMenu/ResourceMenu';
+import ResourceMenu from '../ResourceMenu/ResourceMenu';
 import { faFile } from '@fortawesome/free-solid-svg-icons';
 
 /**
@@ -192,7 +192,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 					/>
 				);
 			case 'resources':
-				return <ResourcesMenu></ResourcesMenu>;
+				return <ResourceMenu></ResourceMenu>;
 		}
 	};
 

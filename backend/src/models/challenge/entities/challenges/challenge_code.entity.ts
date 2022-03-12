@@ -8,7 +8,7 @@ export enum CHALLENGE_RESOLUTION_MODE {
 
 @ChildEntity(CHALLENGE_TYPE.CODE)
 export class ChallengeCodeEntity extends ChallengeEntity {
-  @Column({ enum: CHALLENGE_RESOLUTION_MODE, default: CHALLENGE_RESOLUTION_MODE.ANY })
+  @Column({ type: 'enum', enum: CHALLENGE_RESOLUTION_MODE, default: CHALLENGE_RESOLUTION_MODE.ANY })
   @IsOptional()
   resolution: CHALLENGE_RESOLUTION_MODE;
 

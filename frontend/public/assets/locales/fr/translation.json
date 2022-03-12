@@ -114,6 +114,13 @@
 			"video": "Visionnement",
 			"theory": "Théorie"
 		},
+		"subjects": {
+			"iot": "Internet des Objets",
+			"ai": "Intelligence Artificielle",
+			"code": "Programmation",
+			"other": "Autre",
+			"all": "Tout"
+		},
 		"time": {
 			"format": "{{dayName}}, {{day}} {{monthName}} {{year}} - {{hour}}:{{minute}}",
 			"day": {

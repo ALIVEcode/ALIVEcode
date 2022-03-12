@@ -1,5 +1,8 @@
-import { SUBJECTS } from '../../../Types/sharedTypes';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { ResourceMenuSections } from '../../../Pages/ResourceMenu/resourceMenuTypes';
 
 export type ResourceSectionProps = {
-	subject: SUBJECTS;
+	name: string;
+	icon: IconDefinition;
+	section: ResourceMenuSections;
 };

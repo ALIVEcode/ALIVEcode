@@ -11,7 +11,7 @@ import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 const ResourceCard = ({ resource }: ResourceCardProps) => {
 	const [deleteOpen, setDeleteOpen] = useState(false);
 	const { t } = useTranslation();
-	const { user, resources, setResources } = useContext(UserContext);
+	const { resources, setResources } = useContext(UserContext);
 
 	if (!resources) return <LoadingScreen />;
 	return (
@@ -24,7 +24,7 @@ const ResourceCard = ({ resource }: ResourceCardProps) => {
 						icon={resource.getIcon()}
 					/>
 				</div>
-				<div className="absolute top-4 right-4">
+				<div className="absolute top-2 right-2">
 					<FontAwesomeIcon
 						className="transition-colors cursor-pointer text-[color:var(--bg-shade-three-color)] hover:text-red-500"
 						icon={faTrash}

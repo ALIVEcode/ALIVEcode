@@ -1,5 +1,5 @@
 import { IsEmpty, IsNotEmpty, IsOptional } from "class-validator";
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 import { CreatedByUser } from '../../../../generics/entities/createdByUser.entity';
 import { IoTRouteEntity } from '../../IoTroute/entities/IoTroute.entity';
 import { UserEntity } from '../../../user/entities/user.entity';

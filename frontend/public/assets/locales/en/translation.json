@@ -114,6 +114,13 @@
 			"video": "Video",
 			"theory": "Theory"
 		},
+		"subjects": {
+			"iot": "Internet of Things",
+			"ai": "Artificial Intelligence",
+			"code": "Programming",
+			"other": "Other",
+			"all": "All"
+		},
 		"time": {
 			"format": "{{dayName}}, {{day}} {{monthName}} {{year}} {{hour}}:{{minute}}",
 			"day": {
@@ -220,6 +227,9 @@
 		}
 	},
 	"resources": {
+		"menu": {
+			"title": "Resources"
+		},
 		"video": {
 			"name": "Video"
 		},

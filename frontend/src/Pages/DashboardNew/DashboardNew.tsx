@@ -1,5 +1,6 @@
 import {
 	DashboardNewProps,
+	DashboardTabs,
 	StyledDashboard,
 	SwitchTabActions,
 } from './dashboardNewTypes';
@@ -41,6 +42,8 @@ import DashboardChallenges from '../../Components/DashboardComponents/DashboardC
 import { Challenge } from '../../Models/Challenge/challenge.entity';
 import Button from '../../Components/UtilsComponents/Buttons/Button';
 import CourseSection from '../../Components/DashboardComponents/CourseSection/CourseSection';
+import ResourcesMenu from '../ResourceMenu/ResourceMenu';
+import { faFile } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * State reducer to change the state of the selected tab
@@ -49,23 +52,22 @@ import CourseSection from '../../Components/DashboardComponents/CourseSection/Co
  * @returns The new state of the reducer
  */
 const SwitchTabReducer = (
-	state: { index: number; classroom?: ClassroomModel },
+	state: { tab: DashboardTabs; classroom?: ClassroomModel },
 	action: SwitchTabActions,
-): { index: number; classroom?: ClassroomModel } => {
-	switch (action.type) {
-		case 'recents':
-			return { index: 0 };
-		case 'challenges':
-			return { index: 1 };
+): { tab: DashboardTabs; classroom?: ClassroomModel } => {
+	switch (action.tab) {
 		case 'classrooms':
 			if (action.classroom) {
-				return { index: 2, classroom: action.classroom };
+				return { tab: action.tab, classroom: action.classroom };
 			}
 			return SwitchTabReducer(state, {
-				type: 'recents',
+				tab: 'recents',
 			});
+		case 'recents':
+		case 'challenges':
+		case 'resources':
 		default:
-			return { index: 0 };
+			return { tab: action.tab };
 	}
 };
 
@@ -88,22 +90,27 @@ const DashboardNew = (props: DashboardNewProps) => {
 	const query = useQuery();
 	const { pathname } = useLocation();
 	const [tabSelected, setTabSelected] = useReducer(SwitchTabReducer, {
-		index: 0,
+		tab: 'recents',
 	});
 	const [recentCourses, setRecentCourses] = useState<Course[]>();
 	const [challenges, setChallenges] = useState<Challenge[]>();
 
 	useEffect(() => {
-		if (pathname.endsWith('recents') && tabSelected.index !== 0)
-			setTabSelected({ type: 'recents' });
-		else if (pathname.endsWith('challenges') && tabSelected.index !== 1)
-			setTabSelected({ type: 'challenges' });
+		if (pathname.endsWith('recents') && tabSelected.tab !== 'recents')
+			setTabSelected({ tab: 'recents' });
+		else if (
+			pathname.endsWith('challenges') &&
+			tabSelected.tab !== 'challenges'
+		)
+			setTabSelected({ tab: 'challenges' });
+		else if (pathname.endsWith('resources') && tabSelected.tab !== 'resources')
+			setTabSelected({ tab: 'resources' });
 		else if (pathname.includes('classroom')) {
 			const classroomId = query.get('id');
 			if (tabSelected.classroom?.id === classroomId) return;
 			const classroom = classrooms.find(c => c.id === classroomId);
 			if (!classroom) return;
-			setTabSelected({ type: 'classrooms', classroom });
+			setTabSelected({ tab: 'classrooms', classroom });
 		}
 	}, [
 		classrooms,
@@ -111,7 +118,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 		pathname,
 		query,
 		tabSelected.classroom?.id,
-		tabSelected.index,
+		tabSelected.tab,
 	]);
 
 	useEffect(() => {
@@ -148,6 +155,14 @@ const DashboardNew = (props: DashboardNewProps) => {
 		});
 	};
 
+	const openResources = () => {
+		query.delete('id');
+		navigate({
+			pathname: `/dashboard/resources`,
+			search: query.toString(),
+		});
+	};
+
 	/**
 	 * Opens the classrooms tab
 	 */
@@ -163,12 +178,12 @@ const DashboardNew = (props: DashboardNewProps) => {
 	 * Renders the tab currently selected
 	 */
 	const renderTabSelected = () => {
-		switch (tabSelected.index) {
-			case 0:
+		switch (tabSelected.tab) {
+			case 'recents':
 				return <DashboardRecents></DashboardRecents>;
-			case 1:
+			case 'challenges':
 				return <DashboardChallenges></DashboardChallenges>;
-			case 2:
+			case 'classrooms':
 				if (!tabSelected.classroom) return;
 				return (
 					<Classroom
@@ -176,6 +191,8 @@ const DashboardNew = (props: DashboardNewProps) => {
 						classroomProp={tabSelected.classroom}
 					/>
 				);
+			case 'resources':
+				return <ResourcesMenu></ResourcesMenu>;
 		}
 	};
 
@@ -238,7 +255,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 						<div
 							className={
 								'sidebar-btn ' +
-								(tabSelected.index === 0 ? 'sidebar-selected' : '')
+								(tabSelected.tab === 'recents' ? 'sidebar-selected' : '')
 							}
 							onClick={openRecents}
 						>
@@ -250,13 +267,25 @@ const DashboardNew = (props: DashboardNewProps) => {
 						<div
 							className={
 								'sidebar-btn ' +
-								(tabSelected.index === 1 ? 'sidebar-selected' : '')
+								(tabSelected.tab === 'challenges' ? 'sidebar-selected' : '')
 							}
 							onClick={openChallenges}
 						>
 							<FontAwesomeIcon className="sidebar-icon" icon={faStar} />
 							<label className="sidebar-btn-text">
 								{t('dashboard.challenges.title')}
+							</label>
+						</div>
+						<div
+							className={
+								'sidebar-btn ' +
+								(tabSelected.tab === 'resources' ? 'sidebar-selected' : '')
+							}
+							onClick={openResources}
+						>
+							<FontAwesomeIcon className="sidebar-icon" icon={faFile} />
+							<label className="sidebar-btn-text">
+								{t('dashboard.resources.title')}
 							</label>
 						</div>
 

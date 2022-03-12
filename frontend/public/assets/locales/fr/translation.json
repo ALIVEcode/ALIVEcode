@@ -197,6 +197,9 @@
 			"create_challenge": "Créer un niveau",
 			"empty": "Tu ne possèdes aucun niveau"
 		},
+		"resources": {
+			"title": "Mes Ressources"
+		},
 		"classrooms": {
 			"title": "Classes",
 			"no_courses": "Aucun cours",

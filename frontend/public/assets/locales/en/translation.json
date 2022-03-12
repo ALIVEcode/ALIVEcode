@@ -197,6 +197,9 @@
 			"create_challenge": "Create a challenge",
 			"empty": "You do not have any challenge"
 		},
+		"resources": {
+			"title": "My Resources"
+		},
 		"classrooms": {
 			"title": "Classrooms",
 			"no_courses": "No courses",

@@ -2,8 +2,14 @@ import styled from 'styled-components';
 import { Classroom } from '../../Models/Classroom/classroom.entity';
 export type DashboardNewProps = {};
 
+export type DashboardTabs =
+	| 'recents'
+	| 'challenges'
+	| 'classrooms'
+	| 'resources';
+
 export type SwitchTabActions = {
-	type: 'recents' | 'challenges' | 'classrooms';
+	tab: DashboardTabs;
 	classroom?: Classroom;
 };
 

@@ -246,7 +246,9 @@
 			"name": "Theory"
 		},
 		"form": {
-			"create": "Create a resource"
+			"create": "Create a resource",
+			"delete": "Delete the resource",
+			"delete_confirm": "Are you sure you want to delete this resource? If you have used it in a course, it will be forever lost."
 		}
 	},
 	"classroom": {

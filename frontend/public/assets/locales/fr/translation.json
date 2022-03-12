@@ -227,6 +227,9 @@
 		}
 	},
 	"resources": {
+		"menu": {
+			"title": "Resources"
+		},
 		"video": {
 			"name": "Vidéo"
 		},
@@ -243,7 +246,9 @@
 			"name": "Théorie"
 		},
 		"form": {
-			"create": "Créer une ressource"
+			"create": "Créer une ressource",
+			"delete": "Supprimer la ressource",
+			"delete_confirm": "Êtes-vous sûr de vouloir supprimer cette ressource? Si vous l'avez utilisée dans un cours, celle-ci sera perdue à jamais."
 		}
 	},
 	"classroom": {

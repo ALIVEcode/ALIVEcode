@@ -124,7 +124,7 @@ const ResourceMenu = () => {
 								variant="primary"
 								onClick={() => setCreationModalOpen(true)}
 							>
-								Create a resource
+								{t('resources.form.create')}
 							</Button>
 						</div>
 						<div className="grid grid-cols-1 phone:grid-cols-2 tablet:grid-cols-4 laptop:grid-cols-6 desktop:grid-cols-7 gap-4">

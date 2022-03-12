@@ -39,7 +39,7 @@ const ResourceCard = ({ resource }: ResourceCardProps) => {
 			<div className="text-center mt-4">{resource.name}</div>
 
 			<AlertConfirm
-				title={t('msg.resource.delete')}
+				title={t('resources.form.delete_confirm')}
 				onConfirm={async () => {
 					await api.db.resources.delete({ id: resource.id });
 					setResources(resources?.filter(r => r.id !== resource.id));

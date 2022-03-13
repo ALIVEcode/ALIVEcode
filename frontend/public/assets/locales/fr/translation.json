@@ -247,6 +247,7 @@
 		},
 		"form": {
 			"create": "Créer une ressource",
+			"update": "Modifier la resource",
 			"delete": "Supprimer la ressource",
 			"delete_confirm": "Êtes-vous sûr de vouloir supprimer cette ressource? Si vous l'avez utilisée dans un cours, celle-ci sera perdue à jamais."
 		}

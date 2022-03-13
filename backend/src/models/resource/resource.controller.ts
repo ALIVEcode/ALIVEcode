@@ -48,8 +48,12 @@ export class ResourceController {
 
   @Patch(':id')
   @UseGuards(ResourceCreator)
-  async update(@Param('id') id: string, @Body() updateResourceDto: ResourceEntity) {
-    return await this.resourceService.update(id, updateResourceDto);
+  async update(@Resource() res: ResourceEntity, @Param('id') id: string, @Body() dto: CreateResourceDTOSimple) {
+    dto.resource.type = res.type;
+    console.log(dto.resource.type);
+    const errors = await validate(plainToInstance(CreateResourceDTO, dto));
+    if (errors.length > 0) throw new HttpException(errors, HttpStatus.BAD_REQUEST);
+    return await this.resourceService.update(id, dto);
   }
 
   @Delete(':id')

@@ -17,10 +17,10 @@ import { faBook } from '@fortawesome/free-solid-svg-icons';
 
 export enum RESOURCE_TYPE {
 	VIDEO = 'VI',
-	THEORY = 'TH',
 	FILE = 'FI',
 	IMAGE = 'IM',
 	CHALLENGE = 'CH',
+	THEORY = 'TH',
 }
 
 export type DifferentResources =

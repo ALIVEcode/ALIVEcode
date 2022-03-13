@@ -307,6 +307,15 @@ const api = {
 					resource: (await axios.post(`resources`, dto)).data,
 				}).resource;
 			},
+			update: async (dto: FormCreateResourceDTO, id: string) => {
+				const axiosRes = (await axios.patch(`resources/${id}`, dto)).data;
+				console.log({ ...axiosRes });
+				const res = plainToInstance(GenericResourceTransformer, {
+					resource: axiosRes,
+				}).resource;
+				console.log(res);
+				return res;
+			},
 		},
 		challenges: {
 			progressions: {

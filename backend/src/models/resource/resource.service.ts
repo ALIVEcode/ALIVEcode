@@ -7,7 +7,7 @@ import { ResourceFileEntity } from './entities/resource_file.entity';
 import { ResourceImageEntity } from './entities/resource_image.entity';
 import { ResourceTheoryEntity } from './entities/resource_theory.entity';
 import { ResourceVideoEntity } from './entities/resource_video.entity';
-import { CreateResourceDTO } from './dto/CreateResource.dto';
+import { CreateResourceDTO, CreateResourceDTOSimple } from './dto/CreateResource.dto';
 import { ProfessorEntity } from '../user/entities/user.entity';
 
 @Injectable()
@@ -21,21 +21,26 @@ export class ResourceService {
     @InjectRepository(ResourceVideoEntity) private readonly resVideoRepo: Repository<ResourceVideoEntity>,
   ) {}
 
-  async create(dto: CreateResourceDTO, professor: ProfessorEntity) {
-    dto.resource.creator = professor;
+  async genericSave(dto: CreateResourceDTOSimple, id?: string) {
+    if (id) dto.resource.id = id;
     switch (dto.type) {
       case RESOURCE_TYPE.CHALLENGE:
-        return await this.resChallengeRepo.save(dto.resource);
+        return await this.resChallengeRepo.save({ ...dto.resource, type: RESOURCE_TYPE.CHALLENGE });
       case RESOURCE_TYPE.FILE:
-        return await this.resFileRepo.save(dto.resource);
+        return await this.resFileRepo.save({ ...dto.resource, type: RESOURCE_TYPE.FILE });
       case RESOURCE_TYPE.IMAGE:
-        return await this.resImageRepo.save(dto.resource);
+        return await this.resImageRepo.save({ ...dto.resource, type: RESOURCE_TYPE.IMAGE });
       case RESOURCE_TYPE.THEORY:
-        return await this.resTheoryRepo.save(dto.resource);
+        return await this.resTheoryRepo.save({ ...dto.resource, type: RESOURCE_TYPE.THEORY });
       case RESOURCE_TYPE.VIDEO:
-        return await this.resVideoRepo.save(dto.resource);
+        return await this.resVideoRepo.save({ ...dto.resource, type: RESOURCE_TYPE.VIDEO });
     }
-    throw new HttpException('Bad request for creating resource', HttpStatus.BAD_REQUEST);
+    throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+  }
+
+  async create(dto: CreateResourceDTO, professor: ProfessorEntity) {
+    dto.resource.creator = professor;
+    return await this.genericSave(dto);
   }
 
   async findOne(id: string) {
@@ -44,8 +49,8 @@ export class ResourceService {
     return res;
   }
 
-  async update(id: string, updateResourceDto: ResourceEntity) {
-    return await this.resRepo.save({ id, ...updateResourceDto });
+  async update(id: string, dto: CreateResourceDTOSimple) {
+    return await this.genericSave(dto, id);
   }
 
   async remove(id: string) {

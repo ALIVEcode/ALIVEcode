@@ -1,30 +1,44 @@
 import { RESOURCE_TYPE } from '../../../Models/Resource/resource.entity';
 import { useForm } from 'react-hook-form';
 import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
-import { FormCreateResourceDTO } from './formCreateResourceTypes';
+import {
+	FormEditResourceDTO,
+	FormEditResourceProps,
+} from './formEditResourceTypes';
 import api from '../../../Models/api';
 import Button from '../../UtilsComponents/Buttons/Button';
-import { SUBJECTS } from '../../../Types/sharedTypes';
 import { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserContext } from '../../../state/contexts/UserContext';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 
-const FormCreateResource = ({ subject }: { subject: SUBJECTS }) => {
-	const [type, setType] = useState<RESOURCE_TYPE>(RESOURCE_TYPE.FILE);
+const FormEditResource = ({ resource }: FormEditResourceProps) => {
+	const [type, setType] = useState<RESOURCE_TYPE>(resource.type);
 	const { t } = useTranslation();
 	const { setResources, resources } = useContext(UserContext);
+
+	const anyRes = resource as any;
+
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<FormCreateResourceDTO>({ defaultValues: { type } });
+	} = useForm<FormEditResourceDTO>({
+		defaultValues: {
+			type,
+			resource: {
+				name: resource.name,
+				subject: resource.subject,
+				url: anyRes.url,
+				extension: anyRes.extension,
+			},
+		},
+	});
 	if (!resources) return <LoadingScreen></LoadingScreen>;
 
-	const onSubmit = async (formValues: FormCreateResourceDTO) => {
-		formValues.resource.subject = subject;
-		const resource = await api.db.resources.create(formValues);
-		setResources([...resources, resource]);
+	const onSubmit = async (formValues: FormEditResourceDTO) => {
+		const updatedRes = await api.db.resources.update(formValues, resource.id);
+		setResources(resources.map(r => (r.id === updatedRes.id ? updatedRes : r)));
 	};
 
 	const renderSpecificFields = () => {
@@ -82,10 +96,10 @@ const FormCreateResource = ({ subject }: { subject: SUBJECTS }) => {
 			/>
 			{renderSpecificFields()}
 			<Button variant="primary" type="submit" className="mt-3">
-				{t('resources.form.create')}
+				{t('resources.form.update')}
 			</Button>
 		</form>
 	);
 };
 
-export default FormCreateResource;
+export default FormEditResource;

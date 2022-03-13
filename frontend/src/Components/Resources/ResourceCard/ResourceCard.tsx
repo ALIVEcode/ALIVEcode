@@ -7,9 +7,12 @@ import { useTranslation } from 'react-i18next';
 import api from '../../../Models/api';
 import { UserContext } from '../../../state/contexts/UserContext';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
+import Modal from '../../UtilsComponents/Modal/Modal';
+import FormEditResource from '../FormEditResource/FormEditResource';
 
 const ResourceCard = ({ resource }: ResourceCardProps) => {
 	const [deleteOpen, setDeleteOpen] = useState(false);
+	const [updateOpen, setUpdateOpen] = useState(false);
 	const { t } = useTranslation();
 	const { resources, setResources } = useContext(UserContext);
 
@@ -33,6 +36,7 @@ const ResourceCard = ({ resource }: ResourceCardProps) => {
 					<FontAwesomeIcon
 						className="ml-2 transition-colors cursor-pointer text-[color:var(--bg-shade-three-color)] hover:text-[color:var(--foreground-color)]"
 						icon={faWrench}
+						onClick={() => setUpdateOpen(true)}
 					/>
 				</div>
 			</div>
@@ -47,6 +51,14 @@ const ResourceCard = ({ resource }: ResourceCardProps) => {
 				setOpen={setDeleteOpen}
 				open={deleteOpen}
 			/>
+
+			<Modal
+				title={t('resources.form.update')}
+				setOpen={setUpdateOpen}
+				open={updateOpen}
+			>
+				<FormEditResource resource={resource} />
+			</Modal>
 		</div>
 	);
 };

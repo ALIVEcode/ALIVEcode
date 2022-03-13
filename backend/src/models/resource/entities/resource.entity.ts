@@ -46,8 +46,8 @@ export class ResourceEntity {
   name: string;
 
   /** Type of the resource */
-  @Exclude({ toClassOnly: true })
   @Column({ type: 'enum', name: 'type', enum: RESOURCE_TYPE, default: RESOURCE_TYPE.FILE })
+  @IsEmpty()
   type: RESOURCE_TYPE;
 
   @Column({ type: 'enum', enum: SUBJECTS, default: SUBJECTS.OTHER })

@@ -1,10 +1,17 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
-export type RichTextToolBarProps = {};
+export type RichTextToolBarProps = {
+};
 
 export type RichTextToolBarButtonFormatProps = {
 	icon: IconProp;
-	styleChange: string;
-	hotkey?: { ctrlModifier?: boolean; key: string; preventDefault?: boolean };
-	toggle?: boolean;
+	styleChange: richTextStyles;
+	showSeparator?: boolean;
+};
+
+export type richTextStyles = 'invisible' | 'italic' | 'bold';
+
+export type StyleElementProps = {
+	attributes: object;
+	children: JSX.Element;
 };

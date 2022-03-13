@@ -41,7 +41,7 @@ const Course = () => {
 	const newCourseElementId = useRef<number>();
 	const [isNavigationOpen, setIsNavigationOpen] = useState(true);
 	const [tabSelected, setTabSelected] = useReducer(SwitchCourseTabReducer, {
-		tab: 'layout',
+		tab: 'navigation',
 	});
 	const { id } = useParams<{ id: string }>();
 	const [loading, setLoading] = useState(true);

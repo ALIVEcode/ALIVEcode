@@ -1,67 +1,62 @@
-import { Editable, Slate, withReact } from 'slate-react';
+import { Editable, Slate, useFocused, withReact } from 'slate-react';
 import { createEditor, Descendant, Editor, Transforms } from 'slate';
 import { withHistory } from 'slate-history';
-import { KeyboardEventHandler, useCallback, useMemo, useState } from 'react';
-import InvisibleElement from '../RichTextElements/InvisibleElement';
-import DefaultElement from '../RichTextElements/DefaultElement';
+import {
+	KeyboardEventHandler,
+	useCallback,
+	useMemo,
+	useRef,
+	useState,
+} from 'react';
 import RichTextToolBar from './RichTextToolBar';
+import {
+	DefaultElement,
+	ItalicElement,
+} from '../RichTextElements/RichTextSyleElements';
+import { InvisibleElement } from '../RichTextElements/RichTextSyleElements';
+import useTextEditor from '../../../state/hooks/useTextEditor';
 
 const RichTextEditor = () => {
 	const editor = useMemo(() => withReact(withHistory(createEditor())), []);
+	const { applyHotKey, applyStyle } = useTextEditor(editor);
 	const [value, setValue] = useState<Descendant[]>([
 		{
 			type: 'paragraph',
-			children: [{ text: 'Hey!' }],
+			children: [
+				{
+					text:
+						'Lorem, ipsum ' +
+						'dolor sit amet consectetur adipisicing elit. Ad accusamus voluptatibus eum consequuntur,' +
+						' assumenda facilis repellat ipsum beatae hic quidem laborum provident nulla repellendus debi' +
+						'tis quam nihil, repudiandae suscip' +
+						'it itaque?',
+				},
+			],
 		},
 	]);
-
-	const handleOnKeyDown: KeyboardEventHandler<HTMLDivElement> = event => {
-		if (!event.ctrlKey) return;
-
-		switch (event.key) {
-			case 'b':
-				// Prevent the "qs" from being inserted by default.
-				event.preventDefault();
-				// Otherwise, set the currently selected blocks type to "code".
-				const [match] = Editor.nodes(editor, {
-					match: (n: any) => n.type === 'invisible',
-				});
-				// Toggle the block type depending on whether there's already a match.
-				Transforms.setNodes(
-					editor,
-					{ type: match ? 'paragraph' : 'invisible' },
-					{
-						match: n => Editor.isBlock(editor, n),
-						split: true,
-					},
-				);
-				break;
-		}
-	};
-
-	const renderElement = useCallback(props => {
-		switch (props.element.type) {
-			case 'invisible':
-				return <InvisibleElement {...props} />;
-			default:
-				return <DefaultElement {...props} />;
-		}
-	}, []);
+	const [mouseUp, setMouseUp] = useState(true);
 
 	return (
-		<div className="flex justify-center w-full h-full bg-[color:var(--background-color)]">
-			<div className="pt-20">
-				<Slate
-					editor={editor}
-					value={value}
-					onChange={value => {
-						setValue(value);
-					}}
-				>
-					<RichTextToolBar />
-					<Editable renderElement={renderElement} onKeyDown={handleOnKeyDown} />
-				</Slate>
-			</div>
+		<div
+			className="flex justify-center w-full h-full bg-[color:var(--background-color)]"
+			onMouseDown={() =>
+				mouseUp && setMouseUp(window.getSelection()?.rangeCount !== 0)
+			}
+			onMouseUp={() => !mouseUp && setMouseUp(true)}
+		>
+			<Slate
+				editor={editor}
+				value={value}
+				onChange={value => {
+					setValue(value);
+				}}
+			>
+				{mouseUp && <RichTextToolBar />}
+				<Editable
+					renderElement={props => applyStyle(props.element.type, props)}
+					onKeyDown={applyHotKey}
+				/>
+			</Slate>
 		</div>
 	);
 };

@@ -3,6 +3,7 @@ import { CourseContext } from '../../../state/contexts/CourseContext';
 import { useNavigate } from 'react-router';
 import { ACTIVITY_TYPE } from '../../../Models/Course/activity.entity';
 import ActivityChallenge from './ActivityLevel';
+import RichTextEditor from '../../RichTextComponents/RichTextEditor/RichTextEditor';
 
 /**
  * Shows the opened activity. Renders different component depending on the type of the activity opened.
@@ -43,7 +44,14 @@ const Activity = () => {
 			<div className="z-10 sticky top-0 text-2xl text-center bg-[color:var(--background-color)] py-8 w-full border-b border-[color:var(--bg-shade-four-color)]">
 				{activity.name}
 			</div>
+			<div className="text-sm border-b py-3 border-[color:var(--bg-shade-four-color)]">
+				<RichTextEditor />
+			</div>
+
 			{renderSpecificActivity()}
+			<div className="text-sm">
+				<RichTextEditor />
+			</div>
 		</div>
 	);
 };

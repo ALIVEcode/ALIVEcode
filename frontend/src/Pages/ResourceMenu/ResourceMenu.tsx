@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext, useMemo, useCallback } from 'react';
 import ResourceCard from '../../Components/Resources/ResourceCard/ResourceCard';
 import Button from '../../Components/UtilsComponents/Buttons/Button';
-import Modal from '../../Components/UtilsComponents/Modal/Modal';
 import { UserContext } from '../../state/contexts/UserContext';
 import { useTranslation } from 'react-i18next';
 import FormCreateResource from '../../Components/Resources/FormCreateResource/FormCreateResource';
@@ -138,14 +137,10 @@ const ResourceMenu = () => {
 						</div>
 					</div>
 				</div>
-				<Modal
-					title={t('resources.form.create')}
+				<FormCreateResource
 					setOpen={setCreationModalOpen}
 					open={creationModalOpen}
-					hideFooter
-				>
-					<FormCreateResource subject={SUBJECTS.CODE} />
-				</Modal>
+				/>
 			</div>
 		</ResourceMenuContext.Provider>
 	);

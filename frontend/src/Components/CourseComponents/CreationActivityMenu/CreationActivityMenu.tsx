@@ -8,7 +8,6 @@ import {
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import TypeCard from '../../UtilsComponents/Cards/TypeCard/TypeCard';
 import Modal from '../../UtilsComponents/Modal/Modal';
-import CreationMenu from '../CreationMenu/CreationMenu';
 import { CreationActivityMenuProps } from './creationActivityMenuTypes';
 
 /**
@@ -48,7 +47,7 @@ const CreationActivityMenu = ({
 			setOpen={setOpen}
 			closeCross
 		>
-			<CreationMenu>
+			<div className="bg-[color:var(--background-color)] gap-8 grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3">
 				<TypeCard
 					title={t('msg.activity_type.challenge')}
 					icon={faCode}
@@ -64,7 +63,7 @@ const CreationActivityMenu = ({
 					icon={faBook}
 					onClick={() => onSelect(ACTIVITY_TYPE.THEORY)}
 				/>
-			</CreationMenu>
+			</div>
 		</Modal>
 	);
 };

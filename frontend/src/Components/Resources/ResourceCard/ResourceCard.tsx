@@ -51,11 +51,11 @@ const ResourceCard = ({ resource }: ResourceCardProps) => {
 				setOpen={setDeleteOpen}
 				open={deleteOpen}
 			/>
-
 			<Modal
 				title={t('resources.form.update')}
 				setOpen={setUpdateOpen}
 				open={updateOpen}
+				hideFooter
 			>
 				<FormEditResource resource={resource} />
 			</Modal>

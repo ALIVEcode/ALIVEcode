@@ -24,7 +24,6 @@ const CourseNavigation = () => {
 	return (
 		<div className="w-full h-full border-r border-[color:var(--bg-shade-four-color)]">
 			<div className="w-full py-3 text-2xl text-center flex justify-between">
-				<div></div>
 				<div className="w-full">
 					<span>Sections</span>
 				</div>

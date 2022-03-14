@@ -301,6 +301,7 @@
 			"new": "New section"
 		},
 		"activity": {
+			"open": "Open",
 			"empty": "This activity is empty.",
 			"no_activity": "Open an activity to get started.",
 			"new": "Add an activity",

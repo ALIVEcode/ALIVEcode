@@ -12,9 +12,11 @@ import { ActivityChallenge as ActivityChallengeModel } from '../../../Models/Cou
  *
  * @author Enric Soldevila
  */
-const ActivityChallenge = () => {
-	const { openedActivity } = useContext(CourseContext);
-	const activity = openedActivity as ActivityChallengeModel;
+const ActivityChallenge = ({
+	activity,
+}: {
+	activity: ActivityChallengeModel;
+}) => {
 	const forceUpdate = useForceUpdate();
 
 	useEffect(() => {
@@ -23,32 +25,34 @@ const ActivityChallenge = () => {
 		 * @returns void
 		 */
 		const loadChallenge = async () => {
-			if (!activity.resource) return;
+			if (!activity?.resource) return;
 			activity.resource.challenge = await api.db.challenges.get({
 				id: activity.resource.challengeId,
 			});
 			forceUpdate();
 		};
 		loadChallenge();
-	}, [activity.resource]);
+	}, [activity?.resource]);
 
 	return (
-		<div className="w-full h-full">
-			{!activity.resourceId ? (
-				<div className="w-full h-full flex justify-center items-center">
-					There is no challenge in this activity
-				</div>
-			) : !activity.resource?.challenge ? (
-				<LoadingScreen />
-			) : (
-				<div className="w-full h-full flex">
-					<Challenge
-						challenge={activity.resource?.challenge}
-						editMode={false}
-					/>
-				</div>
-			)}
-		</div>
+		activity && (
+			<div className="w-full h-full">
+				{!activity.resourceId ? (
+					<div className="w-full h-full flex justify-center items-center">
+						There is no challenge in this activity
+					</div>
+				) : !activity.resource?.challenge ? (
+					<LoadingScreen />
+				) : (
+					<div className="w-full h-full flex">
+						<Challenge
+							challenge={activity.resource?.challenge}
+							editMode={false}
+						/>
+					</div>
+				)}
+			</div>
+		)
 	);
 };
 

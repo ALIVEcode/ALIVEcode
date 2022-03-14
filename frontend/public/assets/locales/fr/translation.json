@@ -301,6 +301,7 @@
 			"new": "Ajouter une section"
 		},
 		"activity": {
+			"open": "Ouvrir",
 			"empty": "Cette activité est vide.",
 			"no_activity": "Ouvre une activité pour commencer à apprendre.",
 			"new": "Ajouter une activité",

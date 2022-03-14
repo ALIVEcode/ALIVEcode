@@ -71,11 +71,11 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 					className="text-[color:var(--foreground-color)] transition-all duration-75 group-hover:cursor-grab group-hover:opacity-50 opacity-0"
 				/>
 				<div className="ml-2 py-3 rounded-sm border p-[0.2rem] border-[color:var(--bg-shade-four-color)] text-[color:var(--foreground-color)] flex items-center w-full justify-between">
-					<div className="">
+					<div className="flex flex-row">
 						{element?.icon && (
 							<FontAwesomeIcon
 								icon={element.icon}
-								className="[color:var(--bg-shade-four-color)] mr-3 ml-2"
+								className="[color:var(--bg-shade-four-color)] mr-3 ml-2 mt-1"
 							/>
 						)}
 						{isRenaming || isNewCourseElement(element) ? (
@@ -95,12 +95,19 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 								defaultValue={element.name}
 							/>
 						) : (
-							<span
-								onDoubleClick={() => setIsRenaming(true)}
-								className=" cursor-pointer"
-							>
-								{element.name}
-							</span>
+							<div className="flex flex-row">
+								<span
+									onDoubleClick={() => setIsRenaming(true)}
+									className=" cursor-pointer"
+								>
+									{element.name}
+								</span>
+								{element.activity && (
+									<div className="invisible group-hover:visible">
+										<CourseLayoutActivity courseElement={element} />
+									</div>
+								)}
+							</div>
 						)}
 					</div>
 					<div>
@@ -113,13 +120,7 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 					</div>
 				</div>
 			</div>
-			{element?.section ? (
-				<CourseLayoutSection courseElement={element} />
-			) : element?.activity ? (
-				<CourseLayoutActivity courseElement={element} />
-			) : (
-				<div>ERREUR</div>
-			)}
+			{element.section && <CourseLayoutSection courseElement={element} />}
 			<AlertConfirm
 				open={confirmDelete}
 				title={t('couse.section.delete')}

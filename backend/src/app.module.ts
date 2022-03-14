@@ -11,6 +11,7 @@ import { IoTProjectModule } from './models/iot/IoTproject/IoTproject.module';
 import { IoTRouteModule } from './models/iot/IoTroute/IoTroute.module';
 import { LevelModule } from './models/level/level.module';
 import { MaintenanceModule } from './models/maintenance/maintenance.module';
+import { UploadsModule } from './models/uploads/uploads.module';
 import { MaintenanceMiddleware } from './utils/middlewares/maintenance.middleware';
 import { MaintenanceEntity } from './models/maintenance/entities/maintenance.entity';
 import { AuthMiddleware } from './utils/middlewares/auth.middleware';
@@ -73,7 +74,7 @@ adminjs.registerAdapter({ Database, Resource });
       }),
     }),
     MulterModule.register({
-      dest: 'images/uploads',
+      dest: './uploads',
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../../images'),
@@ -102,6 +103,7 @@ adminjs.registerAdapter({ Database, Resource });
     MessagesModule,
     ChatModule,
     TopicsModule,
+    UploadsModule,
   ],
   controllers: [AppController],
   providers: [AppService, MaintenanceService, UserService],

@@ -6,9 +6,23 @@ import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
 import { WsAdapter } from '@nestjs/platform-ws';
 import * as bodyParser from 'body-parser';
+import { SwaggerModule, DocumentBuilder, SwaggerDocumentOptions } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  const config = new DocumentBuilder()
+    .setTitle('API alive code')
+    .setDescription('')
+    .setVersion('1.0')
+    .build();
+
+  const options: SwaggerDocumentOptions = {
+    ignoreGlobalPrefix: false,
+  }
+
+  const document = SwaggerModule.createDocument(app, config, options);
+  SwaggerModule.setup('api', app, document);
 
   app.setGlobalPrefix('api');
 

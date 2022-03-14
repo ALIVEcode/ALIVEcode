@@ -456,6 +456,15 @@ public class ModuleAI {
                         executeurInstance.addData(new Data(Data.Id.FONCTION_COUT));
                         return new Nul();
                     }
+                },
+
+                new ASObjet.Fonction("testReseauNeurones", new ASObjet.Fonction.Parametre[]{
+                }, ASObjet.TypeBuiltin.nulType.asType()) {
+                    @Override
+                    public ASObjet<?> executer() {
+                        executeurInstance.addData(new Data(Data.Id.TEST_RESEAU_NEURONES));
+                        return null;
+                    }
                 }
         }, new ASObjet.Variable[]{});
     }

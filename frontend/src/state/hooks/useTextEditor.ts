@@ -18,6 +18,7 @@ const styles: {
 	invisible: InvisibleElement,
 	italic: ItalicElement,
 	bold: BoldElement,
+	emphasis: props => ItalicElement({ ...props, children: BoldElement(props) }),
 };
 
 const hotkeys: {
@@ -41,6 +42,10 @@ const useTextEditor = (editor: Editor) => {
 
 		const style = hotkeys[event.key as richTextStyles];
 
+		changeStyle(style);
+	};
+
+	const changeStyle = (style: richTextStyles) => {
 		const [match] = Editor.nodes(editor, {
 			match: (n: any) => n.type === style,
 		});
@@ -55,7 +60,7 @@ const useTextEditor = (editor: Editor) => {
 		);
 	};
 
-	return { applyStyle, applyHotKey };
+	return { applyStyle, applyHotKey, changeStyle };
 };
 
 export default useTextEditor;

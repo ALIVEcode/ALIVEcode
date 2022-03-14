@@ -9,11 +9,6 @@ import {
 	useState,
 } from 'react';
 import RichTextToolBar from './RichTextToolBar';
-import {
-	DefaultElement,
-	ItalicElement,
-} from '../RichTextElements/RichTextSyleElements';
-import { InvisibleElement } from '../RichTextElements/RichTextSyleElements';
 import useTextEditor from '../../../state/hooks/useTextEditor';
 
 const RichTextEditor = () => {
@@ -37,13 +32,7 @@ const RichTextEditor = () => {
 	const [mouseUp, setMouseUp] = useState(true);
 
 	return (
-		<div
-			className="flex justify-center w-full h-full bg-[color:var(--background-color)]"
-			onMouseDown={() =>
-				mouseUp && setMouseUp(window.getSelection()?.rangeCount !== 0)
-			}
-			onMouseUp={() => !mouseUp && setMouseUp(true)}
-		>
+		<div className="flex justify-center w-full h-full bg-[color:var(--background-color)]">
 			<Slate
 				editor={editor}
 				value={value}

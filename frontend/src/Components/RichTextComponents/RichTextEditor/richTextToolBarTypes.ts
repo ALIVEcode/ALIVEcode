@@ -1,7 +1,6 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
-export type RichTextToolBarProps = {
-};
+export type RichTextToolBarProps = {};
 
 export type RichTextToolBarButtonFormatProps = {
 	icon: IconProp;
@@ -9,7 +8,7 @@ export type RichTextToolBarButtonFormatProps = {
 	showSeparator?: boolean;
 };
 
-export type richTextStyles = 'invisible' | 'italic' | 'bold';
+export type richTextStyles = 'invisible' | 'italic' | 'bold' | 'emphasis';
 
 export type StyleElementProps = {
 	attributes: object;

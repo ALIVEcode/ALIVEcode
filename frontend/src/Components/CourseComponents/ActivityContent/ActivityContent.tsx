@@ -32,7 +32,7 @@ const ActivityContent = (props: ActivityContentProps) => {
 	const {
 		activity,
 		saveActivityContent,
-		saveActivity,
+		updateActivity,
 		canEdit,
 		isNavigationOpen,
 		setIsNavigationOpen,
@@ -102,13 +102,13 @@ const ActivityContent = (props: ActivityContentProps) => {
 										onChange={(e: any) => setName(e.target.value)}
 										onBlur={() => {
 											activity.name = name;
-											saveActivity(activity);
+											updateActivity(activity);
 											setEditingName(false);
 										}}
 										onKeyDown={(e: any) => {
 											if (e.keyCode === 13) {
 												activity.name = name;
-												saveActivity(activity);
+												updateActivity(activity);
 												setEditingName(false);
 											}
 										}}

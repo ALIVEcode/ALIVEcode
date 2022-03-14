@@ -2,6 +2,7 @@ import { faBook, faCode, faVideo } from '@fortawesome/free-solid-svg-icons';
 import { Exclude, Type } from 'class-transformer';
 import { ResourceChallenge } from '../Resource/resource_challenge.entity';
 import { CourseElement } from './course_element.entity';
+import { Descendant } from 'slate';
 
 export enum ACTIVITY_TYPE {
 	THEORY = 'TH',
@@ -11,7 +12,7 @@ export enum ACTIVITY_TYPE {
 
 /**
  * Activity model in the database
- * @author Enric Soldevila
+ * @author Enric Soldevila, Mathis Laroche
  */
 export class Activity {
 	/** Id of the activity (0, 1, 2, ..., n) */
@@ -25,6 +26,12 @@ export class Activity {
 	@Type(() => CourseElement)
 	@Exclude({ toPlainOnly: true })
 	courseElement: CourseElement;
+
+	/** Header of the activity */
+	header: Descendant[];
+
+	/** Footer of the activity */
+	footer: Descendant[];
 
 	/** Name of the activity */
 	@Exclude()

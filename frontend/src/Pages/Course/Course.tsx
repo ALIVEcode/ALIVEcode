@@ -26,6 +26,7 @@ import {
 import { UserContext } from '../../state/contexts/UserContext';
 import { useForceUpdate } from '../../state/hooks/useForceUpdate';
 import { SwitchCourseTabReducer } from './courseTypes';
+import { plainToInstance } from 'class-transformer';
 
 /**
  * Course page that shows the content of a course
@@ -232,6 +233,22 @@ const Course = () => {
 		setOpenedActivity(undefined);
 	};
 
+	type keyofActivity = {
+		[name in keyof Activity]?: Activity[name];
+	};
+	const updateActivity = async (activity: Activity, fields: keyofActivity) => {
+		if (!activity || !course.current) return;
+		await api.db.courses.updateActivity(
+			{
+				courseId: course.current.id,
+				activityId: activity.id.toString(),
+			},
+			fields,
+		);
+		Object.assign(activity, fields);
+		update();
+	};
+
 	// const saveActivity = async (activity: Activity) => {
 	// 	if (!course || !activity || !section) return;
 	// 	const { course_element, ...actWithoutContent } = activity;
@@ -314,9 +331,7 @@ const Course = () => {
 		setIsNavigationOpen,
 		deleteElement,
 		moveElement: async (..._) => {},
-		saveActivity: (activity: Activity) => {
-			throw new Error('Function not implemented.');
-		},
+		updateActivity,
 		saveActivityContent: (data: string) => {
 			throw new Error('Function not implemented.');
 		},

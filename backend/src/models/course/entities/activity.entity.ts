@@ -1,7 +1,8 @@
 import { Exclude } from 'class-transformer';
 import { Entity, PrimaryGeneratedColumn, TableInheritance, Column, OneToOne, JoinColumn } from 'typeorm';
-import { IsEmpty, IsNotEmpty, Length } from 'class-validator';
+import { IsEmpty, IsNotEmpty, IsOptional, Length } from 'class-validator';
 import { CourseElementEntity } from './course_element.entity';
+import { Descendant } from 'slate';
 
 export class ActivityContent {
   body: string;
@@ -15,7 +16,7 @@ export enum ACTIVITY_TYPE {
 
 /**
  * Activity model in the database
- * @author Enric Soldevila
+ * @author Enric Soldevila, Mathis Laroche
  */
 @Entity()
 @TableInheritance({ column: 'type' })
@@ -37,6 +38,16 @@ export class ActivityEntity {
   @Column({ nullable: false })
   @Length(1, 100)
   name: string;
+
+  /** Header of the activity */
+  @IsOptional()
+  @Column({ nullable: true, default: null, type: 'json' })
+  header: Descendant[];
+
+  /** Footer of the activity */
+  @IsOptional()
+  @Column({ nullable: true, default: null, type: 'json' })
+  footer: Descendant[];
 
   /** CourseElement attached to the activity */
   @OneToOne(() => CourseElementEntity, el => el.activity, { onDelete: 'CASCADE', cascade: true })

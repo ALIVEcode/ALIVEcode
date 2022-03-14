@@ -26,7 +26,12 @@ export type CourseContextValues = {
 	closeOpenedActivity: () => any;
 	loadSectionElements: (section: Section) => Promise<any>;
 	renameElement: (element: CourseElement, newName: string) => void;
-	saveActivity: (activity: Activity) => Promise<void>;
+	updateActivity: (
+		activity: Activity,
+		fields: {
+			[name in keyof Activity]?: Activity[name];
+		},
+	) => Promise<void>;
 	saveActivityContent: (data: string) => Promise<void>;
 	setIsNavigationOpen: (bool: boolean) => void;
 	addContent: (
@@ -54,7 +59,7 @@ export const CourseContext = createContext<CourseContextValues>({
 	setTitle: async (newTitle: string) => {},
 	openActivity: async (..._) => {},
 	closeOpenedActivity: () => {},
-	saveActivity: async (activity: Activity) => {},
+	updateActivity: async (..._) => {},
 	saveActivityContent: async (data: string) => {},
 	setIsNavigationOpen: async (bool: boolean) => {},
 	addContent: async (

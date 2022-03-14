@@ -1,4 +1,10 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { Descendant } from 'slate';
+
+export type RichTextEditorProps = {
+	onChange: (value: Descendant[]) => void;
+	defaultText?: Descendant[];
+};
 
 export type RichTextToolBarProps = {};
 

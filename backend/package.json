@@ -53,6 +53,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.4.0",
+    "slate": "^0.73.1",
     "socket.io": "^4.4.0",
     "typeorm": "^0.2.41",
     "ws": "^8.4.0"

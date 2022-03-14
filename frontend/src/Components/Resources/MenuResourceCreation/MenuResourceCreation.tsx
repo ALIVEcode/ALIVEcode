@@ -19,6 +19,7 @@ import {
 	MenuResourceCreationDTO,
 	MenuResourceCreationProps,
 } from './menuResourceCreationTypes';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
 const MenuResourceCreation = ({
 	open,
@@ -183,6 +184,7 @@ const MenuResourceCreation = ({
 			title={
 				updateMode ? t('resources.form.update') : t('resources.form.create')
 			}
+			submitIcon={updateMode ? faCheckCircle : undefined}
 			setOpen={setOpen}
 			open={open}
 			onSubmit={() => handleSubmit(onSubmit)()}

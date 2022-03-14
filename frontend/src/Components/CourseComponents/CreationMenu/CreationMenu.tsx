@@ -23,6 +23,7 @@ const CreationMenu: React.FC<CreationMenuProps> = ({
 	setOpen,
 	onSubmit,
 	defaultPageNb,
+	submitIcon,
 }) => {
 	const [pageNb, setPageNb] = useState(defaultPageNb ?? 0);
 	const [children, setChildren] = useState<React.ReactNode[]>([]);
@@ -59,7 +60,7 @@ const CreationMenu: React.FC<CreationMenuProps> = ({
 				>
 					<FontAwesomeIcon
 						size="2x"
-						icon={isLastPage ? faPlusCircle : faChevronRight}
+						icon={isLastPage ? submitIcon ?? faPlusCircle : faChevronRight}
 					></FontAwesomeIcon>
 				</div>
 			</div>

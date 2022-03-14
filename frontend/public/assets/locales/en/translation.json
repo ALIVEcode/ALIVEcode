@@ -231,16 +231,28 @@
 			"title": "Resources"
 		},
 		"video": {
-			"name": "Video"
+			"name": "Video",
+			"form": {
+				"url": "URL of the video"
+			}
 		},
 		"file": {
-			"name": "File"
+			"name": "File",
+			"form": {
+				"file": "Drag and drop a file or insert one"
+			}
 		},
 		"image": {
-			"name": "Image"
+			"name": "Image",
+			"form": {
+				"url": "URL of the image"
+			}
 		},
 		"challenge": {
-			"name": "Challenge"
+			"name": "Challenge",
+			"form": {
+				"select": "Select a level for the linkage"
+			}
 		},
 		"theory": {
 			"name": "Theory"
@@ -249,7 +261,10 @@
 			"create": "Create a resource",
 			"update": "Update the resource",
 			"delete": "Delete the resource",
-			"delete_confirm": "Are you sure you want to delete this resource? If you have used it in a course, it will be forever lost."
+			"delete_confirm": "Are you sure you want to delete this resource? If you have used it in a course, it will be forever lost.",
+			"subject": "Subject of the resource",
+			"type": "Type of resource",
+			"name": "Name of the resource"
 		}
 	},
 	"classroom": {

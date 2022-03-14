@@ -47,7 +47,7 @@ const CreationMenu: React.FC<CreationMenuProps> = ({
 					)}
 					onClick={() => pageNb !== 0 && setPageNb(pageNb - 1)}
 				>
-					<FontAwesomeIcon icon={faChevronLeft}></FontAwesomeIcon>
+					<FontAwesomeIcon size="2x" icon={faChevronLeft}></FontAwesomeIcon>
 				</div>
 				<div className="p-12 w-full">{currentChild}</div>
 				<div
@@ -58,6 +58,7 @@ const CreationMenu: React.FC<CreationMenuProps> = ({
 					onClick={() => (isLastPage ? onSubmit() : setPageNb(pageNb + 1))}
 				>
 					<FontAwesomeIcon
+						size="2x"
 						icon={isLastPage ? faPlusCircle : faChevronRight}
 					></FontAwesomeIcon>
 				</div>

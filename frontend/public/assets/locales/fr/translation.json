@@ -228,28 +228,43 @@
 	},
 	"resources": {
 		"menu": {
-			"title": "Resources"
+			"title": "Ressources"
 		},
 		"video": {
-			"name": "Vidéo"
+			"name": "Vidéo",
+			"form": {
+				"url": "URL vers la vidéo"
+			}
 		},
 		"file": {
-			"name": "Fichier"
+			"name": "Fichier",
+			"form": {
+				"file": "Glissez ou sélectionnez un fichier"
+			}
 		},
 		"image": {
-			"name": "Image"
+			"name": "Image",
+			"form": {
+				"url": "URL vers l'image"
+			}
 		},
 		"challenge": {
-			"name": "Défi"
+			"name": "Défi",
+			"form": {
+				"select": "Sélectionnez un niveau pour la liaison"
+			}
 		},
 		"theory": {
 			"name": "Théorie"
 		},
 		"form": {
 			"create": "Créer une ressource",
-			"update": "Modifier la resource",
+			"update": "Modifier la ressource",
 			"delete": "Supprimer la ressource",
-			"delete_confirm": "Êtes-vous sûr de vouloir supprimer cette ressource? Si vous l'avez utilisée dans un cours, celle-ci sera perdue à jamais."
+			"delete_confirm": "Êtes-vous sûr de vouloir supprimer cette ressource? Si vous l'avez utilisée dans un cours, celle-ci sera perdue à jamais.",
+			"subject": "Sujet de la ressource",
+			"type": "Type de ressource",
+			"name": "Nom de la ressource"
 		}
 	},
 	"classroom": {

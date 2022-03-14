@@ -20,7 +20,7 @@ import Link from '../../UtilsComponents/Link/Link';
 import useRoutes from '../../../state/hooks/useRoutes';
 
 const FormCreateResource = ({ open, setOpen }: FormCreateResourceProps) => {
-	const [type, setType] = useState<RESOURCE_TYPE>(RESOURCE_TYPE.FILE);
+	const [type, setType] = useState<RESOURCE_TYPE>(RESOURCE_TYPE.THEORY);
 	const [challenges, setChallenges] = useState<Challenge[]>([]);
 	const { t } = useTranslation();
 	const { setResources, resources } = useContext(UserContext);
@@ -46,6 +46,7 @@ const FormCreateResource = ({ open, setOpen }: FormCreateResourceProps) => {
 		formValues.type = type;
 		const resource = await api.db.resources.create(formValues);
 		setResources([...resources, resource]);
+		setOpen(false);
 	};
 
 	const renderSpecificFields = () => {
@@ -53,7 +54,7 @@ const FormCreateResource = ({ open, setOpen }: FormCreateResourceProps) => {
 			case RESOURCE_TYPE.CHALLENGE:
 				return (
 					<>
-						<FormLabel>{t('resources.challenge.select_level')}</FormLabel>
+						<FormLabel>{t('resources.challenge.form.select')}</FormLabel>
 						{challenges.length <= 0 ? (
 							<div>
 								<i>{t('dashboard.challenges.empty')}. </i>
@@ -62,7 +63,11 @@ const FormCreateResource = ({ open, setOpen }: FormCreateResourceProps) => {
 								</Link>
 							</div>
 						) : (
-							<FormInput as="select" {...register('resource.challengeId')}>
+							<FormInput
+								as="select"
+								errors={errors.resource?.challengeId}
+								{...register('resource.challengeId', { required: true })}
+							>
 								{challenges.map((c, idx) => (
 									<option key={idx} value={c.id}>
 										{c.name}
@@ -77,7 +82,7 @@ const FormCreateResource = ({ open, setOpen }: FormCreateResourceProps) => {
 			case RESOURCE_TYPE.VIDEO:
 				return (
 					<InputGroup
-						label="Url"
+						label={t('resources.video.form.url')}
 						errors={errors.resource?.url}
 						{...register('resource.url', { required: true })}
 					/>
@@ -85,7 +90,7 @@ const FormCreateResource = ({ open, setOpen }: FormCreateResourceProps) => {
 			case RESOURCE_TYPE.IMAGE:
 				return (
 					<InputGroup
-						label="Url"
+						label={t('resources.image.form.url')}
 						errors={errors.resource?.url}
 						{...register('resource.url', { required: true })}
 					/>
@@ -115,9 +120,14 @@ const FormCreateResource = ({ open, setOpen }: FormCreateResourceProps) => {
 			</div>
 			<>
 				<InputGroup
-					as="select"
-					label="Subject"
+					label={t('resources.form.name')}
 					errors={errors.resource?.name}
+					{...register('resource.name', { required: true })}
+				/>
+				<InputGroup
+					as="select"
+					label={t('resources.form.subject')}
+					errors={errors.resource?.subject}
 					{...register('resource.subject', { required: true })}
 					onChange={(e: any) => {
 						setType(e.target.value);
@@ -129,11 +139,6 @@ const FormCreateResource = ({ open, setOpen }: FormCreateResourceProps) => {
 						</option>
 					))}
 				</InputGroup>
-				<InputGroup
-					label="Name"
-					errors={errors.resource?.name}
-					{...register('resource.name', { required: true })}
-				/>
 				{renderSpecificFields()}
 			</>
 		</CreationMenu>

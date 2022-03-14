@@ -7,8 +7,7 @@ import { useTranslation } from 'react-i18next';
 import api from '../../../Models/api';
 import { UserContext } from '../../../state/contexts/UserContext';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
-import Modal from '../../UtilsComponents/Modal/Modal';
-import FormEditResource from '../FormEditResource/FormEditResource';
+import MenuResourceCreation from '../MenuResourceCreation/MenuResourceCreation';
 
 const ResourceCard = ({ resource }: ResourceCardProps) => {
 	const [deleteOpen, setDeleteOpen] = useState(false);
@@ -51,14 +50,12 @@ const ResourceCard = ({ resource }: ResourceCardProps) => {
 				setOpen={setDeleteOpen}
 				open={deleteOpen}
 			/>
-			<Modal
-				title={t('resources.form.update')}
+			<MenuResourceCreation
 				setOpen={setUpdateOpen}
 				open={updateOpen}
-				hideFooter
-			>
-				<FormEditResource resource={resource} />
-			</Modal>
+				updateMode
+				defaultResource={resource}
+			/>
 		</div>
 	);
 };

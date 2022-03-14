@@ -1,5 +1,4 @@
-import React from 'react';
-import { CreationMenuProps } from './creationMenuProps';
+import { CreationMenuProps, flattenChildren } from './creationMenuProps';
 import Modal from '../../UtilsComponents/Modal/Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState, useEffect } from 'react';
@@ -23,12 +22,13 @@ const CreationMenu: React.FC<CreationMenuProps> = ({
 	open,
 	setOpen,
 	onSubmit,
+	defaultPageNb,
 }) => {
-	const [pageNb, setPageNb] = useState(0);
+	const [pageNb, setPageNb] = useState(defaultPageNb ?? 0);
 	const [children, setChildren] = useState<React.ReactNode[]>([]);
 	useEffect(() => {
-		if (!Array.isArray(childrenProp)) return setChildren([childrenProp]);
-		setChildren(childrenProp);
+		setChildren(flattenChildren(childrenProp));
+		console.log(flattenChildren(childrenProp));
 	}, [childrenProp]);
 
 	/**
@@ -68,7 +68,7 @@ const CreationMenu: React.FC<CreationMenuProps> = ({
 
 	return (
 		<Modal
-			size="xl"
+			size="lg"
 			title={title}
 			open={open}
 			setOpen={setOpen}

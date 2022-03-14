@@ -44,8 +44,8 @@ import { Result } from './Social/result.entity';
 import { Topics } from './Social/topics.entity';
 import { Professor, Student } from './User/user.entity';
 import { loadObj } from './utils';
-import { FormCreateResourceDTO } from '../Components/Resources/FormCreateResource/formCreateResourceTypes';
 import { GenericResourceTransformer } from './Resource/transformer/GenericResourceTransformer';
+import { MenuResourceCreationDTO } from '../Components/Resources/MenuResourceCreation/menuResourceCreationTypes';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;
@@ -302,12 +302,12 @@ const api = {
 		},
 		resources: {
 			delete: apiDelete('resources/:id'),
-			create: async (dto: FormCreateResourceDTO) => {
+			create: async (dto: MenuResourceCreationDTO) => {
 				return plainToInstance(GenericResourceTransformer, {
 					resource: (await axios.post(`resources`, dto)).data,
 				}).resource;
 			},
-			update: async (dto: FormCreateResourceDTO, id: string) => {
+			update: async (dto: MenuResourceCreationDTO, id: string) => {
 				const axiosRes = (await axios.patch(`resources/${id}`, dto)).data;
 				console.log({ ...axiosRes });
 				const res = plainToInstance(GenericResourceTransformer, {

@@ -3,7 +3,6 @@ import ResourceCard from '../../Components/Resources/ResourceCard/ResourceCard';
 import Button from '../../Components/UtilsComponents/Buttons/Button';
 import { UserContext } from '../../state/contexts/UserContext';
 import { useTranslation } from 'react-i18next';
-import FormCreateResource from '../../Components/Resources/FormCreateResource/FormCreateResource';
 import { SUBJECTS, getSubjectIcon } from '../../Types/sharedTypes';
 import api from '../../Models/api';
 import LoadingScreen from '../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
@@ -17,6 +16,7 @@ import {
 import FormInput from '../../Components/UtilsComponents/FormInput/FormInput';
 import { RESOURCE_TYPE } from '../../Models/Resource/resource.entity';
 import { ResourceFilter } from '../../Components/Resources/ResourceFilter/ResourceFilter';
+import MenuResourceCreation from '../../Components/Resources/MenuResourceCreation/MenuResourceCreation';
 
 const ResourceMenu = () => {
 	const [creationModalOpen, setCreationModalOpen] = useState(false);
@@ -137,7 +137,7 @@ const ResourceMenu = () => {
 						</div>
 					</div>
 				</div>
-				<FormCreateResource
+				<MenuResourceCreation
 					setOpen={setCreationModalOpen}
 					open={creationModalOpen}
 				/>

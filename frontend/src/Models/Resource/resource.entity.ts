@@ -32,8 +32,10 @@ export class Resource {
 
 	subject: SUBJECTS;
 
+	@Exclude({ toPlainOnly: true })
 	creationDate: Date;
 
+	@Exclude({ toPlainOnly: true })
 	updateDate: Date;
 
 	@Exclude({ toPlainOnly: true })

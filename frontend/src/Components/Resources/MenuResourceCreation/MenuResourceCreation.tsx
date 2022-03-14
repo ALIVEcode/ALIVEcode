@@ -1,12 +1,8 @@
 import { RESOURCE_TYPE } from '../../../Models/Resource/resource.entity';
 import { useForm } from 'react-hook-form';
 import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
-import {
-	FormCreateResourceDTO,
-	FormCreateResourceProps,
-} from './formCreateResourceTypes';
 import api from '../../../Models/api';
-import { useState, useContext } from 'react';
+import { useState, useContext, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserContext } from '../../../state/contexts/UserContext';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
@@ -18,34 +14,75 @@ import FormLabel from '../../UtilsComponents/FormLabel/FormLabel';
 import FormInput from '../../UtilsComponents/FormInput/FormInput';
 import Link from '../../UtilsComponents/Link/Link';
 import useRoutes from '../../../state/hooks/useRoutes';
+import { instanceToPlain } from 'class-transformer';
+import {
+	MenuResourceCreationDTO,
+	MenuResourceCreationProps,
+} from './menuResourceCreationTypes';
 
-const FormCreateResource = ({ open, setOpen }: FormCreateResourceProps) => {
-	const [type, setType] = useState<RESOURCE_TYPE>(RESOURCE_TYPE.THEORY);
+const MenuResourceCreation = ({
+	open,
+	setOpen,
+	updateMode,
+	defaultResource,
+}: MenuResourceCreationProps) => {
+	const [type, setType] = useState<RESOURCE_TYPE>(
+		defaultResource?.type ?? RESOURCE_TYPE.THEORY,
+	);
 	const [challenges, setChallenges] = useState<Challenge[]>([]);
 	const { t } = useTranslation();
 	const { setResources, resources } = useContext(UserContext);
 	const { user } = useContext(UserContext);
 	const { routes } = useRoutes();
+	const defaultValues = useMemo(() => {
+		return {
+			type,
+			resource: instanceToPlain(defaultResource),
+		};
+	}, [defaultResource, type]);
+
+	console.log(defaultValues);
+
 	const {
 		register,
 		formState: { errors },
 		handleSubmit,
-	} = useForm<FormCreateResourceDTO>({ defaultValues: { type } });
+	} = useForm<MenuResourceCreationDTO>({
+		defaultValues,
+	});
+
+	const updateUserChallenges = async () => {
+		if (!user) return;
+		setChallenges(await api.db.users.getChallenges({ id: user?.id }));
+	};
+
+	useEffect(() => {
+		if (type === RESOURCE_TYPE.CHALLENGE) updateUserChallenges();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	if (!resources) return <LoadingScreen></LoadingScreen>;
 
-	const onSelect = async (type: RESOURCE_TYPE) => {
-		if (!user) return;
-		if (type === RESOURCE_TYPE.CHALLENGE) {
-			setChallenges(await api.db.users.getChallenges({ id: user?.id }));
-		}
+	const onSelectSubject = async (type: RESOURCE_TYPE) => {
+		if (type === RESOURCE_TYPE.CHALLENGE) updateUserChallenges();
 		setType(type);
 	};
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const onSubmit = async (formValues: FormCreateResourceDTO) => {
+	const onSubmit = async (formValues: MenuResourceCreationDTO) => {
 		formValues.type = type;
-		const resource = await api.db.resources.create(formValues);
-		setResources([...resources, resource]);
+		if (updateMode && defaultResource) {
+			const updatedRes = await api.db.resources.update(
+				formValues,
+				defaultResource.id,
+			);
+			setResources(
+				resources.map(r => (r.id === updatedRes.id ? updatedRes : r)),
+			);
+		} else {
+			const resource = await api.db.resources.create(formValues);
+			setResources([...resources, resource]);
+		}
 		setOpen(false);
 	};
 
@@ -100,25 +137,25 @@ const FormCreateResource = ({ open, setOpen }: FormCreateResourceProps) => {
 		}
 	};
 
-	return (
-		<CreationMenu
-			title={t('resources.form.create')}
-			setOpen={setOpen}
-			open={open}
-			onSubmit={() => handleSubmit(onSubmit)()}
-		>
+	const renderPageResourceType = () => {
+		return (
 			<div className="bg-[color:var(--background-color)] gap-8 grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3">
 				{Object.entries(RESOURCE_TYPE).map((entry, idx) => (
 					<TypeCard
 						key={idx}
 						title={t(`resources.${entry[0].toLowerCase()}.name`)}
 						icon={getResourceIcon(entry[1])}
-						onClick={() => onSelect(entry[1])}
+						onClick={() => onSelectSubject(entry[1])}
 						selected={type === entry[1]}
 					/>
 				))}
 			</div>
-			<>
+		);
+	};
+
+	const renderPageResourceInfos = () => {
+		return (
+			<div className="tablet:px-8 laptop:px-16 desktop:px-36">
 				<InputGroup
 					label={t('resources.form.name')}
 					errors={errors.resource?.name}
@@ -129,9 +166,6 @@ const FormCreateResource = ({ open, setOpen }: FormCreateResourceProps) => {
 					label={t('resources.form.subject')}
 					errors={errors.resource?.subject}
 					{...register('resource.subject', { required: true })}
-					onChange={(e: any) => {
-						setType(e.target.value);
-					}}
 				>
 					{Object.entries(SUBJECTS).map((entry, idx) => (
 						<option key={idx} value={entry[1]}>
@@ -140,9 +174,23 @@ const FormCreateResource = ({ open, setOpen }: FormCreateResourceProps) => {
 					))}
 				</InputGroup>
 				{renderSpecificFields()}
-			</>
+			</div>
+		);
+	};
+
+	return (
+		<CreationMenu
+			title={
+				updateMode ? t('resources.form.update') : t('resources.form.create')
+			}
+			setOpen={setOpen}
+			open={open}
+			onSubmit={() => handleSubmit(onSubmit)()}
+		>
+			{!updateMode && renderPageResourceType()}
+			{renderPageResourceInfos()}
 		</CreationMenu>
 	);
 };
 
-export default FormCreateResource;
+export default MenuResourceCreation;

@@ -193,7 +193,7 @@ export class UserService {
   }
 
   async getResources(user: ProfessorEntity) {
-    return await this.resourceRepo.find({ where: { creator: user } });
+    return await this.resourceRepo.find({ where: { creator: user }, order: { updateDate: 'DESC' } });
   }
 
   async getIoTProjects(user: UserEntity) {

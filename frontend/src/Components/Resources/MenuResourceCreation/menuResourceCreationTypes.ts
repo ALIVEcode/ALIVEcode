@@ -1,12 +1,17 @@
-import { RESOURCE_TYPE } from '../../../Models/Resource/resource.entity';
+import {
+	RESOURCE_TYPE,
+	Resource,
+} from '../../../Models/Resource/resource.entity';
 import { SUBJECTS } from '../../../Types/sharedTypes';
 
-export type FormCreateResourceProps = {
+export type MenuResourceCreationProps = {
 	open: boolean;
 	setOpen: (state: boolean) => void;
+	updateMode?: boolean;
+	defaultResource?: Resource;
 };
 
-export type FormCreateResourceDTO = {
+export type MenuResourceCreationDTO = {
 	type: RESOURCE_TYPE;
 	resource: {
 		name: string;

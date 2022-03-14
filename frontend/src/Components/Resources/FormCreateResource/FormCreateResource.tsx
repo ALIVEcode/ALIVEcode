@@ -13,11 +13,19 @@ import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import CreationMenu from '../../CourseComponents/CreationMenu/CreationMenu';
 import TypeCard from '../../UtilsComponents/Cards/TypeCard/TypeCard';
 import { getResourceIcon, SUBJECTS } from '../../../Types/sharedTypes';
+import { Challenge } from '../../../Models/Challenge/challenge.entity';
+import FormLabel from '../../UtilsComponents/FormLabel/FormLabel';
+import FormInput from '../../UtilsComponents/FormInput/FormInput';
+import Link from '../../UtilsComponents/Link/Link';
+import useRoutes from '../../../state/hooks/useRoutes';
 
 const FormCreateResource = ({ open, setOpen }: FormCreateResourceProps) => {
 	const [type, setType] = useState<RESOURCE_TYPE>(RESOURCE_TYPE.FILE);
+	const [challenges, setChallenges] = useState<Challenge[]>([]);
 	const { t } = useTranslation();
 	const { setResources, resources } = useContext(UserContext);
+	const { user } = useContext(UserContext);
+	const { routes } = useRoutes();
 	const {
 		register,
 		formState: { errors },
@@ -26,6 +34,10 @@ const FormCreateResource = ({ open, setOpen }: FormCreateResourceProps) => {
 	if (!resources) return <LoadingScreen></LoadingScreen>;
 
 	const onSelect = async (type: RESOURCE_TYPE) => {
+		if (!user) return;
+		if (type === RESOURCE_TYPE.CHALLENGE) {
+			setChallenges(await api.db.users.getChallenges({ id: user?.id }));
+		}
 		setType(type);
 	};
 
@@ -37,10 +49,29 @@ const FormCreateResource = ({ open, setOpen }: FormCreateResourceProps) => {
 	};
 
 	const renderSpecificFields = () => {
-		console.log('bo');
 		switch (type) {
 			case RESOURCE_TYPE.CHALLENGE:
-				return <></>;
+				return (
+					<>
+						<FormLabel>{t('resources.challenge.select_level')}</FormLabel>
+						{challenges.length <= 0 ? (
+							<div>
+								<i>{t('dashboard.challenges.empty')}. </i>
+								<Link dark to={routes.auth.challenge_create.path}>
+									{t('dashboard.challenges.create_challenge')}
+								</Link>
+							</div>
+						) : (
+							<FormInput as="select" {...register('resource.challengeId')}>
+								{challenges.map((c, idx) => (
+									<option key={idx} value={c.id}>
+										{c.name}
+									</option>
+								))}
+							</FormInput>
+						)}
+					</>
+				);
 			case RESOURCE_TYPE.THEORY:
 				return <></>;
 			case RESOURCE_TYPE.VIDEO:
@@ -66,7 +97,7 @@ const FormCreateResource = ({ open, setOpen }: FormCreateResourceProps) => {
 
 	return (
 		<CreationMenu
-			title="ww"
+			title={t('resources.form.create')}
 			setOpen={setOpen}
 			open={open}
 			onSubmit={() => handleSubmit(onSubmit)()}

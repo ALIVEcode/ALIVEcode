@@ -13,5 +13,6 @@ export type FormCreateResourceDTO = {
 		url?: string;
 		extension?: string;
 		subject: SUBJECTS;
+		challengeId?: string;
 	};
 };

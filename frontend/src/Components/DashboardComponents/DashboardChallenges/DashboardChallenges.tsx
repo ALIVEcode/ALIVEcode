@@ -24,7 +24,7 @@ export const DashboardChallenges = () => {
 					variant="secondary"
 					to={routes.auth.challenge_create.path}
 				>
-					{t('dashboard.challenges.create_challenges')}
+					{t('dashboard.challenges.create_challenge')}
 				</Button>
 			</div>
 			<ChallengeList></ChallengeList>

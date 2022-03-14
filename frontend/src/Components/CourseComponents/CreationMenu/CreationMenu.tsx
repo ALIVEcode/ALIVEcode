@@ -17,12 +17,13 @@ import {
  *
  * @author Enric Soldevila
  */
-const CreationMenu = <T extends {}>({
+const CreationMenu: React.FC<CreationMenuProps> = ({
 	children: childrenProp,
 	title,
 	open,
 	setOpen,
-}: CreationMenuProps<T>) => {
+	onSubmit,
+}) => {
 	const [pageNb, setPageNb] = useState(0);
 	const [children, setChildren] = useState<React.ReactNode[]>([]);
 	useEffect(() => {
@@ -48,17 +49,13 @@ const CreationMenu = <T extends {}>({
 				>
 					<FontAwesomeIcon icon={faChevronLeft}></FontAwesomeIcon>
 				</div>
-				<div className="p-12">{currentChild}</div>
+				<div className="p-12 w-full">{currentChild}</div>
 				<div
 					className={classNames(
 						'flex items-center cursor-pointer',
 						isLastPage ? '' : '',
 					)}
-					onClick={() =>
-						isLastPage
-							? console.log('to be implemented')
-							: setPageNb(pageNb + 1)
-					}
+					onClick={() => (isLastPage ? onSubmit() : setPageNb(pageNb + 1))}
 				>
 					<FontAwesomeIcon
 						icon={isLastPage ? faPlusCircle : faChevronRight}
@@ -69,7 +66,14 @@ const CreationMenu = <T extends {}>({
 	};
 
 	return (
-		<Modal size="xl" title={title} open={open} setOpen={setOpen}>
+		<Modal
+			size="xl"
+			title={title}
+			open={open}
+			setOpen={setOpen}
+			closeCross
+			hideFooter
+		>
 			{generatePages()}
 		</Modal>
 	);

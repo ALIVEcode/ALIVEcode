@@ -2,6 +2,7 @@ import { TypeCardProps } from './typeCardTypes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext } from 'react';
 import { ThemeContext } from '../../../../state/contexts/ThemeContext';
+import { classNames } from '../../../../Types/utils';
 
 /**
  * Card component used to choose between different subjects or types
@@ -18,7 +19,10 @@ const TypeCard = (props: TypeCardProps) => {
 
 	return (
 		<div
-			className="bg-[color:var(--background-color)] border border-[color:var(--bg-shade-four-color)] aspect-square flex flex-col items-center justify-center gap-8 cursor-pointer rounded-md"
+			className={classNames(
+				'bg-[color:var(--background-color)] border border-[color:var(--bg-shade-four-color)] aspect-square flex flex-col items-center justify-center gap-8 cursor-pointer rounded-md transition-colors duration-100',
+				props.selected && 'border-2 border-[color:var(--logo-color)]',
+			)}
 			onClick={props.onClick}
 		>
 			{props.img && <img src={props.img} alt={props.alt} />}

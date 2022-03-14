@@ -12,7 +12,7 @@ import { UserContext } from '../../../state/contexts/UserContext';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import CreationMenu from '../../CourseComponents/CreationMenu/CreationMenu';
 import TypeCard from '../../UtilsComponents/Cards/TypeCard/TypeCard';
-import { faCode, faVideo, faBook } from '@fortawesome/free-solid-svg-icons';
+import { getResourceIcon, SUBJECTS } from '../../../Types/sharedTypes';
 
 const FormCreateResource = ({ open, setOpen }: FormCreateResourceProps) => {
 	const [type, setType] = useState<RESOURCE_TYPE>(RESOURCE_TYPE.FILE);
@@ -21,18 +21,23 @@ const FormCreateResource = ({ open, setOpen }: FormCreateResourceProps) => {
 	const {
 		register,
 		formState: { errors },
+		handleSubmit,
 	} = useForm<FormCreateResourceDTO>({ defaultValues: { type } });
 	if (!resources) return <LoadingScreen></LoadingScreen>;
 
-	const onSelect = async (type: RESOURCE_TYPE) => {};
+	const onSelect = async (type: RESOURCE_TYPE) => {
+		setType(type);
+	};
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const onSubmit = async (formValues: FormCreateResourceDTO) => {
+		formValues.type = type;
 		const resource = await api.db.resources.create(formValues);
 		setResources([...resources, resource]);
 	};
 
 	const renderSpecificFields = () => {
+		console.log('bo');
 		switch (type) {
 			case RESOURCE_TYPE.CHALLENGE:
 				return <></>;
@@ -60,62 +65,38 @@ const FormCreateResource = ({ open, setOpen }: FormCreateResourceProps) => {
 	};
 
 	return (
-		<CreationMenu<{ name: string }>
+		<CreationMenu
 			title="ww"
 			setOpen={setOpen}
 			open={open}
-			state={{ name: 'This is a default state' }}
+			onSubmit={() => handleSubmit(onSubmit)()}
 		>
 			<div className="bg-[color:var(--background-color)] gap-8 grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3">
-				<TypeCard
-					title={t('resources.challenge.name')}
-					icon={faCode}
-					onClick={() => onSelect(RESOURCE_TYPE.CHALLENGE)}
-				/>
-				<TypeCard
-					title={t('resources.video.name')}
-					icon={faVideo}
-					onClick={() => onSelect(RESOURCE_TYPE.VIDEO)}
-				/>
-				<TypeCard
-					title={t('resources.file.name')}
-					icon={faBook}
-					onClick={() => onSelect(RESOURCE_TYPE.FILE)}
-				/>
-				<TypeCard
-					title={t('resources.image.name')}
-					icon={faBook}
-					onClick={() => onSelect(RESOURCE_TYPE.IMAGE)}
-				/>
-				<TypeCard
-					title={t('resources.theory.name')}
-					icon={faBook}
-					onClick={() => onSelect(RESOURCE_TYPE.THEORY)}
-				/>
+				{Object.entries(RESOURCE_TYPE).map((entry, idx) => (
+					<TypeCard
+						key={idx}
+						title={t(`resources.${entry[0].toLowerCase()}.name`)}
+						icon={getResourceIcon(entry[1])}
+						onClick={() => onSelect(entry[1])}
+						selected={type === entry[1]}
+					/>
+				))}
 			</div>
 			<>
 				<InputGroup
 					as="select"
-					label="Type"
+					label="Subject"
 					errors={errors.resource?.name}
-					{...register('type', { required: true })}
+					{...register('resource.subject', { required: true })}
 					onChange={(e: any) => {
 						setType(e.target.value);
 					}}
 				>
-					<option value={RESOURCE_TYPE.FILE}>{t('resources.file.name')}</option>
-					<option value={RESOURCE_TYPE.VIDEO}>
-						{t('resources.video.name')}
-					</option>
-					<option value={RESOURCE_TYPE.IMAGE}>
-						{t('resources.image.name')}
-					</option>
-					<option value={RESOURCE_TYPE.THEORY}>
-						{t('resources.theory.name')}
-					</option>
-					<option value={RESOURCE_TYPE.CHALLENGE}>
-						{t('resources.challenge.name')}
-					</option>
+					{Object.entries(SUBJECTS).map((entry, idx) => (
+						<option key={idx} value={entry[1]}>
+							{t(`msg.subjects.${entry[0].toLowerCase()}`)}
+						</option>
+					))}
 				</InputGroup>
 				<InputGroup
 					label="Name"

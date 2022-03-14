@@ -6,4 +6,5 @@ export type TypeCardProps = {
 	icon?: IconDefinition;
 	title: string;
 	onClick: () => void;
+	selected?: boolean;
 };

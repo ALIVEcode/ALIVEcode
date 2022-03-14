@@ -1,7 +1,7 @@
-export type CreationMenuProps<T> = {
+export type CreationMenuProps = {
 	open: boolean;
 	setOpen: (state: boolean) => void;
 	title: string;
-	state: T;
 	children: React.ReactNode;
+	onSubmit: () => void;
 };

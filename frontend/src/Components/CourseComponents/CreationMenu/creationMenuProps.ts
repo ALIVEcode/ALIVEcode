@@ -16,6 +16,7 @@ export type CreationMenuProps = {
 	onSubmit: () => void;
 	defaultPageNb?: number;
 	submitIcon?: IconDefinition;
+	disabledPageIndex?: number;
 };
 
 /**

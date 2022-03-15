@@ -11,6 +11,7 @@ import {
 	faExpandAlt,
 	faExpandArrowsAlt,
 } from '@fortawesome/free-solid-svg-icons';
+import activity from '../Activities/Activity';
 
 /**
  * Useful component to show an activity (currently empty)
@@ -36,10 +37,11 @@ const CourseLayoutActivity = ({ courseElement }: CourseLayoutActivityProps) => {
 
 			<Modal
 				open={openActivity}
-				title=""
 				setOpen={setOpenActivity}
+				icon={activity.icon}
 				centered
 				size="lg"
+				hideTitle
 				hideFooter
 				closeCross
 			>

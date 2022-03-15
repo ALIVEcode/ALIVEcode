@@ -62,27 +62,27 @@ const Activity = ({ activity }: { activity: ActivityModel }) => {
 				</div>
 				<div className=" flex justify-center items-center">
 					{activity.header !== null ? (
-						<div className="text-sm border-b py-3 border-[color:var(--bg-shade-four-color)]">
+						<div className="text-sm border-b border-dotted py-3 border-[color:var(--bg-shade-four-color)] w-full">
 							<RichTextEditor
 								onChange={update('header')}
 								defaultText={activity.header}
 							/>
 						</div>
 					) : (
-						<ButtonAdd what="header" />
+						<ButtonAdd what="header" activity={activity} />
 					)}
 				</div>
 				<div className="py-5">{renderSpecificActivity()}</div>
 				<div className=" flex justify-center items-center">
 					{activity.footer !== null ? (
-						<div className="text-sm border-b py-3 border-[color:var(--bg-shade-four-color)]">
+						<div className="text-sm border-t border-dotted py-3 border-[color:var(--bg-shade-four-color)] w-full">
 							<RichTextEditor
 								onChange={update('footer')}
 								defaultText={activity.footer}
 							/>
 						</div>
 					) : (
-						<ButtonAdd what="footer" />
+						<ButtonAdd what="footer" activity={activity} />
 					)}
 				</div>
 			</div>

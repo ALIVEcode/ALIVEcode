@@ -40,6 +40,7 @@ const Modal = (props: ModalProps) => {
 		closeButtonVariant,
 		submitText,
 		closeText,
+		hideTitle,
 		hideSubmitButton,
 		hideCloseButton,
 		centered,
@@ -120,7 +121,7 @@ const Modal = (props: ModalProps) => {
 									className="absolute top-2 right-2 w-6 h-6 text-[color:var(--fg-shade-four-color)] cursor-pointer text-center"
 									onClick={() => setOpen(false)}
 								>
-									<FontAwesomeIcon icon={faTimes}></FontAwesomeIcon>
+									<FontAwesomeIcon icon={faTimes} />
 								</div>
 							)}
 							<div className="p-4 py-0 tablet:p-5 tablet:py-2 desktop:p-7 desktop:py-4">
@@ -135,10 +136,14 @@ const Modal = (props: ModalProps) => {
 										</div>
 									)}
 									<div className={classNames('mt-3 w-full', contentClassName)}>
-										<Dialog.Title className="text-lg leading-6 font-medium">
-											{title}
-										</Dialog.Title>
-										<div className="mt-2 border-b border-[color:var(--bg-shade-four-color)]"></div>
+										{!hideTitle && (
+											<>
+												<Dialog.Title className="text-lg leading-6 font-medium">
+													{title}
+												</Dialog.Title>
+												<div className="mt-2 border-b border-[color:var(--bg-shade-four-color)]" />
+											</>
+										)}
 										<div
 											className={classNames(
 												size === 'sm' ? 'my-2' : 'my-4',

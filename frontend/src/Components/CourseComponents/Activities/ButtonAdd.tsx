@@ -1,15 +1,18 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { Descendant } from 'slate';
-import api from '../../../Models/api';
 import { useContext } from 'react';
 import { CourseContext } from '../../../state/contexts/CourseContext';
-import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import { useTranslation } from 'react-i18next';
+import { Activity } from '../../../Models/Course/activity.entity';
 
-const ButtonAdd = ({ what }: { what: 'header' | 'footer' }) => {
-	const { openedActivity: activity, updateActivity } =
-		useContext(CourseContext);
+const ButtonAdd = ({
+	activity,
+	what,
+}: {
+	activity: Activity;
+	what: 'header' | 'footer';
+}) => {
+	const { updateActivity } = useContext(CourseContext);
 
 	const { t } = useTranslation();
 

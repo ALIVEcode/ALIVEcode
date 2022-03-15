@@ -21,7 +21,6 @@ export default class PolyOptimizer extends RegressionOptimizer {
     let sum: number = 0;
     for (let i: number = 0; i < predicted.length; i++) {
       sum += 2 * predicted[i] * (1 - predicted[i]) * (predicted[i] - real[i]);
-      //sum += predicted[i] - real[i];
     }
     return sum / predicted.length;
   }

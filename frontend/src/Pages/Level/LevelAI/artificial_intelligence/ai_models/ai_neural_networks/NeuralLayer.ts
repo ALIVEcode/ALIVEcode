@@ -9,21 +9,24 @@ import { Matrix, appendColumn } from '../../AIUtils';
 export class NeuralLayer {
 
   private neurons: Neuron[] = [];
+  private activation: ActivationFunction;
+  private weights: Matrix;
+  private biases: Matrix;
 
   /**
    * Creates a NeuralLayer by creating its neurons based on the given 
    * parameters.
    * @param nbNeurons the number of neurons in the NeuralLayer.
    * @param activation the ActivationFunction of the layer.
-   * @param weights the weights of all neurons in the layer.
-   * @param biases the biases of all neurons in the layer.
+   * @param weights the weights of all neurons in the layer (nbPrevious x nbNeurons).
+   * @param biases the biases of all neurons in the layer (1 x nbNeurons).
    */
-  public constructor(
-    private nbNeurons: number,
-    private activation: ActivationFunction,
-    weights: Matrix, // nbPrevious x nbNeurons
-    biases: Matrix // 1 x nbNeurons
-  ){
+  public constructor(nbNeurons: number, activation: ActivationFunction, weights: Matrix, biases: Matrix)
+  {
+    this.activation = activation;
+    this.weights = weights;
+    this.biases = biases;
+
     // Creates every neuron in the layer.
     for (let i: number = 0; i < nbNeurons; i++) {
       this.neurons.push(new Neuron(biases.getValue()[i][0], weights.getMatrixColumn(i)))
@@ -45,5 +48,15 @@ export class NeuralLayer {
     }
 
     return output;
+  }
+
+  public getWeights(): Matrix
+  {
+    return this.weights;
+  }
+
+  public getBiases(): Matrix
+  {
+    return this.biases;
   }
 }

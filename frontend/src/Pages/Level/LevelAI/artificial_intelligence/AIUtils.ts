@@ -1,7 +1,10 @@
+import { theWindow } from "tone/build/esm/core/context/AudioContext";
+
 /**
  * This interface defines the properties of a Data
  */
-export interface DataSample {
+export interface DataSample 
+{
   id: number;
   x: number;
   y: number;
@@ -11,8 +14,8 @@ export interface DataSample {
  * This class represents a mathematical matrix that can be used to perform 
  * matrix operations such as matrix multiplications.
  */
-export class Matrix {
-
+export class Matrix 
+{
   private value: number[][];
   private rows: number;
   private columns: number;
@@ -31,10 +34,9 @@ export class Matrix {
    */
   public constructor(value: number[][]);
   
-  public constructor(...args: any[]) {
-    if (args.length === 2) {
-      this.value = zeros(args[0], args[1]);
-    }
+  public constructor(...args: any[]) 
+  {
+    if (args.length === 2) this.value = zeros(args[0], args[1]);
     else if (args.length === 1) this.value = args[0];
     else this.value = zeros(1, 1);
 
@@ -43,25 +45,43 @@ export class Matrix {
   }
 
   // --METHODS-- //
+
+  public sumOfAll(): number
+  {
+    let sum: number = 0;
+    for (let i: number = 0; i < this.rows; i++) 
+    {
+      for (let j: number = 0; j < this.columns; j++)
+      {
+        sum += this.value[i][j];
+      }
+    }
+    return sum;
+  }
+
   /**
    * Returns one column of the Matrix as a new Matrix (row x 1).
    * @param colNumber the column number.
    * @returns the column as a new Matrix.
    */
-  public getMatrixColumn(colNumber: number): Matrix {
+  public getMatrixColumn(colNumber: number): Matrix 
+  {
     let columnValues: number[][] = [];
 
-    for (let i: number = 0; i < this.rows; i++) {
+    for (let i: number = 0; i < this.rows; i++) 
+    {
       columnValues.push([this.value[i][colNumber]]);
     }
 
     return new Matrix(columnValues);
   }
+
   /**
    * Returns the 2D array representing the values of the matrix. 
    * @returns the Matrix's values.
    */
-  public getValue(): number[][] {
+  public getValue(): number[][] 
+  {
     return this.value;
   }
 
@@ -69,7 +89,8 @@ export class Matrix {
    * Returns the number of rows.
    * @returns the number of rows.
    */
-  public getRows(): number {
+  public getRows(): number 
+  {
     return this.rows;
   }
 
@@ -77,7 +98,8 @@ export class Matrix {
    * Returns the number of columns.
    * @returns the number of columns.
    */
-  public getColumns(): number {
+  public getColumns(): number 
+  {
     return this.columns;
   }
 
@@ -85,10 +107,24 @@ export class Matrix {
    * Sets the value of the Matrix and adjusts the number of rows and columns.
    * @param newValue the new value of the Matrix.
    */
-  public setValue(newValue: number[][]) {
+  public setValue(newValue: number[][]) 
+  {
     this.value = newValue;
     this.rows = newValue.length;
     this.columns = newValue[0].length;
+  }
+
+  public display()
+  {
+    let str: String = "";
+    for (let row: number = 0; row < this.rows; row++)
+    {
+      for (let col: number = 0; col < this.columns; col++)
+      { 
+        str = str + this.value[row][col].toString() + "  ";
+      }
+      console.log(str);
+    }
   }
 }
 
@@ -100,15 +136,18 @@ export class Matrix {
  * @param columns the number of columns, or number of elements of the 2nd dimension.
  * @returns a 2D-array full of zeros.
  */
-export function zeros(rows: number, columns: number): number[][] {
+export function zeros(rows: number, columns: number): number[][] 
+{
   let output: number[][] = [];
   
   //If the number of rows or columns is 0, then return a 1/1 zero matrix
   if (rows === 0 || columns === 0) return [[0]];
 
-  for (let i = 0; i < rows; i++) {
+  for (let i = 0; i < rows; i++) 
+  {
     output.push([0]);
-    for (let j = 1; j < columns; j++) {
+    for (let j = 1; j < columns; j++) 
+    {
       output[i].push(0);
     }
   }
@@ -133,11 +172,13 @@ export function zeros(rows: number, columns: number): number[][] {
  * If the number of columns of the first matrix doesn't match the number of rows 
  * of the second matrix, returns a matrix full of zeros (same size as if the equation could have been solved).
  */
-export function matMul(m1: Matrix, m2: Matrix): Matrix {
+export function matMul(m1: Matrix, m2: Matrix): Matrix 
+{
   
   //If the number of m1 columns doesn't equal the number of m2 rows, the equation 
   //can't be solved, return a Matrix full of zeros.
-  if (m1.getColumns() !== m2.getRows()) {
+  if (m1.getColumns() !== m2.getRows()) 
+  {
     return new Matrix(zeros(m1.getRows(), m2.getColumns()))
   }
   
@@ -146,9 +187,12 @@ export function matMul(m1: Matrix, m2: Matrix): Matrix {
   let outputValue: number[][] = zeros(m1.getRows(), m2.getColumns());
 
   // Computation of a matrix mulltiplication
-  for (let row: number = 0; row < m1.getRows(); row++) {
-    for (let col: number = 0; col < m2.getColumns(); col++) {
-      for (let i: number = 0; i < m1.getColumns(); i++) {
+  for (let row: number = 0; row < m1.getRows(); row++) 
+  {
+    for (let col: number = 0; col < m2.getColumns(); col++) 
+    {
+      for (let i: number = 0; i < m1.getColumns(); i++) 
+      {
         outputValue[row][col] += value1[row][i] * value2[i][col];
       }
     }
@@ -167,13 +211,15 @@ export function matMul(m1: Matrix, m2: Matrix): Matrix {
  * @returns the resulting Matrix. If the 2 Matrices do not have the same number 
  * of rows, returns a copy of the first Matrix.
  */
-export function appendColumn(m1: Matrix, m2: Matrix): Matrix {
+export function appendColumn(m1: Matrix, m2: Matrix): Matrix 
+{
   let outputValue: number[][] = m1.getValue();
   const m2Value: number[][] = m2.getValue();
   
   if (m1.getRows() !== m2.getRows()) return new Matrix(outputValue);
 
-  for (let i: number = 0; i < outputValue.length; i++) {
+  for (let i: number = 0; i < outputValue.length; i++) 
+  {
     outputValue[i].push(...m2Value[i]);
   }
 
@@ -185,7 +231,8 @@ export function appendColumn(m1: Matrix, m2: Matrix): Matrix {
  * create a normal distribution by generating multiple samples.
  * @return the generated number. 
  */
-function randnBoxMuller(): number {
+function randnBoxMuller(): number 
+{
   let u: number = 0 
   let v: number = 0;
   while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)
@@ -200,11 +247,14 @@ function randnBoxMuller(): number {
  * @param columns the number of columns for the output Matrix.
  * @returns the Matrix with random values.
  */
-export function normalMatrix(rows: number, columns: number): Matrix {
+export function normalMatrix(rows: number, columns: number): Matrix 
+{
   let randomValues: number[][] = zeros(rows, columns);
 
-  for (let i: number = 0; i < rows; i++) {
-    for (let j: number = 0; j < columns; j++) {
+  for (let i: number = 0; i < rows; i++) 
+  {
+    for (let j: number = 0; j < columns; j++) 
+    {
       randomValues[i][j] = randnBoxMuller();
     }
   }

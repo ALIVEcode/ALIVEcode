@@ -5,7 +5,9 @@ import { Model } from '../Model';
 
 export class NeuralNetwork extends Model
 {
-  private layers: NeuralLayer[];
+  // The hidden layers plus the output layer. The input layer doesn't need its 
+  // own object since it doesn't have weights or biases.
+  private layers: NeuralLayer[]; 
   private activationsByLayer: ActivationFunction[];
   private outputActivation: ActivationFunction;
 
@@ -32,12 +34,14 @@ export class NeuralNetwork extends Model
 
     // If the number of activation functions is smaller than the number of layers,
     // fills the activation function array until its of the same length as the number of layers.
-    if (activationsByLayer.length < neuronsByLayer.length) {
+    if (activationsByLayer.length < neuronsByLayer.length) 
+    {
       for (let i: number = activationsByLayer.length; i < neuronsByLayer.length; i++) 
       {
         activationsByLayer.push(activationsByLayer[i - 1]);
       }
     }
+
     for (let layer: number = 0; layer < nbLayers; layer++) 
     {
       //Number of neurons from the previous layer (can be the input layer)
@@ -68,4 +72,26 @@ export class NeuralNetwork extends Model
     }
     return output;
   }
+
+  /**
+   * Returns the weights Matrix of a specified layer.
+   * @param layer the layer's index (starting at 0).
+   * @returns the weights Matrix of the layer.
+   */
+  public getWeightsByLayer(layer: number): Matrix
+  {
+    return this.layers[layer].getWeights();
+  }
+
+  /**
+   * Returns the biases Matrix of a specified layer.
+   * @param layer the layer's index (starting at 0).
+   * @returns the biases Matrix of the layer.
+   */
+  public getBiasesByLayer(layer: number): Matrix
+  {
+    return this.layers[layer].getBiases();
+  }
+  
+
 }

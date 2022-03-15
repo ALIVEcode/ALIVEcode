@@ -33,4 +33,23 @@ export default class Neuron {
     return activation.compute(output);
   }
 
+  /**
+   * Sets the weights Matrix to the one given in parameter.
+   * This method is only called by the Neuron's Layer.
+   * @param newWeights the new weights Matrix.
+   */
+  setWeights(newWeights: Matrix)
+  {
+    this.weights = newWeights;
+  }
+
+  /**
+   * Sets the bias to the one given in parameter.
+   * This method is only called by the Neuron's Layer.
+   * @param newBias the new bias.
+   */
+  setBias(newBias: number)
+  {
+    this.bias = newBias;
+  }
 }

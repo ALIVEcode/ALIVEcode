@@ -61,6 +61,7 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 					evaluate: (x: number) => evaluate(x),
 					costMSE: () => costMSE(),
 					showRegression,
+					testNeuralNetwork
 				},
 				level.name,
 				askForUserInput,
@@ -109,6 +110,7 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 	});
 	let datasets = useRef([initialDataset, initialDataset]);
 	const [chartData, setChartData] = useState({ datasets: [initialDataset]});
+
 
 	/**
 	 * Resets the dataset array and the data shown on the graph.
@@ -216,6 +218,19 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 		showRegression();
 		return lastFunc.current!.compute(x);
 	}
+
+	// FOR TESTING PURPOSE ONLY, TO BE DELETED WHEN NEURAL NETWORK IMPLEMENTATION WORKS //
+
+	function testNeuralNetwork(cmd: any) {
+
+
+		cmd?.print("hello");
+	}
+
+
+	// END OF TEST FUNCTION //
+
+
 
 	return (
 		<>

@@ -88,6 +88,16 @@ class LevelAIExecutor extends LevelCodeExecutor {
 					},
 				},
 			},
+			{
+				actionId: 805,
+				action: {
+					label: 'Test ANN',
+					type: 'NORMAL',
+					apply: () => {
+						this.executableFuncs.testNeuralNetwork(this.cmd);
+					}
+				}
+			}
 		]);
 
 		this.executableFuncs = executables;

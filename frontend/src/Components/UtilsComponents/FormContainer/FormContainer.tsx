@@ -44,7 +44,7 @@ const StyledCenteredContainer = styled.div`
  * @param {React.ReactNode} children form to display
  * @param {string} title title of the container
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const FormContainer = ({ children, title }: FormContainerProps) => {
 	return (

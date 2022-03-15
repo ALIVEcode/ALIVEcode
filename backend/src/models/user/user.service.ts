@@ -1,8 +1,7 @@
 import { Injectable, HttpException, HttpStatus, Scope, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ILike, Repository } from 'typeorm';
-import { ProfessorEntity } from './entities/professor.entity';
-import { StudentEntity } from './entities/student.entity';
+import { StudentEntity, ProfessorEntity } from './entities/user.entity';
 import { UserEntity } from './entities/user.entity';
 import { compare, hash } from 'bcryptjs';
 import { Response } from 'express';
@@ -13,10 +12,12 @@ import { REQUEST } from '@nestjs/core';
 import { ClassroomEntity } from '../classroom/entities/classroom.entity';
 import { IoTProjectEntity } from '../iot/IoTproject/entities/IoTproject.entity';
 import { IoTObjectEntity } from '../iot/IoTobject/entities/IoTobject.entity';
-import { LevelEntity } from '../level/entities/level.entity';
+import { ChallengeEntity } from '../challenge/entities/challenge.entity';
 import { CourseEntity } from '../course/entities/course.entity';
 import { MyRequest } from '../../utils/guards/auth.guard';
 import { CourseHistoryEntity } from '../course/entities/course_history.entity';
+import { NameMigrationDTO } from './dto/name_migration.dto';
+import { ResourceEntity } from '../resource/entities/resource.entity';
 
 @Injectable({ scope: Scope.REQUEST })
 export class UserService {
@@ -29,9 +30,10 @@ export class UserService {
     @InjectRepository(ClassroomEntity) private classroomRepository: Repository<ClassroomEntity>,
     @InjectRepository(CourseEntity) private courseRepository: Repository<CourseEntity>,
     @InjectRepository(CourseHistoryEntity) private courseHistoryRepo: Repository<CourseHistoryEntity>,
+    @InjectRepository(ResourceEntity) private resourceRepo: Repository<ResourceEntity>,
     @InjectRepository(IoTProjectEntity) private iotProjectRepository: Repository<IoTProjectEntity>,
     @InjectRepository(IoTObjectEntity) private iotObjectRepository: Repository<IoTObjectEntity>,
-    @InjectRepository(LevelEntity) private levelRepository: Repository<LevelEntity>,
+    @InjectRepository(ChallengeEntity) private challengeRepo: Repository<ChallengeEntity>,
     @Inject(REQUEST) private req: MyRequest,
   ) {}
   async createStudent(createStudentDto: UserEntity) {
@@ -39,13 +41,10 @@ export class UserService {
     createStudentDto.password = hashedPassword;
 
     try {
-      const student = await this.studentRepository.save(this.studentRepository.create(createStudentDto));
-      return student;
+      return await this.studentRepository.save(createStudentDto);
     } catch (err) {
-      if ((err as any).detail.includes('Key (name)='))
-        throw new HttpException('This username is already in use', HttpStatus.CONFLICT);
-
-      throw new HttpException('This email is already in use', HttpStatus.CONFLICT);
+      if ((err as any).detail.includes('Key (email)='))
+        throw new HttpException('This email is already in use', HttpStatus.CONFLICT);
     }
   }
 
@@ -54,10 +53,11 @@ export class UserService {
     createProfessorDto.password = hashedPassword;
 
     try {
-      const professor = await this.professorRepository.save(this.professorRepository.create(createProfessorDto));
+      const professor = await this.professorRepository.save(createProfessorDto);
       return professor;
-    } catch {
-      throw new HttpException('This email is already in use', HttpStatus.CONFLICT);
+    } catch (err) {
+      if ((err as any).detail.includes('Key (email)='))
+        throw new HttpException('This email is already in use', HttpStatus.CONFLICT);
     }
   }
 
@@ -132,8 +132,12 @@ export class UserService {
     return user;
   }
 
+  async nameMigration(userId: string, nameMigrationDto: NameMigrationDTO) {
+    return await this.studentRepository.save({ id: userId, oldStudentName: null, ...nameMigrationDto });
+  }
+
   async update(userId: string, updateUserDto: UserEntity) {
-    return await this.userRepository.update(userId, updateUserDto);
+    return await this.userRepository.save({ id: userId, ...updateUserDto });
   }
 
   remove(user: UserEntity) {
@@ -150,7 +154,9 @@ export class UserService {
   async getCourses(user: UserEntity) {
     if (user instanceof ProfessorEntity) return await this.courseRepository.find({ where: { creator: user } });
     if (user instanceof StudentEntity)
-      return (await this.studentRepository.findOne(user.id, { relations: ['courses'] })).classrooms;
+      return (
+        await this.studentRepository.findOne(user.id, { relations: ['classrooms', 'classrooms.courses'] })
+      ).classrooms.flatMap(c => c.courses);
     return [];
   }
 
@@ -186,6 +192,10 @@ export class UserService {
     }
   }
 
+  async getResources(user: ProfessorEntity) {
+    return await this.resourceRepo.find({ where: { creator: user }, order: { updateDate: 'DESC' } });
+  }
+
   async getIoTProjects(user: UserEntity) {
     return await this.iotProjectRepository.find({ where: { creator: user } });
   }
@@ -196,8 +206,8 @@ export class UserService {
   async getResults(user: UserEntity) {
     return await this.userRepository.find({ where: { id: user } });
   }
-  async getLevels(user: UserEntity, query: string) {
-    return await this.levelRepository.find({
+  async getChallenges(user: UserEntity, query: string) {
+    return await this.challengeRepo.find({
       where: { creator: user, name: ILike(`%${query ?? ''}%`) },
       order: {
         creationDate: 'DESC',

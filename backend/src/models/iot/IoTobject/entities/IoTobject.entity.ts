@@ -15,7 +15,7 @@ export class IoTObjectEntity extends CreatedByUser {
   @IsEmpty()
   creator: UserEntity;
 
-  @Column({ enum: IoTObjectLabel })
+  @Column({ type: 'enum', enum: IoTObjectLabel, default: IoTObjectLabel.OTHER })
   @IsNotEmpty()
   label: IoTObjectLabel;
 

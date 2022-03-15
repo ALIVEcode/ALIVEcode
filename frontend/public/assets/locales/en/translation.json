@@ -1,7 +1,7 @@
 {
 	"error": {
 		"sorry": "Sorry.",
-		"unknown": "An unknow error occured, please try again.",
+		"unknown": "An unknown error occurred, please try again.",
 		"custom": "Error: {{error}}.",
 		"back": "Go back",
 		"home": "Back to the main page",
@@ -39,9 +39,9 @@
 				"name": "This field should only contains alphanumeric characters"
 			}
 		},
-		"level": {
+		"challenge": {
 			"PATCH": {
-				"title": "Level settings"
+				"title": "Challenge settings"
 			}
 		},
 		"title": {
@@ -49,7 +49,7 @@
 			"signup": "Sign up",
 			"create_classroom": "Creation of a classroom",
 			"create_course": "Creation of a course",
-			"create_level": "Creation of a level",
+			"create_challenge": "Creation of a Challenge",
 			"create_iot_project": "Creation of an IoT project",
 			"create_iot_object": "Creation of an IoT object"
 		},
@@ -72,22 +72,17 @@
 			"taken": "This email address is already taken",
 			"info": "We will not share your email address with anyone"
 		},
-		"name": {
-			"label": "Name",
-			"placeholder": "Enric",
-			"required": "A username is required",
-			"taken": "This username is already taken",
-			"pattern": "The username should only be letters, numbers and underscores"
-		},
 		"firstName": {
 			"label": "First name",
 			"placeholder": "Enric",
-			"required": "Your first name is required"
+			"required": "Your first name is required",
+			"pattern": "Your first name should only contains letters and hyphens"
 		},
 		"lastName": {
 			"label": "Last name",
 			"placeholder": "Soldevila",
-			"required": "Your last name is required"
+			"required": "Your last name is required",
+			"pattern": "Your last name should only contains letters and hyphens"
 		},
 		"scholarity": {
 			"label": "Scholarity",
@@ -109,11 +104,23 @@
 		"description": "description",
 		"deleted_user": "Deleted user",
 		"search": "Search",
-		"community_levels": "Community levels",
+		"community_challenges": "Community challenges",
 		"public_classrooms": "Public classrooms",
 		"creation_date": "Creation date",
 		"update_date": "Update date",
 		"see_links": "See links",
+		"activity_type": {
+			"challenge": "Challenge",
+			"video": "Video",
+			"theory": "Theory"
+		},
+		"subjects": {
+			"iot": "Internet of Things",
+			"ai": "Artificial Intelligence",
+			"code": "Programming",
+			"other": "Other",
+			"all": "All"
+		},
 		"time": {
 			"format": "{{dayName}}, {{day}} {{monthName}} {{year}} {{hour}}:{{minute}}",
 			"day": {
@@ -152,7 +159,13 @@
 			"signup_student": "Student account",
 			"signout": "Sign out",
 			"already_registered": "Already have an account ?",
-			"account_required": "You need an account to do that"
+			"account_required": "You need an account to do that",
+			"name_migration": {
+				"title": "Changing the way students are identified",
+				"desc": "Every student must now have a first name and last name to help better identify the student. Also, your name is not unique anymore.",
+				"please": "Please take the time to choose a new name.",
+				"submit": "Confirm your new account name"
+			}
 		},
 		"section": {
 			"alive": "ALIVE Play",
@@ -168,8 +181,8 @@
 		"maintenance": {
 			"more_info": "More info",
 			"no_desc": "No description available.",
-			"ongoing": "The website is currently undergoing a maintenance from {{startDate}} to {{finishDate}}. You cannot use your account or see other users' levels during this period of time. Sorry for the inconvenience.",
-			"upcoming": "The website will be undergoing a maintenance from {{startDate}} to {{finishDate}}. You will not be able to use your account or see other users' levels during this period of time. Sorry for the inconvenience.",
+			"ongoing": "The website is currently undergoing a maintenance from {{startDate}} to {{finishDate}}. You cannot use your account or see other users' challenges during this period of time. Sorry for the inconvenience.",
+			"upcoming": "The website will be undergoing a maintenance from {{startDate}} to {{finishDate}}. You will not be able to use your account or see other users' challgenes during this period of time. Sorry for the inconvenience.",
 			"status": {
 				"ongoing": "Ongoing",
 				"finished": "Finished",
@@ -182,14 +195,17 @@
 			"title": "Recent Courses",
 			"empty": {
 				"student": "You have no recent activity. Join a public or private classroom to get started",
-				"professor": "You have no recent activity. Create a classroom to get started"
+				"professor": "You have no recent activity. Create a classroom or a course to get started"
 			}
 		},
-		"levels": {
-			"title": "Levels",
-			"browse_levels": "Explore the community levels",
-			"create_level": "Create a level",
-			"empty": "You have no level"
+		"challenges": {
+			"title": "Challenges",
+			"browse_challenges": "Explore the community challenges",
+			"create_challenge": "Create a challenge",
+			"empty": "You do not have any challenge"
+		},
+		"resources": {
+			"title": "My Resources"
 		},
 		"classrooms": {
 			"title": "Classrooms",
@@ -203,6 +219,52 @@
 				"student": "Join a classroom",
 				"professor": "Create a classroom"
 			}
+		},
+		"courses": {
+			"title": "Your courses",
+			"add": "Create a course",
+			"empty": "You have do not have any course"
+		}
+	},
+	"resources": {
+		"menu": {
+			"title": "Resources"
+		},
+		"video": {
+			"name": "Video",
+			"form": {
+				"url": "URL of the video"
+			}
+		},
+		"file": {
+			"name": "File",
+			"form": {
+				"file": "Drag and drop a file or insert one"
+			}
+		},
+		"image": {
+			"name": "Image",
+			"form": {
+				"url": "URL of the image"
+			}
+		},
+		"challenge": {
+			"name": "Challenge",
+			"form": {
+				"select": "Select a level for the linkage"
+			}
+		},
+		"theory": {
+			"name": "Theory"
+		},
+		"form": {
+			"create": "Create a resource",
+			"update": "Update the resource",
+			"delete": "Delete the resource",
+			"delete_confirm": "Are you sure you want to delete this resource? If you have used it in a course, it will be forever lost.",
+			"subject": "Subject of the resource",
+			"type": "Type of resource",
+			"name": "Name of the resource"
 		}
 	},
 	"classroom": {
@@ -239,6 +301,7 @@
 			"new": "New section"
 		},
 		"activity": {
+			"open": "Open",
 			"empty": "This activity is empty.",
 			"no_activity": "Open an activity to get started.",
 			"new": "Add an activity",
@@ -250,11 +313,11 @@
 			"professor": "Professor account",
 			"student": "Student account"
 		},
-		"level": {
-			"alive": "Level with ALIVE car",
-			"code": "Level with console",
-			"ai": "Level with artificial intelligence",
-			"iot": "Level with Internet of Things"
+		"challenge": {
+			"alive": "Challenge with ALIVE car",
+			"code": "Challenge with console",
+			"ai": "Challenge with artificial intelligence",
+			"iot": "Challenge with Internet of Things"
 		}
 	},
 	"home": {
@@ -273,7 +336,7 @@
 			"to_trainings": "To Trainings",
 			"section": {
 				"develop": {
-					"title": "Start Developping",
+					"title": "Start Developing",
 					"desc": "Practice your notions of the Internet of Things by developing IoT Projects. Register your IoT Objects. Create a network of connected devices and establish communications between them. Collect and share data between those objects. Show in real-time your data in a graphical user interface."
 				},
 				"learn": {
@@ -293,11 +356,11 @@
 			},
 			"story": {
 				"title": "Our story",
-				"desc": "ALIVEcode comes from way back in time. Three years from now we thought of making miniature autonomous vehicles for researchs' purposes. A year later, we had the idea to use those robots to teach programming to young students. Fast-forward one year and we decided to create ALIVEcode to make our teaching more accessible to the mass. It's now been over a year that the website exists and keeps expanding."
+				"desc": "ALIVEcode comes from way back in time. Three years from now we thought of making miniature autonomous vehicles for researches' purposes. A year later, we had the idea to use those robots to teach programming to young students. Fast-forward one year and we decided to create ALIVEcode to make our teaching more accessible to the mass. It's now been over a year that the website exists and keeps expanding."
 			},
 			"training_ai": {
 				"title": "Artificial Intelligence Training",
-				"desc": "Learn the theory and current usage of AI in society. Follow one or multiple complete pieces of training offered by ALIVEcode that will teach you all there is to know about AI. Such as linear regressions, classification, decisional trees, neural networks, etc."
+				"desc": "Learn the theory and current usage of AI in society. Follow one or multiple complete pieces of training offered by ALIVEcode that will teach you all there is to know about AI. Such as linear regressions, classification, decision trees, neural networks, etc."
 			},
 			"training_iot": {
 				"title": "Internet of Things Training",
@@ -346,18 +409,18 @@
 		"section": {
 			"artificial-intelligence": {
 				"title": "The Potential of Artificial Intelligence",
-				"paragraph1": "Artificial intelligence is taking an increasingly important place in our daily lives. In fact, we can already see it today: there are smart assiistants in our phones, computers and speakers; more and more experiments with AI technologies are carried out in the fiels of transport, agriculture, medicine and more; Internet search engines and many sites use AI for buisness purposes; and there are many more examples!",
+				"paragraph1": "Artificial intelligence is taking an increasingly important place in our daily lives. In fact, we can already see it today: there are smart assistants in our phones, computers and speakers; more and more experiments with AI technologies are carried out in the fiels of transport, agriculture, medicine and more; Internet search engines and many sites use AI for business purposes; and there are many more examples!",
 				"paragraph2": "While following the courses on the different facets of artificial intelligence, you will learn how it can be used to solve a variety of problems:",
 				"point1": "How to predict the fuel consumption of a car if we vary its engine, weight, and several other characteristics?",
 				"point2": "How to develop a formula that will predict the maximum height of a person",
 				"point3": "How to find the optimal configuration for a robot to accomplish a task?",
 				"point4": "And much more!",
-				"paragraph3": "Additionnaly, even if we have covered only a few applications of artificial intelligence, the possibilities are endless, so there is still so much to discover!"
+				"paragraph3": "Additionally, even if we have covered only a few applications of artificial intelligence, the possibilities are endless, so there is still so much to discover!"
 			},
 			"machine-learning": {
 				"title": "Machine Learning and Its Place in AI",
 				"paragraph1": "If you are not familiar with the field of artificial intelligence, the first thing to know is that there are multiple major branches that focus on a more specific topic of AI. For example, the computer vision branch specializes in image recognition, while the speech recognition branch seeks more to recognize or generate human speech. Machine learning is just one of these categories, but it contains several sub-branches, including the famous neural networks.",
-				"paragraph2": "Machine learning mainly specializes in predicting values based on data relevant to the situation being analyzed. It makes predicting results possible in situations which would require extremely complex calculations to arrive at the same results. To do this, the algorithm trains on values from previous experimets and tries to predict their results with a random model. Then, we compare the prediction with the real value and we adapt the model according to the error in order to improve it. Finally, this process is repeated until a satisfactory resolt is achieved. It is this process that is used in all machine learning algorithms, whether they are regressions or even neural networks."
+				"paragraph2": "Machine learning mainly specializes in predicting values based on data relevant to the situation being analyzed. It makes predicting results possible in situations which would require extremely complex calculations to arrive at the same results. To do this, the algorithm trains on values from previous experiments and tries to predict their results with a random model. Then, we compare the prediction with the real value and we adapt the model according to the error in order to improve it. Finally, this process is repeated until a satisfactory resolt is achieved. It is this process that is used in all machine learning algorithms, whether they are regressions or even neural networks."
 			},
 			"deep-learning": {
 				"title": "Deep Neural Networks in AI",

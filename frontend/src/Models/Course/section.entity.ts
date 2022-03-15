@@ -1,18 +1,34 @@
-import { Exclude, Type } from "class-transformer";
-import { Activity } from './activity.entity';
-import api from '../api';
+import { faFolder } from '@fortawesome/free-solid-svg-icons';
+import { Exclude, Type } from 'class-transformer';
+import { CourseElement } from './course_element.entity';
 
+/**
+ * Section model in the database
+ * @author Enric Soldevila
+ */
 export class Section {
+	/** Id of the Section (0, 1, 2, ..., n) */
 	@Exclude({ toPlainOnly: true })
 	id: number;
-	name: string;
 
-	@Type(() => Activity)
-	activities?: Activity[];
+	/** CourseElements inside the section */
+	@Type(() => CourseElement)
+	elements: CourseElement[];
 
-	async getActivities(courseId: string) {
-		if (this.activities) return this.activities;
-		this.activities = await api.db.courses.getActivities(courseId, this.id);
-		return this.activities;
+	/** Display order of the CourseElements */
+	@Type(() => Number)
+	elementsOrder: number[];
+
+	/** CourseElement attached to the section */
+	@Type(() => CourseElement)
+	courseElement: CourseElement;
+
+	/** Name of the section */
+	get name() {
+		return this.courseElement.name;
+	}
+
+	get icon() {
+		return faFolder;
 	}
 }

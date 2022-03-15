@@ -17,7 +17,7 @@ import { IoTProjectContext } from '../../../../state/contexts/IoTProjectContext'
  *
  * @param {IoTRoute} route IoTRoute object
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const IoTRouteCard = ({ route }: IoTRouteCardProps) => {
 	const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);

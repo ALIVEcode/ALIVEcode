@@ -15,7 +15,7 @@ import { Link as RouterLink } from 'react-router-dom';
  * @param {string} className classNames
  * @param {any} children
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const Link = ({
 	to,

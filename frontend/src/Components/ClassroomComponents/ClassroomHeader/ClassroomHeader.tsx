@@ -25,7 +25,7 @@ import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
  *
  * @param {Classroom} classroom classroom object
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const ClassroomHeader: React.FC<
 	ClassroomHeaderProps &

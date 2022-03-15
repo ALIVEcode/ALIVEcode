@@ -23,7 +23,7 @@ const StyledContainer = styled.div`
  * @param {string} className react classNames of the component
  * @param {any} style react styling
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const CenteredContainer = ({
 	vertically,

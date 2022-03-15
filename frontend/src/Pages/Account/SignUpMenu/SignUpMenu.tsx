@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 /**
  * Page that gives the option to signup as a student or as a professor
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const SignUpMenu = (props: SignUpMenuProps) => {
 	const { routes } = useRoutes();

@@ -7,7 +7,7 @@ import interpreteur.as.modules.builtins.BuiltinsListeUtils;
 import interpreteur.as.modules.builtins.BuiltinsNombreUtils;
 import interpreteur.as.modules.builtins.BuiltinsTexteUtils;
 import interpreteur.as.modules.core.ASModule;
-import interpreteur.ast.buildingBlocs.expressions.Type;
+import interpreteur.as.lang.ASType;
 import interpreteur.data_manager.Data;
 import interpreteur.executeur.Executeur;
 
@@ -45,7 +45,7 @@ public class ModuleBuiltins {
         ASFonctionModule[] fonctions = new ASFonctionModule[]{
 
                 new ASFonctionModule("afficher", new ASFonctionModule.Parametre[]{
-                        new ASFonctionModule.Parametre(new Type("tout"), "element", new ASTexte(""))
+                        new ASFonctionModule.Parametre(new ASType("tout"), "element", new ASTexte(""))
                 }, ASTypeBuiltin.rien.asType()) {
                     @Override
                     public ASObjet<?> executer() {
@@ -57,7 +57,7 @@ public class ModuleBuiltins {
                 },
 
                 new ASFonctionModule("attendre", new ASFonctionModule.Parametre[]{
-                        new ASFonctionModule.Parametre(new Type("nombre"), "duree", new ASEntier(0))
+                        new ASFonctionModule.Parametre(new ASType("nombre"), "duree", new ASEntier(0))
                 }, ASTypeBuiltin.rien.asType()) {
                     @Override
                     public ASObjet<?> executer() {
@@ -79,8 +79,8 @@ public class ModuleBuiltins {
                  * 				-> si "choix" est de type texte: une lettre aleatoirement choisi dans le texte
                  */
                 new ASFonctionModule("aleatoire", new ASFonctionModule.Parametre[]{
-                        new ASFonctionModule.Parametre(new Type("iterable"), "choix", null)
-                }, new Type("tout")) {
+                        new ASFonctionModule.Parametre(new ASType("iterable"), "choix", null)
+                }, new ASType("tout")) {
                     @Override
                     public ASObjet<?> executer() {
                         if (this.getParamsValeursDict().get("choix") instanceof ASListe liste) {
@@ -103,8 +103,8 @@ public class ModuleBuiltins {
                  * 		@return le nom du type de l'objet passe en parametre dans un "texte"
                  */
                 new ASFonctionModule("typeDe", new ASFonctionModule.Parametre[]{
-                        new ASFonctionModule.Parametre(new Type("tout"), "element", null)
-                }, new Type("texte")) {
+                        new ASFonctionModule.Parametre(new ASType("tout"), "element", null)
+                }, new ASType("texte")) {
                     @Override
                     public ASObjet<?> executer() {
                         return new ASTexte(this.getParamsValeursDict().get("element").obtenirNomType());
@@ -165,7 +165,7 @@ public class ModuleBuiltins {
                  */
                 new ASFonctionModule("info", new ASFonctionModule.Parametre[]{
                         new ASFonctionModule.Parametre(ASTypeBuiltin.tout.asType(), "element", null)
-                }, new Type("tout")) {
+                }, new ASType("tout")) {
                     @Override
                     public ASObjet<?> executer() {
                         return this.getParamsValeursDict().get("element");
@@ -174,7 +174,7 @@ public class ModuleBuiltins {
 
                 new ASFonctionModule("getVar", new ASFonctionModule.Parametre[]{
                         new ASFonctionModule.Parametre(ASTypeBuiltin.texte.asType(), "nomVariable", null)
-                }, new Type("tout")) {
+                }, new ASType("tout")) {
                     @Override
                     public ASObjet<?> executer() {
                         String nomVar = (String) this.getValeurParam("nomVariable").getValue();

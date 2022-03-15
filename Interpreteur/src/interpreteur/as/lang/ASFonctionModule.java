@@ -2,7 +2,6 @@ package interpreteur.as.lang;
 
 import interpreteur.as.erreurs.ASErreur;
 import interpreteur.as.lang.datatype.ASObjet;
-import interpreteur.ast.buildingBlocs.expressions.Type;
 import interpreteur.executeur.Coordonnee;
 
 import java.util.ArrayList;
@@ -10,7 +9,7 @@ import java.util.Arrays;
 import java.util.Hashtable;
 
 public abstract class ASFonctionModule implements ASObjet<Object> {
-    private final Type typeRetour;
+    private final ASType typeRetour;
     private final Parametre[] parametres; //String[] de forme {nomDuParam�tre, typeDuParam�tre (ou null s'il n'en poss�de pas)}
     private final String nom;
     private final Coordonnee coordReprise = null;
@@ -33,7 +32,7 @@ public abstract class ASFonctionModule implements ASObjet<Object> {
      *                   Mettre <b>null</b> si le type du retour n'a pas de type forcee
      *                   </li>
      */
-    public ASFonctionModule(String nom, Type typeRetour) {
+    public ASFonctionModule(String nom, ASType typeRetour) {
         this.nom = nom;
         this.scopeName = "fonc_";
         this.typeRetour = typeRetour;
@@ -57,7 +56,7 @@ public abstract class ASFonctionModule implements ASObjet<Object> {
      *                   Mettre <b>null</b> si le type du retour n'a pas de type forcee
      *                   </li>
      */
-    public ASFonctionModule(String nom, Parametre[] parametres, Type typeRetour) {
+    public ASFonctionModule(String nom, Parametre[] parametres, ASType typeRetour) {
         this.nom = nom;
         this.scopeName = "fonc_";
         this.parametres = parametres;
@@ -68,7 +67,7 @@ public abstract class ASFonctionModule implements ASObjet<Object> {
         return nom;
     }
 
-    public Type getTypeRetour() {
+    public ASType getTypeRetour() {
         return this.typeRetour;
     }
 
@@ -209,7 +208,7 @@ public abstract class ASFonctionModule implements ASObjet<Object> {
     /**
      * Classe responsable de definir les proprietes des parametres des fonctions
      */
-    public record Parametre(Type type, String nom,
+    public record Parametre(ASType type, String nom,
                             ASObjet<?> valeurParDefaut) implements ASObjet<Object> {
         /**
          * @param type            <li>
@@ -233,7 +232,7 @@ public abstract class ASFonctionModule implements ASObjet<Object> {
          *                        Mettre <b>null</b> pour rendre ce parametre obligatoire lors de l'appel de la fonction
          *                        </li>
          */
-        public Parametre(Type type, String nom, ASObjet<?> valeurParDefaut) {
+        public Parametre(ASType type, String nom, ASObjet<?> valeurParDefaut) {
             this.nom = nom;
             this.type = type == null ? ASTypeBuiltin.tout.asType() : type;
             this.valeurParDefaut = valeurParDefaut;
@@ -243,7 +242,7 @@ public abstract class ASFonctionModule implements ASObjet<Object> {
             return nom;
         }
 
-        public Type getType() {
+        public ASType getType() {
             return type;
         }
 

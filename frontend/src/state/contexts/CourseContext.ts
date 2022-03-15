@@ -1,37 +1,80 @@
-import { createContext } from "react";
-import { Course } from "../../Models/Course/course.entity";
-import { Section } from '../../Models/Course/section.entity';
+import { createContext, MutableRefObject } from 'react';
 import { Activity } from '../../Models/Course/activity.entity';
+import { Course } from '../../Models/Course/course.entity';
+import {
+	CourseContent,
+	CourseElement,
+} from '../../Models/Course/course_element.entity';
+import { Section } from '../../Models/Course/section.entity';
+import {
+	CourseTabs,
+	SwitchCourseTabActions,
+} from '../../Pages/Course/courseTypes';
 
-export type CourseContentValues = {
+export type CourseContextValues = {
 	course?: Course;
-	section?: Section;
-	activity?: Activity;
+	courseElements?: MutableRefObject<{ [id: number]: CourseElement }>;
+	isNewCourseElement: (element: CourseElement) => boolean;
+	setCourseElementNotNew: (element: CourseElement) => void;
 	isNavigationOpen: boolean;
 	canEdit: boolean;
-	setTitle: (newTitle: string) => void;
-	addSection: (section: Section) => void;
-	deleteSection: (section: Section) => void;
-	loadActivity: (section: Section, activity: Activity) => any;
-	closeCurrentActivity: () => void;
-	addActivity: (section: Section, activity: Activity) => void;
-	deleteActivity: (section: Section, activity: Activity) => void;
-	saveActivity: (activity: Activity) => void;
-	saveActivityContent: (data: string) => void;
+	tabSelected: { tab: CourseTabs };
+	setTabSelected: React.Dispatch<SwitchCourseTabActions>;
+	setTitle: (newTitle: string) => Promise<void>;
+	openedActivity?: Activity;
+	openActivity: (activity: Activity) => Promise<any>;
+	closeOpenedActivity: () => any;
+	loadSectionElements: (section: Section) => Promise<any>;
+	renameElement: (element: CourseElement, newName: string) => void;
+	updateActivity: (
+		activity: Activity,
+		fields: {
+			[name in keyof Activity]?: Activity[name];
+		},
+	) => Promise<void>;
+	saveActivityContent: (data: string) => Promise<void>;
 	setIsNavigationOpen: (bool: boolean) => void;
+	addContent: (
+		content: CourseContent,
+		name: string,
+		sectionParent?: Section,
+	) => Promise<void>;
+	deleteElement: (element: CourseElement) => Promise<void>;
+	moveElement: (
+		element: CourseElement,
+		newIdx: number,
+		newParent: CourseElement,
+	) => Promise<void>;
+	openSectionForm: (sectionParent?: Section) => void;
+	openActivityForm: (sectionParent?: Section) => void;
 };
 
-export const CourseContext = createContext<CourseContentValues>({
+export const CourseContext = createContext<CourseContextValues>({
 	canEdit: false,
 	isNavigationOpen: true,
-	setTitle: (newTitle: string) => {},
-	loadActivity: (section: Section, activity: Activity) => {},
-	addSection: (section: Section) => {},
-	deleteSection: (section: Section) => {},
-	addActivity: (section: Section, activity: Activity) => {},
-	closeCurrentActivity: () => {},
-	deleteActivity: (section: Section, activity: Activity) => {},
-	saveActivity: (activity: Activity) => {},
-	saveActivityContent: (data: string) => {},
-	setIsNavigationOpen: (bool: boolean) => {},
+	tabSelected: { tab: 'navigation' },
+	setCourseElementNotNew: (element: CourseElement) => {},
+	isNewCourseElement: (element: CourseElement) => false,
+	setTabSelected: (..._) => {},
+	setTitle: async (newTitle: string) => {},
+	openActivity: async (..._) => {},
+	closeOpenedActivity: () => {},
+	updateActivity: async (..._) => {},
+	saveActivityContent: async (data: string) => {},
+	setIsNavigationOpen: async (bool: boolean) => {},
+	addContent: async (
+		content: CourseContent,
+		name: string,
+		sectionParent?: Section,
+	) => {},
+	renameElement: (element: CourseElement, newName: string) => {},
+	deleteElement: async (element: CourseElement) => {},
+	moveElement: async (
+		element: CourseElement,
+		newIdx: number,
+		newParent: CourseElement,
+	) => {},
+	loadSectionElements: async (section: Section) => {},
+	openSectionForm: () => {},
+	openActivityForm: () => {},
 });

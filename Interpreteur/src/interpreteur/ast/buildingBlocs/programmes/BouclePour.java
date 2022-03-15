@@ -7,7 +7,7 @@ import interpreteur.as.lang.ASVariable;
 import interpreteur.as.lang.datatype.ASIterable;
 import interpreteur.as.lang.datatype.ASObjet;
 import interpreteur.ast.buildingBlocs.Expression;
-import interpreteur.ast.buildingBlocs.expressions.Type;
+import interpreteur.as.lang.ASType;
 import interpreteur.ast.buildingBlocs.expressions.Var;
 import interpreteur.executeur.Coordonnee;
 import interpreteur.executeur.Executeur;
@@ -23,7 +23,7 @@ public class BouclePour extends Boucle {
     private final Expression<?> objItere;
     private final ASScope scope;
     private Iterator<ASObjet<?>> iteration = null;
-    private Type typeVar = new Type("tout");
+    private ASType typeVar = new ASType("tout");
 
     public BouclePour(Var var, Expression<?> objItere, Executeur executeurInstance) {
         super("pour", executeurInstance);
@@ -32,7 +32,7 @@ public class BouclePour extends Boucle {
         this.scope = ASScope.makeNewCurrentScope();
     }
 
-    public BouclePour setDeclarerVar(boolean estConst, Type typeVar) {
+    public BouclePour setDeclarerVar(boolean estConst, ASType typeVar) {
         this.typeVar = typeVar == null ? this.typeVar : typeVar;
         if (estConst) {
             scope.declarerVariable(new ASConstante(var.getNom(), null));

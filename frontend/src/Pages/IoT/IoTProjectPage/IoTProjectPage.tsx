@@ -29,7 +29,7 @@ import IoTProjectDocuments from '../../../Components/IoTComponents/IoTProject/Io
  *
  * @param {string} id id of the project (as url prop)
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const IoTProjectPage = () => {
 	const { project } = useContext(IoTProjectContext);

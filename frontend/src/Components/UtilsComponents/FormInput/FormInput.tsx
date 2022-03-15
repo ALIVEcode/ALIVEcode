@@ -35,7 +35,7 @@ type Props = FullSelectProps | FullInputProps;
 /**
  * Styled Group for label and input
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const FormInput = React.forwardRef<any, any>(
 	({ className, errors, ...props }, ref) => {

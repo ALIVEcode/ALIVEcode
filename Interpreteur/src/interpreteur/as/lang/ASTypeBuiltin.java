@@ -1,7 +1,5 @@
 package interpreteur.as.lang;
 
-import interpreteur.ast.buildingBlocs.expressions.Type;
-
 public enum ASTypeBuiltin {
     tout,
     entier,
@@ -31,8 +29,8 @@ public enum ASTypeBuiltin {
         return aliases;
     }
 
-    public Type asType() {
-        return new Type(toString());
+    public ASType asType() {
+        return new ASType(toString());
     }
 
     /* previous toString

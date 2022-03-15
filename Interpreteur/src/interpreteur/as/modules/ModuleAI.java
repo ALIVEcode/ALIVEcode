@@ -8,6 +8,11 @@ import interpreteur.as.modules.core.ASModule;
 import interpreteur.data_manager.Data;
 import interpreteur.executeur.Executeur;
 
+import java.util.Arrays;
+import java.util.stream.DoubleStream;
+import java.util.stream.Stream;
+
+
 /**
  * Module containing all methods related to artificial intelligence.
  *
@@ -65,7 +70,6 @@ public class ModuleAI {
         double sum = 0;
         if (data.length == 0)
             throw new DifferentArrayLengthException("Erreur sommation() : la liste de données est vide");
-
         //General case
         for (Double datum : data) {
             sum += datum;

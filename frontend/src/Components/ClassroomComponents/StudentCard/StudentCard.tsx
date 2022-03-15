@@ -3,10 +3,10 @@ import { StudentCardProps } from './studentCardTypes';
 /**
  * Component that display all the information of a student of a class
  * (name)
- * 
+ *
  * @param {Student} student student object
- * 
- * @author MoSk3
+ *
+ * @author Enric Soldevila
  */
 const StudentCard = ({ student }: StudentCardProps) => {
 	return (

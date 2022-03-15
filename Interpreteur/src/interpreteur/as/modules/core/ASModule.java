@@ -4,7 +4,7 @@ import interpreteur.as.lang.ASFonctionModule;
 import interpreteur.as.lang.ASVariable;
 import interpreteur.as.lang.ASScope;
 import interpreteur.as.lang.managers.ASFonctionManager;
-import interpreteur.ast.buildingBlocs.expressions.Type;
+import interpreteur.as.lang.ASType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +27,7 @@ public record ASModule(ASFonctionModule[] fonctions,
     public void utiliser(String prefix) {
         ASFonctionManager.ajouterStructure(prefix);
         for (ASFonctionModule fonction : fonctions) {
-            ASScope.getCurrentScope().declarerVariable(new ASVariable(fonction.getNom(), fonction, new Type(fonction.obtenirNomType())));
+            ASScope.getCurrentScope().declarerVariable(new ASVariable(fonction.getNom(), fonction, new ASType(fonction.obtenirNomType())));
         }
         for (ASVariable variable : variables) {
             ASScope.getCurrentScope().declarerVariable(variable.clone());

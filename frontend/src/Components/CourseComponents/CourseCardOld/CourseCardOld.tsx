@@ -12,7 +12,7 @@ import Badge from '../../UtilsComponents/Badge/Badge';
  *
  * @param {course} course course object
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const CourseCardOld = ({ course }: CourseCardOldProps) => {
 	const { t } = useTranslation();

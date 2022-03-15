@@ -11,7 +11,7 @@ import Modal from '../../Modal/Modal';
  * @param {() => void} onCancel when the action is cancelled
  * @param {ModalProps} other other normal modal props
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const AlertConfirm = ({
 	setOpen,

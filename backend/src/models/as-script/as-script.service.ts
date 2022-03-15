@@ -2,7 +2,7 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { AxiosResponse } from 'axios';
 import { CompileDTO } from './dto/compile.dto';
 import axios from 'axios';
-import LevelIoTBackendExecutor from './LevelIoTBackendExecutor';
+import ChallengeIoTBackendExecutor from './ChallengeIoTBackendExecutor';
 import { IoTProjectService } from '../iot/IoTproject/IoTproject.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AsScriptEntity } from './entities/as-script.entity';
@@ -42,7 +42,7 @@ export class AsScriptService {
 
   async compileBackend(data: any, context: any = undefined) {
     const res = await this.sendDataToAsServer(data, context);
-    const executor = new LevelIoTBackendExecutor(this, this.iotProjectService, res.result);
+    const executor = new ChallengeIoTBackendExecutor(this, this.iotProjectService, res.result);
     await executor.toggleExecution();
 
     if (res.result) {

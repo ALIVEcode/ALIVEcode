@@ -6,13 +6,16 @@ Format:
 
 #### AliveScript
 
--   \[✔] lorsqu'une variable est déclarée dans une fonction comme paramètre, elle n'est pas détectée comme déclarée par le compiler
--   \[✔] le message d'erreur lorsqu'une variable n'est pas déclarée dans le compiler a des accents graves au lieu d'accents aiguës
--   \[✔] les variables ne se transmettent pas dans les scopes inférieurs
--   \[✔] dans un splice, le premier argument \(celui avant le : ) est ignoré
--   \[✔] les getter ne marchent pas pour une raison obscure
--   \[❌] les commentaires multi-lignes et de documentation sont détectés même dans les string (Mathis)
--   \[❌] la fonction builtin "nombre" est transformée en 'entier|decimal' (Mathis)
+- \[✔] lorsqu'une variable est déclarée dans une fonction comme paramètre, elle n'est pas détectée comme déclarée par le compiler
+- \[✔] le message d'erreur lorsqu'une variable n'est pas déclarée dans le compiler a des accents graves au lieu d'accents aiguës
+- \[✔] les variables ne se transmettent pas dans les scopes inférieurs
+- \[✔] dans un splice, le premier argument \(celui avant le : ) est ignoré
+- \[✔] les getter ne marchent pas pour une raison obscure
+- \[✔] la fonction builtin "nombre" est transformée en 'entier|decimal' (Mathis)
+- \[❌] les commentaires multi-lignes et de documentation sont détectés même dans les string (Mathis)
+- \[❌] index dans un dictionnaire retourne `nul` si la clef n'existe pas (devrait être une erreur)
+- \[❌] impossible d'assigner en utilisant un index nested (`d[1][0] = 2` ou `doc['document']['logs'] += "salut"`)
+- \[❌] impossible d'assigner si la clef est un texte (ex: `d['logs'] += "oh oh!"` -> erreur)
 
 #### Server:
 

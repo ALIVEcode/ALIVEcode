@@ -18,6 +18,7 @@ export const StyledIoTGenericComponent = styled.div`
 		ishovering &&
 		'transform: scale(105%) rotateZ(2deg); cursor: pointer;'}
 	transition: 0.2s;
+	${({ error }: any) => error && 'border: 2px red solid;'}
 
 	label {
 		cursor: inherit;

@@ -39,7 +39,7 @@
 				"name": "Ce champs doit contenir uniquement des lettres et des chiffres"
 			}
 		},
-		"level": {
+		"challenge": {
 			"PATCH": {
 				"title": "Paramètres du niveau"
 			}
@@ -49,7 +49,7 @@
 			"signup": "Inscription",
 			"create_classroom": "Création d'une classe",
 			"create_course": "Création d'un cours",
-			"create_level": "Création d'un niveau",
+			"create_challenge": "Création d'un niveau",
 			"create_iot_project": "Création d'un projet IoT",
 			"create_iot_object": "Création d'un objet IoT"
 		},
@@ -72,22 +72,17 @@
 			"taken": "Cette addresse courriel est déjà prise",
 			"info": "Nous ne partagerons pas votre adresse courriel"
 		},
-		"name": {
-			"label": "Nom",
-			"placeholder": "Enric",
-			"required": "Un pseudonyme est requis",
-			"taken": "Ce pseudonyme est déjà pris",
-			"pattern": "Le pseudonyme doit contenir uniquement des lettres, des chiffres et des _"
-		},
 		"firstName": {
 			"label": "Prénom",
 			"placeholder": "Enric",
-			"required": "Votre prénom est requis"
+			"required": "Votre prénom est requis",
+			"pattern": "Votre prénom doit contenir uniquement des lettres et des tirets"
 		},
 		"lastName": {
 			"label": "Nom",
 			"placeholder": "Soldevila",
-			"required": "Votre nom est requis"
+			"required": "Votre nom de famille est requis",
+			"pattern": "Votre nom de famille doit contenir uniquement des lettres et des tirets"
 		},
 		"scolarity": {
 			"label": "Niveau scholaire",
@@ -109,11 +104,23 @@
 		"description": "description",
 		"deleted_user": "Ancien utilisateur",
 		"search": "Rechercher",
-		"community_levels": "Niveaux de la communauté",
+		"community_challenges": "Niveaux de la communauté",
 		"public_classrooms": "Classes publiques",
 		"creation_date": "Date de création",
 		"update_date": "Date de modification",
 		"see_links": "Voir les liens",
+		"activity_type": {
+			"challenge": "Niveau",
+			"video": "Visionnement",
+			"theory": "Théorie"
+		},
+		"subjects": {
+			"iot": "Internet des Objets",
+			"ai": "Intelligence Artificielle",
+			"code": "Programmation",
+			"other": "Autre",
+			"all": "Tout"
+		},
 		"time": {
 			"format": "{{dayName}}, {{day}} {{monthName}} {{year}} - {{hour}}:{{minute}}",
 			"day": {
@@ -152,7 +159,13 @@
 			"signup_student": "Compte étudiant",
 			"signout": "Se déconnecter",
 			"already_registered": "Tu as déjà un compte ?",
-			"account_required": "Il te faut un compte pour faire ça"
+			"account_required": "Il te faut un compte pour faire ça",
+			"name_migration": {
+				"title": "Changement de la façon dont les étudiants sont identifiés",
+				"desc": "Chaque étudiant doit maintenant posséder un prénom ainsi qu'un nom de famille afin d'être plus facilement identifié. De plus, votre nom n'est plus unique.",
+				"please": "Veuillez s'il vous plait prendre le temps de choisir un nouveau nom.",
+				"submit": "Confirmer votre nouveau nom"
+			}
 		},
 		"section": {
 			"alive": "ALIVE Play",
@@ -185,11 +198,14 @@
 				"professor": "Tu n'as pas d'activité récente. Crée une classe pour commencer"
 			}
 		},
-		"levels": {
+		"challenges": {
 			"title": "Niveaux",
-			"browse_levels": "Explorer les niveaux de la communauté",
-			"create_level": "Créer un niveau",
-			"empty": "Tu n'as pas de niveau"
+			"browse_challenges": "Explorer les niveaux de la communauté",
+			"create_challenge": "Créer un niveau",
+			"empty": "Tu ne possèdes aucun niveau"
+		},
+		"resources": {
+			"title": "Mes Ressources"
 		},
 		"classrooms": {
 			"title": "Classes",
@@ -197,12 +213,58 @@
 			"browse_public": "Explorer les classes publiques",
 			"empty": {
 				"student": "Tu ne fais parti d'aucune classe",
-				"professor": "Tu ne possède aucune classe"
+				"professor": "Tu ne possèdes aucune classe"
 			},
 			"add": {
 				"student": "Rejoindre une classe",
 				"professor": "Créer une classe"
 			}
+		},
+		"courses": {
+			"title": "Vos cours",
+			"add": "Créer un cours",
+			"empty": "Tu ne possèdes aucun cours"
+		}
+	},
+	"resources": {
+		"menu": {
+			"title": "Ressources"
+		},
+		"video": {
+			"name": "Vidéo",
+			"form": {
+				"url": "URL vers la vidéo"
+			}
+		},
+		"file": {
+			"name": "Fichier",
+			"form": {
+				"file": "Glissez ou sélectionnez un fichier"
+			}
+		},
+		"image": {
+			"name": "Image",
+			"form": {
+				"url": "URL vers l'image"
+			}
+		},
+		"challenge": {
+			"name": "Défi",
+			"form": {
+				"select": "Sélectionnez un niveau pour la liaison"
+			}
+		},
+		"theory": {
+			"name": "Théorie"
+		},
+		"form": {
+			"create": "Créer une ressource",
+			"update": "Modifier la ressource",
+			"delete": "Supprimer la ressource",
+			"delete_confirm": "Êtes-vous sûr de vouloir supprimer cette ressource? Si vous l'avez utilisée dans un cours, celle-ci sera perdue à jamais.",
+			"subject": "Sujet de la ressource",
+			"type": "Type de ressource",
+			"name": "Nom de la ressource"
 		}
 	},
 	"classroom": {
@@ -219,15 +281,15 @@
 				"title": "Détails"
 			},
 			"students": {
-				"title": "Élèves dans la classe",
-				"empty": "Il n'y a aucun élève dans la classe"
+				"title": "Étudiants dans la classe",
+				"empty": "Il n'y a aucun étudiant dans la classe"
 			}
 		},
 		"desc": "Classe de {{professor}}",
 		"subject": "Sujet",
 		"code": {
 			"title": "Code de la classe",
-			"desc": "Donnez ce code aux élèves afin qu'ils puissent rejoindre la classe depuis le tableau de bord!"
+			"desc": "Donnez ce code aux étudiants afin qu'ils puissent rejoindre la classe depuis le tableau de bord!"
 		}
 	},
 	"course": {
@@ -236,9 +298,10 @@
 		"empty": "Ce cours est vide.",
 		"section": {
 			"empty": "Cette section ne possède aucune activité",
-			"new": "Nouvelle section"
+			"new": "Ajouter une section"
 		},
 		"activity": {
+			"open": "Ouvrir",
 			"empty": "Cette activité est vide.",
 			"no_activity": "Ouvre une activité pour commencer à apprendre.",
 			"new": "Ajouter une activité",
@@ -250,7 +313,7 @@
 			"professor": "Compte professeur",
 			"student": "Compte étudiant"
 		},
-		"level": {
+		"challenge": {
 			"alive": "Niveau avec voiture ALIVE",
 			"code": "Niveau avec console",
 			"ai": "Niveau avec intelligence artificielle",
@@ -289,11 +352,11 @@
 			},
 			"us": {
 				"title": "Qui sommes-nous ?",
-				"desc": "Nous sommes des chercheurs du Laboratoire de Recherche Informatique Maisonneuve LRIMa. Chaque année nous avons comme but d'innover dans l'industrie informatique en menant des recherches et en publiant/partageant les résultats de nos recherches durant des conférences à travers le monde. Visitez le site du LRIMa pour plus de détails et la section à propos."
+				"desc": "Nous sommes des chercheurs du Laboratoire de Recherche Informatique du collège Maisonneuve LRIMa. Chaque année nous avons comme but d'innover dans l'industrie informatique en menant des recherches et en publiant/partageant les résultats de nos recherches durant des conférences à travers le monde. Visitez le site du LRIMa pour plus de détails et la section à propos."
 			},
 			"story": {
 				"title": "Notre histoire",
-				"desc": "Les origines d'ALIVEcode remontent à loin dans le temps. Il y a trois ans, nous avons eu l'idée de créer des véhicules miniatures autonomes dans le but de recherches scientifiques. Un an plus tard, nous avons eu l'idée d'utiliser ces robots afin d'apprendre la programmation à de jeunes étudiants. L'année suivante, nous avons décidé de créer ALIVEcode afin de rendre l'apprentissage de la programmation accessible à tous. Cela fait maintenant plus d'un an qu'ALIVEcode existe et continue d'être amélioré."
+				"desc": "Les origines d'ALIVEcode remontent à loin dans le temps. Il y a trois ans, nous avons eu l'idée de créer des véhicules miniatures autonomes dans le but de recherches scientifiques. Un an plus tard, nous avons eu l'idée d'utiliser ces robots afin d'apprendre la programmation à de jeunes étudiants. L'année suivante, nous avons décidé de créer ALIVEcode afin de rendre l'apprentissage de la programmation accessible à tous. Cela fait maintenant plus d'un an qu'ALIVEcode existe et continue de grandir."
 			},
 			"training_ai": {
 				"title": "Formation en Intelligence Artificielle",

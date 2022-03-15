@@ -6,25 +6,31 @@ import { CourseEntity } from './entities/course.entity';
 import { SectionEntity } from './entities/section.entity';
 import { UserEntity } from '../user/entities/user.entity';
 import { ClassroomEntity } from '../classroom/entities/classroom.entity';
-import { StudentEntity } from '../user/entities/student.entity';
+import { StudentEntity } from '../user/entities/user.entity';
 import { CourseHistoryEntity } from './entities/course_history.entity';
 import { UserService } from '../user/user.service';
-import { ProfessorEntity } from '../user/entities/professor.entity';
+import { ProfessorEntity } from '../user/entities/user.entity';
 import { IoTProjectEntity } from '../iot/IoTproject/entities/IoTproject.entity';
 import { IoTObjectEntity } from '../iot/IoTobject/entities/IoTobject.entity';
-import { LevelEntity } from '../level/entities/level.entity';
-import { ActivityTheoryEntity } from './entities/activities/activity_theory.entity';
+import { ChallengeEntity } from '../challenge/entities/challenge.entity';
 import { ActivityEntity } from './entities/activity.entity';
-import { ActivityLevelEntity } from './entities/activities/activity_level.entity';
+import { ActivityTheoryEntity } from './entities/activities/activity_theory.entity';
+import { CourseElementEntity } from './entities/course_element.entity';
+import { ActivityChallengeEntity } from './entities/activities/activity_challenge.entity';
+import { ActivityVideoEntity } from './entities/activities/activity_video.entity';
+import { ResourceEntity } from '../resource/entities/resource.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       CourseEntity,
+      CourseElementEntity,
       SectionEntity,
       ActivityEntity,
       ActivityTheoryEntity,
-      ActivityLevelEntity,
+      ActivityVideoEntity,
+      ActivityChallengeEntity,
+      ResourceEntity,
       UserEntity,
       ClassroomEntity,
       StudentEntity,
@@ -32,7 +38,7 @@ import { ActivityLevelEntity } from './entities/activities/activity_level.entity
       ProfessorEntity,
       IoTProjectEntity,
       IoTObjectEntity,
-      LevelEntity,
+      ChallengeEntity,
     ]),
   ],
   controllers: [CourseController],

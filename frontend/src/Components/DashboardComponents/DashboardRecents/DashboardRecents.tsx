@@ -29,19 +29,30 @@ export const DashboardRecents = () => {
 							? t('dashboard.recents.empty.professor')
 							: t('dashboard.recents.empty.student')}
 					</i>
-					<Button
-						className="!text-xs mt-2"
-						variant="primary"
-						onClick={() =>
-							user?.isProfessor()
-								? navigate(routes.auth.create_classroom.path)
-								: setFormJoinClassOpen(true)
-						}
-					>
-						{user?.isProfessor()
-							? t('dashboard.classrooms.add.professor')
-							: t('dashboard.classrooms.add.student')}
-					</Button>
+					<div className="flex flex-row">
+						<Button
+							className="!text-xs mt-2"
+							variant="primary"
+							onClick={() =>
+								user?.isProfessor()
+									? navigate(routes.auth.create_classroom.path)
+									: setFormJoinClassOpen(true)
+							}
+						>
+							{user?.isProfessor()
+								? t('dashboard.classrooms.add.professor')
+								: t('dashboard.classrooms.add.student')}
+						</Button>
+						{user?.isProfessor() && (
+							<Button
+								className="!text-xs mt-2 ml-4"
+								variant="primary"
+								onClick={() => navigate(routes.auth.create_course.path)}
+							>
+								{t('dashboard.courses.add')}
+							</Button>
+						)}
+					</div>
 				</div>
 			)}
 		</div>

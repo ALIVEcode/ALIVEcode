@@ -33,12 +33,14 @@ const Modal = (props: ModalProps) => {
 		open,
 		setOpen,
 		size = 'sm',
+		unclosable,
 		hideFooter,
 		closeCross,
 		submitButtonVariant,
 		closeButtonVariant,
 		submitText,
 		closeText,
+		hideTitle,
 		hideSubmitButton,
 		hideCloseButton,
 		centered,
@@ -55,7 +57,6 @@ const Modal = (props: ModalProps) => {
 
 	useEffect(() => {
 		if (open) onShow && onShow();
-		if (!open) document.documentElement.style = 'overflow:auto !important';
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [open]);
 
@@ -65,7 +66,7 @@ const Modal = (props: ModalProps) => {
 				as="div"
 				className="fixed z-20 inset-0 overflow-y-auto h-full"
 				initialFocus={cancelButtonRef}
-				onClose={setOpen}
+				onClose={state => !unclosable && setOpen(state)}
 			>
 				<div
 					className={classNames(
@@ -111,7 +112,7 @@ const Modal = (props: ModalProps) => {
 								size === 'sm' && 'w-full phone:2-4/5 tablet:w-1/2 laptop:w-1/3',
 								size === 'lg' && 'w-full tablet:w-3/4 desktop:w-3/5',
 								size === 'xl' && 'w-full laptop:2/3 desktop:w-4/5',
-								'overflow-y-auto inline-block align-bottom rounded-lg overflow-hidden shadow-xl transform transition-all bg-[color:var(--background-color)]',
+								'overflow-y-auto inline-block align-bottom rounded-lg overflow-hidden shadow-xl transform transition-all bg-[color:var(--background-color)] border-blue-600 focus:border-2',
 								dialogClassName,
 							)}
 						>
@@ -120,7 +121,7 @@ const Modal = (props: ModalProps) => {
 									className="absolute top-2 right-2 w-6 h-6 text-[color:var(--fg-shade-four-color)] cursor-pointer text-center"
 									onClick={() => setOpen(false)}
 								>
-									<FontAwesomeIcon icon={faTimes}></FontAwesomeIcon>
+									<FontAwesomeIcon icon={faTimes} />
 								</div>
 							)}
 							<div className="p-4 py-0 tablet:p-5 tablet:py-2 desktop:p-7 desktop:py-4">
@@ -135,10 +136,14 @@ const Modal = (props: ModalProps) => {
 										</div>
 									)}
 									<div className={classNames('mt-3 w-full', contentClassName)}>
-										<Dialog.Title className="text-lg leading-6 font-medium">
-											{title}
-										</Dialog.Title>
-										<div className="mt-2 border-b border-[color:var(--bg-shade-four-color)]"></div>
+										{!hideTitle && (
+											<>
+												<Dialog.Title className="text-lg leading-6 font-medium">
+													{title}
+												</Dialog.Title>
+												<div className="mt-2 border-b border-[color:var(--bg-shade-four-color)]" />
+											</>
+										)}
 										<div
 											className={classNames(
 												size === 'sm' ? 'my-2' : 'my-4',

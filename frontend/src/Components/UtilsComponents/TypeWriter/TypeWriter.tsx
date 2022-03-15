@@ -11,7 +11,7 @@ import { useState, useEffect } from 'react';
  * @param {number} delayAfterErase pause time before writing the new word (timeout delay in ms)
  * @param {boolean} shadow if it should have a shadow effect
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const TypeWriter = ({
 	lines,

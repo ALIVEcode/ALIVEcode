@@ -19,6 +19,7 @@ import {
 	MenuResourceCreationDTO,
 	MenuResourceCreationProps,
 } from './menuResourceCreationTypes';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
 const MenuResourceCreation = ({
 	open,
@@ -26,8 +27,8 @@ const MenuResourceCreation = ({
 	updateMode,
 	defaultResource,
 }: MenuResourceCreationProps) => {
-	const [type, setType] = useState<RESOURCE_TYPE>(
-		defaultResource?.type ?? RESOURCE_TYPE.THEORY,
+	const [type, setType] = useState<RESOURCE_TYPE | undefined>(
+		defaultResource?.type ?? undefined,
 	);
 	const [challenges, setChallenges] = useState<Challenge[]>([]);
 	const { t } = useTranslation();
@@ -40,8 +41,6 @@ const MenuResourceCreation = ({
 			resource: instanceToPlain(defaultResource),
 		};
 	}, [defaultResource, type]);
-
-	console.log(defaultValues);
 
 	const {
 		register,
@@ -63,13 +62,15 @@ const MenuResourceCreation = ({
 
 	if (!resources) return <LoadingScreen></LoadingScreen>;
 
-	const onSelectSubject = async (type: RESOURCE_TYPE) => {
-		if (type === RESOURCE_TYPE.CHALLENGE) updateUserChallenges();
-		setType(type);
+	const onSelectSubject = async (newType: RESOURCE_TYPE) => {
+		if (type === newType) return setType(undefined);
+		if (newType === RESOURCE_TYPE.CHALLENGE) updateUserChallenges();
+		setType(newType);
 	};
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const onSubmit = async (formValues: MenuResourceCreationDTO) => {
+		if (!type) return;
 		formValues.type = type;
 		if (updateMode && defaultResource) {
 			const updatedRes = await api.db.resources.update(
@@ -183,9 +184,11 @@ const MenuResourceCreation = ({
 			title={
 				updateMode ? t('resources.form.update') : t('resources.form.create')
 			}
+			submitIcon={updateMode ? faCheckCircle : undefined}
 			setOpen={setOpen}
 			open={open}
 			onSubmit={() => handleSubmit(onSubmit)()}
+			disabledPageIndex={!updateMode ? (!type ? 1 : undefined) : undefined}
 		>
 			{!updateMode && renderPageResourceType()}
 			{renderPageResourceInfos()}

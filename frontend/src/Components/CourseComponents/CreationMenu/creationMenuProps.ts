@@ -6,6 +6,7 @@ import React, {
 	ReactNode,
 } from 'react';
 import { isFragment } from 'react-is';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 export type CreationMenuProps = {
 	open: boolean;
@@ -14,6 +15,8 @@ export type CreationMenuProps = {
 	children: React.ReactNode;
 	onSubmit: () => void;
 	defaultPageNb?: number;
+	submitIcon?: IconDefinition;
+	disabledPageIndex?: number;
 };
 
 /**

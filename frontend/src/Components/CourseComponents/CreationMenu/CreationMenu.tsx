@@ -23,6 +23,8 @@ const CreationMenu: React.FC<CreationMenuProps> = ({
 	setOpen,
 	onSubmit,
 	defaultPageNb,
+	submitIcon,
+	disabledPageIndex,
 }) => {
 	const [pageNb, setPageNb] = useState(defaultPageNb ?? 0);
 	const [children, setChildren] = useState<React.ReactNode[]>([]);
@@ -37,6 +39,9 @@ const CreationMenu: React.FC<CreationMenuProps> = ({
 		const currentChild = children[pageNb];
 		const isLastPage = pageNb === children.length - 1;
 		const isFirstPage = pageNb === 0;
+		const isPreviousPageDisabled =
+			isFirstPage || disabledPageIndex === pageNb - 1;
+		const isNextPageDisabled = disabledPageIndex === pageNb + 1;
 
 		return (
 			<div className="w-full h-full flex flex-row items-center justify-evenly gap-4">
@@ -44,23 +49,27 @@ const CreationMenu: React.FC<CreationMenuProps> = ({
 					className={classNames(
 						'flex items-center',
 						isFirstPage ? 'opacity-0' : 'cursor-pointer',
+						!isFirstPage && isPreviousPageDisabled && 'opacity-30',
 					)}
-					onClick={() => pageNb !== 0 && setPageNb(pageNb - 1)}
+					onClick={() => !isPreviousPageDisabled && setPageNb(pageNb - 1)}
 				>
 					<FontAwesomeIcon size="2x" icon={faChevronLeft}></FontAwesomeIcon>
 				</div>
 				<div className="p-12 w-full">{currentChild}</div>
 				<div
 					className={classNames(
-						'flex items-center cursor-pointer',
-						isLastPage ? '' : '',
+						'flex items-center',
+						isNextPageDisabled ? 'opacity-30' : 'cursor-pointer',
 					)}
-					onClick={() => (isLastPage ? onSubmit() : setPageNb(pageNb + 1))}
+					onClick={() =>
+						!isNextPageDisabled &&
+						(isLastPage ? onSubmit() : setPageNb(pageNb + 1))
+					}
 				>
 					<FontAwesomeIcon
 						size="2x"
-						icon={isLastPage ? faPlusCircle : faChevronRight}
-					></FontAwesomeIcon>
+						icon={isLastPage ? submitIcon ?? faPlusCircle : faChevronRight}
+					/>
 				</div>
 			</div>
 		);

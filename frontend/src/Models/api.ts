@@ -224,6 +224,7 @@ const api = {
 			},
 		},
 		courses: {
+			create: apiCreate('/courses', Course),
 			get: apiGet('courses/:id', Course, false),
 			update: apiUpdate('courses/:id', Course),
 			getSections: apiGet('courses/:id/sections', Section, true),

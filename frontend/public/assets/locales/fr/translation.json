@@ -262,7 +262,7 @@
 			"update": "Modifier la ressource",
 			"delete": "Supprimer la ressource",
 			"delete_confirm": "Êtes-vous sûr de vouloir supprimer cette ressource? Si vous l'avez utilisée dans un cours, celle-ci sera perdue à jamais.",
-			"subject": "Sujet de la ressource",
+			"subject": "Matière de la ressource",
 			"type": "Type de ressource",
 			"name": "Nom de la ressource"
 		}
@@ -286,7 +286,7 @@
 			}
 		},
 		"desc": "Classe de {{professor}}",
-		"subject": "Sujet",
+		"subject": "Matière",
 		"code": {
 			"title": "Code de la classe",
 			"desc": "Donnez ce code aux étudiants afin qu'ils puissent rejoindre la classe depuis le tableau de bord!"
@@ -294,7 +294,7 @@
 	},
 	"course": {
 		"desc": "Cours de {{professor}}",
-		"subject": "Sujet",
+		"subject": "Matière du cours",
 		"empty": "Ce cours est vide.",
 		"section": {
 			"empty": "Cette section ne possède aucune activité",
@@ -306,6 +306,13 @@
 			"no_activity": "Ouvre une activité pour commencer à apprendre.",
 			"new": "Ajouter une activité",
 			"new_name": "Activité #{{num}}"
+		},
+		"form": {
+			"create": "Créer un cours",
+			"update": "Modifier le cours",
+			"name": "Nom du cours",
+			"description": "Description du cours",
+			"subject": "Matière du cours"
 		}
 	},
 	"menu": {

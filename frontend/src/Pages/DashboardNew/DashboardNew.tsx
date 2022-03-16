@@ -44,6 +44,7 @@ import Button from '../../Components/UtilsComponents/Buttons/Button';
 import CourseSection from '../../Components/DashboardComponents/CourseSection/CourseSection';
 import ResourceMenu from '../ResourceMenu/ResourceMenu';
 import { faFile } from '@fortawesome/free-solid-svg-icons';
+import MenuCourseCreation from '../../Components/Resources/MenuCourseCreation/MenuCourseCreation';
 
 /**
  * State reducer to change the state of the selected tab
@@ -82,6 +83,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 	const { routes } = useRoutes();
 	const [classrooms, setClassrooms] = useState<ClassroomModel[]>([]);
 	const [courses, setCourses] = useState<Course[]>([]);
+	const [openFormCreateCourse, setOpenFormCreateCourse] = useState(false);
 	const [formJoinClassOpen, setFormJoinClassOpen] = useState(false);
 	const [hoveringClassroom, setHoveringClassroom] = useState(false);
 	const [hoveringCourse, setHoveringCourse] = useState(false);
@@ -304,7 +306,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 								<FontAwesomeIcon
 									onClick={() =>
 										user?.isProfessor()
-											? navigate(routes.auth.create_classroom.path)
+											? setOpenFormCreateCourse(true)
 											: setFormJoinClassOpen(true)
 									}
 									className="sidebar-icon-right cursor-pointer"
@@ -360,7 +362,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 									</label>
 									{hoveringCourse && (
 										<FontAwesomeIcon
-											onClick={() => navigate(routes.auth.create_course.path)}
+											onClick={() => setOpenFormCreateCourse(true)}
 											className="sidebar-icon-right cursor-pointer"
 											icon={faPlus}
 										/>
@@ -378,7 +380,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 										<i>{t('dashboard.courses.empty')}</i>
 										<Button
 											className="!text-xs mt-2"
-											onClick={() => navigate(routes.auth.create_course.path)}
+											onClick={() => setOpenFormCreateCourse(true)}
 											variant="primary"
 										>
 											{t('dashboard.courses.add')}
@@ -400,6 +402,10 @@ const DashboardNew = (props: DashboardNewProps) => {
 			>
 				<JoinClassroomForm />
 			</FormModal>
+			<MenuCourseCreation
+				open={openFormCreateCourse}
+				setOpen={setOpenFormCreateCourse}
+			/>
 		</StyledDashboard>
 	);
 };

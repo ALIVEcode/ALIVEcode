@@ -6,7 +6,6 @@ import { useState, useContext, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserContext } from '../../../state/contexts/UserContext';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
-import CreationMenu from '../../CourseComponents/CreationMenu/CreationMenu';
 import TypeCard from '../../UtilsComponents/Cards/TypeCard/TypeCard';
 import { getResourceIcon, SUBJECTS } from '../../../Types/sharedTypes';
 import { Challenge } from '../../../Models/Challenge/challenge.entity';
@@ -20,6 +19,7 @@ import {
 	MenuResourceCreationProps,
 } from './menuResourceCreationTypes';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import MenuCreation from '../../UtilsComponents/MenuCreation/MenuCreation';
 
 const MenuResourceCreation = ({
 	open,
@@ -180,7 +180,7 @@ const MenuResourceCreation = ({
 	};
 
 	return (
-		<CreationMenu
+		<MenuCreation
 			title={
 				updateMode ? t('resources.form.update') : t('resources.form.create')
 			}
@@ -192,7 +192,7 @@ const MenuResourceCreation = ({
 		>
 			{!updateMode && renderPageResourceType()}
 			{renderPageResourceInfos()}
-		</CreationMenu>
+		</MenuCreation>
 	);
 };
 

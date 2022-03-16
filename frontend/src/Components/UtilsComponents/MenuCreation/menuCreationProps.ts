@@ -8,7 +8,7 @@ import React, {
 import { isFragment } from 'react-is';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
-export type CreationMenuProps = {
+export type MenuCreationProps = {
 	open: boolean;
 	setOpen: (state: boolean) => void;
 	title: string;

@@ -294,7 +294,7 @@
 	},
 	"course": {
 		"desc": "Course of {{professor}}",
-		"subject": "Subject",
+		"subject": "Subject of the course",
 		"empty": "This course is empty.",
 		"section": {
 			"empty": "This section has no activities.",
@@ -306,6 +306,13 @@
 			"no_activity": "Open an activity to get started.",
 			"new": "Add an activity",
 			"new_name": "Activity #{{num}}"
+		},
+		"form": {
+			"create": "Create a course",
+			"update": "Update the course",
+			"name": "Name of the course",
+			"description": "Description of the course",
+			"subject": "Subject of the course"
 		}
 	},
 	"menu": {

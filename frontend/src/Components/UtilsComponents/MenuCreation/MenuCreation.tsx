@@ -1,5 +1,5 @@
-import { CreationMenuProps, flattenChildren } from './creationMenuProps';
-import Modal from '../../UtilsComponents/Modal/Modal';
+import { MenuCreationProps, flattenChildren } from './menuCreationProps';
+import Modal from '../Modal/Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState, useEffect } from 'react';
 import { classNames } from '../../../Types/utils';
@@ -16,7 +16,7 @@ import {
  *
  * @author Enric Soldevila
  */
-const CreationMenu: React.FC<CreationMenuProps> = ({
+const MenuCreation: React.FC<MenuCreationProps> = ({
 	children: childrenProp,
 	title,
 	open,
@@ -89,4 +89,4 @@ const CreationMenu: React.FC<CreationMenuProps> = ({
 	);
 };
 
-export default CreationMenu;
+export default MenuCreation;

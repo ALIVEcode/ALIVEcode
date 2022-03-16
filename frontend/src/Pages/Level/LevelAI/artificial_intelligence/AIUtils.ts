@@ -60,6 +60,16 @@ export class Matrix
   }
 
   /**
+   * Returns one row of the Matrix as a new Matrix (1 x columns).
+   * @param rowNumber the row number.
+   * @returns the row as a new Matrix.
+   */
+  public getMatrixRow(rowNumber: number): Matrix
+  {
+    return new Matrix([this.value[rowNumber]]);
+  }
+
+  /**
    * Returns one column of the Matrix as a new Matrix (row x 1).
    * @param colNumber the column number.
    * @returns the column as a new Matrix.
@@ -114,16 +124,40 @@ export class Matrix
     this.columns = newValue[0].length;
   }
 
-  public display()
+  /**
+   * Displays the Matrix on the application's console.
+   * @param cmd the console object.
+   */
+  public displayInCmd(cmd: any)
   {
-    let str: String = "";
+    let str: String;
     for (let row: number = 0; row < this.rows; row++)
     {
+      str = "";
       for (let col: number = 0; col < this.columns; col++)
       { 
-        str = str + this.value[row][col].toString() + "  ";
+        str = str + (Math.round(this.value[row][col] * 1000) / 1000).toString();
+        if (col !== this.columns - 1) str = str + "   ";
       }
-      console.log(str);
+      cmd?.print("[" + str + "]");
+    }
+  }
+
+  /**
+   * Displays the Matrix on the standart console.
+   */
+  public display()
+  {
+    let str: String;
+    for (let row: number = 0; row < this.rows; row++)
+    {
+      str = "";
+      for (let col: number = 0; col < this.columns; col++)
+      { 
+        str = str + (Math.round(this.value[row][col] * 1000) / 1000).toString();
+        if (col !== this.columns - 1) str = str + "   ";
+      }
+      console.log("[" + str + "]");
     }
   }
 }
@@ -155,6 +189,58 @@ export function zeros(rows: number, columns: number): number[][]
   return output;
 }
 
+export function matAddConstant(mat: Matrix, constant: number): Matrix
+{
+  let output: number[][] = mat.getValue();
+  for (let row: number = 0; row < mat.getRows(); row++)
+  {
+    for (let col: number = 0; col < mat.getColumns(); col++)
+    {
+      output[row][col] += constant;
+    }
+  }
+  return new Matrix(output);
+}
+
+/**
+ * Computes the addition of 2 Matrices in 2 different ways :
+ * - if the sizes of both Matrices are equal, performs an element-wise addition.
+ * - if the number of rows are equal, but the number of columns of the second Matrix is 1,
+ * the second Matrix is added to each column of the first Matrix.
+ * - in every other case, returns the first Matrix (the operation can't be done).
+ * 
+ * @param mat1 the first Matrix, which its size determines the result's size.
+ * @param mat2 the second Matrix, which has to be either :
+ * - the same size as the first Matrix
+ * - the same number of rows as the first Matrix and 1 column.
+ * @returns the resulting Matrix of the addition. Its size is the same as the mat1 size.
+ */
+export function matAdd(mat1: Matrix, mat2: Matrix): Matrix
+{
+  const value1: number[][] = mat1.getValue();
+  const value2: number[][] = mat2.getValue();
+  let output: number[][] = value1;
+  
+  for (let row: number = 0; row < mat1.getRows(); row++)
+  {
+    for (let col: number = 0; col < mat1.getColumns(); col++)
+    {
+      // If both Matrices are of the same size, element-wise addition.
+      if (mat1.getRows() === mat2.getRows() && mat1.getColumns() === mat2.getColumns())
+      {
+        output[row][col] += value2[row][col];
+      }
+      // If both Matrices have the same number of rows but the second Matrix has 1 column,
+      // the same column of value2 is applied to all columns of value1.
+      else if (mat1.getRows() === mat2.getRows() && mat2.getColumns() === 1)
+      {
+        output[row][col] += value2[row][0];
+      }
+    }
+  }
+  return new Matrix(output);
+}
+
 /**
  * Computes the matrix multiplicaiton of 2 matrices and returns a new resulting
  * matrix. 
@@ -174,11 +260,11 @@ export function zeros(rows: number, columns: number): number[][]
  */
 export function matMul(m1: Matrix, m2: Matrix): Matrix 
 {
-  
   //If the number of m1 columns doesn't equal the number of m2 rows, the equation 
   //can't be solved, return a Matrix full of zeros.
   if (m1.getColumns() !== m2.getRows()) 
   {
+    console.log("Columns 1 = " + m1.getColumns() + " and rows 2 = " + m2.getRows())
     return new Matrix(zeros(m1.getRows(), m2.getColumns()))
   }
   
@@ -211,17 +297,14 @@ export function matMul(m1: Matrix, m2: Matrix): Matrix
  * @returns the resulting Matrix. If the 2 Matrices do not have the same number 
  * of rows, returns a copy of the first Matrix.
  */
-export function appendColumn(m1: Matrix, m2: Matrix): Matrix 
+export function appendRow(m1: Matrix, m2: Matrix): Matrix 
 {
   let outputValue: number[][] = m1.getValue();
   const m2Value: number[][] = m2.getValue();
   
-  if (m1.getRows() !== m2.getRows()) return new Matrix(outputValue);
+  if (m1.getColumns() !== m2.getColumns()) return new Matrix(outputValue);
 
-  for (let i: number = 0; i < outputValue.length; i++) 
-  {
-    outputValue[i].push(...m2Value[i]);
-  }
+  outputValue.push(m2Value[0]);
 
   return new Matrix(outputValue);
 }
@@ -241,8 +324,7 @@ function randnBoxMuller(): number
 }
 
 /**
- * Returns a Matrix with values generated from a normal distribution with mean of 0
- * and standart deviation 1.
+ * Returns a Matrix with random values.
  * @param rows the number of rows for the output Matrix.
  * @param columns the number of columns for the output Matrix.
  * @returns the Matrix with random values.
@@ -255,7 +337,7 @@ export function normalMatrix(rows: number, columns: number): Matrix
   {
     for (let j: number = 0; j < columns; j++) 
     {
-      randomValues[i][j] = randnBoxMuller();
+      randomValues[i][j] = Math.random();
     }
   }
 

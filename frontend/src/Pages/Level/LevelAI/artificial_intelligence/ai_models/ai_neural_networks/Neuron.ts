@@ -1,4 +1,4 @@
-import { Matrix, matMul } from "../../AIUtils";
+import { Matrix, matMul, matAddConstant } from "../../AIUtils";
 import { ActivationFunction } from '../../ai_functions/Function';
 
 /**
@@ -17,9 +17,11 @@ export default class Neuron {
     private bias: number,
     private weights: Matrix
   ) {
+    /*
     if (weights.getRows() > 1) {
       weights.setValue([weights.getValue()[0]]);
     }
+    */
   }
 
   /**
@@ -29,7 +31,18 @@ export default class Neuron {
    * @returns the computed output
    */
   public computeOutput(inputs: Matrix, activation: ActivationFunction): Matrix {
-    let output: Matrix = matMul(inputs, this.weights);
+    
+    this.weights.display()
+    let output: Matrix = matMul(this.weights, inputs);
+
+    console.log("After weights :")
+    output.display();
+
+    output = matAddConstant(output, this.bias);
+
+    console.log("After biases :")
+    output.display();
+
     return activation.compute(output);
   }
 

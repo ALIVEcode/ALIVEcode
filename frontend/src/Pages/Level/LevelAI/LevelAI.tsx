@@ -16,6 +16,9 @@ import PolyRegression from './artificial_intelligence/PolyRegression';
 import { LevelContext } from '../../../state/contexts/LevelContext';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import LevelToolsBar from '../../../Components/LevelComponents/LevelToolsBar/LevelToolsBar';
+import { NeuralNetwork } from './artificial_intelligence/ai_models/ai_neural_networks/NeuralNetwork';
+import { ActivationFunction } from './artificial_intelligence/ai_functions/Function';
+import { Matrix } from './artificial_intelligence/AIUtils';
 
 /**
  * Ai level page. Contains all the components to display and make the ai level functionnal.
@@ -223,8 +226,27 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 
 	function testNeuralNetwork(cmd: any) {
 
+		const neuronsByLayer: number[] = [2, 2]
+		const nbInputs: number = 3;
+		const nbOutputs: number = 1;
+		const activations: ActivationFunction[] = [
+			new ActivationFunction(ActivationFunction.SIGMOID),
+			new ActivationFunction(ActivationFunction.RELU)
+		];
+		const outputAct: ActivationFunction = new ActivationFunction(ActivationFunction.RELU);
 
-		cmd?.print("hello");
+		const data: Matrix = new Matrix([
+			[0.4, 0.03, 0.5, 0.88, 0.1],
+			[0.4, 0.03, 0.5, 0.88, 0.1],
+			[0.4, 0.03, 0.5, 0.88, 0.1]
+		]);
+
+		let myNetwork: NeuralNetwork = new NeuralNetwork(neuronsByLayer, activations, outputAct, nbInputs, nbOutputs)
+
+		let predictions: Matrix = myNetwork.predict(data);
+		predictions.displayInCmd(cmd);
+		//cmd?.print(predictions.getRows())
+		//cmd?.print(predictions.getColumns())
 	}
 
 

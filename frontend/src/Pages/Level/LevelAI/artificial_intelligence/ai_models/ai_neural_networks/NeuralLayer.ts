@@ -1,6 +1,6 @@
 import { ActivationFunction } from "../../ai_functions/Function";
 import Neuron from "./Neuron";
-import { Matrix, appendColumn } from '../../AIUtils';
+import { Matrix, appendRow } from '../../AIUtils';
 
 /**
  * This class represents a layer of a neural newtwork.
@@ -29,7 +29,7 @@ export class NeuralLayer {
 
     // Creates every neuron in the layer.
     for (let i: number = 0; i < nbNeurons; i++) {
-      this.neurons.push(new Neuron(biases.getValue()[i][0], weights.getMatrixColumn(i)))
+      this.neurons.push(new Neuron(biases.getValue()[i][0], weights.getMatrixRow(i)));
     }
   }
   
@@ -41,12 +41,15 @@ export class NeuralLayer {
    */
   public computeLayer(inputs: Matrix): Matrix {
     let output: Matrix = this.neurons[0].computeOutput(inputs, this.activation);
-
     for (let i: number = 1; i < this.neurons.length; i++) {
       const newOutput: Matrix = this.neurons[i].computeOutput(inputs, this.activation);
-      output = appendColumn(output, newOutput);
+      console.log("To append :")
+      newOutput.display()
+      output = appendRow(output, newOutput);
     }
 
+    console.log("After layer :")
+    output.display();
     return output;
   }
 

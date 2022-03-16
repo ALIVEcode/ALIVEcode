@@ -48,8 +48,8 @@ export class NeuralNetwork extends Model
       previousNbNeurons = (layer === 0) ? nbInputs : neuronsByLayer[layer - 1];
       weights = normalMatrix(neuronsByLayer[layer], previousNbNeurons);
       biases = new Matrix(zeros(neuronsByLayer[layer], 1));
-
-      this.layers.push(new NeuralLayer(neuronsByLayer[layer], activationsByLayer[layer], weights, biases));
+      if (layer === 0) this.layers = [new NeuralLayer(neuronsByLayer[layer], activationsByLayer[layer], weights, biases)];
+      else this.layers.push(new NeuralLayer(neuronsByLayer[layer], activationsByLayer[layer], weights, biases));
     }
 
     // Output layer

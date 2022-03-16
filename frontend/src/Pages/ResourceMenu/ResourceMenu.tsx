@@ -8,7 +8,7 @@ import api from '../../Models/api';
 import LoadingScreen from '../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
 import { ResourceSection } from '../../Components/Resources/ResourceSection/ResourceSection';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { ResourceMenuSections } from './resourceMenuTypes';
+import { ResourceMenuSections, ResourceMenuProps } from './resourceMenuTypes';
 import {
 	ResourceMenuContext,
 	ResourceMenuContextValues,
@@ -18,7 +18,7 @@ import { RESOURCE_TYPE } from '../../Models/Resource/resource.entity';
 import { ResourceFilter } from '../../Components/Resources/ResourceFilter/ResourceFilter';
 import MenuResourceCreation from '../../Components/Resources/MenuResourceCreation/MenuResourceCreation';
 
-const ResourceMenu = () => {
+const ResourceMenu = ({ mode, onSelectResource }: ResourceMenuProps) => {
 	const [creationModalOpen, setCreationModalOpen] = useState(false);
 	const [selectedFilters, setSelectedFilters] = useState<RESOURCE_TYPE[]>([]);
 	const [selectedSection, setSelectedSection] =
@@ -131,7 +131,12 @@ const ResourceMenu = () => {
 								<LoadingScreen relative></LoadingScreen>
 							) : (
 								resources.map((r, idx) => (
-									<ResourceCard resource={r} key={idx} />
+									<ResourceCard
+										onSelectResource={onSelectResource}
+										mode={mode}
+										resource={r}
+										key={idx}
+									/>
 								))
 							)}
 						</div>

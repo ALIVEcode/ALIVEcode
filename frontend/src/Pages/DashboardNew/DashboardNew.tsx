@@ -180,9 +180,9 @@ const DashboardNew = (props: DashboardNewProps) => {
 	const renderTabSelected = () => {
 		switch (tabSelected.tab) {
 			case 'recents':
-				return <DashboardRecents></DashboardRecents>;
+				return <DashboardRecents />;
 			case 'challenges':
-				return <DashboardChallenges></DashboardChallenges>;
+				return <DashboardChallenges />;
 			case 'classrooms':
 				if (!tabSelected.classroom) return;
 				return (
@@ -192,7 +192,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 					/>
 				);
 			case 'resources':
-				return <ResourceMenu></ResourceMenu>;
+				return <ResourceMenu />;
 		}
 	};
 

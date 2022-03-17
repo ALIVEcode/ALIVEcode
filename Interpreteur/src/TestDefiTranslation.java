@@ -78,8 +78,17 @@ public class TestDefiTranslation {
      */
     public String t(String path) {
         //----------------- À compléter -----------------//
-
-        return path;
+        String[] tokens = path.split("\\.");
+        JSONObject head = jsonFile;
+        try {
+            for (int i = 0; i < tokens.length - 1; i++) {
+                String token = tokens[i];
+                head = (JSONObject) head.get(token);
+            }
+            return (String) head.get(tokens[tokens.length-1]);
+        } catch (Exception e) {
+            return path;
+        }
     }
 }
 

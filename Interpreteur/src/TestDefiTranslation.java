@@ -1,11 +1,7 @@
+import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.Assert;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.lang.reflect.Array;
 import java.util.Arrays;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestDefiTranslation {
@@ -105,7 +101,7 @@ public class TestDefiTranslation {
             }
             // Tu pourrais utiliser head.getString pour être plus concis ---------FIXED-----------
             return head.getString(tokens[tokens.length - 1]);
-        } catch (org.json.JSONException | java.lang.NegativeArraySizeException err) {
+        } catch (JSONException | NegativeArraySizeException err) {
             /*
             ------------------FIXED--------------------
              * Comme en python, c'est une mauvaise pratique de catch toutes les exceptions, car si

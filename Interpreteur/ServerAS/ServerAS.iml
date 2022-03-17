@@ -7,7 +7,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="lib" level="project" />
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
@@ -18,7 +17,6 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="Interpreteur" exported="" />
-    <orderEntry type="library" name="io.github.cdimascio.dotenv.java" level="project" />
     <orderEntry type="library" name="dotenv-java-2.2.0" level="project" />
     <orderEntry type="library" name="json-20140107" level="project" />
   </component>

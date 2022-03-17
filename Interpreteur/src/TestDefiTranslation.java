@@ -76,44 +76,14 @@ public class TestDefiTranslation {
      * @return
      */
     public String t(String path) {
-        /*
-         * Avant tout, félicitation pour avoir réussi!!! 🥳🍾
-         *
-         * Mes commentaires se veulent constructifs et le but est d'apprendre
-         * Aussi, ton code est loin d'être mauvais, alors ce sont plus des suggestions d'amélioration
-         * que de vraies critiques.
-         *
-         *
-            ------------------FIXED--------------------
-         * PS: my bad, mes tests ne couvraient pas tous les edges cases, par exemple, si la personne écrit:
-         *  " function.call.nb-parameter.to-big ", cela devrait quand même fonctionner (tu iras voir la fonction
-         *  <String>.trim() pour ça)
-            ------------------FIXED--------------------
-
-         */
-        String[] tokens = path.trim().split("\\.");  // excellent
+        String[] tokens = path.trim().split("\\.");
         JSONObject head = jsonFile;
         try {
-            // Pourrait être changé pour une foreach loop, look it up ;) (ça ressemble plus à python) --------FIXED-----
             for (String token : Arrays.copyOf(tokens, tokens.length - 1)) {
-                // Tu pourrais utiliser head.getJSONObject pour être plus concis -----------FIXED--------------
                 head = head.getJSONObject(token);
             }
-            // Tu pourrais utiliser head.getString pour être plus concis ---------FIXED-----------
             return head.getString(tokens[tokens.length - 1]);
         } catch (JSONException | NegativeArraySizeException err) {
-            /*
-            ------------------FIXED--------------------
-             * Comme en python, c'est une mauvaise pratique de catch toutes les exceptions, car si
-             *  ton code a une erreur qu'il est pas supposé avoir, elle devrait être lancée pour que tu le saches.
-             *  Conseil: remplace Exception par les exceptions possibles. S'il y en a plusieurs, sépare les par
-             *  le symbole '|'
-             *  ex:
-             *  catch (NumberFormatException | ClassNotFoundException | AutreExeption err) {
-             *  ...
-             *  }
-            ------------------FIXED--------------------
-             */
             return path;
         }
     }

@@ -3,6 +3,9 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestDefiTranslation {
@@ -85,24 +88,26 @@ public class TestDefiTranslation {
          * que de vraies critiques.
          *
          *
+            ------------------FIXED--------------------
          * PS: my bad, mes tests ne couvraient pas tous les edges cases, par exemple, si la personne écrit:
          *  " function.call.nb-parameter.to-big ", cela devrait quand même fonctionner (tu iras voir la fonction
          *  <String>.trim() pour ça)
-         *
+            ------------------FIXED--------------------
+
          */
-        String[] tokens = path.split("\\.");  // excellent
+        String[] tokens = path.trim().split("\\.");  // excellent
         JSONObject head = jsonFile;
         try {
-            // Pourrait être changé pour une foreach loop, look it up ;) (ça ressemble plus à python)
-            for (int i = 0; i < tokens.length - 1; i++) {
-                String token = tokens[i];
-                // Tu pourrais utiliser head.getJSONObject pour être plus concis
-                head = (JSONObject) head.get(token);
+            // Pourrait être changé pour une foreach loop, look it up ;) (ça ressemble plus à python) --------FIXED-----
+            for (String token : Arrays.copyOf(tokens, tokens.length - 1)) {
+                // Tu pourrais utiliser head.getJSONObject pour être plus concis -----------FIXED--------------
+                head = head.getJSONObject(token);
             }
-            // Tu pourrais utiliser head.getString pour être plus concis
-            return (String) head.get(tokens[tokens.length - 1]);
-        } catch (Exception e) {
+            // Tu pourrais utiliser head.getString pour être plus concis ---------FIXED-----------
+            return head.getString(tokens[tokens.length - 1]);
+        } catch (org.json.JSONException | java.lang.NegativeArraySizeException err) {
             /*
+            ------------------FIXED--------------------
              * Comme en python, c'est une mauvaise pratique de catch toutes les exceptions, car si
              *  ton code a une erreur qu'il est pas supposé avoir, elle devrait être lancée pour que tu le saches.
              *  Conseil: remplace Exception par les exceptions possibles. S'il y en a plusieurs, sépare les par
@@ -111,6 +116,7 @@ public class TestDefiTranslation {
              *  catch (NumberFormatException | ClassNotFoundException | AutreExeption err) {
              *  ...
              *  }
+            ------------------FIXED--------------------
              */
             return path;
         }

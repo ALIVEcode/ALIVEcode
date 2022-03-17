@@ -73,7 +73,8 @@ class LevelAIExecutor extends LevelCodeExecutor {
 					type: 'NORMAL',
 					apply: (params, _, response) => {
 						if (typeof params[0] === 'number')
-							this.cmd?.print(this.executableFuncs.evaluate(params[0]));
+							console.log("hello")
+							this.cmd?.print("Modèle évalué avec " + params[0] + " => " + this.executableFuncs.evaluate(params[0]));
 					},
 				},
 			},

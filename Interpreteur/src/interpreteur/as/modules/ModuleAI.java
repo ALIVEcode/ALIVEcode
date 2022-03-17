@@ -442,7 +442,7 @@ public class ModuleAI {
                     @Override
                     public ASObjet<?> executer() {
                         double x = ((Number) this.getValeurParam("x").getValue()).doubleValue();
-                        executeurInstance.addData(new Data(Data.Id.OPTIMISER_REGRESSION).addParam(x));
+                        executeurInstance.addData(new Data(Data.Id.EVALUER).addParam(x));
                         return new Nul();
                     }
                 },

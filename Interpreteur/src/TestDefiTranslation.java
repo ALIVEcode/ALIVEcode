@@ -52,7 +52,7 @@ public class TestDefiTranslation {
 
         assertEquals("function.call.nb-parameter.to-bi", defi.t("function.call.nb-parameter.to-bi"));
 
-        assertEquals("Le nombre de param\u00E8tres est trop grand", defi.t("function.call.nb-parameter.to-big"));
+        assertEquals("Le nombre de param\u00E8tres est trop grand", defi.t(" function.call.nb-parameter.to-big "));
 
         assertEquals("function.call.creation", defi.t("function.call.creation"));
 
@@ -77,16 +77,44 @@ public class TestDefiTranslation {
      * @return
      */
     public String t(String path) {
-        //----------------- À compléter -----------------//
+        /*
+         * Premièrement, félicitation pour avoir réussi!!!
+         *
+         * Premièrement, mes commentaires se veulent constructifs et le but est d'apprendre
+         * Aussi, ton code est loin d'être mauvais, alors ce sont plus des suggestions d'amélioration
+         * que de vraies critiques.
+         *
+         *
+         * PS: my bad, mes tests ne couvraient pas tous les edges cases, par exemple, si la personne écrit:
+         *  " function.call.nb-parameter.to-big ", cela devrait quand même fonctionner (tu iras voir la fonction
+         *  <String>.trim() pour ça)
+         *
+         */
         String[] tokens = path.split("\\.");
         JSONObject head = jsonFile;
         try {
+            /*
+             * Pourrait être changé pour une foreach loop, look it up ;) (ça ressemble plus à python)
+             */
             for (int i = 0; i < tokens.length - 1; i++) {
                 String token = tokens[i];
                 head = (JSONObject) head.get(token);
             }
-            return (String) head.get(tokens[tokens.length-1]);
+            /*
+             * Tu pourrais utiliser head.getString pour être plus concis
+             */
+            return (String) head.get(tokens[tokens.length - 1]);
         } catch (Exception e) {
+            /*
+             * Commen en python, c'est une mauvaise pratique de catch toutes les exceptions, car si
+             *  ton code a une erreur qu'il est pas supposé avoir, elle devrait être lancé pour que tu le saches
+             *  conseil: remplace Exception par les exceptions possibles. S'il y en a plusieurs, sépare les par
+             *  le symbole '|'
+             *  ex:
+             *  catch (NumberFormatException | ClassNotFoundException | AutreExeption err) {
+             *  ...
+             *  }
+             */
             return path;
         }
     }

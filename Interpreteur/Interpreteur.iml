@@ -13,7 +13,6 @@
     <orderEntry type="library" name="annotations-19.0.0" level="project" />
     <orderEntry type="library" name="snakeyaml-1.28" level="project" />
     <orderEntry type="library" name="json-20140107" level="project" />
-    <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="module-library">
       <library name="JUnit4">
         <CLASSES>
@@ -35,6 +34,15 @@
           <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-params/5.7.0/junit-jupiter-params-5.7.0.jar!/" />
           <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-engine/5.7.0/junit-jupiter-engine-5.7.0.jar!/" />
           <root url="jar://$MAVEN_REPOSITORY$/org/junit/platform/junit-platform-engine/1.7.0/junit-platform-engine-1.7.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/dotenv-java-2.2.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

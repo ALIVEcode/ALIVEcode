@@ -366,7 +366,6 @@ public class ModuleAI {
                         if (!(col.equalsIgnoreCase("x") || col.equalsIgnoreCase("y"))) {
                             throw new ASErreur.ErreurInputOutput("La fonction valeursColonne() prend en param\u00E8tre le caract\u00E8re \"x\" ou \"y\" seulement.");
                         }
-                        System.out.println(col);
                         if (col.contains("x")) {
                             for (Double el : DATA_X) {
                                 liste.ajouterElement(new Decimal(el));
@@ -439,11 +438,12 @@ public class ModuleAI {
                 new ASObjet.Fonction("evaluer", new ASObjet.Fonction.Parametre[]{
                         new ASObjet.Fonction.Parametre(
                                 ASObjet.TypeBuiltin.nombre.asType(), "x", null)
-                }, ASObjet.TypeBuiltin.nombre.asType()) {
+                }, ASObjet.TypeBuiltin.nulType.asType()) {
                     @Override
                     public ASObjet<?> executer() {
                         double x = ((Number) this.getValeurParam("x").getValue()).doubleValue();
-                        return Nombre.cast((Number) executeurInstance.getDataResponseOrAsk("evaluer", x));
+                        executeurInstance.addData(new Data(Data.Id.OPTIMISER_REGRESSION).addParam(x));
+                        return new Nul();
                     }
                 },
                 /*

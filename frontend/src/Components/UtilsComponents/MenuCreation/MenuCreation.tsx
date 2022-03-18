@@ -30,7 +30,6 @@ const MenuCreation: React.FC<MenuCreationProps> = ({
 	const [children, setChildren] = useState<React.ReactNode[]>([]);
 	useEffect(() => {
 		setChildren(flattenChildren(childrenProp));
-		console.log(flattenChildren(childrenProp));
 	}, [childrenProp]);
 
 	/**

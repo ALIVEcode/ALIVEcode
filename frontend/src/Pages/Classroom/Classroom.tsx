@@ -13,11 +13,11 @@ import useRoutes from '../../state/hooks/useRoutes';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from 'react-router';
 import { useForceUpdate } from '../../state/hooks/useForceUpdate';
-import { useNavigate } from 'react-router-dom';
 import { ClassroomProps } from './classroomTypes';
 import ClassroomHeader from '../../Components/ClassroomComponents/ClassroomHeader/ClassroomHeader';
 import CourseCard from '../../Components/CourseComponents/CourseCard/CourseCard';
 import Badge from '../../Components/UtilsComponents/Badge/Badge';
+import { DashboardContext } from '../../state/contexts/DashboardContext';
 
 const StyledDiv = styled.div`
 	background-color: var(--background-color);
@@ -42,12 +42,12 @@ const StyledDiv = styled.div`
 const Classroom = ({ classroomProp, ...props }: ClassroomProps) => {
 	const { t } = useTranslation();
 	const { user } = useContext(UserContext);
+	const { setOpenFormCreateCourse } = useContext(DashboardContext);
 	const [classroom, setClassroom] = useState<ClassroomModel | undefined>(
 		classroomProp ?? undefined,
 	);
 	const { id } = useParams<{ id: string }>();
-	const { goBack, routes } = useRoutes();
-	const navigate = useNavigate();
+	const { goBack } = useRoutes();
 	const alert = useAlert();
 	const forceUpdate = useForceUpdate();
 
@@ -89,9 +89,7 @@ const Classroom = ({ classroomProp, ...props }: ClassroomProps) => {
 					title={t('classroom.container.courses.title')}
 					height="60px"
 					icon={classroom.creator.id === user.id ? faPlus : undefined}
-					onIconClick={() =>
-						navigate(routes.auth.create_course.path, { state: { classroom } })
-					}
+					onIconClick={() => setOpenFormCreateCourse(true, classroom)}
 				>
 					{classroom.courses && classroom.courses.length > 0 ? (
 						classroom.courses.map((c, idx) => (

@@ -8,6 +8,7 @@ export type DashboardContextValues = {
 	getClassrooms: () => Classroom[];
 	getChallenges: () => Challenge[];
 	setFormJoinClassOpen: (bool: boolean) => void;
+	setOpenFormCreateCourse: (bool: boolean, classroom?: Classroom) => void;
 };
 
 export const DashboardContext = createContext<DashboardContextValues>({
@@ -15,4 +16,5 @@ export const DashboardContext = createContext<DashboardContextValues>({
 	getClassrooms: () => [],
 	getChallenges: () => [],
 	setFormJoinClassOpen: () => {},
+	setOpenFormCreateCourse: () => {},
 });

@@ -84,6 +84,8 @@ const DashboardNew = (props: DashboardNewProps) => {
 	const [classrooms, setClassrooms] = useState<ClassroomModel[]>([]);
 	const [courses, setCourses] = useState<Course[]>([]);
 	const [openFormCreateCourse, setOpenFormCreateCourse] = useState(false);
+	const [classroomForCourse, setClassroomForCourse] =
+		useState<ClassroomModel>();
 	const [formJoinClassOpen, setFormJoinClassOpen] = useState(false);
 	const [hoveringClassroom, setHoveringClassroom] = useState(false);
 	const [hoveringCourse, setHoveringCourse] = useState(false);
@@ -240,6 +242,10 @@ const DashboardNew = (props: DashboardNewProps) => {
 				return challenges;
 			},
 			setFormJoinClassOpen,
+			setOpenFormCreateCourse: (state: boolean, classroom?: ClassroomModel) => {
+				setOpenFormCreateCourse(state);
+				setClassroomForCourse(classroom);
+			},
 		};
 	}, [
 		classrooms,
@@ -405,6 +411,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 			<MenuCourseCreation
 				open={openFormCreateCourse}
 				setOpen={setOpenFormCreateCourse}
+				classroom={classroomForCourse}
 			/>
 		</StyledDashboard>
 	);

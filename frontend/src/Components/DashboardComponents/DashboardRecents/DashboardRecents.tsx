@@ -8,7 +8,8 @@ import { useNavigate } from 'react-router';
 import useRoutes from '../../../state/hooks/useRoutes';
 
 export const DashboardRecents = () => {
-	const { getCourses, setFormJoinClassOpen } = useContext(DashboardContext);
+	const { getCourses, setFormJoinClassOpen, setOpenFormCreateCourse } =
+		useContext(DashboardContext);
 	const { t } = useTranslation();
 	const { user } = useContext(UserContext);
 	const { routes } = useRoutes();
@@ -47,7 +48,7 @@ export const DashboardRecents = () => {
 							<Button
 								className="!text-xs mt-2 ml-4"
 								variant="primary"
-								onClick={() => navigate(routes.auth.create_course.path)}
+								onClick={() => setOpenFormCreateCourse(true)}
 							>
 								{t('dashboard.courses.add')}
 							</Button>

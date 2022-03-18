@@ -23,6 +23,7 @@ const MenuCourseCreation = ({
 	setOpen,
 	updateMode,
 	defaultCourse,
+	classroom,
 }: MenuCourseCreationProps) => {
 	const [subject, setSubject] = useState<SUBJECTS | undefined>(
 		defaultCourse?.subject ?? undefined,
@@ -53,6 +54,7 @@ const MenuCourseCreation = ({
 	const onSubmit = async (formValues: MenuCourseCreationDTO) => {
 		if (!subject) return;
 		formValues.course.subject = subject;
+		formValues.classId = classroom?.id;
 		if (updateMode && defaultCourse) {
 			const updatedCourse = await api.db.courses.update(
 				{
@@ -101,18 +103,6 @@ const MenuCourseCreation = ({
 					errors={errors.course?.description}
 					{...register('course.description', { maxLength: 500 })}
 				/>
-				<InputGroup
-					as="select"
-					label={t('course.form.subject')}
-					errors={errors.course?.subject}
-					{...register('course.subject', { required: true })}
-				>
-					{Object.entries(SUBJECTS).map((entry, idx) => (
-						<option key={idx} value={entry[1]}>
-							{t(`msg.subjects.${entry[0].toLowerCase()}`)}
-						</option>
-					))}
-				</InputGroup>
 			</div>
 		);
 	};

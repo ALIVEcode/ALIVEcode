@@ -1,5 +1,4 @@
-import { useContext, useEffect } from 'react';
-import { CourseContext } from '../../../state/contexts/CourseContext';
+import { useEffect } from 'react';
 import Challenge from '../../../Pages/Challenge/Challenge';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';

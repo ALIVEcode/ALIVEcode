@@ -5,7 +5,7 @@ import {
 	Activity as ActivityModel,
 	ACTIVITY_TYPE,
 } from '../../../Models/Course/activity.entity';
-import ActivityChallenge from './ActivityLevel';
+import ActivityChallenge from './ActivityChallenge';
 import RichTextEditor from '../../RichTextComponents/RichTextEditor/RichTextEditor';
 import ButtonAdd from './ButtonAdd';
 import { Descendant } from 'slate';

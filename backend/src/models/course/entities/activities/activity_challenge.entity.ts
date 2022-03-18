@@ -9,7 +9,7 @@ import { ResourceChallengeEntity } from '../../../resource/entities/resource_cha
 @ChildEntity(ACTIVITY_TYPE.CHALLENGE)
 export class ActivityChallengeEntity extends ActivityEntity {
   /** Reference to the resource linked to the activity */
-  @ManyToOne(() => ResourceChallengeEntity, res => res.activities, { eager: true })
+  @ManyToOne(() => ResourceChallengeEntity, res => res.activities, { eager: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'resourceId' })
   resource: ResourceChallengeEntity;
 

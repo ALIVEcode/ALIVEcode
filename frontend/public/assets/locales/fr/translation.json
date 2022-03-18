@@ -41,7 +41,7 @@
 		},
 		"challenge": {
 			"PATCH": {
-				"title": "Paramètres du niveau"
+				"title": "Paramètres du défi"
 			}
 		},
 		"title": {
@@ -49,7 +49,7 @@
 			"signup": "Inscription",
 			"create_classroom": "Création d'une classe",
 			"create_course": "Création d'un cours",
-			"create_challenge": "Création d'un niveau",
+			"create_challenge": "Création d'un défi",
 			"create_iot_project": "Création d'un projet IoT",
 			"create_iot_object": "Création d'un objet IoT"
 		},
@@ -181,8 +181,8 @@
 		"maintenance": {
 			"more_info": "Plus d'informations",
 			"no_desc": "Pas de description disponible.",
-			"ongoing": "Une maintenance est présentement en cours du {{startDate}} au {{finishDate}}. Vous ne pouvez pas utiliser votre compte ou voir les niveaux des utilisateurs durant cette période. Désolé pour cet inconvénient.",
-			"upcoming": "Une maintenance est prévue du {{startDate}} au {{finishDate}}. Vous ne pourrez pas utiliser votre compte ou voir les niveaux des utilisateurs durant cette période. Désolé pour cet inconvénient.",
+			"ongoing": "Une maintenance est présentement en cours du {{startDate}} au {{finishDate}}. Vous ne pouvez pas utiliser votre compte ou voir les défis des utilisateurs durant cette période. Désolé pour cet inconvénient.",
+			"upcoming": "Une maintenance est prévue du {{startDate}} au {{finishDate}}. Vous ne pourrez pas utiliser votre compte ou voir les défis des utilisateurs durant cette période. Désolé pour cet inconvénient.",
 			"status": {
 				"ongoing": "En cours",
 				"finished": "Terminée",
@@ -200,9 +200,9 @@
 		},
 		"challenges": {
 			"title": "Niveaux",
-			"browse_challenges": "Explorer les niveaux de la communauté",
-			"create_challenge": "Créer un niveau",
-			"empty": "Tu ne possèdes aucun niveau"
+			"browse_challenges": "Explorer les défis de la communauté",
+			"create_challenge": "Créer un défi",
+			"empty": "Tu ne possèdes aucun défi"
 		},
 		"resources": {
 			"title": "Mes Ressources"
@@ -251,7 +251,7 @@
 		"challenge": {
 			"name": "Défi",
 			"form": {
-				"select": "Sélectionnez un niveau pour la liaison"
+				"select": "Sélectionnez un défi pour la liaison"
 			}
 		},
 		"theory": {

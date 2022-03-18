@@ -306,7 +306,7 @@ const DashboardNew = (props: DashboardNewProps) => {
 								<FontAwesomeIcon
 									onClick={() =>
 										user?.isProfessor()
-											? setOpenFormCreateCourse(true)
+											? navigate(routes.auth.create_classroom.path)
 											: setFormJoinClassOpen(true)
 									}
 									className="sidebar-icon-right cursor-pointer"

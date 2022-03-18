@@ -326,13 +326,13 @@ export class CourseService {
     let activity: ActivityEntity;
     switch (activityDTO.courseContent.type) {
       case ACTIVITY_TYPE.CHALLENGE:
-        activity = await this.actChallengeRepo.save(activityDTO);
+        activity = await this.actChallengeRepo.save(activityDTO.courseContent);
         break;
       case ACTIVITY_TYPE.THEORY:
-        activity = await this.actTheoryRepo.save(activityDTO);
+        activity = await this.actTheoryRepo.save(activityDTO.courseContent);
         break;
       case ACTIVITY_TYPE.VIDEO:
-        activity = await this.actVideoRepo.save(activityDTO);
+        activity = await this.actVideoRepo.save(activityDTO.courseContent);
         break;
       default:
         throw new HttpException('Invalid activity type', HttpStatus.BAD_REQUEST);

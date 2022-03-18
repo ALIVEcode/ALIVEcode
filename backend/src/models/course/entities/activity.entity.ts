@@ -33,12 +33,6 @@ export class ActivityEntity {
   @Column({ type: 'enum', name: 'type', enum: ACTIVITY_TYPE, default: ACTIVITY_TYPE.THEORY })
   readonly type: ACTIVITY_TYPE;
 
-  /** Name of the activity */
-  @IsNotEmpty()
-  @Column({ nullable: false })
-  @Length(1, 100)
-  name: string;
-
   /** Header of the activity */
   @IsOptional()
   @Column({ nullable: true, default: null, type: 'json' })

@@ -1,5 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
-import { ChildEntity, Column } from 'typeorm';
+import { ChildEntity, Column, OneToMany } from 'typeorm';
 import { ResourceEntity, RESOURCE_TYPE } from './resource.entity';
 
 /**

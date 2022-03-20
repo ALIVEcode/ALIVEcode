@@ -2,7 +2,7 @@ import { ChildEntity, Column, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { ChallengeEntity } from '../../challenge/entities/challenge.entity';
 import { ResourceEntity, RESOURCE_TYPE } from './resource.entity';
 import { ActivityChallengeEntity } from '../../course/entities/activities/activity_challenge.entity';
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
 /**
  * Activity of type Challenge model in the database

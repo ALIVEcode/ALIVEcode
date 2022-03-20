@@ -19,6 +19,12 @@ import { CourseElementEntity } from './entities/course_element.entity';
 import { ActivityChallengeEntity } from './entities/activities/activity_challenge.entity';
 import { ActivityVideoEntity } from './entities/activities/activity_video.entity';
 import { ResourceEntity } from '../resource/entities/resource.entity';
+import { ResourceService } from '../resource/resource.service';
+import { ResourceChallengeEntity } from '../resource/entities/resource_challenge.entity';
+import { ResourceVideoEntity } from '../resource/entities/resource_video.entity';
+import { ResourceFileEntity } from '../resource/entities/resource_file.entity';
+import { ResourceImageEntity } from '../resource/entities/resource_image.entity';
+import { ResourceTheoryEntity } from '../resource/entities/resource_theory.entity';
 
 @Module({
   imports: [
@@ -39,9 +45,14 @@ import { ResourceEntity } from '../resource/entities/resource.entity';
       IoTProjectEntity,
       IoTObjectEntity,
       ChallengeEntity,
+      ResourceChallengeEntity,
+      ResourceVideoEntity,
+      ResourceFileEntity,
+      ResourceImageEntity,
+      ResourceTheoryEntity,
     ]),
   ],
   controllers: [CourseController],
-  providers: [CourseService, UserService],
+  providers: [CourseService, UserService, ResourceService],
 })
 export class CourseModule {}

@@ -1,4 +1,16 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+  UseInterceptors,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { Auth } from '../../utils/decorators/auth.decorator';
 import { Course } from '../../utils/decorators/course.decorator';
 import { User } from '../../utils/decorators/user.decorator';
@@ -19,6 +31,8 @@ import { ActivityEntity } from './entities/activity.entity';
 import { CourseEntity } from './entities/course.entity';
 import { CourseElementEntity } from './entities/course_element.entity';
 import { UpdateCourseElementDTO } from './dtos/UpdateCourseElement.dto';
+import { AddResourceDTO } from './dtos/AddResource.dto';
+import { ResourceService } from '../resource/resource.service';
 
 /**
  * All the routes to create/update/delete/get a course or it's content (CourseElements)
@@ -28,7 +42,11 @@ import { UpdateCourseElementDTO } from './dtos/UpdateCourseElement.dto';
 @Controller('courses')
 @UseInterceptors(DTOInterceptor)
 export class CourseController {
-  constructor(private readonly courseService: CourseService, private readonly userService: UserService) {}
+  constructor(
+    private readonly courseService: CourseService,
+    private readonly userService: UserService,
+    private readonly resourceService: ResourceService,
+  ) {}
 
   /**
    * Route to create a course as a professor. Professor only
@@ -199,6 +217,27 @@ export class CourseController {
   ) {
     const activity = await this.courseService.findActivity(course.id, activityId);
     return await this.courseService.updateActivity(activity, updateActivityDTO);
+  }
+
+  /**
+   * Route to add a resource to an activity by it's id. Must be creator of the course
+   * @param course Course found with the id in the url
+   * @param activityId Id of the activity to add the resource in
+   * @returns The newly updated activity
+   */
+  @Patch(':id/activities/:activityId')
+  @Auth(Role.PROFESSOR, Role.STAFF)
+  @UseGuards(CourseProfessor)
+  async addResourceToActivity(
+    @Course() course: CourseEntity,
+    @Param('activityId') activityId: string,
+    @Body() addResourceDTO: AddResourceDTO,
+    @User() professor: ProfessorEntity,
+  ) {
+    const activity = await this.courseService.findActivity(course.id, activityId);
+    const resource = await this.resourceService.findOne(addResourceDTO.resourceId);
+    if (resource.creator.id !== professor.id) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    return await this.courseService.addResourceToActivity(activity, resource);
   }
 
   /**

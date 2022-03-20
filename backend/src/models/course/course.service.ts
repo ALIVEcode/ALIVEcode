@@ -15,6 +15,7 @@ import { ActivityVideoEntity } from './entities/activities/activity_video.entity
 import { CreateActivityDTO } from './dtos/CreateActivities.dto';
 import { UpdateCourseElementDTO } from './dtos/UpdateCourseElement.dto';
 import { CreateSectionDTO } from './dtos/CreateSection.dto';
+import { ResourceEntity } from '../resource/entities/resource.entity';
 
 /**
  * All the methods to communicate to the database. To create/update/delete/get
@@ -348,6 +349,21 @@ export class CourseService {
    */
   async updateActivity(activity: ActivityEntity, updateActivityDTO: Partial<ActivityEntity>) {
     return await this.activityRepository.save({ id: activity.id, ...updateActivityDTO });
+  }
+
+  /**
+   * Add a resource to an activity
+   * @param activity Course found with the id in the url
+   * @param activityId Id of the activity to add the resource in
+   * @returns The newly updated activity
+   */
+  async addResourceToActivity(activity: ActivityEntity, resource: ResourceEntity) {
+    // Check if the activity accept this type of resource
+    if (!activity.allowedResources.includes(resource.type))
+      throw new HttpException('Cannot add this type of resource to this activity', HttpStatus.BAD_REQUEST);
+
+    activity.resource = resource;
+    return await this.activityRepository.save(activity);
   }
 
   /*****-------End of Activity methods-------*****/

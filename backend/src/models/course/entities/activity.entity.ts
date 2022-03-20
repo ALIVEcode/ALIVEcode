@@ -1,8 +1,9 @@
 import { Exclude } from 'class-transformer';
 import { Entity, PrimaryGeneratedColumn, TableInheritance, Column, OneToOne, JoinColumn } from 'typeorm';
-import { IsEmpty, IsNotEmpty, IsOptional, Length } from 'class-validator';
+import { IsEmpty, IsOptional } from 'class-validator';
 import { CourseElementEntity } from './course_element.entity';
 import { Descendant } from 'slate';
+import { ResourceEntity, RESOURCE_TYPE } from '../../resource/entities/resource.entity';
 
 export class ActivityContent {
   body: string;
@@ -20,7 +21,7 @@ export enum ACTIVITY_TYPE {
  */
 @Entity()
 @TableInheritance({ column: 'type' })
-export class ActivityEntity {
+export abstract class ActivityEntity {
   /** Id of the activity (0, 1, 2, ..., n) */
   @PrimaryGeneratedColumn('increment')
   @Exclude({ toClassOnly: true })
@@ -47,4 +48,12 @@ export class ActivityEntity {
   @OneToOne(() => CourseElementEntity, el => el.activity, { onDelete: 'CASCADE', cascade: true })
   @JoinColumn()
   courseElement: CourseElementEntity;
+
+  /** Id of the referenced resource */
+  @Column({ type: 'uuid', nullable: true })
+  resourceId: string;
+
+  abstract readonly allowedResources: RESOURCE_TYPE[];
+
+  abstract resource: ResourceEntity;
 }

@@ -1,6 +1,7 @@
-import { ChildEntity, Column, JoinColumn, ManyToOne } from 'typeorm';
+import { ChildEntity, JoinColumn, ManyToOne } from 'typeorm';
 import { ACTIVITY_TYPE, ActivityEntity } from '../activity.entity';
 import { ResourceChallengeEntity } from '../../../resource/entities/resource_challenge.entity';
+import { RESOURCE_TYPE } from '../../../resource/entities/resource.entity';
 
 /**
  * Activity of type challenge model in the database
@@ -13,7 +14,6 @@ export class ActivityChallengeEntity extends ActivityEntity {
   @JoinColumn({ name: 'resourceId' })
   resource: ResourceChallengeEntity;
 
-  /** Id of the referenced resource */
-  @Column({ type: 'uuid', nullable: true })
-  resourceId: string;
+  /** Allowed types of resources inside the challenge */
+  readonly allowedResources: RESOURCE_TYPE[] = [RESOURCE_TYPE.VIDEO];
 }

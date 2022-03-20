@@ -369,7 +369,7 @@ const Course = () => {
 				update();
 				setLoading(false);
 			} catch (err) {
-				navigate('/');
+				navigate(-1);
 				return alert.error(t('error.not_found', { obj: t('msg.course') }));
 			}
 		};

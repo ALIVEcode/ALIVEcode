@@ -9,6 +9,7 @@ import ActivityChallenge from './ActivityChallenge';
 import RichTextEditor from '../../RichTextComponents/RichTextEditor/RichTextEditor';
 import ButtonAdd from './ButtonAdd';
 import { Descendant } from 'slate';
+import { ActivityChallenge as ActivityChallengeModel } from '../../../Models/Course/activities/activity_challenge.entity';
 
 /**
  * Shows the opened activity. Renders different component depending on the type of the activity opened.
@@ -33,7 +34,6 @@ const Activity = ({ activity }: { activity: ActivityModel }) => {
 	);
 
 	if (!activity) {
-		navigate(-1);
 		return <></>;
 	}
 
@@ -44,7 +44,9 @@ const Activity = ({ activity }: { activity: ActivityModel }) => {
 	const renderSpecificActivity = () => {
 		switch (activity.type) {
 			case ACTIVITY_TYPE.CHALLENGE:
-				return <ActivityChallenge activity={activity} />;
+				return (
+					<ActivityChallenge activity={activity as ActivityChallengeModel} />
+				);
 			default:
 				return (
 					<div className="w-full h-full flex justify-center items-center">

@@ -18,7 +18,7 @@ const CourseBody = () => {
 					<label>Open an activity to get started</label>
 				</div>
 			) : (
-				<Activity />
+				<Activity activity={activity} />
 			)}
 		</>
 	);

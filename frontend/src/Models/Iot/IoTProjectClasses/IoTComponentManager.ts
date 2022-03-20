@@ -5,7 +5,6 @@ import { IoTSocket } from './IoTSocket';
 
 export class IoTComponentManager {
 	private project: IoTProject;
-	private components: Array<IoTComponent>;
 	private onRequestRender: (
 		saveLayout: boolean,
 		layout: Array<IoTComponent>,
@@ -26,8 +25,8 @@ export class IoTComponentManager {
 	}
 
 	public setNewLayout(layout: IoTProjectLayout) {
-		this.components = layout.components;
-		this.components = this.components.map(c => {
+		this.project.layout.components = layout.components;
+		this.project.layout.components = this.project.layout.components.map(c => {
 			c.setComponentManager(this);
 			return c;
 		});
@@ -49,22 +48,24 @@ export class IoTComponentManager {
 	}
 
 	public getComponent(id: string): IoTComponent | undefined {
-		return this.components.find(c => c.id === id);
+		return this.project.layout.components.find(c => c.id === id);
 	}
 
 	public getComponents(): Array<IoTComponent> {
-		return this.components;
+		return this.project.layout.components;
 	}
 
 	public addComponent(component: IoTComponent) {
 		component.setComponentManager(this);
-		this.components.push(component);
+		this.project.layout.components.push(component);
 		this.render();
 		return component;
 	}
 
 	public removeComponent(component: IoTComponent) {
-		this.components = this.components.filter(c => c !== component);
+		this.project.layout.components = this.project.layout.components.filter(
+			c => c !== component,
+		);
 		this.render();
 		return component;
 	}
@@ -76,7 +77,7 @@ export class IoTComponentManager {
 	public render(saveLayout?: boolean) {
 		this.onRequestRender(
 			saveLayout === undefined ? true : saveLayout,
-			this.components,
+			this.project.layout.components,
 		);
 	}
 }

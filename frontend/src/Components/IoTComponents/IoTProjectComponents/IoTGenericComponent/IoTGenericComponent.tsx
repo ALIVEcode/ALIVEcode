@@ -19,6 +19,8 @@ import { IoTLabel } from '../../../../Models/Iot/IoTProjectClasses/Components/Io
 import IoTLabelComponent from '../IoTLabelComponent/IoTLabelComponent';
 import IoTBuzzerComponent from '../IoTBuzzerComponent/IoTBuzzerComponent';
 import { IoTBuzzer } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTBuzzer';
+import IoTTrafficLightComponent from '../IoTTrafficLightComponent/IoTTrafficLightComponent';
+import { IoTTrafficLight } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTTrafficLight';
 
 const IoTGenericComponent = ({
 	component,
@@ -45,6 +47,10 @@ const IoTGenericComponent = ({
 				return <IoTLabelComponent component={component as IoTLabel} />;
 			case IOT_COMPONENT_TYPE.BUZZER:
 				return <IoTBuzzerComponent component={component as IoTBuzzer} />;
+			case IOT_COMPONENT_TYPE.TRAFFIC_LIGHT:
+				return (
+					<IoTTrafficLightComponent component={component as IoTTrafficLight} />
+				);
 		}
 	};
 
@@ -54,10 +60,16 @@ const IoTGenericComponent = ({
 			selectable={selectable ? 1 : 0}
 			onMouseOver={() => !isHovering && setIsHovering(true)}
 			onMouseLeave={() => isHovering && setIsHovering(false)}
+			error={!component.isRefValueValid()}
 			onClick={() => selectable && onSelect && onSelect()}
 		>
 			<div className="component">
 				<label className="component-name">{component.name}</label>
+				{!component.isRefValueValid() && (
+					<i>
+						<div className="font-bold text-red-600">ERROR</div>
+					</i>
+				)}
 				{renderSpecificComponent()}
 				{setEditingComponent && (
 					<FontAwesomeIcon

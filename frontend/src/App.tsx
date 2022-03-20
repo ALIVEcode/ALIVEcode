@@ -28,6 +28,9 @@ import { PlaySocket } from './Pages/Level/PlaySocket';
 import Navbar from './Components/MainComponents/Navbar/Navbar';
 import { useLocation } from 'react-router';
 import { hot } from 'react-hot-loader/root';
+import Modal from './Components/UtilsComponents/Modal/Modal';
+import NameMigrationForm from './Components/SiteStatusComponents/NameMigrationForm/NameMigrationForm';
+import { useForceUpdate } from './state/hooks/useForceUpdate';
 
 type GlobalStyleProps = {
 	theme: Theme;
@@ -88,21 +91,33 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const App = () => {
-	const [user, setUser] = useState<Student | Professor | null>(null);
+	const [user, setUser] = useState<User | null>(null);
 	const [playSocket, setPlaySocket] = useState<PlaySocket | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [theme, setTheme] = useState(themes.light);
 	const [maintenance, setMaintenance] = useState<Maintenance | null>(null);
+	const [oldStudentNameMigrationOpen, setOldStudentNameMigrationOpen] =
+		useState(true);
 
 	const { routes } = useRoutes();
 	const { t } = useTranslation();
 	const alert = useAlert();
 	const { pathname } = useLocation();
+	const forceUpdate = useForceUpdate();
 
 	const navigate = useNavigate();
+
+	const handleSetUser = useCallback(
+		(user: User | null, doesForceUpdate?: boolean) => {
+			setUser(user);
+			doesForceUpdate && forceUpdate();
+		},
+		[forceUpdate],
+	);
+
 	const providerValue = useMemo(
-		() => ({ user, setUser, maintenance, playSocket }),
-		[user, setUser, maintenance, playSocket],
+		() => ({ user, setUser: handleSetUser, maintenance, playSocket }),
+		[user, handleSetUser, maintenance, playSocket],
 	);
 
 	const handleSetTheme = (theme: Theme) => {
@@ -231,11 +246,19 @@ const App = () => {
 							/>
 						)}
 						<Navbar handleLogout={async () => await logout()} />
-						{/**
-							<BackArrow
-								maintenancePopUp={maintenance != null && !maintenance.hidden}
-							/>
-							 */}
+						{user instanceof Student && (!user.lastName || !user.firstName) && (
+							<Modal
+								open={oldStudentNameMigrationOpen}
+								title={t('msg.auth.name_migration.title')}
+								setOpen={setOldStudentNameMigrationOpen}
+								size="sm"
+								hideCloseButton
+								hideFooter
+								unclosable
+							>
+								<NameMigrationForm setOpen={setOldStudentNameMigrationOpen} />
+							</Modal>
+						)}
 					</UserContext.Provider>
 				)}
 			</ThemeContext.Provider>

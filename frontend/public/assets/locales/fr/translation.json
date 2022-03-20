@@ -72,22 +72,17 @@
 			"taken": "Cette addresse courriel est déjà prise",
 			"info": "Nous ne partagerons pas votre adresse courriel"
 		},
-		"name": {
-			"label": "Nom",
-			"placeholder": "Enric",
-			"required": "Un pseudonyme est requis",
-			"taken": "Ce pseudonyme est déjà pris",
-			"pattern": "Le pseudonyme doit contenir uniquement des lettres, des chiffres et des _"
-		},
 		"firstName": {
 			"label": "Prénom",
 			"placeholder": "Enric",
-			"required": "Votre prénom est requis"
+			"required": "Votre prénom est requis",
+			"pattern": "Votre prénom doit contenir uniquement des lettres et des tirets"
 		},
 		"lastName": {
 			"label": "Nom",
 			"placeholder": "Soldevila",
-			"required": "Votre nom est requis"
+			"required": "Votre nom de famille est requis",
+			"pattern": "Votre nom de famille doit contenir uniquement des lettres et des tirets"
 		},
 		"scolarity": {
 			"label": "Niveau scholaire",
@@ -152,7 +147,13 @@
 			"signup_student": "Compte étudiant",
 			"signout": "Se déconnecter",
 			"already_registered": "Tu as déjà un compte ?",
-			"account_required": "Il te faut un compte pour faire ça"
+			"account_required": "Il te faut un compte pour faire ça",
+			"name_migration": {
+				"title": "Changement de la façon dont les étudiants sont identifiés",
+				"desc": "Chaque étudiant doit maintenant posséder un prénom ainsi qu'un nom de famille afin d'être plus facilement identifié. De plus, votre nom n'est plus unique.",
+				"please": "Veuillez s'il vous plait prendre le temps de choisir un nouveau nom.",
+				"submit": "Confirmer votre nouveau nom"
+			}
 		},
 		"section": {
 			"alive": "ALIVE Play",

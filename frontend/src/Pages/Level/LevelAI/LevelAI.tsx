@@ -266,6 +266,7 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 						{editMode ? (
 							/* Interface du code avec les tabs */
 							<LineInterface
+								key="edit-mode"
 								hasTabs
 								tabs={[
 									{
@@ -292,6 +293,7 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 						) : (
 							/* Interface de code sans les tabs */
 							<LineInterface
+								key="play-mode"
 								initialContent={initialCode}
 								handleChange={lineInterfaceContentChanges}
 							/>
@@ -302,9 +304,7 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 							Contains the graph and the console
 					*/}
 					<div className="flex flex-col w-1/2">
-						<div
-							className="h-3/5 w-full flex flex-row data-section"
-						>
+						<div className="h-3/5 w-full flex flex-row data-section">
 							<div className="w-1/3 h-full">
 								<LevelTable
 									data={data}

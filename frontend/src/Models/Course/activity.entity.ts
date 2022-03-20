@@ -1,8 +1,8 @@
 import { faBook, faCode, faVideo } from '@fortawesome/free-solid-svg-icons';
 import { Exclude, Type } from 'class-transformer';
-import { ResourceChallenge } from '../Resource/resource_challenge.entity';
 import { CourseElement } from './course_element.entity';
 import { Descendant } from 'slate';
+import { Resource } from '../Resource/resource.entity';
 
 export enum ACTIVITY_TYPE {
 	THEORY = 'TH',
@@ -14,7 +14,7 @@ export enum ACTIVITY_TYPE {
  * Activity model in the database
  * @author Enric Soldevila, Mathis Laroche
  */
-export class Activity {
+export abstract class Activity {
 	/** Id of the activity (0, 1, 2, ..., n) */
 	@Exclude({ toPlainOnly: true })
 	id: number;
@@ -50,17 +50,6 @@ export class Activity {
 				return faVideo;
 		}
 	}
-}
 
-/**
- * Activity of type Challenge model in the database
- * @author Enric Solevila
- */
-export class ActivityChallenge extends Activity {
-	/** Resource */
-	@Type(() => ResourceChallenge)
-	resource?: ResourceChallenge;
-
-	/** Id of the resource resource */
-	resourceId?: string;
+	abstract resource: Resource;
 }

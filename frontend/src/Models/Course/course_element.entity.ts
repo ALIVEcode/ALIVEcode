@@ -6,11 +6,12 @@ import {
 	Type,
 	plainToInstance,
 } from 'class-transformer';
-import { Activity, ActivityChallenge, ACTIVITY_TYPE } from './activity.entity';
+import { Activity, ACTIVITY_TYPE } from './activity.entity';
 import { Course } from './course.entity';
 import { Section } from './section.entity';
 import { ActivityTheory } from './activities/activity_theory.entity';
 import { ActivityVideo } from './activities/activity_video.entity';
+import { ActivityChallenge } from './activities/activity_challenge.entity';
 
 export type CourseContent = Activity | Section;
 

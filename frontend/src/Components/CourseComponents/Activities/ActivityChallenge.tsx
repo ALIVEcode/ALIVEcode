@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import Challenge from '../../../Pages/Challenge/Challenge';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
+import { ActivityChallenge as ActivityChallengeModel } from '../../../Models/Course/activities/activity_challenge.entity';
 import api from '../../../Models/api';
-import { ActivityChallenge as ActivityChallengeModel } from '../../../Models/Course/activity.entity';
 
 /**
  * Shows an activity of type Level

@@ -8,7 +8,6 @@ import {
 import { CompileDTO } from './ASModels';
 import { AsScript } from './AsScript/as-script.entity';
 import { Classroom } from './Classroom/classroom.entity';
-import { Activity } from './Course/activity.entity';
 import { Course } from './Course/course.entity';
 import { CourseContent, CourseElement } from './Course/course_element.entity';
 import { Section } from './Course/section.entity';
@@ -35,17 +34,14 @@ import { Category } from './Quiz/categories-quiz.entity';
 import { QuestionForm } from './Quiz/questionForm.entity';
 import { Quiz } from './Quiz/quiz.entity';
 import { QuizForm } from './Quiz/quizForm.entity';
-import {
-	DifferentResources,
-	Resource,
-	RESOURCE_TYPE,
-} from './Resource/resource.entity';
+import { Resource } from './Resource/resource.entity';
 import { Result } from './Social/result.entity';
 import { Topics } from './Social/topics.entity';
 import { Professor, Student } from './User/user.entity';
 import { loadObj } from './utils';
 import { GenericResourceTransformer } from './Resource/transformer/GenericResourceTransformer';
 import { MenuResourceCreationDTO } from '../Components/Resources/MenuResourceCreation/menuResourceCreationTypes';
+import { Activity } from './Course/activity.entity';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;

@@ -51,9 +51,6 @@ export class Challenge extends CreatedByUser {
 
 	tags: CHALLENGE_TAG[];
 
-	@Type(() => Activity)
-	activities?: Activity[];
-
 	getTypeDisplay() {
 		if (this.type === CHALLENGE_TYPE.ALIVE) return 'Car coding';
 		if (this.type === CHALLENGE_TYPE.CODE) return 'Coding';

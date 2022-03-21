@@ -6,8 +6,8 @@ import { ActivityChallenge as ActivityChallengeModel } from '../../../Models/Cou
 import api from '../../../Models/api';
 
 /**
- * Shows an activity of type Level
- * @returns The activity of type Level
+ * Shows an activity of type Challenge
+ * @returns The activity of type Challenge
  *
  * @author Enric Soldevila
  */

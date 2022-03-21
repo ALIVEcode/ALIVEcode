@@ -1,5 +1,5 @@
 import { faBook, faCode, faVideo } from '@fortawesome/free-solid-svg-icons';
-import { Exclude, Type } from 'class-transformer';
+import { Exclude, Expose, Type } from 'class-transformer';
 import { CourseElement } from './course_element.entity';
 import { Descendant } from 'slate';
 import { Resource } from '../Resource/resource.entity';

@@ -356,6 +356,7 @@ const Course = () => {
 					id,
 				});
 				const elements = await api.db.courses.getElements({ courseId: id });
+				console.log(elements);
 
 				for (const el of elements) {
 					if (!course.current) {

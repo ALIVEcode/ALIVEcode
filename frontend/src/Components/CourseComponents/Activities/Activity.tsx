@@ -11,6 +11,8 @@ import { Descendant } from 'slate';
 import { ActivityChallenge as ActivityChallengeModel } from '../../../Models/Course/activities/activity_challenge.entity';
 import Button from '../../UtilsComponents/Buttons/Button';
 import { useTranslation } from 'react-i18next';
+import { ActivityVideo as ActivityVideoModel } from '../../../Models/Course/activities/activity_video.entity';
+import ActivityVideo from './ActivityVideo';
 
 /**
  * Shows the opened activity. Renders different component depending on the type of the activity opened.
@@ -50,6 +52,12 @@ const Activity = ({ activity }: { activity: ActivityModel }) => {
 				return (
 					<ActivityChallenge activity={activity as ActivityChallengeModel} />
 				);
+			case ACTIVITY_TYPE.THEORY:
+				return (
+					<ActivityChallenge activity={activity as ActivityChallengeModel} />
+				);
+			case ACTIVITY_TYPE.VIDEO:
+				return <ActivityVideo activity={activity as ActivityVideoModel} />;
 			default:
 				return (
 					<div className="w-full h-full flex justify-center items-center">

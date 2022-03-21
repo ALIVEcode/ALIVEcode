@@ -52,9 +52,12 @@ export class CourseElement {
 			return activity;
 		}
 
-		if (activity.type === ACTIVITY_TYPE.CHALLENGE) {
+		if (activity.type === ACTIVITY_TYPE.CHALLENGE)
 			return plainToInstance(ActivityChallenge, activity);
-		}
+		if (activity.type === ACTIVITY_TYPE.VIDEO)
+			return plainToInstance(ActivityVideo, activity);
+		if (activity.type === ACTIVITY_TYPE.THEORY)
+			return plainToInstance(ActivityTheory, activity);
 
 		return plainToInstance(Activity, activity);
 	})

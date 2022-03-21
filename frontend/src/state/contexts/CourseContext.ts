@@ -47,6 +47,7 @@ export type CourseContextValues = {
 	) => Promise<void>;
 	openSectionForm: (sectionParent?: Section) => void;
 	openActivityForm: (sectionParent?: Section) => void;
+	setOpenModalImportResource: (state: boolean) => void;
 };
 
 export const CourseContext = createContext<CourseContextValues>({
@@ -77,4 +78,5 @@ export const CourseContext = createContext<CourseContextValues>({
 	loadSectionElements: async (section: Section) => {},
 	openSectionForm: () => {},
 	openActivityForm: () => {},
+	setOpenModalImportResource: () => {},
 });

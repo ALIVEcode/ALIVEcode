@@ -9,6 +9,8 @@ import RichTextEditor from '../../RichTextComponents/RichTextEditor/RichTextEdit
 import ButtonAdd from './ButtonAdd';
 import { Descendant } from 'slate';
 import { ActivityChallenge as ActivityChallengeModel } from '../../../Models/Course/activities/activity_challenge.entity';
+import Button from '../../UtilsComponents/Buttons/Button';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Shows the opened activity. Renders different component depending on the type of the activity opened.
@@ -19,7 +21,9 @@ import { ActivityChallenge as ActivityChallengeModel } from '../../../Models/Cou
  * @author Enric Soldevila, Mathis Laroche
  */
 const Activity = ({ activity }: { activity: ActivityModel }) => {
-	const { course, updateActivity } = useContext(CourseContext);
+	const { course, updateActivity, setOpenModalImportResource } =
+		useContext(CourseContext);
+	const { t } = useTranslation();
 
 	const update = useCallback(
 		(what: 'header' | 'footer') => {
@@ -73,7 +77,31 @@ const Activity = ({ activity }: { activity: ActivityModel }) => {
 						<ButtonAdd what="header" activity={activity} />
 					)}
 				</div>
-				<div className="py-5">{renderSpecificActivity()}</div>
+				<div className="py-5">
+					{activity.resource ? (
+						<div className="flex flex-col items-center gap-4">
+							{renderSpecificActivity()}
+							<Button
+								variant="danger"
+								onClick={() => console.log('Not Implemented')}
+							>
+								{t('course.activity.remove_resource')}
+							</Button>
+						</div>
+					) : (
+						<div className="flex flex-col items-center gap-4">
+							<Button
+								variant="primary"
+								onClick={() => setOpenModalImportResource(true)}
+							>
+								{t('course.activity.import_resource')}
+							</Button>
+							<Button variant="secondary">
+								{t('course.activity.create_resource')}
+							</Button>
+						</div>
+					)}
+				</div>
 				<div className=" flex justify-center items-center">
 					{activity.footer !== null ? (
 						<div className="text-sm border-t border-dotted py-3 border-[color:var(--bg-shade-four-color)] w-full">

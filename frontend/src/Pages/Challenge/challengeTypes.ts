@@ -27,6 +27,9 @@ type StyledProps = {
 };
 
 export const StyledChallenge = styled.div`
+	width: 100%;
+	height: 100%;
+
 	.row {
 		padding: 0px;
 		margin: 0px;

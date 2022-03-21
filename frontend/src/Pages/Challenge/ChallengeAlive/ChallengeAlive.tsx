@@ -1,7 +1,4 @@
-import {
-	ChallengeAliveProps,
-	StyledAliveChallenge,
-} from './challengeAliveTypes';
+import { ChallengeAliveProps } from './challengeAliveTypes';
 import { useEffect, useContext, useMemo } from 'react';
 import LineInterface from '../../../Components/ChallengeComponents/LineInterface/LineInterface';
 import { UserContext } from '../../../state/contexts/UserContext';
@@ -81,7 +78,7 @@ const ChallengeAlive = ({ initialCode }: ChallengeAliveProps) => {
 	if (!challenge) return <LoadingScreen></LoadingScreen>;
 
 	return (
-		<StyledAliveChallenge>
+		<div className="w-full h-full">
 			<div className="h-full flex flex-row">
 				{/* Left Side of screen */}
 				<div className="w-1/2 h-full flex flex-col">
@@ -162,7 +159,7 @@ const ChallengeAlive = ({ initialCode }: ChallengeAliveProps) => {
 					</div>
 				</div>
 			</div>
-		</StyledAliveChallenge>
+		</div>
 	);
 };
 

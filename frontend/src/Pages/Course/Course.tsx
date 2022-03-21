@@ -10,6 +10,7 @@ import CreateSectionMenu from '../../Components/CourseComponents/CourseSection/C
 import CreationActivityMenu from '../../Components/CourseComponents/CreationActivityMenu/CreationActivityMenu';
 import FormInput from '../../Components/UtilsComponents/FormInput/FormInput';
 import LoadingScreen from '../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
+import Modal from '../../Components/UtilsComponents/Modal/Modal';
 import api from '../../Models/api';
 import { Activity } from '../../Models/Course/activity.entity';
 import { Course as CourseModel } from '../../Models/Course/course.entity';
@@ -25,6 +26,7 @@ import {
 } from '../../state/contexts/CourseContext';
 import { UserContext } from '../../state/contexts/UserContext';
 import { useForceUpdate } from '../../state/hooks/useForceUpdate';
+import ResourceMenu from '../ResourceMenu/ResourceMenu';
 import { SwitchCourseTabReducer } from './courseTypes';
 
 /**
@@ -52,6 +54,7 @@ const Course = () => {
 
 	const [openModalSection, setOpenModalSection] = useState(false);
 	const [openModalActivity, setOpenModalActivity] = useState(false);
+	const [openModalImportResource, setOpenModalImportResource] = useState(false);
 	const [sectionParent, setSectionParent] = useState<Section>();
 	const [openedActivity, setOpenedActivity] = useState<Activity>();
 
@@ -337,6 +340,7 @@ const Course = () => {
 		openActivityForm,
 		openSectionForm,
 		openActivity,
+		setOpenModalImportResource,
 		closeOpenedActivity,
 		openedActivity,
 	};
@@ -435,6 +439,28 @@ const Course = () => {
 				setOpen={setOpenModalActivity}
 				sectionParent={sectionParent}
 			/>
+			<Modal
+				title={t('course.resource.import')}
+				size="xl"
+				setOpen={setOpenModalImportResource}
+				open={openModalImportResource}
+			>
+				<ResourceMenu
+					mode="import"
+					onSelectResource={async resource => {
+						if (!course.current || !openedActivity) return;
+						await api.db.courses.addResourceInActivity(
+							course.current,
+							openedActivity,
+							resource,
+						);
+						console.log(openedActivity);
+						console.log(resource);
+						openedActivity.resource = resource;
+						setOpenModalImportResource(false);
+					}}
+				/>
+			</Modal>
 		</CourseContext.Provider>
 	);
 };

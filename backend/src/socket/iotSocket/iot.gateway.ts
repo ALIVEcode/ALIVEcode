@@ -155,7 +155,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   async update(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTUpdateDocumentRequestFromObject) {
     if (!payload.projectId || payload.fields == null || typeof payload.fields !== 'object')
       throw new WsException('Bad payload');
-    this.objectPermissionFilter(socket, payload.projectId);
+    await this.objectPermissionFilter(socket, payload.projectId);
 
     await this.iotProjectService.updateDocumentFields(payload.projectId, payload.fields);
   }
@@ -190,7 +190,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   @SubscribeMessage('send_route')
   async send_route(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTRouteRequestFromObject) {
     if (!payload.routePath || !payload.data || !payload.projectId) throw new WsException('Bad payload');
-    this.objectPermissionFilter(socket, payload.projectId);
+    await this.objectPermissionFilter(socket, payload.projectId);
 
     const { route } = await this.iotProjectService.findOneWithRoute(payload.projectId, payload.routePath);
     await this.iotProjectService.sendRoute(route, payload.data);
@@ -203,7 +203,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     if (!payload.projectId || !payload.data) throw new WsException('Bad payload');
     const client = Client.getClientBySocket(socket);
     if (client instanceof ObjectClient) {
-      this.objectPermissionFilter(socket, payload.projectId);
+      await this.objectPermissionFilter(socket, payload.projectId);
     } else {
       throw new HttpException('Not Implemented', HttpStatus.NOT_IMPLEMENTED);
     }
@@ -229,7 +229,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     if (!obj) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
 
     try {
-      this.objectPermissionFilter(obj.getSocket(), payload.projectId);
+      await this.objectPermissionFilter(obj.getSocket(), payload.projectId);
     } catch {
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     }
@@ -245,7 +245,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     if (!obj) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
 
     try {
-      this.objectPermissionFilter(obj.getSocket(), payload.projectId);
+      await this.objectPermissionFilter(obj.getSocket(), payload.projectId);
     } catch {
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     }

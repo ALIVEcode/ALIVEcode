@@ -63,6 +63,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     WatcherClient.clients = WatcherClient.watchers.filter(w => w.getSocket() !== socket);
   }
 
+  @UseFilters(new IoTExceptionFilter())
   async objectPermissionFilter(socket: WebSocket, projectId: string) {
     const object = ObjectClient.getClientBySocket(socket);
     if (!object) throw new WsException('Forbidden');

@@ -305,7 +305,9 @@
 			"empty": "This activity is empty.",
 			"no_activity": "Open an activity to get started.",
 			"new": "Add an activity",
-			"new_name": "Activity #{{num}}"
+			"new_name": "Activity #{{num}}",
+			"import_resource": "Import a resource",
+			"create_resource": "Create a new resource"
 		},
 		"form": {
 			"create": "Create a course",

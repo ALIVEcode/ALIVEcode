@@ -14,6 +14,6 @@ export class ActivityChallengeEntity extends ActivityEntity {
   @JoinColumn({ name: 'resourceId' })
   resource: ResourceChallengeEntity;
 
-  /** Allowed types of resources inside the challenge */
-  readonly allowedResources: RESOURCE_TYPE[] = [RESOURCE_TYPE.VIDEO];
+  /** Allowed types of resources inside the activity */
+  readonly allowedResources: RESOURCE_TYPE[] = [RESOURCE_TYPE.CHALLENGE];
 }

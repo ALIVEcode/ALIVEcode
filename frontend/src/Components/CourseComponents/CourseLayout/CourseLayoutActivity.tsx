@@ -5,13 +5,7 @@ import Activity from '../Activities/Activity';
 import { useTranslation } from 'react-i18next';
 import Modal from '../../UtilsComponents/Modal/Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-	faArrowsAlt,
-	faExpand,
-	faExpandAlt,
-	faExpandArrowsAlt,
-} from '@fortawesome/free-solid-svg-icons';
-import activity from '../Activities/Activity';
+import { faExpandAlt } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Useful component to show an activity (currently empty)
@@ -36,11 +30,11 @@ const CourseLayoutActivity = ({ courseElement }: CourseLayoutActivityProps) => {
 			</div>
 
 			<Modal
+				size="xl"
 				open={openActivity}
 				setOpen={setOpenActivity}
 				icon={activity.icon}
 				centered
-				size="lg"
 				hideTitle
 				hideFooter
 				closeCross

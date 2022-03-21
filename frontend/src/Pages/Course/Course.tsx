@@ -26,7 +26,6 @@ import {
 import { UserContext } from '../../state/contexts/UserContext';
 import { useForceUpdate } from '../../state/hooks/useForceUpdate';
 import { SwitchCourseTabReducer } from './courseTypes';
-import { plainToInstance } from 'class-transformer';
 
 /**
  * Course page that shows the content of a course

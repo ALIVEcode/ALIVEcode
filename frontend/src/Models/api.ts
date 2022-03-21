@@ -228,13 +228,23 @@ const api = {
 			deleteActivity: apiDelete(
 				'courses/:courseId/sections/:sectionId/activities/:activityId',
 			),
+			async addResourceInActivity(
+				course: Course,
+				activity: Activity,
+				resource: Resource,
+			) {
+				await axios.post(
+					`courses/${course.id}/activities/${activity.id}/addResource`,
+					{ resourceId: resource.id },
+				);
+			},
 			delete: apiDelete('courses/:id'),
 			async getActivities(courseId: string, sectionId: number) {
 				return (
 					await axios.get(
 						`courses/${courseId}/sections/${sectionId}/activities`,
 					)
-				).data.map((c: any) => plainToClass(Activity, c));
+				).data.map((c: any) => plainToInstance(Activity, c));
 			},
 			async getActivityContent(
 				courseId: string,

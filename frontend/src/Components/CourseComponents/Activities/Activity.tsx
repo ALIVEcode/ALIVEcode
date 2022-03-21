@@ -1,6 +1,5 @@
 import { useCallback, useContext } from 'react';
 import { CourseContext } from '../../../state/contexts/CourseContext';
-import { useNavigate } from 'react-router';
 import {
 	Activity as ActivityModel,
 	ACTIVITY_TYPE,
@@ -21,7 +20,6 @@ import { ActivityChallenge as ActivityChallengeModel } from '../../../Models/Cou
  */
 const Activity = ({ activity }: { activity: ActivityModel }) => {
 	const { course, updateActivity } = useContext(CourseContext);
-	const navigate = useNavigate();
 
 	const update = useCallback(
 		(what: 'header' | 'footer') => {
@@ -30,6 +28,7 @@ const Activity = ({ activity }: { activity: ActivityModel }) => {
 				await updateActivity(activity, { [what]: value });
 			};
 		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[activity, course],
 	);
 

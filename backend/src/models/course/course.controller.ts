@@ -225,7 +225,7 @@ export class CourseController {
    * @param activityId Id of the activity to add the resource in
    * @returns The newly updated activity
    */
-  @Patch(':id/activities/:activityId')
+  @Post(':id/activities/:activityId/addResource')
   @Auth(Role.PROFESSOR, Role.STAFF)
   @UseGuards(CourseProfessor)
   async addResourceToActivity(

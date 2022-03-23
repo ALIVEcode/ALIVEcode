@@ -49,17 +49,17 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   @WebSocketServer()
   server: Server;
 
-  private pingInterval: NodeJS.Timer;
-
   afterInit() {
     this.logger.log(`Initialized`);
 
     // Set the ping interval to ping each connected object (each 15 seconds)
-    this.pingInterval = setInterval(() => {
+    setInterval(() => {
       Client.clients.forEach(client => {
         // Client still hasn't responded to the ping, it is presumed dead
         if (!client.isAlive) {
           console.log('Client seems dead');
+          ObjectClient.objects = ObjectClient.objects.filter(obj => obj.getSocket() !== client.getSocket());
+          WatcherClient.clients = WatcherClient.watchers.filter(w => w.getSocket() !== client.getSocket());
           return client.getSocket().terminate();
         }
 

@@ -49,12 +49,37 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   @WebSocketServer()
   server: Server;
 
+  private pingInterval: NodeJS.Timer;
+
   afterInit() {
     this.logger.log(`Initialized`);
+
+    // Set the ping interval to ping each connected object (each 15 seconds)
+    this.pingInterval = setInterval(() => {
+      Client.clients.forEach(client => {
+        // Client still hasn't responded to the ping, it is presumed dead
+        if (!client.isAlive) {
+          console.log('Client seems dead');
+          return client.getSocket().terminate();
+        }
+
+        // Client is ping to see if it is still alive
+        console.log('Sending ping to client');
+        client.isAlive = false;
+        client.getSocket().ping();
+      });
+    }, 15000); // Each 15 secondes
   }
 
-  handleConnection() {
+  handleConnection(ws: WebSocket) {
     this.logger.log(`Client connected`);
+
+    /** Register pong action for client socket */
+    ws.on('pong', () => {
+      console.log('Received pong');
+      const client = Client.getClientBySocket(ws);
+      if (client) client.isAlive = true;
+    });
   }
 
   handleDisconnect(@ConnectedSocket() socket: WebSocket) {
@@ -105,8 +130,11 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   async connect_object(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: ObjectClientConnectPayload) {
     if (!payload.id) throw new WsException('Bad payload');
     if (WatcherClient.isSocketAlreadyWatcher(socket)) throw new WsException('Already connected as a watcher');
-    if (ObjectClient.getClientById(payload.id))
+    const alreadyConnectedObj = ObjectClient.getClientById(payload.id);
+    if (alreadyConnectedObj) {
+      alreadyConnectedObj.getSocket().ping(null, false, err => console.log(err));
       throw new WsException(`An IoTObject is already connected with the id "${payload.id}"`);
+    }
 
     // Checks if the object exists in the database and checks for permissions for projects
     let iotObject: IoTObjectEntity;

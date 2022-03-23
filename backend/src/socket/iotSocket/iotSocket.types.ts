@@ -93,11 +93,13 @@ export type IoTUpdateLayoutRequestToWatcher = {
 
 export class Client {
   static clients: Client[] = [];
+  public isAlive: boolean;
 
   constructor(private socket: WebSocket) {}
 
   register() {
     Client.clients.push(this);
+    this.isAlive = true;
   }
 
   getSocket() {

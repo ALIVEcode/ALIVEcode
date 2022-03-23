@@ -25,4 +25,5 @@ export interface ModalProps {
 	contentClassName?: string;
 	icon?: IconProp;
 	onShow?: () => void;
+	topBar?: JSX.Element;
 }

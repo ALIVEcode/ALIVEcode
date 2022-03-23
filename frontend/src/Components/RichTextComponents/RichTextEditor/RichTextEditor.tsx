@@ -15,6 +15,8 @@ import { RichTextEditorProps } from './richTextToolBarTypes';
 const RichTextEditor = ({ defaultText, onChange }: RichTextEditorProps) => {
 	const editor = useMemo(() => withReact(withHistory(createEditor())), []);
 	const { applyHotKey, applyStyle } = useTextEditor(editor);
+	const [editMode, setEditMode] = useState(false);
+
 	const [value, setValue] = useState<Descendant[]>(
 		defaultText ?? [
 			{
@@ -32,10 +34,9 @@ const RichTextEditor = ({ defaultText, onChange }: RichTextEditorProps) => {
 			},
 		],
 	);
-	const [mouseUp, setMouseUp] = useState(true);
 
 	return (
-		<div className="flex justify-center w-full h-full bg-[color:var(--background-color)]">
+		<div className={`flex bg-[color:var(--background-color)] `}>
 			<Slate
 				editor={editor}
 				value={value}
@@ -44,11 +45,17 @@ const RichTextEditor = ({ defaultText, onChange }: RichTextEditorProps) => {
 					onChange(value);
 				}}
 			>
-				{mouseUp && <RichTextToolBar />}
+				<RichTextToolBar />
 				<Editable
+					className={`rounded-sm pl-2 bg-[color:var(--background-color)] cursor-text border py-3 w-full h-full ${
+						editMode && 'drop-shadow-md'
+					}`}
 					renderElement={props => applyStyle(props.element.type, props)}
 					onKeyDown={applyHotKey}
+					onSelect={() => setEditMode(true)}
+					onBlur={() => setEditMode(false)}
 				/>
+				{/**/}
 			</Slate>
 		</div>
 	);

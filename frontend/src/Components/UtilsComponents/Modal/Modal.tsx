@@ -50,9 +50,11 @@ const Modal = (props: ModalProps) => {
 		dialogClassName,
 		icon,
 		onShow,
+		topBar,
 	} = props;
 
 	const cancelButtonRef = useRef<HTMLButtonElement | null>(null);
+	const crossButtonRef = useRef<HTMLDivElement | null>(null);
 	const { t } = useTranslation();
 
 	useEffect(() => {
@@ -65,7 +67,9 @@ const Modal = (props: ModalProps) => {
 			<Dialog
 				as="div"
 				className="fixed z-20 inset-0 overflow-y-auto h-full"
-				initialFocus={cancelButtonRef}
+				initialFocus={
+					cancelButtonRef.current ? cancelButtonRef : crossButtonRef
+				}
 				onClose={state => !unclosable && setOpen(state)}
 			>
 				<div
@@ -120,10 +124,12 @@ const Modal = (props: ModalProps) => {
 								<div
 									className="absolute top-2 right-2 w-6 h-6 text-[color:var(--fg-shade-four-color)] cursor-pointer text-center"
 									onClick={() => setOpen(false)}
+									ref={crossButtonRef}
 								>
-									<FontAwesomeIcon icon={faTimes} />
+									<FontAwesomeIcon icon={faTimes} focusable />
 								</div>
 							)}
+							{topBar}
 							<div className="p-4 py-0 tablet:p-5 tablet:py-2 desktop:p-7 desktop:py-4">
 								<div className="sm:flex sm:items-start w-full">
 									{icon && (

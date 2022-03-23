@@ -33,16 +33,25 @@ const CourseLayoutActivity = ({ courseElement }: CourseLayoutActivityProps) => {
 				<FontAwesomeIcon icon={faExpandAlt} className="mx-2" />
 				{t('course.activity.open')}
 			</div>
-
 			<Modal
-				size="xl"
+				size="lg"
 				open={openedActivity === courseElement.activity}
 				setOpen={(state: boolean) => !state && closeOpenedActivity()}
-				icon={activity.icon}
 				centered
 				hideTitle
 				hideFooter
 				closeCross
+				dialogClassName="rounded-[3px] h-full"
+				backdropClassName="bg-[color:black] opacity-50"
+				topBar={
+					<div
+						className="w-fit rounded-sm pr-2 py-1 ml-1 mt-1 [color:var(--bg-shade-four-color)] font-bold cursor-pointer hover:bg-[color:var(--bg-shade-one-color)] hover:[color:grey]"
+						onClick={() => {}}
+					>
+						<FontAwesomeIcon icon={faExpandAlt} className="mx-2" />
+						{t('course.activity.open_in_student_view')}
+					</div>
+				}
 			>
 				<div className="h-full">
 					<Activity activity={activity} />

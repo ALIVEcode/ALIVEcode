@@ -13,6 +13,9 @@ import Button from '../../UtilsComponents/Buttons/Button';
 import { useTranslation } from 'react-i18next';
 import { ActivityVideo as ActivityVideoModel } from '../../../Models/Course/activities/activity_video.entity';
 import ActivityVideo from './ActivityVideo';
+import Link from '../../UtilsComponents/Link/Link';
+import { faExpandAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 /**
  * Shows the opened activity. Renders different component depending on the type of the activity opened.
@@ -69,13 +72,14 @@ const Activity = ({ activity }: { activity: ActivityModel }) => {
 
 	return (
 		activity && (
-			<div className="w-full h-full relative overflow-y-auto flex flex-col">
-				<div className="z-10 sticky top-0 text-2xl text-center bg-[color:var(--background-color)] py-6 w-full border-b border-[color:var(--bg-shade-four-color)]">
-					{activity.name}
+			<div className="w-full h-full relative overflow-y-auto flex flex-col px-8">
+				<FontAwesomeIcon icon={activity.icon} className="pb-2 m-0" size="3x" color="lightgrey" />
+				<div className="z-10 sticky top-0 pt-2 text-4xl bg-[color:var(--background-color)] pb-6 w-full border-[color:var(--bg-shade-four-color)]">
+					<b>{activity.name}</b>
 				</div>
-				<div className=" flex justify-center items-center">
+				<div className="flex">
 					{activity.header !== null ? (
-						<div className="text-sm border-b border-dotted py-3 border-[color:var(--bg-shade-four-color)] w-full">
+						<div className="text-sm pt-3 pb-3 w-full">
 							<RichTextEditor
 								onChange={update('header')}
 								defaultText={activity.header}
@@ -98,21 +102,21 @@ const Activity = ({ activity }: { activity: ActivityModel }) => {
 						</div>
 					) : (
 						<div className="flex flex-col items-center gap-4">
-							<Button
-								variant="primary"
-								onClick={() => setOpenModalImportResource(true)}
-							>
-								{t('course.activity.import_resource')}
-							</Button>
-							<Button variant="secondary">
+							<Button variant="primary">
 								{t('course.activity.create_resource')}
 							</Button>
+							<Link
+								onClick={() => setOpenModalImportResource(true)}
+								className="[color:var(--fg-shade-four-color)] hover:[color:var(--fg-shade-one-color)] hover:underline hover:cursor-pointer"
+							>
+								{t('course.activity.import_resource')}
+							</Link>
 						</div>
 					)}
 				</div>
 				<div className=" flex justify-center items-center">
 					{activity.footer !== null ? (
-						<div className="text-sm border-t border-dotted py-3 border-[color:var(--bg-shade-four-color)] w-full">
+						<div className="text-sm py-3 w-full">
 							<RichTextEditor
 								onChange={update('footer')}
 								defaultText={activity.footer}

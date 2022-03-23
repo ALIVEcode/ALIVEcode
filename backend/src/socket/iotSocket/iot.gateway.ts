@@ -54,12 +54,11 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
 
     // Set the ping interval to ping each connected object (each 15 seconds)
     setInterval(() => {
-      Client.clients.forEach(client => {
+      Client.getClients().forEach(client => {
         // Client still hasn't responded to the ping, it is presumed dead
         if (!client.isAlive) {
           console.log('Client seems dead');
-          ObjectClient.objects = ObjectClient.objects.filter(obj => obj.getSocket() !== client.getSocket());
-          WatcherClient.clients = WatcherClient.watchers.filter(w => w.getSocket() !== client.getSocket());
+          client.removeClient();
           return client.getSocket().terminate();
         }
 
@@ -84,8 +83,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
 
   handleDisconnect(@ConnectedSocket() socket: WebSocket) {
     this.logger.log(`Client disconnected`);
-    ObjectClient.objects = ObjectClient.objects.filter(obj => obj.getSocket() !== socket);
-    WatcherClient.clients = WatcherClient.watchers.filter(w => w.getSocket() !== socket);
+    Client.removeClientBySocket(socket);
   }
 
   @UseFilters(new IoTExceptionFilter())

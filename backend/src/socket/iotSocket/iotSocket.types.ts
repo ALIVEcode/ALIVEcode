@@ -92,13 +92,16 @@ export type IoTUpdateLayoutRequestToWatcher = {
 };
 
 export class Client {
-  static clients: Client[] = [];
   public isAlive: boolean;
 
   constructor(private socket: WebSocket) {}
 
+  static getClients() {
+    const clients: Array<ObjectClient | WatcherClient> = [];
+    return clients.concat(ObjectClient.objects).concat(WatcherClient.watchers);
+  }
+
   register() {
-    Client.clients.push(this);
     this.isAlive = true;
   }
 
@@ -114,17 +117,20 @@ export class Client {
     this.send({ event, data });
   }
 
-  removeSocket() {
-    if (this instanceof WatcherClient) {
+  static removeClientBySocket(socket: WebSocket) {
+    WatcherClient.watchers = WatcherClient.watchers.filter(w => w.socket !== socket);
+    ObjectClient.objects = ObjectClient.objects.filter(w => w.socket !== socket);
+  }
+
+  removeClient() {
+    if (this instanceof WatcherClient)
       WatcherClient.watchers = WatcherClient.watchers.filter(w => w.socket !== this.socket);
-    } else if (this instanceof ObjectClient) {
+    else if (this instanceof ObjectClient)
       ObjectClient.objects = ObjectClient.objects.filter(w => w.socket !== this.socket);
-    }
-    Client.clients = Client.clients.filter(w => w.socket !== this.socket);
   }
 
   static getClientBySocket(socket: WebSocket) {
-    return Client.clients.find(c => c.socket === socket);
+    return this.getClients().find(c => c.socket === socket);
   }
 }
 

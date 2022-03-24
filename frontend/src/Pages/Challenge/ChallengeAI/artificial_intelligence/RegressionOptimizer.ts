@@ -1,5 +1,10 @@
+<<<<<<< HEAD:frontend/src/Pages/Challenge/ChallengeAI/artificial_intelligence/RegressionOptimizer.ts
 import PolyRegression from '../../../../Components/ChallengeComponents/ChallengeGraph/PolyRegression';
 import DataSample from './DataSample';
+=======
+import PolyRegression from './PolyRegression';
+import { DataSample } from './AIUtils';
+>>>>>>> upload:frontend/src/Pages/Level/LevelAI/artificial_intelligence/RegressionOptimizer.ts
 
 /**
  * Superclass for every Optimizer class. It contains all usefull static and abstract methods

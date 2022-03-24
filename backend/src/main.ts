@@ -6,11 +6,22 @@ import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
 import { WsAdapter } from '@nestjs/platform-ws';
 import * as bodyParser from 'body-parser';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.setGlobalPrefix('api');
+
+  const config = new DocumentBuilder()
+    .setTitle('API alive code')
+    .setDescription('description')
+    .setVersion('1.0')
+    .setBasePath('api')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   app.enableCors({
     origin: process.env.CORS_ORIGIN,
@@ -28,8 +39,8 @@ async function bootstrap() {
 
   app.useWebSocketAdapter(new WsAdapter(app));
 
-  app.use(bodyParser.json({ limit: '50mb' }));
-  app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+  app.use(bodyParser.json({limit: '50mb'}));
+  app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
   app.useWebSocketAdapter(new WsAdapter(app));
 

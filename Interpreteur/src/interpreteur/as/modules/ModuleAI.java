@@ -369,7 +369,6 @@ public class ModuleAI {
                         if (!(col.equalsIgnoreCase("x") || col.equalsIgnoreCase("y"))) {
                             throw new ASErreur.ErreurInputOutput("La fonction valeursColonne() prend en param\u00E8tre le caract\u00E8re \"x\" ou \"y\" seulement.");
                         }
-                        System.out.println(col);
                         if (col.contains("x")) {
                             for (Double el : DATA_X) {
                                 liste.ajouterElement(new ASDecimal(el));
@@ -439,14 +438,15 @@ public class ModuleAI {
                 /*
                     Evaluates the regression on the graph at a specific x value.
                  */
-                new ASFonctionModule("evaluer", new ASFonctionModule.Parametre[]{
-                        new ASFonctionModule.Parametre(
-                                ASTypeBuiltin.nombre.asType(), "x", null)
-                }, ASTypeBuiltin.nombre.asType()) {
+                new ASObjet.Fonction("evaluer", new ASObjet.Fonction.Parametre[]{
+                        new ASObjet.Fonction.Parametre(
+                                ASObjet.TypeBuiltin.nombre.asType(), "x", null)
+                }, ASObjet.TypeBuiltin.nulType.asType()) {
                     @Override
                     public ASObjet<?> executer() {
                         double x = ((Number) this.getValeurParam("x").getValue()).doubleValue();
-                        return ASNombre.cast((Number) executeurInstance.getDataResponseOrAsk("evaluer", x));
+                        executeurInstance.addData(new Data(Data.Id.EVALUER).addParam(x));
+                        return new Nul();
                     }
                 },
                 /*
@@ -458,6 +458,15 @@ public class ModuleAI {
                     public ASObjet<?> executer() {
                         executeurInstance.addData(new Data(Data.Id.FONCTION_COUT));
                         return new ASNul();
+                    }
+                },
+
+                new ASObjet.Fonction("testReseauNeurones", new ASObjet.Fonction.Parametre[]{
+                }, ASObjet.TypeBuiltin.nulType.asType()) {
+                    @Override
+                    public ASObjet<?> executer() {
+                        executeurInstance.addData(new Data(Data.Id.TEST_RESEAU_NEURONES));
+                        return null;
                     }
                 }
         });

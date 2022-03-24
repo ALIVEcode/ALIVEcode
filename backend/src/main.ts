@@ -11,20 +11,17 @@ import { SwaggerModule, DocumentBuilder, SwaggerDocumentOptions } from '@nestjs/
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.setGlobalPrefix('api');
+
   const config = new DocumentBuilder()
     .setTitle('API alive code')
-    .setDescription('')
+    .setDescription('description')
     .setVersion('1.0')
+    .setBasePath('api')
     .build();
 
-  const options: SwaggerDocumentOptions = {
-    ignoreGlobalPrefix: false,
-  }
-
-  const document = SwaggerModule.createDocument(app, config, options);
+  const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-
-  app.setGlobalPrefix('api');
 
   app.enableCors({
     origin: process.env.CORS_ORIGIN,
@@ -44,7 +41,7 @@ async function bootstrap() {
 
   app.use(bodyParser.json({limit: '50mb'}));
   app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
-  
+
   app.useWebSocketAdapter(new WsAdapter(app));
 
   await app.listen(process.env.PORT);

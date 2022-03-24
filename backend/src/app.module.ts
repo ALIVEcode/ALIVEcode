@@ -3,6 +3,7 @@ import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import config from '../ormconfig';
+import { MulterModule } from '@nestjs/platform-express';
 import { AsScriptModule } from './models/as-script/as-script.module';
 import { ClassroomModule } from './models/classroom/classroom.module';
 import { CourseModule } from './models/course/course.module';
@@ -11,7 +12,7 @@ import { IoTProjectModule } from './models/iot/IoTproject/IoTproject.module';
 import { IoTRouteModule } from './models/iot/IoTroute/IoTroute.module';
 import { LevelModule } from './models/level/level.module';
 import { MaintenanceModule } from './models/maintenance/maintenance.module';
-import { UploadsModule } from './models/uploads/uploads.module';
+import { UploadModule } from './models/upload/upload.module';
 import { MaintenanceMiddleware } from './utils/middlewares/maintenance.middleware';
 import { MaintenanceEntity } from './models/maintenance/entities/maintenance.entity';
 import { AuthMiddleware } from './utils/middlewares/auth.middleware';
@@ -31,7 +32,6 @@ import { MyLogger } from './admin/loger/logger';
 import { CarModule } from './socket/carSocket/carSocket.module';
 import { IoTModule } from './socket/iotSocket/iotSocket.module';
 import { QuizzesModule } from './models/social/quizzes/quizzes.module';
-import { MulterModule } from '@nestjs/platform-express';
 import { CategoriesQuizModule } from './models/social/categories-quiz/categories-quiz.module';
 import { QuestionsModule } from './models/social/questions/questions.module';
 import { AnswersModule } from './models/social/answers/answers.module';
@@ -54,7 +54,13 @@ adminjs.registerAdapter({ Database, Resource });
     TypeOrmModule.forFeature([MaintenanceEntity]),
     TypeOrmModule.forRoot(config),
     AdminModule.createAdminAsync({
-      imports: [UserModule, LoggerModule],
+      imports: [
+        UserModule,
+        LoggerModule,
+        MulterModule.register({
+          dest: '../uploads',
+        }),
+      ],
       inject: [getRepositoryToken(UserEntity)],
       useFactory: (userRepo: Repository<UserEntity>) => ({
         adminJsOptions: adminOptions,
@@ -103,7 +109,7 @@ adminjs.registerAdapter({ Database, Resource });
     MessagesModule,
     ChatModule,
     TopicsModule,
-    UploadsModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [AppService, MaintenanceService, UserService],

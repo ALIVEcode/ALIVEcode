@@ -57,13 +57,13 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
       Client.getClients().forEach(client => {
         // Client still hasn't responded to the ping, it is presumed dead
         if (!client.isAlive) {
-          console.log('Client seems dead');
+          this.logger.warn('Client seems dead');
           client.removeClient();
           return client.getSocket().terminate();
         }
 
         // Client is ping to see if it is still alive
-        console.log('Sending ping to client');
+        this.logger.log('Sending ping to client');
         client.isAlive = false;
         client.getSocket().ping();
       });
@@ -74,16 +74,23 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     this.logger.log(`Client connected`);
 
     /** Register pong action for client socket */
-    ws.on('pong', () => {
-      console.log('Received pong');
-      const client = Client.getClientBySocket(ws);
-      if (client) client.isAlive = true;
-    });
+    ws.on('pong', this.receivePong);
+  }
+
+  receivePong(socket: WebSocket) {
+    this.logger.log('Received pong');
+    const client = Client.getClientBySocket(socket);
+    if (client) client.isAlive = true;
   }
 
   handleDisconnect(@ConnectedSocket() socket: WebSocket) {
     this.logger.log(`Client disconnected`);
     Client.removeClientBySocket(socket);
+  }
+
+  @SubscribeMessage('pong')
+  pong(@ConnectedSocket() socket: WebSocket) {
+    this.receivePong(socket);
   }
 
   @UseFilters(new IoTExceptionFilter())
@@ -129,10 +136,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     if (!payload.id) throw new WsException('Bad payload');
     if (WatcherClient.isSocketAlreadyWatcher(socket)) throw new WsException('Already connected as a watcher');
     const alreadyConnectedObj = ObjectClient.getClientById(payload.id);
-    if (alreadyConnectedObj) {
-      alreadyConnectedObj.getSocket().ping(null, false, err => console.log(err));
-      throw new WsException(`An IoTObject is already connected with the id "${payload.id}"`);
-    }
+    if (alreadyConnectedObj) throw new WsException(`An IoTObject is already connected with the id "${payload.id}"`);
 
     // Checks if the object exists in the database and checks for permissions for projects
     let iotObject: IoTObjectEntity;
@@ -225,7 +229,6 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   @UseFilters(new IoTExceptionFilter())
   @SubscribeMessage('broadcast')
   async broadcast(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTBroadcastRequestFromBoth) {
-    console.log(payload);
     if (!payload.projectId || !payload.data) throw new WsException('Bad payload');
     const client = Client.getClientBySocket(socket);
     if (client instanceof ObjectClient) {

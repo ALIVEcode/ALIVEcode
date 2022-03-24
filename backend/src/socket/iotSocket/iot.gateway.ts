@@ -57,13 +57,11 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
       Client.getClients().forEach(client => {
         // Client still hasn't responded to the ping, it is presumed dead
         if (!client.isAlive) {
-          this.logger.warn('Client seems dead');
           client.removeClient();
           return client.getSocket().terminate();
         }
 
         // Client is ping to see if it is still alive
-        this.logger.log('Sending ping to client');
         client.isAlive = false;
         client.getSocket().ping();
       });
@@ -78,7 +76,6 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   }
 
   receivePong(socket: WebSocket) {
-    this.logger.log('Received pong');
     const client = Client.getClientBySocket(socket);
     if (client) client.isAlive = true;
   }

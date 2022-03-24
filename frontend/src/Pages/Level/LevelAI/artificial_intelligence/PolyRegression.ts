@@ -1,6 +1,6 @@
-import DataSample from '../../../Pages/Level/LevelAI/artificial_intelligence/DataSample';
-import DataTypes from './DataTypes';
-import RegressionOptimizer from '../../../Pages/Level/LevelAI/artificial_intelligence/RegressionOptimizer';
+import { DataSample } from './AIUtils';
+import DataTypes from '../../../../Components/LevelComponents/LevelGraph/DataTypes';
+import RegressionOptimizer from './RegressionOptimizer';
 
 /**
  * This class defines a third degree polynomial function that can be shown in a scatter plot of a line graph.

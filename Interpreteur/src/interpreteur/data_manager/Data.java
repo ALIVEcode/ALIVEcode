@@ -43,6 +43,7 @@ public class Data extends JSONObject {
      * UTILITAIRE = 3xx
      * ERREUR = 400 à 449: erreur execution
      * 450 à 499: erreur compilation
+     * AI = 8xx
      */
     public enum Id {
         ARRETER(Categorie.MOTEUR),          // 0
@@ -67,11 +68,12 @@ public class Data extends JSONObject {
         CONSEIL(Categorie.TIPS),
         AVERTISSEMENT(Categorie.TIPS),
 
-        CREER_REGRESSION(Categorie.AI),   // 0
+        CREER_REGRESSION(Categorie.AI),     // 0
         OPTIMISER_REGRESSION(Categorie.AI), // 1
-        AFFICHER_NUAGE(Categorie.AI),     // 2
-        EVALUER(Categorie.AI),            // 3
-        FONCTION_COUT(Categorie.AI),  // 4
+        AFFICHER_NUAGE(Categorie.AI),       // 2
+        EVALUER(Categorie.AI),              // 3
+        FONCTION_COUT(Categorie.AI),        // 4
+        TEST_RESEAU_NEURONES(Categorie.AI), // 5
 
         // IoT Data Ids
         UPDATE_COMPONENT(Categorie.IOT), // 0

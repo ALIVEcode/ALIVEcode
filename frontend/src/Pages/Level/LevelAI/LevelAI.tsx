@@ -12,10 +12,13 @@ import LevelGraph from '../../../Components/LevelComponents/LevelGraph/LevelGrap
 import PolyOptimizer from './artificial_intelligence/PolyOptmizer';
 import RegressionOptimizer from './artificial_intelligence/RegressionOptimizer';
 import DataTypes from '../../../Components/LevelComponents/LevelGraph/DataTypes';
-import PolyRegression from '../../../Components/LevelComponents/LevelGraph/PolyRegression';
+import PolyRegression from './artificial_intelligence/PolyRegression';
 import { LevelContext } from '../../../state/contexts/LevelContext';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import LevelToolsBar from '../../../Components/LevelComponents/LevelToolsBar/LevelToolsBar';
+import { NeuralNetwork } from './artificial_intelligence/ai_models/ai_neural_networks/NeuralNetwork';
+import { ActivationFunction } from './artificial_intelligence/ai_functions/Function';
+import { Matrix } from './artificial_intelligence/AIUtils';
 
 /**
  * Ai level page. Contains all the components to display and make the ai level functionnal.
@@ -61,6 +64,7 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 					evaluate: (x: number) => evaluate(x),
 					costMSE: () => costMSE(),
 					showRegression,
+					testNeuralNetwork
 				},
 				level.name,
 				askForUserInput,
@@ -87,7 +91,8 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 
 	//Set the data for the level
 	const [data] = useState(dataAI);
-	let func = useRef<PolyRegression>();
+	let allFuncs = useRef<PolyRegression[]>([]);
+	let lastFunc = useRef<PolyRegression>();
 
 	//The dataset of the prototype AI course
 	const mainDataset: DataTypes = {
@@ -106,15 +111,24 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 		backgroundColor: 'var(--contrast-color)',
 		borderWidth: 1,
 	});
-	let datasets = useRef([initialDataset]);
-	const [chartData, setChartData] = useState({ datasets: [initialDataset] });
+	let datasets = useRef([initialDataset, initialDataset]);
+	const [chartData, setChartData] = useState({ datasets: [initialDataset]});
+
 
 	/**
 	 * Resets the dataset array and the data shown on the graph.
 	 */
 	function resetGraph() {
-		datasets.current = [initialDataset];
-		setChartData({ datasets: datasets.current });
+		datasets.current = [initialDataset, initialDataset];
+		allFuncs.current = [];
+		setChart();
+	}
+
+	/**
+	 * Sets the chartData datasets with the datasets array.
+	 */
+	function setChart() {
+		setChartData({ datasets: [...datasets.current] });
 	}
 
 	/**
@@ -123,12 +137,10 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 	 */
 	function setDataOnGraph(newData: DataTypes): void {
 		if (datasets.current[0] === initialDataset) {
-			console.log('dataset vide');
 			datasets.current = [newData];
-		} else datasets.current.push(newData);
-		setChartData({ datasets: datasets.current });
-
-		console.log(chartData.datasets[0].data);
+		}
+		else datasets.current[1] = newData;
+		setChart();
 	}
 	//-------------------------- Alivescript functions ----------------------------//
 
@@ -147,14 +159,15 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 	 * @param d the param d of a polynomial regression.
 	 */
 	function createRegression(a: number, b: number, c: number, d: number) {
-		func.current = new PolyRegression(a, b, c, d);
+		lastFunc.current = new PolyRegression(a, b, c, d);
+		allFuncs.current.push(lastFunc.current);
 	}
 
 	/**
-	 * Generates the regression's points and shows them on the graph.
+	 * Generates the latest regression's points and shows them on the graph.
 	 */
 	function showRegression() {
-		const points = func.current!.generatePoints();
+		const points = lastFunc.current!.generatePoints();
 		setDataOnGraph(points);
 	}
 
@@ -177,7 +190,7 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 	function costMSE(): string {
 		setDataOnGraph(mainDataset);
 		showRegression();
-		return 'Erreur du modèle : ' + func.current!.computeMSE(data);
+		return 'Erreur du modèle : ' + lastFunc.current!.computeMSE(data);
 	}
 
 	/**
@@ -186,16 +199,16 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 	 * @param lr the learning rate for the optimization algorithm.
 	 */
 	function optimizeRegression(lr: number, epoch: number): string | void {
-		if (!func.current) return;
+		if (!lastFunc.current) return;
 		const optimizer: PolyOptimizer = new PolyOptimizer(
-			func.current,
+			lastFunc.current,
 			lr,
 			epoch,
 			RegressionOptimizer.costMSE,
 		);
-		func.current = optimizer.optimize(data);
+		lastFunc.current = optimizer.optimize(data);
 		showRegression();
-		return func.current.paramsToString();
+		return lastFunc.current.paramsToString();
 	}
 
 	/**
@@ -206,8 +219,40 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 	function evaluate(x: number): number {
 		setDataOnGraph(mainDataset);
 		showRegression();
-		return func.current!.compute(x);
+		return lastFunc.current!.compute(x);
 	}
+
+	// FOR TESTING PURPOSE ONLY, TO BE DELETED WHEN NEURAL NETWORK IMPLEMENTATION WORKS //
+
+	function testNeuralNetwork(cmd: any) {
+
+		const neuronsByLayer: number[] = [2, 2]
+		const nbInputs: number = 3;
+		const nbOutputs: number = 1;
+		const activations: ActivationFunction[] = [
+			new ActivationFunction(ActivationFunction.SIGMOID),
+			new ActivationFunction(ActivationFunction.RELU)
+		];
+		const outputAct: ActivationFunction = new ActivationFunction(ActivationFunction.RELU);
+
+		const data: Matrix = new Matrix([
+			[0.4, 0.03, 0.5, 0.88, 0.1],
+			[0.4, 0.03, 0.5, 0.88, 0.1],
+			[0.4, 0.03, 0.5, 0.88, 0.1]
+		]);
+
+		let myNetwork: NeuralNetwork = new NeuralNetwork(neuronsByLayer, activations, outputAct, nbInputs, nbOutputs)
+
+		let predictions: Matrix = myNetwork.predict(data);
+		predictions.displayInCmd(cmd);
+		//cmd?.print(predictions.getRows())
+		//cmd?.print(predictions.getColumns())
+	}
+
+
+	// END OF TEST FUNCTION //
+
+
 
 	return (
 		<>

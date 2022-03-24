@@ -1,5 +1,5 @@
-import PolyRegression from '../../../../Components/LevelComponents/LevelGraph/PolyRegression';
-import DataSample from './DataSample';
+import PolyRegression from './PolyRegression';
+import { DataSample } from './AIUtils';
 
 /**
  * Superclass for every Optimizer class. It contains all usefull static and abstract methods 

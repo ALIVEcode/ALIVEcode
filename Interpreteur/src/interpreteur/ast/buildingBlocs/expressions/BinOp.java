@@ -1,7 +1,7 @@
 package interpreteur.ast.buildingBlocs.expressions;
 
 import interpreteur.as.erreurs.ASErreur;
-import interpreteur.as.Objets.ASObjet;
+import interpreteur.as.lang.datatype.*;
 import interpreteur.ast.buildingBlocs.Expression;
 
 import java.util.function.BiFunction;
@@ -35,8 +35,8 @@ public record BinOp(Expression<?> gauche,
          * Gere x / y
          */
         DIV((gauche, droite) -> {
-            if (gauche instanceof ASObjet.Liste lstG && droite instanceof ASObjet.Liste lstD) {
-                return new ASObjet.Liste(lstG
+            if (gauche instanceof ASListe lstG && droite instanceof ASListe lstD) {
+                return new ASListe(lstG
                         .getValue()
                         .stream()
                         .filter(element -> !lstD.contient(element))
@@ -46,7 +46,7 @@ public record BinOp(Expression<?> gauche,
             if (((Number) droite.getValue()).doubleValue() == 0) {
                 throw new ASErreur.ErreurDivisionParZero("Division par z\u00E9ro impossible");
             }
-            return new ASObjet.Decimal(((Number) gauche.getValue()).doubleValue() / ((Number) droite.getValue()).doubleValue());
+            return new ASDecimal(((Number) gauche.getValue()).doubleValue() / ((Number) droite.getValue()).doubleValue());
         }, "division") /* remove all dans listes */,
 
         /**
@@ -54,7 +54,7 @@ public record BinOp(Expression<?> gauche,
          */
         DIV_ENTIERE((gauche, droite) -> {
             int result = ((Number) gauche.getValue()).intValue() / ((Number) droite.getValue()).intValue();
-            return new ASObjet.Entier(result);
+            return new ASEntier(result);
         }, "division enti\u00E8re"),
 
         /**
@@ -64,7 +64,7 @@ public record BinOp(Expression<?> gauche,
             if (((Number) droite.getValue()).doubleValue() == 0)
                 throw new ASErreur.ErreurModuloZero("Modulo par z\u00E9ro impossible");
             double result = ((Number) gauche.getValue()).intValue() % ((Number) droite.getValue()).intValue();
-            return new ASObjet.Entier((int) result);
+            return new ASEntier((int) result);
         }, "modulo"),
 
         /**
@@ -72,33 +72,33 @@ public record BinOp(Expression<?> gauche,
          */
         MOINS((gauche, droite) -> {
 
-            if (gauche instanceof ASObjet.Texte txtG && droite instanceof ASObjet.Texte txtD) {
-                return new ASObjet.Texte(txtG.getValue().replace(txtD.getValue(), ""));
+            if (gauche instanceof ASTexte txtG && droite instanceof ASTexte txtD) {
+                return new ASTexte(txtG.getValue().replace(txtD.getValue(), ""));
             }
 
-            if (gauche instanceof ASObjet.Liste lstG) {
-                return new ASObjet.Liste(lstG
+            if (gauche instanceof ASListe lstG) {
+                return new ASListe(lstG
                         .getValue()
                         .stream()
                         .filter(element -> !element.getValue().equals(droite.getValue())).toArray(ASObjet[]::new));
             }
 
             double result = ((Number) gauche.getValue()).doubleValue() - ((Number) droite.getValue()).doubleValue();
-            return gauche instanceof ASObjet.Entier && droite instanceof ASObjet.Entier ?
-                    new ASObjet.Entier((int) result) :
-                    new ASObjet.Decimal(result);
+            return gauche instanceof ASEntier && droite instanceof ASEntier ?
+                    new ASEntier((int) result) :
+                    new ASDecimal(result);
         }, "soustraction") /* remove texte */ /* remove liste */,
 
         /**
          * Gere x * y
          */
         MUL((gauche, droite) -> {
-            if (gauche instanceof ASObjet.Texte txtG && droite instanceof ASObjet.Entier intD) {
-                return new ASObjet.Texte(txtG.getValue().repeat(intD.getValue()));
+            if (gauche instanceof ASTexte txtG && droite instanceof ASEntier intD) {
+                return new ASTexte(txtG.getValue().repeat(intD.getValue()));
             }
 
-            if (gauche instanceof ASObjet.Liste lstG && droite instanceof ASObjet.Entier intD) {
-                ASObjet.Liste liste = new ASObjet.Liste();
+            if (gauche instanceof ASListe lstG && droite instanceof ASEntier intD) {
+                ASListe liste = new ASListe();
                 for (int i = 0; i < intD.getValue(); i++) {
                     liste.ajouterTout(lstG);
                 }
@@ -106,17 +106,17 @@ public record BinOp(Expression<?> gauche,
             }
 
             double result = ((Number) gauche.getValue()).doubleValue() * ((Number) droite.getValue()).doubleValue();
-            return gauche instanceof ASObjet.Entier && droite instanceof ASObjet.Entier ?
-                    new ASObjet.Entier((int) result) :
-                    new ASObjet.Decimal(result);
+            return gauche instanceof ASEntier && droite instanceof ASEntier ?
+                    new ASEntier((int) result) :
+                    new ASDecimal(result);
         }, "multiplication") /* repeat texte */ /* repeat liste */,
 
         /**
          * Gere x | y
          */
         PIPE((gauche, droite) -> {
-            if (gauche instanceof ASObjet.Liste lstG && droite instanceof ASObjet.Liste lstD) {
-                return new ASObjet.Liste(lstG.getValue().toArray(ASObjet[]::new)).ajouterTout(lstD);
+            if (gauche instanceof ASListe lstG && droite instanceof ASListe lstD) {
+                return new ASListe(lstG.getValue().toArray(ASObjet[]::new)).ajouterTout(lstD);
             }
             throw new RuntimeException();
         }, "union") /* unir listes */,
@@ -126,21 +126,21 @@ public record BinOp(Expression<?> gauche,
          */
         PLUS((gauche, droite) -> {
 
-            if (gauche instanceof ASObjet.Liste lstG) {
-                ASObjet.Liste lst = lstG.sousSection(0, lstG.taille());
+            if (gauche instanceof ASListe lstG) {
+                ASListe lst = lstG.sousSection(0, lstG.taille());
                 lst.ajouterElement(droite);
                 System.out.println(lst);
                 return lst;
             }
 
-            if (gauche instanceof ASObjet.Texte || droite instanceof ASObjet.Texte) {
-                return new ASObjet.Texte(gauche.toString() + droite.toString());
+            if (gauche instanceof ASTexte || droite instanceof ASTexte) {
+                return new ASTexte(gauche.toString() + droite.toString());
             }
 
             double result = ((Number) gauche.getValue()).doubleValue() + ((Number) droite.getValue()).doubleValue();
-            return gauche instanceof ASObjet.Entier && droite instanceof ASObjet.Entier ?
-                    new ASObjet.Entier((int) result) :
-                    new ASObjet.Decimal(result);
+            return gauche instanceof ASEntier && droite instanceof ASEntier ?
+                    new ASEntier((int) result) :
+                    new ASDecimal(result);
         }, "addition") /* append */ /* concat */ /* add */,
 
         /**
@@ -148,9 +148,9 @@ public record BinOp(Expression<?> gauche,
          */
         POW((gauche, droite) -> {
             double result = Math.pow(((Number) gauche.getValue()).doubleValue(), ((Number) droite.getValue()).doubleValue());
-            return gauche instanceof ASObjet.Entier && droite instanceof ASObjet.Entier ?
-                    new ASObjet.Entier((int) result) :
-                    new ASObjet.Decimal(result);
+            return gauche instanceof ASEntier && droite instanceof ASEntier ?
+                    new ASEntier((int) result) :
+                    new ASDecimal(result);
         }, "exposant"),
         ;
 

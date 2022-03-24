@@ -4,7 +4,7 @@ import { GenericCardProps } from '../GenericCard/genericCardTypes';
 /**
  * Generic custom styled card for ALIVEcode
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const Card = (props: GenericCardProps) => {
 	return (

@@ -1,8 +1,8 @@
 package interpreteur.ast.buildingBlocs.programmes;
 
-import interpreteur.as.Objets.Scope;
+import interpreteur.as.lang.ASScope;
 import interpreteur.as.erreurs.ASErreur;
-import interpreteur.as.Objets.ASObjet;
+import interpreteur.as.lang.datatype.ASObjet;
 import interpreteur.ast.buildingBlocs.Programme;
 import interpreteur.executeur.Coordonnee;
 import interpreteur.executeur.Executeur;
@@ -15,7 +15,7 @@ public class FinBoucle extends Programme {
 
     public FinBoucle(String nomBoucle, Executeur executeurInstance) {
         super(executeurInstance);
-        Scope.popCurrentScope();
+        ASScope.popCurrentScope();
         this.nomBoucle = nomBoucle;
     }
 

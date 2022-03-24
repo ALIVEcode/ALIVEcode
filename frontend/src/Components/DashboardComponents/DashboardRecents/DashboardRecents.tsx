@@ -8,7 +8,8 @@ import { useNavigate } from 'react-router';
 import useRoutes from '../../../state/hooks/useRoutes';
 
 export const DashboardRecents = () => {
-	const { getCourses, setFormJoinClassOpen } = useContext(DashboardContext);
+	const { getCourses, setFormJoinClassOpen, setOpenFormCreateCourse } =
+		useContext(DashboardContext);
 	const { t } = useTranslation();
 	const { user } = useContext(UserContext);
 	const { routes } = useRoutes();
@@ -29,19 +30,30 @@ export const DashboardRecents = () => {
 							? t('dashboard.recents.empty.professor')
 							: t('dashboard.recents.empty.student')}
 					</i>
-					<Button
-						className="!text-xs mt-2"
-						variant="primary"
-						onClick={() =>
-							user?.isProfessor()
-								? navigate(routes.auth.create_classroom.path)
-								: setFormJoinClassOpen(true)
-						}
-					>
-						{user?.isProfessor()
-							? t('dashboard.classrooms.add.professor')
-							: t('dashboard.classrooms.add.student')}
-					</Button>
+					<div className="flex flex-row">
+						<Button
+							className="!text-xs mt-2"
+							variant="primary"
+							onClick={() =>
+								user?.isProfessor()
+									? navigate(routes.auth.create_classroom.path)
+									: setFormJoinClassOpen(true)
+							}
+						>
+							{user?.isProfessor()
+								? t('dashboard.classrooms.add.professor')
+								: t('dashboard.classrooms.add.student')}
+						</Button>
+						{user?.isProfessor() && (
+							<Button
+								className="!text-xs mt-2 ml-4"
+								variant="primary"
+								onClick={() => setOpenFormCreateCourse(true)}
+							>
+								{t('dashboard.courses.add')}
+							</Button>
+						)}
+					</div>
 				</div>
 			)}
 		</div>

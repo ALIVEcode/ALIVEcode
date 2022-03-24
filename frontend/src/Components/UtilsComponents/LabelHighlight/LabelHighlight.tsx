@@ -1,4 +1,7 @@
-import { LabelHighlightProps, StyledLabelHighlightProps } from './LabelHighlightTypes';
+import {
+	LabelHighlightProps,
+	StyledLabelHighlightProps,
+} from './LabelHighlightTypes';
 import styled from 'styled-components';
 
 const StyledDiv = styled.div`
@@ -24,7 +27,7 @@ const StyledDiv = styled.div`
  * @param {string} fontSize css fontSize
  * @param {children} children react children
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const LabelHighlight = (props: LabelHighlightProps) => {
 	return (

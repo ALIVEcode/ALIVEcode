@@ -9,13 +9,13 @@ import { IoTObjectService } from '../IoTobject/IoTobject.service';
 import { IoTObjectEntity } from '../IoTobject/entities/IoTobject.entity';
 import { AsScriptEntity } from '../../as-script/entities/as-script.entity';
 import { AsScriptService } from '../../as-script/as-script.service';
-import { LevelService } from '../../level/level.service';
-import { LevelEntity } from '../../level/entities/level.entity';
-import { LevelAliveEntity } from '../../level/entities/levelAlive.entity';
-import { LevelAIEntity } from '../../level/entities/levelAI.entity';
-import { LevelCodeEntity } from '../../level/entities/levelCode.entity';
-import { LevelIoTEntity } from '../../level/entities/levelIoT.entity';
-import { LevelProgressionEntity } from '../../level/entities/levelProgression.entity';
+import { ChallengeService } from '../../challenge/challenge.service';
+import { ChallengeEntity } from '../../challenge/entities/challenge.entity';
+import { ChallengeAliveEntity } from '../../challenge/entities/challenges/challenge_alive.entity';
+import { ChallengeAIEntity } from '../../challenge/entities/challenges/challenge_ai.entity';
+import { ChallengeCodeEntity } from '../../challenge/entities/challenges/challenge_code.entity';
+import { ChallengeIoTEntity } from '../../challenge/entities/challenges/challenge_iot.entity';
+import { ChallengeProgressionEntity } from '../../challenge/entities/challenge_progression.entity';
 
 @Module({
   imports: [
@@ -25,15 +25,15 @@ import { LevelProgressionEntity } from '../../level/entities/levelProgression.en
       IoTObjectEntity,
       UserEntity,
       AsScriptEntity,
-      LevelEntity,
-      LevelAliveEntity,
-      LevelAIEntity,
-      LevelCodeEntity,
-      LevelIoTEntity,
-      LevelProgressionEntity,
+      ChallengeEntity,
+      ChallengeAliveEntity,
+      ChallengeAIEntity,
+      ChallengeCodeEntity,
+      ChallengeIoTEntity,
+      ChallengeProgressionEntity,
     ]),
   ],
   controllers: [IoTProjectController],
-  providers: [IoTProjectService, IoTObjectService, AsScriptService, LevelService],
+  providers: [IoTProjectService, IoTObjectService, AsScriptService, ChallengeService],
 })
 export class IoTProjectModule {}

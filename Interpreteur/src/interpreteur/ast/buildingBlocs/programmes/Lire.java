@@ -1,17 +1,16 @@
 package interpreteur.ast.buildingBlocs.programmes;
 
-import interpreteur.as.Objets.ASFonction;
-import interpreteur.as.Objets.Scope;
+import interpreteur.as.lang.ASFonctionModule;
+import interpreteur.as.lang.datatype.ASFonction;
 import interpreteur.as.erreurs.ASErreur;
-import interpreteur.as.Objets.ASObjet;
+import interpreteur.as.lang.datatype.ASObjet;
+import interpreteur.as.lang.datatype.ASTexte;
 import interpreteur.ast.buildingBlocs.Expression;
 import interpreteur.ast.buildingBlocs.Programme;
-import interpreteur.ast.buildingBlocs.expressions.Type;
 import interpreteur.ast.buildingBlocs.expressions.ValeurConstante;
 import interpreteur.ast.buildingBlocs.expressions.Var;
 import interpreteur.data_manager.Data;
 import interpreteur.executeur.Executeur;
-import org.jetbrains.annotations.NotNull;
 
 import javax.lang.model.type.NullType;
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public class Lire extends Programme {
     public Lire(Var var, Expression<?> message, Expression<?> fonction, Executeur executeurInstance) {
         super(executeurInstance);
         this.var = var;
-        this.message = message == null ? new ValeurConstante(new ASObjet.Texte("Entrez un input")) : message;
+        this.message = message == null ? new ValeurConstante(new ASTexte("Entrez un input")) : message;
         //Scope.getCurrentScope().declarerVariable(new ASObjet.Variable(nomVar, null, new Type("tout")));
         this.fonction = fonction;
     }
@@ -37,15 +36,15 @@ public class Lire extends Programme {
         if (executeurInstance.getDataResponse().isEmpty())
             throw new ASErreur.StopGetInfo(new Data(Data.Id.GET).addParam("read").addParam(message.eval().getValue().toString()));
 
-        ASObjet.Texte data = new ASObjet.Texte(executeurInstance.getDataResponse().pop());
+        ASTexte data = new ASTexte(executeurInstance.getDataResponse().pop());
         if (this.fonction == null) {
-            new Assigner(var, new ValeurConstante(new ASObjet.Texte(data)), null).execute();
+            new Assigner(var, new ValeurConstante(new ASTexte(data)), null).execute();
             return null;
         }
         ASObjet<?> exprEval = this.fonction.eval();
         ASObjet<?> valeur;
-        List<ASObjet.Texte> argument = Collections.singletonList(data);
-        if (exprEval instanceof ASObjet.Fonction fct) {
+        List<ASTexte> argument = Collections.singletonList(data);
+        if (exprEval instanceof ASFonctionModule fct) {
             valeur = fct.setParamPuisExecute(new ArrayList<>(argument));
         } else if (exprEval instanceof ASFonction fct) {
             valeur = fct.makeInstance().executer(new ArrayList<>(argument));

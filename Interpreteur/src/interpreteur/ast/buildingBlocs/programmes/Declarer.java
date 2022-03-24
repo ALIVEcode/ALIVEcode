@@ -1,7 +1,10 @@
 package interpreteur.ast.buildingBlocs.programmes;
 
-import interpreteur.as.Objets.ASObjet;
-import interpreteur.as.Objets.Scope;
+import interpreteur.as.lang.ASConstante;
+import interpreteur.as.lang.ASType;
+import interpreteur.as.lang.ASVariable;
+import interpreteur.as.lang.datatype.ASObjet;
+import interpreteur.as.lang.ASScope;
 import interpreteur.as.erreurs.ASErreur;
 import interpreteur.ast.buildingBlocs.Expression;
 import interpreteur.ast.buildingBlocs.Programme;
@@ -15,10 +18,10 @@ public class Declarer extends Programme {
 
     private final Expression<?> valeur;
     private final boolean constante;
-    private final Type type;
+    private final ASType type;
     private final Var var;
 
-    public Declarer(Expression<?> expr, Expression<?> valeur, Type type, boolean constante) {
+    public Declarer(Expression<?> expr, Expression<?> valeur, ASType type, boolean constante) {
         // get la variable
         if (expr instanceof Var) {
             var = (Var) expr;
@@ -28,7 +31,7 @@ public class Declarer extends Programme {
 
         this.valeur = valeur;
         this.constante = constante;
-        this.type = type == null ? new Type("tout") : type;
+        this.type = type == null ? new ASType("tout") : type;
         addVariable();
     }
 
@@ -49,7 +52,7 @@ public class Declarer extends Programme {
 
         // get l'objet variable s'il existe
         // ASObjet.Variable varObj = ASObjet.VariableManager.obtenirVariable(var.getNom(), var.getScope());
-        ASObjet.Variable varObj = Scope.getCurrentScope().getVariable(var.getNom());
+        ASVariable varObj = ASScope.getCurrentScope().getVariable(var.getNom());
 
         // si la variable existe déjà et que c'est une constante, lance une erreur, car on ne peut pas modifier une constante
         if (varObj != null)
@@ -57,9 +60,9 @@ public class Declarer extends Programme {
 
         // si le mot "const" est présent dans l'assignement de la variable, on crée la constante
         // sinon si la variable a été déclarée avec "var", on crée la variable
-        varObj = constante ? new ASObjet.Constante(var.getNom(), null) : new ASObjet.Variable(var.getNom(), null, type);
+        varObj = constante ? new ASConstante(var.getNom(), null) : new ASVariable(var.getNom(), null, type);
 
-        Scope.getCurrentScope().declarerVariable(varObj);
+        ASScope.getCurrentScope().declarerVariable(varObj);
 
         var.setNom(varObj.obtenirNom());
 
@@ -79,7 +82,7 @@ public class Declarer extends Programme {
     @Override
     public Object execute() {
         //ASObjet.Variable variable = ASObjet.VariableManager.obtenirVariable(var.getNom());
-        ASObjet.Variable variable = Scope.getCurrentScopeInstance().getVariable(var.getNom());
+        ASVariable variable = ASScope.getCurrentScopeInstance().getVariable(var.getNom());
         if (this.valeur != null) {
             ASObjet<?> valeur = this.valeur.eval();
             variable.setValeur(valeur);

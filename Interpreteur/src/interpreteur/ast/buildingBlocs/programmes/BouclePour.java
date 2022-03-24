@@ -1,11 +1,13 @@
 package interpreteur.ast.buildingBlocs.programmes;
 
-import interpreteur.as.Objets.Scope;
+import interpreteur.as.lang.ASConstante;
+import interpreteur.as.lang.ASScope;
 import interpreteur.as.erreurs.ASErreur;
-import interpreteur.as.Objets.ASObjet;
+import interpreteur.as.lang.ASVariable;
+import interpreteur.as.lang.datatype.ASIterable;
+import interpreteur.as.lang.datatype.ASObjet;
 import interpreteur.ast.buildingBlocs.Expression;
-import interpreteur.ast.buildingBlocs.expressions.Type;
-import interpreteur.ast.buildingBlocs.expressions.ValeurConstante;
+import interpreteur.as.lang.ASType;
 import interpreteur.ast.buildingBlocs.expressions.Var;
 import interpreteur.executeur.Coordonnee;
 import interpreteur.executeur.Executeur;
@@ -19,29 +21,29 @@ public class BouclePour extends Boucle {
     public static boolean sortir = false;
     private final Var var;
     private final Expression<?> objItere;
-    private final Scope scope;
+    private final ASScope scope;
     private Iterator<ASObjet<?>> iteration = null;
-    private Type typeVar = new Type("tout");
+    private ASType typeVar = new ASType("tout");
 
     public BouclePour(Var var, Expression<?> objItere, Executeur executeurInstance) {
         super("pour", executeurInstance);
         this.var = var;
         this.objItere = objItere;
-        this.scope = Scope.makeNewCurrentScope();
+        this.scope = ASScope.makeNewCurrentScope();
     }
 
-    public BouclePour setDeclarerVar(boolean estConst, Type typeVar) {
+    public BouclePour setDeclarerVar(boolean estConst, ASType typeVar) {
         this.typeVar = typeVar == null ? this.typeVar : typeVar;
         if (estConst) {
-            scope.declarerVariable(new ASObjet.Constante(var.getNom(), null));
+            scope.declarerVariable(new ASConstante(var.getNom(), null));
         } else {
-            scope.declarerVariable(new ASObjet.Variable(var.getNom(), null, typeVar));
+            scope.declarerVariable(new ASVariable(var.getNom(), null, typeVar));
         }
         return this;
     }
 
     public void sortir() {
-        Scope.popCurrentScopeInstance();
+        ASScope.popCurrentScopeInstance();
         iteration = null;
         sortir = false;
     }
@@ -49,17 +51,17 @@ public class BouclePour extends Boucle {
     @Override
     public NullType execute() {
         if (iteration == null) {
-            if (!(objItere.eval() instanceof ASObjet.Iterable)) {
+            if (!(objItere.eval() instanceof ASIterable)) {
                 throw new ASErreur.ErreurType("Seuls les valeurs de type 'iterable' ('texte' et 'liste') sont accept\u00E0es dans les boucles pour");
             }
-            iteration = ((ASObjet.Iterable) objItere.eval()).iter();
-            Scope.pushCurrentScopeInstance(scope.makeScopeInstanceFromCurrentScope());
+            iteration = ((ASIterable) objItere.eval()).iter();
+            ASScope.pushCurrentScopeInstance(scope.makeScopeInstanceFromCurrentScope());
         }
 
         if (iteration.hasNext() && !sortir) {
-            Scope.popCurrentScopeInstance();
-            Scope.pushCurrentScopeInstance(scope.makeScopeInstanceFromCurrentScope());
-            ASObjet.Variable variable = Scope.getCurrentScopeInstance().getVariable(var.getNom());
+            ASScope.popCurrentScopeInstance();
+            ASScope.pushCurrentScopeInstance(scope.makeScopeInstanceFromCurrentScope());
+            ASVariable variable = ASScope.getCurrentScopeInstance().getVariable(var.getNom());
             if (variable == null) {
                 throw new ASErreur.ErreurVariableInconnue("La variable " + var.getNom() + " n'a pas \u00E9t\u00E9 initialis\u00E9e." +
                         "\nAvez-vous oubli\u00E9 de mettre 'var' devant la d\u00E9claration de la variable?");

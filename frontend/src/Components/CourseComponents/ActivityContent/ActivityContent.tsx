@@ -1,38 +1,38 @@
 import {
-	ActivityContentProps,
-	StyledActivityContent,
-} from './activityContentTypes';
-import { useContext, useState, useEffect } from 'react';
-import { CourseContext } from '../../../state/contexts/CourseContext';
-import { ThemeContext } from '../../../state/contexts/ThemeContext';
-import CenteredContainer from '../../UtilsComponents/CenteredContainer/CenteredContainer';
-import Level from '../../../Pages/Level/Level';
-import IconButton from '../../DashboardComponents/IconButton/IconButton';
-import {
 	faAngleRight,
 	faCheckCircle,
 	faPencilAlt,
 } from '@fortawesome/free-solid-svg-icons';
-import MDEditor from '../MDEditor/MDEditor';
-import Button from '../../UtilsComponents/Buttons/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Modal from '../../UtilsComponents/Modal/Modal';
-import NewActivityContentModal from './NewActivityContentModal';
 import ReactMarkdown from 'react-markdown';
+import Challenge from '../../../Pages/Challenge/Challenge';
+import { CourseContext } from '../../../state/contexts/CourseContext';
+import { ThemeContext } from '../../../state/contexts/ThemeContext';
+import IconButton from '../../DashboardComponents/IconButton/IconButton';
+import Button from '../../UtilsComponents/Buttons/Button';
+import CenteredContainer from '../../UtilsComponents/CenteredContainer/CenteredContainer';
 import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
+import Modal from '../../UtilsComponents/Modal/Modal';
+import MDEditor from '../MDEditor/MDEditor';
+import {
+	ActivityContentProps,
+	StyledActivityContent,
+} from './activityContentTypes';
+import NewActivityContentModal from './NewActivityContentModal';
 
 /**
  * Displays the content of the activity in the CourseContext
- *
- * @author MoSk3
+ * @deprecated
+ * @author Enric Soldevila
  */
 const ActivityContent = (props: ActivityContentProps) => {
 	const { theme } = useContext(ThemeContext);
 	const {
 		activity,
 		saveActivityContent,
-		saveActivity,
+		updateActivity,
 		canEdit,
 		isNavigationOpen,
 		setIsNavigationOpen,
@@ -63,89 +63,6 @@ const ActivityContent = (props: ActivityContentProps) => {
 			),
 		);
 	};
-
-	/*const projectId = useMemo(() => {
-		return Math.random() > 0.5
-			? '73f799b7-1019-4f8e-8205-872cf1fac1ff'
-			: '7ae63621-b0f9-4996-a742-6f9bdce715b4';
-	}, [activity?.id]);*/
-	/*
-	<>
-							<div
-								className="activity-header"
-								style={{ cursor: editMode ? 'pointer' : 'initial' }}
-							>
-								{!editingName ? (
-									<div
-										className="activity-header-title"
-										onClick={() => editMode && setEditingName(true)}
-									>
-										{activity.name}
-									</div>
-								) : (
-									<Form.Control
-										className="activity-header-title"
-										value={name}
-										autoFocus
-										onChange={e => setName(e.target.value)}
-										onBlur={() => {
-											activity.name = name;
-											saveActivity(activity);
-											setEditingName(false);
-										}}
-										onKeyDown={(e: any) => {
-											if (e.keyCode === 13) {
-												activity.name = name;
-												saveActivity(activity);
-												setEditingName(false);
-											}
-										}}
-									/>
-								)}
-								{canEdit && (
-									<IconButton
-										icon={editMode ? faCheckCircle : faPencilAlt}
-										onClick={() => setEditMode(!editMode)}
-										size="2x"
-									/>
-								)}
-							</div>
-							<div>
-								{/*<IoTProject
-									key={`iotproject-${projectId}`}
-									id={projectId}
-								></IoTProject>}
-								<ActivityEditor
-									isEditable={() => canEdit && editMode}
-									onSave={content => {
-										if (!activity.content) {
-											activity.content = { data: '{}' };
-										}
-										activity.content.data = JSON.stringify(content);
-										saveActivity(plainToClass(Activity, activity));
-									}}
-									defaultValue={
-										activity.content?.data && JSON.parse(activity.content.data)
-									}
-								/>
-
-								{activity.levels && activity.levels.length > 0 && (
-									<>
-										{activity.levels &&
-											activity.levels.map((a, idx) => (
-												<div key={idx} style={{ position: 'relative' }}>
-													<Level
-														key={`level-${a.level.id}`}
-														level={a.level}
-														editMode={false}
-													/>
-												</div>
-											))}
-									</>
-								)}
-							</div>
-						</>
-						*/
 
 	return (
 		<StyledActivityContent navigationOpen={isNavigationOpen} theme={theme}>
@@ -185,13 +102,13 @@ const ActivityContent = (props: ActivityContentProps) => {
 										onChange={(e: any) => setName(e.target.value)}
 										onBlur={() => {
 											activity.name = name;
-											saveActivity(activity);
+											updateActivity(activity);
 											setEditingName(false);
 										}}
 										onKeyDown={(e: any) => {
 											if (e.keyCode === 13) {
 												activity.name = name;
-												saveActivity(activity);
+												updateActivity(activity);
 												setEditingName(false);
 											}
 										}}
@@ -216,17 +133,17 @@ const ActivityContent = (props: ActivityContentProps) => {
 										defaultValue={defaultMDValue}
 									/>
 								) : activity.content?.data ||
-								  (activity.levels && activity.levels.length > 0) ? (
+								  (activity.challenges && activity.challenges.length > 0) ? (
 									<>
 										{activity.content && (
 											<ReactMarkdown>{activity.content.data}</ReactMarkdown>
 										)}
-										{activity.levels &&
-											activity.levels.map((a, idx) => (
+										{activity.challenges &&
+											activity.challenges.map((a, idx) => (
 												<div key={idx} className="h-64">
-													<Level
-														key={`level-${a.level.id}`}
-														level={a.level}
+													<Challenge
+														key={`challenge-${a.challenge.id}`}
+														challenge={a.challenge}
 														editMode={false}
 													/>
 												</div>

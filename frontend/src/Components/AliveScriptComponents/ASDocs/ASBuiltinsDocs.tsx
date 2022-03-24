@@ -1,4 +1,4 @@
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown from 'react-markdown';
 import { useState, useEffect } from 'react';
 import mdPath from './asBuiltins.md';
 import styled from 'styled-components';
@@ -12,7 +12,8 @@ const StyledDiv = styled.div`
 /**
  * Component that shows all of the alivescript documentation
  *
- * @author Ecoral360 MoSk3
+ * @author Ecoral360
+ * @author Enric Soldevila
  */
 const ASBuiltinsDocs = () => {
 	const [text, setText] = useState('');

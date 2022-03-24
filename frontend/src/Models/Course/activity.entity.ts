@@ -1,32 +1,55 @@
-import { Exclude, Type } from 'class-transformer';
-import api from '../api';
-import { ActivityLevel } from './activity_level.entity';
+import { faBook, faCode, faVideo } from '@fortawesome/free-solid-svg-icons';
+import { Exclude, Expose, Type } from 'class-transformer';
+import { CourseElement } from './course_element.entity';
+import { Descendant } from 'slate';
+import { Resource } from '../Resource/resource.entity';
 
-export class ActivityContent {
-	data: string;
+export enum ACTIVITY_TYPE {
+	THEORY = 'TH',
+	CHALLENGE = 'CH',
+	VIDEO = 'VI',
 }
 
-export class Activity {
+/**
+ * Activity model in the database
+ * @author Enric Soldevila, Mathis Laroche
+ */
+export abstract class Activity {
+	/** Id of the activity (0, 1, 2, ..., n) */
 	@Exclude({ toPlainOnly: true })
 	id: number;
 
-	name: string;
+	/** Type of the activity */
+	type: ACTIVITY_TYPE;
 
-	@Type(() => ActivityContent)
-	content?: ActivityContent;
+	/** CourseElement attached to the activity */
+	@Type(() => CourseElement)
+	@Exclude({ toPlainOnly: true })
+	courseElement: CourseElement;
 
-	@Type(() => ActivityLevel)
-	levels?: ActivityLevel[];
+	/** Header of the activity */
+	header: Descendant[];
 
-	async getContent(courseId: string, sectionId: number) {
-		if (this.content) return this.content;
-		const { content, levels } = await api.db.courses.getActivityContent(
-			courseId,
-			sectionId,
-			this.id,
-		);
-		this.content = content;
-		this.levels = levels;
-		return this;
+	/** Footer of the activity */
+	footer: Descendant[];
+
+	/** Name of the activity */
+	@Exclude()
+	get name() {
+		return this.courseElement.name;
 	}
+
+	// eslint-disable-next-line getter-return
+	get icon() {
+		switch (this.type) {
+			case ACTIVITY_TYPE.CHALLENGE:
+				return faCode;
+			case ACTIVITY_TYPE.THEORY:
+				return faBook;
+			case ACTIVITY_TYPE.VIDEO:
+				return faVideo;
+		}
+	}
+
+	abstract resource: Resource;
 }

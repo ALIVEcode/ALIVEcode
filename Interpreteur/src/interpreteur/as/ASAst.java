@@ -1,6 +1,7 @@
 package interpreteur.as;
 
-import interpreteur.as.Objets.ASObjet.*;
+import interpreteur.as.lang.ASType;
+import interpreteur.as.lang.datatype.*;
 import interpreteur.as.erreurs.ASErreur.ErreurAssignement;
 import interpreteur.as.erreurs.ASErreur.ErreurInputOutput;
 import interpreteur.as.erreurs.ASErreur.ErreurSyntaxe;
@@ -52,7 +53,7 @@ public class ASAst extends AstGenerator {
                 new Ast<Utiliser>() {
                     @Override
                     public Utiliser apply(List<Object> p) {
-                        if (p.get(1) instanceof ValeurConstante valeurConstante && valeurConstante.eval() instanceof Texte texte) {
+                        if (p.get(1) instanceof ValeurConstante valeurConstante && valeurConstante.eval() instanceof ASTexte texte) {
                             String msg = texte.getValue();
                             if (msg.equalsIgnoreCase("experimental")) {
                                 //executeurInstance.setAst(new ASAstExperimental(executeurInstance));
@@ -145,29 +146,29 @@ public class ASAst extends AstGenerator {
                         if (p.get(0) instanceof Token token) {
                             boolean estConst = token.obtenirNom().equals("CONSTANTE");
                             if (p.size() == 2) {
-                                return new Declarer((Expression<?>) p.get(1), new ValeurConstante(new Nul()), null, false);
+                                return new Declarer((Expression<?>) p.get(1), new ValeurConstante(new ASNul()), null, false);
                             }
                             if (p.size() == 4 && p.get(2) instanceof Token token2 && token2.obtenirNom().equals("DEUX_POINTS")) {
                                 // si le type précisisé n'est pas un type
-                                if (!(p.get(3) instanceof Type type))
+                                if (!(p.get(3) instanceof ASType type))
                                     throw new ErreurType("Dans une d\u00E9claration de " +
                                             (estConst ? "constante" : "variable") +
                                             ", les deux points doivent \u00EAtre suivi d'un type valide");
 
-                                return new Declarer((Expression<?>) p.get(1), new ValeurConstante(new Nul()), type, false);
+                                return new Declarer((Expression<?>) p.get(1), new ValeurConstante(new ASNul()), type, false);
                             }
-                            Type type = null;
+                            ASType type = null;
                             // si la précision du type est présente
                             if (p.size() == 6) {
                                 idxValeur = 5;
                                 idxAssignement = 4;
 
                                 // si le type précisisé n'est pas un type
-                                if (!(p.get(3) instanceof Type))
+                                if (!(p.get(3) instanceof ASType))
                                     throw new ErreurType("Dans une d\u00E9claration de " +
                                             (estConst ? "constante" : "variable") +
                                             ", les deux points doivent \u00EAtre suivi d'un type valide");
-                                type = (Type) p.get(3);
+                                type = (ASType) p.get(3);
                             }
                             // si la précision du type n'est pas présente
                             else {
@@ -248,12 +249,12 @@ public class ASAst extends AstGenerator {
                 new Ast<CreerGetter>() {
                     @Override
                     public CreerGetter apply(List<Object> p) {
-                        Type type = new Type("tout");
+                        ASType type = new ASType("tout");
                         if (p.size() > 2) {
-                            if (!(p.get(3) instanceof Type)) {
+                            if (!(p.get(3) instanceof ASType)) {
                                 throw new ErreurType("'" + p.get(4) + "' n'est pas un type valide");
                             }
-                            type = (Type) p.get(3);
+                            type = (ASType) p.get(3);
                         }
                         return new CreerGetter(new Var(((Token) p.get(1)).obtenirValeur()), type, executeurInstance);
                     }
@@ -273,12 +274,12 @@ public class ASAst extends AstGenerator {
                 new Ast<CreerSetter>() {
                     @Override
                     public CreerSetter apply(List<Object> p) {
-                        Type type = new Type("tout");
+                        ASType type = new ASType("tout");
                         if (p.size() > 5) {
-                            if (!(p.get(5) instanceof Type)) {
+                            if (!(p.get(5) instanceof ASType)) {
                                 throw new ErreurType("'" + p.get(5) + "' n'est pas un type valide");
                             }
-                            type = (Type) p.get(5);
+                            type = (ASType) p.get(5);
                         }
                         return new CreerSetter(new Var(((Token) p.get(1)).obtenirValeur()), new Var(((Token) p.get(3)).obtenirValeur()), type, executeurInstance);
                     }
@@ -303,7 +304,7 @@ public class ASAst extends AstGenerator {
                                 new Ast<Argument>(19) {
                                     @Override
                                     public Argument apply(List<Object> p) {
-                                        Type type = new Type("tout");
+                                        ASType type = new ASType("tout");
                                         Expression<?> valParDefaut = null;
 
                                         if (!(p.get(0) instanceof Var var)) {
@@ -316,7 +317,7 @@ public class ASAst extends AstGenerator {
                                                 .orElse(null);
                                         if (deuxPointsToken != null) {
                                             Expression<?> typeObj = (Expression<?>) p.get(p.indexOf(deuxPointsToken) + 1);
-                                            if (!(typeObj instanceof Type)) {
+                                            if (!(typeObj instanceof ASType)) {
                                                 String nom;
                                                 if (p.get(0) instanceof Var) {
                                                     nom = ((Var) typeObj).getNom();
@@ -325,7 +326,7 @@ public class ASAst extends AstGenerator {
                                                 }
                                                 throw new ErreurType("Le symbole ':' doit \u00EAtre suivi d'un type valide ('" + nom + "' n'est pas un type valide)");
                                             }
-                                            type = (Type) typeObj;
+                                            type = (ASType) typeObj;
                                         }
                                         Token assignementToken = (Token) p.stream()
                                                 .filter(t -> t instanceof Token token && token.obtenirNom().equals("ASSIGNEMENT"))
@@ -343,9 +344,9 @@ public class ASAst extends AstGenerator {
                     public CreerFonction apply(List<Object> p) {
                         Argument[] params = new Argument[]{};
 
-                        Type typeRetour = p.get(p.size() - 1) instanceof Type type ? type : new Type("tout");
+                        ASType typeRetour = p.get(p.size() - 1) instanceof ASType type ? type : new ASType("tout");
 
-                        if (p.get(p.size() - 1) == null && p.get(3) instanceof Type type) {
+                        if (p.get(p.size() - 1) == null && p.get(3) instanceof ASType type) {
                             typeRetour = type;
                             return new CreerFonction((Var) p.get(1), params, typeRetour, executeurInstance);
                         }
@@ -378,7 +379,7 @@ public class ASAst extends AstGenerator {
                     public Retourner apply(List<Object> p) {
                         if (p.size() > 1 && p.get(1) instanceof CreerListe.Enumeration enumeration)
                             p.set(1, enumeration.buildCreerListe());
-                        return new Retourner(p.size() > 1 ? (Expression<?>) p.get(1) : new ValeurConstante(new Nul()));
+                        return new Retourner(p.size() > 1 ? (Expression<?>) p.get(1) : new ValeurConstante(new ASNul()));
                     }
                 });
 
@@ -526,10 +527,10 @@ public class ASAst extends AstGenerator {
         });
 
         ajouterExpression("{nom_type_de_donnees}",
-                new Ast<Type>() {
+                new Ast<ASType>() {
                     @Override
-                    public Type apply(List<Object> p) {
-                        return new Type(((Token) p.get(0)).obtenirValeur());
+                    public ASType apply(List<Object> p) {
+                        return new ASType(((Token) p.get(0)).obtenirValeur());
                     }
                 });
 
@@ -540,11 +541,11 @@ public class ASAst extends AstGenerator {
                         Token valeur = (Token) p.get(0);
                         String nom = valeur.obtenirNom();
                         return new ValeurConstante(switch (nom) {
-                            case "ENTIER" -> new Entier(valeur);
-                            case "DECIMAL" -> new Decimal(valeur);
-                            case "TEXTE" -> new Texte(valeur);
-                            case "BOOLEEN" -> new Booleen(valeur);
-                            case "NUL" -> new Nul();
+                            case "ENTIER" -> new ASEntier(valeur);
+                            case "DECIMAL" -> new ASDecimal(valeur);
+                            case "TEXTE" -> new ASTexte(valeur);
+                            case "BOOLEEN" -> new ASBooleen(valeur);
+                            case "NUL" -> new ASNul();
                             default -> throw new ErreurType("Type de donnee invalide");
                         });
                     }
@@ -789,7 +790,7 @@ public class ASAst extends AstGenerator {
                 new Ast<Expression<?>>() {
                     @Override
                     public Expression<?> apply(List<Object> p) {
-                        if (!(p.get(0) instanceof Type typeG && p.get(2) instanceof Type typeD)) {
+                        if (!(p.get(0) instanceof ASType typeG && p.get(2) instanceof ASType typeD)) {
                             //String nom;
                             //if (p.get(0) instanceof Var) {
                             //    nom = ((Var) p.get(0)).getNom();

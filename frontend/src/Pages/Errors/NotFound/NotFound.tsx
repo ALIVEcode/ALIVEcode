@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 /**
  * Page that is displayed when the requested url doesn't lead to anywhere
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 export const NotFound = () => {
 	const navigate = useNavigate();

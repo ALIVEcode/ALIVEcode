@@ -16,7 +16,7 @@ import { classNames } from '../../../Types/utils';
  * @param {string} padding css padding
  * @param {string} className css classes applied to the button
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const Button = forwardRef<
 	HTMLButtonElement,

@@ -1,6 +1,14 @@
 import styled from 'styled-components';
 import { themes } from '../../../state/contexts/ThemeContext';
-export type CourseNavigationProps = {};
+import { CourseElement } from '../../../Models/Course/course_element.entity';
+
+export type CourseNavigationSectionProps = {
+	element: CourseElement;
+};
+
+export type CourseNavigationActivityProps = {
+	element: CourseElement;
+};
 
 type NavigationOptions = {
 	isNavigationOpen: boolean;

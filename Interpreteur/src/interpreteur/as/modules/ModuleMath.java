@@ -1,77 +1,83 @@
 package interpreteur.as.modules;
 
-import interpreteur.as.Objets.ASObjet;
-import interpreteur.ast.buildingBlocs.expressions.Type;
+import interpreteur.as.lang.ASConstante;
+import interpreteur.as.lang.ASFonctionModule;
+import interpreteur.as.lang.ASVariable;
+import interpreteur.as.lang.datatype.ASDecimal;
+import interpreteur.as.lang.datatype.ASEntier;
+import interpreteur.as.lang.datatype.ASObjet;
+import interpreteur.as.modules.core.ASModule;
+import interpreteur.as.lang.ASType;
 import interpreteur.executeur.Executeur;
 
 
 public class ModuleMath {
     static ASModule charger(Executeur executeurInstance) {
-        return new ASModule(new ASObjet.Fonction[]{
-                new ASObjet.Fonction("rad", new ASObjet.Fonction.Parametre[]{
-                        new ASObjet.Fonction.Parametre(new Type("nombre"), "x", null)
-                }, new Type("decimal")) {
+        return new ASModule(new ASFonctionModule[]{
+                new ASFonctionModule("rad", new ASFonctionModule.Parametre[]{
+                        new ASFonctionModule.Parametre(new ASType("nombre"), "x", null)
+                }, new ASType("decimal")) {
                     @Override
                     public ASObjet<?> executer() {
                         double angle = ((Number) this.getValeurParam("x").getValue()).doubleValue();
-                        return new Decimal(Math.toRadians(angle));
+                        return new ASDecimal(Math.toRadians(angle));
                     }
                 },
 
-                new ASObjet.Fonction("deg", new ASObjet.Fonction.Parametre[]{
-                        new ASObjet.Fonction.Parametre(new Type("nombre"), "x", null)
-                }, new Type("decimal")) {
+                new ASFonctionModule("deg", new ASFonctionModule.Parametre[]{
+                        new ASFonctionModule.Parametre(new ASType("nombre"), "x", null)
+                }, new ASType("decimal")) {
                     @Override
                     public ASObjet<?> executer() {
                         double angle = ((Number) this.getValeurParam("x").getValue()).doubleValue();
-                        return new Decimal(Math.toDegrees(angle));
+                        return new ASDecimal(Math.toDegrees(angle));
                     }
                 },
 
-                new ASObjet.Fonction("sin", new ASObjet.Fonction.Parametre[]{
-                        new ASObjet.Fonction.Parametre(new Type("nombre"), "x", null)
-                }, new Type("decimal")) {
+                new ASFonctionModule("sin", new ASFonctionModule.Parametre[]{
+                        new ASFonctionModule.Parametre(new ASType("nombre"), "x", null)
+                }, new ASType("decimal")) {
                     @Override
                     public ASObjet<?> executer() {
                         double angle = ((Number) this.getValeurParam("x").getValue()).doubleValue();
-                        return new Decimal(Math.sin(Math.toRadians(angle)));
+                        return new ASDecimal(Math.sin(Math.toRadians(angle)));
                     }
                 },
 
-                new ASObjet.Fonction("cos", new ASObjet.Fonction.Parametre[]{
-                        new ASObjet.Fonction.Parametre(new Type("nombre"), "x", null)
-                }, new Type("decimal")) {
+                new ASFonctionModule("cos", new ASFonctionModule.Parametre[]{
+                        new ASFonctionModule.Parametre(new ASType("nombre"), "x", null)
+                }, new ASType("decimal")) {
                     @Override
                     public ASObjet<?> executer() {
                         double angle = ((Number) this.getValeurParam("x").getValue()).doubleValue();
-                        return new Decimal(Math.cos(Math.toRadians(angle)));
+                        return new ASDecimal(Math.cos(Math.toRadians(angle)));
                     }
                 },
 
-                new ASObjet.Fonction("tan", new ASObjet.Fonction.Parametre[]{
-                        new ASObjet.Fonction.Parametre(new Type("nombre"), "x", null)
-                }, new Type("decimal")) {
+                new ASFonctionModule("tan", new ASFonctionModule.Parametre[]{
+                        new ASFonctionModule.Parametre(new ASType("nombre"), "x", null)
+                }, new ASType("decimal")) {
                     @Override
                     public ASObjet<?> executer() {
                         double angle = ((Number) this.getValeurParam("x").getValue()).doubleValue();
-                        return new Decimal(Math.tan(Math.toRadians(angle)));
+                        return new ASDecimal(Math.tan(Math.toRadians(angle)));
                     }
                 },
 
-                new ASObjet.Fonction("arrondir", new ASObjet.Fonction.Parametre[]{
-                        new ASObjet.Fonction.Parametre(new Type("nombre"), "n", null),
-                        new ASObjet.Fonction.Parametre(new Type("entier"), "nbSignificatifs", new ASObjet.Entier(0)),
-                }, new Type("nombre")) {
+                new ASFonctionModule("arrondir", new ASFonctionModule.Parametre[]{
+                        new ASFonctionModule.Parametre(new ASType("nombre"), "n", null),
+                        new ASFonctionModule.Parametre(new ASType("entier"), "nbSignificatifs", new ASEntier(0)),
+                }, new ASType("nombre")) {
                     @Override
                     public ASObjet<?> executer() {
                         double n = ((Number) this.getValeurParam("n").getValue()).doubleValue();
                         double shift = Math.pow(10, (Integer) this.getValeurParam("nbSignificatifs").getValue());
-                        return new Decimal(Math.round(n * shift) / shift);
+                        return new ASDecimal(Math.round(n * shift) / shift);
                     }
                 },
-        }, new ASObjet.Variable[]{
-                new ASObjet.Constante("PI", new ASObjet.Decimal(Math.PI)),
-                new ASObjet.Constante("E", new ASObjet.Decimal(Math.E))
+        }, new ASVariable[]{
+                new ASConstante("PI", new ASDecimal(Math.PI)),
+                new ASConstante("E", new ASDecimal(Math.E))
         });
     }
 }

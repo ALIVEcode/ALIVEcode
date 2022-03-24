@@ -1,10 +1,10 @@
 package interpreteur.ast.buildingBlocs.programmes;
 
-import interpreteur.as.Objets.ASFonction;
-import interpreteur.as.Objets.ASObjet;
-import interpreteur.as.Objets.Scope;
+import interpreteur.as.lang.ASVariable;
+import interpreteur.as.lang.datatype.ASFonction;
+import interpreteur.as.lang.ASScope;
 import interpreteur.ast.buildingBlocs.Programme;
-import interpreteur.ast.buildingBlocs.expressions.Type;
+import interpreteur.as.lang.ASType;
 import interpreteur.ast.buildingBlocs.expressions.Var;
 import interpreteur.executeur.Coordonnee;
 import interpreteur.executeur.Executeur;
@@ -15,15 +15,15 @@ import java.util.List;
 
 public class CreerGetter extends Programme {
     private final Var var;
-    private final Type type;
-    private final Scope scope;
+    private final ASType type;
+    private final ASScope scope;
 
-    public CreerGetter(Var var, Type type, Executeur executeurInstance) {
+    public CreerGetter(Var var, ASType type, Executeur executeurInstance) {
         super(executeurInstance);
         this.var = var;
         this.type = type;
         this.addGetter();
-        this.scope = Scope.makeNewCurrentScope();
+        this.scope = ASScope.makeNewCurrentScope();
     }
 
     public Var getVar() {
@@ -31,7 +31,7 @@ public class CreerGetter extends Programme {
     }
 
     public void addGetter() {
-        ASObjet.Variable v = Scope.getCurrentScope().getVariable(var.getNom());
+        ASVariable v = ASScope.getCurrentScope().getVariable(var.getNom());
 
         if (v == null) {
             Declarer.addWaitingGetter(this);
@@ -39,8 +39,8 @@ public class CreerGetter extends Programme {
         }
 
         v.setGetter(() -> {
-            Scope scope = new Scope(this.scope);
-            scope.setParent(Scope.getCurrentScopeInstance());
+            ASScope scope = new ASScope(this.scope);
+            scope.setParent(ASScope.getCurrentScopeInstance());
 
             ASFonction get = new ASFonction(this.var.getNom(), this.type, executeurInstance);
             get.setScope(scope);

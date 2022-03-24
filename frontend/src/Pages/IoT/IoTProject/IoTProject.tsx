@@ -26,7 +26,7 @@ import { IoTObject } from '../../../Models/Iot/IoTobject.entity';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import { useParams } from 'react-router';
 import IoTProjectPage from '../IoTProjectPage/IoTProjectPage';
-import IoTLevel from '../../Level/LevelIoT/LevelIoT';
+import IoTChallenge from '../../Challenge/ChallengeIoT/ChallengeIoT';
 import { AsScript } from '../../../Models/AsScript/as-script.entity';
 import { useNavigate } from 'react-router-dom';
 import { IoTProjectDocument } from '../../../../../backend/src/models/iot/IoTproject/entities/IoTproject.entity';
@@ -39,10 +39,10 @@ import { instanceToPlain } from 'class-transformer';
  *
  * @param {string} id id of the project (as url prop)
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
-const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
-	const projectRef = useRef<ProjectModel | null>(level?.project ?? null);
+const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
+	const projectRef = useRef<ProjectModel | null>(challenge?.project ?? null);
 	const project = projectRef.current;
 
 	const navigate = useNavigate();
@@ -52,10 +52,10 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 	const { id: paramId } = useParams<{ id: string | undefined }>();
 	const forceUpdate = useForceUpdate();
 
-	const id = level?.id ?? paramId;
+	const id = challenge?.id ?? paramId;
 
-	const isLevel = level ? true : false;
-	const canEdit = user?.id === projectRef.current?.creator?.id && !isLevel;
+	const isChallenge = challenge ? true : false;
+	const canEdit = user?.id === projectRef.current?.creator?.id && !isChallenge;
 
 	const saveTimeout = useRef<any>(null);
 	const [lastSaved, setLastSaved] = useState<number>(Date.now() - 4000);
@@ -99,7 +99,7 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 	}, [socket, onRequestRender]);
 
 	useEffect(() => {
-		if (!id || level?.project) return;
+		if (!id || challenge?.project) return;
 		const getProject = async () => {
 			try {
 				const project: ProjectModel = await api.db.iot.projects.get({
@@ -209,7 +209,7 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 			project: project ?? null,
 			canEdit,
 			updateId: updateId ? updateId : project ? project.id : '',
-			isLevel,
+			isChallenge,
 			socket: socket ?? null,
 			addRoute,
 			deleteRoute,
@@ -224,7 +224,7 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 		project,
 		canEdit,
 		updateId,
-		isLevel,
+		isChallenge,
 		socket,
 		addRoute,
 		deleteRoute,
@@ -242,8 +242,8 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 
 	return (
 		<IoTProjectContext.Provider value={providerValues}>
-			{level ? (
-				<IoTLevel initialCode={initialCode ?? ''} />
+			{challenge ? (
+				<IoTChallenge initialCode={initialCode ?? ''} />
 			) : (
 				<IoTProjectPage />
 			)}

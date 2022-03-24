@@ -16,21 +16,22 @@ import { loadThemeFromCookies, setCookie } from './Types/cookies';
 import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
 import { setAccessToken } from './Types/accessToken';
-import { User, Student, Professor } from './Models/User/user.entity';
+import { User, Student } from './Models/User/user.entity';
 import LoadingScreen from './Components/UtilsComponents/LoadingScreen/LoadingScreen';
 import background_image_light from './assets/images/backgroundImage4.png';
 import background_image_dark from './assets/images/backgroundImageDark4.png';
 import api from './Models/api';
 import MaintenanceBar from './Components/SiteStatusComponents/MaintenanceBar/MaintenanceBar';
 import { Maintenance } from './Models/Maintenance/maintenance.entity';
-import openPlaySocket from './Pages/Level/PlaySocket';
-import { PlaySocket } from './Pages/Level/PlaySocket';
+import openPlaySocket from './Pages/Challenge/PlaySocket';
+import { PlaySocket } from './Pages/Challenge/PlaySocket';
 import Navbar from './Components/MainComponents/Navbar/Navbar';
 import { useLocation } from 'react-router';
 import { hot } from 'react-hot-loader/root';
 import Modal from './Components/UtilsComponents/Modal/Modal';
 import NameMigrationForm from './Components/SiteStatusComponents/NameMigrationForm/NameMigrationForm';
 import { useForceUpdate } from './state/hooks/useForceUpdate';
+import { Resource } from './Models/Resource/resource.entity';
 
 type GlobalStyleProps = {
 	theme: Theme;
@@ -96,6 +97,7 @@ const App = () => {
 	const [loading, setLoading] = useState(true);
 	const [theme, setTheme] = useState(themes.light);
 	const [maintenance, setMaintenance] = useState<Maintenance | null>(null);
+	const [resources, setResources] = useState<Resource[] | null>(null);
 	const [oldStudentNameMigrationOpen, setOldStudentNameMigrationOpen] =
 		useState(true);
 
@@ -116,8 +118,15 @@ const App = () => {
 	);
 
 	const providerValue = useMemo(
-		() => ({ user, setUser: handleSetUser, maintenance, playSocket }),
-		[user, handleSetUser, maintenance, playSocket],
+		() => ({
+			user,
+			setUser: handleSetUser,
+			maintenance,
+			playSocket,
+			resources,
+			setResources: (res: Resource[]) => setResources(res),
+		}),
+		[user, handleSetUser, maintenance, playSocket, resources],
 	);
 
 	const handleSetTheme = (theme: Theme) => {

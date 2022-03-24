@@ -1,11 +1,11 @@
 package interpreteur.ast.buildingBlocs.programmes;
 
-import interpreteur.as.Objets.ASObjet;
+import interpreteur.as.lang.datatype.ASNul;
+import interpreteur.as.lang.datatype.ASObjet;
 import interpreteur.ast.buildingBlocs.Expression;
 import interpreteur.ast.buildingBlocs.Programme;
 import interpreteur.ast.buildingBlocs.expressions.CreerListe;
 import interpreteur.data_manager.Data;
-import interpreteur.executeur.Executeur;
 
 @Deprecated
 public class Afficher extends Programme {
@@ -26,7 +26,7 @@ public class Afficher extends Programme {
                     .toArray(String[]::new));
         } else {
             ASObjet<?> val = expr.eval();
-            msg = val instanceof ASObjet.Nul ? "nul" : val.toString();
+            msg = val instanceof ASNul ? "nul" : val.toString();
         }
         //Executeur.ecrire(msg);
         return new Data(Data.Id.AFFICHER).addParam(msg);

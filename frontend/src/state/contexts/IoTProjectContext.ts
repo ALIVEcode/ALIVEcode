@@ -14,7 +14,7 @@ export type IoTProjectContextValues = {
 	project: IoTProject | null;
 	canEdit: boolean;
 	updateId: string;
-	isLevel: boolean;
+	isChallenge: boolean;
 	socket: IoTSocket | null;
 	addRoute: (route: IotRoute) => void;
 	deleteRoute: (route: IotRoute) => void;
@@ -35,7 +35,7 @@ export const IoTProjectContext = createContext<IoTProjectContextValues>({
 	canEdit: false,
 	project: null,
 	updateId: '',
-	isLevel: false,
+	isChallenge: false,
 	socket: null,
 	addRoute: () => {},
 	deleteRoute: () => {},

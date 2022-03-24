@@ -9,7 +9,7 @@ import { SearchBarProps } from './searchBarTypes';
  * @param {(txt: string) => value} setValue function that updates the parent state of the value
  * @param {(txt: string) => value} onSubmit callback called when the search is triggered (search icon clicked) or enter pressed
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const SearchBar = ({ value, setValue, onSubmit }: SearchBarProps) => {
 	return (

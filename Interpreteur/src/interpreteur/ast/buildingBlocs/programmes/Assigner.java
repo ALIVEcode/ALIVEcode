@@ -1,7 +1,9 @@
 package interpreteur.ast.buildingBlocs.programmes;
 
-import interpreteur.as.Objets.ASObjet;
-import interpreteur.as.Objets.Scope;
+import interpreteur.as.lang.ASVariable;
+import interpreteur.as.lang.datatype.ASListe;
+import interpreteur.as.lang.datatype.ASObjet;
+import interpreteur.as.lang.ASScope;
 import interpreteur.as.erreurs.ASErreur;
 import interpreteur.ast.buildingBlocs.Expression;
 import interpreteur.ast.buildingBlocs.Programme;
@@ -36,7 +38,7 @@ public class Assigner extends Programme {
     @Override
     public Object execute() {
         //ASObjet.Variable variable = ASObjet.VariableManager.obtenirVariable(var.getNom());
-        ASObjet.Variable variable = Scope.getCurrentScopeInstance().getVariable(var.getNom());
+        ASVariable variable = ASScope.getCurrentScopeInstance().getVariable(var.getNom());
 
         ASObjet<?> valeur = this.valeur.eval();
         if (variable == null) {
@@ -46,7 +48,7 @@ public class Assigner extends Programme {
 
         if (expr instanceof CreerListe.SousSection) {
             ASObjet<?> valeurVariable = variable.getValeurApresGetter();
-            if (!(valeurVariable instanceof ASObjet.Liste listeInitial)) {
+            if (!(valeurVariable instanceof ASListe listeInitial)) {
                 throw new ASErreur.ErreurType("L'assignement d'index ou de sous-section n'est pas d\u00E9finie pour " +
                         "un \u00E9l\u00E9ment de type '" + valeurVariable.obtenirNomType() + "'.");
             }
@@ -54,13 +56,13 @@ public class Assigner extends Programme {
             // si l'assignement est de forme
             // var[debut:fin] = valeur
             if (expr instanceof CreerListe.SousSection.CreerSousSection sousSection) {
-                if (!(valeur instanceof ASObjet.Liste)) {
+                if (!(valeur instanceof ASListe)) {
                     // TODO ERREUR peut pas assigner une sous liste à autre chose qu'à une liste
                     throw new ASErreur.ErreurAssignement("un interval de valeur doit \u00EAtre assign\u00E9 \u00E0 une liste");
                 }
                 int fin = sousSection.getFin();
                 int debut = sousSection.getDebut();
-                valeur = listeInitial.remplacerRange(debut, fin, (ASObjet.Liste) valeur);
+                valeur = listeInitial.remplacerRange(debut, fin, (ASListe) valeur);
             }
             // si l'assignement est de forme
             // var[idxOrKey] = valeur

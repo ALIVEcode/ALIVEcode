@@ -8,13 +8,13 @@ import { IoTRouteEntity } from '../../models/iot/IoTroute/entities/IoTroute.enti
 import { IoTProjectService } from '../../models/iot/IoTproject/IoTproject.service';
 import { AsScriptEntity } from '../../models/as-script/entities/as-script.entity';
 import { AsScriptService } from '../../models/as-script/as-script.service';
-import { LevelService } from '../../models/level/level.service';
-import { LevelEntity } from '../../models/level/entities/level.entity';
-import { LevelAliveEntity } from '../../models/level/entities/levelAlive.entity';
-import { LevelCodeEntity } from '../../models/level/entities/levelCode.entity';
-import { LevelAIEntity } from '../../models/level/entities/levelAI.entity';
-import { LevelIoTEntity } from '../../models/level/entities/levelIoT.entity';
-import { LevelProgressionEntity } from '../../models/level/entities/levelProgression.entity';
+import { ChallengeService } from '../../models/challenge/challenge.service';
+import { ChallengeEntity } from '../../models/challenge/entities/challenge.entity';
+import { ChallengeAliveEntity } from '../../models/challenge/entities/challenges/challenge_alive.entity';
+import { ChallengeCodeEntity } from '../../models/challenge/entities/challenges/challenge_code.entity';
+import { ChallengeAIEntity } from '../../models/challenge/entities/challenges/challenge_ai.entity';
+import { ChallengeIoTEntity } from '../../models/challenge/entities/challenges/challenge_iot.entity';
+import { ChallengeProgressionEntity } from '../../models/challenge/entities/challenge_progression.entity';
 
 @Module({
   imports: [
@@ -23,15 +23,15 @@ import { LevelProgressionEntity } from '../../models/level/entities/levelProgres
       IoTProjectEntity,
       IoTRouteEntity,
       AsScriptEntity,
-      LevelEntity,
-      LevelAliveEntity,
-      LevelCodeEntity,
-      LevelAIEntity,
-      LevelIoTEntity,
-      LevelProgressionEntity,
+      ChallengeEntity,
+      ChallengeAliveEntity,
+      ChallengeCodeEntity,
+      ChallengeAIEntity,
+      ChallengeIoTEntity,
+      ChallengeProgressionEntity,
     ]),
   ],
   controllers: [IoTGateway],
-  providers: [IoTObjectService, IoTProjectService, IoTGateway, AsScriptService, LevelService],
+  providers: [IoTObjectService, IoTProjectService, IoTGateway, AsScriptService, ChallengeService],
 })
 export class IoTModule {}

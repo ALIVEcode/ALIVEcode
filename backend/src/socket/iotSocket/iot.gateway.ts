@@ -51,18 +51,46 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
 
   afterInit() {
     this.logger.log(`Initialized`);
+
+    // Set the ping interval to ping each connected object (each 15 seconds)
+    setInterval(() => {
+      Client.getClients().forEach(client => {
+        // Client still hasn't responded to the ping, it is presumed dead
+        if (!client.isAlive) {
+          client.removeClient();
+          return client.getSocket().terminate();
+        }
+
+        // Client is ping to see if it is still alive
+        client.isAlive = false;
+        client.getSocket().ping();
+      });
+    }, 15000); // Each 15 secondes
   }
 
-  handleConnection() {
+  handleConnection(ws: WebSocket) {
     this.logger.log(`Client connected`);
+
+    /** Register pong action for client socket */
+    ws.on('pong', this.receivePong);
+  }
+
+  receivePong(socket: WebSocket) {
+    const client = Client.getClientBySocket(socket);
+    if (client) client.isAlive = true;
   }
 
   handleDisconnect(@ConnectedSocket() socket: WebSocket) {
     this.logger.log(`Client disconnected`);
-    ObjectClient.objects = ObjectClient.objects.filter(obj => obj.getSocket() !== socket);
-    WatcherClient.clients = WatcherClient.watchers.filter(w => w.getSocket() !== socket);
+    Client.removeClientBySocket(socket);
   }
 
+  @SubscribeMessage('pong')
+  pong(@ConnectedSocket() socket: WebSocket) {
+    this.receivePong(socket);
+  }
+
+  @UseFilters(new IoTExceptionFilter())
   async objectPermissionFilter(socket: WebSocket, projectId: string) {
     const object = ObjectClient.getClientBySocket(socket);
     if (!object) throw new WsException('Forbidden');
@@ -104,8 +132,8 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   async connect_object(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: ObjectClientConnectPayload) {
     if (!payload.id) throw new WsException('Bad payload');
     if (WatcherClient.isSocketAlreadyWatcher(socket)) throw new WsException('Already connected as a watcher');
-    if (ObjectClient.getClientById(payload.id))
-      throw new WsException(`An IoTObject is already connected with the id "${payload.id}"`);
+    const alreadyConnectedObj = ObjectClient.getClientById(payload.id);
+    if (alreadyConnectedObj) throw new WsException(`An IoTObject is already connected with the id "${payload.id}"`);
 
     // Checks if the object exists in the database and checks for permissions for projects
     let iotObject: IoTObjectEntity;
@@ -154,7 +182,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   async update(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTUpdateDocumentRequestFromObject) {
     if (!payload.projectId || payload.fields == null || typeof payload.fields !== 'object')
       throw new WsException('Bad payload');
-    this.objectPermissionFilter(socket, payload.projectId);
+    await this.objectPermissionFilter(socket, payload.projectId);
 
     await this.iotProjectService.updateDocumentFields(payload.projectId, payload.fields);
   }
@@ -189,7 +217,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   @SubscribeMessage('send_route')
   async send_route(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTRouteRequestFromObject) {
     if (!payload.routePath || !payload.data || !payload.projectId) throw new WsException('Bad payload');
-    this.objectPermissionFilter(socket, payload.projectId);
+    await this.objectPermissionFilter(socket, payload.projectId);
 
     const { route } = await this.iotProjectService.findOneWithRoute(payload.projectId, payload.routePath);
     await this.iotProjectService.sendRoute(route, payload.data);
@@ -198,11 +226,10 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   @UseFilters(new IoTExceptionFilter())
   @SubscribeMessage('broadcast')
   async broadcast(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTBroadcastRequestFromBoth) {
-    console.log(payload);
     if (!payload.projectId || !payload.data) throw new WsException('Bad payload');
     const client = Client.getClientBySocket(socket);
     if (client instanceof ObjectClient) {
-      this.objectPermissionFilter(socket, payload.projectId);
+      await this.objectPermissionFilter(socket, payload.projectId);
     } else {
       throw new HttpException('Not Implemented', HttpStatus.NOT_IMPLEMENTED);
     }
@@ -228,7 +255,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     if (!obj) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
 
     try {
-      this.objectPermissionFilter(obj.getSocket(), payload.projectId);
+      await this.objectPermissionFilter(obj.getSocket(), payload.projectId);
     } catch {
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     }
@@ -244,7 +271,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     if (!obj) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
 
     try {
-      this.objectPermissionFilter(obj.getSocket(), payload.projectId);
+      await this.objectPermissionFilter(obj.getSocket(), payload.projectId);
     } catch {
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     }

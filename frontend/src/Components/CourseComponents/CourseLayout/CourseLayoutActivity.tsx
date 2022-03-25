@@ -54,7 +54,7 @@ const CourseLayoutActivity = ({ courseElement }: CourseLayoutActivityProps) => {
 				}
 			>
 				<div className="h-full">
-					<Activity activity={activity} />
+					<Activity editMode activity={activity} />
 				</div>
 			</Modal>
 		</>

@@ -1,13 +1,7 @@
-import { Editable, Slate, useFocused, withReact } from 'slate-react';
-import { createEditor, Descendant, Editor, Transforms } from 'slate';
+import { Editable, Slate, withReact } from 'slate-react';
+import { createEditor, Descendant } from 'slate';
 import { withHistory } from 'slate-history';
-import {
-	KeyboardEventHandler,
-	useCallback,
-	useMemo,
-	useRef,
-	useState,
-} from 'react';
+import { useMemo, useState } from 'react';
 import RichTextToolBar from './RichTextToolBar';
 import useTextEditor from '../../../state/hooks/useTextEditor';
 import { RichTextEditorProps } from './richTextToolBarTypes';

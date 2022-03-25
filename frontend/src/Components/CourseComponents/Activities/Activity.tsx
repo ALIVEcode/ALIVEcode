@@ -1,9 +1,6 @@
 import { useCallback, useContext } from 'react';
 import { CourseContext } from '../../../state/contexts/CourseContext';
-import {
-	Activity as ActivityModel,
-	ACTIVITY_TYPE,
-} from '../../../Models/Course/activity.entity';
+import { ACTIVITY_TYPE } from '../../../Models/Course/activity.entity';
 import ActivityChallenge from './ActivityChallenge';
 import RichTextEditor from '../../RichTextComponents/RichTextEditor/RichTextEditor';
 import ButtonAdd from './ButtonAdd';
@@ -14,8 +11,8 @@ import { useTranslation } from 'react-i18next';
 import { ActivityVideo as ActivityVideoModel } from '../../../Models/Course/activities/activity_video.entity';
 import ActivityVideo from './ActivityVideo';
 import Link from '../../UtilsComponents/Link/Link';
-import { faExpandAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ActivityProps } from './activityTypes';
 
 /**
  * Shows the opened activity. Renders different component depending on the type of the activity opened.
@@ -25,7 +22,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
  *
  * @author Enric Soldevila, Mathis Laroche
  */
-const Activity = ({ activity }: { activity: ActivityModel }) => {
+const Activity = ({ activity, editMode }: ActivityProps) => {
 	const { course, updateActivity, setOpenModalImportResource } =
 		useContext(CourseContext);
 	const { t } = useTranslation();
@@ -73,7 +70,12 @@ const Activity = ({ activity }: { activity: ActivityModel }) => {
 	return (
 		activity && (
 			<div className="w-full h-full relative overflow-y-auto flex flex-col px-8">
-				<FontAwesomeIcon icon={activity.icon} className="pb-2 m-0" size="3x" color="lightgrey" />
+				<FontAwesomeIcon
+					icon={activity.icon}
+					className="pb-2 m-0"
+					size="3x"
+					color="lightgrey"
+				/>
 				<div className="z-10 sticky top-0 pt-2 text-4xl bg-[color:var(--background-color)] pb-6 w-full border-[color:var(--bg-shade-four-color)]">
 					<b>{activity.name}</b>
 				</div>
@@ -93,24 +95,32 @@ const Activity = ({ activity }: { activity: ActivityModel }) => {
 					{activity.resource ? (
 						<div className="flex flex-col items-center gap-4">
 							{renderSpecificActivity()}
-							<Button
-								variant="danger"
-								onClick={() => console.log('Not Implemented')}
-							>
-								{t('course.activity.remove_resource')}
-							</Button>
+							{editMode && (
+								<Button
+									variant="danger"
+									onClick={() => console.log('Not Implemented')}
+								>
+									{t('course.activity.remove_resource')}
+								</Button>
+							)}
 						</div>
 					) : (
 						<div className="flex flex-col items-center gap-4">
-							<Button variant="primary">
-								{t('course.activity.create_resource')}
-							</Button>
-							<Link
-								onClick={() => setOpenModalImportResource(true)}
-								className="[color:var(--fg-shade-four-color)] hover:[color:var(--fg-shade-one-color)] hover:underline hover:cursor-pointer"
-							>
-								{t('course.activity.import_resource')}
-							</Link>
+							{editMode ? (
+								<>
+									<Button variant="primary">
+										{t('course.activity.create_resource')}
+									</Button>
+									<Link
+										onClick={() => setOpenModalImportResource(true)}
+										className="[color:var(--fg-shade-four-color)] hover:[color:var(--fg-shade-one-color)] hover:underline hover:cursor-pointer"
+									>
+										{t('course.activity.import_resource')}
+									</Link>
+								</>
+							) : (
+								<div>{t('courses.activity.empty')}</div>
+							)}
 						</div>
 					)}
 				</div>

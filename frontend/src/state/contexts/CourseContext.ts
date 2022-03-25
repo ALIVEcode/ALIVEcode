@@ -6,6 +6,7 @@ import {
 	CourseElement,
 } from '../../Models/Course/course_element.entity';
 import { Section } from '../../Models/Course/section.entity';
+import { Resource } from '../../Models/Resource/resource.entity';
 import {
 	CourseTabs,
 	SwitchCourseTabActions,
@@ -48,6 +49,7 @@ export type CourseContextValues = {
 	openSectionForm: (sectionParent?: Section) => void;
 	openActivityForm: (sectionParent?: Section) => void;
 	setOpenModalImportResource: (state: boolean) => void;
+	removeResourceFromActivity: (activity: Activity) => void;
 };
 
 export const CourseContext = createContext<CourseContextValues>({
@@ -79,4 +81,5 @@ export const CourseContext = createContext<CourseContextValues>({
 	openSectionForm: () => {},
 	openActivityForm: () => {},
 	setOpenModalImportResource: () => {},
+	removeResourceFromActivity: () => {},
 });

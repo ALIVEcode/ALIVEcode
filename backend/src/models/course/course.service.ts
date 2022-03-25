@@ -366,5 +366,16 @@ export class CourseService {
     return await this.activityRepository.save(activity);
   }
 
+  /**
+   * Remove a resource from an activity
+   * @param activity Course found with the id in the url
+   * @param activityId Id of the activity to remove the resource from
+   * @returns The removal query result
+   */
+  async removeResourceFromActivity(activity: ActivityEntity) {
+    activity.resource = null;
+    return await this.activityRepository.save(activity);
+  }
+
   /*****-------End of Activity methods-------*****/
 }

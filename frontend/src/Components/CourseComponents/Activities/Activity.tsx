@@ -24,8 +24,13 @@ import FormInput from '../../UtilsComponents/FormInput/FormInput';
  * @author Enric Soldevila, Mathis Laroche
  */
 const Activity = ({ activity, editMode }: ActivityProps) => {
-	const { course, updateActivity, setOpenModalImportResource, renameElement } =
-		useContext(CourseContext);
+	const {
+		course,
+		updateActivity,
+		setOpenModalImportResource,
+		renameElement,
+		removeResourceFromActivity,
+	} = useContext(CourseContext);
 	const { t } = useTranslation();
 	const [isRenaming, setIsRenaming] = useState(false);
 	const inputRef = useRef<HTMLInputElement>();
@@ -145,7 +150,7 @@ const Activity = ({ activity, editMode }: ActivityProps) => {
 							{editMode && (
 								<Button
 									variant="danger"
-									onClick={() => console.log('Not Implemented')}
+									onClick={() => removeResourceFromActivity(activity)}
 								>
 									{t('course.activity.remove_resource')}
 								</Button>

@@ -228,6 +228,9 @@ const api = {
 			deleteActivity: apiDelete(
 				'courses/:courseId/sections/:sectionId/activities/:activityId',
 			),
+			removeResourceFromActivity: apiDelete(
+				'courses/:id/activities/:activityId/removeResource',
+			),
 			async addResourceInActivity(
 				course: Course,
 				activity: Activity,

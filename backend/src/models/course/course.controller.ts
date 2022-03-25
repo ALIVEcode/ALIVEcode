@@ -223,7 +223,7 @@ export class CourseController {
    * Route to add a resource to an activity by it's id. Must be creator of the course
    * @param course Course found with the id in the url
    * @param activityId Id of the activity to add the resource in
-   * @returns The newly updated activity
+   * @returns The newly added resource
    */
   @Post(':id/activities/:activityId/addResource')
   @Auth(Role.PROFESSOR, Role.STAFF)
@@ -238,6 +238,20 @@ export class CourseController {
     const resource = await this.resourceService.findOne(addResourceDTO.resourceId);
     if (resource.creator.id !== professor.id) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     return await this.courseService.addResourceToActivity(activity, resource);
+  }
+
+  /**
+   * Route to remove a resource from an activity by it's id. Must be creator of the course
+   * @param course Course found with the id in the url
+   * @param activityId Id of the activity to remove the resource from
+   * @returns The removal query result
+   */
+  @Delete(':id/activities/:activityId/removeResource')
+  @Auth(Role.PROFESSOR, Role.STAFF)
+  @UseGuards(CourseProfessor)
+  async removeResourceFromActivity(@Course() course: CourseEntity, @Param('activityId') activityId: string) {
+    const activity = await this.courseService.findActivity(course.id, activityId);
+    return await this.courseService.removeResourceFromActivity(activity);
   }
 
   /**

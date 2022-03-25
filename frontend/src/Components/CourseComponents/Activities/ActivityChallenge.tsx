@@ -28,6 +28,7 @@ const ActivityChallenge = ({
 			activity.resource.challenge = await api.db.challenges.get({
 				id: activity.resource.challengeId,
 			});
+			console.log(activity.resource.challenge);
 			forceUpdate();
 		};
 		loadChallenge();
@@ -37,7 +38,7 @@ const ActivityChallenge = ({
 	return (
 		activity && (
 			<div className="w-full h-[500px]">
-				{!activity.resourceId ? (
+				{!activity.resource ? (
 					<div className="w-full h-full flex flex-col justify-center items-center"></div>
 				) : !activity.resource?.challenge ? (
 					<LoadingScreen />

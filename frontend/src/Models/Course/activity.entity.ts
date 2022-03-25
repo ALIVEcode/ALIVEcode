@@ -51,5 +51,5 @@ export abstract class Activity {
 		}
 	}
 
-	abstract resource: Resource;
+	abstract resource?: Resource;
 }

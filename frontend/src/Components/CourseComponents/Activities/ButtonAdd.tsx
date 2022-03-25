@@ -40,10 +40,7 @@ const ButtonAdd = ({
 				await updateActivity(activity, { [what]: value });
 			}}
 		>
-			<FontAwesomeIcon
-				icon={faPlus}
-				className="[color:var(--contrast-color)]"
-			/>
+			<FontAwesomeIcon icon={faPlus} className="[color:var(--logo-color)]" />
 		</div>
 	);
 };

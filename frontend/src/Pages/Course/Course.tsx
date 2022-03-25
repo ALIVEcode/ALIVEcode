@@ -28,6 +28,8 @@ import { UserContext } from '../../state/contexts/UserContext';
 import { useForceUpdate } from '../../state/hooks/useForceUpdate';
 import ResourceMenu from '../ResourceMenu/ResourceMenu';
 import { SwitchCourseTabReducer } from './courseTypes';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChalkboardTeacher } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Course page that shows the content of a course
@@ -424,8 +426,16 @@ const Course = () => {
 						<div className="w-1/4 h-full overflow-y-auto">
 							<CourseNavigation />
 						</div>
-						<div className="w-3/4 h-full overflow-y-auto">
+						<div className="w-3/4 h-full overflow-y-auto relative">
 							<CourseBody />
+							<div className="absolute z-10 right-6 top-4">
+								<FontAwesomeIcon
+									icon={faChalkboardTeacher}
+									size="4x"
+									className="pl-5 hover:cursor-pointer [color:var(--foreground-color)]"
+									onClick={() => setTabSelected({ tab: 'layout' })}
+								/>
+							</div>
 						</div>
 					</div>
 				)}
@@ -455,8 +465,6 @@ const Course = () => {
 							openedActivity,
 							resource,
 						);
-						console.log(openedActivity);
-						console.log(resource);
 						openedActivity.resource = resource;
 						setOpenModalImportResource(false);
 					}}

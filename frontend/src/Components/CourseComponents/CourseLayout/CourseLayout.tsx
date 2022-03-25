@@ -1,4 +1,4 @@
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faUserGraduate } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -24,10 +24,10 @@ const CourseLayout = () => {
 	}
 
 	return (
-		<div className="w-full h-full overflow-y-auto relative">
-			<div className="sticky z-10 left-0 top-0">
+		<div className="w-full h-full overflow-y-auto relative p-6">
+			<div className="absolute z-10 right-6 top-4">
 				<FontAwesomeIcon
-					icon={faArrowLeft}
+					icon={faUserGraduate}
 					size="4x"
 					className="pl-5 hover:cursor-pointer [color:var(--foreground-color)]"
 					onClick={() => setTabSelected({ tab: 'navigation' })}

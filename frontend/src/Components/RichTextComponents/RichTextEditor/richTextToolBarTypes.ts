@@ -4,6 +4,7 @@ import { Descendant } from 'slate';
 export type RichTextEditorProps = {
 	onChange: (value: Descendant[]) => void;
 	defaultText?: Descendant[];
+	readOnly?: boolean;
 };
 
 export type RichTextToolBarProps = {};

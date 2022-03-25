@@ -5,8 +5,13 @@ import { useMemo, useState } from 'react';
 import RichTextToolBar from './RichTextToolBar';
 import useTextEditor from '../../../state/hooks/useTextEditor';
 import { RichTextEditorProps } from './richTextToolBarTypes';
+import { classNames } from '../../../Types/utils';
 
-const RichTextEditor = ({ defaultText, onChange }: RichTextEditorProps) => {
+const RichTextEditor = ({
+	defaultText,
+	onChange,
+	readOnly,
+}: RichTextEditorProps) => {
 	const editor = useMemo(() => withReact(withHistory(createEditor())), []);
 	const { applyHotKey, applyStyle } = useTextEditor(editor);
 	const [editMode, setEditMode] = useState(false);
@@ -41,9 +46,11 @@ const RichTextEditor = ({ defaultText, onChange }: RichTextEditorProps) => {
 			>
 				<RichTextToolBar />
 				<Editable
-					className={`rounded-sm pl-2 bg-[color:var(--background-color)] cursor-text border py-3 w-full h-full ${
-						editMode && 'drop-shadow-md'
-					}`}
+					readOnly={readOnly}
+					className={classNames(
+						'rounded-sm pl-2 bg-[color:var(--background-color)] cursor-text border py-3 w-full h-full transition-all',
+						editMode && !readOnly && 'drop-shadow-md',
+					)}
 					renderElement={props => applyStyle(props.element.type, props)}
 					onKeyDown={applyHotKey}
 					onSelect={() => setEditMode(true)}

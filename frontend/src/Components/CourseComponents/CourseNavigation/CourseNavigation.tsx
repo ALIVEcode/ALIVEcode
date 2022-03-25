@@ -1,5 +1,3 @@
-import { faLayerGroup } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CourseContext } from '../../../state/contexts/CourseContext';
@@ -12,7 +10,7 @@ import CourseNavigationElement from './CourseNavigationElement';
  * @author Enric Soldevila
  */
 const CourseNavigation = () => {
-	const { course, courseElements, setTabSelected } = useContext(CourseContext);
+	const { course, courseElements } = useContext(CourseContext);
 	const { routes, goTo } = useRoutes();
 	const { t } = useTranslation();
 
@@ -26,13 +24,6 @@ const CourseNavigation = () => {
 			<div className="w-full py-3 text-2xl text-center flex justify-between">
 				<div className="w-full">
 					<span>Sections</span>
-				</div>
-				<div>
-					<FontAwesomeIcon
-						className="cursor-pointer mt-1 mr-2"
-						icon={faLayerGroup}
-						onClick={() => setTabSelected({ tab: 'layout' })}
-					/>
 				</div>
 			</div>
 			<div className="course-nav-body">

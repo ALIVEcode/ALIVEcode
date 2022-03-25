@@ -104,7 +104,7 @@ const Activity = ({ activity, editMode }: ActivityProps) => {
 							icon={activity.icon}
 							className="m-0 mr-4 text-[color:var(--bg-shade-four-color)]"
 						/>
-						{isRenaming ? (
+						{isRenaming && editMode ? (
 							<FormInput
 								ref={inputRef as any}
 								type="text"
@@ -122,8 +122,8 @@ const Activity = ({ activity, editMode }: ActivityProps) => {
 							/>
 						) : (
 							<strong
-								onDoubleClick={() => setIsRenaming(true)}
-								className="cursor-pointer"
+								onDoubleClick={() => editMode && setIsRenaming(true)}
+								className={editMode ? 'cursor-pointer' : ''}
 							>
 								{activity.name}
 							</strong>

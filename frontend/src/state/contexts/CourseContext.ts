@@ -6,7 +6,6 @@ import {
 	CourseElement,
 } from '../../Models/Course/course_element.entity';
 import { Section } from '../../Models/Course/section.entity';
-import { Resource } from '../../Models/Resource/resource.entity';
 import {
 	CourseTabs,
 	SwitchCourseTabActions,

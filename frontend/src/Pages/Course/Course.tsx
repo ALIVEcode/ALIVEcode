@@ -463,7 +463,7 @@ const Course = () => {
 							) : (
 								<span
 									style={{ cursor: canEdit ? 'pointer' : 'auto' }}
-									onDoubleClick={() => canEdit && setEditTitle(true)}
+									onClick={() => canEdit && setEditTitle(true)}
 								>
 									{courseTitle}
 								</span>
@@ -485,14 +485,14 @@ const Course = () => {
 						</div>
 						<div className="w-3/4 h-full overflow-y-auto relative">
 							<CourseBody />
-							<div className="absolute z-10 right-6 top-4">
+							{/*<div className="absolute z-10 right-6 top-4">
 								<FontAwesomeIcon
 									icon={faChalkboardTeacher}
 									size="4x"
 									className="pl-5 hover:cursor-pointer [color:var(--foreground-color)]"
 									onClick={() => setTabSelected({ tab: 'layout' })}
 								/>
-							</div>
+							</div>*/}
 						</div>
 					</div>
 				)}

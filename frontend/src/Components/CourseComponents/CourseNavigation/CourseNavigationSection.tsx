@@ -24,7 +24,7 @@ const CourseNavigationSection = ({ element }: CourseNavigationSectionProps) => {
 			{({ open }) => (
 				<>
 					<Disclosure.Button as="div" className="cursor-pointer group">
-						<div className="flex justify-between p-3 border-t border-l border-b border-[color:var(--bg-shade-four-color)]">
+						<div className="flex justify-between p-3 pl-5 border-t border-l border-b border-[color:var(--bg-shade-four-color)]">
 							<span>{element.name}</span>
 							<FontAwesomeIcon
 								className="group-hover:visible invisible opacity-40 mt-1"

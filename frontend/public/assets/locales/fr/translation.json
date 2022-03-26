@@ -303,6 +303,7 @@
 		"activity": {
 			"open": "Ouvrir",
 			"open_in_student_view": "Ouvrir dans la vue étudiant",
+			"edit_in_layout_view": "Modifier dans la vue professeur",
 			"empty": "Cette activité est vide.",
 			"no_activity": "Ouvre une activité pour commencer à apprendre.",
 			"new": "Ajouter une activité",

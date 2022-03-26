@@ -5,7 +5,7 @@ import Activity from '../Activities/Activity';
 import { useTranslation } from 'react-i18next';
 import Modal from '../../UtilsComponents/Modal/Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExpandAlt } from '@fortawesome/free-solid-svg-icons';
+import { faExpandAlt, faUserGraduate } from '@fortawesome/free-solid-svg-icons';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 
 /**
@@ -29,7 +29,8 @@ const CourseLayoutActivity = ({ courseElement }: CourseLayoutActivityProps) => {
 	return (
 		<>
 			<div
-				className="bg-[color:var(--bg-shade-one-color)] rounded-sm ml-4 pr-2 [color:var(--bg-shade-four-color)] font-bold cursor-pointer hover:bg-[color:var(--bg-shade-three-color)] hover:[color:grey]"
+				className="bg-[color:var(--bg-shade-one-color)] rounded-sm ml-4 pr-2 [color:var(--bg-shade-four-color)] font-bold
+				cursor-pointer hover:bg-[color:var(--bg-shade-three-color)] hover:[color:var(--fg-shade-four-color)]"
 				onClick={() =>
 					courseElement.activity !== undefined &&
 					openActivity(courseElement.activity)
@@ -51,10 +52,10 @@ const CourseLayoutActivity = ({ courseElement }: CourseLayoutActivityProps) => {
 				backdropClassName="bg-[color:black] opacity-50"
 				topBar={
 					<div
-						className="w-fit rounded-sm pr-2 py-1 ml-1 mt-1 [color:var(--bg-shade-four-color)] font-bold cursor-pointer hover:bg-[color:var(--bg-shade-one-color)] hover:[color:grey]"
+						className="w-fit rounded-sm pr-2 py-1 ml-1 mt-1 [color:var(--fg-shade-three-color)] font-bold cursor-pointer hover:bg-[color:var(--bg-shade-one-color)]"
 						onClick={() => setTabSelected({ tab: 'view' })}
 					>
-						<FontAwesomeIcon icon={faExpandAlt} className="mx-2" />
+						<FontAwesomeIcon icon={faUserGraduate} className="mx-2" />
 						{t('course.activity.open_in_student_view')}
 					</div>
 				}

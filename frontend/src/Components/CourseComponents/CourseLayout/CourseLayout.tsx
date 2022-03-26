@@ -28,6 +28,7 @@ const CourseLayout = () => {
 			<div className="absolute z-10 right-6 top-4">
 				<FontAwesomeIcon
 					icon={faUserGraduate}
+					name={t("course.activity.open_in_student_view")}
 					size="4x"
 					className="pl-5 hover:cursor-pointer [color:var(--foreground-color)]"
 					onClick={() => setTabSelected({ tab: 'view' })}

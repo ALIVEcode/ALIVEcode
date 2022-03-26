@@ -58,12 +58,12 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 				/>
 				<div className="ml-2 py-3 rounded-sm border p-[0.2rem] border-[color:var(--bg-shade-four-color)] text-[color:var(--foreground-color)] flex items-center w-full justify-between">
 					<div className="flex flex-row">
-						{element?.icon && (
+						{element?.activity && element?.icon ? (
 							<FontAwesomeIcon
 								icon={element.icon}
 								className="[color:var(--bg-shade-four-color)] mr-3 ml-2 mt-1"
 							/>
-						)}
+						) : <span className='invisible pl-3'/>}
 						{isRenaming || isNewCourseElement(element) ? (
 							<FormInput
 								ref={inputRef as any}
@@ -84,7 +84,7 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 							<div className="flex flex-row">
 								<span
 									onDoubleClick={() => setIsRenaming(true)}
-									className=" cursor-pointer"
+									className={"cursor-pointer"}
 								>
 									{element.name}
 								</span>

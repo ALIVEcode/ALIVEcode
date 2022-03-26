@@ -23,6 +23,10 @@ import { IoTBuzzer } from '../../../../Models/Iot/IoTProjectClasses/Components/I
 import InputGroup from '../../../UtilsComponents/InputGroup/InputGroup';
 import FormLabel from '../../../UtilsComponents/FormLabel/FormLabel';
 import { IoTComponent } from '../../../../Models/Iot/IoTProjectClasses/IoTComponent';
+import {
+	IoTTrafficLight,
+	TRAFFIC_LIGHT_STATE,
+} from '../../../../Models/Iot/IoTProjectClasses/Components/IoTTrafficLight';
 
 const IoTComponentEditor = ({
 	component,
@@ -44,7 +48,12 @@ const IoTComponentEditor = ({
 
 		getIoTObjects();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [component.type]);
+	}, [component?.type]);
+
+	if (!component) {
+		onClose();
+		return <></>;
+	}
 
 	const removeComponent = () => {
 		component.getComponentManager()?.removeComponent(component);
@@ -87,6 +96,11 @@ const IoTComponentEditor = ({
 						{')'}
 					</option>
 				))}
+				{!component.isRefValueValid() && (
+					<option value={component.value}>
+						{component.value} (INVALID VALUE)
+					</option>
+				)}
 			</>
 		);
 	};
@@ -215,6 +229,30 @@ const IoTComponentEditor = ({
 					onChange={(e: any) => component.setValue(e.target.value)}
 					disabled={!canEdit}
 				/>
+			);
+		if (component instanceof IoTTrafficLight)
+			return (
+				<InputGroup
+					label="LED on/off"
+					as="select"
+					defaultChecked={component.value}
+					className="mb-2"
+					onChange={(e: any) => component.setValue(e.target.value)}
+					disabled={!canEdit}
+				>
+					<option id={TRAFFIC_LIGHT_STATE.OFF}>
+						{TRAFFIC_LIGHT_STATE.OFF}
+					</option>
+					<option id={TRAFFIC_LIGHT_STATE.GREEN}>
+						{TRAFFIC_LIGHT_STATE.GREEN}
+					</option>
+					<option id={TRAFFIC_LIGHT_STATE.YELLOW}>
+						{TRAFFIC_LIGHT_STATE.YELLOW}
+					</option>
+					<option id={TRAFFIC_LIGHT_STATE.RED}>
+						{TRAFFIC_LIGHT_STATE.RED}
+					</option>
+				</InputGroup>
 			);
 	};
 
@@ -373,9 +411,11 @@ const IoTComponentEditor = ({
 			<InputGroup
 				label="Ref"
 				as="select"
+				errors={
+					!component.isRefValueValid() ? [{ type: 'Invalid ref' }] : undefined
+				}
 				value={component.isRef() ? component.value : 'static'}
 				onChange={(e: any) => {
-					console.log(e.target.value);
 					if (e.target.value === 'static') component.reset();
 					else component.setValue(e.target.value);
 				}}

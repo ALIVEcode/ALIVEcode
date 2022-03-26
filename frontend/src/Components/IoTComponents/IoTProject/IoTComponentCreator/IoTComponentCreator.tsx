@@ -10,6 +10,7 @@ import {
 } from './iotComponentCreatorTypes';
 import { createDefaultIoTLabel } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTLabel';
 import { createDefaultIoTBuzzer } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTBuzzer';
+import { createDefaultStreetLight } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTTrafficLight';
 
 export const IoTComponentCreator = ({ onSelect }: IoTComponentCreatorProps) => {
 	const components = useMemo(
@@ -20,6 +21,7 @@ export const IoTComponentCreator = ({ onSelect }: IoTComponentCreatorProps) => {
 			createDefaultIoTLed(),
 			createDefaultIoTLabel(),
 			createDefaultIoTBuzzer(),
+			createDefaultStreetLight(),
 		],
 		[],
 	);

@@ -1,6 +1,6 @@
 import { ResourceWithOptions } from 'adminjs';
-import { StudentEntity } from '../../../models/user/entities/student.entity';
 import { UserParent } from './users.parent';
+import { StudentEntity } from '../../../models/user/entities/user.entity';
 
 const StudentResource: ResourceWithOptions = {
   resource: StudentEntity,

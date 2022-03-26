@@ -108,8 +108,8 @@ export class Client {
     this.socket.send(JSON.stringify(data));
   }
 
-  sendCustom(event: string, data: any) {
-    this.socket.send(JSON.stringify({ event, data }));
+  sendEvent(event: string, data: any) {
+    this.send({ event, data });
   }
 
   removeSocket() {
@@ -164,7 +164,7 @@ export class WatcherClient extends Client {
       },
     };
 
-    object.getSocket().send(data);
+    object.send(data);
   }
 }
 
@@ -242,7 +242,7 @@ export class ObjectClient extends Client {
       value: updateData.value,
     };
 
-    watchers.forEach(w => w.sendCustom('update', data));
+    watchers.forEach(w => w.sendEvent('update', data));
   }
 }
 

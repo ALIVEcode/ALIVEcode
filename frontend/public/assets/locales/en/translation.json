@@ -72,22 +72,17 @@
 			"taken": "This email address is already taken",
 			"info": "We will not share your email address with anyone"
 		},
-		"name": {
-			"label": "Name",
-			"placeholder": "Enric",
-			"required": "A username is required",
-			"taken": "This username is already taken",
-			"pattern": "The username should only be letters, numbers and underscores"
-		},
 		"firstName": {
 			"label": "First name",
 			"placeholder": "Enric",
-			"required": "Your first name is required"
+			"required": "Your first name is required",
+			"pattern": "Your first name should only contains letters and hyphens"
 		},
 		"lastName": {
 			"label": "Last name",
 			"placeholder": "Soldevila",
-			"required": "Your last name is required"
+			"required": "Your last name is required",
+			"pattern": "Your last name should only contains letters and hyphens"
 		},
 		"scholarity": {
 			"label": "Scholarity",
@@ -152,7 +147,13 @@
 			"signup_student": "Student account",
 			"signout": "Sign out",
 			"already_registered": "Already have an account ?",
-			"account_required": "You need an account to do that"
+			"account_required": "You need an account to do that",
+			"name_migration": {
+				"title": "Changing the way students are identified",
+				"desc": "Every student must now have a first name and last name to help better identify the student. Also, your name is not unique anymore.",
+				"please": "Please take the time to choose a new name.",
+				"submit": "Confirm your new account name"
+			}
 		},
 		"section": {
 			"alive": "ALIVE Play",

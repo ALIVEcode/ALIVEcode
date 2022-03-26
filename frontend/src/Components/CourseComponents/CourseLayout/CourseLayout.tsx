@@ -30,7 +30,7 @@ const CourseLayout = () => {
 					icon={faUserGraduate}
 					size="4x"
 					className="pl-5 hover:cursor-pointer [color:var(--foreground-color)]"
-					onClick={() => setTabSelected({ tab: 'navigation' })}
+					onClick={() => setTabSelected({ tab: 'view' })}
 				/>
 			</div>
 			<div className="flex flex-col justify-center md:px-52 pl-3 pr-12 min-w-fit w-[100%] whitespace-nowrap">

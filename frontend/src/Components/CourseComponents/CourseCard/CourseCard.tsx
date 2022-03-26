@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { formatTooLong } from '../../../Types/formatting';
 import { ThemeContext } from '../../../state/contexts/ThemeContext';
 import { useContext } from 'react';
+import { UserContext } from '../../../state/contexts/UserContext';
 
 /**
  * Card that shows all the information of a course and lets you access to it
@@ -15,10 +16,16 @@ import { useContext } from 'react';
 const CourseCard = ({ course }: CourseCardProps) => {
 	const { routes, goTo } = useRoutes();
 	const { theme } = useContext(ThemeContext);
+	const { user } = useContext(UserContext);
 
 	return (
 		<StyledCourseCard
-			onClick={() => goTo(routes.auth.course.path.replace(':id', course.id))}
+			onClick={() =>
+				goTo(
+					routes.auth.course.path.replace(':id', course.id) +
+						(user?.id === course.creator?.id ? '/layout' : '/recents'),
+				)
+			}
 			className="shadow-lg"
 			theme={theme}
 		>

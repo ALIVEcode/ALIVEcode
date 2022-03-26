@@ -54,7 +54,7 @@ export type CourseContextValues = {
 export const CourseContext = createContext<CourseContextValues>({
 	canEdit: false,
 	isNavigationOpen: true,
-	tabSelected: { tab: 'navigation' },
+	tabSelected: { tab: 'view' },
 	setCourseElementNotNew: (element: CourseElement) => {},
 	isNewCourseElement: (element: CourseElement) => false,
 	setTabSelected: (..._) => {},

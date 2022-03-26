@@ -52,7 +52,7 @@ const CourseLayoutActivity = ({ courseElement }: CourseLayoutActivityProps) => {
 				topBar={
 					<div
 						className="w-fit rounded-sm pr-2 py-1 ml-1 mt-1 [color:var(--bg-shade-four-color)] font-bold cursor-pointer hover:bg-[color:var(--bg-shade-one-color)] hover:[color:grey]"
-						onClick={() => setTabSelected({ tab: 'navigation' })}
+						onClick={() => setTabSelected({ tab: 'view' })}
 					>
 						<FontAwesomeIcon icon={faExpandAlt} className="mx-2" />
 						{t('course.activity.open_in_student_view')}

@@ -1,7 +1,7 @@
 import { useContext, useEffect, useReducer, useRef, useState } from 'react';
 import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router';
+import { useParams, useLocation } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import CourseBody from '../../Components/CourseComponents/CourseBody/CourseBody';
 import CourseLayout from '../../Components/CourseComponents/CourseLayout/CourseLayout';
@@ -27,9 +27,11 @@ import {
 import { UserContext } from '../../state/contexts/UserContext';
 import { useForceUpdate } from '../../state/hooks/useForceUpdate';
 import ResourceMenu from '../ResourceMenu/ResourceMenu';
-import { SwitchCourseTabReducer } from './courseTypes';
+import { CourseTabs, SwitchCourseTabActions } from './courseTypes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChalkboardTeacher } from '@fortawesome/free-solid-svg-icons';
+import useRoutes from '../../state/hooks/useRoutes';
+import { useQuery } from '../../state/hooks/useQuery';
 
 /**
  * Course page that shows the content of a course
@@ -38,15 +40,16 @@ import { faChalkboardTeacher } from '@fortawesome/free-solid-svg-icons';
  */
 const Course = () => {
 	const { user } = useContext(UserContext);
+	const { routes } = useRoutes();
+	const { pathname } = useLocation();
+	const location = useLocation();
+	const query = useQuery();
 	const course = useRef<CourseModel>();
 	const courseElements = useRef<{
 		[id: number]: CourseElement;
 	}>({});
 	const newCourseElementId = useRef<number>();
 	const [isNavigationOpen, setIsNavigationOpen] = useState(true);
-	const [tabSelected, setTabSelected] = useReducer(SwitchCourseTabReducer, {
-		tab: 'layout',
-	});
 	const { id } = useParams<{ id: string }>();
 	const [loading, setLoading] = useState(true);
 	const { t } = useTranslation();
@@ -65,6 +68,70 @@ const Course = () => {
 	const [courseTitle, setCourseTitle] = useState(course.current?.name);
 
 	const [editTitle, setEditTitle] = useState(false);
+
+	const [tabSelected, setTabSelected] = useReducer(
+		(
+			state: { tab: CourseTabs },
+			action: SwitchCourseTabActions,
+		): { tab: CourseTabs } => {
+			if (!course.current) return state;
+
+			if (action.openedActivityId != null) {
+				query.set('act', action.openedActivityId);
+			}
+
+			state.tab = action.tab ?? state.tab;
+
+			switch (state.tab) {
+				case 'view':
+					navigate({
+						pathname:
+							routes.auth.course.path.replace(':id', course.current.id) +
+							'/view',
+						search: query.toString(),
+					});
+					break;
+				case 'layout':
+					navigate({
+						pathname:
+							routes.auth.course.path.replace(':id', course.current.id) +
+							'/layout',
+						search: query.toString(),
+					});
+					break;
+			}
+
+			return { tab: action.tab ?? state.tab };
+		},
+		{
+			tab: 'view',
+		},
+	);
+
+	useEffect(() => {
+		if (pathname.endsWith('layout')) setTabSelected({ tab: 'layout' });
+		else if (pathname.endsWith('view')) setTabSelected({ tab: 'view' });
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	useEffect(() => {
+		if (Object.keys(courseElements.current).length > 0) {
+			const openedActivityId = query.get('act');
+			if (openedActivityId != null) {
+				if (Number(openedActivityId) in courseElements.current) {
+					const courseElement = courseElements.current[Number(openedActivity)];
+
+					if (courseElement.activity) {
+						openActivity(courseElement.activity);
+						return;
+					}
+				}
+				query.delete('act');
+				navigate({ search: query.toString() });
+			}
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [courseElements.current]);
 
 	/**
 	 * Indicates if the element was just added (is new)
@@ -226,6 +293,7 @@ const Course = () => {
 	 */
 	const openActivity = async (activity: Activity) => {
 		setOpenedActivity(activity);
+		setTabSelected({ openedActivityId: activity.courseElement.id.toString() });
 	};
 
 	/**
@@ -348,7 +416,6 @@ const Course = () => {
 					id,
 				});
 				const elements = await api.db.courses.getElements({ courseId: id });
-				console.log(elements);
 
 				for (const el of elements) {
 					if (!course.current) {

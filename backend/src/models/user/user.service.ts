@@ -164,6 +164,7 @@ export class UserService {
     const courses = await this.courseHistoryRepo
       .createQueryBuilder('course_history')
       .leftJoinAndSelect('course_history.course', 'course')
+      .leftJoinAndSelect('course.creator', 'creator')
       .leftJoinAndSelect('course_history.user', 'user')
       .where('user.id = :userId', { userId: user.id })
       .orderBy('course_history.lastInteraction', 'DESC')

@@ -4,7 +4,6 @@ import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Popup from 'reactjs-popup';
 import { CourseContext } from '../../../state/contexts/CourseContext';
-import Link from '../../UtilsComponents/Link/Link';
 import { ButtonAddCourseElementProps } from './courseLayoutTypes';
 import { Section } from '../../../Models/Course/section.entity';
 import { plainToClass } from 'class-transformer';
@@ -32,7 +31,7 @@ const ButtonAddCourseElement = ({ section }: ButtonAddCourseElementProps) => {
 				>
 					<FontAwesomeIcon
 						icon={faPlus}
-						className="[color:var(--contrast-color)]"
+						className="[color:var(--logo-color)]"
 					/>
 				</div>
 			}
@@ -46,38 +45,35 @@ const ButtonAddCourseElement = ({ section }: ButtonAddCourseElementProps) => {
 				display: 'flex',
 				flexDirection: 'column',
 				background: 'var(--background-color)',
-				border: 'solid 3px',
+				border: 'solid 1px',
 				borderColor: 'var(--bg-shade-four-color)',
-				borderRadius: '10px',
-				padding: '10px',
+				borderRadius: '0.5rem',
 			}}
 			arrowStyle={{
 				color: 'var(--bg-shade-four-color)',
 				bottom: '2px',
 			}}
 		>
-			<div className="text-[color:var(--foreground-color)] text-center">
-				<Link
-					dark
+			<div className="text-[color:var(--logo-color)] text-center">
+				<div
+					className="p-2 border-b border-[color:var(--bg-shade-four-color)] cursor-pointer rounded-t-lg transition-all hover:bg-[color:var(--bg-shade-one-color)]"
 					onClick={async () => {
-						//openSectionForm(section);
 						const newSection: Section = plainToClass(Section, {});
 						await addContent(newSection, 'New Section', section);
 						setPopupOpen(false);
 					}}
 				>
 					{t('course.section.new')}
-				</Link>
-				<Link
+				</div>
+				<div
+					className="p-2 cursor-pointer rounded-b-lg transition-all hover:bg-[color:var(--bg-shade-one-color)]"
 					onClick={() => {
 						openActivityForm(section);
 						setPopupOpen(false);
 					}}
-					dark
-					block
 				>
 					{t('course.activity.new')}
-				</Link>
+				</div>
 			</div>
 		</Popup>
 	);

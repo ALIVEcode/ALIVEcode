@@ -28,20 +28,6 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 	const [isRenaming, setIsRenaming] = useState(false);
 	const inputRef = useRef<HTMLInputElement>();
 
-	// useEffect(() => {
-	// 	if (!element?.section || !courseElements?.current) return;
-
-	// 	const noReload = element.section.elementsOrder.every(id => {
-	// 		return id in courseElements.current;
-	// 	});
-
-	// 	if (noReload) return;
-
-	// 	console.log(`reloading section ${element.name}`);
-	// 	loadSectionElements(element.section);
-	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	// }, [element, courseElements]);
-
 	/**
 	 * Handles the renaming of an element
 	 *

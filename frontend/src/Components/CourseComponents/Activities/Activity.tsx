@@ -1,9 +1,6 @@
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useRef, useState } from 'react';
 import { CourseContext } from '../../../state/contexts/CourseContext';
-import {
-	Activity as ActivityModel,
-	ACTIVITY_TYPE,
-} from '../../../Models/Course/activity.entity';
+import { ACTIVITY_TYPE } from '../../../Models/Course/activity.entity';
 import ActivityChallenge from './ActivityChallenge';
 import RichTextEditor from '../../RichTextComponents/RichTextEditor/RichTextEditor';
 import ButtonAdd from './ButtonAdd';
@@ -14,8 +11,9 @@ import { useTranslation } from 'react-i18next';
 import { ActivityVideo as ActivityVideoModel } from '../../../Models/Course/activities/activity_video.entity';
 import ActivityVideo from './ActivityVideo';
 import Link from '../../UtilsComponents/Link/Link';
-import { faExpandAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ActivityProps } from './activityTypes';
+import FormInput from '../../UtilsComponents/FormInput/FormInput';
 
 /**
  * Shows the opened activity. Renders different component depending on the type of the activity opened.
@@ -25,10 +23,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
  *
  * @author Enric Soldevila, Mathis Laroche
  */
-const Activity = ({ activity }: { activity: ActivityModel }) => {
-	const { course, updateActivity, setOpenModalImportResource } =
-		useContext(CourseContext);
+const Activity = ({ activity, editMode }: ActivityProps) => {
+	const {
+		course,
+		updateActivity,
+		setOpenModalImportResource,
+		renameElement,
+		removeResourceFromActivity,
+	} = useContext(CourseContext);
 	const { t } = useTranslation();
+	const [isRenaming, setIsRenaming] = useState(false);
+	const inputRef = useRef<HTMLInputElement>();
 
 	const update = useCallback(
 		(what: 'header' | 'footer') => {
@@ -40,6 +45,26 @@ const Activity = ({ activity }: { activity: ActivityModel }) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[activity, course],
 	);
+
+	/**
+	 * Handles the renaming of an element
+	 *
+	 * @author Mathis Laroche
+	 */
+	const rename = async () => {
+		if (isRenaming) {
+			setIsRenaming(false);
+		}
+		if (
+			inputRef.current?.value &&
+			inputRef.current.value.trim() !== activity.courseElement.name
+		) {
+			await renameElement(
+				activity.courseElement,
+				inputRef.current.value.trim(),
+			);
+		}
+	};
 
 	if (!activity) {
 		return <></>;
@@ -73,57 +98,95 @@ const Activity = ({ activity }: { activity: ActivityModel }) => {
 	return (
 		activity && (
 			<div className="w-full h-full relative overflow-y-auto flex flex-col px-8">
-				<FontAwesomeIcon icon={activity.icon} className="pb-2 m-0" size="3x" color="lightgrey" />
 				<div className="z-10 sticky top-0 pt-2 text-4xl bg-[color:var(--background-color)] pb-6 w-full border-[color:var(--bg-shade-four-color)]">
-					<b>{activity.name}</b>
+					<div className="flex justi items-center">
+						<FontAwesomeIcon
+							icon={activity.icon}
+							className="m-0 mr-4 text-[color:var(--bg-shade-four-color)]"
+						/>
+						{isRenaming && editMode ? (
+							<FormInput
+								ref={inputRef as any}
+								type="text"
+								autoFocus
+								onKeyPress={(event: KeyboardEvent) =>
+									event.key.toLowerCase() === 'enter' && rename()
+								}
+								onFocus={() => {
+									setIsRenaming(true);
+								}}
+								onBlur={rename}
+								onDoubleClick={rename}
+								className="bg-[color:var(--background-color)]"
+								defaultValue={activity.name}
+							/>
+						) : (
+							<strong
+								onDoubleClick={() => editMode && setIsRenaming(true)}
+								className={editMode ? 'cursor-pointer' : ''}
+							>
+								{activity.name}
+							</strong>
+						)}
+					</div>
 				</div>
-				<div className="flex">
+				<div className="flex justify-center items-center">
 					{activity.header !== null ? (
 						<div className="text-sm pt-3 pb-3 w-full">
 							<RichTextEditor
+								readOnly={!editMode}
 								onChange={update('header')}
 								defaultText={activity.header}
 							/>
 						</div>
 					) : (
-						<ButtonAdd what="header" activity={activity} />
+						editMode && <ButtonAdd what="header" activity={activity} />
 					)}
 				</div>
 				<div className="py-5">
 					{activity.resource ? (
 						<div className="flex flex-col items-center gap-4">
 							{renderSpecificActivity()}
-							<Button
-								variant="danger"
-								onClick={() => console.log('Not Implemented')}
-							>
-								{t('course.activity.remove_resource')}
-							</Button>
+							{editMode && (
+								<Button
+									variant="danger"
+									onClick={() => removeResourceFromActivity(activity)}
+								>
+									{t('course.activity.remove_resource')}
+								</Button>
+							)}
 						</div>
 					) : (
 						<div className="flex flex-col items-center gap-4">
-							<Button variant="primary">
-								{t('course.activity.create_resource')}
-							</Button>
-							<Link
-								onClick={() => setOpenModalImportResource(true)}
-								className="[color:var(--fg-shade-four-color)] hover:[color:var(--fg-shade-one-color)] hover:underline hover:cursor-pointer"
-							>
-								{t('course.activity.import_resource')}
-							</Link>
+							{editMode ? (
+								<>
+									<Button variant="primary">
+										{t('course.activity.create_resource')}
+									</Button>
+									<Link
+										onClick={() => setOpenModalImportResource(true)}
+										className="[color:var(--fg-shade-four-color)] hover:[color:var(--fg-shade-one-color)] hover:underline hover:cursor-pointer"
+									>
+										{t('course.activity.import_resource')}
+									</Link>
+								</>
+							) : (
+								<div>{t('course.activity.empty')}</div>
+							)}
 						</div>
 					)}
 				</div>
-				<div className=" flex justify-center items-center">
+				<div className="flex justify-center items-center">
 					{activity.footer !== null ? (
 						<div className="text-sm py-3 w-full">
 							<RichTextEditor
+								readOnly={!editMode}
 								onChange={update('footer')}
 								defaultText={activity.footer}
 							/>
 						</div>
 					) : (
-						<ButtonAdd what="footer" activity={activity} />
+						editMode && <ButtonAdd what="footer" activity={activity} />
 					)}
 				</div>
 			</div>

@@ -18,18 +18,18 @@ import { Link as RouterLink } from 'react-router-dom';
  * @author Enric Soldevila
  */
 const Link = ({
-								to,
-								className,
-								children,
-								style,
-								dark,
-								bold,
-								block,
-								pale,
-								openInNewTab,
-								outsideLink,
-								onClick,
-							}: LinkProps) => {
+	to,
+	className,
+	children,
+	style,
+	dark,
+	bold,
+	block,
+	pale,
+	openInNewTab,
+	outsideLink,
+	onClick,
+}: LinkProps) => {
 	if (to && !outsideLink)
 		return (
 			<RouterLink className={className} style={style} to={to ?? '#'}>
@@ -41,8 +41,8 @@ const Link = ({
 		return (
 			<a
 				href={to}
-				rel='noreferrer'
-				target='_blank'
+				rel="noreferrer"
+				target="_blank"
 				style={style}
 				className={className}
 			>
@@ -68,20 +68,19 @@ const Link = ({
 	);
 };
 
-export default Link;
-// export default styled(Link)`
-// 	color: ${(props: StyledLinkProps) => {
-// 		if (props.dark) return 'var(--contrast-color)';
-// 		if (props.pale) return 'var(--pale-color)';
-// 		else return 'var(--primary-color)';
-// 	}};
-// 	transition: 0.3s;
-// 	cursor: pointer;
-// 	font-weight: ${(props: StyledLinkProps) => (props.bold ? 'bold' : '')};
-// 	display: ${(props: StyledLinkProps) => (props.block ? 'block' : 'inline')};
-//
-// 	&:hover {
-// 		color: #0059ac;
-// 		text-decoration-line: underline;
-// 	}
-// `;
+export default styled(Link)`
+	color: ${(props: StyledLinkProps) => {
+		if (props.dark) return 'var(--contrast-color)';
+		if (props.pale) return 'var(--pale-color)';
+		else return 'var(--primary-color)';
+	}};
+	transition: 0.3s;
+	cursor: pointer;
+	font-weight: ${(props: StyledLinkProps) => (props.bold ? 'bold' : '')};
+	display: ${(props: StyledLinkProps) => (props.block ? 'block' : 'inline')};
+
+	&:hover {
+		color: #0059ac;
+		text-decoration-line: underline;
+	}
+`;

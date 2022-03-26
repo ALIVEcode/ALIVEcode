@@ -28,6 +28,8 @@ import { UserContext } from '../../state/contexts/UserContext';
 import { useForceUpdate } from '../../state/hooks/useForceUpdate';
 import ResourceMenu from '../ResourceMenu/ResourceMenu';
 import { SwitchCourseTabReducer } from './courseTypes';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChalkboardTeacher } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Course page that shows the content of a course
@@ -50,7 +52,7 @@ const Course = () => {
 	const { t } = useTranslation();
 	const alert = useAlert();
 	const navigate = useNavigate();
-	const update = useForceUpdate();
+	const forceUpdate = useForceUpdate();
 
 	const [openModalSection, setOpenModalSection] = useState(false);
 	const [openModalActivity, setOpenModalActivity] = useState(false);
@@ -152,7 +154,7 @@ const Course = () => {
 
 		courseElements.current[courseElement.id] = courseElement;
 		newCourseElementId.current = courseElement.id;
-		update();
+		forceUpdate();
 	};
 
 	/**
@@ -169,7 +171,7 @@ const Course = () => {
 		});
 		deleteElementRecursively(element);
 
-		update();
+		forceUpdate();
 	};
 
 	/**
@@ -194,7 +196,7 @@ const Course = () => {
 		});
 
 		section.elements = elements;
-		update();
+		forceUpdate();
 	};
 
 	/**
@@ -213,7 +215,7 @@ const Course = () => {
 			{ elementId: element.id.toString(), courseId: course.current.id },
 			{ name: newName },
 		);
-		update();
+		forceUpdate();
 	};
 
 	/**
@@ -248,38 +250,8 @@ const Course = () => {
 			fields,
 		);
 		Object.assign(activity, fields);
-		update();
+		forceUpdate();
 	};
-
-	// const saveActivity = async (activity: Activity) => {
-	// 	if (!course || !activity || !section) return;
-	// 	const { course_element, ...actWithoutContent } = activity;
-	// 	(actWithoutContent as any).levels = undefined;
-
-	// 	const updatedAct = await api.db.courses.updateActivity(
-	// 		{
-	// 			courseId: course.id,
-	// 			sectionId: section.id.toString(),
-	// 			activityId: activity.id.toString(),
-	// 		},
-	// 		actWithoutContent,
-	// 	);
-	// 	activity.name = updatedAct.name;
-	// 	activity.course_element = updatedAct.course_element;
-	// 	setActivity(activity);
-	// };
-
-	// 	activity.name = updatedAct.name;
-	// 	activity.course_element = updatedAct.course_element;
-	// 	setActivity(activity);
-	// };
-
-	// const loadActivity = async (section: Section, activity: Activity) => {
-	// 	if (!course) return;
-	// 	await activity.getContent(course?.id, section.id);
-	// 	setActivity(activity);
-	// 	setSection(section);
-	// };
 
 	/**
 	 * Deletes the element passed in argument. If the element is a section,
@@ -312,6 +284,22 @@ const Course = () => {
 		}
 	};
 
+	/**
+	 * Removes the resource of an activity with the request to the backend.
+	 *
+	 * @param activity Activity to remove the resource from
+	 * @returns void
+	 */
+	const removeResourceFromActivity = async (activity: Activity) => {
+		if (!course.current) return;
+		await api.db.courses.removeResourceFromActivity({
+			id: course.current.id,
+			activityId: activity.id.toString(),
+		});
+		activity.resource = undefined;
+		forceUpdate();
+	};
+
 	const canEdit = course.current?.creator.id === user?.id;
 
 	const contextValue: CourseContextValues = {
@@ -327,9 +315,6 @@ const Course = () => {
 		setTitle,
 		addContent,
 		loadSectionElements,
-		// closeCurrentActivity,
-		// saveActivity,
-		// saveActivityContent,
 		setIsNavigationOpen,
 		deleteElement,
 		moveElement: async (..._) => {},
@@ -343,6 +328,7 @@ const Course = () => {
 		setOpenModalImportResource,
 		closeOpenedActivity,
 		openedActivity,
+		removeResourceFromActivity,
 	};
 
 	/**
@@ -370,7 +356,7 @@ const Course = () => {
 				}
 				course.current.elements = elements;
 				setCourseTitle(course.current.name);
-				update();
+				forceUpdate();
 				setLoading(false);
 			} catch (err) {
 				navigate(-1);
@@ -424,8 +410,16 @@ const Course = () => {
 						<div className="w-1/4 h-full overflow-y-auto">
 							<CourseNavigation />
 						</div>
-						<div className="w-3/4 h-full overflow-y-auto">
+						<div className="w-3/4 h-full overflow-y-auto relative">
 							<CourseBody />
+							<div className="absolute z-10 right-6 top-4">
+								<FontAwesomeIcon
+									icon={faChalkboardTeacher}
+									size="4x"
+									className="pl-5 hover:cursor-pointer [color:var(--foreground-color)]"
+									onClick={() => setTabSelected({ tab: 'layout' })}
+								/>
+							</div>
 						</div>
 					</div>
 				)}
@@ -455,8 +449,6 @@ const Course = () => {
 							openedActivity,
 							resource,
 						);
-						console.log(openedActivity);
-						console.log(resource);
 						openedActivity.resource = resource;
 						setOpenModalImportResource(false);
 					}}

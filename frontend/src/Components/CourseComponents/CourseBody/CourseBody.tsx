@@ -12,15 +12,15 @@ const CourseBody = () => {
 	const { openedActivity: activity } = useContext(CourseContext);
 
 	return (
-		<>
+		<div className="py-8">
 			{!activity ? (
 				<div className="w-full h-full flex justify-center items-center">
 					<label>Open an activity to get started</label>
 				</div>
 			) : (
-				<Activity activity={activity} />
+				<Activity key={activity.id} activity={activity} />
 			)}
-		</>
+		</div>
 	);
 };
 

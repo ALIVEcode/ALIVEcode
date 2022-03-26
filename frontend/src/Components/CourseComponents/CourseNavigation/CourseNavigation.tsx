@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
  * @author Enric Soldevila
  */
 const CourseNavigation = () => {
-	const { course, courseElements, setTabSelected, closeOpenedActivity } = useContext(CourseContext);
+	const { course, courseElements, setTab } = useContext(CourseContext);
 	const { routes, goTo } = useRoutes();
 	const { t } = useTranslation();
 
@@ -29,10 +29,7 @@ const CourseNavigation = () => {
 					icon={faChalkboardTeacher}
 					size="2x"
 					className="pr-5 hover:cursor-pointer [color:var(--foreground-color)]"
-					onClick={() => {
-						closeOpenedActivity();
-						setTabSelected({ tab: 'layout' })
-					}}
+					onClick={() => setTab({ tab: 'layout', openedActivity: null })}
 				/>
 			</div>
 			<div className="course-nav-body">

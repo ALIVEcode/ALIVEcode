@@ -8,6 +8,10 @@ import FormInput from '../../UtilsComponents/FormInput/FormInput';
 import CourseLayoutActivity from './CourseLayoutActivity';
 import CourseLayoutSection from './CourseLayoutSection';
 import { CourseLayoutElementProps } from './courseLayoutTypes';
+import {
+	CourseElementActivity,
+	CourseElementSection,
+} from '../../../Models/Course/course_element.entity';
 
 /**
  * Component that wraps a CourseElement to show it properly on the layout view
@@ -63,7 +67,9 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 								icon={element.icon}
 								className="[color:var(--bg-shade-four-color)] mr-3 ml-2 mt-1"
 							/>
-						) : <span className='invisible pl-3'/>}
+						) : (
+							<span className="invisible pl-3" />
+						)}
 						{isRenaming || isNewCourseElement(element) ? (
 							<FormInput
 								ref={inputRef as any}
@@ -84,13 +90,15 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 							<div className="flex flex-row">
 								<span
 									onDoubleClick={() => setIsRenaming(true)}
-									className={"cursor-pointer"}
+									className={'cursor-pointer'}
 								>
 									{element.name}
 								</span>
 								{element.activity && (
 									<div className="invisible group-hover:visible">
-										<CourseLayoutActivity courseElement={element} />
+										<CourseLayoutActivity
+											courseElement={element as CourseElementActivity}
+										/>
 									</div>
 								)}
 							</div>
@@ -106,7 +114,9 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 					</div>
 				</div>
 			</div>
-			{element.section && <CourseLayoutSection courseElement={element} />}
+			{element.section && (
+				<CourseLayoutSection courseElement={element as CourseElementSection} />
+			)}
 			<AlertConfirm
 				open={confirmDelete}
 				title={t('couse.section.delete')}

@@ -7,7 +7,7 @@ import {
 } from '../../Models/Course/course_element.entity';
 import { Section } from '../../Models/Course/section.entity';
 import {
-	CourseTabs,
+	CourseTabState,
 	SwitchCourseTabActions,
 } from '../../Pages/Course/courseTypes';
 
@@ -18,12 +18,9 @@ export type CourseContextValues = {
 	setCourseElementNotNew: (element: CourseElement) => void;
 	isNavigationOpen: boolean;
 	canEdit: boolean;
-	tabSelected: { tab: CourseTabs };
-	setTabSelected: React.Dispatch<SwitchCourseTabActions>;
+	tab: CourseTabState;
+	setTab: React.Dispatch<SwitchCourseTabActions>;
 	setTitle: (newTitle: string) => Promise<void>;
-	openedActivity?: Activity;
-	openActivity: (activity: Activity) => Promise<any>;
-	closeOpenedActivity: () => any;
 	loadSectionElements: (section: Section) => Promise<any>;
 	renameElement: (element: CourseElement, newName: string) => void;
 	updateActivity: (
@@ -54,28 +51,18 @@ export type CourseContextValues = {
 export const CourseContext = createContext<CourseContextValues>({
 	canEdit: false,
 	isNavigationOpen: true,
-	tabSelected: { tab: 'view' },
-	setCourseElementNotNew: (element: CourseElement) => {},
-	isNewCourseElement: (element: CourseElement) => false,
-	setTabSelected: (..._) => {},
-	setTitle: async (newTitle: string) => {},
-	openActivity: async (..._) => {},
-	closeOpenedActivity: () => {},
-	updateActivity: async (..._) => {},
-	setIsNavigationOpen: async (bool: boolean) => {},
-	addContent: async (
-		content: CourseContent,
-		name: string,
-		sectionParent?: Section,
-	) => {},
-	renameElement: (element: CourseElement, newName: string) => {},
-	deleteElement: async (element: CourseElement) => {},
-	moveElement: async (
-		element: CourseElement,
-		newIdx: number,
-		newParent: CourseElement,
-	) => {},
-	loadSectionElements: async (section: Section) => {},
+	tab: { tab: 'view' },
+	setCourseElementNotNew: () => {},
+	isNewCourseElement: () => false,
+	setTab: () => {},
+	setTitle: async () => {},
+	updateActivity: async () => {},
+	setIsNavigationOpen: async () => {},
+	addContent: async () => {},
+	renameElement: () => {},
+	deleteElement: async () => {},
+	moveElement: async () => {},
+	loadSectionElements: async () => {},
 	openSectionForm: () => {},
 	openActivityForm: () => {},
 	setOpenModalImportResource: () => {},

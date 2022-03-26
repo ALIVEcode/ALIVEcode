@@ -146,3 +146,13 @@ export class CourseElement {
 		this.parent.elements = this.parent.elements.filter(el => el.id !== this.id);
 	}
 }
+
+export class CourseElementActivity extends CourseElement {
+	activity: ActivityChallenge | ActivityVideo | ActivityTheory;
+	section: undefined;
+}
+
+export class CourseElementSection extends CourseElement {
+	activity: undefined;
+	section: Section;
+}

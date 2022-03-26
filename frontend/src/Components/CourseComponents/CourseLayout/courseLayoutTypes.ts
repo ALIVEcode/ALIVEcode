@@ -1,7 +1,11 @@
 import styled from 'styled-components';
-import { CourseElement } from '../../../Models/Course/course_element.entity';
+import {
+	CourseElement,
+	CourseElementActivity,
+} from '../../../Models/Course/course_element.entity';
 import { Section } from '../../../Models/Course/section.entity';
 import { themes } from '../../../state/contexts/ThemeContext';
+import { CourseElementSection } from '../../../Models/Course/course_element.entity';
 
 export type CourseLayoutElementProps = {
 	element: CourseElement;
@@ -13,11 +17,11 @@ type NavigationOptions = {
 };
 
 export type CourseLayoutSectionProps = {
-	courseElement: CourseElement;
+	courseElement: CourseElementSection;
 };
 
 export type CourseLayoutActivityProps = {
-	courseElement: CourseElement;
+	courseElement: CourseElementActivity;
 };
 
 export type ButtonAddCourseElementProps = {

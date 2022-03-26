@@ -27,9 +27,14 @@ import {
 import { UserContext } from '../../state/contexts/UserContext';
 import { useForceUpdate } from '../../state/hooks/useForceUpdate';
 import ResourceMenu from '../ResourceMenu/ResourceMenu';
-import { CourseTabs, SwitchCourseTabActions } from './courseTypes';
+import {
+	CourseTabs,
+	SwitchCourseTabActions,
+	CourseTabState,
+} from './courseTypes';
 import useRoutes from '../../state/hooks/useRoutes';
 import { useQuery } from '../../state/hooks/useQuery';
+import { CourseElementActivity } from '../../Models/Course/course_element.entity';
 
 /**
  * Course page that shows the content of a course
@@ -57,25 +62,24 @@ const Course = () => {
 	const [openModalActivity, setOpenModalActivity] = useState(false);
 	const [openModalImportResource, setOpenModalImportResource] = useState(false);
 	const [sectionParent, setSectionParent] = useState<Section>();
-	const [openedActivity, setOpenedActivity] = useState<Activity>();
 	const titleRef = useRef<HTMLInputElement>(null);
 	const [courseTitle, setCourseTitle] = useState(course.current?.name);
 	const [editTitle, setEditTitle] = useState(false);
-	const [tabSelected, setTabSelected] = useReducer(
-		(
-			state: { tab: CourseTabs },
-			action: SwitchCourseTabActions,
-		): { tab: CourseTabs } => {
+	const [tab, setTab] = useReducer(
+		(state: CourseTabState, action: SwitchCourseTabActions): CourseTabState => {
 			if (!course.current) return state;
 
-			if (action.openedActivityId != null)
-				query.set('act', action.openedActivityId);
+			console.log(action.openedActivity);
+
+			if (action.openedActivity != null)
+				query.set('act', action.openedActivity.id.toString());
 			// Do not replace the else if for an else
-			else if (action.openedActivityId === null) query.delete('act');
+			else if (action.openedActivity === null) {
+				query.delete('act');
+				if (!action.tab) navigate({ search: query.toString() });
+			}
 
-			state.tab = action.tab ?? state.tab;
-
-			switch (state.tab) {
+			switch (action.tab) {
 				case 'view':
 					navigate({
 						pathname:
@@ -94,7 +98,13 @@ const Course = () => {
 					break;
 			}
 
-			return { tab: action.tab ?? state.tab };
+			return {
+				tab: action.tab ?? state.tab,
+				openedActivity:
+					action.openedActivity !== undefined
+						? action.openedActivity
+						: state.openedActivity,
+			};
 		},
 		{
 			tab: 'view',
@@ -102,29 +112,12 @@ const Course = () => {
 	);
 
 	useEffect(() => {
-		if (pathname.endsWith('layout')) setTabSelected({ tab: 'layout' });
-		else if (pathname.endsWith('view')) setTabSelected({ tab: 'view' });
+		if (pathname.endsWith('layout') && tab.tab !== 'layout')
+			setTab({ tab: 'layout' });
+		else if (pathname.endsWith('view') && tab.tab !== 'view')
+			setTab({ tab: 'view' });
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
-	useEffect(() => {
-		if (Object.keys(courseElements.current).length > 0) {
-			const openedActivityId = query.get('act');
-			if (openedActivityId != null) {
-				if (Number(openedActivityId) in courseElements.current) {
-					const courseElement = courseElements.current[Number(openedActivity)];
-
-					if (courseElement.activity) {
-						openActivity(courseElement.activity);
-						return;
-					}
-				}
-				query.delete('act');
-				navigate({ search: query.toString() });
-			}
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [courseElements.current]);
+	}, [pathname]);
 
 	/**
 	 * Gets the first activity inside an array of elements.
@@ -133,8 +126,10 @@ const Course = () => {
 	 * @author Enric Soldevila
 	 */
 	const getFirstActivity = (elements: CourseElement[]) => {
-		const getRecursively = (courseElement: CourseElement): null | Activity => {
-			if (courseElement.activity) return courseElement.activity;
+		const getRecursively = (
+			courseElement: CourseElement,
+		): CourseElementActivity | null => {
+			if (courseElement.activity) return courseElement as CourseElementActivity;
 			if (courseElement.section) {
 				if (courseElement.section.elements.length <= 0) return null;
 				return getRecursively(courseElement.section.elements[0]);
@@ -297,29 +292,6 @@ const Course = () => {
 		forceUpdate();
 	};
 
-	/**
-	 * Set the activity opened to the activity passed in argument
-	 *
-	 * @param activity the activity to open
-	 * @author Enric
-	 */
-	const openActivity = async (activity: Activity) => {
-		setOpenedActivity(activity);
-		setTabSelected({ openedActivityId: activity.courseElement.id.toString() });
-	};
-
-	/**
-	 * Resets the opened activity to undefined => close the current activity
-	 *
-	 * @author Enric
-	 */
-	const closeOpenedActivity = () => {
-		if (!course.current) return;
-		setOpenedActivity(undefined);
-		query.delete('act');
-		setTabSelected({ openedActivityId: null });
-	};
-
 	type keyofActivity = {
 		[name in keyof Activity]?: Activity[name];
 	};
@@ -400,8 +372,8 @@ const Course = () => {
 		isNewCourseElement,
 		canEdit,
 		isNavigationOpen,
-		tabSelected,
-		setTabSelected,
+		tab,
+		setTab,
 		renameElement,
 		setTitle,
 		addContent,
@@ -412,10 +384,7 @@ const Course = () => {
 		updateActivity,
 		openActivityForm,
 		openSectionForm,
-		openActivity,
 		setOpenModalImportResource,
-		closeOpenedActivity,
-		openedActivity,
 		removeResourceFromActivity,
 		loadActivityResource,
 	};
@@ -442,21 +411,22 @@ const Course = () => {
 
 				// Get saved opened activity inside the url params
 				const savedOpenedActivityId = query.get('act');
-				let savedOpenedActivity: Activity | undefined;
+				let savedOpenedActivity: CourseElementActivity | undefined;
 				if (
 					savedOpenedActivityId &&
 					Number(savedOpenedActivityId) in courseElements.current
 				) {
-					savedOpenedActivity =
-						courseElements.current[Number(savedOpenedActivityId)].activity;
+					const el = courseElements.current[Number(savedOpenedActivityId)];
+					if (el.activity) savedOpenedActivity = el as CourseElementActivity;
 				}
 
 				// If there is a saved opened activity opens it
-				if (savedOpenedActivity) openActivity(savedOpenedActivity);
+				if (savedOpenedActivity)
+					setTab({ openedActivity: savedOpenedActivity });
 				// Otherwise, open the first activity
 				else {
 					const firstActivity = getFirstActivity(elements);
-					if (firstActivity) openActivity(firstActivity);
+					if (firstActivity) setTab({ openedActivity: firstActivity });
 				}
 
 				// Updating the state
@@ -509,7 +479,7 @@ const Course = () => {
 
 				{loading ? (
 					<LoadingScreen />
-				) : tabSelected.tab === 'layout' ? (
+				) : tab.tab === 'layout' ? (
 					<CourseLayout />
 				) : (
 					<div className="flex w-full h-full overflow-y-auto">
@@ -518,14 +488,6 @@ const Course = () => {
 						</div>
 						<div className="w-3/4 h-full overflow-y-auto relative">
 							<CourseBody />
-							{/*<div className="absolute z-10 right-6 top-4">
-								<FontAwesomeIcon
-									icon={faChalkboardTeacher}
-									size="4x"
-									className="pl-5 hover:cursor-pointer [color:var(--foreground-color)]"
-									onClick={() => setTabSelected({ tab: 'layout' })}
-								/>
-							</div>*/}
 						</div>
 					</div>
 				)}
@@ -549,13 +511,18 @@ const Course = () => {
 				<ResourceMenu
 					mode="import"
 					onSelectResource={async resource => {
-						if (!course.current || !openedActivity) return;
+						if (
+							!course.current ||
+							!tab.openedActivity ||
+							!tab.openedActivity.activity
+						)
+							return;
 						await api.db.courses.addResourceInActivity(
 							course.current,
-							openedActivity,
+							tab.openedActivity.activity,
 							resource,
 						);
-						openedActivity.resource = resource;
+						(tab.openedActivity.activity as Activity).resource = resource;
 						setOpenModalImportResource(false);
 					}}
 				/>

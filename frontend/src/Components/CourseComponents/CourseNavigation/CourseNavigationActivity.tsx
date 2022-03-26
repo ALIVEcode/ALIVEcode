@@ -17,20 +17,19 @@ const CourseNavigationActivity = ({
 }: CourseNavigationActivityProps) => {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const activity = element.activity as Activity;
-	const { openActivity, closeOpenedActivity, openedActivity } =
-		useContext(CourseContext);
+	const { tab, setTab } = useContext(CourseContext);
 	return (
 		<div
 			className={classNames(
 				'p-3 pl-5 border-t border-l border-b border-[color:var(--bg-shade-four-color)] cursor-pointer transition-all duration-150',
-				activity.id === openedActivity?.id
+				activity.id === tab.openedActivity?.activity.id
 					? 'bg-[color:var(--secondary-color)] hover:bg-[color:var(--bg-shade-three-color)]'
 					: 'hover:bg-[color:var(--bg-shade-one-color)]',
 			)}
 			onClick={() =>
-				activity.id === openedActivity?.id
-					? closeOpenedActivity()
-					: openActivity(activity)
+				activity.id === tab.openedActivity?.activity?.id
+					? setTab({ openedActivity: null })
+					: setTab({ openedActivity: element })
 			}
 		>
 			{activity.icon && (

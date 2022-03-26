@@ -13,8 +13,7 @@ import CourseLayoutElement from './CourseLayoutElement';
  * @author Mathis Laroche
  */
 const CourseLayout = () => {
-	const { course, canEdit, courseElements, setTabSelected } =
-		useContext(CourseContext);
+	const { course, canEdit, courseElements, setTab } = useContext(CourseContext);
 	const { routes, goTo } = useRoutes();
 	const { t } = useTranslation();
 
@@ -28,10 +27,10 @@ const CourseLayout = () => {
 			<div className="absolute z-10 right-6 top-4">
 				<FontAwesomeIcon
 					icon={faUserGraduate}
-					name={t("course.activity.open_in_student_view")}
+					name={t('course.activity.open_in_student_view')}
 					size="4x"
 					className="pl-5 hover:cursor-pointer [color:var(--foreground-color)]"
-					onClick={() => setTabSelected({ tab: 'view' })}
+					onClick={() => setTab({ tab: 'view' })}
 				/>
 			</div>
 			<div className="flex flex-col justify-center md:px-52 pl-3 pr-12 min-w-fit w-[100%] whitespace-nowrap">

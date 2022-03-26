@@ -18,13 +18,7 @@ import { CourseContext } from '../../../state/contexts/CourseContext';
 const CourseLayoutActivity = ({ courseElement }: CourseLayoutActivityProps) => {
 	const activity = courseElement.activity as ActivityModel;
 	const { t } = useTranslation();
-	const {
-		closeOpenedActivity,
-		openActivity,
-		openedActivity,
-		setTabSelected,
-		tabSelected,
-	} = useContext(CourseContext);
+	const { tab, setTab } = useContext(CourseContext);
 
 	return (
 		<>
@@ -33,17 +27,17 @@ const CourseLayoutActivity = ({ courseElement }: CourseLayoutActivityProps) => {
 				cursor-pointer hover:bg-[color:var(--bg-shade-three-color)] hover:[color:var(--fg-shade-four-color)]"
 				onClick={() =>
 					courseElement.activity !== undefined &&
-					openActivity(courseElement.activity)
+					setTab({ openedActivity: courseElement })
 				}
 			>
 				<FontAwesomeIcon icon={faExpandAlt} className="mx-2" />
 				{t('course.activity.open')}
 			</div>
 			<Modal
-				key={courseElement.activity?.id + tabSelected.tab}
+				key={courseElement?.activity?.id + tab.tab}
 				size="lg"
-				open={openedActivity === courseElement.activity}
-				setOpen={(state: boolean) => !state && closeOpenedActivity()}
+				open={tab.openedActivity === courseElement}
+				setOpen={(state: boolean) => !state && setTab({ openedActivity: null })}
 				centered
 				hideTitle
 				hideFooter
@@ -53,7 +47,7 @@ const CourseLayoutActivity = ({ courseElement }: CourseLayoutActivityProps) => {
 				topBar={
 					<div
 						className="w-fit rounded-sm pr-2 py-1 ml-1 mt-1 [color:var(--fg-shade-three-color)] font-bold cursor-pointer hover:bg-[color:var(--bg-shade-one-color)]"
-						onClick={() => setTabSelected({ tab: 'view' })}
+						onClick={() => setTab({ tab: 'view' })}
 					>
 						<FontAwesomeIcon icon={faUserGraduate} className="mx-2" />
 						{t('course.activity.open_in_student_view')}

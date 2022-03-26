@@ -11,7 +11,6 @@ import { useTranslation } from 'react-i18next';
 import { ActivityVideo as ActivityVideoModel } from '../../../Models/Course/activities/activity_video.entity';
 import { ActivityTheory as ActivityTheoryModel } from '../../../Models/Course/activities/activity_theory.entity';
 import ActivityVideo from './ActivityVideo';
-import Link from '../../UtilsComponents/Link/Link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ActivityProps } from './activityTypes';
 import FormInput from '../../UtilsComponents/FormInput/FormInput';
@@ -172,17 +171,12 @@ const Activity = ({ activity, editMode }: ActivityProps) => {
 					) : (
 						<div className="flex flex-col items-center gap-4">
 							{editMode ? (
-								<>
-									<Button variant="primary">
-										{t('course.activity.create_resource')}
-									</Button>
-									<Link
-										onClick={() => setOpenModalImportResource(true)}
-										className="[color:var(--fg-shade-four-color)] hover:[color:var(--fg-shade-one-color)] hover:underline hover:cursor-pointer"
-									>
-										{t('course.activity.import_resource')}
-									</Link>
-								</>
+								<Button
+									variant="primary"
+									onClick={() => setOpenModalImportResource(true)}
+								>
+									{t('course.activity.import_resource')}
+								</Button>
 							) : (
 								<div>{t('course.activity.empty')}</div>
 							)}

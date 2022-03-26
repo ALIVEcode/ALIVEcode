@@ -48,7 +48,7 @@ const RichTextEditor = ({
 				<Editable
 					readOnly={readOnly}
 					className={classNames(
-						'rounded-sm pl-2 bg-[color:var(--background-color)] cursor-text border py-3 w-full h-full transition-all',
+						'rounded-sm pl-2 bg-[color:var(--background-color)] cursor-text border border-[color:var(--bg-shade-two-color)] py-3 w-full h-full transition-all',
 						editMode && !readOnly && 'drop-shadow-md',
 					)}
 					renderElement={props => applyStyle(props.element.type, props)}

@@ -28,8 +28,6 @@ import { UserContext } from '../../state/contexts/UserContext';
 import { useForceUpdate } from '../../state/hooks/useForceUpdate';
 import ResourceMenu from '../ResourceMenu/ResourceMenu';
 import { CourseTabs, SwitchCourseTabActions } from './courseTypes';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChalkboardTeacher } from '@fortawesome/free-solid-svg-icons';
 import useRoutes from '../../state/hooks/useRoutes';
 import { useQuery } from '../../state/hooks/useQuery';
 
@@ -42,7 +40,6 @@ const Course = () => {
 	const { user } = useContext(UserContext);
 	const { routes } = useRoutes();
 	const { pathname } = useLocation();
-	const location = useLocation();
 	const query = useQuery();
 	const course = useRef<CourseModel>();
 	const courseElements = useRef<{
@@ -56,19 +53,14 @@ const Course = () => {
 	const alert = useAlert();
 	const navigate = useNavigate();
 	const forceUpdate = useForceUpdate();
-
 	const [openModalSection, setOpenModalSection] = useState(false);
 	const [openModalActivity, setOpenModalActivity] = useState(false);
 	const [openModalImportResource, setOpenModalImportResource] = useState(false);
 	const [sectionParent, setSectionParent] = useState<Section>();
 	const [openedActivity, setOpenedActivity] = useState<Activity>();
-
 	const titleRef = useRef<HTMLInputElement>(null);
-
 	const [courseTitle, setCourseTitle] = useState(course.current?.name);
-
 	const [editTitle, setEditTitle] = useState(false);
-
 	const [tabSelected, setTabSelected] = useReducer(
 		(
 			state: { tab: CourseTabs },
@@ -76,9 +68,10 @@ const Course = () => {
 		): { tab: CourseTabs } => {
 			if (!course.current) return state;
 
-			if (action.openedActivityId != null) {
+			if (action.openedActivityId != null)
 				query.set('act', action.openedActivityId);
-			}
+			// Do not replace the else if for an else
+			else if (action.openedActivityId === null) query.delete('act');
 
 			state.tab = action.tab ?? state.tab;
 
@@ -132,6 +125,25 @@ const Course = () => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [courseElements.current]);
+
+	/**
+	 * Gets the first activity inside an array of elements.
+	 *
+	 * @returns The first activity found or null there are no activities
+	 * @author Enric Soldevila
+	 */
+	const getFirstActivity = (elements: CourseElement[]) => {
+		const getRecursively = (courseElement: CourseElement): null | Activity => {
+			if (courseElement.activity) return courseElement.activity;
+			if (courseElement.section) {
+				if (courseElement.section.elements.length <= 0) return null;
+				return getRecursively(courseElement.section.elements[0]);
+			}
+			return null;
+		};
+		if (elements.length <= 0) return null;
+		return getRecursively(elements[0]);
+	};
 
 	/**
 	 * Indicates if the element was just added (is new)
@@ -302,7 +314,10 @@ const Course = () => {
 	 * @author Enric
 	 */
 	const closeOpenedActivity = () => {
+		if (!course.current) return;
 		setOpenedActivity(undefined);
+		query.delete('act');
+		setTabSelected({ openedActivityId: null });
 	};
 
 	type keyofActivity = {
@@ -417,16 +432,34 @@ const Course = () => {
 				});
 				const elements = await api.db.courses.getElements({ courseId: id });
 
+				// Loading all elements recursively
 				for (const el of elements) {
-					if (!course.current) {
-						console.error('Something went wrong, not loading element ' + el);
-						continue;
-					}
 					el.course = course.current;
 					courseElements.current[el.id] = el;
 					el.initialize();
 					await loadSectionRecursively(el);
 				}
+
+				// Get saved opened activity inside the url params
+				const savedOpenedActivityId = query.get('act');
+				let savedOpenedActivity: Activity | undefined;
+				if (
+					savedOpenedActivityId &&
+					Number(savedOpenedActivityId) in courseElements.current
+				) {
+					savedOpenedActivity =
+						courseElements.current[Number(savedOpenedActivityId)].activity;
+				}
+
+				// If there is a saved opened activity opens it
+				if (savedOpenedActivity) openActivity(savedOpenedActivity);
+				// Otherwise, open the first activity
+				else {
+					const firstActivity = getFirstActivity(elements);
+					if (firstActivity) openActivity(firstActivity);
+				}
+
+				// Updating the state
 				course.current.elements = elements;
 				setCourseTitle(course.current.name);
 				forceUpdate();

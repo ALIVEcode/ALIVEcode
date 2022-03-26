@@ -13,31 +13,27 @@ const ActivityVideo = ({ activity }: { activity: ActivityVideoModel }) => {
 
 	const matches = useMemo(
 		() =>
-			activity.resource.url.match(
+			activity.resource?.url.match(
 				/^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w-]+\?v=|embed\/|v\/)?)([\w-]+)(\S+)?$/,
 			),
-		[activity.resource.url],
+		[activity.resource?.url],
 	);
 
-	if (!matches) {
-		return <i>{t('course.activity.invalid_url')}</i>;
-	}
+	if (!matches) return <i>{t('course.activity.invalid_url')}</i>;
 
 	const videoId = matches[6];
 
 	return (
-		activity.resource && (
-			<div className="w-full desktop:px-16">
-				<iframe
-					className="m-auto w-full aspect-video"
-					src={`https://youtube.com/embed/${videoId}`}
-					title="YouTube video player"
-					frameBorder="0"
-					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-					allowFullScreen
-				></iframe>
-			</div>
-		)
+		<div className="w-full desktop:px-16">
+			<iframe
+				className="m-auto w-full aspect-video"
+				src={`https://youtube.com/embed/${videoId}`}
+				title="YouTube video player"
+				frameBorder="0"
+				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+				allowFullScreen
+			></iframe>
+		</div>
 	);
 };
 

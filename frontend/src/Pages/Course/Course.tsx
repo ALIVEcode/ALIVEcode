@@ -300,6 +300,14 @@ const Course = () => {
 		forceUpdate();
 	};
 
+	const loadActivityResource = async (activity: Activity) => {
+		if (!course.current) return;
+		activity.resource = await api.db.courses.getActivityResource({
+			courseId: course.current.id,
+			activityId: activity.id.toString(),
+		});
+	};
+
 	const canEdit = course.current?.creator.id === user?.id;
 
 	const contextValue: CourseContextValues = {
@@ -319,9 +327,6 @@ const Course = () => {
 		deleteElement,
 		moveElement: async (..._) => {},
 		updateActivity,
-		saveActivityContent: (data: string) => {
-			throw new Error('Function not implemented.');
-		},
 		openActivityForm,
 		openSectionForm,
 		openActivity,
@@ -329,6 +334,7 @@ const Course = () => {
 		closeOpenedActivity,
 		openedActivity,
 		removeResourceFromActivity,
+		loadActivityResource,
 	};
 
 	/**

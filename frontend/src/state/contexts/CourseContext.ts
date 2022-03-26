@@ -32,7 +32,6 @@ export type CourseContextValues = {
 			[name in keyof Activity]?: Activity[name];
 		},
 	) => Promise<void>;
-	saveActivityContent: (data: string) => Promise<void>;
 	setIsNavigationOpen: (bool: boolean) => void;
 	addContent: (
 		content: CourseContent,
@@ -49,6 +48,7 @@ export type CourseContextValues = {
 	openActivityForm: (sectionParent?: Section) => void;
 	setOpenModalImportResource: (state: boolean) => void;
 	removeResourceFromActivity: (activity: Activity) => void;
+	loadActivityResource: (activity: Activity) => void;
 };
 
 export const CourseContext = createContext<CourseContextValues>({
@@ -62,7 +62,6 @@ export const CourseContext = createContext<CourseContextValues>({
 	openActivity: async (..._) => {},
 	closeOpenedActivity: () => {},
 	updateActivity: async (..._) => {},
-	saveActivityContent: async (data: string) => {},
 	setIsNavigationOpen: async (bool: boolean) => {},
 	addContent: async (
 		content: CourseContent,
@@ -81,4 +80,5 @@ export const CourseContext = createContext<CourseContextValues>({
 	openActivityForm: () => {},
 	setOpenModalImportResource: () => {},
 	removeResourceFromActivity: () => {},
+	loadActivityResource: () => {},
 });

@@ -13,8 +13,4 @@ export class ResourceVideoEntity extends ResourceEntity {
   @Column()
   @IsNotEmpty()
   url: string;
-
-  /** Activities containing this resource */
-  @OneToMany(() => ActivityVideoEntity, act => act.resource)
-  activities: ActivityVideoEntity[];
 }

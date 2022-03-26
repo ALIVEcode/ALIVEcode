@@ -1,12 +1,14 @@
 import { ChallengeExecutor } from '../AbstractChallengeExecutor';
 import { typeAskForUserInput } from '../challengeTypes';
+import { SupportedLanguagesAS } from '../../../Models/ASModels';
 
 export default class ChallengeCodeExecutor extends ChallengeExecutor {
 	constructor(
 		public challengeName: string,
 		protected askForUserInput: typeAskForUserInput,
+		lang?: SupportedLanguagesAS,
 	) {
-		super(challengeName);
+		super(challengeName, lang);
 
 		this.registerActions([
 			{

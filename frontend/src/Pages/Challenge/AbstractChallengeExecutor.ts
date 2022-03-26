@@ -1,6 +1,6 @@
 import { CMD } from '../../Components/ChallengeComponents/Cmd/cmdTypes';
 import { typeAction } from './challengeTypes';
-import { CompileDTO, CompileStatus } from '../../Models/ASModels';
+import { CompileDTO, CompileStatus, SupportedLanguagesAS } from '../../Models/ASModels';
 import api from '../../Models/api';
 
 export class ChallengeExecutor {
@@ -11,6 +11,7 @@ export class ChallengeExecutor {
 	public onToggleExecution?: (exec: any) => void;
 	private idToken: string;
 	private backendContext: CompileDTO;
+
 	private registeredActions: { [actionId: number]: typeAction } = {
 		0: {
 			label: 'Stop Execution',
@@ -53,14 +54,20 @@ export class ChallengeExecutor {
 	/** function called after the end or the interruption of the exection of the code */
 	private _afterStop: () => void;
 
-	constructor(public challengeName: string) {}
+	constructor(
+		public challengeName: string,
+		private _lang: SupportedLanguagesAS = 'fr',
+	) {}
 
 	protected async sendDataToAsServer(data: CompileDTO) {
 		try {
-			return await api.as.compile({
-				...data,
-				...this.backendContext,
-			});
+			return await api.as.compile(
+				{
+					...data,
+					...this.backendContext,
+				},
+				this.lang,
+			);
 		} catch {
 			this.cmd?.error(
 				"Une erreur inconnue est survenue. Vérifiez pour des erreurs dans votre code, sinon, les services d'alivescript sont hors-ligne.",
@@ -92,7 +99,7 @@ export class ChallengeExecutor {
 	public stop() {
 		this._beforeStop && this._beforeStop();
 		this.execution && this.onToggleExecution && this.onToggleExecution(this);
-		// Clear all the timouts of the execution
+		// Clear all the timeouts of the execution
 		for (let timeout of this.timeouts) {
 			clearTimeout(timeout);
 		}
@@ -127,7 +134,7 @@ export class ChallengeExecutor {
 		);
 
 		if (!data || !this.execution) {
-			this.interrupt();
+			await this.interrupt();
 			return;
 		}
 		if (process.env.DEBUG) console.log(data);
@@ -144,9 +151,9 @@ export class ChallengeExecutor {
 		this._beforeRun && this._beforeRun();
 		try {
 			// Envoie le code à exécuter au serveur
-			this.executeNext([], true);
+			await this.executeNext([], true);
 		} catch (err) {
-			this.interrupt();
+			await this.interrupt();
 		}
 	}
 
@@ -188,7 +195,7 @@ export class ChallengeExecutor {
 				}
 				i++;
 				if (i >= actions.length) return;
-				perform_action(i);
+				await perform_action(i);
 			},
 			getIndex: () => i,
 		};
@@ -216,7 +223,7 @@ export class ChallengeExecutor {
 		console.log(actions);
 		const formatedActions = actions.map(action => {
 			if (!hasValidDataStructure(action)) {
-				this.interrupt();
+				(async () => await this.interrupt())();
 				throw new Error();
 			}
 			return {
@@ -232,6 +239,14 @@ export class ChallengeExecutor {
 
 	public setBackendContext(compileDTO: CompileDTO) {
 		this.backendContext = compileDTO;
+	}
+
+	set lang(lang: SupportedLanguagesAS) {
+		this._lang = lang;
+	}
+
+	get lang() {
+		return this._lang;
 	}
 
 	public wait(callback: () => void, duration: number) {

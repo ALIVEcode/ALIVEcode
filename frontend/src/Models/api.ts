@@ -5,7 +5,7 @@ import {
 	plainToClass,
 	plainToInstance,
 } from 'class-transformer';
-import { CompileDTO } from './ASModels';
+import { CompileDTO, SupportedLanguagesAS } from './ASModels';
 import { AsScript } from './AsScript/as-script.entity';
 import { Classroom } from './Classroom/classroom.entity';
 import { Course } from './Course/course.entity';
@@ -51,8 +51,8 @@ export type ResultElementCreated = {
 type urlArgType<S extends string> = S extends `${infer _}:${infer A}/${infer B}`
 	? A | urlArgType<B>
 	: S extends `${infer _}:${infer A}`
-	? A
-	: never;
+		? A
+		: never;
 
 const formatQuery = (query: { [name: string]: string }) => {
 	return (
@@ -331,17 +331,18 @@ const api = {
 				console.log(res);
 				return res;
 			},
-      upload: async (
-        formdata: FormData,
-      ) => {
-        return (await axios.post(
-          'resources/image',
-          formdata,
-          { headers:
-            { 'Content-Type': 'multipart/formdata' }
-          }
-        )).data;
-      },
+			upload: async (
+				formdata: FormData,
+			) => {
+				return (await axios.post(
+					'resources/image',
+					formdata,
+					{
+						headers:
+							{ 'Content-Type': 'multipart/formdata' },
+					},
+				)).data;
+			},
 		},
 		challenges: {
 			progressions: {
@@ -488,11 +489,11 @@ const api = {
 		},
 	},
 	as: {
-		async compile(data: CompileDTO) {
-			return (await axios.post('as/compile', data)).data;
+		async compile(data: CompileDTO, lang?: SupportedLanguagesAS) {
+			return (await axios.post(`as/compile?lang=${lang ?? 'fr'}`, data)).data;
 		},
-		async getLintInfo() {
-			return (await axios.get(`${process.env.BACKEND_URL}/as/lintinfo`)).data;
+		async getLintInfo(lang?: SupportedLanguagesAS) {
+			return (await axios.get(`${process.env.BACKEND_URL}/as/lintinfo?lang=${lang ?? 'fr'}`)).data;
 		},
 	},
 };

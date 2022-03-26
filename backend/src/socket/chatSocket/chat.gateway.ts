@@ -52,7 +52,7 @@ export class ChatGateway implements OnGatewayDisconnect, OnGatewayConnection, On
   }
 
   private broadcast(event: string, data: any): any {
-    for (let c of this.clients) {
+    for (const c of this.clients) {
       c.send(
         JSON.stringify({
           event,

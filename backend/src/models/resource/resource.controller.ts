@@ -9,9 +9,10 @@ import {
   UseInterceptors,
   UseGuards,
   HttpException,
+  UploadedFile,
 } from '@nestjs/common';
 import { ResourceService } from './resource.service';
-import { ResourceEntity } from './entities/resource.entity';
+import { ResourceEntity, RESOURCE_TYPE } from './entities/resource.entity';
 import { Auth } from '../../utils/decorators/auth.decorator';
 import { Role } from '../../utils/types/roles.types';
 import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
@@ -23,8 +24,14 @@ import { User } from '../../utils/decorators/user.decorator';
 import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 import { HttpStatus } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { MyRequest } from 'src/utils/guards/auth.guard';
+import { extname } from 'path';
 
 @Controller('resources')
+@ApiTags('resources')
 @UseInterceptors(DTOInterceptor)
 export class ResourceController {
   constructor(private readonly resourceService: ResourceService) {}
@@ -35,6 +42,8 @@ export class ResourceController {
     dto.resource.type = dto.type;
     const errors = await validate(plainToInstance(CreateResourceDTO, dto));
     if (errors.length > 0) throw new HttpException(errors, HttpStatus.BAD_REQUEST);
+
+    if (!dto.uuid && dto.type === RESOURCE_TYPE.IMAGE) throw new HttpException('Bad payload', HttpStatus.BAD_REQUEST);
 
     return await this.resourceService.create(dto, user);
   }
@@ -59,5 +68,39 @@ export class ResourceController {
   @UseGuards(ResourceCreator)
   async remove(@Param('id') id: string) {
     return await this.resourceService.remove(id);
+  }
+
+  @Post('/image')
+  @ApiOperation({ summary: 'upload an image' })
+  @Auth(Role.PROFESSOR)
+  @UseInterceptors(
+    FileInterceptor('file', {
+      limits: {
+        fileSize: 1000000,
+      },
+      storage: diskStorage({
+        destination: 'uploads',
+        filename: (req: MyRequest, file: Express.Multer.File, callback: (error: Error, filename: string) => void) => {
+          if (!file) throw new HttpException('Missing file', HttpStatus.BAD_REQUEST);
+          callback(null, `${req.user.id}\$${req.body.uuid}${extname(file.originalname)}`);
+        },
+      }),
+      fileFilter: (req: MyRequest, file: Express.Multer.File, callback: (error: Error, acceptFile: boolean) => void) => {
+        const acceptedMimetypes = [
+          'image/jpeg',
+          'image/jpg',
+          'image/png',
+        ];
+
+        if (!acceptedMimetypes.includes(file.mimetype)) {
+          return callback(new HttpException(`Invalid filetype, accepted types: ${acceptedMimetypes.join(', ')}`, HttpStatus.BAD_REQUEST), false);
+        }
+
+        callback(null, true);
+      },
+    }),
+  )
+  async uploadImage(@UploadedFile() file: Express.Multer.File) {
+    return file;
   }
 }

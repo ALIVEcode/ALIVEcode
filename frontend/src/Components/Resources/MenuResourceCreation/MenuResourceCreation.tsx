@@ -20,6 +20,8 @@ import {
 } from './menuResourceCreationTypes';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import MenuCreation from '../../UtilsComponents/MenuCreation/MenuCreation';
+import Button from '../../UtilsComponents/Buttons/Button';
+import { v4 as uuid } from 'uuid';
 
 const MenuResourceCreation = ({
 	open,
@@ -31,6 +33,8 @@ const MenuResourceCreation = ({
 		defaultResource?.type ?? undefined,
 	);
 	const [challenges, setChallenges] = useState<Challenge[]>([]);
+  const [file, setFile] = useState<File>();
+  const [reqUuid, setReqUuid] = useState<string>();
 	const { t } = useTranslation();
 	const { setResources, resources } = useContext(UserContext);
 	const { user } = useContext(UserContext);
@@ -71,7 +75,9 @@ const MenuResourceCreation = ({
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const onSubmit = async (formValues: MenuResourceCreationDTO) => {
 		if (!type) return;
+    if (reqUuid) formValues.uuid = reqUuid.split('.')[0].split('$')[1];
 		formValues.type = type;
+    formValues.resource.url = reqUuid;
 		if (updateMode && defaultResource) {
 			const updatedRes = await api.db.resources.update(
 				formValues,
@@ -86,6 +92,16 @@ const MenuResourceCreation = ({
 		}
 		setOpen(false);
 	};
+
+  const handleUpload = async () => {
+    if (!file) return;
+    const id = uuid();
+    const formdata = new FormData();
+    formdata.append('uuid', id);
+    formdata.append('file', file);
+    const data = await api.db.resources.upload(formdata);
+    setReqUuid(data.filename)
+  };
 
 	const renderSpecificFields = () => {
 		switch (type) {
@@ -120,18 +136,27 @@ const MenuResourceCreation = ({
 			case RESOURCE_TYPE.VIDEO:
 				return (
 					<InputGroup
-						label={t('resources.video.form.url')}
+					  label={t('resources.video.form.url')}
 						errors={errors.resource?.url}
 						{...register('resource.url', { required: true })}
 					/>
 				);
 			case RESOURCE_TYPE.IMAGE:
 				return (
-					<InputGroup
-						label={t('resources.image.form.url')}
-						errors={errors.resource?.url}
-						{...register('resource.url', { required: true })}
-					/>
+          <>
+            <InputGroup
+              type="file"
+              label={t('resources.image.form.url')}
+              errors={errors.resource?.url}
+              onChange={(e: any) => e.target.files && setFile(e.target.files[0])} // TODO any -> React.SyntheticEvent?
+            />
+            <Button
+              variant="primary"
+              onClick={handleUpload}
+            >
+              upload
+            </Button>
+          </>
 				);
 			case RESOURCE_TYPE.FILE:
 				return <></>;

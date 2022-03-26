@@ -36,7 +36,7 @@ const Activity = ({ activity, editMode }: ActivityProps) => {
 	} = useContext(CourseContext);
 	const { t } = useTranslation();
 	const [isRenaming, setIsRenaming] = useState(false);
-	const [loading, setLoading] = useState(activity.resource ? false : true);
+	const [loading, setLoading] = useState(!activity.resource);
 	const inputRef = useRef<HTMLInputElement>();
 
 	useEffect(() => {

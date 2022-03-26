@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   HttpException,
   HttpStatus,
+  UploadedFile,
 } from '@nestjs/common';
 import { Auth } from '../../utils/decorators/auth.decorator';
 import { Course } from '../../utils/decorators/course.decorator';
@@ -33,13 +34,18 @@ import { CourseElementEntity } from './entities/course_element.entity';
 import { UpdateCourseElementDTO } from './dtos/UpdateCourseElement.dto';
 import { AddResourceDTO } from './dtos/AddResource.dto';
 import { ResourceService } from '../resource/resource.service';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { MyRequest } from 'src/utils/guards/auth.guard';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 
 /**
  * All the routes to create/update/delete/get a course or it's content (CourseElements)
- 
  * @author Enric Soldevila
  */
 @Controller('courses')
+@ApiTags('courses')
 @UseInterceptors(DTOInterceptor)
 export class CourseController {
   constructor(

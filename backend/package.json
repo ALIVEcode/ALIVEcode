@@ -34,6 +34,7 @@
     "@nestjs/platform-socket.io": "^8.2.4",
     "@nestjs/platform-ws": "^8.2.4",
     "@nestjs/serve-static": "^2.2.2",
+    "@nestjs/swagger": "^5.2.1",
     "@nestjs/typeorm": "^8.0.2",
     "@nestjs/websockets": "^8.2.4",
     "@types/randomstring": "^1.1.8",
@@ -55,6 +56,7 @@
     "rxjs": "^7.4.0",
     "slate": "^0.73.1",
     "socket.io": "^4.4.0",
+    "swagger-ui-express": "^4.3.0",
     "typeorm": "^0.2.41",
     "ws": "^8.4.0"
   },

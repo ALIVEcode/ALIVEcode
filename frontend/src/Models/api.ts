@@ -323,6 +323,17 @@ const api = {
 				console.log(res);
 				return res;
 			},
+      upload: async (
+        formdata: FormData,
+      ) => {
+        return (await axios.post(
+          'resources/image',
+          formdata,
+          { headers:
+            { 'Content-Type': 'multipart/formdata' }
+          }
+        )).data;
+      },
 		},
 		challenges: {
 			progressions: {

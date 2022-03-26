@@ -19,7 +19,7 @@ export class PostController {
   }
   @Post('findandcount')
   async findAndCount() {
-    let [data, count] = await this.postService.findAndCount();
+    const [data, count] = await this.postService.findAndCount();
     return count;
   }
 

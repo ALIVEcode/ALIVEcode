@@ -10,11 +10,7 @@ import { ActivityTheoryEntity } from '../../course/entities/activities/activity_
 @ChildEntity(RESOURCE_TYPE.THEORY)
 export class ResourceTheoryEntity extends ResourceEntity {
   /** Content of the theory resource */
-  @Column({ type: 'json', default: {} })
+  @Column({ type: 'json', nullable: true })
   @IsOptional()
   document: object;
-
-  /** Activities containing this resource */
-  @OneToMany(() => ActivityTheoryEntity, act => act.resource)
-  activities: ActivityTheoryEntity[];
 }

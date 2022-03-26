@@ -19,8 +19,4 @@ export class ResourceChallengeEntity extends ResourceEntity {
   @Column({ type: 'uuid', name: 'challengeId' })
   @IsNotEmpty()
   challengeId: string;
-
-  /** Activities containing this resource */
-  @OneToMany(() => ActivityChallengeEntity, act => act.resource)
-  activities: ActivityChallengeEntity[];
 }

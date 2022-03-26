@@ -6,7 +6,7 @@ import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
 import { WsAdapter } from '@nestjs/platform-ws';
 import * as bodyParser from 'body-parser';
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -17,7 +17,6 @@ async function bootstrap() {
     .setTitle('API alive code')
     .setDescription('description')
     .setVersion('1.0')
-    .setBasePath('api')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

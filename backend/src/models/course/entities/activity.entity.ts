@@ -1,5 +1,5 @@
 import { Exclude } from 'class-transformer';
-import { Entity, PrimaryGeneratedColumn, TableInheritance, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, TableInheritance, Column, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
 import { IsEmpty, IsOptional } from 'class-validator';
 import { CourseElementEntity } from './course_element.entity';
 import { Descendant } from 'slate';
@@ -55,5 +55,8 @@ export abstract class ActivityEntity {
 
   abstract readonly allowedResources: RESOURCE_TYPE[];
 
-  abstract resource: ResourceEntity;
+  /** Reference to the resource linked to the activity */
+  @ManyToOne(() => ResourceEntity, res => res.activities, { eager: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'resourceId' })
+  resource: ResourceEntity;
 }

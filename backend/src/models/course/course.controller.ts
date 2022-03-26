@@ -10,7 +10,6 @@ import {
   UseInterceptors,
   HttpException,
   HttpStatus,
-  UploadedFile,
 } from '@nestjs/common';
 import { Auth } from '../../utils/decorators/auth.decorator';
 import { Course } from '../../utils/decorators/course.decorator';
@@ -34,11 +33,7 @@ import { CourseElementEntity } from './entities/course_element.entity';
 import { UpdateCourseElementDTO } from './dtos/UpdateCourseElement.dto';
 import { AddResourceDTO } from './dtos/AddResource.dto';
 import { ResourceService } from '../resource/resource.service';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { MyRequest } from 'src/utils/guards/auth.guard';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
+import { ApiTags } from '@nestjs/swagger';
 
 /**
  * All the routes to create/update/delete/get a course or it's content (CourseElements)
@@ -193,20 +188,6 @@ export class CourseController {
   }
 
   /**
-   * Route to get the content of an activity (non-generic fields of a specific type
-   * of activity). Must have access to the course
-   * @param course Course found with the id in the url
-   * @param activityId Id of the activity you want to get the content from
-   * @returns The content of the specified activity
-   */
-  @Get(':id/activities/:activityId/content')
-  @Auth()
-  @UseGuards(CourseAccess)
-  async getActivityContent(@Course() course: CourseEntity, @Param('activityId') activityId: string) {
-    return await this.courseService.findActivityWithContentLoaded(course.id, activityId);
-  }
-
-  /**
    * Route to update an activity by it's id. Must be creator of the course
    * @param course Course found with the id in the url
    * @param activityId Id of the activity to update
@@ -223,6 +204,20 @@ export class CourseController {
   ) {
     const activity = await this.courseService.findActivity(course.id, activityId);
     return await this.courseService.updateActivity(activity, updateActivityDTO);
+  }
+
+  /**
+   * Route to get a resource in an activity by it's id. Must be creator of the course
+   * @param course Course found with the id in the url
+   * @param activityId Id of the activity to get the resource in
+   * @returns The removal query result
+   */
+  @Get(':id/activities/:activityId/resources')
+  @Auth(Role.PROFESSOR, Role.STAFF)
+  @UseGuards(CourseProfessor)
+  async getResourceInActivity(@Course() course: CourseEntity, @Param('activityId') activityId: string) {
+    const activity = await this.courseService.findActivity(course.id, activityId);
+    return await this.courseService.getResourceOfActivity(activity);
   }
 
   /**
@@ -250,7 +245,7 @@ export class CourseController {
    * Route to remove a resource from an activity by it's id. Must be creator of the course
    * @param course Course found with the id in the url
    * @param activityId Id of the activity to remove the resource from
-   * @returns The removal query result
+   * @returns The updated activity
    */
   @Delete(':id/activities/:activityId/removeResource')
   @Auth(Role.PROFESSOR, Role.STAFF)

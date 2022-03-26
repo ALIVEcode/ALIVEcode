@@ -28,7 +28,6 @@ const ActivityChallenge = ({
 			activity.resource.challenge = await api.db.challenges.get({
 				id: activity.resource.challengeId,
 			});
-			console.log(activity.resource.challenge);
 			forceUpdate();
 		};
 		loadChallenge();

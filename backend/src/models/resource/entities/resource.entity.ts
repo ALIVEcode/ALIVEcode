@@ -17,6 +17,7 @@ import { ResourceFileEntity } from './resource_file.entity';
 import { ResourceImageEntity } from './resource_image.entity';
 import { ResourceTheoryEntity } from './resource_theory.entity';
 import { ResourceVideoEntity } from './resource_video.entity';
+import { ActivityEntity } from '../../course/entities/activity.entity';
 
 export enum RESOURCE_TYPE {
   VIDEO = 'VI',
@@ -72,4 +73,8 @@ export class ResourceEntity {
 
   @OneToMany(() => ResourceEntity, res => res.original)
   borrowed: ResourceEntity[];
+
+  /** Activities containing this resource */
+  @OneToMany(() => ActivityEntity, act => act.resource)
+  activities: ActivityEntity[];
 }

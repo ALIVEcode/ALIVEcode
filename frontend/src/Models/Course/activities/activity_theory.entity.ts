@@ -12,5 +12,5 @@ export class ActivityTheory extends Activity {
 
 	/** Resource of the activity */
 	@Type(() => ResourceTheory)
-	resource: ResourceTheory;
+	resource?: ResourceTheory;
 }

@@ -1,4 +1,4 @@
-import { useCallback, useContext, useRef, useState } from 'react';
+import { useCallback, useContext, useRef, useState, useEffect } from 'react';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import { ACTIVITY_TYPE } from '../../../Models/Course/activity.entity';
 import ActivityChallenge from './ActivityChallenge';
@@ -9,11 +9,14 @@ import { ActivityChallenge as ActivityChallengeModel } from '../../../Models/Cou
 import Button from '../../UtilsComponents/Buttons/Button';
 import { useTranslation } from 'react-i18next';
 import { ActivityVideo as ActivityVideoModel } from '../../../Models/Course/activities/activity_video.entity';
+import { ActivityTheory as ActivityTheoryModel } from '../../../Models/Course/activities/activity_theory.entity';
 import ActivityVideo from './ActivityVideo';
 import Link from '../../UtilsComponents/Link/Link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ActivityProps } from './activityTypes';
 import FormInput from '../../UtilsComponents/FormInput/FormInput';
+import ActivityTheory from './ActivityTheory';
+import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 
 /**
  * Shows the opened activity. Renders different component depending on the type of the activity opened.
@@ -30,10 +33,22 @@ const Activity = ({ activity, editMode }: ActivityProps) => {
 		setOpenModalImportResource,
 		renameElement,
 		removeResourceFromActivity,
+		loadActivityResource,
 	} = useContext(CourseContext);
 	const { t } = useTranslation();
 	const [isRenaming, setIsRenaming] = useState(false);
+	const [loading, setLoading] = useState(activity.resource ? false : true);
 	const inputRef = useRef<HTMLInputElement>();
+
+	useEffect(() => {
+		const load = async () => {
+			setLoading(true);
+			await loadActivityResource(activity);
+			setLoading(false);
+		};
+		if (!activity.resource) load();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const update = useCallback(
 		(what: 'header' | 'footer') => {
@@ -81,9 +96,7 @@ const Activity = ({ activity, editMode }: ActivityProps) => {
 					<ActivityChallenge activity={activity as ActivityChallengeModel} />
 				);
 			case ACTIVITY_TYPE.THEORY:
-				return (
-					<ActivityChallenge activity={activity as ActivityChallengeModel} />
-				);
+				return <ActivityTheory activity={activity as ActivityTheoryModel} />;
 			case ACTIVITY_TYPE.VIDEO:
 				return <ActivityVideo activity={activity as ActivityVideoModel} />;
 			default:
@@ -146,7 +159,7 @@ const Activity = ({ activity, editMode }: ActivityProps) => {
 				<div className="py-5">
 					{activity.resource ? (
 						<div className="flex flex-col items-center gap-4">
-							{renderSpecificActivity()}
+							{loading ? <LoadingScreen relative /> : renderSpecificActivity()}
 							{editMode && (
 								<Button
 									variant="danger"

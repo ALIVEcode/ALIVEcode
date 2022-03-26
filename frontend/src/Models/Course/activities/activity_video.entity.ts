@@ -12,5 +12,5 @@ export class ActivityVideo extends Activity {
 
 	/** Resource of the activity */
 	@Type(() => ResourceVideo)
-	resource: ResourceVideo;
+	resource?: ResourceVideo;
 }

@@ -1,5 +1,3 @@
-import { theWindow } from "tone/build/esm/core/context/AudioContext";
-
 /**
  * This interface defines the properties of a Data
  */
@@ -46,6 +44,10 @@ export class Matrix
 
   // --METHODS-- //
 
+  /**
+   * Returns the sum of all elements in the Matrix.
+   * @returns the sum of all elements.
+   */
   public sumOfAll(): number
   {
     let sum: number = 0;
@@ -122,6 +124,30 @@ export class Matrix
     this.value = newValue;
     this.rows = newValue.length;
     this.columns = newValue[0].length;
+  }
+
+  /**
+   * Asserts that the Matrix parameter is equal to the current Matrix. To be considered equal, 2 
+   * Matrices must have the following points in common :
+   * - the same number of rows;
+   * - the same number of columns;
+   * - the same values at the same place inside the Matrix.
+   * @param otherMatrix the other Matrix to compare.
+   * @returns true if both Matrices are Equal, false otherwise.
+   */
+  public equals(otherMatrix: Matrix): boolean
+  {
+    if (this.rows !== otherMatrix.getRows() || this.columns !== otherMatrix.getColumns()) return false;
+    
+    const otherValue: number[][] = otherMatrix.getValue();
+    for (let row: number = 0; row < this.rows; row++) 
+    {
+      for (let col: number = 0; col < this.columns; col++) 
+      {
+        if (this.value[row][col] !== otherValue[row][col]) return false;
+      }
+    }
+    return true;
   }
 
   /**
@@ -329,7 +355,7 @@ function randnBoxMuller(): number
  * @param columns the number of columns for the output Matrix.
  * @returns the Matrix with random values.
  */
-export function normalMatrix(rows: number, columns: number): Matrix 
+export function randomMatrix(rows: number, columns: number): Matrix 
 {
   let randomValues: number[][] = zeros(rows, columns);
 

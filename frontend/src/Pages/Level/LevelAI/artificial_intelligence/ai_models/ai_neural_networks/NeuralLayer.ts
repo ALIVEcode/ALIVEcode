@@ -21,8 +21,7 @@ export class NeuralLayer {
    * @param weights the weights of all neurons in the layer (nbPrevious x nbNeurons).
    * @param biases the biases of all neurons in the layer (1 x nbNeurons).
    */
-  public constructor(nbNeurons: number, activation: ActivationFunction, weights: Matrix, biases: Matrix)
-  {
+  public constructor(nbNeurons: number, activation: ActivationFunction, weights: Matrix, biases: Matrix) {
     this.activation = activation;
     this.weights = weights;
     this.biases = biases;
@@ -40,26 +39,23 @@ export class NeuralLayer {
    * @returns the output of the whole layer.
    */
   public computeLayer(inputs: Matrix): Matrix {
+    
+    // We compute the first neuron and creation of the output Matrix
     let output: Matrix = this.neurons[0].computeOutput(inputs, this.activation);
+
+    // We compute the other neurons and append their outputs to the Matrix
     for (let i: number = 1; i < this.neurons.length; i++) {
       const newOutput: Matrix = this.neurons[i].computeOutput(inputs, this.activation);
-      console.log("To append :")
-      newOutput.display()
       output = appendRow(output, newOutput);
     }
-
-    console.log("After layer :")
-    output.display();
     return output;
   }
 
-  public getWeights(): Matrix
-  {
+  public getWeights(): Matrix {
     return this.weights;
   }
 
-  public getBiases(): Matrix
-  {
+  public getBiases(): Matrix {
     return this.biases;
   }
 }

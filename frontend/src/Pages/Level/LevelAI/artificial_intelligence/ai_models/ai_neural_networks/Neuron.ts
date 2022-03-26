@@ -32,17 +32,13 @@ export default class Neuron {
    */
   public computeOutput(inputs: Matrix, activation: ActivationFunction): Matrix {
     
-    this.weights.display()
+    // Multiplication of the weights with inputs
     let output: Matrix = matMul(this.weights, inputs);
 
-    console.log("After weights :")
-    output.display();
-
+    // Addition of the biases
     output = matAddConstant(output, this.bias);
 
-    console.log("After biases :")
-    output.display();
-
+    // Returning the result of the activation function
     return activation.compute(output);
   }
 

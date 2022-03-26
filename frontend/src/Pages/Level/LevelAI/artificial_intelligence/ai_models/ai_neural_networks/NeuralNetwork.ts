@@ -1,4 +1,4 @@
-import { Matrix, normalMatrix, zeros } from '../../AIUtils';
+import { Matrix, randomMatrix, zeros } from '../../AIUtils';
 import { NeuralLayer } from "./NeuralLayer";
 import { ActivationFunction } from '../../ai_functions/Function';
 import { Model } from '../Model';
@@ -46,7 +46,7 @@ export class NeuralNetwork extends Model
     {
       //Number of neurons from the previous layer (can be the input layer)
       previousNbNeurons = (layer === 0) ? nbInputs : neuronsByLayer[layer - 1];
-      weights = normalMatrix(neuronsByLayer[layer], previousNbNeurons);
+      weights = randomMatrix(neuronsByLayer[layer], previousNbNeurons);
       biases = new Matrix(zeros(neuronsByLayer[layer], 1));
       if (layer === 0) this.layers = [new NeuralLayer(neuronsByLayer[layer], activationsByLayer[layer], weights, biases)];
       else this.layers.push(new NeuralLayer(neuronsByLayer[layer], activationsByLayer[layer], weights, biases));
@@ -54,7 +54,7 @@ export class NeuralNetwork extends Model
 
     // Output layer
     previousNbNeurons = neuronsByLayer[nbLayers - 1];
-    weights = normalMatrix(nbOutputs, previousNbNeurons);
+    weights = randomMatrix(nbOutputs, previousNbNeurons);
     biases = new Matrix(zeros(nbOutputs, 1));
 
     this.layers.push(new NeuralLayer(nbOutputs, outputActivation, weights, biases));

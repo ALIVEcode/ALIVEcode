@@ -19,6 +19,7 @@ import LevelToolsBar from '../../../Components/LevelComponents/LevelToolsBar/Lev
 import { NeuralNetwork } from './artificial_intelligence/ai_models/ai_neural_networks/NeuralNetwork';
 import { ActivationFunction } from './artificial_intelligence/ai_functions/Function';
 import { Matrix } from './artificial_intelligence/AIUtils';
+import { mainAITest } from './artificial_intelligence/AITests';
 
 /**
  * Ai level page. Contains all the components to display and make the ai level functionnal.
@@ -226,27 +227,43 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 
 	function testNeuralNetwork(cmd: any) {
 
+		mainAITest();
+		/*
 		const neuronsByLayer: number[] = [2, 2]
 		const nbInputs: number = 3;
 		const nbOutputs: number = 1;
 		const activations: ActivationFunction[] = [
-			new ActivationFunction(ActivationFunction.SIGMOID),
+			new ActivationFunction(ActivationFunction.RELU),
 			new ActivationFunction(ActivationFunction.RELU)
 		];
-		const outputAct: ActivationFunction = new ActivationFunction(ActivationFunction.RELU);
+		const outputAct: ActivationFunction = new ActivationFunction(ActivationFunction.SIGMOID);
 
 		const data: Matrix = new Matrix([
-			[0.4, 0.03, 0.5, 0.88, 0.1],
-			[0.4, 0.03, 0.5, 0.88, 0.1],
-			[0.4, 0.03, 0.5, 0.88, 0.1]
+			[10, 20, 3, 6, 4],
+			[3, 5, 1, 2, 2],
+			[2, 4, 1, 1, 1]
 		]);
+
+		cmd?.print("Les données entrées :");
+		data.displayInCmd(cmd);
+		cmd?.print("Colonne 1 : nombre de pièces");
+		cmd?.print("Colonne 2 : nombre de chambres");
+		cmd?.print("Colonne 3 : nombre de salles de bain");
+
+		cmd?.print("Nombre de paramètres d'entrée : " + nbInputs);
+		cmd?.print("Nombre de sorties : " + nbOutputs);
+
+		let str: string = "Le nombre de neurones par couche : [" + neuronsByLayer[0];
+		for (let i: number = 1; i < neuronsByLayer.length; i++) {
+			str += ", " + neuronsByLayer[i]; 
+		}
+		cmd?.print(str + "]");
 
 		let myNetwork: NeuralNetwork = new NeuralNetwork(neuronsByLayer, activations, outputAct, nbInputs, nbOutputs)
 
 		let predictions: Matrix = myNetwork.predict(data);
 		predictions.displayInCmd(cmd);
-		//cmd?.print(predictions.getRows())
-		//cmd?.print(predictions.getColumns())
+		*/
 	}
 
 

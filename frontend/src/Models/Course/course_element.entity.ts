@@ -95,7 +95,7 @@ export class CourseElement {
 		return this.activity != null;
 	}
 
-	initialize() {
+	initialize(course: Course, sectionParent?: Section) {
 		if (this.section) {
 			this.section.elements || (this.section.elements = []);
 			this.section.elementsOrder || (this.section.elementsOrder = []);
@@ -103,6 +103,8 @@ export class CourseElement {
 		} else if (this.activity) {
 			this.activity.courseElement = this as CourseElementActivity;
 		}
+		this.course = course;
+		this.sectionParent = sectionParent;
 	}
 
 	/**

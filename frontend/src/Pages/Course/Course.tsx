@@ -328,7 +328,7 @@ const Course = () => {
 			sectionParent?.id,
 		);
 
-		courseElement.initialize();
+		courseElement.initialize(course.current, sectionParent);
 		const parent = sectionParent ?? course.current;
 		parent.elementsOrder = newOrder;
 		parent.elements.push(courseElement);
@@ -370,10 +370,9 @@ const Course = () => {
 		});
 
 		elements.forEach(el => {
-			el.sectionParent = section;
-			course.current && (el.course = course.current);
 			courseElements.current[el.id] = el;
-			el.initialize();
+			if (!course.current) throw Error('No course currently set');
+			course.current && el.initialize(course.current, section);
 		});
 
 		section.elements = elements;
@@ -512,9 +511,8 @@ const Course = () => {
 
 				// Loading all elements recursively
 				for (const el of elements) {
-					el.course = course.current;
 					courseElements.current[el.id] = el;
-					el.initialize();
+					el.initialize(course.current);
 					await loadSectionRecursively(el);
 				}
 

@@ -13,7 +13,7 @@ import { MouseEventHandler } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSlate } from 'slate-react';
 
-const RichTextButton = ({
+export const RichTextButton = ({
 	onClick,
 	active,
 	children,
@@ -36,6 +36,8 @@ const RichTextButton = ({
 /**
  * @param icon
  * @param styleChange
+ * @param getValue
+ * @param mode
  * @param showSeparator
  * @constructor
  * @see https://github.com/ianstormtaylor/slate/blob/main/site/examples/richtext.tsx
@@ -164,23 +166,40 @@ export const renderLeaf = (props: RichTextLeafProps) => (
 	<RichTextLeaf {...props} />
 );
 
-const isMarkActive = (editor: Editor, format: keyof RichTextLeafType) => {
+export const isMarkActive = (editor: Editor, format: keyof RichTextLeafType) => {
 	const marks = Editor.marks(editor);
 	// @ts-ignore
-	return marks ? marks[format] === true : false;
+	return marks ? !!marks[format] : false;
 };
 
-export const toggleMark = (editor: Editor, format: keyof RichTextLeafType) => {
+export const toggleMark = (
+	editor: Editor,
+	format: keyof RichTextLeafType,
+	value?: any,
+) => {
 	const isActive = isMarkActive(editor, format);
 
 	if (isActive) {
 		Editor.removeMark(editor, format);
 	} else {
-		Editor.addMark(editor, format, true);
+		Editor.addMark(editor, format, value ?? true);
 	}
 };
 
-const isBlockActive = (
+export const replaceMark = (
+	editor: Editor,
+	prevFormat: keyof RichTextLeafType,
+	newFormat: keyof RichTextLeafType,
+	value?: any,
+) => {
+	const isActive = isMarkActive(editor, prevFormat);
+
+	if (isActive) Editor.removeMark(editor, prevFormat);
+
+	Editor.addMark(editor, newFormat, value ?? true);
+};
+
+export const isBlockActive = (
 	editor: Editor,
 	format: RichTextBlockStyles,
 	blockType = 'type',
@@ -200,7 +219,7 @@ const isBlockActive = (
 	return !!match;
 };
 
-const toggleBlock = (editor: Editor, format: RichTextBlockStyles) => {
+export const toggleBlock = (editor: Editor, format: RichTextBlockStyles) => {
 	const isActive = isBlockActive(
 		editor,
 		format,

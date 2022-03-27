@@ -39,7 +39,7 @@ export type RichTextBlockButtonProps = {
 
 export type RichTextElementType = {
 	type?: RichTextBlockStyles;
-	align: CSS.Properties["textAlign"];
+	align: CSS.Properties['textAlign'];
 };
 
 export type RichTextElementProps = {

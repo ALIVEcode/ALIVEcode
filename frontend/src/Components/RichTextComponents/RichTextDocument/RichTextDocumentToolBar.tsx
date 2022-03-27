@@ -41,7 +41,7 @@ import {
  * @constructor
  */
 const RichTextDocumentToolBar = ({}: RichTextToolBarProps) => {
-	const ref = useRef<HTMLDivElement>(null);
+	const ref = useRef<HTMLInputElement>(null);
 	const editor = useSlate();
 	const selectedRec = useRef<{ left: number; top: number }>();
 
@@ -49,6 +49,16 @@ const RichTextDocumentToolBar = ({}: RichTextToolBarProps) => {
 		const marks = Editor.marks(editor);
 		// @ts-ignore
 		return (marks && marks['color']) ?? 'black';
+	};
+
+	const changeColor = () => {
+		if (!ref.current) return;
+		const marks = Editor.marks(editor);
+		// @ts-ignore
+		const previous = marks && marks['color'];
+		const color = ref.current.value || previous;
+		replaceMark(editor, 'color', 'color', color);
+		ref.current.style.visibility = 'invisible';
 	};
 
 	return (
@@ -65,18 +75,33 @@ const RichTextDocumentToolBar = ({}: RichTextToolBarProps) => {
 					const marks = Editor.marks(editor);
 					// @ts-ignore
 					const previous = marks && marks['color'];
-					console.log(previous);
-					const color = prompt('Precise the color')?.trim() || previous;
+					const color = prompt('Pick your color') || previous;
 					replaceMark(editor, 'color', 'color', color);
+					// if (!ref.current) return;
+					/*ref.current.style.visibility = 'visible';
+					ref.current.value = currentColor();
+					ref.current.focus();*/
 				}}
 				showSeparator
 			>
-				<FontAwesomeIcon
-					icon={faCircle}
-					size="sm"
-					style={{ color: currentColor() }}
-					title="color"
-				/>
+				<>
+					{/*<form>
+						<input
+							type="color"
+							ref={ref}
+							className="absolute invisible "
+							onBlur={e => {
+								changeColor();
+							}}
+						/>
+					</form>*/}
+					<FontAwesomeIcon
+						icon={faCircle}
+						size="sm"
+						style={{ color: currentColor() }}
+						title="color"
+					/>
+				</>
 			</RichTextButton>
 
 			<BlockButton icon={faHeading} styleChange="h1" />

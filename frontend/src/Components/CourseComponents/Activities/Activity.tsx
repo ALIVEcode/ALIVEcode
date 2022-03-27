@@ -24,7 +24,8 @@ import ActivityTheory from './ActivityTheory';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import {
 	faChevronLeft,
-	faChevronRight, faMinusCircle,
+	faChevronRight,
+	faMinusCircle,
 	faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import Link from '../../UtilsComponents/Link/Link';
@@ -260,10 +261,10 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 				<div className="flex flex-row items-center justify-evenly pt-12">
 					<button
 						className="flex items-center gap-4 cursor-pointer disabled:cursor-auto disabled:opacity-25"
-						disabled={!hasPrev}
+						disabled={previousActivity == null}
 						onClick={() =>
 							setTab({
-								openedActivity: getPreviousActivity(courseElement),
+								openedActivity: previousActivity,
 							})
 						}
 					>
@@ -272,12 +273,10 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					</button>
 					<button
 						className="flex items-center gap-4 cursor-pointer disabled:cursor-auto disabled:opacity-25"
-						disabled={!hasNext}
+						disabled={nextActivity == null}
 						onClick={() => {
-							const act = getNextActivity(courseElement);
-							console.log(act);
 							setTab({
-								openedActivity: act,
+								openedActivity: nextActivity,
 							});
 						}}
 					>

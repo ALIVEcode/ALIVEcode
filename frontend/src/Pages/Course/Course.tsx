@@ -27,11 +27,7 @@ import {
 import { UserContext } from '../../state/contexts/UserContext';
 import { useForceUpdate } from '../../state/hooks/useForceUpdate';
 import ResourceMenu from '../ResourceMenu/ResourceMenu';
-import {
-	CourseTabs,
-	SwitchCourseTabActions,
-	CourseTabState,
-} from './courseTypes';
+import { SwitchCourseTabActions, CourseTabState } from './courseTypes';
 import useRoutes from '../../state/hooks/useRoutes';
 import { useQuery } from '../../state/hooks/useQuery';
 import { CourseElementActivity } from '../../Models/Course/course_element.entity';
@@ -65,59 +61,15 @@ const Course = () => {
 	const titleRef = useRef<HTMLInputElement>(null);
 	const [courseTitle, setCourseTitle] = useState(course.current?.name);
 	const [editTitle, setEditTitle] = useState(false);
-	const [tab, setTab] = useReducer(
-		(state: CourseTabState, action: SwitchCourseTabActions): CourseTabState => {
-			if (!course.current) return state;
-
-			console.log(action.openedActivity);
-
-			if (action.openedActivity != null)
-				query.set('act', action.openedActivity.id.toString());
-			// Do not replace the else if for an else
-			else if (action.openedActivity === null) {
-				query.delete('act');
-				if (!action.tab) navigate({ search: query.toString() });
-			}
-
-			switch (action.tab) {
-				case 'view':
-					navigate({
-						pathname:
-							routes.auth.course.path.replace(':id', course.current.id) +
-							'/view',
-						search: query.toString(),
-					});
-					break;
-				case 'layout':
-					navigate({
-						pathname:
-							routes.auth.course.path.replace(':id', course.current.id) +
-							'/layout',
-						search: query.toString(),
-					});
-					break;
-			}
-
-			return {
-				tab: action.tab ?? state.tab,
-				openedActivity:
-					action.openedActivity !== undefined
-						? action.openedActivity
-						: state.openedActivity,
-			};
-		},
-		{
-			tab: 'view',
-		},
-	);
 
 	useEffect(() => {
 		if (pathname.endsWith('layout') && tab.tab !== 'layout')
 			setTab({ tab: 'layout' });
-		else if (pathname.endsWith('view') && tab.tab !== 'view')
+		else if (pathname.endsWith('view') && tab.tab !== 'view') {
 			setTab({ tab: 'view' });
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [pathname]);
+	}, [pathname, courseElements]);
 
 	/**
 	 * Gets the first activity inside an array of elements.
@@ -139,6 +91,56 @@ const Course = () => {
 		if (elements.length <= 0) return null;
 		return getRecursively(elements[0]);
 	};
+
+	const tabReducer = (
+		state: CourseTabState,
+		action: SwitchCourseTabActions,
+	): CourseTabState => {
+		if (!course.current) return state;
+
+		if (action.openedActivity != null)
+			query.set('act', action.openedActivity.id.toString());
+		// Do not replace the else if for an else
+		else if (action.openedActivity === null) {
+			query.delete('act');
+			if (!action.tab) navigate({ search: query.toString() });
+		}
+
+		if (action.tab === 'view' && state.tab !== 'view')
+			action.openedActivity = getFirstActivity(
+				Object.values(courseElements.current),
+			);
+
+		switch (action.tab) {
+			case 'view':
+				navigate({
+					pathname:
+						routes.auth.course.path.replace(':id', course.current.id) + '/view',
+					search: query.toString(),
+				});
+				break;
+			case 'layout':
+				navigate({
+					pathname:
+						routes.auth.course.path.replace(':id', course.current.id) +
+						'/layout',
+					search: query.toString(),
+				});
+				break;
+		}
+
+		return {
+			tab: action.tab ?? state.tab,
+			openedActivity:
+				action.openedActivity !== undefined
+					? action.openedActivity
+					: state.openedActivity,
+		};
+	};
+
+	const [tab, setTab] = useReducer(tabReducer, {
+		tab: 'view',
+	});
 
 	/**
 	 * Indicates if the element was just added (is new)

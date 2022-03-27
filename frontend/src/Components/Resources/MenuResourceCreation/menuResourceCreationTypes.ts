@@ -18,13 +18,9 @@ export type MenuResourceCreationDTO = {
 	resource: {
 		name: string;
 		url?: string;
-		document?: Descendant[],
+		document?: Descendant[];
 		extension?: string;
 		subject: SUBJECTS;
 		challengeId?: string;
 	};
-};
-
-export type UpdateResourceType<T extends Resource = Resource> = {
-	[name in keyof T]?: T[name];
 };

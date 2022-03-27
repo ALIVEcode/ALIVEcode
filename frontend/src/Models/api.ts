@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import axios from 'axios';
-import { ClassConstructor, plainToClass, plainToInstance } from 'class-transformer';
+import {
+	ClassConstructor,
+	plainToClass,
+	plainToInstance,
+} from 'class-transformer';
 import { CompileDTO, SupportedLanguagesAS } from './ASModels';
 import { AsScript } from './AsScript/as-script.entity';
 import { Classroom } from './Classroom/classroom.entity';
@@ -10,7 +14,11 @@ import { Section } from './Course/section.entity';
 import { CategorySubject } from './Forum/categorySubject.entity';
 import { Post } from './Forum/post.entity';
 import { IoTObject } from './Iot/IoTobject.entity';
-import { IoTProject, IoTProjectDocument, IoTProjectLayout } from './Iot/IoTproject.entity';
+import {
+	IoTProject,
+	IoTProjectDocument,
+	IoTProjectLayout,
+} from './Iot/IoTproject.entity';
 import { IotRoute } from './Iot/IoTroute.entity';
 import { ClassroomQueryDTO } from './Challenge/dto/ClassroomQuery.dto';
 import { ChallengeQueryDTO } from './Challenge/dto/ChallengeQuery.dto';
@@ -32,10 +40,7 @@ import { Topics } from './Social/topics.entity';
 import { Professor, Student } from './User/user.entity';
 import { loadObj } from './utils';
 import { GenericResourceTransformer } from './Resource/transformer/GenericResourceTransformer';
-import {
-	MenuResourceCreationDTO,
-	UpdateResourceType,
-} from '../Components/Resources/MenuResourceCreation/menuResourceCreationTypes';
+import { MenuResourceCreationDTO } from '../Components/Resources/MenuResourceCreation/menuResourceCreationTypes';
 import { Activity } from './Course/activity.entity';
 
 export type ResultElementCreated = {
@@ -46,8 +51,8 @@ export type ResultElementCreated = {
 type urlArgType<S extends string> = S extends `${infer _}:${infer A}/${infer B}`
 	? A | urlArgType<B>
 	: S extends `${infer _}:${infer A}`
-		? A
-		: never;
+	? A
+	: never;
 
 const formatQuery = (query: { [name: string]: string }) => {
 	return (
@@ -247,7 +252,7 @@ const api = {
 					await axios.get(
 						`courses/${courseId}/sections/${sectionId}/activities`,
 					)
-				).data.map((c: any) => plainToInstance(Activity, c));
+				).data.map((c: any) => plainToInstance(Activity as any, c));
 			},
 			async getActivityContent(
 				courseId: string,
@@ -255,6 +260,7 @@ const api = {
 				activityId: number,
 			) {
 				return plainToClass(
+					// @ts-ignore
 					Activity,
 					(
 						await axios.get(
@@ -307,7 +313,7 @@ const api = {
 			deleteElement: apiDelete('courses/:courseId/elements/:elementId'),
 			updateActivity: apiUpdate(
 				'courses/:courseId/activities/:activityId',
-				Activity,
+				Activity as any,
 			),
 		},
 		resources: {
@@ -317,24 +323,34 @@ const api = {
 					resource: (await axios.post(`resources`, dto)).data,
 				}).resource;
 			},
-			update: async (dto: MenuResourceCreationDTO, id: string) => {
-				const axiosRes = (await axios.patch(`resources/${id}`, dto)).data;
-				console.log(axiosRes);
+			update: async <T extends Resource>(
+				resource: T,
+				fields: Omit<T, keyof Resource> | MenuResourceCreationDTO,
+			) => {
+				const dto: MenuResourceCreationDTO =
+					'uuid' in fields
+						? (fields as MenuResourceCreationDTO)
+						: {
+								uuid: resource.id,
+								type: resource.type,
+								resource: {
+									name: resource.name,
+									subject: resource.subject,
+									...fields,
+								},
+						  };
+				const axiosRes = (await axios.patch(`resources/${resource.id}`, dto))
+					.data;
 				return plainToInstance(GenericResourceTransformer, {
 					resource: axiosRes,
 				}).resource;
 			},
-			upload: async (
-				formdata: FormData,
-			) => {
-				return (await axios.post(
-					'resources/image',
-					formdata,
-					{
-						headers:
-							{ 'Content-Type': 'multipart/formdata' },
-					},
-				)).data;
+			upload: async (formdata: FormData) => {
+				return (
+					await axios.post('resources/image', formdata, {
+						headers: { 'Content-Type': 'multipart/formdata' },
+					})
+				).data;
 			},
 		},
 		challenges: {
@@ -486,7 +502,11 @@ const api = {
 			return (await axios.post(`as/compile?lang=${lang ?? 'fr'}`, data)).data;
 		},
 		async getLintInfo(lang?: SupportedLanguagesAS) {
-			return (await axios.get(`${process.env.BACKEND_URL}/as/lintinfo?lang=${lang ?? 'fr'}`)).data;
+			return (
+				await axios.get(
+					`${process.env.BACKEND_URL}/as/lintinfo?lang=${lang ?? 'fr'}`,
+				)
+			).data;
 		},
 	},
 };

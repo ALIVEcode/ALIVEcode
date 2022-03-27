@@ -37,7 +37,7 @@ const FormEditResource = ({ resource }: FormEditResourceProps) => {
 	if (!resources) return <LoadingScreen />;
 
 	const onSubmit = async (formValues: FormEditResourceDTO) => {
-		const updatedRes = await api.db.resources.update(formValues, resource.id);
+		const updatedRes = await api.db.resources.update(resource, formValues);
 		setResources(resources.map(r => (r.id === updatedRes.id ? updatedRes : r)));
 	};
 

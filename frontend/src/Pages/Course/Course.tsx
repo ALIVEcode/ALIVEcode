@@ -183,7 +183,7 @@ const Course = () => {
 	};
 
 	const [tab, setTab] = useReducer(tabReducer, {
-		tab: 'view',
+		tab: 'layout',
 	});
 
 	/**

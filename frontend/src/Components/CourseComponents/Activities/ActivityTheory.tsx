@@ -8,7 +8,7 @@ import { ActivityProps } from './activityTypes';
  * Shows an activity of type Theory
  * @returns The activity of type Theory
  *
- * @author Enric Soldevila
+ * @author Mathis Laroche
  */
 const ActivityTheory = ({ courseElement, editMode }: ActivityProps) => {
 	const activity = courseElement.activity as ActivityTheoryModel;

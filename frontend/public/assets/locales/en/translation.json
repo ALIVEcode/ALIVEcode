@@ -298,7 +298,8 @@
 		"empty": "This course is empty.",
 		"section": {
 			"empty": "This section has no activities.",
-			"new": "New section"
+			"new": "New section",
+			"delete": "Are you sure you want to delete this section? All the elements contained inside it will also be deleted. This action is irreversible."
 		},
 		"activity": {
 			"open": "Open",
@@ -309,8 +310,10 @@
 			"new": "Add an activity",
 			"new_name": "Activity #{{num}}",
 			"import_resource": "Import a resource",
+			"remove_resource": "Remove the ressource",
 			"next": "Next activity",
-			"previous": "Previous activity"
+			"previous": "Previous activity",
+			"delete": "Are you sure you want to delete this activity? The resources contained inside it will not be deleted. This action is irreversible."
 		},
 		"form": {
 			"create": "Create a course",

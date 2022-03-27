@@ -1,4 +1,3 @@
-import { Activity as ActivityModel } from '../../../Models/Course/activity.entity';
 import { CourseLayoutActivityProps } from './courseLayoutTypes';
 import { useContext } from 'react';
 import Activity from '../Activities/Activity';
@@ -16,7 +15,6 @@ import { CourseContext } from '../../../state/contexts/CourseContext';
  * @author Mathis Laroche
  */
 const CourseLayoutActivity = ({ courseElement }: CourseLayoutActivityProps) => {
-	const activity = courseElement.activity as ActivityModel;
 	const { t } = useTranslation();
 	const { tab, setTab } = useContext(CourseContext);
 

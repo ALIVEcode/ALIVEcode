@@ -605,7 +605,7 @@ const Course = () => {
 				sectionParent={sectionParent}
 			/>
 			<Modal
-				title={t('course.resource.import')}
+				title={t('course.activity.import_resource')}
 				size="xl"
 				setOpen={setOpenModalImportResource}
 				open={openModalImportResource}

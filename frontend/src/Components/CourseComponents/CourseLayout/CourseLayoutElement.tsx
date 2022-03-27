@@ -82,7 +82,6 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 									setIsRenaming(true);
 								}}
 								onBlur={rename}
-								onClick={rename}
 								className="bg-[color:var(--background-color)] w-full"
 								defaultValue={element.name}
 							/>
@@ -119,7 +118,11 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 			)}
 			<AlertConfirm
 				open={confirmDelete}
-				title={t('couse.section.delete')}
+				title={
+					element.isActivity
+						? t('course.activity.delete')
+						: t('course.section.delete')
+				}
 				setOpen={setConfirmDelete}
 				onConfirm={async () => {
 					await deleteElement(element);

@@ -130,7 +130,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 		courseElement && (
 			<div className="w-full h-full relative overflow-y-auto flex flex-col px-8">
 				<div className="z-10 sticky top-0 pt-2 text-4xl bg-[color:var(--background-color)] pb-6 w-full border-[color:var(--bg-shade-four-color)]">
-					<div className="flex items-center">
+					<div className="flex items-center pb-7">
 						<FontAwesomeIcon
 							icon={activity.icon}
 							className="m-0 mr-4 text-[color:var(--bg-shade-four-color)]"
@@ -161,9 +161,9 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 						)}
 					</div>
 				</div>
-				<div className="flex justify-center items-center">
+				<div className="flex justify-center items-center pb-3 pt-3">
 					{activity.header !== null ? (
-						<div className="text-sm pt-3 pb-3 w-full">
+						<div className="text-sm w-full">
 							<RichTextEditor
 								readOnly={!editMode}
 								onChange={update('header')}
@@ -215,7 +215,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 						editMode && <ButtonAdd what="footer" activity={activity} />
 					)}
 				</div>
-				<div className="flex flex-row items-center justify-evenly py-8">
+				<div className="flex flex-row items-center justify-evenly pt-12">
 					<button
 						className="flex items-center gap-4 cursor-pointer disabled:cursor-auto disabled:opacity-25"
 						disabled={!hasPrev}

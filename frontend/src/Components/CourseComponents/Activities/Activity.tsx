@@ -102,7 +102,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					<ActivityChallenge activity={activity as ActivityChallengeModel} />
 				);
 			case ACTIVITY_TYPE.THEORY:
-				return <ActivityTheory activity={activity as ActivityTheoryModel} />;
+				return <ActivityTheory activity={activity as ActivityTheoryModel} editMode={editMode} />;
 			case ACTIVITY_TYPE.VIDEO:
 				return <ActivityVideo activity={activity as ActivityVideoModel} />;
 			default:

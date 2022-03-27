@@ -10,7 +10,8 @@ import { ActivityProps } from './activityTypes';
  *
  * @author Enric Soldevila
  */
-const ActivityTheory = ({ activity, editMode }: ActivityProps<ActivityTheoryModel>) => {
+const ActivityTheory = ({ courseElement, editMode }: ActivityProps) => {
+	const activity = courseElement.activity as ActivityTheoryModel;
 	return (
 		<div className="w-full">
 			<div>

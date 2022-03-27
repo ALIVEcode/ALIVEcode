@@ -20,6 +20,7 @@ import {
 	faChevronLeft,
 	faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
+import Link from '../../UtilsComponents/Link/Link';
 
 /**
  * Shows the opened activity. Renders different component depending on the type of the activity opened.
@@ -176,15 +177,15 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 				</div>
 				<div className="py-5">
 					{activity.resource ? (
-						<div className="flex flex-col items-center gap-4">
+						<div className="flex flex-col items-end gap-2">
 							{loading ? <LoadingScreen relative /> : renderSpecificActivity()}
 							{editMode && (
-								<Button
-									variant="danger"
+								<div
 									onClick={() => removeResourceFromActivity(activity)}
+									className="border text-sm p-1 cursor-pointer text-red-600 border-red-600 opacity-75 transition-colors hover:opacity-100 hover:bg-red-600 hover:text-white"
 								>
 									{t('course.activity.remove_resource')}
-								</Button>
+								</div>
 							)}
 						</div>
 					) : (

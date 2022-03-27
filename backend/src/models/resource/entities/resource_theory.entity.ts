@@ -2,6 +2,7 @@ import { ChildEntity, Column, OneToMany } from 'typeorm';
 import { ResourceEntity, RESOURCE_TYPE } from './resource.entity';
 import { IsOptional } from 'class-validator';
 import { ActivityTheoryEntity } from '../../course/entities/activities/activity_theory.entity';
+import { Descendant } from 'slate';
 
 /**
  * Activity of type Theory model in the database
@@ -12,5 +13,5 @@ export class ResourceTheoryEntity extends ResourceEntity {
   /** Content of the theory resource */
   @Column({ type: 'json', nullable: true })
   @IsOptional()
-  document: object;
+  document: Descendant[];
 }

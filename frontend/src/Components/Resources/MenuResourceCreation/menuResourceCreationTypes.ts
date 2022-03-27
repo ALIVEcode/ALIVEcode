@@ -3,6 +3,7 @@ import {
 	Resource,
 } from '../../../Models/Resource/resource.entity';
 import { SUBJECTS } from '../../../Types/sharedTypes';
+import { Descendant } from 'slate';
 
 export type MenuResourceCreationProps = {
 	open: boolean;
@@ -12,13 +13,18 @@ export type MenuResourceCreationProps = {
 };
 
 export type MenuResourceCreationDTO = {
-  uuid: string;
+	uuid: string;
 	type: RESOURCE_TYPE;
 	resource: {
 		name: string;
 		url?: string;
+		document?: Descendant[],
 		extension?: string;
 		subject: SUBJECTS;
 		challengeId?: string;
 	};
+};
+
+export type UpdateResourceType<T extends Resource = Resource> = {
+	[name in keyof T]?: T[name];
 };

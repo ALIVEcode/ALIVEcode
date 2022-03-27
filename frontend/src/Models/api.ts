@@ -1,10 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import axios from 'axios';
-import {
-	ClassConstructor,
-	plainToClass,
-	plainToInstance,
-} from 'class-transformer';
+import { ClassConstructor, plainToClass, plainToInstance } from 'class-transformer';
 import { CompileDTO, SupportedLanguagesAS } from './ASModels';
 import { AsScript } from './AsScript/as-script.entity';
 import { Classroom } from './Classroom/classroom.entity';
@@ -14,11 +10,7 @@ import { Section } from './Course/section.entity';
 import { CategorySubject } from './Forum/categorySubject.entity';
 import { Post } from './Forum/post.entity';
 import { IoTObject } from './Iot/IoTobject.entity';
-import {
-	IoTProject,
-	IoTProjectDocument,
-	IoTProjectLayout,
-} from './Iot/IoTproject.entity';
+import { IoTProject, IoTProjectDocument, IoTProjectLayout } from './Iot/IoTproject.entity';
 import { IotRoute } from './Iot/IoTroute.entity';
 import { ClassroomQueryDTO } from './Challenge/dto/ClassroomQuery.dto';
 import { ChallengeQueryDTO } from './Challenge/dto/ChallengeQuery.dto';
@@ -40,7 +32,10 @@ import { Topics } from './Social/topics.entity';
 import { Professor, Student } from './User/user.entity';
 import { loadObj } from './utils';
 import { GenericResourceTransformer } from './Resource/transformer/GenericResourceTransformer';
-import { MenuResourceCreationDTO } from '../Components/Resources/MenuResourceCreation/menuResourceCreationTypes';
+import {
+	MenuResourceCreationDTO,
+	UpdateResourceType,
+} from '../Components/Resources/MenuResourceCreation/menuResourceCreationTypes';
 import { Activity } from './Course/activity.entity';
 
 export type ResultElementCreated = {
@@ -324,12 +319,10 @@ const api = {
 			},
 			update: async (dto: MenuResourceCreationDTO, id: string) => {
 				const axiosRes = (await axios.patch(`resources/${id}`, dto)).data;
-				console.log({ ...axiosRes });
-				const res = plainToInstance(GenericResourceTransformer, {
+				console.log(axiosRes);
+				return plainToInstance(GenericResourceTransformer, {
 					resource: axiosRes,
 				}).resource;
-				console.log(res);
-				return res;
 			},
 			upload: async (
 				formdata: FormData,

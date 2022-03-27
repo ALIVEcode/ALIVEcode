@@ -151,7 +151,7 @@ const Course = () => {
 			if (!action.tab) navigate({ search: query.toString() });
 		}
 
-		if (action.tab === 'view' && state.tab !== 'view')
+		if (action.tab === 'view' && state.tab !== 'view' && !query.has('act'))
 			action.openedActivity = getFirstActivity(course.current);
 
 		switch (action.tab) {

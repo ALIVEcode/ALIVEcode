@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import { themes } from '../../../state/contexts/ThemeContext';
 import {
-	CourseElement,
+	CourseElementSection,
 	CourseElementActivity,
 } from '../../../Models/Course/course_element.entity';
 
 export type CourseNavigationSectionProps = {
-	element: CourseElement;
+	element: CourseElementSection;
 };
 
 export type CourseNavigationActivityProps = {

@@ -84,7 +84,7 @@ export class CourseElement {
 	 * @author Mathis Laroche
 	 */
 	get isSection() {
-		return this.section !== undefined;
+		return this.section != null;
 	}
 	/**
 	 * Check if the element is an activity
@@ -92,16 +92,16 @@ export class CourseElement {
 	 * @author Mathis Laroche
 	 */
 	get isActivity(): boolean {
-		return this.activity !== undefined;
+		return this.activity != null;
 	}
 
 	initialize() {
 		if (this.section) {
 			this.section.elements || (this.section.elements = []);
 			this.section.elementsOrder || (this.section.elementsOrder = []);
-			this.section.courseElement = this;
+			this.section.courseElement = this as CourseElementSection;
 		} else if (this.activity) {
-			this.activity.courseElement = this;
+			this.activity.courseElement = this as CourseElementActivity;
 		}
 	}
 

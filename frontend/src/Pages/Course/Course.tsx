@@ -17,6 +17,7 @@ import { Course as CourseModel } from '../../Models/Course/course.entity';
 import {
 	CourseContent,
 	CourseElement,
+	CourseParent,
 } from '../../Models/Course/course_element.entity';
 import { UpdateCourseDTO } from '../../Models/Course/dtos/UpdateCourse.dto';
 import { Section } from '../../Models/Course/section.entity';
@@ -30,7 +31,10 @@ import ResourceMenu from '../ResourceMenu/ResourceMenu';
 import { SwitchCourseTabActions, CourseTabState } from './courseTypes';
 import useRoutes from '../../state/hooks/useRoutes';
 import { useQuery } from '../../state/hooks/useQuery';
-import { CourseElementActivity } from '../../Models/Course/course_element.entity';
+import {
+	CourseElementActivity,
+	CourseElementSection,
+} from '../../Models/Course/course_element.entity';
 
 /**
  * Course page that shows the content of a course
@@ -69,7 +73,7 @@ const Course = () => {
 			setTab({ tab: 'view' });
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [pathname, courseElements]);
+	}, [pathname]);
 
 	/**
 	 * Gets the first activity inside an array of elements.
@@ -77,19 +81,60 @@ const Course = () => {
 	 * @returns The first activity found or null there are no activities
 	 * @author Enric Soldevila
 	 */
-	const getFirstActivity = (elements: CourseElement[]) => {
+	const getFirstActivity = (parent: CourseParent) => {
 		const getRecursively = (
 			courseElement: CourseElement,
 		): CourseElementActivity | null => {
 			if (courseElement.activity) return courseElement as CourseElementActivity;
 			if (courseElement.section) {
-				if (courseElement.section.elements.length <= 0) return null;
-				return getRecursively(courseElement.section.elements[0]);
+				if (courseElement.section?.elementsOrder.length <= 0) return null;
+				const firstEl = courseElement.section.elements.find(
+					el => el.id === courseElement.section?.elementsOrder[0],
+				);
+				if (!firstEl) return null;
+				return getRecursively(firstEl);
 			}
 			return null;
 		};
-		if (elements.length <= 0) return null;
-		return getRecursively(elements[0]);
+		if (parent.elementsOrder.length <= 0) return null;
+		const firstEl = parent.elements.find(
+			el => el.id === parent.elementsOrder[0],
+		);
+		if (!firstEl) return null;
+		return getRecursively(firstEl);
+	};
+
+	/**
+	 * Gets the last activity inside an array of elements.
+	 *
+	 * @returns The last activity found or null there are no activities
+	 * @author Enric Soldevila
+	 */
+	const getLastActivity = (parent: CourseParent) => {
+		const getRecursively = (
+			courseElement: CourseElement,
+		): CourseElementActivity | null => {
+			if (courseElement.activity) return courseElement as CourseElementActivity;
+			if (courseElement.section) {
+				if (courseElement.section?.elementsOrder.length <= 0) return null;
+				const firstEl = courseElement.section.elements.find(
+					el =>
+						el.id ===
+						courseElement.section?.elementsOrder[
+							courseElement.section.elementsOrder.length - 1
+						],
+				);
+				if (!firstEl) return null;
+				return getRecursively(firstEl);
+			}
+			return null;
+		};
+		if (parent.elementsOrder.length <= 0) return null;
+		const lastEl = parent.elements.find(
+			el => el.id === parent.elementsOrder[parent.elementsOrder.length - 1],
+		);
+		if (!lastEl) return null;
+		return getRecursively(lastEl);
 	};
 
 	const tabReducer = (
@@ -107,9 +152,7 @@ const Course = () => {
 		}
 
 		if (action.tab === 'view' && state.tab !== 'view')
-			action.openedActivity = getFirstActivity(
-				Object.values(courseElements.current),
-			);
+			action.openedActivity = getFirstActivity(course.current);
 
 		switch (action.tab) {
 			case 'view':
@@ -156,6 +199,60 @@ const Course = () => {
 	};
 	const setCourseElementNotNew = (element: CourseElement) => {
 		if (isNewCourseElement(element)) newCourseElementId.current = undefined;
+	};
+
+	/**
+	 * Gets the next activity in the course starting from an activity.
+	 *
+	 * @returns The next activity found or null there are no activities
+	 * @author Enric Soldevila
+	 */
+	const getNextActivity = (element: CourseElement) => {
+		const getRecursively = (
+			el: CourseElement,
+		): CourseElementActivity | null => {
+			const parent = el.getParent();
+			const index = parent.elementsOrder.indexOf(el.id);
+			if (index + 1 >= parent.elementsOrder.length) {
+				if (parent instanceof CourseModel) return null;
+				return getRecursively(parent.courseElement);
+			}
+			const nextElement = parent.elements.find(
+				el => el.id === parent.elementsOrder[index + 1],
+			);
+			if (!nextElement) return null;
+			if (nextElement.isActivity)
+				return courseElements.current[nextElement.id] as CourseElementActivity;
+			return getFirstActivity((nextElement as CourseElementSection).section);
+		};
+		return getRecursively(element);
+	};
+
+	/**
+	 * Gets the previous activity in the course starting from an activity.
+	 *
+	 * @returns The previous activity found or null there are no activities
+	 * @author Enric Soldevila
+	 */
+	const getPreviousActivity = (element: CourseElement) => {
+		const getRecursively = (
+			el: CourseElement,
+		): CourseElementActivity | null => {
+			const parent = el.getParent();
+			const index = parent.elementsOrder.indexOf(el.id);
+			if (index - 1 < 0) {
+				if (parent instanceof CourseModel) return null;
+				return getRecursively(parent.courseElement);
+			}
+			const nextElement = parent.elements.find(
+				el => el.id === parent.elementsOrder[index - 1],
+			);
+			if (!nextElement) return null;
+			if (nextElement.isActivity)
+				return courseElements.current[nextElement.id] as CourseElementActivity;
+			return getLastActivity((nextElement as CourseElementSection).section);
+		};
+		return getRecursively(element);
 	};
 
 	/**
@@ -389,6 +486,8 @@ const Course = () => {
 		setOpenModalImportResource,
 		removeResourceFromActivity,
 		loadActivityResource,
+		getNextActivity,
+		getPreviousActivity,
 	};
 
 	/**
@@ -427,7 +526,7 @@ const Course = () => {
 					setTab({ openedActivity: savedOpenedActivity });
 				// Otherwise, open the first activity
 				else {
-					const firstActivity = getFirstActivity(elements);
+					const firstActivity = getFirstActivity(course.current);
 					if (firstActivity) setTab({ openedActivity: firstActivity });
 				}
 

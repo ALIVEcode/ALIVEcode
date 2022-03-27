@@ -115,7 +115,18 @@ export class CourseService {
    * @throws HttpException Course not found
    */
   async findOneWithElements(courseId: string) {
-    const course = await this.courseRepository.findOne(courseId, { relations: ['elements'] });
+    const course = await this.courseRepository
+      .createQueryBuilder('course')
+      .leftJoinAndSelect('course.elements', 'elements')
+      .leftJoinAndSelect('elements.activity', 'activity')
+      .leftJoinAndSelect('elements.section', 'section')
+      .where('course.id = :courseId', { courseId })
+      .andWhere('elements.sectionParentId IS NULL')
+      .getOne();
+    /*const course = await this.courseRepository.findOne(courseId, {
+      where: { 'elements.section': null },
+      relations: ['elements'],
+    });*/
     if (!course) throw new HttpException('Course not found', HttpStatus.NOT_FOUND);
     return course;
   }

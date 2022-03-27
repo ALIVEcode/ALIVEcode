@@ -82,14 +82,14 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 									setIsRenaming(true);
 								}}
 								onBlur={rename}
-								onDoubleClick={rename}
+								onClick={rename}
 								className="bg-[color:var(--background-color)] w-full"
 								defaultValue={element.name}
 							/>
 						) : (
 							<div className="flex flex-row">
 								<span
-									onDoubleClick={() => setIsRenaming(true)}
+									onClick={() => setIsRenaming(true)}
 									className={'cursor-pointer'}
 								>
 									{element.name}

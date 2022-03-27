@@ -13,14 +13,14 @@ import { useTranslation } from 'react-i18next';
  */
 const CourseBody = () => {
 	const {
-		tab: { openedActivity: activity },
+		tab: { openedActivity: courseElement },
 		setTab,
 	} = useContext(CourseContext);
 	const { t } = useTranslation();
 
 	return (
-		<div className="">
-			{!activity ? (
+		<div>
+			{!courseElement ? (
 				<div className="w-full h-full flex justify-center items-center">
 					<label>Open an activity to get started</label>
 				</div>
@@ -33,7 +33,7 @@ const CourseBody = () => {
 						<FontAwesomeIcon icon={faChalkboardTeacher} className="mx-2" />
 						{t('course.activity.edit_in_layout_view')}
 					</div>
-					<Activity key={activity.id} activity={activity.activity} />
+					<Activity key={courseElement.id} courseElement={courseElement} />
 				</>
 			)}
 		</div>

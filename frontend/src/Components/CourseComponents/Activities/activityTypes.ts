@@ -1,7 +1,6 @@
-import { Activity } from '../../../Models/Course/activity.entity';
+import { CourseElementActivity } from '../../../Models/Course/course_element.entity';
 
 export type ActivityProps = {
-	activity: Activity;
+	courseElement: CourseElementActivity;
 	editMode?: boolean;
-
 };

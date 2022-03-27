@@ -1,6 +1,6 @@
 import { faFolder } from '@fortawesome/free-solid-svg-icons';
 import { Exclude, Type } from 'class-transformer';
-import { CourseElement } from './course_element.entity';
+import { CourseElement, CourseElementSection } from './course_element.entity';
 
 /**
  * Section model in the database
@@ -21,7 +21,7 @@ export class Section {
 
 	/** CourseElement attached to the section */
 	@Type(() => CourseElement)
-	courseElement: CourseElement;
+	courseElement: CourseElementSection;
 
 	/** Name of the section */
 	get name() {

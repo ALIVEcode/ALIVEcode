@@ -1,6 +1,6 @@
 import { faBook, faCode, faVideo } from '@fortawesome/free-solid-svg-icons';
 import { Exclude, Type } from 'class-transformer';
-import { CourseElement } from './course_element.entity';
+import { CourseElement, CourseElementActivity } from './course_element.entity';
 import { Descendant } from 'slate';
 import { Resource } from '../Resource/resource.entity';
 
@@ -25,7 +25,7 @@ export abstract class Activity {
 	/** CourseElement attached to the activity */
 	@Type(() => CourseElement)
 	@Exclude({ toPlainOnly: true })
-	courseElement: CourseElement;
+	courseElement: CourseElementActivity;
 
 	/** Header of the activity */
 	header: Descendant[];

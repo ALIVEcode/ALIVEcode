@@ -307,7 +307,10 @@
 			"empty": "Cette activité est vide.",
 			"no_activity": "Ouvre une activité pour commencer à apprendre.",
 			"new": "Ajouter une activité",
-			"new_name": "Activité #{{num}}"
+			"new_name": "Activité #{{num}}",
+			"import_resource": "Importer une ressource",
+			"next": "Activité suivante",
+			"previous": "Activité précédente"
 		},
 		"form": {
 			"create": "Créer un cours",

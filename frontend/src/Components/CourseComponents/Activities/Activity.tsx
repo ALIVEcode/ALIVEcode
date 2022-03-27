@@ -16,6 +16,10 @@ import { ActivityProps } from './activityTypes';
 import FormInput from '../../UtilsComponents/FormInput/FormInput';
 import ActivityTheory from './ActivityTheory';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
+import {
+	faChevronLeft,
+	faChevronRight,
+} from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Shows the opened activity. Renders different component depending on the type of the activity opened.
@@ -25,15 +29,21 @@ import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
  *
  * @author Enric Soldevila, Mathis Laroche
  */
-const Activity = ({ activity, editMode }: ActivityProps) => {
+const Activity = ({ courseElement, editMode }: ActivityProps) => {
 	const {
 		course,
+		setTab,
 		updateActivity,
 		setOpenModalImportResource,
 		renameElement,
 		removeResourceFromActivity,
 		loadActivityResource,
+		getPreviousActivity,
+		getNextActivity,
 	} = useContext(CourseContext);
+
+	const activity = courseElement.activity;
+
 	const { t } = useTranslation();
 	const [isRenaming, setIsRenaming] = useState(false);
 	const [loading, setLoading] = useState(!activity.resource);
@@ -52,12 +62,12 @@ const Activity = ({ activity, editMode }: ActivityProps) => {
 	const update = useCallback(
 		(what: 'header' | 'footer') => {
 			return async (value: Descendant[]) => {
-				if (!activity) return;
+				if (!courseElement) return;
 				await updateActivity(activity, { [what]: value });
 			};
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[activity, course],
+		[courseElement, course],
 	);
 
 	/**
@@ -71,16 +81,13 @@ const Activity = ({ activity, editMode }: ActivityProps) => {
 		}
 		if (
 			inputRef.current?.value &&
-			inputRef.current.value.trim() !== activity.courseElement.name
+			inputRef.current.value.trim() !== courseElement.name
 		) {
-			await renameElement(
-				activity.courseElement,
-				inputRef.current.value.trim(),
-			);
+			await renameElement(courseElement, inputRef.current.value.trim());
 		}
 	};
 
-	if (!activity) {
+	if (!courseElement) {
 		return <></>;
 	}
 
@@ -108,7 +115,7 @@ const Activity = ({ activity, editMode }: ActivityProps) => {
 	};
 
 	return (
-		activity && (
+		courseElement && (
 			<div className="w-full h-full relative overflow-y-auto flex flex-col px-8">
 				<div className="z-10 sticky top-0 pt-2 text-4xl bg-[color:var(--background-color)] pb-6 w-full border-[color:var(--bg-shade-four-color)]">
 					<div className="flex items-center">
@@ -130,14 +137,14 @@ const Activity = ({ activity, editMode }: ActivityProps) => {
 								onBlur={rename}
 								onDoubleClick={rename}
 								className="bg-[color:var(--background-color)]"
-								defaultValue={activity.name}
+								defaultValue={courseElement.name}
 							/>
 						) : (
 							<strong
 								onClick={() => editMode && setIsRenaming(true)}
-								className={editMode ? 'cursor-text' : ''}
+								className={editMode ? 'cursor-pointer' : ''}
 							>
-								{activity.name}
+								{courseElement.name}
 							</strong>
 						)}
 					</div>
@@ -185,7 +192,7 @@ const Activity = ({ activity, editMode }: ActivityProps) => {
 				</div>
 				<div className="flex justify-center items-center">
 					{activity.footer !== null ? (
-						<div className="text-sm py-3 w-full">
+						<div className="text-sm pt-3 w-full">
 							<RichTextEditor
 								readOnly={!editMode}
 								onChange={update('footer')}
@@ -195,6 +202,32 @@ const Activity = ({ activity, editMode }: ActivityProps) => {
 					) : (
 						editMode && <ButtonAdd what="footer" activity={activity} />
 					)}
+				</div>
+				<div className="flex flex-row items-center justify-evenly py-8">
+					<div
+						className="flex items-center gap-4 cursor-pointer"
+						onClick={() =>
+							setTab({
+								openedActivity: getPreviousActivity(courseElement),
+							})
+						}
+					>
+						<FontAwesomeIcon size="1x" icon={faChevronLeft} />
+						{t('course.activity.previous')}
+					</div>
+					<div
+						className="flex items-center gap-4 cursor-pointer"
+						onClick={() => {
+							const act = getNextActivity(courseElement);
+							console.log(act);
+							setTab({
+								openedActivity: act,
+							});
+						}}
+					>
+						{t('course.activity.next')}
+						<FontAwesomeIcon size="1x" icon={faChevronRight} />
+					</div>
 				</div>
 			</div>
 		)

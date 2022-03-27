@@ -57,6 +57,7 @@ export const MarkButton = ({
 		<RichTextButton
 			active={isMarkActive(editor, styleChange)}
 			onClick={onClick}
+			showSeparator={showSeparator}
 		>
 			<FontAwesomeIcon
 				icon={icon}
@@ -68,7 +69,7 @@ export const MarkButton = ({
 	);
 };
 
-const BlockButton = ({
+export const BlockButton = ({
 	styleChange,
 	icon,
 	showSeparator,
@@ -88,6 +89,7 @@ const BlockButton = ({
 				styleChange.startsWith('align_') ? 'align' : 'type',
 			)}
 			onClick={onClick}
+			showSeparator={showSeparator}
 		>
 			<FontAwesomeIcon
 				icon={icon}
@@ -109,9 +111,9 @@ const RichTextElement = ({
 	switch (element.type) {
 		case 'h1':
 			return (
-				<h1 style={style} {...attributes}>
+				<p style={style} className="text-3xl" {...attributes}>
 					{children}
-				</h1>
+				</p>
 			);
 		case 'h2':
 			return (
@@ -166,7 +168,10 @@ export const renderLeaf = (props: RichTextLeafProps) => (
 	<RichTextLeaf {...props} />
 );
 
-export const isMarkActive = (editor: Editor, format: keyof RichTextLeafType) => {
+export const isMarkActive = (
+	editor: Editor,
+	format: keyof RichTextLeafType,
+) => {
 	const marks = Editor.marks(editor);
 	// @ts-ignore
 	return marks ? !!marks[format] : false;
@@ -246,7 +251,7 @@ export const toggleBlock = (editor: Editor, format: RichTextBlockStyles) => {
 			type: isActive ? 'paragraph' : isList(format) ? 'list_item' : format,
 		};
 	}
-	Transforms.setNodes<Element>(editor, newProperties);
+	Transforms.setNodes(editor, newProperties, { mode: "all" });
 
 	if (!isActive && isList) {
 		const block = { type: format, children: [] };

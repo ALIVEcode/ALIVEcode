@@ -24,7 +24,7 @@ const RichTextEditor = ({
 				type: 'paragraph',
 				children: [
 					{
-						text: 'Commencer à écrire...',
+						text: '',
 					},
 				],
 			},
@@ -44,6 +44,7 @@ const RichTextEditor = ({
 				<RichTextToolBar />
 				<Editable
 					readOnly={readOnly}
+					placeholder="Commencer à écrire..."
 					className={classNames(
 						'rounded-sm pl-2 bg-[color:var(--background-color)] cursor-text border border-[color:var(--bg-shade-two-color)] py-3 w-full h-full transition-all',
 						editMode && !readOnly && 'drop-shadow-md',

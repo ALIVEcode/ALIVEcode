@@ -43,7 +43,7 @@ const ActivityTheory = ({ courseElement, editMode }: ActivityProps) => {
 				<RichTextDocument
 					onChange={setValue}
 					defaultText={activity.resource?.document}
-					// readOnly={!editMode}
+					readOnly={!editMode}
 				/>
 			</div>
 		</div>

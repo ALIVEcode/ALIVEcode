@@ -20,6 +20,7 @@ import {
 	faCircle,
 	faCode,
 	faEye,
+	faHeading,
 	faItalic,
 	faUnderline,
 } from '@fortawesome/free-solid-svg-icons';
@@ -27,6 +28,7 @@ import { Popup } from 'reactjs-popup';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import { Toolbar } from '../../CourseComponents/ActivityContent/EditorComponents';
 import {
+	BlockButton,
 	isMarkActive,
 	MarkButton,
 	replaceMark,
@@ -67,6 +69,7 @@ const RichTextDocumentToolBar = ({}: RichTextToolBarProps) => {
 					const color = prompt('Precise the color')?.trim() || previous;
 					replaceMark(editor, 'color', 'color', color);
 				}}
+				showSeparator
 			>
 				<FontAwesomeIcon
 					icon={faCircle}
@@ -75,6 +78,8 @@ const RichTextDocumentToolBar = ({}: RichTextToolBarProps) => {
 					title="color"
 				/>
 			</RichTextButton>
+
+			<BlockButton icon={faHeading} styleChange="h1" />
 		</Toolbar>
 	);
 };

@@ -28,10 +28,10 @@ export abstract class Activity {
 	courseElement: CourseElementActivity;
 
 	/** Header of the activity */
-	header: Descendant[];
+	header: Descendant[] | null;
 
 	/** Footer of the activity */
-	footer: Descendant[];
+	footer: Descendant[] | null;
 
 	/** Name of the activity */
 	@Exclude()

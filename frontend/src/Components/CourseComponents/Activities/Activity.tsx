@@ -24,8 +24,12 @@ import ActivityTheory from './ActivityTheory';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import {
 	faChevronLeft,
-	faChevronRight,
+	faChevronRight, faMinusCircle,
+	faTrash,
 } from '@fortawesome/free-solid-svg-icons';
+import Link from '../../UtilsComponents/Link/Link';
+import RichTextDocument from '../../RichTextComponents/RichTextDocument/RichTextDocument';
+import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 
 /**
  * Shows the opened activity. Renders different component depending on the type of the activity opened.
@@ -54,6 +58,9 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 	const [isRenaming, setIsRenaming] = useState(false);
 	const [loading, setLoading] = useState(!activity.resource);
 	const inputRef = useRef<HTMLInputElement>();
+	const [hasNext, setHasNext] = useState(false);
+	const [hasPrev, setHasPrev] = useState(false);
+	const forceUpdate = useForceUpdate();
 
 	const previousActivity = useMemo(
 		() => getPreviousActivity(courseElement),
@@ -168,12 +175,27 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 				</div>
 				<div className="flex justify-center items-center pb-3 pt-3">
 					{activity.header !== null ? (
-						<div className="text-sm w-full">
-							<RichTextEditor
-								readOnly={!editMode}
-								onChange={update('header')}
-								defaultText={activity.header}
-							/>
+						<div className="flex flex-row text-sm w-full">
+							<div className="w-[95%]">
+								<RichTextEditor
+									readOnly={!editMode}
+									onChange={update('header')}
+									defaultText={activity.header}
+								/>
+							</div>
+							{editMode && (
+								<FontAwesomeIcon
+									icon={faMinusCircle}
+									onClick={async () => {
+										// eslint-disable-next-line no-restricted-globals
+										if (confirm(t('course.activity.remove_header_confirm')))
+											await updateActivity(activity, { header: null });
+									}}
+									size="2x"
+									className="p-1 mb-2 border cursor-pointer text-red-600
+									border-red-600 opacity-75 transition-colors hover:opacity-100 hover:bg-red-600 hover:text-white"
+								/>
+							)}
 						</div>
 					) : (
 						editMode && <ButtonAdd what="header" activity={activity} />
@@ -209,24 +231,39 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 				</div>
 				<div className="flex justify-center items-center">
 					{activity.footer !== null ? (
-						<div className="text-sm pt-3 w-full">
-							<RichTextEditor
-								readOnly={!editMode}
-								onChange={update('footer')}
-								defaultText={activity.footer}
-							/>
+						<div className="flex flex-row text-sm w-full">
+							<div className="w-[95%]">
+								<RichTextEditor
+									readOnly={!editMode}
+									onChange={update('header')}
+									defaultText={activity.footer}
+								/>
+							</div>
+							{editMode && (
+								<FontAwesomeIcon
+									icon={faMinusCircle}
+									onClick={async () => {
+										// eslint-disable-next-line no-restricted-globals
+										if (confirm(t('course.activity.remove_footer_confirm')))
+											await updateActivity(activity, { footer: null });
+									}}
+									size="2x"
+									className="p-1 mb-2 border cursor-pointer text-red-600
+									border-red-600 opacity-75 transition-colors hover:opacity-100 hover:bg-red-600 hover:text-white"
+								/>
+							)}
 						</div>
 					) : (
 						editMode && <ButtonAdd what="footer" activity={activity} />
 					)}
 				</div>
-				<div className="flex flex-row items-center justify-evenly py-12">
+				<div className="flex flex-row items-center justify-evenly pt-12">
 					<button
 						className="flex items-center gap-4 cursor-pointer disabled:cursor-auto disabled:opacity-25"
-						disabled={previousActivity === null}
+						disabled={!hasPrev}
 						onClick={() =>
 							setTab({
-								openedActivity: previousActivity,
+								openedActivity: getPreviousActivity(courseElement),
 							})
 						}
 					>
@@ -235,12 +272,14 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					</button>
 					<button
 						className="flex items-center gap-4 cursor-pointer disabled:cursor-auto disabled:opacity-25"
-						disabled={nextActivity === null}
-						onClick={() =>
+						disabled={!hasNext}
+						onClick={() => {
+							const act = getNextActivity(courseElement);
+							console.log(act);
 							setTab({
-								openedActivity: nextActivity,
-							})
-						}
+								openedActivity: act,
+							});
+						}}
 					>
 						{t('course.activity.next')}
 						<FontAwesomeIcon size="1x" icon={faChevronRight} />

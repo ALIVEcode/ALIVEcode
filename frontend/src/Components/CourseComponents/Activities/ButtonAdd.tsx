@@ -32,7 +32,7 @@ const ButtonAdd = ({
 						type: 'paragraph',
 						children: [
 							{
-								text: 'Hello, World!',
+								text: '',
 							},
 						],
 					},

@@ -49,7 +49,8 @@ const RichTextDocument = ({
 						placeholder="Commencer à écrire..."
 						readOnly={readOnly}
 						renderElement={props => renderElement(props as any)}
-						renderLeaf={props => renderLeaf(props as any)}
+						// @ts-ignore
+						renderLeaf={props => props?.leaf["invisible"] ? !readOnly && renderLeaf(props as any) : renderLeaf(props as any)}
 						onKeyDown={event => {}}
 						onSelect={() => setEditMode(true)}
 						onBlur={() => setEditMode(false)}

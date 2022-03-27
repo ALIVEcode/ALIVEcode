@@ -1,4 +1,8 @@
 import { ActivityTheory as ActivityTheoryModel } from '../../../Models/Course/activities/activity_theory.entity';
+import RichTextEditor from '../../RichTextComponents/RichTextEditor/RichTextEditor';
+import { useContext } from 'react';
+import RichTextDocument from '../../RichTextComponents/RichTextDocument/RichTextDocument';
+import { ActivityProps } from './activityTypes';
 
 /**
  * Shows an activity of type Theory
@@ -6,10 +10,16 @@ import { ActivityTheory as ActivityTheoryModel } from '../../../Models/Course/ac
  *
  * @author Enric Soldevila
  */
-const ActivityTheory = ({ activity }: { activity: ActivityTheoryModel }) => {
+const ActivityTheory = ({ activity, editMode }: ActivityProps<ActivityTheoryModel>) => {
 	return (
 		<div className="w-full">
-			<div>{activity.resource?.document.toString()}</div>
+			<div>
+				<RichTextDocument
+					onChange={value => {}}
+					defaultText={activity.resource?.document}
+					// readOnly={!editMode}
+				/>
+			</div>
 		</div>
 	);
 };

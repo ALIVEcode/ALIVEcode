@@ -3,9 +3,12 @@ import { createEditor, Descendant } from 'slate';
 import { withHistory } from 'slate-history';
 import { useMemo, useState } from 'react';
 import RichTextToolBar from './RichTextToolBar';
-import useTextEditor from '../../../state/hooks/useTextEditor';
 import { RichTextEditorProps } from './richTextToolBarTypes';
 import { classNames } from '../../../Types/utils';
+import {
+	renderElement,
+	renderLeaf,
+} from '../RichTextElements/RichTextSyleElements';
 
 const RichTextEditor = ({
 	defaultText,
@@ -13,7 +16,6 @@ const RichTextEditor = ({
 	readOnly,
 }: RichTextEditorProps) => {
 	const editor = useMemo(() => withReact(withHistory(createEditor())), []);
-	const { applyHotKey, applyStyle } = useTextEditor(editor);
 	const [editMode, setEditMode] = useState(false);
 
 	const [value, setValue] = useState<Descendant[]>(
@@ -22,12 +24,7 @@ const RichTextEditor = ({
 				type: 'paragraph',
 				children: [
 					{
-						text:
-							'Lorem, ipsum ' +
-							'dolor sit amet consectetur adipisicing elit. Ad accusamus voluptatibus eum consequuntur,' +
-							' assumenda facilis repellat ipsum beatae hic quidem laborum provident nulla repellendus debi' +
-							'tis quam nihil, repudiandae suscip' +
-							'it itaque?',
+						text: 'Commencer à écrire...',
 					},
 				],
 			},
@@ -51,8 +48,9 @@ const RichTextEditor = ({
 						'rounded-sm pl-2 bg-[color:var(--background-color)] cursor-text border border-[color:var(--bg-shade-two-color)] py-3 w-full h-full transition-all',
 						editMode && !readOnly && 'drop-shadow-md',
 					)}
-					renderElement={props => applyStyle(props.element.type, props)}
-					onKeyDown={applyHotKey}
+					renderElement={props => renderElement(props as any)}
+					renderLeaf={props => renderLeaf(props as any)}
+					onKeyDown={event => {}}
 					onSelect={() => setEditMode(true)}
 					onBlur={() => setEditMode(false)}
 				/>

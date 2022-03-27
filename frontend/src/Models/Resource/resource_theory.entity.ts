@@ -1,4 +1,5 @@
 import { Resource } from './resource.entity';
+import { Descendant } from 'slate';
 
 /**
  * Activity of type Theory model in the database
@@ -6,5 +7,5 @@ import { Resource } from './resource.entity';
  */
 export class ResourceTheory extends Resource {
 	/** Content of the theory resource */
-	document: object;
+	document?: Descendant[];
 }

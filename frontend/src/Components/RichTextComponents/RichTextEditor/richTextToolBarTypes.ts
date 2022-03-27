@@ -1,5 +1,6 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { Descendant } from 'slate';
+import { RichTextLeafType, RichTextBlockStyles } from '../RichTextElements/richTextStyleTypes';
 
 export type RichTextEditorProps = {
 	onChange: (value: Descendant[]) => void;
@@ -9,15 +10,5 @@ export type RichTextEditorProps = {
 
 export type RichTextToolBarProps = {};
 
-export type RichTextToolBarButtonFormatProps = {
-	icon: IconProp;
-	styleChange: richTextStyles;
-	showSeparator?: boolean;
-};
 
-export type richTextStyles = 'invisible' | 'italic' | 'bold' | 'emphasis';
 
-export type StyleElementProps = {
-	attributes: object;
-	children: JSX.Element;
-};

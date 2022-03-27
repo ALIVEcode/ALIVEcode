@@ -48,6 +48,16 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 	const [isRenaming, setIsRenaming] = useState(false);
 	const [loading, setLoading] = useState(!activity.resource);
 	const inputRef = useRef<HTMLInputElement>();
+	const [hasNext, setHasNext] = useState(false);
+	const [hasPrev, setHasPrev] = useState(false);
+
+	useEffect(() => {
+		setHasNext(getNextActivity(courseElement) !== null);
+	}, [courseElement, getNextActivity]);
+
+	useEffect(() => {
+		setHasPrev(getPreviousActivity(courseElement) !== null);
+	}, [courseElement, getPreviousActivity]);
 
 	useEffect(() => {
 		const load = async () => {
@@ -102,7 +112,9 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					<ActivityChallenge activity={activity as ActivityChallengeModel} />
 				);
 			case ACTIVITY_TYPE.THEORY:
-				return <ActivityTheory activity={activity as ActivityTheoryModel} editMode={editMode} />;
+				return (
+					<ActivityTheory courseElement={courseElement} editMode={editMode} />
+				);
 			case ACTIVITY_TYPE.VIDEO:
 				return <ActivityVideo activity={activity as ActivityVideoModel} />;
 			default:
@@ -204,8 +216,9 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					)}
 				</div>
 				<div className="flex flex-row items-center justify-evenly py-8">
-					<div
-						className="flex items-center gap-4 cursor-pointer"
+					<button
+						className="flex items-center gap-4 cursor-pointer disabled:cursor-auto disabled:opacity-25"
+						disabled={!hasPrev}
 						onClick={() =>
 							setTab({
 								openedActivity: getPreviousActivity(courseElement),
@@ -214,9 +227,10 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					>
 						<FontAwesomeIcon size="1x" icon={faChevronLeft} />
 						{t('course.activity.previous')}
-					</div>
-					<div
-						className="flex items-center gap-4 cursor-pointer"
+					</button>
+					<button
+						className="flex items-center gap-4 cursor-pointer disabled:cursor-auto disabled:opacity-25"
+						disabled={!hasNext}
 						onClick={() => {
 							const act = getNextActivity(courseElement);
 							console.log(act);
@@ -227,7 +241,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					>
 						{t('course.activity.next')}
 						<FontAwesomeIcon size="1x" icon={faChevronRight} />
-					</div>
+					</button>
 				</div>
 			</div>
 		)

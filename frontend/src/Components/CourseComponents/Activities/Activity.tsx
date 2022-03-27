@@ -1,4 +1,11 @@
-import { useCallback, useContext, useRef, useState, useEffect } from 'react';
+import {
+	useCallback,
+	useContext,
+	useRef,
+	useState,
+	useEffect,
+	useMemo,
+} from 'react';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import { ACTIVITY_TYPE } from '../../../Models/Course/activity.entity';
 import ActivityChallenge from './ActivityChallenge';
@@ -9,7 +16,6 @@ import { ActivityChallenge as ActivityChallengeModel } from '../../../Models/Cou
 import Button from '../../UtilsComponents/Buttons/Button';
 import { useTranslation } from 'react-i18next';
 import { ActivityVideo as ActivityVideoModel } from '../../../Models/Course/activities/activity_video.entity';
-import { ActivityTheory as ActivityTheoryModel } from '../../../Models/Course/activities/activity_theory.entity';
 import ActivityVideo from './ActivityVideo';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ActivityProps } from './activityTypes';
@@ -20,7 +26,6 @@ import {
 	faChevronLeft,
 	faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
-import Link from '../../UtilsComponents/Link/Link';
 
 /**
  * Shows the opened activity. Renders different component depending on the type of the activity opened.
@@ -49,16 +54,15 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 	const [isRenaming, setIsRenaming] = useState(false);
 	const [loading, setLoading] = useState(!activity.resource);
 	const inputRef = useRef<HTMLInputElement>();
-	const [hasNext, setHasNext] = useState(false);
-	const [hasPrev, setHasPrev] = useState(false);
 
-	useEffect(() => {
-		setHasNext(getNextActivity(courseElement) !== null);
-	}, [courseElement, getNextActivity]);
-
-	useEffect(() => {
-		setHasPrev(getPreviousActivity(courseElement) !== null);
-	}, [courseElement, getPreviousActivity]);
+	const previousActivity = useMemo(
+		() => getPreviousActivity(courseElement),
+		[courseElement, getPreviousActivity],
+	);
+	const nextActivity = useMemo(
+		() => getNextActivity(courseElement),
+		[courseElement, getNextActivity],
+	);
 
 	useEffect(() => {
 		const load = async () => {
@@ -216,13 +220,13 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 						editMode && <ButtonAdd what="footer" activity={activity} />
 					)}
 				</div>
-				<div className="flex flex-row items-center justify-evenly pt-12">
+				<div className="flex flex-row items-center justify-evenly py-12">
 					<button
 						className="flex items-center gap-4 cursor-pointer disabled:cursor-auto disabled:opacity-25"
-						disabled={!hasPrev}
+						disabled={previousActivity === null}
 						onClick={() =>
 							setTab({
-								openedActivity: getPreviousActivity(courseElement),
+								openedActivity: previousActivity,
 							})
 						}
 					>
@@ -231,14 +235,12 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					</button>
 					<button
 						className="flex items-center gap-4 cursor-pointer disabled:cursor-auto disabled:opacity-25"
-						disabled={!hasNext}
-						onClick={() => {
-							const act = getNextActivity(courseElement);
-							console.log(act);
+						disabled={nextActivity === null}
+						onClick={() =>
 							setTab({
-								openedActivity: act,
-							});
-						}}
+								openedActivity: nextActivity,
+							})
+						}
 					>
 						{t('course.activity.next')}
 						<FontAwesomeIcon size="1x" icon={faChevronRight} />

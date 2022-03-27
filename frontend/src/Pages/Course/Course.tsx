@@ -1,4 +1,11 @@
-import { useContext, useEffect, useReducer, useRef, useState } from 'react';
+import {
+	useContext,
+	useEffect,
+	useReducer,
+	useRef,
+	useState,
+	useCallback,
+} from 'react';
 import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
 import { useParams, useLocation } from 'react-router';
@@ -183,7 +190,7 @@ const Course = () => {
 	};
 
 	const [tab, setTab] = useReducer(tabReducer, {
-		tab: 'layout',
+		tab: 'view',
 	});
 
 	/**
@@ -208,7 +215,7 @@ const Course = () => {
 	 * @returns The next activity found or null there are no activities
 	 * @author Enric Soldevila
 	 */
-	const getNextActivity = (element: CourseElement) => {
+	const getNextActivity = useCallback((element: CourseElement) => {
 		const getRecursively = (
 			el: CourseElement,
 		): CourseElementActivity | null => {
@@ -227,7 +234,7 @@ const Course = () => {
 			return getFirstActivity((nextElement as CourseElementSection).section);
 		};
 		return getRecursively(element);
-	};
+	}, []);
 
 	/**
 	 * Gets the previous activity in the course starting from an activity.
@@ -235,7 +242,7 @@ const Course = () => {
 	 * @returns The previous activity found or null there are no activities
 	 * @author Enric Soldevila
 	 */
-	const getPreviousActivity = (element: CourseElement) => {
+	const getPreviousActivity = useCallback((element: CourseElement) => {
 		const getRecursively = (
 			el: CourseElement,
 		): CourseElementActivity | null => {
@@ -254,7 +261,7 @@ const Course = () => {
 			return getLastActivity((nextElement as CourseElementSection).section);
 		};
 		return getRecursively(element);
-	};
+	}, []);
 
 	/**
 	 * Sets the course's title to a new one

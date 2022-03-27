@@ -82,6 +82,7 @@ const Course = () => {
 	 * @author Enric Soldevila
 	 */
 	const getFirstActivity = (parent: CourseParent) => {
+		if (!parent.elements || !parent.elementsOrder) return null;
 		const getRecursively = (
 			courseElement: CourseElement,
 		): CourseElementActivity | null => {

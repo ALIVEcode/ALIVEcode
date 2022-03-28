@@ -12,4 +12,7 @@ export class ResourceImageEntity extends ResourceEntity {
   @Column()
   @IsNotEmpty()
   url: string;
+
+  @Column()
+  extension: string;
 }

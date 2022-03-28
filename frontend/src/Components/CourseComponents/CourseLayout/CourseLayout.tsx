@@ -33,12 +33,12 @@ const CourseLayout = () => {
 
 	return (
 		<div className="w-full h-full overflow-y-auto relative p-6">
-			<div className="absolute z-10 right-6 top-4">
+			<div className="sticky z-10 right-6 top-0">
 				<FontAwesomeIcon
 					icon={faUserGraduate}
 					name={t('course.activity.open_in_student_view')}
 					size="4x"
-					className="pl-5 hover:cursor-pointer [color:var(--foreground-color)]"
+					className="absolute right-6 top-4 pl-5 hover:cursor-pointer [color:var(--foreground-color)]"
 					onClick={() => setTab({ tab: 'view' })}
 				/>
 			</div>

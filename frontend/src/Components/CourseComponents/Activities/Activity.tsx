@@ -22,6 +22,7 @@ import { ActivityProps } from './activityTypes';
 import FormInput from '../../UtilsComponents/FormInput/FormInput';
 import ActivityTheory from './ActivityTheory';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
+import { classNames } from '../../../Types/utils';
 import {
 	faChevronLeft,
 	faChevronRight,
@@ -39,6 +40,7 @@ import {
 const Activity = ({ courseElement, editMode }: ActivityProps) => {
 	const {
 		course,
+		tab,
 		setTab,
 		updateActivity,
 		setOpenModalImportResource,
@@ -134,8 +136,13 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 
 	return (
 		courseElement && (
-			<div className="w-full h-full relative overflow-y-auto flex flex-col px-8">
-				<div className="z-10 sticky top-0 text-4xl bg-[color:var(--background-color)] mb-6 w-full border-[color:var(--bg-shade-four-color)]">
+			<div
+				className={classNames(
+					'w-full h-full relative overflow-y-auto flex flex-col px-8',
+					tab.tab === 'view' ? 'py-8' : 'py-0',
+				)}
+			>
+				<div className="text-4xl bg-[color:var(--background-color)] mb-6 w-full border-[color:var(--bg-shade-four-color)]">
 					<div className="flex items-center">
 						<FontAwesomeIcon
 							icon={activity.icon}

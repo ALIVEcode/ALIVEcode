@@ -43,12 +43,14 @@ const CourseLayoutActivity = ({ courseElement }: CourseLayoutActivityProps) => {
 				dialogClassName="rounded-[3px] h-full"
 				backdropClassName="bg-[color:black] opacity-50"
 				topBar={
-					<div
-						className="w-fit rounded-sm pr-2 py-1 ml-1 mt-1 [color:var(--fg-shade-three-color)] font-bold cursor-pointer hover:bg-[color:var(--bg-shade-one-color)]"
-						onClick={() => setTab({ tab: 'view' })}
-					>
-						<FontAwesomeIcon icon={faUserGraduate} className="mx-2" />
-						{t('course.activity.open_in_student_view')}
+					<div className="p-2 pb-0 w-full bg-[color:var(--background-color)]">
+						<div
+							className="w-fit rounded-sm p-1 pl-0 pr-2 [color:var(--fg-shade-three-color)] font-bold cursor-pointer hover:bg-[color:var(--bg-shade-one-color)]"
+							onClick={() => setTab({ tab: 'view' })}
+						>
+							<FontAwesomeIcon icon={faUserGraduate} className="mx-2" />
+							{t('course.activity.open_in_student_view')}
+						</div>
 					</div>
 				}
 			>

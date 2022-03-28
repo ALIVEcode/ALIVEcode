@@ -15,6 +15,7 @@ const CourseBody = () => {
 	const {
 		tab: { openedActivity: courseElement },
 		setTab,
+		isCreator,
 	} = useContext(CourseContext);
 	const { t } = useTranslation();
 
@@ -26,13 +27,17 @@ const CourseBody = () => {
 				</div>
 			) : (
 				<>
-					<div
-						className="w-fit rounded-sm ml-2 mt-2 mb-6 [color:var(--fg-shade-three-color)] font-bold cursor-pointer hover:bg-[color:var(--bg-shade-one-color)]"
-						onClick={() => setTab({ tab: 'layout' })}
-					>
-						<FontAwesomeIcon icon={faChalkboardTeacher} className="mx-2" />
-						{t('course.activity.edit_in_layout_view')}
-					</div>
+					{isCreator() && (
+						<div className="sticky z-10 p-2 pb-0 top-0 left-0 w-full bg-[color:var(--background-color)]">
+							<div
+								className="w-fit rounded-sm p-1 pl-0 pr-2 [color:var(--fg-shade-three-color)] font-bold cursor-pointer hover:bg-[color:var(--bg-shade-one-color)]"
+								onClick={() => setTab({ tab: 'layout' })}
+							>
+								<FontAwesomeIcon icon={faChalkboardTeacher} className="mx-2" />
+								{t('course.activity.edit_in_layout_view')}
+							</div>
+						</div>
+					)}
 					<Activity key={courseElement.id} courseElement={courseElement} />
 				</>
 			)}

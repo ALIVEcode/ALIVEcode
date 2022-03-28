@@ -450,6 +450,7 @@ const Course = () => {
 	 *
 	 * @param activity Activity to remove the resource from
 	 * @returns void
+	 * @author Enric Soldevila
 	 */
 	const removeResourceFromActivity = async (activity: Activity) => {
 		if (!course.current) return;
@@ -461,12 +462,29 @@ const Course = () => {
 		forceUpdate();
 	};
 
+	/**
+	 * Loads from the backend the resource contained inside an activity.
+	 *
+	 * @param activity The activity to load the resource of
+	 * @returns The activity contained inside the activity
+	 * @author Enric Soldevila
+	 */
 	const loadActivityResource = async (activity: Activity) => {
 		if (!course.current) return;
 		activity.resource = await api.db.courses.getActivityResource({
 			courseId: course.current.id,
 			activityId: activity.id.toString(),
 		});
+	};
+
+	/**
+	 * Check if the current logged in user is the creator of the course
+	 *
+	 * @returns true if the user is the creator, false otherwise
+	 * @author Enric Soldevila
+	 */
+	const isCreator = () => {
+		return user?.id === course.current?.creator.id;
 	};
 
 	const canEdit = course.current?.creator.id === user?.id;
@@ -495,6 +513,7 @@ const Course = () => {
 		loadActivityResource,
 		getNextActivity,
 		getPreviousActivity,
+		isCreator,
 	};
 
 	/**

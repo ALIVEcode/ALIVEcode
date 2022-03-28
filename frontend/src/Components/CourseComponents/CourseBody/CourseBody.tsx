@@ -27,7 +27,7 @@ const CourseBody = () => {
 			) : (
 				<>
 					<div
-						className="w-fit rounded-sm pr-2 py-1 my-4 ml-1 mt-1 [color:var(--fg-shade-three-color)] font-bold cursor-pointer hover:bg-[color:var(--bg-shade-one-color)]"
+						className="w-fit rounded-sm ml-2 mt-2 mb-6 [color:var(--fg-shade-three-color)] font-bold cursor-pointer hover:bg-[color:var(--bg-shade-one-color)]"
 						onClick={() => setTab({ tab: 'layout' })}
 					>
 						<FontAwesomeIcon icon={faChalkboardTeacher} className="mx-2" />

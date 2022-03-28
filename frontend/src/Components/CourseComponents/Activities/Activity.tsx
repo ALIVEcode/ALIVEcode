@@ -26,11 +26,7 @@ import {
 	faChevronLeft,
 	faChevronRight,
 	faMinusCircle,
-	faTrash,
 } from '@fortawesome/free-solid-svg-icons';
-import Link from '../../UtilsComponents/Link/Link';
-import RichTextDocument from '../../RichTextComponents/RichTextDocument/RichTextDocument';
-import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 
 /**
  * Shows the opened activity. Renders different component depending on the type of the activity opened.
@@ -59,9 +55,6 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 	const [isRenaming, setIsRenaming] = useState(false);
 	const [loading, setLoading] = useState(!activity.resource);
 	const inputRef = useRef<HTMLInputElement>();
-	const [hasNext, setHasNext] = useState(false);
-	const [hasPrev, setHasPrev] = useState(false);
-	const forceUpdate = useForceUpdate();
 
 	const previousActivity = useMemo(
 		() => getPreviousActivity(courseElement),
@@ -142,8 +135,8 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 	return (
 		courseElement && (
 			<div className="w-full h-full relative overflow-y-auto flex flex-col px-8">
-				<div className="z-10 sticky top-0 pt-2 text-4xl bg-[color:var(--background-color)] pb-6 w-full border-[color:var(--bg-shade-four-color)]">
-					<div className="flex items-center pb-7">
+				<div className="z-10 sticky top-0 text-4xl bg-[color:var(--background-color)] mb-6 w-full border-[color:var(--bg-shade-four-color)]">
+					<div className="flex items-center">
 						<FontAwesomeIcon
 							icon={activity.icon}
 							className="m-0 mr-4 text-[color:var(--bg-shade-four-color)]"
@@ -174,10 +167,10 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 						)}
 					</div>
 				</div>
-				<div className="flex justify-center items-center pb-3 pt-3">
-					{activity.header !== null ? (
-						<div className="flex flex-row text-sm w-full">
-							<div className="w-[95%]">
+				{activity.header !== null ? (
+					<div className="flex justify-center items-center pb-5">
+						<div className="flex flex-row gap-2 text-sm w-full">
+							<div className="w-full">
 								<RichTextEditor
 									readOnly={!editMode}
 									onChange={update('header')}
@@ -198,11 +191,13 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 								/>
 							)}
 						</div>
-					) : (
-						editMode && <ButtonAdd what="header" activity={activity} />
-					)}
-				</div>
-				<div className="py-5">
+					</div>
+				) : (
+					editMode && (
+						<ButtonAdd className="mb-5" what="header" activity={activity} />
+					)
+				)}
+				<div className="">
 					{activity.resource ? (
 						<div className="flex flex-col items-end gap-2">
 							{loading ? <LoadingScreen relative /> : renderSpecificActivity()}
@@ -230,10 +225,10 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 						</div>
 					)}
 				</div>
-				<div className="flex justify-center items-center">
-					{activity.footer !== null ? (
-						<div className="flex flex-row text-sm w-full">
-							<div className="w-[95%]">
+				{activity.footer !== null ? (
+					<div className="flex justify-center items-center pt-5">
+						<div className="flex flex-row gap-2 text-sm w-full">
+							<div className="w-full">
 								<RichTextEditor
 									readOnly={!editMode}
 									onChange={update('header')}
@@ -254,11 +249,13 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 								/>
 							)}
 						</div>
-					) : (
-						editMode && <ButtonAdd what="footer" activity={activity} />
-					)}
-				</div>
-				<div className="flex flex-row items-center justify-evenly pt-12">
+					</div>
+				) : (
+					editMode && (
+						<ButtonAdd className="mt-5" what="footer" activity={activity} />
+					)
+				)}
+				<div className="flex flex-row items-center justify-evenly py-12">
 					<button
 						className="flex items-center gap-4 cursor-pointer disabled:cursor-auto disabled:opacity-25"
 						disabled={previousActivity == null}

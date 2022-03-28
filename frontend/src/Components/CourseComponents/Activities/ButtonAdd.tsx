@@ -8,9 +8,11 @@ import { Activity } from '../../../Models/Course/activity.entity';
 const ButtonAdd = ({
 	activity,
 	what,
+	className,
 }: {
 	activity: Activity;
 	what: 'header' | 'footer';
+	className?: string;
 }) => {
 	const { updateActivity } = useContext(CourseContext);
 
@@ -18,7 +20,10 @@ const ButtonAdd = ({
 
 	return (
 		<div
-			className="border p-2 border-[color:var(--bg-shade-four-color)] text-[color:var(--foreground-color)] mt-2 border-opacity-25 w-24 hover:cursor-pointer"
+			className={
+				'border p-2 border-[color:var(--bg-shade-four-color)] text-[color:var(--foreground-color)] mt-2 border-opacity-25 w-24 hover:cursor-pointer ' +
+				(className ?? '')
+			}
 			style={{
 				display: 'flex',
 				justifyContent: 'center',

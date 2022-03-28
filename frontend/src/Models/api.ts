@@ -42,6 +42,7 @@ import { loadObj } from './utils';
 import { GenericResourceTransformer } from './Resource/transformer/GenericResourceTransformer';
 import { MenuResourceCreationDTO } from '../Components/Resources/MenuResourceCreation/menuResourceCreationTypes';
 import { Activity } from './Course/activity.entity';
+import { SetStateAction } from 'react';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;
@@ -345,9 +346,15 @@ const api = {
 					resource: axiosRes,
 				}).resource;
 			},
-			upload: async (formdata: FormData) => {
+			uploadImage: async (
+        formdata: FormData,
+        progressSetter: React.Dispatch<React.SetStateAction<number>>
+      ) => {
 				return (
 					await axios.post('resources/image', formdata, {
+            onUploadProgress: (progressEvent) => {
+              progressSetter(Math.round((progressEvent.loaded * 100) / progressEvent.total));
+            },
 						headers: { 'Content-Type': 'multipart/formdata' },
 					})
 				).data;

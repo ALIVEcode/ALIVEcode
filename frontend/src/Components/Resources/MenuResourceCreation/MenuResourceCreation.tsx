@@ -36,6 +36,7 @@ const MenuResourceCreation = ({
 	const [file, setFile] = useState<File>();
 	const [reqUuid, setReqUuid] = useState<string>();
 	const [reqPath, setReqPath] = useState<string>();
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
 	const { t } = useTranslation();
 	const { setResources, resources } = useContext(UserContext);
 	const { user } = useContext(UserContext);
@@ -106,7 +107,7 @@ const MenuResourceCreation = ({
 		formdata.append('uuid', id);
 		formdata.append('file', file);
 		setReqUuid(id);
-		const data = await api.db.resources.upload(formdata);
+		const data = await api.db.resources.uploadImage(formdata, setUploadProgress);
 		setReqPath(data.filename);
 	};
 
@@ -162,6 +163,8 @@ const MenuResourceCreation = ({
 						<Button variant="primary" onClick={handleUpload}>
 							upload
 						</Button>
+            <label htmlFor="uploadProgress">{uploadProgress}</label>
+            <progress id="uploadProgress" max="100" value={uploadProgress} />
 					</>
 				);
 			case RESOURCE_TYPE.FILE:

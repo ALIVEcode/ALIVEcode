@@ -46,7 +46,7 @@ import {
 /**
  * Course page that shows the content of a course
  *
- * @author Enric, Mathis
+ * @author Enric Soldevila, Mathis Laroche
  */
 const Course = () => {
 	const { user } = useContext(UserContext);

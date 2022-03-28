@@ -2,7 +2,6 @@ import { ActivityTheory as ActivityTheoryModel } from '../../../Models/Course/ac
 import RichTextDocument from '../../RichTextComponents/RichTextDocument/RichTextDocument';
 import { ActivityProps } from './activityTypes';
 import api from '../../../Models/api';
-import { RESOURCE_TYPE } from '../../../Models/Resource/resource.entity';
 import useWaitBeforeUpdate from '../../../state/hooks/useWaitBeforeUpdate';
 import { ResourceTheory } from '../../../Models/Resource/resource_theory.entity';
 
@@ -20,7 +19,6 @@ const ActivityTheory = ({ courseElement, editMode }: ActivityProps) => {
 			wait: 500,
 			onUpdate: () => {
 				(async () => {
-					console.log({ ...activity });
 					if (
 						!activity.resource ||
 						!activity.resourceId ||

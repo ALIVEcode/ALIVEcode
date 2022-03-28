@@ -56,7 +56,7 @@ const MenuCourseCreation = ({
 		formValues.course.subject = subject;
 		formValues.classId = classroom?.id;
 		if (updateMode && defaultCourse) {
-			const updatedCourse = await api.db.courses.update(
+			await api.db.courses.update(
 				{
 					id: defaultCourse.id,
 				},
@@ -68,7 +68,7 @@ const MenuCourseCreation = ({
 				await api.db.courses.create(formValues),
 			);
 			await user?.addCourse(course);
-			navigate(routes.auth.course.path.replace(':id', course.id));
+			navigate(routes.auth.course.path.replace(':id', course.id) + '/layout');
 			return alert.success('Cours créé avec succès');
 		}
 		setOpen(false);

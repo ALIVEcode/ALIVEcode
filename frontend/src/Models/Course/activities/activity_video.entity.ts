@@ -1,6 +1,7 @@
 import { Type } from 'class-transformer';
 import { Activity } from '../activity.entity';
 import { ResourceVideo } from '../../Resource/resource_video.entity';
+import { RESOURCE_TYPE } from '../../Resource/resource.entity';
 
 /**
  * Activity of type Video model in the database
@@ -13,4 +14,7 @@ export class ActivityVideo extends Activity {
 	/** Resource of the activity */
 	@Type(() => ResourceVideo)
 	resource?: ResourceVideo;
+
+	/** Allowed types of resources inside the activity */
+	readonly allowedResources: RESOURCE_TYPE[] = [RESOURCE_TYPE.VIDEO];
 }

@@ -617,6 +617,7 @@ const Course = () => {
 			>
 				<ResourceMenu
 					mode="import"
+					filters={tab.openedActivity?.activity.allowedResources}
 					onSelectResource={async resource => {
 						if (
 							!course.current ||

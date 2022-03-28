@@ -18,9 +18,15 @@ import { RESOURCE_TYPE } from '../../Models/Resource/resource.entity';
 import { ResourceFilter } from '../../Components/Resources/ResourceFilter/ResourceFilter';
 import MenuResourceCreation from '../../Components/Resources/MenuResourceCreation/MenuResourceCreation';
 
-const ResourceMenu = ({ mode, onSelectResource }: ResourceMenuProps) => {
+const ResourceMenu = ({
+	mode,
+	filters,
+	onSelectResource,
+}: ResourceMenuProps) => {
 	const [creationModalOpen, setCreationModalOpen] = useState(false);
-	const [selectedFilters, setSelectedFilters] = useState<RESOURCE_TYPE[]>([]);
+	const [selectedFilters, setSelectedFilters] = useState<RESOURCE_TYPE[]>(
+		filters ?? [],
+	);
 	const [selectedSection, setSelectedSection] =
 		useState<ResourceMenuSections>('all');
 
@@ -71,6 +77,7 @@ const ResourceMenu = ({ mode, onSelectResource }: ResourceMenuProps) => {
 
 	const resourceContextValues: ResourceMenuContextValues = useMemo(() => {
 		return {
+			mode: mode ?? 'default',
 			selectedSection,
 			setSelectedSection,
 			selectedFilters,
@@ -78,7 +85,7 @@ const ResourceMenu = ({ mode, onSelectResource }: ResourceMenuProps) => {
 			isFilterSelected,
 			toggleFilter,
 		};
-	}, [selectedSection, selectedFilters, isFilterSelected, toggleFilter]);
+	}, [mode, selectedSection, selectedFilters, isFilterSelected, toggleFilter]);
 
 	return (
 		<ResourceMenuContext.Provider value={resourceContextValues}>

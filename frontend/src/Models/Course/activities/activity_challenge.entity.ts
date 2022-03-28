@@ -1,6 +1,7 @@
 import { Activity } from '../activity.entity';
 import { ResourceChallenge } from '../../Resource/resource_challenge.entity';
 import { Type } from 'class-transformer';
+import { RESOURCE_TYPE } from '../../Resource/resource.entity';
 
 /**
  * Activity of type Challenge model in the database
@@ -13,4 +14,7 @@ export class ActivityChallenge extends Activity {
 	/** Resource of the activity */
 	@Type(() => ResourceChallenge)
 	resource: ResourceChallenge;
+
+	/** Allowed types of resources inside the activity */
+	readonly allowedResources: RESOURCE_TYPE[] = [RESOURCE_TYPE.CHALLENGE];
 }

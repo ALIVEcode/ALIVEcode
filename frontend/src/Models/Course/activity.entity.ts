@@ -2,7 +2,7 @@ import { faBook, faCode, faVideo } from '@fortawesome/free-solid-svg-icons';
 import { Exclude, Type } from 'class-transformer';
 import { CourseElement, CourseElementActivity } from './course_element.entity';
 import { Descendant } from 'slate';
-import { Resource } from '../Resource/resource.entity';
+import { Resource, RESOURCE_TYPE } from '../Resource/resource.entity';
 
 export enum ACTIVITY_TYPE {
 	THEORY = 'TH',
@@ -52,4 +52,5 @@ export abstract class Activity {
 	}
 
 	abstract resource?: Resource;
+	abstract readonly allowedResources: RESOURCE_TYPE[];
 }

@@ -1,5 +1,5 @@
 import { Transform } from "class-transformer";
-import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsOptional} from 'class-validator';
 import { SUBJECTS } from '../../../generics/types/sharedTypes';
 import { RESOURCE_TYPE } from '../../resource/entities/resource.entity';
 

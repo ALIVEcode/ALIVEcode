@@ -1,6 +1,7 @@
 import { Type } from 'class-transformer';
 import { Activity } from '../activity.entity';
 import { ResourceTheory } from '../../Resource/resource_theory.entity';
+import { RESOURCE_TYPE } from '../../Resource/resource.entity';
 
 /**
  * Activity of type theory model in the database
@@ -13,4 +14,7 @@ export class ActivityTheory extends Activity {
 	/** Resource of the activity */
 	@Type(() => ResourceTheory)
 	resource?: ResourceTheory;
+
+	/** Allowed types of resources inside the activity */
+	readonly allowedResources: RESOURCE_TYPE[] = [RESOURCE_TYPE.THEORY];
 }

@@ -30,11 +30,16 @@ const ResourceMenu = ({ mode, onSelectResource }: ResourceMenuProps) => {
 	useEffect(() => {
 		if (!user) return;
 		const getResources = async () => {
-			setResources(await api.db.users.getResources({ id: user.id }));
+			setResources(
+				await api.db.users.getResources(user.id, {
+					subject: selectedSection !== 'all' ? selectedSection : undefined,
+					types: selectedFilters.length > 0 ? selectedFilters : undefined,
+				}),
+			);
 		};
 		getResources();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [selectedSection, selectedFilters]);
 
 	const getSelectedSectionName = () => {
 		if (selectedSection === 'all') return t(`msg.subjects.all`);

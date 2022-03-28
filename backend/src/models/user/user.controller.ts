@@ -27,6 +27,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { editFileName, imageFileFilter } from 'src/utils/upload/file-uploading';
 import { NameMigrationDTO } from './dto/name_migration.dto';
+import { QueryResources } from './dto/query_resources.dto';
 
 export const storage = {
   fileFilter: imageFileFilter,
@@ -178,16 +179,16 @@ export class UserController {
 
   @Get(':id/resources')
   @Auth(Role.PROFESSOR, Role.MOD)
-  async getResources(@User() user: ProfessorEntity, @Param('id') id: string) {
+  async getResources(@User() user: ProfessorEntity, @Param('id') id: string, @Query() query: QueryResources) {
     if (!hasRole(user, Role.MOD) && user.id !== id) throw new HttpException('You cannot do that', HttpStatus.FORBIDDEN);
 
-    if (user.id === id) return this.userService.getResources(user);
+    if (user.id === id) return this.userService.getResources(user, query);
 
     const target = await this.userService.findById(id);
     if (target.type === USER_TYPES.STUDENT)
       throw new HttpException('A student has no resources', HttpStatus.BAD_REQUEST);
 
-    return this.userService.getResources(target as ProfessorEntity);
+    return this.userService.getResources(target as ProfessorEntity, query);
   }
 
   @Get(':id/challenges')

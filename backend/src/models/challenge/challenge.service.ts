@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ChallengeAliveEntity } from './entities/challenges/challenge_alive.entity';
 import { ChallengeCodeEntity } from './entities/challenges/challenge_code.entity';
 import { UserEntity } from '../user/entities/user.entity';
-import { ChallengeProgressionData, ChallengeProgressionEntity } from './entities/challenge_progression.entity';
+import { ChallengeProgressionEntity } from './entities/challenge_progression.entity';
 import { QueryDTO } from './dto/query.dto';
 import { ChallengeAIEntity } from './entities/challenges/challenge_ai.entity';
 import { ChallengeIoTEntity } from './entities/challenges/challenge_iot.entity';

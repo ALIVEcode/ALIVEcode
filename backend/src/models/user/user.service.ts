@@ -1,6 +1,6 @@
 import { Injectable, HttpException, HttpStatus, Scope, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ILike, Repository } from 'typeorm';
+import { ILike, Repository, In } from 'typeorm';
 import { StudentEntity, ProfessorEntity } from './entities/user.entity';
 import { UserEntity } from './entities/user.entity';
 import { compare, hash } from 'bcryptjs';
@@ -18,6 +18,7 @@ import { MyRequest } from '../../utils/guards/auth.guard';
 import { CourseHistoryEntity } from '../course/entities/course_history.entity';
 import { NameMigrationDTO } from './dto/name_migration.dto';
 import { ResourceEntity } from '../resource/entities/resource.entity';
+import { QueryResources } from './dto/query_resources.dto';
 
 @Injectable({ scope: Scope.REQUEST })
 export class UserService {
@@ -193,8 +194,12 @@ export class UserService {
     }
   }
 
-  async getResources(user: ProfessorEntity) {
-    return await this.resourceRepo.find({ where: { creator: user }, order: { updateDate: 'DESC' } });
+  async getResources(user: ProfessorEntity, query?: QueryResources) {
+    const where: any = { creator: user, name: ILike(`%${query?.name ?? ''}%`) };
+    if (query.subject) where.subject = query.subject;
+    if (query.types) where.type = In(query.types);
+
+    return await this.resourceRepo.find({ where, order: { updateDate: 'DESC' } });
   }
 
   async getIoTProjects(user: UserEntity) {

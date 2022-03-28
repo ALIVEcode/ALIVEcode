@@ -86,8 +86,8 @@ const MenuResourceCreation = ({
 		formValues.type = type;
 		if (updateMode && defaultResource) {
 			const updatedRes = await api.db.resources.update(
-				formValues,
-				defaultResource.id,
+				defaultResource,
+				formValues.resource,
 			);
 			setResources(
 				resources.map(r => (r.id === updatedRes.id ? updatedRes : r)),

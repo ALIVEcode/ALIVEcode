@@ -42,6 +42,7 @@ import { loadObj } from './utils';
 import { GenericResourceTransformer } from './Resource/transformer/GenericResourceTransformer';
 import { MenuResourceCreationDTO } from '../Components/Resources/MenuResourceCreation/menuResourceCreationTypes';
 import { Activity } from './Course/activity.entity';
+import { QueryResources } from './Resource/dto/query_resources.dto';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;
@@ -177,7 +178,17 @@ const api = {
 			getClassrooms: apiGet('users/:id/classrooms', Classroom, true),
 			getCourses: apiGet('users/:id/courses', Course, true),
 			getRecentCourses: apiGet('users/:id/courses/recents', Course, true),
-			getResources: apiGet('users/:id/resources', Resource, true),
+			async getResources(userId: string, query: QueryResources) {
+				return (
+					await axios.get(
+						`users/${userId}/resources?${
+							query.name ? `name=${query.name}` : ''
+						}${query.subject ? `&subject=${query.subject}` : ''}${
+							query.types ? `&types=${query.types}` : ''
+						}`,
+					)
+				).data.map((r: any) => plainToInstance(Resource, r));
+			},
 			getChallenges: apiGet(
 				'users/:id/challenges',
 				Challenge,

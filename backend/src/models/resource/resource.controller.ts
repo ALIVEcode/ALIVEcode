@@ -19,6 +19,7 @@ import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
 import { ResourceCreator } from '../../utils/guards/resource.guard';
 import { Resource } from '../../utils/decorators/resource.decorator';
 import { CreateResourceDTO, CreateResourceDTOSimple } from './dto/CreateResource.dto';
+import { ResourceImageEntity } from './entities/resource_image.entity';
 import { ProfessorEntity } from '../user/entities/user.entity';
 import { User } from '../../utils/decorators/user.decorator';
 import { validate } from 'class-validator';
@@ -43,7 +44,12 @@ export class ResourceController {
     const errors = await validate(plainToInstance(CreateResourceDTO, dto));
     if (errors.length > 0) throw new HttpException(errors, HttpStatus.BAD_REQUEST);
 
-    if (!dto.uuid && dto.type === RESOURCE_TYPE.IMAGE) throw new HttpException('Bad payload', HttpStatus.BAD_REQUEST);
+    console.log(dto);
+
+    if (dto.type === RESOURCE_TYPE.IMAGE) {
+      if (!dto.uuid) throw new HttpException('Bad payload', HttpStatus.BAD_REQUEST);
+      (dto.resource as ResourceImageEntity).extension = extname((dto.resource as ResourceImageEntity).url);
+    }
 
     return await this.resourceService.create(dto, user);
   }
@@ -76,10 +82,10 @@ export class ResourceController {
   @UseInterceptors(
     FileInterceptor('file', {
       limits: {
-        fileSize: 1000000,
+        fileSize: 1000000000000,
       },
       storage: diskStorage({
-        destination: 'uploads',
+        destination: 'uploads/resources',
         filename: (req: MyRequest, file: Express.Multer.File, callback: (error: Error, filename: string) => void) => {
           if (!file) throw new HttpException('Missing file', HttpStatus.BAD_REQUEST);
           callback(null, `${req.user.id}\$${req.body.uuid}${extname(file.originalname)}`);

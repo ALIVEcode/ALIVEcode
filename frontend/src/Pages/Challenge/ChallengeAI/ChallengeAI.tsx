@@ -27,9 +27,7 @@ import ChallengeToolsBar from '../../../Components/ChallengeComponents/Challenge
  * @param {(challenge: ChallengeAIModel) => void} setChallenge callback used to modify the challenge in the parent state
  * @param {(progression: ChallengeProgression) => void} setProgression callback used to modify the challenge progression in the parent state
  *
- * @author Félix
- * @author Enric
- * @author Mathis Laroche
+ * @author Félix Jobin, Enric Soldevila, Mathis Laroche
  */
 const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	const { user } = useContext(UserContext);

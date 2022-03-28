@@ -1,7 +1,7 @@
-import { Vector } from "../simulation/Vector";
+import { Vector } from '../simulation/Vector';
 
-var EPSILON = 1e-10
-var GRAVITATIONAL_FORCE = 9.8
+var EPSILON = 1e-10;
+var GRAVITATIONAL_FORCE = 9.8;
 
 function handleErrors(message: string) {
 	throw new Error(message);

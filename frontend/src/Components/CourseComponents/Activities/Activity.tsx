@@ -231,7 +231,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 							<div className="w-full">
 								<RichTextEditor
 									readOnly={!editMode}
-									onChange={update('header')}
+									onChange={update('footer')}
 									defaultText={activity.footer}
 								/>
 							</div>

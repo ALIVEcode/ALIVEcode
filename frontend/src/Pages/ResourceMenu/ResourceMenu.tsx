@@ -17,6 +17,7 @@ import FormInput from '../../Components/UtilsComponents/FormInput/FormInput';
 import { RESOURCE_TYPE } from '../../Models/Resource/resource.entity';
 import { ResourceFilter } from '../../Components/Resources/ResourceFilter/ResourceFilter';
 import MenuResourceCreation from '../../Components/Resources/MenuResourceCreation/MenuResourceCreation';
+import useWaitBeforeUpdate from '../../state/hooks/useWaitBeforeUpdate';
 
 const ResourceMenu = ({
 	mode,
@@ -33,16 +34,23 @@ const ResourceMenu = ({
 	const { t } = useTranslation();
 	const { user, resources, setResources } = useContext(UserContext);
 
-	useEffect(() => {
+	const getResources = async () => {
 		if (!user) return;
-		const getResources = async () => {
-			setResources(
-				await api.db.users.getResources(user.id, {
-					subject: selectedSection !== 'all' ? selectedSection : undefined,
-					types: selectedFilters.length > 0 ? selectedFilters : undefined,
-				}),
-			);
-		};
+		setResources(
+			await api.db.users.getResources(user.id, {
+				subject: selectedSection !== 'all' ? selectedSection : undefined,
+				types: selectedFilters.length > 0 ? selectedFilters : undefined,
+				name,
+			}),
+		);
+	};
+
+	const [name, setName] = useWaitBeforeUpdate(
+		{ wait: 500, onUpdate: getResources },
+		'',
+	);
+
+	useEffect(() => {
 		getResources();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedSection, selectedFilters]);
@@ -92,7 +100,18 @@ const ResourceMenu = ({
 			<div className="w-full h-full flex flex-row bg-[color:var(--background-color)]">
 				<div className="w-1/6 flex flex-col border-r border-[color:var(--bg-shade-four-color)]">
 					<div className="h-20 text-xs p-2 flex justify-center items-center border-b border-[color:var(--bg-shade-four-color)]">
-						<FormInput placeholder="Search"></FormInput>
+						<FormInput
+							placeholder={t('resources.menu.search')}
+							onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+								if (e.keyCode === 13) {
+									setName(e.currentTarget.value);
+									getResources();
+								}
+							}}
+							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+								setName(e.target.value)
+							}
+						></FormInput>
 					</div>
 					<div className="w-full h-full overflow-y-auto">
 						<ResourceSection

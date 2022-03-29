@@ -228,7 +228,8 @@
 	},
 	"resources": {
 		"menu": {
-			"title": "Ressources"
+			"title": "Ressources",
+			"search": "Rechercher"
 		},
 		"video": {
 			"name": "Vidéo",

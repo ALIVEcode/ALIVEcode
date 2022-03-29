@@ -21,7 +21,10 @@ import {
 	faCode,
 	faEye,
 	faHeading,
+	faHighlighter,
 	faItalic,
+	faList,
+	faListOl,
 	faUnderline,
 } from '@fortawesome/free-solid-svg-icons';
 import { Popup } from 'reactjs-popup';
@@ -35,6 +38,7 @@ import {
 	RichTextButton,
 	toggleMark,
 } from '../RichTextElements/RichTextSyleElements';
+import api from '../../../Models/api';
 
 /**
  * Some code from {@link https://github.com/ianstormtaylor/slate/blob/main/site/examples/hovering-toolbar.tsx}
@@ -68,6 +72,23 @@ const RichTextDocumentToolBar = ({}: RichTextToolBarProps) => {
 			<MarkButton icon={faCode} styleChange="code" />
 			<MarkButton icon={faUnderline} styleChange="underline" />
 			<MarkButton icon={faEye} styleChange="invisible" />
+			<RichTextButton
+				active={isMarkActive(editor, 'backgroundColor')}
+				onClick={() => {
+					const marks = Editor.marks(editor);
+					// @ts-ignore
+					const previous = marks && marks['backgroundColor'];
+					const color = prompt('Pick your color') || previous;
+					replaceMark(editor, 'backgroundColor', 'backgroundColor', color);
+				}}
+			>
+				<FontAwesomeIcon
+					icon={faCircle}
+					size="sm"
+					style={{ color: currentColor() }}
+					title="color"
+				/>
+			</RichTextButton>
 			{/*Color picker*/}
 			<RichTextButton
 				active={isMarkActive(editor, 'color')}
@@ -105,6 +126,8 @@ const RichTextDocumentToolBar = ({}: RichTextToolBarProps) => {
 			</RichTextButton>
 
 			<BlockButton icon={faHeading} styleChange="h1" />
+			<BlockButton icon={faList} styleChange="list_bullet" />
+			<BlockButton icon={faListOl} styleChange="list_number" />
 		</Toolbar>
 	);
 };

@@ -31,6 +31,7 @@ const RichTextEditor = ({
 		],
 	);
 
+
 	return (
 		<div className={`flex bg-[color:var(--background-color)] `}>
 			<Slate
@@ -44,7 +45,7 @@ const RichTextEditor = ({
 				<RichTextToolBar />
 				<Editable
 					readOnly={readOnly}
-					placeholder="Commencer à écrire..."
+					placeholder={!readOnly ? 'Commencer à écrire...' : undefined}
 					className={classNames(
 						'rounded-sm pl-2 bg-[color:var(--background-color)] cursor-text border border-[color:var(--bg-shade-two-color)] py-3 w-full h-full transition-all',
 						editMode && !readOnly && 'drop-shadow-md',

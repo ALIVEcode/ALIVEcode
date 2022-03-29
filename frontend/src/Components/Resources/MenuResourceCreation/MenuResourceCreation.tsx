@@ -22,6 +22,7 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import MenuCreation from '../../UtilsComponents/MenuCreation/MenuCreation';
 import Button from '../../UtilsComponents/Buttons/Button';
 import { v4 as uuid } from 'uuid';
+import ProgressBar from '../../UtilsComponents/ProgressBar/ProgressBar';
 
 const MenuResourceCreation = ({
 	open,
@@ -80,7 +81,7 @@ const MenuResourceCreation = ({
 	const onSubmit = async (formValues: MenuResourceCreationDTO) => {
 		if (!type) return;
 
-		if (type === RESOURCE_TYPE.IMAGE) {
+		if (type === RESOURCE_TYPE.IMAGE || type === RESOURCE_TYPE.FILE) {
 			if (reqUuid) formValues.uuid = reqUuid;
 			if (reqPath) formValues.resource.url = reqPath;
 		}
@@ -100,7 +101,7 @@ const MenuResourceCreation = ({
 		setOpen(false);
 	};
 
-	const handleUpload = async () => {
+	const handleUploadImage = async () => {
 		if (!file) return;
 		const id = uuid();
 		const formdata = new FormData();
@@ -110,6 +111,17 @@ const MenuResourceCreation = ({
 		const data = await api.db.resources.uploadImage(formdata, setUploadProgress);
 		setReqPath(data.filename);
 	};
+
+  const handleUploadFile = async () => {
+		if (!file) return;
+		const id = uuid();
+		const formdata = new FormData();
+		formdata.append('uuid', id);
+		formdata.append('file', file);
+		setReqUuid(id);
+		const data = await api.db.resources.uploadFile(formdata, setUploadProgress);
+		setReqPath(data.filename);
+  };
 
 	const renderSpecificFields = () => {
 		switch (type) {
@@ -153,22 +165,36 @@ const MenuResourceCreation = ({
 				return (
 					<>
 						<InputGroup
-							type="file"
-							label={t('resources.image.form.url')}
-							errors={errors.resource?.url}
-							onChange={(e: any) =>
-								e.target.files && setFile(e.target.files[0])
-							} // TODO any -> React.SyntheticEvent?
+              type="file"
+              label={t('resources.image.form.url')}
+              errors={errors.resource?.url}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                e.target.files && setFile(e.target.files[0])
+              }
 						/>
-						<Button variant="primary" onClick={handleUpload}>
+						<Button variant="primary" onClick={handleUploadImage}>
 							upload
 						</Button>
-            <label htmlFor="uploadProgress">{uploadProgress}</label>
-            <progress id="uploadProgress" max="100" value={uploadProgress} />
+            <ProgressBar progress={uploadProgress} />
 					</>
 				);
 			case RESOURCE_TYPE.FILE:
-				return <></>;
+				return (
+					<>
+						<InputGroup
+              type="file"
+              label={t('resources.image.form.url')}
+              errors={errors.resource?.url}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                e.target.files && setFile(e.target.files[0])
+              }
+						/>
+						<Button variant="primary" onClick={handleUploadFile}>
+							upload
+						</Button>
+            <ProgressBar progress={uploadProgress} />
+					</>
+        );
 		}
 	};
 

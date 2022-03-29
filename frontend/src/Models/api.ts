@@ -372,6 +372,19 @@ const api = {
 					})
 				).data;
 			},
+      uploadFile: async (
+        formdata: FormData,
+        progressSetter: React.Dispatch<React.SetStateAction<number>>
+      ) => {
+				return (
+					await axios.post('resources/file', formdata, {
+            onUploadProgress: (progressEvent) => {
+              progressSetter(Math.round((progressEvent.loaded * 100) / progressEvent.total));
+            },
+						headers: { 'Content-Type': 'multipart/formdata' },
+					})
+				).data;
+			},
 		},
 		challenges: {
 			progressions: {

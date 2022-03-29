@@ -30,6 +30,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { MyRequest } from 'src/utils/guards/auth.guard';
 import { extname } from 'path';
+import { ResourceFileEntity } from './entities/resource_file.entity';
 
 @Controller('resources')
 @ApiTags('resources')
@@ -44,11 +45,12 @@ export class ResourceController {
     const errors = await validate(plainToInstance(CreateResourceDTO, dto));
     if (errors.length > 0) throw new HttpException(errors, HttpStatus.BAD_REQUEST);
 
-    console.log(dto);
-
     if (dto.type === RESOURCE_TYPE.IMAGE) {
       if (!dto.uuid) throw new HttpException('Bad payload', HttpStatus.BAD_REQUEST);
       (dto.resource as ResourceImageEntity).extension = extname((dto.resource as ResourceImageEntity).url);
+    } else if (dto.type === RESOURCE_TYPE.FILE) {
+      if (!dto.uuid) throw new HttpException('Bad payload', HttpStatus.BAD_REQUEST);
+      (dto.resource as ResourceFileEntity).extension = extname((dto.resource as ResourceFileEntity).url);
     }
 
     return await this.resourceService.create(dto, user);
@@ -88,10 +90,11 @@ export class ResourceController {
         destination: 'uploads/resources',
         filename: (req: MyRequest, file: Express.Multer.File, callback: (error: Error, filename: string) => void) => {
           if (!file) throw new HttpException('Missing file', HttpStatus.BAD_REQUEST);
+          if (!req.body.uuid) throw new HttpException('Uuid missing', HttpStatus.BAD_REQUEST);
           callback(null, `${req.user.id}\$${req.body.uuid}${extname(file.originalname)}`);
         },
       }),
-      fileFilter: (req: MyRequest, file: Express.Multer.File, callback: (error: Error, acceptFile: boolean) => void) => {
+      fileFilter: (_, file: Express.Multer.File, callback: (error: Error, acceptFile: boolean) => void) => {
         const acceptedMimetypes = [
           'image/jpeg',
           'image/jpg',
@@ -107,6 +110,28 @@ export class ResourceController {
     }),
   )
   async uploadImage(@UploadedFile() file: Express.Multer.File) {
+    return file;
+  }
+
+  @Post('/file')
+  @ApiOperation({ summary: 'upload an file' })
+  @Auth(Role.PROFESSOR)
+  @UseInterceptors(
+    FileInterceptor('file', {
+      limits: {
+        fileSize: 1000000000000,
+      },
+      storage: diskStorage({
+        destination: 'uploads/resources',
+        filename: (req: MyRequest, file: Express.Multer.File, callback: (error: Error, filename: string) => void) => {
+          if (!file) throw new HttpException('Missing file', HttpStatus.BAD_REQUEST);
+          if (!req.body.uuid) throw new HttpException('Uuid missing', HttpStatus.BAD_REQUEST);
+          callback(null, `${req.user.id}\$${req.body.uuid}${extname(file.originalname)}`);
+        },
+      }),
+    }),
+  )
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
     return file;
   }
 }

@@ -145,24 +145,69 @@ const Course = () => {
 		return getRecursively(lastEl);
 	};
 
-	const tabReducer = (
+	/**
+	 * Reducer function used to reduce the state complexity of the CourseContext.
+	 * All the method for navigating and storing the current state of the page
+	 * after a refresh is done here (openedActivity, openedTab, openedSections)
+	 *
+	 * @author Enric Soldevila
+	 */
+	const TabReducer = (
 		state: CourseTabState,
 		action: SwitchCourseTabActions,
 	): CourseTabState => {
 		if (!course.current) return state;
 
-		if (action.openedActivity != null)
+		let openedSections = (query.get('sec')?.split(',') ?? []).reduce(
+			(elements: CourseElementSection[], el: string) => {
+				if (Number(el) in courseElements.current) {
+					const foundSection = courseElements.current[Number(el)];
+					if (foundSection.isSection) {
+						elements.push(foundSection as CourseElementSection);
+					}
+				}
+				return elements;
+			},
+			[],
+		);
+		if (action.openedActivity != null) {
+			const openParentSection = (element: CourseElement) => {
+				const parentSection = element.getParent();
+				if (parentSection instanceof Section) {
+					const parent = parentSection.courseElement;
+					if (!openedSections.find(sec => sec === parent))
+						openedSections.push(parent);
+					if (parent.sectionParent)
+						openParentSection((element.getParent() as Section).courseElement);
+				}
+			};
+			openParentSection(action.openedActivity);
 			query.set('act', action.openedActivity.id.toString());
-		// Do not replace the else if for an else
-		else if (action.openedActivity === null) {
-			query.delete('act');
-			if (!action.tab) navigate({ search: query.toString() });
 		}
+		// Do not replace the else if for an else
+		else if (action.openedActivity === null) query.delete('act');
 
 		if (action.tab === 'view' && state.tab !== 'view' && !query.has('act'))
 			action.openedActivity = getFirstActivity(course.current);
 
-		switch (action.tab) {
+		if (action.openSection) {
+			if (openedSections.length <= 0)
+				query.set('sec', action.openSection.id.toString());
+			else if (!openedSections.includes(action.openSection))
+				openedSections.push(action.openSection);
+		}
+
+		if (action.closeSection) {
+			openedSections = openedSections.filter(
+				sec => sec !== action.closeSection,
+			);
+		}
+
+		if (openedSections.length <= 0) query.delete('sec');
+		else query.set('sec', openedSections.map(s => s.id).join(','));
+
+		const tab = action.tab ?? state.tab;
+		switch (tab) {
 			case 'view':
 				navigate({
 					pathname:
@@ -186,11 +231,13 @@ const Course = () => {
 				action.openedActivity !== undefined
 					? action.openedActivity
 					: state.openedActivity,
+			openedSections,
 		};
 	};
 
-	const [tab, setTab] = useReducer(tabReducer, {
+	const [tab, setTab] = useReducer(TabReducer, {
 		tab: 'view',
+		openedSections: [],
 	});
 
 	/**
@@ -551,6 +598,7 @@ const Course = () => {
 					setTab({ openedActivity: savedOpenedActivity });
 				// Otherwise, open the first activity
 				else {
+					course.current.elements = Object.values(courseElements.current);
 					const firstActivity = getFirstActivity(course.current);
 					if (firstActivity) setTab({ openedActivity: firstActivity });
 				}

@@ -54,6 +54,12 @@ export type RichTextLeafType = {
 	code?: boolean;
 	underline?: boolean;
 	invisible?: boolean;
+	strikethrough?: boolean;
+	superscript?: boolean;
+	subscript?: boolean;
+	backgroundColor?: CSS.Properties['color'];
+	fontSize?: number;
+	fontFamily?: string;
 	color?: CSS.Properties['color'];
 };
 

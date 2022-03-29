@@ -157,6 +157,23 @@ const RichTextLeaf = ({ attributes, children, leaf }: RichTextLeafProps) => {
 	if (leaf.invisible)
 		children = <span style={{ opacity: 0.75 }}>{children}</span>;
 
+	if (leaf.strikethrough) children = <s>{children}</s>;
+
+	if (leaf.superscript) children = <sup>{children}</sup>;
+
+	if (leaf.subscript) children = <sub>{children}</sub>;
+
+	if (leaf.backgroundColor)
+		children = (
+			<span style={{ backgroundColor: leaf.backgroundColor }}>{children}</span>
+		);
+
+	if (leaf.fontSize)
+		children = <span style={{ fontSize: leaf.fontSize }}>{children}</span>;
+
+	if (leaf.fontFamily)
+		children = <span style={{ fontFamily: leaf.fontFamily }}>{children}</span>;
+
 	return <span {...attributes}>{children}</span>;
 };
 
@@ -251,7 +268,7 @@ export const toggleBlock = (editor: Editor, format: RichTextBlockStyles) => {
 			type: isActive ? 'paragraph' : isList(format) ? 'list_item' : format,
 		};
 	}
-	Transforms.setNodes(editor, newProperties, { mode: "all" });
+	Transforms.setNodes(editor, newProperties, { mode: 'all' });
 
 	if (!isActive && isList) {
 		const block = { type: format, children: [] };

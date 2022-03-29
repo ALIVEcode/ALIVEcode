@@ -72,6 +72,7 @@ const Course = () => {
 	const titleRef = useRef<HTMLInputElement>(null);
 	const [courseTitle, setCourseTitle] = useState(course.current?.name);
 	const [editTitle, setEditTitle] = useState(false);
+	const [courseNavigationOpen, setCourseNavigationOpen] = useState(true);
 
 	useEffect(() => {
 		if (pathname.endsWith('layout') && tab.tab !== 'layout')
@@ -657,10 +658,23 @@ const Course = () => {
 					<CourseLayout />
 				) : (
 					<div className="flex w-full h-full overflow-y-auto">
-						<div className="w-1/4 h-full overflow-y-auto">
-							<CourseNavigation />
+						<div
+							className={
+								(courseNavigationOpen ? 'w-1/4' : 'w-auto') +
+								' h-full overflow-y-auto'
+							}
+						>
+							<CourseNavigation
+								onToggle={() => setCourseNavigationOpen(!courseNavigationOpen)}
+								startsOpen={courseNavigationOpen}
+							/>
 						</div>
-						<div className="w-3/4 h-full overflow-y-auto relative">
+						<div
+							className={
+								(courseNavigationOpen ? 'w-3/4' : 'w-full') +
+								' h-full overflow-y-auto relative'
+							}
+						>
 							<CourseBody />
 						</div>
 					</div>

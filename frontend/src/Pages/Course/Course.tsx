@@ -598,7 +598,7 @@ const Course = () => {
 				if (savedOpenedActivity)
 					setTab({ openedActivity: savedOpenedActivity });
 				// Otherwise, open the first activity
-				else {
+				else if (pathname.endsWith('view')) {
 					course.current.elements = Object.values(courseElements.current);
 					const firstActivity = getFirstActivity(course.current);
 					if (firstActivity) setTab({ openedActivity: firstActivity });

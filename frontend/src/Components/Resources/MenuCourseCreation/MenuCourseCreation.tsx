@@ -18,6 +18,17 @@ import {
 	MenuCourseCreationDTO,
 } from './menuCourseCreationTypes';
 
+/**
+ * Menu that allows for the creation and updating of a course
+ *
+ * @param open state of the menu
+ * @param setOpen the state handler of the menu
+ * @param updateMode (Optional) If the menu is in edit mode or not (create mode)
+ * @param defaultCourse (Optional) The default course to update in updateMode
+ * @param classroom (Optional) The classroom in which to add the course
+ * @returns The rendered menu
+ * @author Enric Soldevila
+ */
 const MenuCourseCreation = ({
 	open,
 	setOpen,
@@ -45,12 +56,22 @@ const MenuCourseCreation = ({
 		defaultValues,
 	});
 
+	/**
+	 * Handle the chosing of a new subject for the course creation.
+	 * @param newType New resource type to create
+	 * @author Enric Soldevila
+	 */
 	const onSelectSubject = async (newSubject: SUBJECTS) => {
 		if (subject === newSubject) return setSubject(undefined);
 		setSubject(newSubject);
 	};
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	/**
+	 * Handles the form submission. Sends data to the server to update
+	 * or create the course with all the properties chosen in the menu.
+	 * @param formValues Form values returned by the form submission
+	 * @author Enric Soldevila
+	 */
 	const onSubmit = async (formValues: MenuCourseCreationDTO) => {
 		if (!subject) return;
 		formValues.course.subject = subject;
@@ -90,6 +111,11 @@ const MenuCourseCreation = ({
 		);
 	};
 
+	/**
+	 * Renders the inputs and labels necessary for a course (name and description).
+	 * @returns Rendered second page of menu
+	 * @author Enric Soldevila
+	 */
 	const renderPageCourseInfos = () => {
 		return (
 			<div className="tablet:px-8 laptop:px-16 desktop:px-36">

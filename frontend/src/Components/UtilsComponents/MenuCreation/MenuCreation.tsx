@@ -10,10 +10,18 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 /**
- * Generic Creation Menu for future elements creation
- * @param children The children to render inside the component
- * @returns The Creation menu
+ * Generic Creation Menu for future elements creation. Handles pagination,
+ * navigation buttons and submit.
  *
+ * @param children The children to render inside the component
+ * @param title The title of the menu
+ * @param open state of the menu
+ * @param setOpen the state handler of the menu
+ * @param onSubmit callback called when the plus button at the end of the menu is pressed
+ * @param defaultPageNb initial rendered page when the menu is first rendered
+ * @param submitIcon the icon at the last page to confirm the creation
+ * @param disabledPageIndex the index of a disabled page. For example, 1 would block the navigation from page 0 -> 1
+ * @returns The Creation menu
  * @author Enric Soldevila
  */
 const MenuCreation: React.FC<MenuCreationProps> = ({
@@ -33,8 +41,11 @@ const MenuCreation: React.FC<MenuCreationProps> = ({
 	}, [childrenProp]);
 
 	/**
+	 * Renders the current opened page (React child) depending
+	 * on the page index. Also handle arrows to navigate between
+	 * pages.
 	 */
-	const generatePages = () => {
+	const renderPage = () => {
 		const currentChild = children[pageNb];
 		const isLastPage = pageNb === children.length - 1;
 		const isFirstPage = pageNb === 0;
@@ -83,7 +94,7 @@ const MenuCreation: React.FC<MenuCreationProps> = ({
 			closeCross
 			hideFooter
 		>
-			{generatePages()}
+			{renderPage()}
 		</Modal>
 	);
 };

@@ -60,6 +60,10 @@ export class Challenge extends CreatedByUser {
 		return;
 	}
 
+	/**
+	 * Returns the subject of the challenge based on its type
+	 * @returns The subject of the challenge
+	 */
 	getSubject() {
 		switch (this.type) {
 			case CHALLENGE_TYPE.AI:

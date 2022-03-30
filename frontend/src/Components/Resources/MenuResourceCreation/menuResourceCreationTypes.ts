@@ -5,6 +5,9 @@ import {
 import { SUBJECTS } from '../../../Types/sharedTypes';
 import { Descendant } from 'slate';
 
+/**
+ * Props of the MenuResourceCreation component
+ */
 export type MenuResourceCreationProps = {
 	open: boolean;
 	setOpen: (state: boolean) => void;
@@ -12,6 +15,9 @@ export type MenuResourceCreationProps = {
 	defaultResource?: Resource;
 };
 
+/**
+ * DTO model for creating or updating a resource
+ */
 export type MenuResourceCreationDTO = {
 	uuid?: string;
 	type: RESOURCE_TYPE;

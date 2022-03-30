@@ -24,6 +24,16 @@ import Button from '../../UtilsComponents/Buttons/Button';
 import { v4 as uuid } from 'uuid';
 import ProgressBar from '../../UtilsComponents/ProgressBar/ProgressBar';
 
+/**
+ * Menu that allows for the creation and updating of a resource
+ *
+ * @param open state of the menu
+ * @param setOpen the state handler of the menu
+ * @param updateMode (Optional) If the menu is in edit mode or not (create mode)
+ * @param defaultResource (Optional) The default resource to update in updateMode
+ * @returns The rendered menu
+ * @author Enric Soldevila, Maxime Gazze
+ */
 const MenuResourceCreation = ({
 	open,
 	setOpen,
@@ -37,7 +47,7 @@ const MenuResourceCreation = ({
 	const [file, setFile] = useState<File>();
 	const [reqUuid, setReqUuid] = useState<string>();
 	const [reqPath, setReqPath] = useState<string>();
-  const [uploadProgress, setUploadProgress] = useState<number>(0);
+	const [uploadProgress, setUploadProgress] = useState<number>(0);
 	const { t } = useTranslation();
 	const { setResources, resources } = useContext(UserContext);
 	const { user } = useContext(UserContext);
@@ -49,8 +59,6 @@ const MenuResourceCreation = ({
 		};
 	}, [defaultResource, type]);
 
-	console.log(defaultValues);
-
 	const {
 		register,
 		formState: { errors },
@@ -59,25 +67,41 @@ const MenuResourceCreation = ({
 		defaultValues,
 	});
 
-	const updateUserChallenges = async () => {
+	/**
+	 * Loads the user challenges and rerenders the menu
+	 * @author Enric Soldevila
+	 */
+	const loadUserChallenges = async () => {
 		if (!user) return;
 		setChallenges(await api.db.users.getChallenges({ id: user?.id }));
 	};
 
+	/** Loads user challenges on first render */
 	useEffect(() => {
-		if (type === RESOURCE_TYPE.CHALLENGE) updateUserChallenges();
+		if (type === RESOURCE_TYPE.CHALLENGE) loadUserChallenges();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	if (!resources) return <LoadingScreen></LoadingScreen>;
 
-	const onSelectSubject = async (newType: RESOURCE_TYPE) => {
+	/**
+	 * Handle the chosing of a new resource type for the resource creation.
+	 * Loads the user challenges if it is a Challenge resource
+	 * @param newType New resource type to create
+	 * @author Enric Soldevila
+	 */
+	const onSelectResourceType = async (newType: RESOURCE_TYPE) => {
 		if (type === newType) return setType(undefined);
-		if (newType === RESOURCE_TYPE.CHALLENGE) updateUserChallenges();
+		if (newType === RESOURCE_TYPE.CHALLENGE) loadUserChallenges();
 		setType(newType);
 	};
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	/**
+	 * Handles the form submission. Sends data to the server to update
+	 * or create a resource with all the properties chosen in the menu.
+	 * @param formValues Form values returned by the form submission
+	 * @author Enric Soldevila, Maxime Gazze
+	 */
 	const onSubmit = async (formValues: MenuResourceCreationDTO) => {
 		if (!type) return;
 
@@ -86,10 +110,10 @@ const MenuResourceCreation = ({
 			if (reqPath) formValues.resource.url = reqPath;
 		}
 
-    if (file && type === RESOURCE_TYPE.VIDEO) {
+		if (file && type === RESOURCE_TYPE.VIDEO) {
 			if (reqUuid) formValues.uuid = reqUuid;
 			if (reqPath) formValues.resource.url = reqPath;
-    }
+		}
 
 		formValues.type = type;
 		if (updateMode && defaultResource) {
@@ -107,6 +131,11 @@ const MenuResourceCreation = ({
 		setOpen(false);
 	};
 
+	/**
+	 * Handles the image uploading. Uploads an image to the server and
+	 * generates an uuid.
+	 * @author Maxime Gazze
+	 */
 	const handleUploadImage = async () => {
 		if (!file) return;
 		const id = uuid();
@@ -114,10 +143,19 @@ const MenuResourceCreation = ({
 		formdata.append('uuid', id);
 		formdata.append('file', file);
 		setReqUuid(id);
-		const data = await api.db.resources.upload('image', formdata, setUploadProgress);
+		const data = await api.db.resources.upload(
+			'image',
+			formdata,
+			setUploadProgress,
+		);
 		setReqPath(data.filename);
 	};
 
+	/**
+	 * Handles the upload of a video. Uploads a video to the server
+	 * and generates an uuid.
+	 * @author Maxime Gazze
+	 */
 	const handleUploadVideo = async () => {
 		if (!file) return;
 		const id = uuid();
@@ -125,21 +163,40 @@ const MenuResourceCreation = ({
 		formdata.append('uuid', id);
 		formdata.append('file', file);
 		setReqUuid(id);
-		const data = await api.db.resources.upload('video', formdata, setUploadProgress);
+		const data = await api.db.resources.upload(
+			'video',
+			formdata,
+			setUploadProgress,
+		);
 		setReqPath(data.filename);
 	};
 
-  const handleUploadFile = async () => {
+	/**
+	 * Handles the file uploading. Uploads a file to the server and
+	 * generates an uuid.
+	 * @author Maxime Gazze
+	 */
+	const handleUploadFile = async () => {
 		if (!file) return;
 		const id = uuid();
 		const formdata = new FormData();
 		formdata.append('uuid', id);
 		formdata.append('file', file);
 		setReqUuid(id);
-		const data = await api.db.resources.upload('file', formdata, setUploadProgress);
+		const data = await api.db.resources.upload(
+			'file',
+			formdata,
+			setUploadProgress,
+		);
 		setReqPath(data.filename);
-  };
+	};
 
+	/**
+	 * Generates the correct inputs specific to a type of resource. For example,
+	 * for a file show a input of type "file".
+	 * @returns Rendered input components and labels
+	 * @author Enric Soldevila, Maxime Gazze
+	 */
 	const renderSpecificFields = () => {
 		switch (type) {
 			case RESOURCE_TYPE.CHALLENGE:
@@ -172,63 +229,69 @@ const MenuResourceCreation = ({
 				return <></>;
 			case RESOURCE_TYPE.VIDEO:
 				return (
-          <>
-            <InputGroup
-              label={t('resources.video.form.url')}
-              errors={errors.resource?.url}
-              {...register('resource.url', { required: false })}
-            />
-            <InputGroup
-              type="file"
-              label={t('resources.image.form.url')}
-              errors={errors.resource?.url}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                e.target.files && setFile(e.target.files[0])
-              }
-            />
-            <Button variant="primary" onClick={handleUploadVideo}>
-              upload
-            </Button>
-            <ProgressBar progress={uploadProgress} />
-          </>
+					<>
+						<InputGroup
+							label={t('resources.video.form.url')}
+							errors={errors.resource?.url}
+							{...register('resource.url', { required: false })}
+						/>
+						<InputGroup
+							type="file"
+							label={t('resources.image.form.url')}
+							errors={errors.resource?.url}
+							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+								e.target.files && setFile(e.target.files[0])
+							}
+						/>
+						<Button variant="primary" onClick={handleUploadVideo}>
+							upload
+						</Button>
+						<ProgressBar progress={uploadProgress} />
+					</>
 				);
 			case RESOURCE_TYPE.IMAGE:
 				return (
 					<>
 						<InputGroup
-              type="file"
-              label={t('resources.image.form.url')}
-              errors={errors.resource?.url}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                e.target.files && setFile(e.target.files[0])
-              }
+							type="file"
+							label={t('resources.image.form.url')}
+							errors={errors.resource?.url}
+							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+								e.target.files && setFile(e.target.files[0])
+							}
 						/>
 						<Button variant="primary" onClick={handleUploadImage}>
 							upload
 						</Button>
-            <ProgressBar progress={uploadProgress} />
+						<ProgressBar progress={uploadProgress} />
 					</>
 				);
 			case RESOURCE_TYPE.FILE:
 				return (
 					<>
 						<InputGroup
-              type="file"
-              label={t('resources.image.form.url')}
-              errors={errors.resource?.url}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                e.target.files && setFile(e.target.files[0])
-              }
+							type="file"
+							label={t('resources.image.form.url')}
+							errors={errors.resource?.url}
+							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+								e.target.files && setFile(e.target.files[0])
+							}
 						/>
 						<Button variant="primary" onClick={handleUploadFile}>
 							upload
 						</Button>
-            <ProgressBar progress={uploadProgress} />
+						<ProgressBar progress={uploadProgress} />
 					</>
-        );
+				);
 		}
 	};
 
+	/**
+	 * Renders the first page of the menu. Used to select the type of
+	 * resource to create
+	 * @returns The first page of the menu
+	 * @author Enric Soldevila
+	 */
 	const renderPageResourceType = () => {
 		return (
 			<div className="bg-[color:var(--background-color)] gap-8 grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3">
@@ -237,7 +300,7 @@ const MenuResourceCreation = ({
 						key={idx}
 						title={t(`resources.${entry[0].toLowerCase()}.name`)}
 						icon={getResourceIcon(entry[1])}
-						onClick={() => onSelectSubject(entry[1])}
+						onClick={() => onSelectResourceType(entry[1])}
 						selected={type === entry[1]}
 					/>
 				))}
@@ -245,6 +308,12 @@ const MenuResourceCreation = ({
 		);
 	};
 
+	/**
+	 * Renders the generic inputs and labels of a resource.
+	 * (Also calls the renderSpecificFields method)
+	 * @returns Rendered second page of menu
+	 * @author Enric Soldevila
+	 */
 	const renderPageResourceInfos = () => {
 		return (
 			<div className="tablet:px-8 laptop:px-16 desktop:px-36">

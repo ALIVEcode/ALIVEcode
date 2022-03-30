@@ -102,7 +102,10 @@ export class ResourceController {
         ];
 
         if (!acceptedMimetypes.includes(file.mimetype)) {
-          return callback(new HttpException(`Invalid filetype, accepted types: ${acceptedMimetypes.join(', ')}`, HttpStatus.BAD_REQUEST), false);
+          return callback(
+            new HttpException(`Invalid filetype, accepted types: ${acceptedMimetypes.join(', ')}`, HttpStatus.BAD_REQUEST),
+            false
+          );
         }
 
         callback(null, true);
@@ -114,7 +117,7 @@ export class ResourceController {
   }
 
   @Post('/file')
-  @ApiOperation({ summary: 'upload an file' })
+  @ApiOperation({ summary: 'upload a file' })
   @Auth(Role.PROFESSOR)
   @UseInterceptors(
     FileInterceptor('file', {

@@ -26,6 +26,8 @@
 - frontend\src\Components\Utils\MenuCreation\*.ts(x)
 - frontend\src\Components\Resources\**\*.ts(x)
 
+- frontend\src\Components\RichTextComponents\**
+
 - backend\src\models\course\dtos\*.dto.ts
 - backend\src\models\course\entites\activities\*.entity.ts
 - backend\src\models\course\entites\activity.entity.ts
@@ -35,3 +37,4 @@
 - backend\src\models\course\course.controller.ts
 - backend\src\models\course\course.service.ts
 - backend\src\models\resource\**\*.*
+

@@ -13,6 +13,16 @@ import { MouseEventHandler } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSlate } from 'slate-react';
 
+/**
+ * This button is the base for all buttons in the RichTextEditor toolbar.
+ *
+ * @param onClick The function to call when the button is clicked.
+ * @param active The boolean value that determines if the button should is in the active state.
+ * @param children The children of the button.
+ * @param showSeparator The boolean value that determines if the button should have a separator.
+ * @constructor
+ * @author Mathis Laroche
+ */
 export const RichTextButton = ({
 	onClick,
 	active,
@@ -37,13 +47,15 @@ export const RichTextButton = ({
 };
 
 /**
- * @param icon
- * @param styleChange
- * @param getValue
- * @param mode
- * @param showSeparator
+ * This button represents a stackable style in the RichTextEditor's toolbar.
+ *
+ * @param icon The icon to display in the button.
+ * @param styleChange The name of the style to change.
+ * @param showSeparator The boolean value that determines if the button should have a separator.
  * @constructor
  * @see https://github.com/ianstormtaylor/slate/blob/main/site/examples/richtext.tsx
+ *
+ * @author Mathis Laroche
  */
 export const MarkButton = ({
 	icon,
@@ -72,6 +84,15 @@ export const MarkButton = ({
 	);
 };
 
+/**
+ * This button represents a block style in the RichTextEditor's toolbar.
+ *
+ * @param styleChange The style to change to.
+ * @param icon The icon to display.
+ * @param showSeparator The boolean value that determines if the button should have a separator.
+ * @constructor
+ * @author Mathis Laroche
+ */
 export const BlockButton = ({
 	styleChange,
 	icon,
@@ -104,6 +125,16 @@ export const BlockButton = ({
 	);
 };
 
+/**
+ * This component represents a rich text element.
+ *
+ * @param attributes The attributes of the element.
+ * @param children The children of the element.
+ * @param element The element type.
+ * @constructor
+ *
+ * @author Mathis Laroche
+ */
 const RichTextElement = ({
 	attributes,
 	children,
@@ -157,6 +188,16 @@ const RichTextElement = ({
 	}
 };
 
+/**
+ * A component that represents a leaf in the rich text editor. A leaf is a text node.
+ *
+ * @param attributes The attributes of the leaf.
+ * @param children The children of the leaf.
+ * @param leaf The leaf type and attributes.
+ * @constructor
+ *
+ * @author Mathis Laroche
+ */
 const RichTextLeaf = ({ attributes, children, leaf }: RichTextLeafProps) => {
 	if (leaf.bold) children = <b>{children}</b>;
 
@@ -192,14 +233,35 @@ const RichTextLeaf = ({ attributes, children, leaf }: RichTextLeafProps) => {
 	return <span {...attributes}>{children}</span>;
 };
 
+/**
+ * This function is used to render an element in the rich text editor.
+ * @param props The props of the element.
+ *
+ * @author Mathis Laroche
+ */
 export const renderElement = (props: RichTextElementProps) => (
 	<RichTextElement {...props} />
 );
 
+/**
+ * This function is used to render a leaf in the rich text editor.
+ *
+ * @param props The props of the leaf.
+ *
+ * @author Mathis Laroche
+ */
 export const renderLeaf = (props: RichTextLeafProps) => (
 	<RichTextLeaf {...props} />
 );
 
+/**
+ * This function returns whether the mark is active or not. A mark is a style that can be applied to a leaf.
+ *
+ * @param editor The editor.
+ * @param format The format of the mark.
+ *
+ * @author Mathis Laroche
+ */
 export const isMarkActive = (
 	editor: Editor,
 	format: keyof RichTextLeafType,
@@ -209,6 +271,14 @@ export const isMarkActive = (
 	return marks ? !!marks[format] : false;
 };
 
+/**
+ * This function applies a mark to a leaf.
+ * @param editor The editor to apply the mark to.
+ * @param format The mark to apply.
+ * @param value The value of the mark.
+ *
+ * @author Mathis Laroche
+ */
 export const toggleMark = (
 	editor: Editor,
 	format: keyof RichTextLeafType,
@@ -223,6 +293,16 @@ export const toggleMark = (
 	}
 };
 
+/**
+ * This function replaces marks with a new mark.
+ *
+ * @param editor The editor to apply the mark to.
+ * @param prevFormat The previous mark to remove.
+ * @param newFormat The new mark to apply.
+ * @param value The value of the mark.
+ *
+ * @author Mathis Laroche
+ */
 export const replaceMark = (
 	editor: Editor,
 	prevFormat: keyof RichTextLeafType,
@@ -236,6 +316,14 @@ export const replaceMark = (
 	Editor.addMark(editor, newFormat, value ?? true);
 };
 
+/**
+ * This function returns whether the block is active or not. A block is a style that can be applied to an element.
+ * @param editor The editor.
+ * @param format The format of the block.
+ * @param blockType The block type.
+ *
+ * @author Mathis Laroche
+ */
 export const isBlockActive = (
 	editor: Editor,
 	format: RichTextBlockStyles,
@@ -256,6 +344,13 @@ export const isBlockActive = (
 	return !!match;
 };
 
+/**
+ * This function applies a block to an element.
+ * @param editor The editor to apply the block to.
+ * @param format The block to apply.
+ *
+ * @author Mathis Laroche
+ */
 export const toggleBlock = (editor: Editor, format: RichTextBlockStyles) => {
 	const isActive = isBlockActive(
 		editor,

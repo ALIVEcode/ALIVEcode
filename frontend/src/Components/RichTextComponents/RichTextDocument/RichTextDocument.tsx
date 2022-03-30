@@ -10,14 +10,12 @@ import {
 } from '../RichTextElements/RichTextSyleElements';
 
 /**
- * Look "page" :
- * 	ombre sous la page
- * 	page blanche
- * 	fond plus foncé
+ * RichTextDocument component is used to render the rich text document.
+ * In this component we are using the slate-react library to write down rich text.
  *
- * @param defaultText
- * @param onChange
- * @param readOnly
+ * @param defaultText - The default text to be displayed in the editor.
+ * @param onChange - The function to be called when the editor changes.
+ * @param readOnly - The flag to determine if the editor is read only or not.
  * @constructor
  */
 const RichTextDocument = ({
@@ -26,11 +24,11 @@ const RichTextDocument = ({
 	readOnly = false,
 }: RichTextDocumentProps) => {
 	const editor = useMemo(() => withReact(withHistory(createEditor())), []);
-	const [editMode, setEditMode] = useState(false);
+	const [editMode, setEditMode] = useState(false); // The flag to determine if the editor is in edit mode or not.
 
 	const [value, setValue] = useState<Descendant[]>(
 		defaultText ?? [{ type: 'paragraph', children: [{ text: '' }] }],
-	);
+	); // The value of the editor.
 
 	return (
 		<div className={`flex bg-[color:var(--background-color)] `}>
@@ -49,8 +47,13 @@ const RichTextDocument = ({
 						placeholder="Commencer à écrire..."
 						readOnly={readOnly}
 						renderElement={props => renderElement(props as any)}
-						// @ts-ignore
-						renderLeaf={props => props?.leaf["invisible"] ? !readOnly && renderLeaf(props as any) : renderLeaf(props as any)}
+						// @ts-ignore - The type of the renderLeaf function is not correct.
+						renderLeaf={props =>
+							// @ts-ignore
+							props?.leaf['invisible']
+								? !readOnly && renderLeaf(props as any)
+								: renderLeaf(props as any)
+						}
 						onKeyDown={event => {}}
 						onSelect={() => setEditMode(true)}
 						onBlur={() => setEditMode(false)}

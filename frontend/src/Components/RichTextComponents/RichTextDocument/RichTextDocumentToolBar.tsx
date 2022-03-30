@@ -27,7 +27,11 @@ import { Toolbar } from './EditorComponents';
 
 /**
  * Some code from {@link https://github.com/ianstormtaylor/slate/blob/main/site/examples/hovering-toolbar.tsx}
+ *
+ * This Toolbar is used to give an easy way to add formatting to the RichTextDocument.
+ *
  * @constructor
+ * @author Mathis Laroche
  */
 const RichTextDocumentToolBar = ({}: RichTextToolBarProps) => {
 	const ref = useRef<HTMLInputElement>(null);

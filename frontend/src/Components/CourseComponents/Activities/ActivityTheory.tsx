@@ -7,6 +7,9 @@ import { ResourceTheory } from '../../../Models/Resource/resources/resource_theo
 
 /**
  * Shows an activity of type Theory
+ *
+ * @param courseElement The course element to show
+ * @param editMode If true, the activity can be edited
  * @returns The activity of type Theory
  *
  * @author Mathis Laroche
@@ -19,6 +22,12 @@ const ActivityTheory = ({ courseElement, editMode }: ActivityProps) => {
 			wait: 500,
 			onUpdate: () => {
 				(async () => {
+					if (activity.resource && !activity.resource?.document) {
+						activity.resource = await api.db.resources.update<ResourceTheory>(
+							activity.resource,
+							{ document: [{ type: 'paragraph', children: [{ text: '' }] }] },
+						);
+					}
 					if (
 						!activity.resource ||
 						!activity.resourceId ||

@@ -24,7 +24,7 @@ import {
 	faHighlighter,
 	faItalic,
 	faList,
-	faListOl,
+	faListOl, faSquare,
 	faUnderline,
 } from '@fortawesome/free-solid-svg-icons';
 import { Popup } from 'reactjs-popup';
@@ -55,6 +55,12 @@ const RichTextDocumentToolBar = ({}: RichTextToolBarProps) => {
 		return (marks && marks['color']) ?? 'black';
 	};
 
+	const currentHighlightColor = () => {
+		const marks = Editor.marks(editor);
+		// @ts-ignore
+		return (marks && marks['backgroundColor']) ?? 'black';
+	};
+
 	const changeColor = () => {
 		if (!ref.current) return;
 		const marks = Editor.marks(editor);
@@ -83,10 +89,10 @@ const RichTextDocumentToolBar = ({}: RichTextToolBarProps) => {
 				}}
 			>
 				<FontAwesomeIcon
-					icon={faCircle}
+					icon={faSquare}
 					size="sm"
-					style={{ color: currentColor() }}
-					title="color"
+					style={{ color: currentHighlightColor() }}
+					title="Highlight color"
 				/>
 			</RichTextButton>
 			{/*Color picker*/}
@@ -125,9 +131,9 @@ const RichTextDocumentToolBar = ({}: RichTextToolBarProps) => {
 				</>
 			</RichTextButton>
 
-			<BlockButton icon={faHeading} styleChange="h1" />
-			<BlockButton icon={faList} styleChange="list_bullet" />
-			<BlockButton icon={faListOl} styleChange="list_number" />
+			<BlockButton icon={faHeading} styleChange="h1" showSeparator />
+			<BlockButton icon={faList} styleChange="list_bullet" showSeparator />
+			<BlockButton icon={faListOl} styleChange="list_number" showSeparator />
 		</Toolbar>
 	);
 };

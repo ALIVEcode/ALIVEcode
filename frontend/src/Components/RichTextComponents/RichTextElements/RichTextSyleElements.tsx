@@ -20,15 +20,18 @@ export const RichTextButton = ({
 	showSeparator,
 }: RichTextButtonProps) => {
 	return (
-		<div
-			className={`px-2 pt-0.5 pb-1 cursor-pointer ${
-				showSeparator ? 'border-r-2 border-gray-500' : ''
-			} ${!active ? 'hover:' : ''}bg-[color:var(--bg-shade-two-color)]`}
-			onMouseDown={e => e.preventDefault()}
-			onMouseUp={e => e.preventDefault()}
-			onClick={onClick}
-		>
-			{children}
+		<div className="flex flex-row">
+			<div
+				className={`px-2 pt-0.5 pb-1 cursor-pointer ${
+					!active ? 'hover:' : ''
+				}bg-[color:var(--bg-shade-two-color)]`}
+				onMouseDown={e => e.preventDefault()}
+				onMouseUp={e => e.preventDefault()}
+				onClick={onClick}
+			>
+				{children}
+			</div>
+			{/*{showSeparator && <div className="mx-1 w-1 h-4 border-r border-[color:var(--fg-shade-two-color)]" />}*/}
 		</div>
 	);
 };
@@ -111,27 +114,39 @@ const RichTextElement = ({
 	switch (element.type) {
 		case 'h1':
 			return (
-				<p style={style} className="text-3xl" {...attributes}>
+				<h1 style={style} className="text-3xl" {...attributes}>
 					{children}
-				</p>
+				</h1>
 			);
 		case 'h2':
 			return (
-				<h2 style={style} {...attributes}>
+				<h2 style={style} className="text-2xl" {...attributes}>
 					{children}
 				</h2>
 			);
 		case 'h3':
 			return (
-				<h3 style={style} {...attributes}>
+				<h3 style={style} className="text-xl" {...attributes}>
 					{children}
 				</h3>
 			);
 		case 'list_bullet':
 			return (
-				<ul style={style} {...attributes}>
+				<ul style={style} className="list-disc" {...attributes}>
 					{children}
 				</ul>
+			);
+		case 'list_number':
+			return (
+				<ol style={style} className="list-decimal" {...attributes}>
+					{children}
+				</ol>
+			);
+		case 'item_in_list':
+			return (
+				<li style={style} className="tabular-nums" {...attributes}>
+					{children}
+				</li>
 			);
 		default:
 			return (
@@ -265,12 +280,13 @@ export const toggleBlock = (editor: Editor, format: RichTextBlockStyles) => {
 		};
 	} else {
 		newProperties = {
-			type: isActive ? 'paragraph' : isList(format) ? 'list_item' : format,
+			type: isActive ? 'paragraph' : isList(format) ? 'item_in_list' : format,
 		};
 	}
-	Transforms.setNodes(editor, newProperties, { mode: 'all' });
 
-	if (!isActive && isList) {
+	Transforms.setNodes<Element>(editor, newProperties);
+
+	if (!isActive && isList(format)) {
 		const block = { type: format, children: [] };
 		Transforms.wrapNodes(editor, block);
 	}

@@ -10,7 +10,7 @@ export type RichTextBlockStyles =
 	| 'h1'
 	| 'h2'
 	| 'h3'
-	| 'list_item'
+	| 'item_in_list'
 	| 'list_bullet'
 	| 'list_number'
 	| 'align_left'

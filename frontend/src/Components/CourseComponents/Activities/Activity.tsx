@@ -68,6 +68,10 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 		[courseElement, getNextActivity],
 	);
 
+	/**
+	 * Loads the resource inside the activity
+	 * @author Enric Soldevila
+	 */
 	useEffect(() => {
 		const load = async () => {
 			setLoading(true);
@@ -78,6 +82,10 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	/**
+	 * Updates the header or footer of the activity
+	 * @author Mathis Laroche
+	 */
 	const update = useCallback(
 		(what: 'header' | 'footer') => {
 			return async (value: Descendant[]) => {
@@ -113,6 +121,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 	/**
 	 * Renders the activity depending on its type
 	 * @returns The specific activity depending on its type
+	 * @author Enric Soldevila
 	 */
 	const renderSpecificActivity = () => {
 		switch (activity.type) {

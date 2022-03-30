@@ -9,9 +9,13 @@
 - frontend\src\Models\Course\activity.entity.ts
 - frontend\src\Models\Course\section.entity.ts
 - frontend\src\Models\Course\course.entity.ts
+- frontend\src\Models\Resource\**\*.ts
 
 - frontend\src\Pages\Course\Course.tsx
+- frontend\src\Pages\Course\courseTypes.ts
 - frontend\src\Pages\Dashboard\Dashboard.tsx
+- frontend\src\Pages\ResourceMenu\ResourceMenu.tsx
+- frontend\src\Pages\ResourceMenu\resourceMenuTypes.ts
 
 - frontend\src\Components\CourseComponents\Activities\*.tsx
 - frontend\src\Components\CourseComponents\CourseBody\CourseBody.tsx
@@ -19,6 +23,8 @@
 - frontend\src\Components\CourseComponents\CourseNavigation\*.ts(x)
 - frontend\src\Components\CourseComponents\CourseActivityMenu\*.ts(x)
 - frontend\src\Components\CourseComponents\CreationMenu\*.ts(x)
+- frontend\src\Components\Utils\MenuCreation\*.ts(x)
+- frontend\src\Components\Resources\**\*.ts(x)
 
 - backend\src\models\course\dtos\*.dto.ts
 - backend\src\models\course\entites\activities\*.entity.ts

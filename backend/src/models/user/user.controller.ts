@@ -24,6 +24,10 @@ import { Role } from '../../utils/types/roles.types';
 import { NameMigrationDTO } from './dto/name_migration.dto';
 import { QueryResources } from './dto/query_resources.dto';
 
+/**
+ * All the routes of the api regarding operations on users.
+ * @author Enric Soldevila
+ */
 @Controller('users')
 @UseInterceptors(DTOInterceptor)
 export class UserController {
@@ -165,6 +169,13 @@ export class UserController {
     return this.userService.getRecentCourses(await this.userService.findById(id));
   }
 
+  /**
+   * Gets the resources of the user depending on a search query
+   * @param user User making the request
+   * @param id Id of the user
+   * @param query Query to use when fetching the resources
+   * @returns The queried resources
+   */
   @Get(':id/resources')
   @Auth(Role.PROFESSOR, Role.MOD)
   async getResources(@User() user: ProfessorEntity, @Param('id') id: string, @Query() query: QueryResources) {

@@ -20,6 +20,10 @@ import { NameMigrationDTO } from './dto/name_migration.dto';
 import { ResourceEntity } from '../resource/entities/resource.entity';
 import { QueryResources } from './dto/query_resources.dto';
 
+/**
+ * All the methods to communicate to the database regarding users.
+ * @author Enric Soldevila
+ */
 @Injectable({ scope: Scope.REQUEST })
 export class UserService {
   [x: string]: any;
@@ -194,6 +198,12 @@ export class UserService {
     }
   }
 
+  /**
+   * Gets the resources of the user depending on a search query
+   * @param user User making the request
+   * @param query Query to use when fetching the resources
+   * @returns The queried resources
+   */
   async getResources(user: ProfessorEntity, query?: QueryResources) {
     const where: any = { creator: user, name: ILike(`%${query?.name ?? ''}%`) };
     if (query.subject) where.subject = query.subject;

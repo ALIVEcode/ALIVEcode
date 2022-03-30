@@ -43,7 +43,7 @@ const ActivityAssignment = ({
 	};
 
 	return (
-		<div className="w-full desktop:px-16">
+		<div className="w-full">
 			{activity.resource?.url ? (
 				<>
 					<div className="text-lg">{activity.resource.name}</div>

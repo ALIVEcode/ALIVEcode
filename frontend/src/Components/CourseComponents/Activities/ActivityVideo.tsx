@@ -11,6 +11,7 @@ import { useMemo } from 'react';
 const ActivityVideo = ({ activity }: { activity: ActivityVideoModel }) => {
 	const { t } = useTranslation();
 
+	/** Parse the youtube url using regex to get the import parts of the url  */
 	const matches = useMemo(
 		() =>
 			activity.resource?.url.match(

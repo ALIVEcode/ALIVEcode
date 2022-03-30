@@ -108,90 +108,6 @@ export class ResourceController {
   }
 
   /**
-   * Route to upload an image to the backend. Needs to be a professor
-   * @param file Image file issued by the user for upload
-   * @returns The result success or fail of the upload
-   */
-  @Post('/image')
-  @ApiOperation({ summary: 'upload an image' })
-  @Auth(Role.PROFESSOR)
-  @UseInterceptors(
-    FileInterceptor('file', {
-      limits: {
-        fileSize: 1000000000000,
-      },
-      storage: diskStorage({
-        destination: 'uploads/resources',
-        filename: (req: MyRequest, file: Express.Multer.File, callback: (error: Error, filename: string) => void) => {
-          if (!file) throw new HttpException('Missing file', HttpStatus.BAD_REQUEST);
-          if (!req.body.uuid) throw new HttpException('Uuid missing', HttpStatus.BAD_REQUEST);
-          callback(null, `${req.user.id}\$${req.body.uuid}${extname(file.originalname)}`);
-        },
-      }),
-      fileFilter: (_, file: Express.Multer.File, callback: (error: Error, acceptFile: boolean) => void) => {
-        const acceptedMimetypes = ['image/jpeg', 'image/jpg', 'image/png'];
-
-        if (!acceptedMimetypes.includes(file.mimetype)) {
-          return callback(
-            new HttpException(
-              `Invalid filetype, accepted types: ${acceptedMimetypes.join(', ')}`,
-              HttpStatus.BAD_REQUEST,
-            ),
-            false,
-          );
-        }
-
-        callback(null, true);
-      },
-    }),
-  )
-  async uploadImage(@UploadedFile() file: Express.Multer.File) {
-    return file;
-  }
-
-  /**
-   * Route to upload a video to the backend. Needs to be a professor
-   * @param file Video file issued by the user for upload
-   * @returns The result success or fail of the upload
-   */
-  @Post('/video')
-  @ApiOperation({ summary: 'upload a video' })
-  @Auth(Role.PROFESSOR)
-  @UseInterceptors(
-    FileInterceptor('file', {
-      limits: {
-        fileSize: 1000000000000,
-      },
-      storage: diskStorage({
-        destination: 'uploads/resources',
-        filename: (req: MyRequest, file: Express.Multer.File, callback: (error: Error, filename: string) => void) => {
-          if (!file) throw new HttpException('Missing file', HttpStatus.BAD_REQUEST);
-          if (!req.body.uuid) throw new HttpException('Uuid missing', HttpStatus.BAD_REQUEST);
-          callback(null, `${req.user.id}\$${req.body.uuid}${extname(file.originalname)}`);
-        },
-      }),
-      fileFilter: (_, file: Express.Multer.File, callback: (error: Error, acceptFile: boolean) => void) => {
-        const acceptedMimetypes = ['video/mp4', 'video/mpeg', 'video/ogg', 'video/mp2t'];
-
-        if (!acceptedMimetypes.includes(file.mimetype)) {
-          return callback(
-            new HttpException(
-              `Invalid filetype, accepted types: ${acceptedMimetypes.join(', ')}`,
-              HttpStatus.BAD_REQUEST,
-            ),
-            false,
-          );
-        }
-
-        callback(null, true);
-      },
-    }),
-  )
-  async uploadVideo(@UploadedFile() file: Express.Multer.File) {
-    return file;
-  }
-
-  /**
    * Route to upload a file to the backend. Needs to be a professor
    * @param file File issued by the user for upload
    * @returns The result success or fail of the upload
@@ -207,14 +123,41 @@ export class ResourceController {
       storage: diskStorage({
         destination: 'uploads/resources',
         filename: (req: MyRequest, file: Express.Multer.File, callback: (error: Error, filename: string) => void) => {
-          if (!file) throw new HttpException('Missing file', HttpStatus.BAD_REQUEST);
-          if (!req.body.uuid) throw new HttpException('Uuid missing', HttpStatus.BAD_REQUEST);
           callback(null, `${req.user.id}\$${req.body.uuid}${extname(file.originalname)}`);
         },
       }),
+      fileFilter: (
+        req: MyRequest,
+        file: Express.Multer.File,
+        callback: (error: Error, acceptFile: boolean) => void,
+      ) => {
+        if (!req.body.uuid || !req.body.type)
+          callback(new HttpException('Missing fields', HttpStatus.BAD_REQUEST), null);
+
+        let acceptedMimetypes = [];
+
+        if (req.body.type === RESOURCE_TYPE.IMAGE) {
+          acceptedMimetypes = ['image/jpeg', 'image/jpg', 'image/png'];
+        } else if (req.body.type === RESOURCE_TYPE.VIDEO) {
+          acceptedMimetypes = ['video/mp4', 'video/mpeg', 'video/ogg', 'video/mp2t'];
+        }
+
+        if (req.body.type !== RESOURCE_TYPE.FILE && !acceptedMimetypes.includes(file.mimetype)) {
+          return callback(
+            new HttpException(
+              `Invalid filetype, accepted types: ${acceptedMimetypes.join(', ')}`,
+              HttpStatus.BAD_REQUEST,
+            ),
+            false,
+          );
+        }
+
+        callback(null, true);
+      },
     }),
   )
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    if (!file) throw new HttpException('Missing file', HttpStatus.BAD_REQUEST);
     return file;
   }
 }

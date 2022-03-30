@@ -55,7 +55,9 @@ const ResourceCard = ({
 					</div>
 				)}
 			</div>
-			<div className="text-center mt-4">{resource.name}</div>
+			<div className="text-center mt-4 overflow-hidden text-ellipsis whitespace-nowrap">
+				{resource.name}
+			</div>
 
 			<AlertConfirm
 				title={t('resources.form.delete_confirm')}

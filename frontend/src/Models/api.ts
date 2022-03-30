@@ -34,7 +34,7 @@ import { Category } from './Quiz/categories-quiz.entity';
 import { QuestionForm } from './Quiz/questionForm.entity';
 import { Quiz } from './Quiz/quiz.entity';
 import { QuizForm } from './Quiz/quizForm.entity';
-import { Resource } from './Resource/resource.entity';
+import { Resource, RESOURCE_TYPE } from './Resource/resource.entity';
 import { Result } from './Social/result.entity';
 import { Topics } from './Social/topics.entity';
 import { Professor, Student } from './User/user.entity';
@@ -376,12 +376,11 @@ const api = {
 				}).resource;
 			},
 			upload: async (
-        type: 'image' | 'video' | 'file',
 				formdata: FormData,
 				progressSetter: React.Dispatch<React.SetStateAction<number>>,
 			) => {
 				return (
-					await axios.post(`resources/${type}`, formdata, {
+					await axios.post(`resources/file`, formdata, {
 						onUploadProgress: progressEvent => {
 							progressSetter(
 								Math.round((progressEvent.loaded * 100) / progressEvent.total),
@@ -391,7 +390,7 @@ const api = {
 					})
 				).data;
 			},
-	  },
+		},
 		challenges: {
 			progressions: {
 				get: apiGet(

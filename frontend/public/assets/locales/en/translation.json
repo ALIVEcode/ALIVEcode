@@ -238,7 +238,8 @@
 		"video": {
 			"name": "Video",
 			"form": {
-				"url": "URL of the video"
+				"url": "URL of the video",
+				"file": "Drag and drop a file or insert one"
 			}
 		},
 		"file": {
@@ -250,7 +251,8 @@
 		"image": {
 			"name": "Image",
 			"form": {
-				"url": "URL of the image"
+				"url": "URL of the image",
+				"file": "Drag and drop a file or insert one"
 			}
 		},
 		"challenge": {

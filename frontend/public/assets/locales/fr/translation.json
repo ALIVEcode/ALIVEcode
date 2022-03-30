@@ -238,7 +238,8 @@
 		"video": {
 			"name": "Vidéo",
 			"form": {
-				"url": "URL vers la vidéo"
+				"url": "URL vers la vidéo",
+				"file": "Glissez ou sélectionnez un fichier"
 			}
 		},
 		"file": {
@@ -250,7 +251,8 @@
 		"image": {
 			"name": "Image",
 			"form": {
-				"url": "URL vers l'image"
+				"url": "URL vers l'image",
+				"file": "Glissez ou sélectionnez un fichier"
 			}
 		},
 		"challenge": {

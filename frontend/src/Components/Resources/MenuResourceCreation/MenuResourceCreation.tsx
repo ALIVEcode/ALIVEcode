@@ -24,6 +24,12 @@ import Button from '../../UtilsComponents/Buttons/Button';
 import { v4 as uuid } from 'uuid';
 import ProgressBar from '../../UtilsComponents/ProgressBar/ProgressBar';
 
+interface FileUpload {
+	file: File;
+	uuid?: string;
+	path?: string;
+}
+
 /**
  * Menu that allows for the creation and updating of a resource
  *
@@ -44,10 +50,9 @@ const MenuResourceCreation = ({
 		defaultResource?.type ?? undefined,
 	);
 	const [challenges, setChallenges] = useState<Challenge[]>([]);
-	const [file, setFile] = useState<File>();
-	const [reqUuid, setReqUuid] = useState<string>();
-	const [reqPath, setReqPath] = useState<string>();
+	const [fileState, setFileState] = useState<FileUpload>();
 	const [uploadProgress, setUploadProgress] = useState<number>(0);
+
 	const { t } = useTranslation();
 	const { setResources, resources } = useContext(UserContext);
 	const { user } = useContext(UserContext);
@@ -105,14 +110,13 @@ const MenuResourceCreation = ({
 	const onSubmit = async (formValues: MenuResourceCreationDTO) => {
 		if (!type) return;
 
-		if (type === RESOURCE_TYPE.IMAGE || type === RESOURCE_TYPE.FILE) {
-			if (reqUuid) formValues.uuid = reqUuid;
-			if (reqPath) formValues.resource.url = reqPath;
-		}
-
-		if (file && type === RESOURCE_TYPE.VIDEO) {
-			if (reqUuid) formValues.uuid = reqUuid;
-			if (reqPath) formValues.resource.url = reqPath;
+		if (
+			type === RESOURCE_TYPE.IMAGE ||
+			type === RESOURCE_TYPE.FILE ||
+			type === RESOURCE_TYPE.VIDEO
+		) {
+			if (fileState?.uuid) formValues.uuid = fileState.uuid;
+			if (fileState?.path) formValues.resource.url = fileState.path;
 		}
 
 		formValues.type = type;
@@ -132,63 +136,27 @@ const MenuResourceCreation = ({
 	};
 
 	/**
-	 * Handles the image uploading. Uploads an image to the server and
-	 * generates an uuid.
-	 * @author Maxime Gazze
-	 */
-	const handleUploadImage = async () => {
-		if (!file) return;
-		const id = uuid();
-		const formdata = new FormData();
-		formdata.append('uuid', id);
-		formdata.append('file', file);
-		setReqUuid(id);
-		const data = await api.db.resources.upload(
-			'image',
-			formdata,
-			setUploadProgress,
-		);
-		setReqPath(data.filename);
-	};
-
-	/**
-	 * Handles the upload of a video. Uploads a video to the server
-	 * and generates an uuid.
-	 * @author Maxime Gazze
-	 */
-	const handleUploadVideo = async () => {
-		if (!file) return;
-		const id = uuid();
-		const formdata = new FormData();
-		formdata.append('uuid', id);
-		formdata.append('file', file);
-		setReqUuid(id);
-		const data = await api.db.resources.upload(
-			'video',
-			formdata,
-			setUploadProgress,
-		);
-		setReqPath(data.filename);
-	};
-
-	/**
 	 * Handles the file uploading. Uploads a file to the server and
 	 * generates an uuid.
 	 * @author Maxime Gazze
 	 */
 	const handleUploadFile = async () => {
-		if (!file) return;
+		if (!fileState?.file || !type) return;
 		const id = uuid();
+		// NOTE append text fields BEFORE the file, otherwise they won't be sent
 		const formdata = new FormData();
 		formdata.append('uuid', id);
-		formdata.append('file', file);
-		setReqUuid(id);
-		const data = await api.db.resources.upload(
-			'file',
-			formdata,
-			setUploadProgress,
-		);
-		setReqPath(data.filename);
+		formdata.append('type', type.toString());
+		formdata.append('file', fileState.file);
+		const data = await api.db.resources.upload(formdata, setUploadProgress);
+		/* setReqUuid(id); */
+		/* setReqPath(data.filename); */
+		console.log(data);
+		if (data) {
+			setFileState({ ...fileState, uuid: id, path: data.filename });
+		} else {
+			console.log('error');
+		}
 	};
 
 	/**
@@ -237,13 +205,14 @@ const MenuResourceCreation = ({
 						/>
 						<InputGroup
 							type="file"
-							label={t('resources.image.form.url')}
+							label={t('resources.image.form.file')}
 							errors={errors.resource?.url}
 							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-								e.target.files && setFile(e.target.files[0])
+								e.target.files &&
+								setFileState({ ...fileState, file: e.target.files[0] })
 							}
 						/>
-						<Button variant="primary" onClick={handleUploadVideo}>
+						<Button variant="primary" onClick={handleUploadFile}>
 							upload
 						</Button>
 						<ProgressBar progress={uploadProgress} />
@@ -254,13 +223,14 @@ const MenuResourceCreation = ({
 					<>
 						<InputGroup
 							type="file"
-							label={t('resources.image.form.url')}
+							label={t('resources.image.form.file')}
 							errors={errors.resource?.url}
 							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-								e.target.files && setFile(e.target.files[0])
+								e.target.files &&
+								setFileState({ ...fileState, file: e.target.files[0] })
 							}
 						/>
-						<Button variant="primary" onClick={handleUploadImage}>
+						<Button variant="primary" onClick={handleUploadFile}>
 							upload
 						</Button>
 						<ProgressBar progress={uploadProgress} />
@@ -271,10 +241,11 @@ const MenuResourceCreation = ({
 					<>
 						<InputGroup
 							type="file"
-							label={t('resources.image.form.url')}
+							label={t('resources.file.form.file')}
 							errors={errors.resource?.url}
 							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-								e.target.files && setFile(e.target.files[0])
+								e.target.files &&
+								setFileState({ ...fileState, file: e.target.files[0] })
 							}
 						/>
 						<Button variant="primary" onClick={handleUploadFile}>

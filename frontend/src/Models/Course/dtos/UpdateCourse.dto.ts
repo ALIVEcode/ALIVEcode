@@ -1,6 +1,10 @@
 import { SUBJECTS } from '../../../Types/sharedTypes';
 import { COURSE_ACCESS, COURSE_DIFFICULTY } from '../course.entity';
 
+/**
+ * DTO to update a course (Data Transfer Object)
+ * @author Enric Soldevila
+ */
 export class UpdateCourseDTO {
 	/** Name of the course */
 	name: string;

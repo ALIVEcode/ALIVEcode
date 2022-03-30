@@ -7,4 +7,7 @@ import { Resource } from './resource.entity';
 export class ResourceImage extends Resource {
 	/** Url of the image */
 	url: string;
+
+	/** File extension */
+	extension: string;
 }

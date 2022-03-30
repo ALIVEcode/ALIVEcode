@@ -459,6 +459,13 @@ const Course = () => {
 	type keyofActivity = {
 		[name in keyof Activity]?: Activity[name];
 	};
+
+	/**
+	 * Method to update any type of activity
+	 * @param activity Activity to update
+	 * @param fields Fields to update the activity with
+	 */
+
 	const updateActivity = async (activity: Activity, fields: keyofActivity) => {
 		if (!activity || !course.current) return;
 		await api.db.courses.updateActivity(
@@ -535,6 +542,7 @@ const Course = () => {
 		});
 	};
 
+	/** Values for the course context used by the other components inside of it */
 	const contextValue: CourseContextValues = {
 		course: course.current,
 		courseElements: courseElements,
@@ -563,6 +571,7 @@ const Course = () => {
 
 	/**
 	 * This is where the course is loaded from the database
+	 * @author Mathis Laroche, Enric Soldevila
 	 */
 	useEffect(() => {
 		if (!id) return;

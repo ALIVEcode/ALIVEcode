@@ -9,6 +9,7 @@ import { faCloudsmith } from '@fortawesome/free-brands-svg-icons';
 import { faFile, faVideo, faBook } from '@fortawesome/free-solid-svg-icons';
 import { RESOURCE_TYPE } from '../Models/Resource/resource.entity';
 
+/** Enum of all the subjects in ALIVEcode */
 export enum SUBJECTS {
 	CODE = 'CO',
 	IOT = 'IOT',
@@ -16,6 +17,12 @@ export enum SUBJECTS {
 	OTHER = 'OT',
 }
 
+/**
+ * Gets the icon of a subject
+ * @param subject Subject to get the icon of
+ * @returns The good display icon
+ * @author Enric Soldevila
+ */
 export const getSubjectIcon = (subject: SUBJECTS) => {
 	switch (subject) {
 		case SUBJECTS.CODE:
@@ -30,6 +37,12 @@ export const getSubjectIcon = (subject: SUBJECTS) => {
 	return faCode;
 };
 
+/**
+ * Gets the icon of a resource
+ * @param subject Type of the resource to get the icon of
+ * @returns The good display icon
+ * @author Enric Soldevila
+ */
 export const getResourceIcon = (resourceType: RESOURCE_TYPE) => {
 	switch (resourceType) {
 		case RESOURCE_TYPE.FILE:

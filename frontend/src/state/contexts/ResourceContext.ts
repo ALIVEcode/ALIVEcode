@@ -2,13 +2,13 @@ import { createContext } from 'react';
 import { RESOURCE_TYPE } from '../../Models/Resource/resource.entity';
 import {
 	ResourceMenuMode,
-	ResourceMenuSections,
+	ResourceMenuSubjects,
 } from '../../Pages/ResourceMenu/resourceMenuTypes';
 
 export type ResourceMenuContextValues = {
-	selectedSection: ResourceMenuSections;
+	selectedSubject: ResourceMenuSubjects;
 	mode: ResourceMenuMode;
-	setSelectedSection: (subject: ResourceMenuSections) => void;
+	setSelectedSubject: (subject: ResourceMenuSubjects) => void;
 	selectedFilters: RESOURCE_TYPE[];
 	setSelectedFilters: (filters: RESOURCE_TYPE[]) => void;
 	isFilterSelected: (filter: RESOURCE_TYPE) => boolean;
@@ -16,9 +16,9 @@ export type ResourceMenuContextValues = {
 };
 
 export const ResourceMenuContext = createContext<ResourceMenuContextValues>({
-	selectedSection: 'all',
+	selectedSubject: 'all',
 	mode: 'default',
-	setSelectedSection: () => {},
+	setSelectedSubject: () => {},
 	selectedFilters: [],
 	setSelectedFilters: () => {},
 	isFilterSelected: () => false,

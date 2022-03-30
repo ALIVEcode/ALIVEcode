@@ -10,6 +10,9 @@ import { ResourceTheory } from '../resource_theory.entity';
 import { ResourceVideo } from '../resource_video.entity';
 import { ResourceChallenge } from '../resource_challenge.entity';
 
+/**
+ * DTO transformer for transforming to instance a generic Resource object
+ */
 export class GenericResourceTransformer {
 	@Type(obj => {
 		switch (obj?.object.resource.type) {

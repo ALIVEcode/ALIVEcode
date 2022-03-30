@@ -8,7 +8,7 @@ import api from '../../Models/api';
 import LoadingScreen from '../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
 import { ResourceSection } from '../../Components/Resources/ResourceSection/ResourceSection';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { ResourceMenuSections, ResourceMenuProps } from './resourceMenuTypes';
+import { ResourceMenuSubjects, ResourceMenuProps } from './resourceMenuTypes';
 import {
 	ResourceMenuContext,
 	ResourceMenuContextValues,
@@ -19,6 +19,16 @@ import { ResourceFilter } from '../../Components/Resources/ResourceFilter/Resour
 import MenuResourceCreation from '../../Components/Resources/MenuResourceCreation/MenuResourceCreation';
 import useWaitBeforeUpdate from '../../state/hooks/useWaitBeforeUpdate';
 
+/**
+ * ResourceMenu is a page that allows a user to get/create/update/delete its resources.
+ * It also provides filters to query the resources of the user
+ *
+ * @param mode Mode of the menu (import or default)
+ * @param filters The default selected filters
+ * @param onSelectResource Callback that has the resource selected as a parameter
+ * @returns The resource menu
+ * @author Enric Soldevila
+ */
 const ResourceMenu = ({
 	mode,
 	filters,
@@ -28,17 +38,20 @@ const ResourceMenu = ({
 	const [selectedFilters, setSelectedFilters] = useState<RESOURCE_TYPE[]>(
 		filters ?? [],
 	);
-	const [selectedSection, setSelectedSection] =
-		useState<ResourceMenuSections>('all');
+	const [selectedSubject, setSelectedSubject] =
+		useState<ResourceMenuSubjects>('all');
 
 	const { t } = useTranslation();
 	const { user, resources, setResources } = useContext(UserContext);
 
+	/**
+	 * Function that get the resources of the user based on the query
+	 */
 	const getResources = async () => {
 		if (!user) return;
 		setResources(
 			await api.db.users.getResources(user.id, {
-				subject: selectedSection !== 'all' ? selectedSection : undefined,
+				subject: selectedSubject !== 'all' ? selectedSubject : undefined,
 				types: selectedFilters.length > 0 ? selectedFilters : undefined,
 				name,
 			}),
@@ -50,23 +63,32 @@ const ResourceMenu = ({
 		'',
 	);
 
+	/** Gets the user resources when the selectedSubject */
 	useEffect(() => {
 		getResources();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectedSection, selectedFilters]);
+	}, [selectedSubject, selectedFilters]);
 
-	const getSelectedSectionName = () => {
-		if (selectedSection === 'all') return t(`msg.subjects.all`);
+	/**
+	 * Gets the translated name of the currently selected subject
+	 * @returns The translated name
+	 */
+	const getSelectedSubjectName = () => {
+		if (selectedSubject === 'all') return t(`msg.subjects.all`);
 		const enumEntry = Object.entries(SUBJECTS).find(
-			entry => entry[1] === selectedSection,
+			entry => entry[1] === selectedSubject,
 		);
 		if (!enumEntry) {
-			setSelectedSection('all');
+			setSelectedSubject('all');
 			return 'all';
 		}
 		return t(`msg.subjects.${enumEntry[0].toLowerCase()}`);
 	};
 
+	/**
+	 * Checks if a filter is selected
+	 * @returns True if the filter is selected, otherwise false
+	 */
 	const isFilterSelected = useCallback(
 		(filter: RESOURCE_TYPE) => {
 			return selectedFilters.find(f => f === filter) != null;
@@ -74,6 +96,10 @@ const ResourceMenu = ({
 		[selectedFilters],
 	);
 
+	/**
+	 * Toggles a filter on or off
+	 * @param filter Filter to toggle on or off
+	 */
 	const toggleFilter = useCallback(
 		(filter: RESOURCE_TYPE) => {
 			if (isFilterSelected(filter))
@@ -83,17 +109,21 @@ const ResourceMenu = ({
 		[isFilterSelected, selectedFilters],
 	);
 
+	/**
+	 * The values of the resource context for the other components inside
+	 * the same context
+	 */
 	const resourceContextValues: ResourceMenuContextValues = useMemo(() => {
 		return {
 			mode: mode ?? 'default',
-			selectedSection,
-			setSelectedSection,
+			selectedSubject,
+			setSelectedSubject,
 			selectedFilters,
 			setSelectedFilters,
 			isFilterSelected,
 			toggleFilter,
 		};
-	}, [mode, selectedSection, selectedFilters, isFilterSelected, toggleFilter]);
+	}, [mode, selectedSubject, selectedFilters, isFilterSelected, toggleFilter]);
 
 	return (
 		<ResourceMenuContext.Provider value={resourceContextValues}>
@@ -135,7 +165,7 @@ const ResourceMenu = ({
 							<label className="text-xl">{t('resources.menu.title')}</label>
 							<label className="ml-2 text-xl text-[color:var(--fg-shade-four-color)]">
 								<span>/</span>
-								<span className="ml-2">{getSelectedSectionName()}</span>
+								<span className="ml-2">{getSelectedSubjectName()}</span>
 							</label>
 						</div>
 						<div className="overflow-x-auto flex">

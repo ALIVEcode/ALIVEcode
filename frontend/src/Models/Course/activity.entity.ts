@@ -10,6 +10,7 @@ import {
 	faQuestion,
 } from '@fortawesome/free-solid-svg-icons';
 
+/** All the types of activities */
 export enum ACTIVITY_TYPE {
 	THEORY = 'TH',
 	CHALLENGE = 'CH',
@@ -46,15 +47,27 @@ export abstract class Activity {
 		return this.courseElement.name;
 	}
 
-	// eslint-disable-next-line getter-return
+	/**
+	 * Gets the display icon of the activity depending on its type
+	 * @author Enric Soldevila
+	 */
 	get icon() {
 		return getActivityIcon(this.type);
 	}
 
+	/** Resource inside the activity */
 	abstract resource?: Resource;
+
+	/** Allowed resources types in the activity for the ResourceMenu filters */
 	abstract readonly allowedResources: RESOURCE_TYPE[];
 }
 
+/**
+ * Gets the icon of an activity depending on its type
+ * @param activityType Type of the activity
+ * @returns The good display icon
+ * @author Enric Soldevila
+ */
 export const getActivityIcon = (activityType: ACTIVITY_TYPE) => {
 	switch (activityType) {
 		case ACTIVITY_TYPE.CHALLENGE:

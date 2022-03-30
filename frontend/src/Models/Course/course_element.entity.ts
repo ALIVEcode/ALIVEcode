@@ -12,9 +12,12 @@ import { Section } from './section.entity';
 import { ActivityTheory } from './activities/activity_theory.entity';
 import { ActivityVideo } from './activities/activity_video.entity';
 import { ActivityChallenge } from './activities/activity_challenge.entity';
+import { ActivityAssignment } from './activities/activity_assignment.entity';
 
+/** Types of contents of a course (activity or section) */
 export type CourseContent = Activity | Section;
 
+/** Types of elements parent (course or section) */
 export type CourseParent = Course | Section;
 
 /**
@@ -58,10 +61,16 @@ export class CourseElement {
 			return plainToInstance(ActivityVideo, activity);
 		if (activity.type === ACTIVITY_TYPE.THEORY)
 			return plainToInstance(ActivityTheory, activity);
+		if (activity.type === ACTIVITY_TYPE.ASSIGNMENT)
+			return plainToInstance(ActivityAssignment, activity);
 
 		return plainToInstance(Activity, activity);
 	})
-	activity?: ActivityChallenge | ActivityTheory | ActivityVideo;
+	activity?:
+		| ActivityChallenge
+		| ActivityTheory
+		| ActivityVideo
+		| ActivityAssignment;
 
 	/** If the element is a section **/
 	@Expose({ toClassOnly: true })

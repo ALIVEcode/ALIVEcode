@@ -25,6 +25,7 @@ import { ResourceVideoEntity } from '../resource/entities/resource_video.entity'
 import { ResourceFileEntity } from '../resource/entities/resource_file.entity';
 import { ResourceImageEntity } from '../resource/entities/resource_image.entity';
 import { ResourceTheoryEntity } from '../resource/entities/resource_theory.entity';
+import { ActivityAssignmentEntity } from './entities/activities/activity_assignment.entity';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { ResourceTheoryEntity } from '../resource/entities/resource_theory.entit
       ActivityEntity,
       ActivityTheoryEntity,
       ActivityVideoEntity,
+      ActivityAssignmentEntity,
       ActivityChallengeEntity,
       ResourceEntity,
       UserEntity,

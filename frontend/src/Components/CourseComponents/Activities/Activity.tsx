@@ -12,14 +12,13 @@ import ActivityChallenge from './ActivityChallenge';
 import RichTextEditor from '../../RichTextComponents/RichTextEditor/RichTextEditor';
 import ButtonAdd from './ButtonAdd';
 import { Descendant } from 'slate';
-import { ActivityChallenge as ActivityChallengeModel } from '../../../Models/Course/activities/activity_challenge.entity';
 import Button from '../../UtilsComponents/Buttons/Button';
 import { useTranslation } from 'react-i18next';
-import { ActivityVideo as ActivityVideoModel } from '../../../Models/Course/activities/activity_video.entity';
 import ActivityVideo from './ActivityVideo';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ActivityProps } from './activityTypes';
 import FormInput from '../../UtilsComponents/FormInput/FormInput';
+import ActivityAssignment from './ActivityAssignment';
 import ActivityTheory from './ActivityTheory';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import { classNames } from '../../../Types/utils';
@@ -28,6 +27,9 @@ import {
 	faChevronRight,
 	faMinusCircle,
 } from '@fortawesome/free-solid-svg-icons';
+import { ActivityChallenge as ActivityChallengeModel } from '../../../Models/Course/activities/activity_challenge.entity';
+import { ActivityVideo as ActivityVideoModel } from '../../../Models/Course/activities/activity_video.entity';
+import { ActivityAssignment as ActivityAssignmentModel } from '../../../Models/Course/activities/activity_assignment.entity';
 
 /**
  * Shows the opened activity. Renders different component depending on the type of the activity opened.
@@ -125,6 +127,10 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 				);
 			case ACTIVITY_TYPE.VIDEO:
 				return <ActivityVideo activity={activity as ActivityVideoModel} />;
+			case ACTIVITY_TYPE.ASSIGNMENT:
+				return (
+					<ActivityAssignment activity={activity as ActivityAssignmentModel} />
+				);
 			default:
 				return (
 					<div className="w-full h-full flex justify-center items-center">

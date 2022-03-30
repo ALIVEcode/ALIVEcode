@@ -112,6 +112,7 @@
 		"activity_type": {
 			"challenge": "Challenge",
 			"video": "Video",
+			"assignment": "Assignment",
 			"theory": "Theory"
 		},
 		"subjects": {

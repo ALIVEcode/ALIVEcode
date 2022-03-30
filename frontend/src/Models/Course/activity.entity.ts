@@ -1,13 +1,20 @@
-import { faBook, faCode, faVideo } from '@fortawesome/free-solid-svg-icons';
 import { Exclude, Type } from 'class-transformer';
 import { CourseElement, CourseElementActivity } from './course_element.entity';
 import { Descendant } from 'slate';
 import { Resource, RESOURCE_TYPE } from '../Resource/resource.entity';
+import {
+	faCode,
+	faBook,
+	faVideo,
+	faTasks,
+	faQuestion,
+} from '@fortawesome/free-solid-svg-icons';
 
 export enum ACTIVITY_TYPE {
 	THEORY = 'TH',
 	CHALLENGE = 'CH',
 	VIDEO = 'VI',
+	ASSIGNMENT = 'AS',
 }
 
 /**
@@ -41,16 +48,23 @@ export abstract class Activity {
 
 	// eslint-disable-next-line getter-return
 	get icon() {
-		switch (this.type) {
-			case ACTIVITY_TYPE.CHALLENGE:
-				return faCode;
-			case ACTIVITY_TYPE.THEORY:
-				return faBook;
-			case ACTIVITY_TYPE.VIDEO:
-				return faVideo;
-		}
+		return getActivityIcon(this.type);
 	}
 
 	abstract resource?: Resource;
 	abstract readonly allowedResources: RESOURCE_TYPE[];
 }
+
+export const getActivityIcon = (activityType: ACTIVITY_TYPE) => {
+	switch (activityType) {
+		case ACTIVITY_TYPE.CHALLENGE:
+			return faCode;
+		case ACTIVITY_TYPE.THEORY:
+			return faBook;
+		case ACTIVITY_TYPE.VIDEO:
+			return faVideo;
+		case ACTIVITY_TYPE.ASSIGNMENT:
+			return faTasks;
+	}
+	return faQuestion;
+};

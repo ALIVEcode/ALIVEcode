@@ -8,6 +8,7 @@ import {
 import { faCloudsmith } from '@fortawesome/free-brands-svg-icons';
 import { faFile, faVideo, faBook } from '@fortawesome/free-solid-svg-icons';
 import { RESOURCE_TYPE } from '../Models/Resource/resource.entity';
+
 export enum SUBJECTS {
 	CODE = 'CO',
 	IOT = 'IOT',

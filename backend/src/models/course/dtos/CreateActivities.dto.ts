@@ -53,3 +53,9 @@ export class CreateActivityTheoryDTO extends CreateActivityDTO {}
  * @author Enric Soldevila
  */
 export class CreateActivityVideoDTO extends CreateActivityDTO {}
+
+/**
+ * DTO to create a course element of an assignment activity (Data Transfer Object)
+ * @author Enric Soldevila
+ */
+export class CreateActivityAssignmentDTO extends CreateActivityDTO {}

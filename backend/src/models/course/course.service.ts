@@ -16,6 +16,7 @@ import { CreateActivityDTO } from './dtos/CreateActivities.dto';
 import { UpdateCourseElementDTO } from './dtos/UpdateCourseElement.dto';
 import { CreateSectionDTO } from './dtos/CreateSection.dto';
 import { ResourceEntity } from '../resource/entities/resource.entity';
+import { ActivityAssignmentEntity } from './entities/activities/activity_assignment.entity';
 
 /**
  * All the methods to communicate to the database. To create/update/delete/get
@@ -31,6 +32,7 @@ export class CourseService {
     @InjectRepository(ActivityEntity) private activityRepository: Repository<ActivityEntity>,
     @InjectRepository(ActivityTheoryEntity) private actTheoryRepo: Repository<ActivityTheoryEntity>,
     @InjectRepository(ActivityVideoEntity) private actVideoRepo: Repository<ActivityChallengeEntity>,
+    @InjectRepository(ActivityAssignmentEntity) private actAssignmentRepo: Repository<ActivityAssignmentEntity>,
     @InjectRepository(ActivityChallengeEntity) private actChallengeRepo: Repository<ActivityChallengeEntity>,
     @InjectRepository(ClassroomEntity) private classroomRepo: Repository<ClassroomEntity>,
     @InjectRepository(CourseElementEntity) private courseElRepo: Repository<CourseElementEntity>,
@@ -324,6 +326,9 @@ export class CourseService {
         break;
       case ACTIVITY_TYPE.VIDEO:
         activity = await this.actVideoRepo.save(activityDTO.courseContent);
+        break;
+      case ACTIVITY_TYPE.ASSIGNMENT:
+        activity = await this.actAssignmentRepo.save(activityDTO.courseContent);
         break;
       default:
         throw new HttpException('Invalid activity type', HttpStatus.BAD_REQUEST);

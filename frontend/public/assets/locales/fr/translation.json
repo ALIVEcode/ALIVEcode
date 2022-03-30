@@ -112,6 +112,7 @@
 		"activity_type": {
 			"challenge": "Niveau",
 			"video": "Visionnement",
+			"assignment": "Énoncé de travail",
 			"theory": "Théorie"
 		},
 		"subjects": {

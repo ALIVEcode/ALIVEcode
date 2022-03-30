@@ -34,6 +34,7 @@ import { UpdateCourseElementDTO } from './dtos/UpdateCourseElement.dto';
 import { AddResourceDTO } from './dtos/AddResource.dto';
 import { ResourceService } from '../resource/resource.service';
 import { ApiTags } from '@nestjs/swagger';
+import { CreateActivityAssignmentDTO } from './dtos/CreateActivities.dto';
 
 /**
  * All the routes to create/update/delete/get a course or it's content (CourseElements)
@@ -176,7 +177,12 @@ export class CourseController {
   @UseGuards(CourseProfessor)
   async addActivity(
     @Course() course: CourseEntity,
-    @Body() createActivityDTO: CreateActivityChallengeDTO | CreateActivityTheoryDTO | CreateActivityVideoDTO,
+    @Body()
+    createActivityDTO:
+      | CreateActivityChallengeDTO
+      | CreateActivityTheoryDTO
+      | CreateActivityVideoDTO
+      | CreateActivityAssignmentDTO,
   ): Promise<{ newOrder: number[]; courseElement: CourseElementEntity }> {
     course = await this.courseService.findOneWithElements(course.id);
     if (createActivityDTO.sectionParentId) {

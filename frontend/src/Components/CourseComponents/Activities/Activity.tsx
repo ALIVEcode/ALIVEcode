@@ -119,7 +119,10 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 		switch (activity.type) {
 			case ACTIVITY_TYPE.CHALLENGE:
 				return (
-					<ActivityChallenge activity={activity as ActivityChallengeModel} />
+					<ActivityChallenge
+						courseElement={courseElement}
+						editMode={editMode}
+					/>
 				);
 			case ACTIVITY_TYPE.THEORY:
 				return (

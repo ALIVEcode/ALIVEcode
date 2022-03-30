@@ -6,6 +6,7 @@ import { ChallengeExecutor } from '../../Pages/Challenge/AbstractChallengeExecut
 
 export type ChallengeContextTypes = {
 	editMode: boolean;
+	showTerminal?: boolean;
 	challenge?: Challenge;
 	executor: React.MutableRefObject<ChallengeExecutor | null>;
 	saveChallenge: () => void;

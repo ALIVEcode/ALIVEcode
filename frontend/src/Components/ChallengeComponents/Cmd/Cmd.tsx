@@ -5,7 +5,8 @@ import Button from '../../UtilsComponents/Buttons/Button';
 import { useTranslation } from 'react-i18next';
 
 const StyledDiv = styled.div`
-	background-color: var(--primary-color);
+	background-color: var(--bg-shade-two-color);
+	border-left: 1px solid var(--bg-shade-three-color);
 	color: var(--foreground-color);
 	padding: 15px;
 	width: 100%;
@@ -24,6 +25,7 @@ const StyledDiv = styled.div`
 	a {
 		cursor: pointer;
 	}
+
 	.btn-clearCmdLines {
 		right: 0%;
 	}
@@ -32,7 +34,7 @@ const StyledDiv = styled.div`
 /**
  * Styled Cmd element used for console logging the alivescript results
  *
- * @author Enric Soldevila
+ * @author Enric Soldevila, Mathis Laroche
  */
 const Cmd = React.forwardRef<HTMLDivElement>((props: CmdProps, ref) => {
 	const { t } = useTranslation();
@@ -49,7 +51,8 @@ const Cmd = React.forwardRef<HTMLDivElement>((props: CmdProps, ref) => {
 			>
 				{t('cmd.clear')}
 			</Button>
-			<div ref={ref}></div>
+			<div className="w-full h-[1px] py-1.5 border-b-2 border-[color:var(--bg-shade-one-color)]"/>
+			<div ref={ref} />
 		</StyledDiv>
 	);
 });

@@ -10,6 +10,7 @@ import { ChallengeContext } from '../../../state/contexts/ChallengeContext';
 import ChallengeToolsBar from '../../../Components/ChallengeComponents/ChallengeToolsBar/ChallengeToolsBar';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import ChallengeCodeExecutor from './ChallengeCodeExecutor';
+import FillContainer from '../../../Components/UtilsComponents/FillContainer/FillContainer';
 
 /**
  * Code challenge page. Contains all the components to display and make the code challenge functionnal.
@@ -21,7 +22,7 @@ import ChallengeCodeExecutor from './ChallengeCodeExecutor';
  * @param {(challenge: ChallengeCodeModel) => void} setChallenge callback used to modify the challenge in the parent state
  * @param {(progression: ChallengeProgression) => void} setProgression callback used to modify the challenge progression in the parent state
  *
- * @author Enric Soldevila
+ * @author Enric Soldevila, Mathis Laroche
  */
 const ChallengeCode = ({ initialCode }: ChallengeCodeProps) => {
 	const { user } = useContext(UserContext);
@@ -29,6 +30,7 @@ const ChallengeCode = ({ initialCode }: ChallengeCodeProps) => {
 		challenge: challengeUntyped,
 		executor: executorUntyped,
 		editMode,
+		showTerminal,
 		progression,
 		setProgression,
 		saveChallengeTimed,
@@ -68,55 +70,61 @@ const ChallengeCode = ({ initialCode }: ChallengeCodeProps) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [cmd]);
 
-	if (!challenge) return <LoadingScreen></LoadingScreen>;
+	if (!challenge) return <LoadingScreen />;
 
 	return (
-		<>
-			<StyledCodeChallenge>
-				<div className="h-full flex flex-row">
-					{/* Left Side of screen */}
-					<div className="w-3/5 h-full flex flex-col">
-						<ChallengeToolsBar />
-						{editMode ? (
-							<LineInterface
-								key="edit-mode"
-								hasTabs
-								tabs={[
-									{
-										title: 'Initial Code',
-										open: true,
-										defaultContent: challenge.initialCode,
-										onChange: content => {
-											challenge.initialCode = content;
-											saveChallengeTimed();
-										},
+		<div className="relative h-full w-full">
+			<div className="h-full flex flex-row">
+				{/* Left Side of screen */}
+				<div
+					className={`${
+						showTerminal ? 'w-3/5' : 'w-full'
+					} h-full flex flex-col`}
+				>
+					<ChallengeToolsBar />
+					{editMode ? (
+						<LineInterface
+							className="h-full"
+							key="edit-mode"
+							hasTabs
+							tabs={[
+								{
+									title: 'Initial Code',
+									open: true,
+									defaultContent: challenge.initialCode,
+									onChange: content => {
+										challenge.initialCode = content;
+										saveChallengeTimed();
 									},
-									{
-										title: 'Solution',
-										open: false,
-										defaultContent: challenge.solution,
-										onChange: content => {
-											challenge.solution = content;
-											saveChallengeTimed();
-										},
+								},
+								{
+									title: 'Solution',
+									open: false,
+									defaultContent: challenge.solution,
+									onChange: content => {
+										challenge.solution = content;
+										saveChallengeTimed();
 									},
-								]}
-								handleChange={lineInterfaceContentChanges}
-							/>
-						) : (
-							<LineInterface
-								key="play-mode"
-								initialContent={initialCode}
-								handleChange={lineInterfaceContentChanges}
-							/>
-						)}
-					</div>
+								},
+							]}
+							handleChange={lineInterfaceContentChanges}
+						/>
+					) : (
+						<LineInterface
+							className="h-full"
+							key="play-mode"
+							initialContent={initialCode}
+							handleChange={lineInterfaceContentChanges}
+						/>
+					)}
+				</div>
+				{showTerminal && (
 					<div className="h-full w-2/5">
 						<Cmd ref={cmdRef} />
 					</div>
-				</div>
-			</StyledCodeChallenge>
-		</>
+				)}
+			</div>
+		</div>
 	);
 };
 

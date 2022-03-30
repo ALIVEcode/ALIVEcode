@@ -8,6 +8,7 @@ export interface ChallengeProps {
 	editMode: boolean;
 	challenge?: Challenge;
 	type?: CHALLENGE_TYPE;
+	showTerminal?: boolean;
 }
 
 export type typeAskForUserInput = (

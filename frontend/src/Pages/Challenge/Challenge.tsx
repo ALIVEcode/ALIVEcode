@@ -63,6 +63,7 @@ import FormInput from '../../Components/UtilsComponents/FormInput/FormInput';
 const Challenge = ({
 	challenge: challengeProp,
 	type,
+	showTerminal = true,
 	...props
 }: ChallengeProps) => {
 	const { challengeId } = useParams<{ challengeId: string }>();
@@ -262,6 +263,7 @@ const Challenge = ({
 	const challengeContextValues: ChallengeContextTypes = useMemo(() => {
 		return {
 			editMode,
+			showTerminal,
 			challenge,
 			saveChallenge,
 			saveChallengeTimed,
@@ -278,6 +280,7 @@ const Challenge = ({
 		};
 	}, [
 		editMode,
+		showTerminal,
 		challenge,
 		progression,
 		saveChallenge,

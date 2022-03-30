@@ -4,19 +4,17 @@ import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import { ActivityChallenge as ActivityChallengeModel } from '../../../Models/Course/activities/activity_challenge.entity';
 import api from '../../../Models/api';
+import { ActivityProps } from './activityTypes';
 
 /**
  * Shows an activity of type Challenge
  * @returns The activity of type Challenge
  *
- * @author Enric Soldevila
+ * @author Enric Soldevila, Mathis Laroche
  */
-const ActivityChallenge = ({
-	activity,
-}: {
-	activity: ActivityChallengeModel;
-}) => {
+const ActivityChallenge = ({ courseElement, editMode }: ActivityProps) => {
 	const forceUpdate = useForceUpdate();
+	const activity = courseElement.activity as ActivityChallengeModel;
 
 	useEffect(() => {
 		/**
@@ -36,18 +34,17 @@ const ActivityChallenge = ({
 
 	return (
 		activity && (
-			<div className="w-full h-[500px]">
+			<div className="w-full h-[450px] relative">
 				{!activity.resource ? (
-					<div className="w-full h-full flex flex-col justify-center items-center"></div>
+					<div className="w-full h-full flex flex-col justify-center items-center" />
 				) : !activity.resource?.challenge ? (
 					<LoadingScreen />
 				) : (
-					<div className="w-full h-full relative">
-						<Challenge
-							challenge={activity.resource?.challenge}
-							editMode={false}
-						/>
-					</div>
+					<Challenge
+						challenge={activity.resource?.challenge}
+						editMode={!!editMode}
+						showTerminal={!editMode}
+					/>
 				)}
 			</div>
 		)

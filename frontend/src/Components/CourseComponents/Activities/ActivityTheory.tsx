@@ -4,6 +4,7 @@ import { ActivityProps } from './activityTypes';
 import api from '../../../Models/api';
 import useWaitBeforeUpdate from '../../../state/hooks/useWaitBeforeUpdate';
 import { ResourceTheory } from '../../../Models/Resource/resources/resource_theory.entity';
+import { Descendant } from 'slate';
 
 /**
  * Shows an activity of type Theory
@@ -25,7 +26,14 @@ const ActivityTheory = ({ courseElement, editMode }: ActivityProps) => {
 					if (activity.resource && !activity.resource?.document) {
 						activity.resource = await api.db.resources.update<ResourceTheory>(
 							activity.resource,
-							{ document: [{ type: 'paragraph', children: [{ text: '' }] }] },
+							{
+								document: [
+									{
+										type: 'paragraph',
+										children: [{ text: '' }],
+									},
+								] as unknown as Descendant[],
+							},
 						);
 					}
 					if (

@@ -13,14 +13,10 @@ import ChallengeCodeExecutor from './ChallengeCodeExecutor';
 import FillContainer from '../../../Components/UtilsComponents/FillContainer/FillContainer';
 
 /**
- * Code challenge page. Contains all the components to display and make the code challenge functionnal.
+ * Code challenge page. Contains all the components to display and make the code challenge functional.
  *
  * @param {ChallengeCodeModel} challenge code challenge object
- * @param {boolean} editMode if the challenge is in editMode or not
- * @param {ChallengeProgression} progression the challenge progression of the current user
  * @param {string} initialCode the initial code of the challenge
- * @param {(challenge: ChallengeCodeModel) => void} setChallenge callback used to modify the challenge in the parent state
- * @param {(progression: ChallengeProgression) => void} setProgression callback used to modify the challenge progression in the parent state
  *
  * @author Enric Soldevila, Mathis Laroche
  */

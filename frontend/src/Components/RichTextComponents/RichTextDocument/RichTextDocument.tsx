@@ -23,10 +23,12 @@ const RichTextDocument = ({
 	onChange,
 	readOnly = false,
 }: RichTextDocumentProps) => {
+	// @ts-ignore
 	const editor = useMemo(() => withReact(withHistory(createEditor())), []);
 	const [editMode, setEditMode] = useState(false); // The flag to determine if the editor is in edit mode or not.
 
 	const [value, setValue] = useState<Descendant[]>(
+		// @ts-ignore
 		defaultText ?? [{ type: 'paragraph', children: [{ text: '' }] }],
 	); // The value of the editor.
 

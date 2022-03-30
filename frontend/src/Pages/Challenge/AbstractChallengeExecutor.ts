@@ -1,8 +1,18 @@
 import { CMD } from '../../Components/ChallengeComponents/Cmd/cmdTypes';
 import { typeAction } from './challengeTypes';
-import { CompileDTO, CompileStatus, SupportedLanguagesAS } from '../../Models/ASModels';
+import {
+	CompileDTO,
+	CompileStatus,
+	SupportedLanguagesAS,
+} from '../../Models/ASModels';
 import api from '../../Models/api';
 
+/**
+ * Abstract class were the execution of alivescript is handled
+ *
+ *
+ * @author Mathis Laroche
+ */
 export class ChallengeExecutor {
 	public cmd?: CMD;
 	public lineInterfaceContent: string = '';

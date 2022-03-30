@@ -10,17 +10,29 @@ import {
 	renderLeaf,
 } from '../RichTextElements/RichTextSyleElements';
 
+/**
+ * The editor for the "portable" rich text editor (like in headers and footers)
+ *
+ * @param defaultText The default text to be displayed in the editor
+ * @param onChange The function to be called when the editor changes
+ * @param readOnly Whether the editor is read only or not
+ * @constructor
+ *
+ * @author Mathis Laroche
+ */
 const RichTextEditor = ({
 	defaultText,
 	onChange,
 	readOnly,
 }: RichTextEditorProps) => {
+	// @ts-ignore
 	const editor = useMemo(() => withReact(withHistory(createEditor())), []);
 	const [editMode, setEditMode] = useState(false);
 
 	const [value, setValue] = useState<Descendant[]>(
 		defaultText ?? [
 			{
+				// @ts-ignore
 				type: 'paragraph',
 				children: [
 					{
@@ -30,7 +42,6 @@ const RichTextEditor = ({
 			},
 		],
 	);
-
 
 	return (
 		<div className={`flex bg-[color:var(--background-color)] `}>

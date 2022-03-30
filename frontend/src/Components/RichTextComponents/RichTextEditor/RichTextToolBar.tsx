@@ -1,29 +1,17 @@
-import { Descendant, Editor, Range, Transforms } from 'slate';
-import {
-	MouseEventHandler,
-	MutableRefObject,
-	useEffect,
-	useLayoutEffect,
-	useRef,
-	useState,
-} from 'react';
-import { useFocused, useSlate, useSelected } from 'slate-react';
-import {
-	RichTextToolBarButtonFormatProps,
-	RichTextToolBarProps,
-} from './richTextToolBarTypes';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useLayoutEffect, useRef } from 'react';
+import { useFocused, useSlate } from 'slate-react';
+import { RichTextToolBarProps } from './richTextToolBarTypes';
 import { faBold, faEye, faItalic } from '@fortawesome/free-solid-svg-icons';
-import { Popup } from 'reactjs-popup';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
-import {
-	MarkButton,
-	toggleMark,
-} from '../RichTextElements/RichTextSyleElements';
+import { MarkButton } from '../RichTextElements/RichTextSyleElements';
 
 /**
+ * The floating toolbar that appears when the user selects a text element in the RichTextEditor.
+ *
  * Some code from {@link https://github.com/ianstormtaylor/slate/blob/main/site/examples/hovering-toolbar.tsx}
  * @constructor
+ *
+ * @author Mathis Laroche
  */
 const RichTextToolBar = ({}: RichTextToolBarProps) => {
 	const ref = useRef<HTMLDivElement>(null);

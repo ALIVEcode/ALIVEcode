@@ -17,8 +17,8 @@ import { plainToClass } from 'class-transformer';
 const CourseLayout = () => {
 	const {
 		course,
-		canEdit,
 		courseElements,
+		isCreator,
 		setTab,
 		addContent,
 		openActivityForm,
@@ -48,7 +48,7 @@ const CourseLayout = () => {
 					<>
 						<label className="text-center">{t('course.empty')}</label>
 						<div className="mt-4 flex justify-center">
-							{canEdit && (
+							{isCreator() && (
 								<div className="text-[color:var(--logo-color)] text-center">
 									<span
 										className="p-2 cursor-pointer rounded-lg transition-all hover:bg-[color:var(--bg-shade-one-color)]"
@@ -86,7 +86,9 @@ const CourseLayout = () => {
 										),
 								)}
 						</div>
-						<div className="pb-5">{canEdit && <ButtonAddCourseElement />}</div>
+						<div className="pb-5">
+							{isCreator() && <ButtonAddCourseElement />}
+						</div>
 					</>
 				)}
 			</div>

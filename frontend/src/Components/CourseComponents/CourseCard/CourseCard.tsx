@@ -23,7 +23,7 @@ const CourseCard = ({ course }: CourseCardProps) => {
 			onClick={() =>
 				goTo(
 					routes.auth.course.path.replace(':id', course.id) +
-						(user?.id === course.creator?.id ? '/layout' : '/recents'),
+						(user?.id === course.creator?.id ? '/layout' : '/view'),
 				)
 			}
 			className="shadow-lg"

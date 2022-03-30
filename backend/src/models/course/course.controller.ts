@@ -223,7 +223,6 @@ export class CourseController {
    * @returns The removal query result
    */
   @Get(':id/activities/:activityId/resources')
-  @Auth(Role.PROFESSOR, Role.STAFF)
   @UseGuards(CourseAccess)
   async getResourceInActivity(@Course() course: CourseEntity, @Param('activityId') activityId: string) {
     const activity = await this.courseService.findActivity(course.id, activityId);
@@ -231,9 +230,9 @@ export class CourseController {
   }
 
   /**
-   * Route to download the file associated with a download activity.
+   * Route to download the file associated with an assignment activity.
    * @param course Course found with the id in the url
-   * @param activityId Id of the activity to get the resource in
+   * @param activityId Id of the activity to download the file from
    * @returns The file to download
    */
   @Get(':id/activities/:activityId/download')

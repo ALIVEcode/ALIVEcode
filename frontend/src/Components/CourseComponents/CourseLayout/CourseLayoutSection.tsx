@@ -17,7 +17,7 @@ import { CourseLayoutSectionProps } from './courseLayoutTypes';
  */
 const CourseLayoutSection = ({ courseElement }: CourseLayoutSectionProps) => {
 	const section = courseElement.section as Section;
-	const { courseElements, canEdit } = useContext(CourseContext);
+	const { courseElements, isCreator } = useContext(CourseContext);
 
 	return (
 		<Disclosure as="div" defaultOpen>
@@ -48,7 +48,7 @@ const CourseLayoutSection = ({ courseElement }: CourseLayoutSectionProps) => {
 									),
 							)}
 						</div>
-						{canEdit && <ButtonAddCourseElement section={section} />}
+						{isCreator() && <ButtonAddCourseElement section={section} />}
 					</Disclosure.Panel>
 				</>
 			)}

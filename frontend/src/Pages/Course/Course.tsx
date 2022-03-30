@@ -74,12 +74,22 @@ const Course = () => {
 	const [editTitle, setEditTitle] = useState(false);
 	const [courseNavigationOpen, setCourseNavigationOpen] = useState(true);
 
+	/**
+	 * Check if the current logged in user is the creator of the course
+	 *
+	 * @returns true if the user is the creator, false otherwise
+	 * @author Enric Soldevila
+	 */
+	const isCreator = () => {
+		return user?.id === course.current?.creator.id;
+	};
+
 	useEffect(() => {
 		if (pathname.endsWith('layout') && tab.tab !== 'layout')
-			setTab({ tab: 'layout' });
-		else if (pathname.endsWith('view') && tab.tab !== 'view') {
+			!isCreator() ? setTab({ tab: 'view' }) : setTab({ tab: 'layout' });
+		else if (pathname.endsWith('view') && tab.tab !== 'view')
 			setTab({ tab: 'view' });
-		}
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [pathname]);
 
@@ -220,7 +230,7 @@ const Course = () => {
 				navigate({
 					pathname:
 						routes.auth.course.path.replace(':id', course.current.id) +
-						'/layout',
+						(isCreator() ? '/layout' : 'view'),
 					search: query.toString(),
 				});
 				break;
@@ -525,24 +535,11 @@ const Course = () => {
 		});
 	};
 
-	/**
-	 * Check if the current logged in user is the creator of the course
-	 *
-	 * @returns true if the user is the creator, false otherwise
-	 * @author Enric Soldevila
-	 */
-	const isCreator = () => {
-		return user?.id === course.current?.creator.id;
-	};
-
-	const canEdit = course.current?.creator.id === user?.id;
-
 	const contextValue: CourseContextValues = {
 		course: course.current,
 		courseElements: courseElements,
 		setCourseElementNotNew,
 		isNewCourseElement,
-		canEdit,
 		isNavigationOpen,
 		tab,
 		setTab,
@@ -624,7 +621,7 @@ const Course = () => {
 			<div className="w-full h-full flex flex-col bg-[color:var(--background-color)] text-[color:var(--foreground-color)]">
 				<div className="border-b border-[color:var(--bg-shade-four-color)]">
 					<div className="text-4xl text-left text-[color:var(--foreground-color)] pl-5 pt-3 pb-3">
-						{canEdit ? (
+						{isCreator() ? (
 							editTitle ? (
 								<FormInput
 									ref={titleRef}
@@ -640,8 +637,8 @@ const Course = () => {
 								/>
 							) : (
 								<span
-									style={{ cursor: canEdit ? 'pointer' : 'auto' }}
-									onClick={() => canEdit && setEditTitle(true)}
+									style={{ cursor: isCreator() ? 'pointer' : 'auto' }}
+									onClick={() => isCreator() && setEditTitle(true)}
 								>
 									{courseTitle}
 								</span>

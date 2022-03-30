@@ -28,6 +28,7 @@ const Link = ({
 	pale,
 	openInNewTab,
 	outsideLink,
+	download,
 	onClick,
 }: LinkProps) => {
 	if (to && !outsideLink)
@@ -45,6 +46,7 @@ const Link = ({
 				target="_blank"
 				style={style}
 				className={className}
+				download={download}
 			>
 				{children}
 			</a>

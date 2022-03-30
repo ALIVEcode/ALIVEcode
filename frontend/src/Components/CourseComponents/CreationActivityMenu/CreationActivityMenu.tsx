@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-	Activity,
 	ACTIVITY_TYPE,
 	getActivityIcon,
 } from '../../../Models/Course/activity.entity';

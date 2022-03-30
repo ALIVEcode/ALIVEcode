@@ -44,6 +44,7 @@ import { MenuResourceCreationDTO } from '../Components/Resources/MenuResourceCre
 import { Activity } from './Course/activity.entity';
 import { QueryResources } from './Resource/dto/query_resources.dto';
 import { SetStateAction } from 'react';
+import { GetMimeType } from '../Types/files.type';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;
@@ -253,9 +254,26 @@ const api = {
 				activity: Activity,
 				resource: Resource,
 			) {
-				await axios.post(
-					`courses/${course.id}/activities/${activity.id}/addResource`,
-					{ resourceId: resource.id },
+				return (
+					await axios.post(
+						`courses/${course.id}/activities/${activity.id}/addResource`,
+						{ resourceId: resource.id },
+					)
+				).data;
+			},
+			async downloadResourceFileInActivity(
+				course: Course,
+				activity: Activity,
+				extension: string,
+			) {
+				const mimeType = GetMimeType(extension);
+				if (!mimeType) return null;
+				return await axios.get(
+					`courses/${course.id}/activities/${activity.id}/download`,
+					{
+						responseType: 'arraybuffer',
+						headers: { accept: mimeType },
+					},
 				);
 			},
 			delete: apiDelete('courses/:id'),
@@ -372,15 +390,17 @@ const api = {
 					})
 				).data;
 			},
-      uploadFile: async (
-        formdata: FormData,
-        progressSetter: React.Dispatch<React.SetStateAction<number>>
-      ) => {
+			uploadFile: async (
+				formdata: FormData,
+				progressSetter: React.Dispatch<React.SetStateAction<number>>,
+			) => {
 				return (
 					await axios.post('resources/file', formdata, {
-            onUploadProgress: (progressEvent) => {
-              progressSetter(Math.round((progressEvent.loaded * 100) / progressEvent.total));
-            },
+						onUploadProgress: progressEvent => {
+							progressSetter(
+								Math.round((progressEvent.loaded * 100) / progressEvent.total),
+							);
+						},
 						headers: { 'Content-Type': 'multipart/formdata' },
 					})
 				).data;

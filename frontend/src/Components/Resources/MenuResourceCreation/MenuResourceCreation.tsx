@@ -85,6 +85,12 @@ const MenuResourceCreation = ({
 			if (reqUuid) formValues.uuid = reqUuid;
 			if (reqPath) formValues.resource.url = reqPath;
 		}
+
+    if (file && type === RESOURCE_TYPE.VIDEO) {
+			if (reqUuid) formValues.uuid = reqUuid;
+			if (reqPath) formValues.resource.url = reqPath;
+    }
+
 		formValues.type = type;
 		if (updateMode && defaultResource) {
 			const updatedRes = await api.db.resources.update(
@@ -108,7 +114,18 @@ const MenuResourceCreation = ({
 		formdata.append('uuid', id);
 		formdata.append('file', file);
 		setReqUuid(id);
-		const data = await api.db.resources.uploadImage(formdata, setUploadProgress);
+		const data = await api.db.resources.upload('image', formdata, setUploadProgress);
+		setReqPath(data.filename);
+	};
+
+	const handleUploadVideo = async () => {
+		if (!file) return;
+		const id = uuid();
+		const formdata = new FormData();
+		formdata.append('uuid', id);
+		formdata.append('file', file);
+		setReqUuid(id);
+		const data = await api.db.resources.upload('video', formdata, setUploadProgress);
 		setReqPath(data.filename);
 	};
 
@@ -119,7 +136,7 @@ const MenuResourceCreation = ({
 		formdata.append('uuid', id);
 		formdata.append('file', file);
 		setReqUuid(id);
-		const data = await api.db.resources.uploadFile(formdata, setUploadProgress);
+		const data = await api.db.resources.upload('file', formdata, setUploadProgress);
 		setReqPath(data.filename);
   };
 
@@ -155,11 +172,25 @@ const MenuResourceCreation = ({
 				return <></>;
 			case RESOURCE_TYPE.VIDEO:
 				return (
-					<InputGroup
-						label={t('resources.video.form.url')}
-						errors={errors.resource?.url}
-						{...register('resource.url', { required: true })}
-					/>
+          <>
+            <InputGroup
+              label={t('resources.video.form.url')}
+              errors={errors.resource?.url}
+              {...register('resource.url', { required: false })}
+            />
+            <InputGroup
+              type="file"
+              label={t('resources.image.form.url')}
+              errors={errors.resource?.url}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                e.target.files && setFile(e.target.files[0])
+              }
+            />
+            <Button variant="primary" onClick={handleUploadVideo}>
+              upload
+            </Button>
+            <ProgressBar progress={uploadProgress} />
+          </>
 				);
 			case RESOURCE_TYPE.IMAGE:
 				return (

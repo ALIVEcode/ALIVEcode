@@ -51,6 +51,8 @@ export class ResourceController {
     } else if (dto.type === RESOURCE_TYPE.FILE) {
       if (!dto.uuid) throw new HttpException('Bad payload', HttpStatus.BAD_REQUEST);
       (dto.resource as ResourceFileEntity).extension = extname((dto.resource as ResourceFileEntity).url);
+    } else if (dto.type === RESOURCE_TYPE.VIDEO && dto.uuid) {
+      (dto.resource as ResourceFileEntity).extension = extname((dto.resource as ResourceFileEntity).url);
     }
 
     return await this.resourceService.create(dto, user);
@@ -115,6 +117,46 @@ export class ResourceController {
   async uploadImage(@UploadedFile() file: Express.Multer.File) {
     return file;
   }
+
+  @Post('/video')
+  @ApiOperation({ summary: 'upload a video' })
+  @Auth(Role.PROFESSOR)
+  @UseInterceptors(
+    FileInterceptor('file', {
+      limits: {
+        fileSize: 1000000000000,
+      },
+      storage: diskStorage({
+        destination: 'uploads/resources',
+        filename: (req: MyRequest, file: Express.Multer.File, callback: (error: Error, filename: string) => void) => {
+          if (!file) throw new HttpException('Missing file', HttpStatus.BAD_REQUEST);
+          if (!req.body.uuid) throw new HttpException('Uuid missing', HttpStatus.BAD_REQUEST);
+          callback(null, `${req.user.id}\$${req.body.uuid}${extname(file.originalname)}`);
+        },
+      }),
+      fileFilter: (_, file: Express.Multer.File, callback: (error: Error, acceptFile: boolean) => void) => {
+        const acceptedMimetypes = [
+          'video/mp4',
+          'video/mpeg',
+          'video/ogg',
+          'video/mp2t',
+        ];
+
+        if (!acceptedMimetypes.includes(file.mimetype)) {
+          return callback(
+            new HttpException(`Invalid filetype, accepted types: ${acceptedMimetypes.join(', ')}`, HttpStatus.BAD_REQUEST),
+            false
+          );
+        }
+
+        callback(null, true);
+      },
+    }),
+  )
+  async uploadVideo(@UploadedFile() file: Express.Multer.File) {
+    return file;
+  }
+
 
   @Post('/file')
   @ApiOperation({ summary: 'upload a file' })

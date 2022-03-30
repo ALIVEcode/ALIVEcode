@@ -27,6 +27,10 @@ import { ResourceFileEntity } from '../resource/entities/resources/resource_file
 import { ResourceImageEntity } from '../resource/entities/resources/resource_image.entity';
 import { ResourceTheoryEntity } from '../resource/entities/resources/resource_theory.entity';
 
+/**
+ * Module for the course nestjs resource
+ * @author Enric Soldevila
+ */
 @Module({
   imports: [
     TypeOrmModule.forFeature([

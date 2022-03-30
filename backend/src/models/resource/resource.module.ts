@@ -18,7 +18,7 @@ import { ResourceTheoryEntity } from './entities/resources/resource_theory.entit
 import { ResourceVideoEntity } from './entities/resources/resource_video.entity';
 
 /**
- * Module for the resource entities
+ * Module for the resource nestjs resource
  * @author Enric Soldevila
  */
 @Module({

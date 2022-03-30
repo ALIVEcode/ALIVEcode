@@ -1,12 +1,11 @@
-import React, { Ref, PropsWithChildren } from 'react'
-import ReactDOM from 'react-dom'
+import React, { Ref, PropsWithChildren } from 'react';
+import ReactDOM from 'react-dom';
 import { cx, css } from '@emotion/css';
 
 interface BaseProps {
 	className: string;
 	[key: string]: unknown;
 }
-
 
 type OrNull<T> = T | null;
 
@@ -180,11 +179,5 @@ export const Toolbar = React.forwardRef(
 	(
 		{ className, ...props }: PropsWithChildren<BaseProps>,
 		ref: OrNull<Ref<HTMLDivElement>>,
-	) => (
-		<Menu
-			{...props}
-			ref={ref}
-			className={className}
-		/>
-	),
+	) => <Menu {...props} ref={ref} className={className} />,
 );

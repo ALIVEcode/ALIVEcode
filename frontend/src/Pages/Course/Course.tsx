@@ -14,7 +14,7 @@ import CourseBody from '../../Components/CourseComponents/CourseBody/CourseBody'
 import CourseLayout from '../../Components/CourseComponents/CourseLayout/CourseLayout';
 import CourseNavigation from '../../Components/CourseComponents/CourseNavigation/CourseNavigation';
 import CreateSectionMenu from '../../Components/CourseComponents/CourseSection/CreateSectionMenu';
-import CreationActivityMenu from '../../Components/CourseComponents/CreationActivityMenu/CreationActivityMenu';
+import MenuActivityCreation from '../../Components/CourseComponents/MenuActivityCreation/MenuActivityCreation';
 import FormInput from '../../Components/UtilsComponents/FormInput/FormInput';
 import LoadingScreen from '../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
 import Modal from '../../Components/UtilsComponents/Modal/Modal';
@@ -682,7 +682,7 @@ const Course = () => {
 				setOpenModalSection={setOpenModalSection}
 				sectionParent={sectionParent}
 			/>
-			<CreationActivityMenu
+			<MenuActivityCreation
 				open={openModalActivity}
 				setOpen={setOpenModalActivity}
 				sectionParent={sectionParent}

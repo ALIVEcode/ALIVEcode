@@ -1,18 +1,7 @@
-import { Descendant, Editor, Range, Transforms } from 'slate';
-import {
-	MouseEventHandler,
-	MutableRefObject,
-	useCallback,
-	useEffect,
-	useLayoutEffect,
-	useRef,
-	useState,
-} from 'react';
-import { useFocused, useSlate, useSelected } from 'slate-react';
-import {
-	RichTextToolBarButtonFormatProps,
-	RichTextToolBarProps,
-} from './richTextDocumentTypes';
+import { Editor } from 'slate';
+import { useRef } from 'react';
+import { useSlate } from 'slate-react';
+import { RichTextToolBarProps } from './richTextDocumentTypes';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -21,24 +10,20 @@ import {
 	faCode,
 	faEye,
 	faHeading,
-	faHighlighter,
 	faItalic,
 	faList,
-	faListOl, faSquare,
+	faListOl,
+	faSquare,
 	faUnderline,
 } from '@fortawesome/free-solid-svg-icons';
-import { Popup } from 'reactjs-popup';
-import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
-import { Toolbar } from '../../CourseComponents/ActivityContent/EditorComponents';
 import {
 	BlockButton,
 	isMarkActive,
 	MarkButton,
 	replaceMark,
 	RichTextButton,
-	toggleMark,
 } from '../RichTextElements/RichTextSyleElements';
-import api from '../../../Models/api';
+import { Toolbar } from './EditorComponents';
 
 /**
  * Some code from {@link https://github.com/ianstormtaylor/slate/blob/main/site/examples/hovering-toolbar.tsx}

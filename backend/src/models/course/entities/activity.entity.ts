@@ -5,10 +5,7 @@ import { CourseElementEntity } from './course_element.entity';
 import { Descendant } from 'slate';
 import { ResourceEntity, RESOURCE_TYPE } from '../../resource/entities/resource.entity';
 
-export class ActivityContent {
-  body: string;
-}
-
+/** Enum for all the types of activities */
 export enum ACTIVITY_TYPE {
   THEORY = 'TH',
   CHALLENGE = 'CH',

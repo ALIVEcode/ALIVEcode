@@ -7,7 +7,7 @@ import {
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import TypeCard from '../../UtilsComponents/Cards/TypeCard/TypeCard';
 import Modal from '../../UtilsComponents/Modal/Modal';
-import { CreationActivityMenuProps } from './creationActivityMenuTypes';
+import { MenuActivityCreationProps } from './menuActivityCreationTypes';
 import { ActivityTheory } from '../../../Models/Course/activities/activity_theory.entity';
 import { ActivityChallenge } from '../../../Models/Course/activities/activity_challenge.entity';
 import { ActivityVideo } from '../../../Models/Course/activities/activity_video.entity';
@@ -22,11 +22,11 @@ import { ActivityAssignment } from '../../../Models/Course/activities/activity_a
  *
  * @author Enric Soldevila
  */
-const CreationActivityMenu = ({
+const MenuActivityCreation = ({
 	open,
 	setOpen,
 	sectionParent,
-}: CreationActivityMenuProps) => {
+}: MenuActivityCreationProps) => {
 	const { t } = useTranslation();
 	const { addContent } = useContext(CourseContext);
 
@@ -91,4 +91,4 @@ const CreationActivityMenu = ({
 	);
 };
 
-export default CreationActivityMenu;
+export default MenuActivityCreation;

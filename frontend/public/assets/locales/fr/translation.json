@@ -53,7 +53,8 @@
 			"create_course": "Création d'un cours",
 			"create_challenge": "Création d'un défi",
 			"create_iot_project": "Création d'un projet IoT",
-			"create_iot_object": "Création d'un objet IoT"
+			"create_iot_object": "Création d'un objet IoT",
+			"update_classroom": "Modification des paramètres de la classe"
 		},
 		"join_classroom": {
 			"title": "Rejoindre une classe",

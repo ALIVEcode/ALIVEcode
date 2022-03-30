@@ -56,8 +56,8 @@ export class ClassroomService {
     return classroom;
   }
 
-  update(id: string, updateClassroomDto: ClassroomEntity) {
-    return this.classroomRepository.save({ id, ...updateClassroomDto });
+  async update(id: string, updateClassroomDto: ClassroomEntity) {
+    return await this.classroomRepository.save({ ...updateClassroomDto, id });
   }
 
   async remove(classroom: ClassroomEntity) {

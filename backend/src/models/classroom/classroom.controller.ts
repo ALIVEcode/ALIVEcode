@@ -109,7 +109,7 @@ export class ClassroomController {
   ) {
     const classroom = await this.classroomService.findOne(id);
     if (!classroom || classroom.creator.id !== professor.id) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-    return this.classroomService.update(id, updateClassroomDto);
+    return await this.classroomService.update(id, updateClassroomDto);
   }
 
   @Delete(':id')

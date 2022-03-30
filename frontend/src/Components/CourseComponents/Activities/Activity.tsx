@@ -27,7 +27,6 @@ import {
 	faChevronRight,
 	faMinusCircle,
 } from '@fortawesome/free-solid-svg-icons';
-import { ActivityChallenge as ActivityChallengeModel } from '../../../Models/Course/activities/activity_challenge.entity';
 import { ActivityVideo as ActivityVideoModel } from '../../../Models/Course/activities/activity_video.entity';
 import { ActivityAssignment as ActivityAssignmentModel } from '../../../Models/Course/activities/activity_assignment.entity';
 

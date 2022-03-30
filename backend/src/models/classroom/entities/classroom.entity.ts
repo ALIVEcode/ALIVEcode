@@ -19,6 +19,7 @@ export class ClassroomEntity extends CreatedByUser {
 
   @IsEmpty()
   @Column({ length: 6, unique: true, nullable: false })
+  @Exclude({ toClassOnly: true })
   // TODO : maybe hide the code
   // The code consists of letters from a-z and numbers from 0-9 | case non-senstive
   code: string;

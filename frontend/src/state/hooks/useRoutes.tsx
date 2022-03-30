@@ -13,7 +13,6 @@ import AIHome from '../../Pages/AI/AIHome/AIHome';
 import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
 import AccountPage from '../../Pages/Account/AccountInfo/AccountPage';
-import CourseForm from '../../Components/CourseComponents/CourseForm/CourseForm';
 import ClassroomForm from '../../Components/ClassroomComponents/ClassroomForm/ClassroomForm';
 import IoTHome from '../../Pages/IoT/IoTHome/IoTHome';
 import IoTProject from '../../Pages/IoT/IoTProject/IoTProject';
@@ -28,7 +27,6 @@ import ASDocs from '../../Components/AliveScriptComponents/ASDocs/ASDocs';
 import { MaintenanceError } from '../../Pages/Errors/MaintenanceError/MaintenanceError';
 import MaintenanceMenu from '../../Pages/SiteStatus/MaintenanceMenu/MaintenanceMenu';
 import ASBuiltinsDocs from '../../Components/AliveScriptComponents/ASDocs/ASBuiltinsDocs';
-import ActivityEditor from '../../Components/CourseComponents/MDEditor/ActivityEditor';
 import ForumHome from '../../Pages/Forum/ForumHome/ForumHome';
 import QuizHome from '../../Pages/Quiz/QuizHome/QuizHome';
 import QuizCategory from '../../Pages/Quiz/QuizCategory/QuizCategory';
@@ -42,10 +40,9 @@ import ForumPost from '../../Pages/Forum/ForumPost/ForumPost';
 import ForumSearch from '../../Pages/Forum/ForumSearch/ForumSearch';
 import Chat from '../../Pages/Chat/Chat';
 import { CHALLENGE_TYPE } from '../../Models/Challenge/challenge.entity';
-import DashboardNew from '../../Pages/DashboardNew/DashboardNew';
+import Dashboard from '../../Pages/Dashboard/Dashboard';
 import ClassroomBrowse from '../../Components/ClassroomComponents/ClassroomBrowse/ClassroomBrowse';
 import { UnderDevelopment } from '../../Pages/Errors/UnderDevelopment/UnderDevelopment';
-import RichTextEditor from '../../Components/RichTextComponents/RichTextEditor/RichTextEditor';
 
 export interface Route {
 	path: string;
@@ -199,12 +196,6 @@ const useRoutes = () => {
 			path: '/forum/subjectList/:id',
 			component: <ForumSubjectList></ForumSubjectList>,
 		},
-		album: {
-			path: '/album-test',
-			exact: true,
-			component: <ActivityEditor></ActivityEditor>,
-			adminOnly: true,
-		},
 		forum: {
 			path: '/forum',
 			component: <ForumHome></ForumHome>,
@@ -241,7 +232,7 @@ const useRoutes = () => {
 	const auth_routes = asAuthRoutes(<SignIn></SignIn>, {
 		dashboard: {
 			path: '/dashboard',
-			component: <DashboardNew></DashboardNew>,
+			component: <Dashboard></Dashboard>,
 		},
 		create_classroom: {
 			accountType: Professor,
@@ -257,10 +248,6 @@ const useRoutes = () => {
 			accountType: Student,
 			path: '/classroom/browse',
 			component: <ClassroomBrowse></ClassroomBrowse>,
-		},
-		create_course: {
-			path: '/course/create',
-			component: <CourseForm></CourseForm>,
 		},
 		course: {
 			path: '/course/:id',
@@ -346,10 +333,6 @@ const useRoutes = () => {
 		forum_post_form: {
 			path: '/forum/post',
 			component: <ForumPostForm></ForumPostForm>,
-		},
-		rich_text_editor: {
-			path: '/txt-edit',
-			component: <RichTextEditor />,
 		},
 	});
 

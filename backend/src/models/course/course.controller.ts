@@ -10,7 +10,9 @@ import {
   UseInterceptors,
   HttpException,
   HttpStatus,
+  Res,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { Auth } from '../../utils/decorators/auth.decorator';
 import { Course } from '../../utils/decorators/course.decorator';
 import { User } from '../../utils/decorators/user.decorator';
@@ -34,6 +36,8 @@ import { UpdateCourseElementDTO } from './dtos/UpdateCourseElement.dto';
 import { AddResourceDTO } from './dtos/AddResource.dto';
 import { ResourceService } from '../resource/resource.service';
 import { ApiTags } from '@nestjs/swagger';
+import { RESOURCE_TYPE } from '../resource/entities/resource.entity';
+import { ResourceFileEntity } from '../resource/entities/resource_file.entity';
 
 /**
  * All the routes to create/update/delete/get a course or it's content (CourseElements)
@@ -214,10 +218,32 @@ export class CourseController {
    */
   @Get(':id/activities/:activityId/resources')
   @Auth(Role.PROFESSOR, Role.STAFF)
-  @UseGuards(CourseProfessor)
+  @UseGuards(CourseAccess)
   async getResourceInActivity(@Course() course: CourseEntity, @Param('activityId') activityId: string) {
     const activity = await this.courseService.findActivity(course.id, activityId);
     return await this.courseService.getResourceOfActivity(activity);
+  }
+
+  /**
+   * Route to download the file associated with a download activity.
+   * @param course Course found with the id in the url
+   * @param activityId Id of the activity to get the resource in
+   * @returns The file to download
+   */
+  @Get(':id/activities/:activityId/download')
+  @UseGuards(CourseAccess)
+  async downloadResourceFileInActivity(
+    @Course() course: CourseEntity,
+    @Param('activityId') activityId: string,
+    @Res() res: Response
+  ) {
+    const activity = await this.courseService.findActivity(course.id, activityId);
+    // TODO check if activity is of acceptable type
+    const resourceUnknown = await this.courseService.getResourceOfActivity(activity);
+    if (resourceUnknown.type !== RESOURCE_TYPE.FILE) throw new HttpException('Can only download on FILE activities', HttpStatus.BAD_REQUEST);
+    const resource = resourceUnknown as ResourceFileEntity;
+    // return res.status(200).sendFile(`${resource.url}`, { root: './uploads/resources'});
+    return res.status(200).download(`./uploads/resources/${resource.url}`);
   }
 
   /**

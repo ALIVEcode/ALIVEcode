@@ -107,7 +107,11 @@ const DashboardNew = (props: DashboardNewProps) => {
 			tabSelected.tab !== 'challenges'
 		)
 			setTabSelected({ tab: 'challenges' });
-		else if (pathname.endsWith('resources') && tabSelected.tab !== 'resources')
+		else if (
+			pathname.endsWith('resources') &&
+			tabSelected.tab !== 'resources' &&
+			user?.isProfessor()
+		)
 			setTabSelected({ tab: 'resources' });
 		else if (pathname.includes('classroom')) {
 			const classroomId = query.get('id');
@@ -277,18 +281,20 @@ const DashboardNew = (props: DashboardNewProps) => {
 								{t('dashboard.challenges.title')}
 							</label>
 						</div>
-						<div
-							className={
-								'sidebar-btn ' +
-								(tabSelected.tab === 'resources' ? 'sidebar-selected' : '')
-							}
-							onClick={openResources}
-						>
-							<FontAwesomeIcon className="sidebar-icon" icon={faFile} />
-							<label className="sidebar-btn-text">
-								{t('dashboard.resources.title')}
-							</label>
-						</div>
+						{user?.isProfessor() && (
+							<div
+								className={
+									'sidebar-btn ' +
+									(tabSelected.tab === 'resources' ? 'sidebar-selected' : '')
+								}
+								onClick={openResources}
+							>
+								<FontAwesomeIcon className="sidebar-icon" icon={faFile} />
+								<label className="sidebar-btn-text">
+									{t('dashboard.resources.title')}
+								</label>
+							</div>
+						)}
 
 						<hr />
 

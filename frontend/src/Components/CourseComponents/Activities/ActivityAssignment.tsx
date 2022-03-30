@@ -1,10 +1,7 @@
-import { ActivityVideo as ActivityVideoModel } from '../../../Models/Course/activities/activity_video.entity';
 import Button from '../../UtilsComponents/Buttons/Button';
 import api from '../../../Models/api';
 import { useContext } from 'react';
 import { CourseContext } from '../../../state/contexts/CourseContext';
-import { useLocation } from 'react-router';
-import Link from '../../UtilsComponents/Link/Link';
 import { ActivityAssignment as ActivityAssignmentModel } from '../../../Models/Course/activities/activity_assignment.entity';
 import { downloadBlob } from '../../../Types/files.type';
 import { useAlert } from 'react-alert';
@@ -21,9 +18,7 @@ const ActivityAssignment = ({
 	activity: ActivityAssignmentModel;
 }) => {
 	const { course } = useContext(CourseContext);
-	const { pathname } = useLocation();
 	const alert = useAlert();
-	console.log(pathname);
 
 	const handleDownload = async () => {
 		if (!course || !activity.resource) return;

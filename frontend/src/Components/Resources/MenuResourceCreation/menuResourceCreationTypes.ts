@@ -13,7 +13,7 @@ export type MenuResourceCreationProps = {
 };
 
 export type MenuResourceCreationDTO = {
-	uuid: string;
+	uuid?: string;
 	type: RESOURCE_TYPE;
 	resource: {
 		name: string;

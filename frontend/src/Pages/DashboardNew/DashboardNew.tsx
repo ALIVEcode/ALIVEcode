@@ -120,7 +120,14 @@ const DashboardNew = (props: DashboardNewProps) => {
 			if (!classroom) return;
 			setTabSelected({ tab: 'classrooms', classroom });
 		}
-	}, [classrooms, pathname, query, tabSelected.classroom?.id, tabSelected.tab]);
+	}, [
+		classrooms,
+		pathname,
+		query,
+		tabSelected.classroom?.id,
+		tabSelected.tab,
+		user,
+	]);
 
 	useEffect(() => {
 		if (!user) return;

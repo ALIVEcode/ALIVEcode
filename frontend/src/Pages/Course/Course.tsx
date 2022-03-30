@@ -86,7 +86,7 @@ const Course = () => {
 
 	useEffect(() => {
 		if (pathname.endsWith('layout') && tab.tab !== 'layout')
-			!isCreator() ? setTab({ tab: 'view' }) : setTab({ tab: 'layout' });
+			setTab({ tab: 'layout' });
 		else if (pathname.endsWith('view') && tab.tab !== 'view')
 			setTab({ tab: 'view' });
 

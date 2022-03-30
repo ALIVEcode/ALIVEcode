@@ -2,9 +2,9 @@ import Form from '../../UtilsComponents/Form/Form';
 import { ChallengeFormProps } from './challengeFormTypes';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { useAlert } from 'react-alert';
-import { ChallengeAlive } from '../../../Models/Challenge/challenges/challenge_alive.entity';
 import { useTranslation } from 'react-i18next';
 import {
+	Challenge,
 	CHALLENGE_ACCESS,
 	CHALLENGE_DIFFICULTY,
 	CHALLENGE_TYPE,
@@ -17,10 +17,13 @@ import {
 	ChallengeIoT,
 } from '../../../Models/Challenge/challenges/challenge_IoT.entity';
 import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { IoTProject } from '../../../Models/Iot/IoTproject.entity';
 import api from '../../../Models/api';
 import { useNavigate } from 'react-router-dom';
+import { RESOURCE_TYPE } from '../../../Models/Resource/resource.entity';
+import { plainToInstance } from 'class-transformer';
+import { UserContext } from '../../../state/contexts/UserContext';
 
 /**
  * Component that renders the create form for the selected challenge type
@@ -32,6 +35,7 @@ import { useNavigate } from 'react-router-dom';
 const ChallengeForm = ({ type }: ChallengeFormProps) => {
 	const { routes } = useRoutes();
 	const { t } = useTranslation();
+	const { user } = useContext(UserContext);
 	const alert = useAlert();
 	const navigate = useNavigate();
 
@@ -58,8 +62,20 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 			case CHALLENGE_TYPE.ALIVE:
 				return (
 					<Form
-						onSubmit={res => {
-							const challenge: ChallengeAlive = res.data;
+						onSubmit={async res => {
+							const challenge: Challenge = plainToInstance(Challenge, res.data);
+
+							if (user?.isProfessor()) {
+								await api.db.resources.create({
+									type: RESOURCE_TYPE.CHALLENGE,
+									resource: {
+										name: challenge.name,
+										subject: challenge.getSubject(),
+										challengeId: challenge.id,
+									},
+								});
+							}
+
 							navigate(
 								routes.auth.challenge_edit.path.replace(
 									':challengeId',

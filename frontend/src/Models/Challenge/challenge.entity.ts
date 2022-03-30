@@ -1,4 +1,5 @@
 import { Exclude, Type } from 'class-transformer';
+import { SUBJECTS } from '../../Types/sharedTypes';
 import { USER_TYPES } from '../../Types/userTypes';
 import { Activity } from '../Course/activity.entity';
 import { CreatedByUser } from '../Generics/createdByUser.entity';
@@ -57,5 +58,18 @@ export class Challenge extends CreatedByUser {
 		if (this.type === CHALLENGE_TYPE.AI) return 'Aritificial Intelligence';
 		if (this.type === CHALLENGE_TYPE.IOT) return 'Internet of Things';
 		return;
+	}
+
+	getSubject() {
+		switch (this.type) {
+			case CHALLENGE_TYPE.AI:
+				return SUBJECTS.AI;
+			case CHALLENGE_TYPE.IOT:
+				return SUBJECTS.IOT;
+			case CHALLENGE_TYPE.ALIVE:
+			case CHALLENGE_TYPE.CODE:
+				return SUBJECTS.CODE;
+		}
+		return SUBJECTS.OTHER;
 	}
 }

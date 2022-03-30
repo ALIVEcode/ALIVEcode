@@ -1,4 +1,4 @@
-import { Resource } from './resource.entity';
+import { Resource } from '../resource.entity';
 import { Descendant } from 'slate';
 
 /**

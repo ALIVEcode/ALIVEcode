@@ -1,11 +1,11 @@
 import { Exclude } from 'class-transformer';
 import { SUBJECTS, getResourceIcon } from '../../Types/sharedTypes';
 import { Professor } from '../User/user.entity';
-import { ResourceChallenge } from './resource_challenge.entity';
-import { ResourceTheory } from './resource_theory.entity';
-import { ResourceFile } from './resource_file.entity';
-import { ResourceImage } from './resource_image.entity';
-import { ResourceVideo } from './resource_video.entity';
+import { ResourceChallenge } from './resources/resource_challenge.entity';
+import { ResourceTheory } from './resources/resource_theory.entity';
+import { ResourceFile } from './resources/resource_file.entity';
+import { ResourceImage } from './resources/resource_image.entity';
+import { ResourceVideo } from './resources/resource_video.entity';
 
 /** Enum of all the type of resources */
 export enum RESOURCE_TYPE {

@@ -1,4 +1,4 @@
-import { Resource } from './resource.entity';
+import { Resource } from '../resource.entity';
 
 /**
  * Activity of type File model in the database

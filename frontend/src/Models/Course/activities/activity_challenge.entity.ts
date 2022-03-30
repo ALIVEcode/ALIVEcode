@@ -1,5 +1,5 @@
 import { Activity } from '../activity.entity';
-import { ResourceChallenge } from '../../Resource/resource_challenge.entity';
+import { ResourceChallenge } from '../../Resource/resources/resource_challenge.entity';
 import { Type } from 'class-transformer';
 import { RESOURCE_TYPE } from '../../Resource/resource.entity';
 

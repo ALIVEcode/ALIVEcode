@@ -1,4 +1,4 @@
-import { Resource } from './resource.entity';
+import { Resource } from '../resource.entity';
 
 /**
  * Activity of type Video model in the database

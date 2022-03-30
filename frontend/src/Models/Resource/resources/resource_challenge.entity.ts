@@ -1,6 +1,6 @@
 import { Type } from 'class-transformer';
-import { Challenge } from '../Challenge/challenge.entity';
-import { Resource } from './resource.entity';
+import { Challenge } from '../../Challenge/challenge.entity';
+import { Resource } from '../resource.entity';
 
 /**
  * Activity of type Challenge model in the database

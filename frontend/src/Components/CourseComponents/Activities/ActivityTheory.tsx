@@ -3,7 +3,7 @@ import RichTextDocument from '../../RichTextComponents/RichTextDocument/RichText
 import { ActivityProps } from './activityTypes';
 import api from '../../../Models/api';
 import useWaitBeforeUpdate from '../../../state/hooks/useWaitBeforeUpdate';
-import { ResourceTheory } from '../../../Models/Resource/resource_theory.entity';
+import { ResourceTheory } from '../../../Models/Resource/resources/resource_theory.entity';
 
 /**
  * Shows an activity of type Theory

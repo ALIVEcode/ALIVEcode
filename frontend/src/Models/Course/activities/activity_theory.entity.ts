@@ -1,6 +1,6 @@
 import { Type } from 'class-transformer';
 import { Activity } from '../activity.entity';
-import { ResourceTheory } from '../../Resource/resource_theory.entity';
+import { ResourceTheory } from '../../Resource/resources/resource_theory.entity';
 import { RESOURCE_TYPE } from '../../Resource/resource.entity';
 
 /**

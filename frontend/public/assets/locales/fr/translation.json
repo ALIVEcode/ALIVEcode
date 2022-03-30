@@ -41,7 +41,9 @@
 		},
 		"challenge": {
 			"PATCH": {
-				"title": "Paramètres du défi"
+				"title": "Paramètres du défi",
+				"fontSize": "Taille de la police",
+				"interface_settings": "L'interface"
 			}
 		},
 		"title": {

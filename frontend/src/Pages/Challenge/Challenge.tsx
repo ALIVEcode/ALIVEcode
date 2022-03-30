@@ -299,21 +299,21 @@ const Challenge = ({
 							initialProgressionCode ||
 							(challenge as ChallengeAliveModel).initialCode
 						}
-					></ChallengeAlive>
+					/>
 				) : challenge instanceof ChallengeCodeModel ? (
 					<ChallengeCode
 						initialCode={
 							initialProgressionCode ||
 							(challenge as ChallengeCodeModel).initialCode
 						}
-					></ChallengeCode>
+					/>
 				) : challenge instanceof ChallengeAIModel ? (
 					<ChallengeAI
 						initialCode={
 							initialProgressionCode ||
 							(challenge as ChallengeAIModel).initialCode
 						}
-					></ChallengeAI>
+					/>
 				) : challenge instanceof ChallengeIoTModel ? (
 					<IoTProject
 						initialCode={
@@ -322,9 +322,9 @@ const Challenge = ({
 						}
 						challenge={challenge}
 						updateId={challenge.id + '/' + progression?.id}
-					></IoTProject>
+					/>
 				) : (
-					<LoadingScreen></LoadingScreen>
+					<LoadingScreen />
 				)}
 				<Modal
 					open={userInputModalOpen}

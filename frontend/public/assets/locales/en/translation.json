@@ -41,7 +41,9 @@
 		},
 		"challenge": {
 			"PATCH": {
-				"title": "Challenge settings"
+				"title": "Challenge settings",
+				"fontSize": "Font size",
+				"interface_settings": "Interface"
 			}
 		},
 		"title": {

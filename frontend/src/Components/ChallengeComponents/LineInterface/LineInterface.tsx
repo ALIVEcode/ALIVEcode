@@ -1,19 +1,41 @@
 import {
+	EditorTabModel,
 	LineInterfaceProps,
 	StyledLineInterface,
-	EditorTabModel,
 } from './lineInterfaceTypes';
 import EditorTab from '../../AliveScriptComponents/EditorTab/EditorTab';
-import { useState, useRef, memo, useContext } from 'react';
+import { memo, useContext, useRef, useState } from 'react';
 import { ThemeContext } from '../../../state/contexts/ThemeContext';
-
 import { Autocomplete, setAutocomplete } from './autocomplete/autocomplete';
 import ace from 'ace-builds';
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/theme-cobalt';
+import 'ace-builds/src-noconflict/theme-dracula';
+import 'ace-builds/src-noconflict/theme-github';
+import 'ace-builds/src-noconflict/theme-twilight';
 import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/webpack-resolver';
 import './mode-alivescript';
+import { faCog } from '@fortawesome/free-solid-svg-icons';
+import IconButton from '../../DashboardComponents/IconButton/IconButton';
+import Modal from '../../UtilsComponents/Modal/Modal';
+import Form from '../../UtilsComponents/Form/Form';
+import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
+import { useTranslation } from 'react-i18next';
+import { UserContext } from '../../../state/contexts/UserContext';
+
+enum FontSize {
+	SMALL = 'small',
+	MEDIUM = 'medium',
+	LARGE = 'large',
+}
+
+enum Theme {
+	COBALT = 'cobalt',
+	DRACULA = 'dracula',
+	GITHUB = 'github',
+	TWILIGHT = 'twilight',
+}
 
 /**
  * Line interface to write the code on
@@ -48,9 +70,16 @@ const LineInterface = memo(
 		/* Content for a single tab interface */
 		const [content, setContent] = useState<string>(initialContent ?? '');
 		const { theme } = useContext(ThemeContext);
+		const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large'>(
+			'medium',
+		);
+		const [codeTheme, setCodeTheme] = useState<Theme>(Theme.COBALT);
+		const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
 
 		const ref = useRef<AceEditor | null>(null);
 		const refList = useRef<AceEditor[]>([]);
+
+		const { t } = useTranslation();
 
 		const setOpenedTab = (idx: number) => {
 			const updatedTabs = tabs.map((t, i) => {
@@ -71,19 +100,40 @@ const LineInterface = memo(
 				theme={theme}
 				className={'flex flex-col h-full ' + className}
 			>
-				{hasTabs && (
-					<div className="editors-tab-bg w-100">
-						<div className="editors-tab w-100">
-							{tabs.map((t, idx) => (
-								<EditorTab
-									key={idx}
-									tab={t}
-									setOpen={() => setOpenedTab(idx)}
-								/>
+				<div className="editors-tab-bg w-full">
+					<div className="editors-tab w-full">
+						{hasTabs &&
+							tabs.map((t, idx) => (
+								<div className="w-fit">
+									<EditorTab
+										key={idx}
+										tab={t}
+										setOpen={() => setOpenedTab(idx)}
+									/>
+								</div>
 							))}
+						{/* GitHub copilot suggestion XD
+							<FontAwesomeIcon
+								icon={faPlus}
+								onClick={() => {
+									setTabs([
+										...tabs,
+										{
+											title: 'New tab',
+											open: true,
+										},
+									]);
+								}}
+							/>*/}
+						<div className="w-full flex justify-end">
+							<IconButton
+								onClick={() => setSettingsOpen(true)}
+								icon={faCog}
+								size="2x"
+							/>
 						</div>
 					</div>
-				)}
+				</div>
 				{hasTabs ? (
 					<>
 						{tabs.map((t, idx) => {
@@ -101,7 +151,7 @@ const LineInterface = memo(
 									defaultValue={t.defaultContent}
 									value={t.content}
 									mode="alivescript"
-									theme="cobalt"
+									theme={codeTheme}
 									showGutter
 									showPrintMargin
 									onLoad={() => {
@@ -123,7 +173,7 @@ const LineInterface = memo(
 										tabs[idx].content = content;
 										setTabs([...tabs]);
 									}}
-									fontSize="large"
+									fontSize={fontSize}
 									name="1nt3rf4c3" //"UNIQUE_ID_OF_DIV"
 									editorProps={{ $blockScrolling: Infinity }}
 									setOptions={{
@@ -142,7 +192,7 @@ const LineInterface = memo(
 						ref={ref}
 						className="ace-editor relative"
 						mode="alivescript"
-						theme="cobalt"
+						theme={codeTheme}
 						defaultValue={initialContent}
 						value={content}
 						onChange={content => {
@@ -162,7 +212,7 @@ const LineInterface = memo(
 								}
 							}, 10);
 						}}
-						fontSize="large"
+						fontSize={fontSize}
 						name="1nt3rf4c3" //"UNIQUE_ID_OF_DIV"
 						editorProps={{ $blockScrolling: true }}
 						setOptions={{
@@ -172,6 +222,34 @@ const LineInterface = memo(
 						}}
 					/>
 				)}
+				<Modal open={settingsOpen} setOpen={setSettingsOpen} hideFooter>
+					<Form
+						action={FORM_ACTION.PATCH}
+						name={t('form.challenge.PATCH.interface_settings')}
+						url=""
+						inputGroups={[
+							{
+								name: 'fontSize',
+								inputType: 'select',
+								default: fontSize,
+								required: true,
+								selectOptions: FontSize,
+							},
+							{
+								name: 'codeTheme',
+								inputType: 'select',
+								default: codeTheme,
+								required: true,
+								selectOptions: Theme,
+							},
+						]}
+						customSubmit={value => {
+							setSettingsOpen(false);
+							setFontSize(value.fontSize);
+							setCodeTheme(value.codeTheme);
+						}}
+					/>
+				</Modal>
 			</StyledLineInterface>
 		);
 	},

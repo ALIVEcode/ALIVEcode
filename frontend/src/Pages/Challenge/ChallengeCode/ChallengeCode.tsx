@@ -1,4 +1,4 @@
-import { useEffect, useContext, useMemo } from 'react';
+import React, { useEffect, useContext, useMemo } from 'react';
 import LineInterface from '../../../Components/ChallengeComponents/LineInterface/LineInterface';
 import { UserContext } from '../../../state/contexts/UserContext';
 import Cmd from '../../../Components/ChallengeComponents/Cmd/Cmd';
@@ -75,7 +75,7 @@ const ChallengeCode = ({ initialCode }: ChallengeCodeProps) => {
 			<StyledCodeChallenge>
 				<div className="h-full flex flex-row">
 					{/* Left Side of screen */}
-					<div className="w-1/2 h-full flex flex-col">
+					<div className="w-3/5 h-full flex flex-col">
 						<ChallengeToolsBar />
 						{editMode ? (
 							<LineInterface
@@ -111,8 +111,8 @@ const ChallengeCode = ({ initialCode }: ChallengeCodeProps) => {
 							/>
 						)}
 					</div>
-					<div className=" h-full w-1/2">
-						<Cmd ref={cmdRef}></Cmd>
+					<div className="h-full w-2/5">
+						<Cmd ref={cmdRef} />
 					</div>
 				</div>
 			</StyledCodeChallenge>

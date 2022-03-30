@@ -1,7 +1,6 @@
-import { ChildEntity, Column, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
-import { ChallengeEntity } from '../../challenge/entities/challenge.entity';
-import { ResourceEntity, RESOURCE_TYPE } from './resource.entity';
-import { ActivityChallengeEntity } from '../../course/entities/activities/activity_challenge.entity';
+import { ChildEntity, Column, JoinColumn, ManyToOne} from 'typeorm';
+import { ChallengeEntity } from '../../../challenge/entities/challenge.entity';
+import { ResourceEntity, RESOURCE_TYPE } from '../resource.entity';
 import { IsNotEmpty } from 'class-validator';
 
 /**

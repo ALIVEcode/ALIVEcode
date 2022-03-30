@@ -17,7 +17,7 @@ export enum ACTIVITY_TYPE {
 }
 
 /**
- * Activity model in the database
+ * Generic activity model in the database
  * @author Enric Soldevila, Mathis Laroche
  */
 @Entity()

@@ -4,7 +4,7 @@ import { CreatedByUser } from '../../../generics/entities/createdByUser.entity';
 import { ActivityChallengeEntity } from '../../course/entities/activities/activity_challenge.entity';
 import { UserEntity } from '../../user/entities/user.entity';
 import { IsEmpty, IsNotEmpty, IsOptional } from 'class-validator';
-import { ResourceChallengeEntity } from '../../resource/entities/resource_challenge.entity';
+import { ResourceChallengeEntity } from '../../resource/entities/resources/resource_challenge.entity';
 
 export enum CHALLENGE_TAG {}
 export enum CHALLENGE_ACCESS {

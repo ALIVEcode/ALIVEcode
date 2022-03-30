@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsOptional } from 'class-validator';
-import { ChildEntity, Column, OneToMany } from 'typeorm';
-import { ResourceEntity, RESOURCE_TYPE } from './resource.entity';
+import { ChildEntity, Column } from 'typeorm';
+import { RESOURCE_TYPE, ResourceEntity } from '../resource.entity';
 
 /**
  * Activity of type Image model in the database

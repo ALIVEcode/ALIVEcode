@@ -30,7 +30,6 @@ import { ChallengeAlive } from '../../../Models/Challenge/challenges/challenge_a
  * Component that renders the create form for the selected challenge type
  *
  * @param {string} type type of the challenge to create: ALIVE, IoT, code or AI
- *
  * @author Enric Soldevila
  */
 const ChallengeForm = ({ type }: ChallengeFormProps) => {
@@ -39,9 +38,12 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 	const { user } = useContext(UserContext);
 	const alert = useAlert();
 	const navigate = useNavigate();
-
 	const [projects, setProjects] = useState<IoTProject[]>([]);
 
+	/**
+	 * Creates a resource Challenge based on the challenge if the user is a profesor.
+	 * @param challenge Challenge to create the resource based on
+	 */
 	const createResourceChallenge = async (challenge: Challenge) => {
 		if (user?.isProfessor()) {
 			await api.db.resources.create({
@@ -55,6 +57,9 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 		}
 	};
 
+	/**
+	 * Loads the IoTProjects of a user when he switched to a level of type IoT
+	 */
 	useEffect(() => {
 		if (type === CHALLENGE_TYPE.IOT) {
 			const getIoTProjects = async () => {
@@ -66,6 +71,11 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 		}
 	}, [type]);
 
+	/**
+	 *
+	 * Renders the specific fields for creating a challenge based on its type
+	 * @returns Specific fields for creating a challenge based on its type
+	 */
 	const getSpecificChallenge = () => {
 		const sharedProps = {
 			name: 'challenge',

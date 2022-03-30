@@ -1,11 +1,11 @@
 import { Type } from "class-transformer";
 import { IsDefined, IsEnum, IsNotEmpty, IsNotEmptyObject, IsOptional, IsUUID, ValidateNested } from 'class-validator';
 import { ResourceEntity, RESOURCE_TYPE, DifferentResources } from '../entities/resource.entity';
-import { ResourceChallengeEntity } from '../entities/resource_challenge.entity';
-import { ResourceFileEntity } from '../entities/resource_file.entity';
-import { ResourceImageEntity } from '../entities/resource_image.entity';
-import { ResourceTheoryEntity } from '../entities/resource_theory.entity';
-import { ResourceVideoEntity } from '../entities/resource_video.entity';
+import { ResourceChallengeEntity } from '../entities/resources/resource_challenge.entity';
+import { ResourceFileEntity } from '../entities/resources/resource_file.entity';
+import { ResourceImageEntity } from '../entities/resources/resource_image.entity';
+import { ResourceTheoryEntity } from '../entities/resources/resource_theory.entity';
+import { ResourceVideoEntity } from '../entities/resources/resource_video.entity';
 
 export class CreateResourceDTOSimple {
   @IsUUID()

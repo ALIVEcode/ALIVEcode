@@ -2,14 +2,19 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { ResourceEntity, RESOURCE_TYPE } from './entities/resource.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ResourceChallengeEntity } from './entities/resource_challenge.entity';
-import { ResourceFileEntity } from './entities/resource_file.entity';
-import { ResourceImageEntity } from './entities/resource_image.entity';
-import { ResourceTheoryEntity } from './entities/resource_theory.entity';
-import { ResourceVideoEntity } from './entities/resource_video.entity';
+import { ResourceChallengeEntity } from './entities/resources/resource_challenge.entity';
 import { CreateResourceDTO, CreateResourceDTOSimple } from './dto/CreateResource.dto';
 import { ProfessorEntity } from '../user/entities/user.entity';
+import { ResourceFileEntity } from './entities/resources/resource_file.entity';
+import { ResourceImageEntity } from './entities/resources/resource_image.entity';
+import { ResourceTheoryEntity } from './entities/resources/resource_theory.entity';
+import { ResourceVideoEntity } from './entities/resources/resource_video.entity';
 
+/**
+ * Service that handles operations with the database
+ * for the resources. (Creation, updating, deletion, etc.)
+ * @author Enric Soldevila
+ */
 @Injectable()
 export class ResourceService {
   constructor(
@@ -21,6 +26,12 @@ export class ResourceService {
     @InjectRepository(ResourceVideoEntity) private readonly resVideoRepo: Repository<ResourceVideoEntity>,
   ) {}
 
+  /**
+   * Save any type of resource with generic and specific fields depending on its type
+   * @param dto DTO to save the resource with
+   * @param id Id of the resource to save
+   * @returns The newly updated resource
+   */
   async genericSave(dto: CreateResourceDTOSimple, id?: string) {
     if (id) dto.resource.id = id;
     switch (dto.type) {
@@ -38,21 +49,43 @@ export class ResourceService {
     throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
   }
 
+  /**
+   * Create a type of resource based on a dto.
+   * @param dto Dto to create a resource
+   * @param professor Professor creating the resource
+   * @returns The newly created resource
+   */
   async create(dto: CreateResourceDTO, professor: ProfessorEntity) {
     dto.resource.creator = professor;
     return await this.genericSave(dto);
   }
 
+  /**
+   * Finds a resource in the database based on its id
+   * @param id Id of the resource to find
+   * @returns The found resource
+   */
   async findOne(id: string) {
     const res = await this.resRepo.findOne(id);
     if (!res) throw new HttpException('Resource not found', HttpStatus.NOT_FOUND);
     return res;
   }
 
+  /**
+   * Updates a resource based on its id with a DTO
+   * @param id Id of the resource to update
+   * @param dto DTO to update the resource with
+   * @returns The updated resource
+   */
   async update(id: string, dto: CreateResourceDTOSimple) {
     return await this.genericSave(dto, id);
   }
 
+  /**
+   * Deletes a resource based on its id
+   * @param id Id of the resource to remove
+   * @returns The deletion query result
+   */
   async remove(id: string) {
     return await this.resRepo.delete(id);
   }

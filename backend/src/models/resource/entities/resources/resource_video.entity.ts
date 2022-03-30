@@ -1,7 +1,6 @@
 import { IsNotEmpty, IsOptional } from 'class-validator';
-import { ChildEntity, Column, OneToMany } from 'typeorm';
-import { ActivityVideoEntity } from '../../course/entities/activities/activity_video.entity';
-import { ResourceEntity, RESOURCE_TYPE } from './resource.entity';
+import { ChildEntity, Column } from 'typeorm';
+import { ResourceEntity, RESOURCE_TYPE } from '../resource.entity';
 
 /**
  * Activity of type Video model in the database

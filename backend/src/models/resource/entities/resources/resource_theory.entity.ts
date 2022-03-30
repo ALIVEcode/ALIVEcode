@@ -1,7 +1,7 @@
 import { ChildEntity, Column} from 'typeorm';
-import { ResourceEntity, RESOURCE_TYPE } from './resource.entity';
 import { IsOptional } from 'class-validator';
 import { Descendant } from 'slate';
+import { ResourceEntity, RESOURCE_TYPE } from '../resource.entity';
 
 /**
  * Activity of type Theory model in the database

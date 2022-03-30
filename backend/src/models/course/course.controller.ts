@@ -38,7 +38,7 @@ import { ResourceService } from '../resource/resource.service';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateActivityAssignmentDTO } from './dtos/CreateActivities.dto';
 import { RESOURCE_TYPE } from '../resource/entities/resource.entity';
-import { ResourceFileEntity } from '../resource/entities/resource_file.entity';
+import { ResourceFileEntity } from '../resource/entities/resources/resource_file.entity';
 
 /**
  * All the routes to create/update/delete/get a course or it's content (CourseElements)

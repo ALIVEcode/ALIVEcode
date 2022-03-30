@@ -19,7 +19,6 @@ import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
 import { ResourceCreator } from '../../utils/guards/resource.guard';
 import { Resource } from '../../utils/decorators/resource.decorator';
 import { CreateResourceDTO, CreateResourceDTOSimple } from './dto/CreateResource.dto';
-import { ResourceImageEntity } from './entities/resource_image.entity';
 import { ProfessorEntity } from '../user/entities/user.entity';
 import { User } from '../../utils/decorators/user.decorator';
 import { validate } from 'class-validator';
@@ -30,14 +29,25 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { MyRequest } from 'src/utils/guards/auth.guard';
 import { extname } from 'path';
-import { ResourceFileEntity } from './entities/resource_file.entity';
+import { ResourceFileEntity } from './entities/resources/resource_file.entity';
+import { ResourceImageEntity } from './entities/resources/resource_image.entity';
 
+/**
+ * All the routes to create/update/delete/get a resource or upload files/videos/images
+ * @author Enric Soldevila
+ */
 @Controller('resources')
 @ApiTags('resources')
 @UseInterceptors(DTOInterceptor)
 export class ResourceController {
   constructor(private readonly resourceService: ResourceService) {}
 
+  /**
+   * Route to create a resource. Needs to be a professor
+   * @param user User creating the resource
+   * @param dto DTO to create the resource with
+   * @returns The newly created resource
+   */
   @Post()
   @Auth(Role.PROFESSOR)
   async create(@User() user: ProfessorEntity, @Body() dto: CreateResourceDTOSimple) {
@@ -58,6 +68,11 @@ export class ResourceController {
     return await this.resourceService.create(dto, user);
   }
 
+  /**
+   * Finds a resource by its id. Needs to be the resource creator
+   * @param resource Resource found by the id in the request
+   * @returns The resource found
+   */
   @Get(':id')
   @Auth()
   @UseGuards(ResourceCreator)
@@ -65,6 +80,13 @@ export class ResourceController {
     return resource;
   }
 
+  /**
+   * Route to update a resource by its id with a DTO. Needs to be the resource creator
+   * @param resource Resource found by the id in the request
+   * @param id Id of the resource
+   * @param dto DTO to update the resource with
+   * @returns The newly updated resource
+   */
   @Patch(':id')
   @UseGuards(ResourceCreator)
   async update(@Resource() res: ResourceEntity, @Param('id') id: string, @Body() dto: CreateResourceDTOSimple) {
@@ -74,12 +96,22 @@ export class ResourceController {
     return await this.resourceService.update(id, dto);
   }
 
+  /**
+   * Route to delete a resource by its id. Needs to be the resource creator
+   * @param id Id of the resource to delete
+   * @returns The query deletion result
+   */
   @Delete(':id')
   @UseGuards(ResourceCreator)
   async remove(@Param('id') id: string) {
     return await this.resourceService.remove(id);
   }
 
+  /**
+   * Route to upload an image to the backend. Needs to be a professor
+   * @param file Image file issued by the user for upload
+   * @returns The result success or fail of the upload
+   */
   @Post('/image')
   @ApiOperation({ summary: 'upload an image' })
   @Auth(Role.PROFESSOR)
@@ -97,16 +129,15 @@ export class ResourceController {
         },
       }),
       fileFilter: (_, file: Express.Multer.File, callback: (error: Error, acceptFile: boolean) => void) => {
-        const acceptedMimetypes = [
-          'image/jpeg',
-          'image/jpg',
-          'image/png',
-        ];
+        const acceptedMimetypes = ['image/jpeg', 'image/jpg', 'image/png'];
 
         if (!acceptedMimetypes.includes(file.mimetype)) {
           return callback(
-            new HttpException(`Invalid filetype, accepted types: ${acceptedMimetypes.join(', ')}`, HttpStatus.BAD_REQUEST),
-            false
+            new HttpException(
+              `Invalid filetype, accepted types: ${acceptedMimetypes.join(', ')}`,
+              HttpStatus.BAD_REQUEST,
+            ),
+            false,
           );
         }
 
@@ -118,6 +149,11 @@ export class ResourceController {
     return file;
   }
 
+  /**
+   * Route to upload a video to the backend. Needs to be a professor
+   * @param file Video file issued by the user for upload
+   * @returns The result success or fail of the upload
+   */
   @Post('/video')
   @ApiOperation({ summary: 'upload a video' })
   @Auth(Role.PROFESSOR)
@@ -135,17 +171,15 @@ export class ResourceController {
         },
       }),
       fileFilter: (_, file: Express.Multer.File, callback: (error: Error, acceptFile: boolean) => void) => {
-        const acceptedMimetypes = [
-          'video/mp4',
-          'video/mpeg',
-          'video/ogg',
-          'video/mp2t',
-        ];
+        const acceptedMimetypes = ['video/mp4', 'video/mpeg', 'video/ogg', 'video/mp2t'];
 
         if (!acceptedMimetypes.includes(file.mimetype)) {
           return callback(
-            new HttpException(`Invalid filetype, accepted types: ${acceptedMimetypes.join(', ')}`, HttpStatus.BAD_REQUEST),
-            false
+            new HttpException(
+              `Invalid filetype, accepted types: ${acceptedMimetypes.join(', ')}`,
+              HttpStatus.BAD_REQUEST,
+            ),
+            false,
           );
         }
 
@@ -157,7 +191,11 @@ export class ResourceController {
     return file;
   }
 
-
+  /**
+   * Route to upload a file to the backend. Needs to be a professor
+   * @param file File issued by the user for upload
+   * @returns The result success or fail of the upload
+   */
   @Post('/file')
   @ApiOperation({ summary: 'upload a file' })
   @Auth(Role.PROFESSOR)

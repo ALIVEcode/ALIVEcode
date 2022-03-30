@@ -20,12 +20,12 @@ import { ActivityChallengeEntity } from './entities/activities/activity_challeng
 import { ActivityVideoEntity } from './entities/activities/activity_video.entity';
 import { ResourceEntity } from '../resource/entities/resource.entity';
 import { ResourceService } from '../resource/resource.service';
-import { ResourceChallengeEntity } from '../resource/entities/resource_challenge.entity';
-import { ResourceVideoEntity } from '../resource/entities/resource_video.entity';
-import { ResourceFileEntity } from '../resource/entities/resource_file.entity';
-import { ResourceImageEntity } from '../resource/entities/resource_image.entity';
-import { ResourceTheoryEntity } from '../resource/entities/resource_theory.entity';
+import { ResourceChallengeEntity } from '../resource/entities/resources/resource_challenge.entity';
 import { ActivityAssignmentEntity } from './entities/activities/activity_assignment.entity';
+import { ResourceVideoEntity } from '../resource/entities/resources/resource_video.entity';
+import { ResourceFileEntity } from '../resource/entities/resources/resource_file.entity';
+import { ResourceImageEntity } from '../resource/entities/resources/resource_image.entity';
+import { ResourceTheoryEntity } from '../resource/entities/resources/resource_theory.entity';
 
 @Module({
   imports: [

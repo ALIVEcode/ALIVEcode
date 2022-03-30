@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsOptional } from 'class-validator';
 import { ChildEntity, Column } from 'typeorm';
-import { ResourceEntity, RESOURCE_TYPE } from './resource.entity';
+import { ResourceEntity, RESOURCE_TYPE } from '../resource.entity';
 
 /**
  * Activity of type File model in the database

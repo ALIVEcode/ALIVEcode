@@ -24,6 +24,7 @@ import { useNavigate } from 'react-router-dom';
 import { RESOURCE_TYPE } from '../../../Models/Resource/resource.entity';
 import { plainToInstance } from 'class-transformer';
 import { UserContext } from '../../../state/contexts/UserContext';
+import { ChallengeAlive } from '../../../Models/Challenge/challenges/challenge_alive.entity';
 
 /**
  * Component that renders the create form for the selected challenge type
@@ -40,6 +41,19 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 	const navigate = useNavigate();
 
 	const [projects, setProjects] = useState<IoTProject[]>([]);
+
+	const createResourceChallenge = async (challenge: Challenge) => {
+		if (user?.isProfessor()) {
+			await api.db.resources.create({
+				type: RESOURCE_TYPE.CHALLENGE,
+				resource: {
+					name: challenge.name,
+					subject: challenge.getSubject(),
+					challengeId: challenge.id,
+				},
+			});
+		}
+	};
 
 	useEffect(() => {
 		if (type === CHALLENGE_TYPE.IOT) {
@@ -63,18 +77,12 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 				return (
 					<Form
 						onSubmit={async res => {
-							const challenge: Challenge = plainToInstance(Challenge, res.data);
+							const challenge: Challenge = plainToInstance(
+								ChallengeAlive,
+								res.data,
+							);
 
-							if (user?.isProfessor()) {
-								await api.db.resources.create({
-									type: RESOURCE_TYPE.CHALLENGE,
-									resource: {
-										name: challenge.name,
-										subject: challenge.getSubject(),
-										challengeId: challenge.id,
-									},
-								});
-							}
+							await createResourceChallenge(challenge);
 
 							navigate(
 								routes.auth.challenge_edit.path.replace(
@@ -119,8 +127,14 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 			case CHALLENGE_TYPE.AI:
 				return (
 					<Form
-						onSubmit={res => {
-							const challenge: ChallengeAI = res.data;
+						onSubmit={async res => {
+							const challenge: ChallengeAI = plainToInstance(
+								ChallengeAI,
+								res.data,
+							);
+
+							await createResourceChallenge(challenge);
+
 							navigate(
 								routes.auth.challenge_edit.path.replace(
 									':challengeId',
@@ -164,8 +178,14 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 			case CHALLENGE_TYPE.CODE:
 				return (
 					<Form
-						onSubmit={res => {
-							const challenge: ChallengeCode = res.data;
+						onSubmit={async res => {
+							const challenge: ChallengeCode = plainToInstance(
+								ChallengeCode,
+								res.data,
+							);
+
+							await createResourceChallenge(challenge);
+
 							navigate(
 								routes.auth.challenge_edit.path.replace(
 									':challengeId',
@@ -209,8 +229,14 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 			case CHALLENGE_TYPE.IOT:
 				return (
 					<Form
-						onSubmit={res => {
-							const challenge: ChallengeIoT = res.data;
+						onSubmit={async res => {
+							const challenge: ChallengeIoT = plainToInstance(
+								ChallengeIoT,
+								res.data,
+							);
+
+							await createResourceChallenge(challenge);
+
 							navigate(
 								routes.auth.challenge_edit.path.replace(
 									':challengeId',

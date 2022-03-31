@@ -163,19 +163,23 @@ const RichTextElement = ({
 			);
 		case 'list_bullet':
 			return (
-				<ul style={style} className="list-disc" {...attributes}>
+				<ul style={style} className="list-disc ml-5" {...attributes}>
 					{children}
 				</ul>
 			);
 		case 'list_number':
 			return (
-				<ol style={style} className="list-decimal" {...attributes}>
+				<ol style={style} className="list-decimal ml-5" {...attributes}>
 					{children}
 				</ol>
 			);
 		case 'item_in_list':
 			return (
-				<li style={style} className="tabular-nums" {...attributes}>
+				<li
+					style={style}
+					className="tabular-nums list-[inherit]"
+					{...attributes}
+				>
 					{children}
 				</li>
 			);
@@ -364,6 +368,7 @@ export const toggleBlock = (editor: Editor, format: RichTextBlockStyles) => {
 		match: n =>
 			!Editor.isEditor(n) &&
 			Element.isElement(n) &&
+			// @ts-ignore
 			isList(n.type) &&
 			!isAlign(format),
 		split: true,

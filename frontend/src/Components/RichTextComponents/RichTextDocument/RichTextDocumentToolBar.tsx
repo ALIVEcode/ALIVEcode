@@ -121,7 +121,7 @@ const RichTextDocumentToolBar = ({}: RichTextToolBarProps) => {
 			</RichTextButton>
 
 			<BlockButton icon={faHeading} styleChange="h1" showSeparator />
-			<BlockButton icon={faList} styleChange="item_in_list" showSeparator />
+			<BlockButton icon={faList} styleChange="list_bullet" showSeparator />
 			<BlockButton icon={faListOl} styleChange="list_number" showSeparator />
 		</Toolbar>
 	);

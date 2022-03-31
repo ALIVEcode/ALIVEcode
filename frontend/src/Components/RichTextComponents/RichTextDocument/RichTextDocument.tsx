@@ -27,10 +27,7 @@ const RichTextDocument = ({
 	const editor = useMemo(() => withReact(withHistory(createEditor())), []);
 	const [editMode, setEditMode] = useState(false); // The flag to determine if the editor is in edit mode or not.
 
-	const [value, setValue] = useState<Descendant[]>(
-		// @ts-ignore
-		defaultText ?? [{ type: 'paragraph', children: [{ text: '' }] }],
-	); // The value of the editor.
+	const [value, setValue] = useState<Descendant[]>(defaultText); // The value of the editor.
 
 	return (
 		<div className={`flex bg-[color:var(--background-color)] `}>

@@ -1,4 +1,4 @@
-import { ChildEntity, Column} from 'typeorm';
+import { ChildEntity, Column } from 'typeorm';
 import { IsOptional } from 'class-validator';
 import { Descendant } from 'slate';
 import { ResourceEntity, RESOURCE_TYPE } from '../resource.entity';
@@ -10,7 +10,7 @@ import { ResourceEntity, RESOURCE_TYPE } from '../resource.entity';
 @ChildEntity(RESOURCE_TYPE.THEORY)
 export class ResourceTheoryEntity extends ResourceEntity {
   /** Content of the theory resource */
-  @Column({ type: 'json', nullable: true })
+  @Column({ type: 'json', default: [{ type: 'paragraph', children: [{ text: '' }] }] })
   @IsOptional()
   document: Descendant[];
 }

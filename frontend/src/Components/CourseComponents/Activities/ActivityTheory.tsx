@@ -5,6 +5,7 @@ import api from '../../../Models/api';
 import useWaitBeforeUpdate from '../../../state/hooks/useWaitBeforeUpdate';
 import { ResourceTheory } from '../../../Models/Resource/resources/resource_theory.entity';
 import { Descendant } from 'slate';
+import { useEffect, useRef, useState } from 'react';
 
 /**
  * Shows an activity of type Theory
@@ -17,35 +18,24 @@ import { Descendant } from 'slate';
  */
 const ActivityTheory = ({ courseElement, editMode }: ActivityProps) => {
 	const activity = courseElement.activity as ActivityTheoryModel;
+	const contentChanged = useRef(false);
 
 	const [value, setValue] = useWaitBeforeUpdate(
 		{
 			wait: 500,
 			onUpdate: () => {
 				(async () => {
-					if (activity.resource && !activity.resource?.document) {
-						activity.resource = await api.db.resources.update<ResourceTheory>(
-							activity.resource,
-							{
-								document: [
-									{
-										type: 'paragraph',
-										children: [{ text: '' }],
-									},
-								] as unknown as Descendant[],
-							},
-						);
-					}
 					if (
 						!activity.resource ||
-						!activity.resourceId ||
-						activity.resource.document === value
+						!activity.resource.id ||
+						!contentChanged.current
 					)
 						return;
 					activity.resource = await api.db.resources.update<ResourceTheory>(
 						activity.resource,
 						{ document: value },
 					);
+					contentChanged.current = false;
 				})();
 			},
 		},
@@ -53,15 +43,20 @@ const ActivityTheory = ({ courseElement, editMode }: ActivityProps) => {
 	);
 
 	return (
-		<div className="w-full">
-			<div>
-				<RichTextDocument
-					onChange={setValue}
-					defaultText={activity.resource?.document}
-					readOnly={!editMode}
-				/>
+		activity.resource?.document && (
+			<div className="w-full">
+				<div>
+					<RichTextDocument
+						onChange={newValue => {
+							setValue(newValue);
+							contentChanged.current = true;
+						}}
+						defaultText={activity.resource.document}
+						readOnly={!editMode}
+					/>
+				</div>
 			</div>
-		</div>
+		)
 	);
 };
 

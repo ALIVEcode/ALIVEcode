@@ -3,7 +3,7 @@ import { Descendant } from 'slate';
 
 export type RichTextDocumentProps = {
 	onChange: (value: Descendant[]) => void;
-	defaultText?: Descendant[];
+	defaultText: Descendant[];
 	readOnly?: boolean;
 };
 

@@ -306,7 +306,7 @@
 		"section": {
 			"empty": "This section has no activities.",
 			"new": "Add a Section",
-			"delete": "Are you sure you want to delete this section? All the elements contained inside it will also be deleted. This action is irreversible."
+			"delete": "Are you sure you want to delete this section? All the elements contained inside it will also be deleted."
 		},
 		"activity": {
 			"open": "Open",
@@ -320,7 +320,7 @@
 			"remove_resource": "Remove the ressource",
 			"next": "Next activity",
 			"previous": "Previous activity",
-			"delete": "Are you sure you want to delete this activity? The resources contained inside it will not be deleted. This action is irreversible."
+			"delete": "Are you sure you want to delete this activity? The resources contained inside it will not be deleted."
 		},
 		"form": {
 			"create": "Create a course",
@@ -492,5 +492,8 @@
 	},
 	"cmd": {
 		"clear": "Clear lines"
+	},
+	"action": {
+		"irreversible": "This action is irreversible"
 	}
 }

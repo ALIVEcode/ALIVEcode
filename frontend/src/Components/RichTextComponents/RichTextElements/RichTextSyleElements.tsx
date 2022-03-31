@@ -379,7 +379,7 @@ export const toggleBlock = (editor: Editor, format: RichTextBlockStyles) => {
 		};
 	}
 
-	Transforms.setNodes<Element>(editor, newProperties);
+	Transforms.setNodes<Element & RichTextElementType>(editor, newProperties);
 
 	if (!isActive && isList(format)) {
 		const block = { type: format, children: [] };

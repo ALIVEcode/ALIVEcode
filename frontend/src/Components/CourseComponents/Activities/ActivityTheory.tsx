@@ -6,6 +6,7 @@ import useWaitBeforeUpdate from '../../../state/hooks/useWaitBeforeUpdate';
 import { ResourceTheory } from '../../../Models/Resource/resources/resource_theory.entity';
 import { Descendant } from 'slate';
 import { useEffect, useRef, useState } from 'react';
+import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 
 /**
  * Shows an activity of type Theory
@@ -42,8 +43,8 @@ const ActivityTheory = ({ courseElement, editMode }: ActivityProps) => {
 		activity.resource?.document,
 	);
 
-	return (
-		activity.resource?.document && (
+	return activity.resource ? (
+		activity.resource.document ? (
 			<div className="w-full">
 				<div>
 					<RichTextDocument
@@ -56,7 +57,11 @@ const ActivityTheory = ({ courseElement, editMode }: ActivityProps) => {
 					/>
 				</div>
 			</div>
+		) : (
+			<></>
 		)
+	) : (
+		<LoadingScreen />
 	);
 };
 

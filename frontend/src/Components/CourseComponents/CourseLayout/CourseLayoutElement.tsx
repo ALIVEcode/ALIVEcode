@@ -128,7 +128,9 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 					await deleteElement(element);
 				}}
 				hideFooter
-			/>
+			>
+				<p className="text-red-600 pb-5 font-bold text-lg">{t('action.irreversible')}</p>
+			</AlertConfirm>
 		</div>
 	);
 };

@@ -17,6 +17,7 @@ const AlertConfirm = ({
 	setOpen,
 	onConfirm,
 	onCancel,
+	children,
 	...other
 }: AlertConfirmProps) => {
 	const { t } = useTranslation();
@@ -31,6 +32,7 @@ const AlertConfirm = ({
 			closeCross
 			{...other}
 		>
+			{children}
 			<div className="flex justify-evenly">
 				<Button
 					className="p-5"

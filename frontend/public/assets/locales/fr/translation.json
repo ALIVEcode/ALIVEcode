@@ -306,7 +306,7 @@
 		"section": {
 			"empty": "Cette section ne possède aucune activité",
 			"new": "Ajouter une section",
-			"delete": "Êtes-vous sûr de vouloir supprimer cette section? Tout le contenu à l'intérieur de celle-ci sera supprimé. Cette action est irréversible."
+			"delete": "Êtes-vous sûr de vouloir supprimer cette section? Tout le contenu à l'intérieur de celle-ci sera supprimé."
 		},
 		"activity": {
 			"open": "Ouvrir",
@@ -320,7 +320,7 @@
 			"remove_resource": "Retirer la ressource",
 			"next": "Activité suivante",
 			"previous": "Activité précédente",
-			"delete": "Êtes-vous sûr de vouloir supprimer cette activité? Les ressources comprises à l'intérieur de celle-ci ne seront pas supprimées. Cette action est irréversible."
+			"delete": "Êtes-vous sûr de vouloir supprimer cette activité? Les ressources comprises à l'intérieur de celle-ci ne seront pas supprimées."
 		},
 		"form": {
 			"create": "Créer un cours",
@@ -492,5 +492,8 @@
 	},
 	"cmd": {
 		"clear": "Effacer les lignes"
+	},
+	"action": {
+		"irreversible": "Cette action est irréversible"
 	}
 }

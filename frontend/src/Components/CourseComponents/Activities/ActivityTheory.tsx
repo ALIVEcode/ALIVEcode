@@ -32,6 +32,7 @@ const ActivityTheory = ({ courseElement, editMode }: ActivityProps) => {
 						activity.resource,
 						{ document: value },
 					);
+					activity.resourceId = activity.resource.id;
 					setContentChanged(false);
 				})();
 			},

@@ -1,5 +1,4 @@
 import Form from '../../../UtilsComponents/Form/Form';
-import { IOTOBJECT_LABEL } from '../../../../Models/Iot/IoTobject.entity';
 import Link from '../../../UtilsComponents/Link/Link';
 import { FORM_ACTION } from '../../../UtilsComponents/Form/formTypes';
 import { IoTObjectSettingsProps } from './iotObjectSettingsTypes';
@@ -22,10 +21,9 @@ const IoTObjectSettings = ({ object, onUpdate }: IoTObjectSettingsProps) => {
 		<>
 			<Form
 				onSubmit={res => {
-					const { name, description, label } = res.data;
+					const { name, description } = res.data;
 					object.name = name;
 					object.description = description;
-					object.label = label;
 					onUpdate(object);
 				}}
 				action={FORM_ACTION.PATCH}
@@ -43,13 +41,6 @@ const IoTObjectSettings = ({ object, onUpdate }: IoTObjectSettingsProps) => {
 						required: false,
 						default: object.description,
 						inputType: 'textarea',
-					},
-					{
-						name: 'label',
-						required: true,
-						default: object.label,
-						inputType: 'select',
-						selectOptions: IOTOBJECT_LABEL,
 					},
 				]}
 			/>

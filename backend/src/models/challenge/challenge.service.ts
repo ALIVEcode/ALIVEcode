@@ -1,5 +1,5 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { ChallengeEntity, CHALLENGE_ACCESS, CHALLENGE_TYPE } from './entities/challenge.entity';
+import { ChallengeEntity, CHALLENGE_ACCESS } from './entities/challenge.entity';
 import { ILike, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ChallengeAliveEntity } from './entities/challenges/challenge_alive.entity';
@@ -74,6 +74,7 @@ export class ChallengeService {
     return await this.challengeRepo.remove(await this.findOne(id));
   }
 
+  /*
   async getIoTProgressionById(challengeId: string, id: string) {
     const progression = await this.challengeProgressionRepo
       .createQueryBuilder('challengeProgression')
@@ -85,6 +86,7 @@ export class ChallengeService {
     if (!progression) throw new HttpException('Progression not found', HttpStatus.NOT_FOUND);
     return progression;
   }
+  */
 
   async getProgression(challengeId: string, user: UserEntity) {
     const progression = await this.challengeProgressionRepo.findOne({ where: { challengeId: challengeId, user } });
@@ -102,11 +104,11 @@ export class ChallengeService {
     } catch {
       // First time saving progression
       progression = this.challengeProgressionRepo.create(updateProgressionDto);
-      if (challenge.type === CHALLENGE_TYPE.IOT) {
+      /*if (challenge.type === CHALLENGE_TYPE.IOT) {
         updateProgressionDto.data = {
           layout: (challenge as ChallengeIoTEntity).project.layout,
         };
-      }
+      }*/
     }
     return await this.challengeProgressionRepo.save({
       ...updateProgressionDto,

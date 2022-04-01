@@ -4,7 +4,6 @@ import { IoTProjectEntity, IoTProjectLayout, IoTProjectDocument, JsonObj } from 
 import { Repository } from 'typeorm';
 import { UserEntity } from '../../user/entities/user.entity';
 import { IoTRouteEntity } from '../IoTroute/entities/IoTroute.entity';
-import { IoTObjectEntity } from '../IoTobject/entities/IoTobject.entity';
 import {
   IoTUpdateDocumentRequestToWatcher,
   IoTUpdateRequestToWatcher,
@@ -18,6 +17,7 @@ import { ChallengeService } from '../../challenge/challenge.service';
 import { ChallengeProgressionEntity } from '../../challenge/entities/challenge_progression.entity';
 import { IoTProjectUpdateDTO } from './dto/updateProject.dto';
 import { IoTUpdateLayoutRequestToWatcher, ObjectClient } from '../../../socket/iotSocket/iotSocket.types';
+import { IoTProjectObjectEntity } from './entities/IoTprojectObject.entity';
 
 @Injectable()
 export class IoTProjectService {
@@ -155,12 +155,12 @@ export class IoTProjectService {
   }
 
   async getObjects(project: IoTProjectEntity) {
-    return (await this.projectRepository.findOne(project.id, { relations: ['iotObjects'] })).iotObjects;
+    return (await this.projectRepository.findOne(project.id, { relations: ['iotObjects'] })).iotProjectObjects;
   }
 
-  async addObject(project: IoTProjectEntity, object: IoTObjectEntity) {
+  async addObject(project: IoTProjectEntity, object: IoTProjectObjectEntity) {
     project = await this.projectRepository.findOne(project.id, { relations: ['iotObjects'] });
-    project.iotObjects.push(object);
+    project.iotProjectObjects.push(object);
     await this.projectRepository.save(project);
     return object;
   }
@@ -182,6 +182,9 @@ export class IoTProjectService {
   }
 
   async getProjectOrProgression(id: string): Promise<IoTProjectEntity | ChallengeProgressionEntity> {
+    return await this.findOne(id);
+
+    /*
     if (id.includes('/')) {
       const split = id.split('/');
       if (split.length < 2) throw new HttpException('Bad Id', HttpStatus.BAD_REQUEST);
@@ -192,7 +195,7 @@ export class IoTProjectService {
       }
     } else {
       return await this.findOne(id);
-    }
+    }*/
   }
 
   async sendRoute(route: IoTRouteEntity, data: any) {

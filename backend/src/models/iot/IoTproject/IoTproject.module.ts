@@ -16,6 +16,7 @@ import { ChallengeAIEntity } from '../../challenge/entities/challenges/challenge
 import { ChallengeCodeEntity } from '../../challenge/entities/challenges/challenge_code.entity';
 import { ChallengeIoTEntity } from '../../challenge/entities/challenges/challenge_iot.entity';
 import { ChallengeProgressionEntity } from '../../challenge/entities/challenge_progression.entity';
+import { IoTProjectObjectEntity } from './entities/IoTprojectObject.entity';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ChallengeProgressionEntity } from '../../challenge/entities/challenge_p
       IoTProjectEntity,
       IoTRouteEntity,
       IoTObjectEntity,
+      IoTProjectObjectEntity,
       UserEntity,
       AsScriptEntity,
       ChallengeEntity,

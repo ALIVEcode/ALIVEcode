@@ -1,13 +1,9 @@
-import { IsNotEmpty, IsEmpty } from 'class-validator';
-import { Column, Entity, ManyToOne, ManyToMany } from 'typeorm';
+import { IsEmpty } from 'class-validator';
+import { Entity, ManyToOne, OneToMany } from 'typeorm';
 import { CreatedByUser } from '../../../../generics/entities/createdByUser.entity';
 import { UserEntity } from '../../../user/entities/user.entity';
 import { IoTProjectEntity } from '../../IoTproject/entities/IoTproject.entity';
-
-export enum IoTObjectLabel {
-  HOME = 'HO',
-  OTHER = 'OT',
-}
+import { IoTProjectObjectEntity } from '../../IoTproject/entities/IoTprojectObject.entity';
 
 @Entity()
 export class IoTObjectEntity extends CreatedByUser {
@@ -15,11 +11,16 @@ export class IoTObjectEntity extends CreatedByUser {
   @IsEmpty()
   creator: UserEntity;
 
-  @Column({ type: 'enum', enum: IoTObjectLabel, default: IoTObjectLabel.OTHER })
-  @IsNotEmpty()
-  label: IoTObjectLabel;
+  @ManyToOne(() => IoTProjectEntity)
+  currentProject: IoTProjectEntity;
 
-  @ManyToMany(() => IoTProjectEntity, project => project.iotObjects, { onDelete: 'CASCADE' })
+  @OneToMany(() => IoTProjectEntity, project => project.iotProjectObjects, { onDelete: 'CASCADE' })
   @IsEmpty()
   iotProjects: IoTProjectEntity[];
+
+  @OneToMany(() => IoTProjectObjectEntity, obj => obj.iotObject, { onDelete: 'SET NULL' })
+  iotProjectObjects: IoTProjectObjectEntity[];
+
+  @OneToMany(() => IoTProjectObjectEntity, obj => obj.iotTestObject, { onDelete: 'SET NULL' })
+  iotProjectTestObjects: IoTProjectObjectEntity[];
 }

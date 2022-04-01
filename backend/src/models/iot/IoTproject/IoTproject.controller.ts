@@ -24,10 +24,10 @@ import { DTOInterceptor } from '../../../utils/interceptors/dto.interceptor';
 import { IoTRouteEntity } from '../IoTroute/entities/IoTroute.entity';
 import { hasRole } from '../../user/auth';
 import { AddObjectDTO } from './dto/addObject.dto';
-import { IoTProjectService } from './IoTproject.service';
-import { IoTObjectService } from '../IoTobject/IoTobject.service';
 import { IoTProjectAddScriptDTO } from './dto/addScript.dto';
 import { IoTProjectUpdateDTO } from './dto/updateProject.dto';
+import { IoTProjectService } from './IoTproject.service';
+import { IoTObjectService } from '../IoTobject/IoTobject.service';
 
 @Controller('iot/projects')
 @UseInterceptors(DTOInterceptor)
@@ -147,6 +147,9 @@ export class IoTProjectController {
   @Post(':id/objects')
   @Auth()
   async addObject(@User() user: UserEntity, @Param('id') id: string, @Body() addObjectDTO: AddObjectDTO) {
+    throw new HttpException('Not implemented', HttpStatus.NOT_IMPLEMENTED);
+
+    /*
     const project = await this.IoTProjectService.findOne(id);
 
     if (project.creator.id !== user.id && !hasRole(user, Role.STAFF))
@@ -154,6 +157,7 @@ export class IoTProjectController {
 
     const object = await this.IoTObjectService.findOne(addObjectDTO.id);
     return await this.IoTProjectService.addObject(project, object);
+    */
   }
 
   @Post(':id/as/create')

@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Headers,
   Param,
   Patch,
   Post,
@@ -11,8 +12,10 @@ import {
   HttpException,
   HttpStatus,
   Res,
+  Req,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { statSync, createReadStream } from 'fs';
+import { Request, Response } from 'express';
 import { Auth } from '../../utils/decorators/auth.decorator';
 import { Course } from '../../utils/decorators/course.decorator';
 import { User } from '../../utils/decorators/user.decorator';
@@ -39,6 +42,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { CreateActivityAssignmentDTO } from './dtos/CreateActivities.dto';
 import { RESOURCE_TYPE } from '../resource/entities/resource.entity';
 import { ResourceFileEntity } from '../resource/entities/resources/resource_file.entity';
+import { ResourceVideoEntity } from '../resource/entities/resources/resource_video.entity';
 
 /**
  * All the routes to create/update/delete/get a course or it's content (CourseElements)
@@ -254,6 +258,53 @@ export class CourseController {
     const resource = resourceUnknown as ResourceFileEntity;
     // return res.status(200).sendFile(`${resource.url}`, { root: './uploads/resources'});
     return res.status(200).download(`./uploads/resources/${resource.url}`);
+  }
+
+  /**
+   * Route to stream the file associated with a video activity.
+   * @param id Id of the course to get the activity from
+   * @param activityId Id of the activity to download the file from
+   * @returns The video stream
+   */
+  @Get(':id/activities/:activityId/video')
+  // @UseGuards(CourseAccess)
+  async streamVideoResourceInActivity(
+    @Param('id') id: string,
+    @Param('activityId') activityId: string,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
+    const range = req.headers.range;
+    if (!range) throw new HttpException('Missing range headers', HttpStatus.BAD_REQUEST);
+
+    const activity = await this.courseService.findActivity(id, activityId);
+    const resourceUnknown = await this.courseService.getResourceOfActivity(activity);
+    if (resourceUnknown.type !== RESOURCE_TYPE.VIDEO)
+      throw new HttpException(
+        "The resource inside the activity is not of type VIDEO, can't download it",
+        HttpStatus.BAD_REQUEST,
+      );
+
+    const resource = resourceUnknown as ResourceVideoEntity;
+    const resourceUrl = `./uploads/resources/${resource.url}`;
+    const videoSize = statSync(resourceUrl).size;
+
+    const CHUNK_SIZE = 10 ** 6; // 1MB
+    const start = Number(range.replace(/\D/g, ''));
+    const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
+
+    const contentLength = end - start + 1;
+    const headers = {
+      'Content-Range': `bytes ${start}-${end}/${videoSize}`,
+      'Accept-Ranges': 'bytes',
+      'Content-Length': contentLength,
+      'Content-Type': 'video/mp4',
+    };
+
+    res.writeHead(206, headers);
+
+    const videoStream = createReadStream(resourceUrl, { start, end });
+    videoStream.pipe(res);
   }
 
   /**

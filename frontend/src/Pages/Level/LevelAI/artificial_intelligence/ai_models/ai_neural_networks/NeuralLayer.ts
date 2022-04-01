@@ -1,4 +1,4 @@
-import { ActivationFunction } from "../../ai_functions/Function";
+import { ActivationFunction } from "../../ai_functions/ActivationFunction";
 import Neuron from "./Neuron";
 import { Matrix, appendRow } from '../../AIUtils';
 
@@ -51,11 +51,39 @@ export class NeuralLayer {
     return output;
   }
 
+  /**
+   * Returns the weights Matrix of the Neural Layer.
+   * @returns the weights Matrix.
+   */
   public getWeights(): Matrix {
     return this.weights;
   }
 
+  /**
+   * Sets the weights Matrix for the new value. The new Matrix has to be of the 
+   * same size as the current Matrix in order to set the weights.
+   * @param newWeights the new weights Matrix.
+   */
+  public setWeights(newWeights: Matrix) {
+    if (this.weights.sameSize(newWeights)) this.weights = newWeights;
+    else console.log("Erreur Matrice : les tailles ne sont pas compatibles pour assignation.");
+  }
+
+  /**
+   * Returns the biases Matrix of the Neural Layer.
+   * @returns the biases Matrix.
+   */
   public getBiases(): Matrix {
     return this.biases;
+  }
+
+  /**
+   * Sets the biases Matrix for the new value. The new Matrix has to be of the 
+   * same size as the current Matrix in order to set the biases.
+   * @param newBiases the new baises Matrix.
+   */
+  public setBiases(newBiases: Matrix) {
+    if (this.biases.sameSize(newBiases)) this.biases = newBiases;
+    else console.log("Erreur Matrice : les tailles ne sont pas compatibles pour assignation.");
   }
 }

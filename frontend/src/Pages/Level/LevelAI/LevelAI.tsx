@@ -17,9 +17,11 @@ import { LevelContext } from '../../../state/contexts/LevelContext';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import LevelToolsBar from '../../../Components/LevelComponents/LevelToolsBar/LevelToolsBar';
 import { NeuralNetwork } from './artificial_intelligence/ai_models/ai_neural_networks/NeuralNetwork';
-import { ActivationFunction } from './artificial_intelligence/ai_functions/Function';
+import { ActivationFunction, Relu, Sigmoid } from './artificial_intelligence/ai_functions/ActivationFunction';
 import { Matrix } from './artificial_intelligence/AIUtils';
 import { mainAITest } from './artificial_intelligence/AITests';
+import { GradientDescent } from './artificial_intelligence/ai_optimizers/ai_ann_optimizers/GradientDescent';
+import { CostFunction, MeanSquaredError } from './artificial_intelligence/ai_functions/CostFunction';
 
 /**
  * Ai level page. Contains all the components to display and make the ai level functionnal.
@@ -227,22 +229,28 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 
 	function testNeuralNetwork(cmd: any) {
 
-		mainAITest();
-		/*
+		//mainAITest();
+		
+		
 		const neuronsByLayer: number[] = [2, 2]
 		const nbInputs: number = 3;
 		const nbOutputs: number = 1;
 		const activations: ActivationFunction[] = [
-			new ActivationFunction(ActivationFunction.RELU),
-			new ActivationFunction(ActivationFunction.RELU)
+			new Relu(),
+			new Relu()
 		];
-		const outputAct: ActivationFunction = new ActivationFunction(ActivationFunction.SIGMOID);
+		const outputAct: ActivationFunction = new Sigmoid();
+		const costFunc: CostFunction = new MeanSquaredError();
 
 		const data: Matrix = new Matrix([
 			[10, 20, 3, 6, 4],
 			[3, 5, 1, 2, 2],
 			[2, 4, 1, 1, 1]
 		]);
+
+		const real: Matrix = new Matrix([
+			[1500, 2000, 500, 800, 700]
+		])
 
 		cmd?.print("Les données entrées :");
 		data.displayInCmd(cmd);
@@ -259,11 +267,21 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 		}
 		cmd?.print(str + "]");
 
-		let myNetwork: NeuralNetwork = new NeuralNetwork(neuronsByLayer, activations, outputAct, nbInputs, nbOutputs)
+		let myNetwork: NeuralNetwork = new NeuralNetwork(nbInputs, nbOutputs, neuronsByLayer, activations, outputAct)
+		let myOpt: GradientDescent = new GradientDescent(myNetwork, costFunc, 0.1, 1000);
 
 		let predictions: Matrix = myNetwork.predict(data);
 		predictions.displayInCmd(cmd);
-		*/
+		cmd?.print("");
+		
+		let testCost: Matrix = activations[0].matDerivative(predictions);
+		testCost.displayInCmd(cmd);
+		let allPredictions: Matrix[] = myNetwork.predictReturnAll(data);
+		myOpt.optimizeOneEpoch(data, allPredictions, real);
+		
+		predictions = myNetwork.predict(data);
+		predictions.displayInCmd(cmd);
+
 	}
 
 

@@ -1,5 +1,5 @@
 import { Matrix, matMul, matAddConstant } from "../../AIUtils";
-import { ActivationFunction } from '../../ai_functions/Function';
+import { ActivationFunction } from '../../ai_functions/ActivationFunction';
 
 /**
  * This class represents the core of a neuron in a neural network. 
@@ -39,7 +39,7 @@ export default class Neuron {
     output = matAddConstant(output, this.bias);
 
     // Returning the result of the activation function
-    return activation.compute(output);
+    return activation.matCompute(output);
   }
 
   /**

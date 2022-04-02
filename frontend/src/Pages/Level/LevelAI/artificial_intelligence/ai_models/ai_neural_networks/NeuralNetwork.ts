@@ -103,6 +103,12 @@ export class NeuralNetwork extends Model
     return this.layers[layer].getWeights();
   }
 
+  /**
+   * Sets the current weights of the specified layer to the new
+   * biases given in parameters.
+   * @param layer the layer to set.
+   * @param newWeights the new values for biases.
+   */
   public setWeightsByLayer(layer: number, newWeights: Matrix) {
     this.layers[layer].setWeights(newWeights);
   }
@@ -116,6 +122,12 @@ export class NeuralNetwork extends Model
     return this.layers[layer].getBiases();
   }
 
+  /**
+   * Sets the current biases of the specified layer to the new
+   * biases given in parameters.
+   * @param layer the layer to set.
+   * @param newBiases the new values for biases.
+   */
   public setBiasesByLayer(layer: number, newBiases: Matrix) {
     this.layers[layer].setBiases(newBiases);
   }

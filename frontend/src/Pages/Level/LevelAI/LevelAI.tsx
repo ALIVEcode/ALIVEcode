@@ -19,9 +19,10 @@ import LevelToolsBar from '../../../Components/LevelComponents/LevelToolsBar/Lev
 import { NeuralNetwork } from './artificial_intelligence/ai_models/ai_neural_networks/NeuralNetwork';
 import { ActivationFunction, Relu, Sigmoid } from './artificial_intelligence/ai_functions/ActivationFunction';
 import { Matrix } from './artificial_intelligence/AIUtils';
-import { mainAITest } from './artificial_intelligence/AITests';
+import { mainAIUtilsTest } from './artificial_intelligence/ai_tests/AIUtilsTest';
 import { GradientDescent } from './artificial_intelligence/ai_optimizers/ai_ann_optimizers/GradientDescent';
 import { CostFunction, MeanSquaredError } from './artificial_intelligence/ai_functions/CostFunction';
+import { mainAINeuralNetworkTest } from './artificial_intelligence/ai_tests/AINeuralNetworkTest';
 
 /**
  * Ai level page. Contains all the components to display and make the ai level functionnal.
@@ -229,9 +230,10 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 
 	function testNeuralNetwork(cmd: any) {
 
-		//mainAITest();
+		mainAIUtilsTest();
+		mainAINeuralNetworkTest();
 		
-		
+		/*
 		const neuronsByLayer: number[] = [2, 2]
 		const nbInputs: number = 3;
 		const nbOutputs: number = 1;
@@ -239,7 +241,7 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 			new Relu(),
 			new Relu()
 		];
-		const outputAct: ActivationFunction = new Sigmoid();
+		const outputAct: ActivationFunction = new Relu();
 		const costFunc: CostFunction = new MeanSquaredError();
 
 		const data: Matrix = new Matrix([
@@ -274,14 +276,14 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 		predictions.displayInCmd(cmd);
 		cmd?.print("");
 		
-		let testCost: Matrix = activations[0].matDerivative(predictions);
-		testCost.displayInCmd(cmd);
-		let allPredictions: Matrix[] = myNetwork.predictReturnAll(data);
-		myOpt.optimizeOneEpoch(data, allPredictions, real);
+		//let testCost: Matrix = activations[0].matDerivative(predictions);
+		//testCost.displayInCmd(cmd);
+		//let allPredictions: Matrix[] = myNetwork.predictReturnAll(data);
+		//myOpt.optimizeOneEpoch(data, allPredictions, real);
 		
-		predictions = myNetwork.predict(data);
-		predictions.displayInCmd(cmd);
-
+		//predictions = myNetwork.predict(data);
+		//predictions.displayInCmd(cmd);
+		*/
 	}
 
 

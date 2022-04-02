@@ -1,8 +1,9 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IoTObjectEntity } from './entities/IoTobject.entity';
+import { IoTLog, IoTObjectEntity } from './entities/IoTobject.entity';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../../user/entities/user.entity';
+import { IOT_EVENT, ObjectClient } from '../../../socket/iotSocket/iotSocket.types';
 
 @Injectable()
 export class IoTObjectService {
@@ -42,5 +43,35 @@ export class IoTObjectService {
 
   async remove(id: string) {
     return await this.objectRepository.delete(id);
+  }
+
+  async getCurrentClient(object: IoTObjectEntity) {
+    const client = ObjectClient.getClientById(object.id);
+    if (!client) throw new HttpException('IoTObject is not connected', HttpStatus.NOT_FOUND);
+    return client;
+  }
+
+  /**
+   * Adds a log to an iotobject. removes logs if it exceeds 100.
+   * @param object Object to add a log to
+   * @param event Name of the event that occured
+   * @param text Text of the log
+   * @returns The updated IoTObject with the new log
+   */
+  async addIoTObjectLog(object: IoTObjectEntity, event: IOT_EVENT, text: string, save = true) {
+    if (!object.logs) object.logs = [];
+    else if (object.logs.length > 100) object.logs.shift();
+    const log = new IoTLog(event, text);
+    object.logs.push(log);
+
+    return save ? await this.objectRepository.save(object) : object;
+  }
+
+  async subscribeListener(object: IoTObjectEntity, fields: string[]) {
+    const client = await this.getCurrentClient(object);
+
+    client.listen(fields);
+    this.addIoTObjectLog(object, IOT_EVENT.SUBSCRIBE_LISTEN, `Subscribed listener for document fields : ${fields}`);
+    client.sendEvent('listener_set', null);
   }
 }

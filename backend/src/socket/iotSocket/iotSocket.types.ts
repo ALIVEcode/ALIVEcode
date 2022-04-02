@@ -2,10 +2,66 @@ import { WsException } from '@nestjs/websockets';
 import { WebSocket } from 'ws';
 import { IoTProjectDocument, IoTProjectLayout, JsonObj } from '../../models/iot/IoTproject/entities/IoTproject.entity';
 
+export enum IOT_EVENT {
+  /*---------- Connection events ----------*/
+
+  /** Connect as watcher (web view) */
+  CONNECT_WATCHER = 'connect_watcher',
+  /** Connect as IoTObject (arduino, raspberrpi, etc.) */
+  CONNECT_OBJECT = 'connect_object',
+  /** Connect IoTObject to a project */
+  CONNECT_PROJECT = 'connect_project',
+  /** Connect object as watcher */
+  CONNECT_SUCCESS = 'connect_success',
+
+  /*---------- Document Events ----------*/
+
+  /** Update project document */
+  UPDATE_DOC = 'update_doc',
+  /** Subscribe a listener to a project */
+  SUBSCRIBE_LISTEN = 'subscribe_listen',
+  /** Unsubscribe a listener to a project */
+  UNSUBSCRIBE_LISTEN = 'unsubscribe_listen',
+  /** Callback when the subscription to a listener worked */
+  SUBSCRIBE_LISTENER_SUCCESS = 'subscribe_listener_success',
+  /** Callback when the unsubscription to a listener worked */
+  UNSUBSCRIBE_LISTENER_SUCCESS = 'subscribe_listener_success',
+
+  /*---------- Broadcast Events ----------*/
+
+  /** Sendinga broadcast to the other objects connected to the same project */
+  SEND_BROADCAST = 'send_broadcast',
+  /** Receiving a broadcast from another object connected to the same project */
+  RECEIVE_BROADCAST = 'receive_broadcast',
+
+  /*---------- Error Events ----------*/
+
+  /** When an error occurs */
+  ERROR = 'error',
+
+  /*---------- Misc Events ----------*/
+
+  /** Sending an action to an object */
+  SEND_ACTION = 'send_action',
+  /** Object receives an action request */
+  RECEIVE_ACTION = 'receive_action',
+  /** A route of the project is triggered */
+  SEND_ROUTE = 'send_route',
+
+  /*---- Deprecated events ----*/
+  SEND_UPDATE = 'send_update',
+
+  /*---- Http requests ----*/
+
+  /** Get the document of a project */
+  GET_DOC = 'get_doc',
+  /** Get the field of a document of a project */
+  GET_FIELD = 'get_field',
+}
+
 // REQUESTS FROM OBJECT
 
 export type IoTUpdateDocumentRequestFromObject = {
-  projectId: string;
   fields: JsonObj;
 };
 
@@ -21,24 +77,20 @@ export type IoTGetFieldRequestFromObject = {
 };
 
 export type IoTListenRequestFromObject = {
-  projectId: string;
   fields: string[];
 };
 
 export type IoTUpdateRequestFromObject = {
   id: string;
   value: any;
-  projectId: string;
 };
 
 export type IoTRouteRequestFromObject = {
   routePath: string;
   data: any;
-  projectId: string;
 };
 
 export type IoTBroadcastRequestFromBoth = {
-  projectId: string;
   data: any;
 };
 
@@ -55,7 +107,6 @@ export type IoTSendActionRequestToObject = {
 export type IoTListenRequestToObject = {
   event: 'listen';
   data: {
-    projectId: string;
     fields: { [key: string]: any };
   };
 };
@@ -63,7 +114,6 @@ export type IoTListenRequestToObject = {
 export type IoTBroadcastRequestToObject = {
   event: 'broadcast';
   data: {
-    projectId: string;
     data: any;
   };
 };
@@ -135,6 +185,10 @@ export class WatcherClient extends Client {
     this.projectId = projectId;
   }
 
+  setProjectId(projectId: string) {
+    this.projectId = projectId;
+  }
+
   register() {
     super.register();
     WatcherClient.watchers.push(this);
@@ -170,14 +224,26 @@ export class WatcherClient extends Client {
 
 export class ObjectClient extends Client {
   static objects: ObjectClient[] = [];
-  private id: string;
-  private projectRights: string[];
-  private listeners: { [key: string]: string[] } = {};
+  private _id: string;
+  private _projectId: string;
+  private listeners: string[];
 
-  constructor(socket: WebSocket, id: string, projectRigths: string[]) {
+  constructor(socket: WebSocket, id: string, projectId: string) {
     super(socket);
-    this.id = id;
-    this.projectRights = projectRigths;
+    this._id = id;
+    this._projectId = projectId;
+  }
+
+  get id() {
+    return this._id;
+  }
+
+  get projectId() {
+    return this._projectId;
+  }
+
+  public setProjectId(projectId: string) {
+    this._projectId = projectId;
   }
 
   register() {
@@ -185,13 +251,8 @@ export class ObjectClient extends Client {
     ObjectClient.objects.push(this);
   }
 
-  hasProjectRights(projectId: string) {
-    return this.projectRights.includes(projectId);
-  }
-
-  listen(projectId: string, fields: string[]) {
-    if (!(projectId in this.listeners)) this.listeners[projectId] = fields;
-    else this.listeners[projectId] = [...this.listeners[projectId], ...fields];
+  listen(fields: string[]) {
+    this.listeners.push(...fields);
   }
 
   static sendToListeners(projectId: string, fieldsUpdated: { [key: string]: any }) {
@@ -205,7 +266,6 @@ export class ObjectClient extends Client {
         const data: IoTListenRequestToObject = {
           event: 'listen',
           data: {
-            projectId,
             fields: fieldsToSendNotification,
           },
         };
@@ -222,27 +282,16 @@ export class ObjectClient extends Client {
 
   static getClientById(id: string) {
     return ObjectClient.objects.find(o => {
-      return o.id === id;
+      return o._id === id;
     });
   }
 
   static getClientsByProject(projectId: string) {
-    return ObjectClient.objects.filter(o => o.projectRights.includes(projectId));
+    return ObjectClient.objects.filter(o => o._projectId === projectId);
   }
 
   static isSocketAlreadyWatcher(socket: WebSocket) {
     return ObjectClient.objects.find(w => w.getSocket() === socket) != null;
-  }
-
-  sendUpdate(updateData: IoTUpdateRequestFromObject) {
-    const watchers = WatcherClient.getClientsByProject(updateData.projectId);
-
-    const data: IoTUpdateRequestToWatcher = {
-      id: updateData.id,
-      value: updateData.value,
-    };
-
-    watchers.forEach(w => w.sendEvent('update', data));
   }
 }
 

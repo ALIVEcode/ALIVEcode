@@ -7,6 +7,7 @@ import { IoTRouteEntity } from '../IoTroute/entities/IoTroute.entity';
 import {
   IoTUpdateDocumentRequestToWatcher,
   IoTUpdateRequestToWatcher,
+  IOT_EVENT,
   WatcherClient,
 } from '../../../socket/iotSocket/iotSocket.types';
 import { validUUID } from '../../../utils/types/validation.types';
@@ -18,6 +19,8 @@ import { ChallengeProgressionEntity } from '../../challenge/entities/challenge_p
 import { IoTProjectUpdateDTO } from './dto/updateProject.dto';
 import { IoTUpdateLayoutRequestToWatcher, ObjectClient } from '../../../socket/iotSocket/iotSocket.types';
 import { IoTProjectObjectEntity } from './entities/IoTprojectObject.entity';
+import { IoTObjectEntity } from '../IoTobject/entities/IoTobject.entity';
+import { IoTObjectService } from '../IoTobject/IoTobject.service';
 
 @Injectable()
 export class IoTProjectService {
@@ -26,8 +29,10 @@ export class IoTProjectService {
     @InjectRepository(IoTRouteEntity) private routeRepository: Repository<IoTRouteEntity>,
     @InjectRepository(AsScriptEntity) private scriptRepo: Repository<AsScriptEntity>,
     @InjectRepository(ChallengeProgressionEntity) private progressionRepo: Repository<ChallengeProgressionEntity>,
+    @InjectRepository(IoTObjectEntity) private objRepo: Repository<IoTObjectEntity>,
     private challengeService: ChallengeService,
     @Inject(forwardRef(() => AsScriptService)) private asScriptService: AsScriptService,
+    @Inject(forwardRef(() => IoTObjectService)) private objService: IoTObjectService,
   ) {}
 
   getDocumentEntries(document: IoTProjectDocument, getAllCombinationEntries = false): { [key: string]: any } {
@@ -67,9 +72,10 @@ export class IoTProjectService {
     return project;
   }
 
-  async findOneWithRoute(id: string, routePath: string) {
-    if (!id || !validUUID(id) || !routePath) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
-    const project = await this.projectRepository.findOne(id, { relations: ['routes'] });
+  async findOneWithRoute(projectId: string, routePath: string) {
+    if (!projectId || !validUUID(projectId) || !routePath)
+      throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+    const project = await this.projectRepository.findOne(projectId, { relations: ['routes'] });
     if (!project) throw new HttpException('IoTProject not found', HttpStatus.NOT_FOUND);
 
     const route = project.routes.find(r => r.path === routePath);
@@ -253,7 +259,7 @@ export class IoTProjectService {
     return field in entries ? entries[field] : null;
   }
 
-  async updateComponent(id: string, componentId: string, value: any, sendUpdate = false): Promise<void> {
+  async updateComponent(id: string, componentId: string, value: any, sendUpdate = true): Promise<void> {
     const projectOrProgression = await this.getProjectOrProgression(id);
 
     const layoutManager = projectOrProgression.getLayoutManager();
@@ -275,6 +281,23 @@ export class IoTProjectService {
 
       watchers.forEach(w => w.sendEvent('update', data));
     }
+  }
+
+  /**
+   * Assigns a current IoTProject (working project) to an IoTObject
+   * @param object IoTObject to assign the project to
+   * @param project IoTProject to assign to the object
+   * @returns The updated object
+   */
+  async assignCurrentProject(object: IoTObjectEntity, project: IoTProjectEntity) {
+    object.currentIotProject = project;
+    const updatedObject = await this.objRepo.save(object);
+    await this.objService.addIoTObjectLog(
+      object,
+      IOT_EVENT.CONNECT_PROJECT,
+      `Connected to project "${project.name}" (${project.id})`,
+    );
+    return updatedObject;
   }
 
   async getComponentValue(id: string, componentId: string) {

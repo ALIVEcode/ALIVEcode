@@ -16,7 +16,7 @@ export default class ChallengeIoTBackendExecutor extends BackendChallengeExecuto
             if (params.length >= 3 && typeof params[0] === 'string' && typeof params[1] === 'string') {
               const [projectId, id, value] = params;
               try {
-                await iotProjectService.updateComponent(projectId, id, value, true);
+                await iotProjectService.updateComponent(projectId, id, value);
               } catch (err) {
                 console.log(err);
                 return this.throwError('InvalidProjectIdError', 'Invalid project id');

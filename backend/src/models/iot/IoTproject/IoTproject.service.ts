@@ -93,12 +93,14 @@ export class IoTProjectService {
     return await this.projectRepository.delete(id);
   }
 
-  async updateLayout(id: string, layout: IoTProjectLayout) {
+  async updateLayout(id: string, layout: IoTProjectLayout, issuer?: WatcherClient) {
     const project = await this.findOne(id);
 
     layout.components = layout.components.filter((c: any) => c != null && JSON.stringify(c) != '{}');
 
-    const watchers = WatcherClient.getClientsByProject(id);
+    const watchers = issuer
+      ? WatcherClient.getClientsByProject(id).filter(c => c.getSocket() !== issuer.getSocket())
+      : WatcherClient.getClientsByProject(id);
 
     const data: IoTUpdateLayoutRequestToWatcher = {
       layout,
@@ -260,7 +262,13 @@ export class IoTProjectService {
     return field in entries ? entries[field] : null;
   }
 
-  async updateComponent(id: string, componentId: string, value: any, sendUpdate = true): Promise<void> {
+  async updateComponent(
+    id: string,
+    componentId: string,
+    value: any,
+    sendUpdate = true,
+    issuer?: WatcherClient,
+  ): Promise<void> {
     const projectOrProgression = await this.getProjectOrProgression(id);
 
     const layoutManager = projectOrProgression.getLayoutManager();
@@ -273,14 +281,16 @@ export class IoTProjectService {
     }
 
     if (sendUpdate) {
-      const watchers = WatcherClient.getClientsByProject(id);
+      const watchers = issuer
+        ? WatcherClient.getClientsByProject(id).filter(c => c.getSocket() !== issuer.getSocket())
+        : WatcherClient.getClientsByProject(id);
 
       const data: IoTUpdateRequestToWatcher = {
         id: componentId,
         value,
       };
 
-      watchers.forEach(w => w.sendEvent(IOT_EVENT.SEND_UPDATE, data));
+      watchers.forEach(w => w.sendEvent(IOT_EVENT.RECEIVE_UPDATE_COMPONENT, data));
     }
   }
 

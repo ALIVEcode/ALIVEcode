@@ -56,7 +56,8 @@ export enum IOT_EVENT {
   RECEIVE_INTERFACE = 'receive_interface',
 
   /*---- Deprecated events ----*/
-  SEND_UPDATE = 'send_update',
+  UPDATE_COMPONENT = 'update_component',
+  RECEIVE_UPDATE_COMPONENT = 'receive_update_component',
 
   /*---- Http requests ----*/
 

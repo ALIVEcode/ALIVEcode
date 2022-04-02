@@ -6,6 +6,7 @@ import {
 import { IoTComponentManager } from './IoTComponentManager';
 import { IoTComponent } from './IoTComponent';
 import { IoTProjectLayout, parseIoTProjectLayout } from '../IoTproject.entity';
+import { IOT_EVENT } from './IoTTypes';
 
 export type IoTSocketUpdateRequest = {
 	id: string;
@@ -67,13 +68,13 @@ export class IoTSocket {
 			this.socket.onmessage = e => {
 				const data = JSON.parse(e.data);
 				switch (data.event) {
-					case 'update':
+					case IOT_EVENT.RECEIVE_UPDATE_COMPONENT:
 						this.onReceiveUpdate(data.data);
 						break;
-					case 'document_update':
+					case IOT_EVENT.RECEIVE_DOC:
 						this.onDocumentUpdate(data.data);
 						break;
-					case 'layout_update':
+					case IOT_EVENT.RECEIVE_INTERFACE:
 						this.onLayoutUpdate(data.data);
 						break;
 				}
@@ -81,7 +82,7 @@ export class IoTSocket {
 
 			this.socket.send(
 				JSON.stringify({
-					event: 'connect_watcher',
+					event: IOT_EVENT.CONNECT_WATCHER,
 					data: {
 						iotProjectId: this.id,
 						iotProjectName: this.name,
@@ -110,7 +111,7 @@ export class IoTSocket {
 
 			this.socket.send(
 				JSON.stringify({
-					event: 'send_object',
+					event: IOT_EVENT.SEND_ACTION,
 					data: {
 						targetId,
 						actionId: Number(actionId),

@@ -29,7 +29,6 @@ import {
   ObjectClientConnectPayload,
   ObjectClient,
 } from './iotSocket.types';
-import { IoTBroadcastRequestToObject } from './iotSocket.types';
 import { IoTExceptionFilter } from './iot.exception';
 import {
   IoTListenRequestFromObject,
@@ -75,7 +74,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
       `Watcher connected and listening on project : ${payload.iotProjectName} id : ${payload.iotProjectId}`,
     );
 
-    client.sendEvent('connect-success', 'Watcher connected');
+    client.sendEvent(IOT_EVENT.CONNECT_SUCCESS, 'Watcher connected');
   }
 
   @UseFilters(new IoTExceptionFilter())
@@ -102,7 +101,9 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     // Logging
     this.logger.log(`IoTObject connect with id : ${payload.id}`);
 
-    client.sendEvent('connected', null);
+    this.iotObjectService.addIoTObjectLog(iotObject, IOT_EVENT.CONNECT_SUCCESS, 'Connected to ALIVEcode');
+
+    client.sendEvent(IOT_EVENT.CONNECT_SUCCESS, null);
   }
 
   @UseFilters(new IoTExceptionFilter())
@@ -133,20 +134,22 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     if (!client) throw new WsException('Forbidden');
 
     const fields = payload.fields.filter(f => typeof f === 'string');
-
     const object = await this.iotObjectService.findOne(client.id);
-    this.iotObjectService.subscribeListener(object, fields);
+
+    await this.iotObjectService.subscribeListener(object, fields);
   }
 
   @UseFilters(new IoTExceptionFilter())
   @SubscribeMessage('send_object')
-  send_object(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTActionRequestFromWatcher) {
+  async send_object(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTActionRequestFromWatcher) {
     if (!payload.targetId || payload.actionId == null || payload.value == null) throw new WsException('Bad payload');
-
     const watcher = WatcherClient.getClientBySocket(socket);
     if (!watcher) throw new WsException('Forbidden');
 
-    watcher.sendActionToObject(payload);
+    const object = await this.iotObjectService.findOneWithLoadedProjects(payload.targetId);
+    if (object.currentIotProject?.id !== watcher.projectId) throw new WsException('Not in the same project');
+
+    await this.iotObjectService.sendAction(object, payload.actionId, payload.value);
   }
 
   @UseFilters(new IoTExceptionFilter())
@@ -167,15 +170,8 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     const client = ObjectClient.getClientBySocket(socket);
     if (!client) throw new WsException('Forbidden');
 
-    const data: IoTBroadcastRequestToObject = {
-      event: 'broadcast',
-      data: {
-        data: payload.data,
-      },
-    };
-
-    const objects = ObjectClient.getClientsByProject(client.projectId);
-    objects.map(o => o.send(data));
+    const project = await this.iotProjectService.findOne(client.projectId);
+    await this.iotProjectService.broadcast(project, payload.data);
   }
 
   /*****   HTTP PROTOCOLS   *****/

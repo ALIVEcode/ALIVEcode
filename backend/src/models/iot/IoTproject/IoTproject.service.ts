@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { UserEntity } from '../../user/entities/user.entity';
 import { IoTRouteEntity } from '../IoTroute/entities/IoTroute.entity';
 import {
+  IoTBroadcastRequestToObject,
   IoTUpdateDocumentRequestToWatcher,
   IoTUpdateRequestToWatcher,
   IOT_EVENT,
@@ -102,7 +103,7 @@ export class IoTProjectService {
     const data: IoTUpdateLayoutRequestToWatcher = {
       layout,
     };
-    watchers.forEach(w => w.sendEvent('layout_update', data));
+    watchers.forEach(w => w.sendEvent(IOT_EVENT.RECEIVE_INTERFACE, data));
 
     return await this.projectRepository.save({ ...project, layout });
   }
@@ -119,7 +120,7 @@ export class IoTProjectService {
     const data: IoTUpdateDocumentRequestToWatcher = {
       doc: document,
     };
-    watchers.forEach(w => w.sendEvent('document_update', data));
+    watchers.forEach(w => w.sendEvent(IOT_EVENT.RECEIVE_DOC, data));
 
     // DETECT CHANGES IN DOCUMENT
     const entriesOld = this.getDocumentEntries(oldDocument, true);
@@ -279,7 +280,7 @@ export class IoTProjectService {
         value,
       };
 
-      watchers.forEach(w => w.sendEvent('update', data));
+      watchers.forEach(w => w.sendEvent(IOT_EVENT.SEND_UPDATE, data));
     }
   }
 
@@ -291,13 +292,31 @@ export class IoTProjectService {
    */
   async assignCurrentProject(object: IoTObjectEntity, project: IoTProjectEntity) {
     object.currentIotProject = project;
-    const updatedObject = await this.objRepo.save(object);
-    await this.objService.addIoTObjectLog(
+    object = await this.objService.addIoTObjectLog(
       object,
       IOT_EVENT.CONNECT_PROJECT,
       `Connected to project "${project.name}" (${project.id})`,
+      false,
     );
+    const updatedObject = await this.objRepo.save(object);
     return updatedObject;
+  }
+
+  /**
+   * Sends a broadcast to every IoTObject currently connected to a specified project
+   * @param project Project to broadcast on
+   * @param data Data to broadcast
+   */
+  async broadcast(project: IoTProjectEntity, data: any) {
+    const req: IoTBroadcastRequestToObject = {
+      event: IOT_EVENT.RECEIVE_BROADCAST,
+      data: {
+        data,
+      },
+    };
+
+    const objects = ObjectClient.getClientsByProject(project.id);
+    objects.map(o => o.sendEvent(req.event, req.data));
   }
 
   async getComponentValue(id: string, componentId: string) {

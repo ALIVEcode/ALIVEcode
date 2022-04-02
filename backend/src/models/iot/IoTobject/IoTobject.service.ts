@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { IoTLog, IoTObjectEntity } from './entities/IoTobject.entity';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../../user/entities/user.entity';
-import { IOT_EVENT, ObjectClient } from '../../../socket/iotSocket/iotSocket.types';
+import { IoTSendActionRequestToObject, IOT_EVENT, ObjectClient } from '../../../socket/iotSocket/iotSocket.types';
 
 @Injectable()
 export class IoTObjectService {
@@ -67,11 +67,32 @@ export class IoTObjectService {
     return save ? await this.objectRepository.save(object) : object;
   }
 
+  /**
+   * Sends a request for an action to an IoTObject
+   * @param object Object to send the action request to
+   * @param actionId Id of the action to send
+   * @param value Value of the action
+   */
+  async sendAction(object: IoTObjectEntity, actionId: string, value: any) {
+    const client = ObjectClient.getClientById(object.id);
+    if (!client) throw new HttpException('Object is not connected', HttpStatus.NOT_FOUND);
+
+    const req: IoTSendActionRequestToObject = {
+      event: IOT_EVENT.RECEIVE_ACTION,
+      data: {
+        id: actionId,
+        value,
+      },
+    };
+
+    client.sendEvent(req.event, req.data);
+  }
+
   async subscribeListener(object: IoTObjectEntity, fields: string[]) {
     const client = await this.getCurrentClient(object);
 
     client.listen(fields);
     this.addIoTObjectLog(object, IOT_EVENT.SUBSCRIBE_LISTEN, `Subscribed listener for document fields : ${fields}`);
-    client.sendEvent('listener_set', null);
+    client.sendEvent(IOT_EVENT.SUBSCRIBE_LISTENER_SUCCESS, null);
   }
 }

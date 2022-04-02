@@ -24,13 +24,13 @@ import { User } from '../../utils/decorators/user.decorator';
 import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 import { HttpStatus } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { MyRequest } from 'src/utils/guards/auth.guard';
 import { extname } from 'path';
-import { ResourceFileEntity } from './entities/resources/resource_file.entity';
-import { ResourceImageEntity } from './entities/resources/resource_image.entity';
+import { nanoid } from 'nanoid';
+import { DebugInterceptor } from 'src/utils/interceptors/debug.interceptor';
 
 /**
  * All the routes to create/update/delete/get a resource or upload files/videos/images
@@ -43,32 +43,6 @@ export class ResourceController {
   constructor(private readonly resourceService: ResourceService) {}
 
   /**
-   * Route to create a resource. Needs to be a professor
-   * @param user User creating the resource
-   * @param dto DTO to create the resource with
-   * @returns The newly created resource
-   */
-  @Post()
-  @Auth(Role.PROFESSOR)
-  async create(@User() user: ProfessorEntity, @Body() dto: CreateResourceDTOSimple) {
-    dto.resource.type = dto.type;
-    const errors = await validate(plainToInstance(CreateResourceDTO, dto));
-    if (errors.length > 0) throw new HttpException(errors, HttpStatus.BAD_REQUEST);
-
-    if (dto.type === RESOURCE_TYPE.IMAGE) {
-      if (!dto.uuid) throw new HttpException('Bad payload', HttpStatus.BAD_REQUEST);
-      (dto.resource as ResourceImageEntity).extension = extname((dto.resource as ResourceImageEntity).url);
-    } else if (dto.type === RESOURCE_TYPE.FILE) {
-      if (!dto.uuid) throw new HttpException('Bad payload', HttpStatus.BAD_REQUEST);
-      (dto.resource as ResourceFileEntity).extension = extname((dto.resource as ResourceFileEntity).url);
-    } else if (dto.type === RESOURCE_TYPE.VIDEO && dto.uuid) {
-      (dto.resource as ResourceFileEntity).extension = extname((dto.resource as ResourceFileEntity).url);
-    }
-
-    return await this.resourceService.create(dto, user);
-  }
-
-  /**
    * Finds a resource by its id. Needs to be the resource creator
    * @param resource Resource found by the id in the request
    * @returns The resource found
@@ -78,6 +52,83 @@ export class ResourceController {
   @UseGuards(ResourceCreator)
   async findOne(@Resource() resource: ResourceEntity) {
     return resource;
+  }
+
+  /**
+   * Route to create a resource. Needs to be a professor
+   *
+   * This route works by accepting Content-Type: multipart-formdata when a resource
+   * requires a file to be uploaded alongside it and Content-Type: application/json
+   * when no file needs to be uploaded.
+   * The multipart-formdata fields must be structured like so:
+   *
+   *   data: JSON.stringify(ResourceDTO)
+   *   file: File object to upload
+   *
+   * @param user User creating the resource
+   * @param dto DTO to create the resource with
+   * @returns The newly created resource
+   */
+  @Post()
+  @Auth(Role.PROFESSOR)
+  @UseInterceptors(
+    FileInterceptor('file', {
+      limits: {
+        fileSize: 1000000000000,
+      },
+      fileFilter: (
+        req: MyRequest,
+        file: Express.Multer.File,
+        callback: (error: Error, acceptFile: boolean) => void,
+      ) => {
+        req.body = JSON.parse(req.body.data);
+        const { type } = req.body;
+
+        if (!type) callback(new HttpException('Missing type', HttpStatus.BAD_REQUEST), null);
+
+        let acceptedMimetypes = [];
+        switch (type) {
+          case RESOURCE_TYPE.IMAGE:
+            acceptedMimetypes = ['image/jpeg', 'image/jpg', 'image/png'];
+            break;
+          case RESOURCE_TYPE.VIDEO:
+            acceptedMimetypes = ['video/mp4', 'video/mpeg', 'video/ogg', 'video/mp2t'];
+            break;
+        }
+
+        if (type !== RESOURCE_TYPE.FILE && !acceptedMimetypes.includes(file.mimetype)) {
+          return callback(
+            new HttpException(
+              `Invalid filetype, accepted types: ${acceptedMimetypes.join(', ')}`,
+              HttpStatus.BAD_REQUEST,
+            ),
+            false,
+          );
+        }
+
+        callback(null, true);
+      },
+      storage: diskStorage({
+        destination: 'uploads/resources',
+        filename: (req: MyRequest, file: Express.Multer.File, callback: (error: Error, filename: string) => void) => {
+          const extension = extname(file.originalname);
+          const filename = `${nanoid()}${extension}`;
+          req.body.resource.url = filename;
+          req.body.resource.extension = extension;
+          callback(null, filename);
+        },
+      }),
+    }),
+  )
+  async create(
+    @User() user: ProfessorEntity,
+    @UploadedFile() file: Express.Multer.File,
+    @Body() dto: CreateResourceDTOSimple,
+  ) {
+    dto.resource.type = dto.type;
+    const errors = await validate(plainToInstance(CreateResourceDTO, dto));
+    if (errors.length > 0) throw new HttpException(errors, HttpStatus.BAD_REQUEST);
+    return await this.resourceService.create(dto, user);
   }
 
   /**
@@ -105,59 +156,5 @@ export class ResourceController {
   @UseGuards(ResourceCreator)
   async remove(@Param('id') id: string) {
     return await this.resourceService.remove(id);
-  }
-
-  /**
-   * Route to upload a file to the backend. Needs to be a professor
-   * @param file File issued by the user for upload
-   * @returns The result success or fail of the upload
-   */
-  @Post('/file')
-  @ApiOperation({ summary: 'upload a file' })
-  @Auth(Role.PROFESSOR)
-  @UseInterceptors(
-    FileInterceptor('file', {
-      limits: {
-        fileSize: 1000000000000,
-      },
-      storage: diskStorage({
-        destination: 'uploads/resources',
-        filename: (req: MyRequest, file: Express.Multer.File, callback: (error: Error, filename: string) => void) => {
-          callback(null, `${req.user.id}\$${req.body.uuid}${extname(file.originalname)}`);
-        },
-      }),
-      fileFilter: (
-        req: MyRequest,
-        file: Express.Multer.File,
-        callback: (error: Error, acceptFile: boolean) => void,
-      ) => {
-        if (!req.body.uuid || !req.body.type)
-          callback(new HttpException('Missing fields', HttpStatus.BAD_REQUEST), null);
-
-        let acceptedMimetypes = [];
-
-        if (req.body.type === RESOURCE_TYPE.IMAGE) {
-          acceptedMimetypes = ['image/jpeg', 'image/jpg', 'image/png'];
-        } else if (req.body.type === RESOURCE_TYPE.VIDEO) {
-          acceptedMimetypes = ['video/mp4', 'video/mpeg', 'video/ogg', 'video/mp2t'];
-        }
-
-        if (req.body.type !== RESOURCE_TYPE.FILE && !acceptedMimetypes.includes(file.mimetype)) {
-          return callback(
-            new HttpException(
-              `Invalid filetype, accepted types: ${acceptedMimetypes.join(', ')}`,
-              HttpStatus.BAD_REQUEST,
-            ),
-            false,
-          );
-        }
-
-        callback(null, true);
-      },
-    }),
-  )
-  async uploadFile(@UploadedFile() file: Express.Multer.File) {
-    if (!file) throw new HttpException('Missing file', HttpStatus.BAD_REQUEST);
-    return file;
   }
 }

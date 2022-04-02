@@ -8,10 +8,6 @@ import { ResourceTheoryEntity } from '../entities/resources/resource_theory.enti
 import { ResourceVideoEntity } from '../entities/resources/resource_video.entity';
 
 export class CreateResourceDTOSimple {
-  @IsUUID()
-  @IsOptional()
-  uuid: string;
-
   @IsNotEmpty()
   @IsEnum(RESOURCE_TYPE)
   type: RESOURCE_TYPE;
@@ -22,10 +18,6 @@ export class CreateResourceDTOSimple {
 }
 
 export class CreateResourceDTO {
-  @IsUUID()
-  @IsOptional()
-  uuid: string;
-
   @IsNotEmpty()
   @IsEnum(RESOURCE_TYPE)
   type: RESOURCE_TYPE;

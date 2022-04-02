@@ -22,7 +22,7 @@ export const IoTProjectAccess = () => {
 		if (!project) return;
 
 		// Load project objects
-		if (!project.iotObjects) loadIoTObjects();
+		if (!project.iotProjectObjects) loadIoTObjects();
 
 		if (!canEdit) return;
 
@@ -37,7 +37,7 @@ export const IoTProjectAccess = () => {
 	if (!project) return <></>;
 
 	const iotObjectOptions = userIotObjects?.flatMap(obj => {
-		if (project.iotObjects?.find(o => o.id === obj.id)) return [];
+		if (project.iotProjectObjects?.find(o => o.id === obj.id)) return [];
 		return {
 			value: obj.id,
 			display: obj.name,
@@ -56,9 +56,9 @@ export const IoTProjectAccess = () => {
 					/>
 				)}
 			</h6>
-			{project.iotObjects ? (
-				project.iotObjects.length > 0 ? (
-					project.iotObjects.map((obj, idx) => (
+			{project.iotProjectObjects ? (
+				project.iotProjectObjects.length > 0 ? (
+					project.iotProjectObjects.map((obj, idx) => (
 						<IoTObjectCard key={idx} object={obj} />
 					))
 				) : (

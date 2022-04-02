@@ -1,5 +1,5 @@
 import { IsEmpty, IsNotEmpty, IsOptional } from "class-validator";
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { CreatedByUser } from '../../../../generics/entities/createdByUser.entity';
 import { IoTRouteEntity } from '../../IoTroute/entities/IoTroute.entity';
 import { UserEntity } from '../../../user/entities/user.entity';
@@ -52,6 +52,16 @@ export class IoTProjectEntity extends CreatedByUser {
   @IsEmpty()
   creator: UserEntity;
 
+  @ManyToOne(() => IoTProjectEntity, project => project.copied, { nullable: true })
+  @JoinColumn({ name: 'originalId' })
+  original?: IoTProjectEntity;
+
+  @Column({ name: 'originalId', nullable: true })
+  originalId?: string;
+
+  @OneToMany(() => IoTProjectEntity, project => project.original)
+  copied?: IoTProjectEntity[];
+
   // TODO : body typing
   @Column({ nullable: true, type: 'json', default: { components: [] } })
   @IsOptional()
@@ -63,7 +73,7 @@ export class IoTProjectEntity extends CreatedByUser {
   document: IoTProjectDocument;
 
   @OneToOne(() => ChallengeProgressionEntity, progress => progress.challenge)
-  progression: ChallengeProgressionEntity;
+  progression?: ChallengeProgressionEntity;
 
   @OneToMany(() => IoTScriptEntity, script => script.iotProject)
   iotScripts: IoTScriptEntity[];

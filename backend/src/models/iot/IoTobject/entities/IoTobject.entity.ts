@@ -12,11 +12,7 @@ export class IoTObjectEntity extends CreatedByUser {
   creator: UserEntity;
 
   @ManyToOne(() => IoTProjectEntity)
-  currentProject: IoTProjectEntity;
-
-  @OneToMany(() => IoTProjectEntity, project => project.iotProjectObjects, { onDelete: 'CASCADE' })
-  @IsEmpty()
-  iotProjects: IoTProjectEntity[];
+  currentIotProject: IoTProjectEntity;
 
   @OneToMany(() => IoTProjectObjectEntity, obj => obj.iotObject, { onDelete: 'SET NULL' })
   iotProjectObjects: IoTProjectObjectEntity[];

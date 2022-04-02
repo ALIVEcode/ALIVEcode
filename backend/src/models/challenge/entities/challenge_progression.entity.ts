@@ -43,9 +43,13 @@ export class ChallengeProgressionEntity {
   @IsEmpty()
   challengeId: string;
 
-  @OneToOne(() => IoTProjectEntity, { onDelete: 'CASCADE' })
+  @OneToOne(() => IoTProjectEntity, { onDelete: 'CASCADE', nullable: true })
+  @JoinColumn({ name: 'iotProjectId' })
   @Exclude()
-  project: IoTProjectEntity;
+  iotProject: IoTProjectEntity;
+
+  @Column({ name: 'iotProjectId', nullable: true })
+  iotProjectId: string;
 
   @Column({ type: 'json', default: () => "'{}'" })
   @IsOptional()

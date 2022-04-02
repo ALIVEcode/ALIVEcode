@@ -116,7 +116,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     }
 
     // Register client
-    const projectRights = iotObject.iotProjects.map(p => p.id);
+    const projectRights = [iotObject.currentIotProject.id]; // .iotProjects.map(p => p.id);
     const client = new ObjectClient(socket, payload.id, projectRights);
     client.register();
 

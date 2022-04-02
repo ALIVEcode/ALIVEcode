@@ -30,7 +30,7 @@ export class IoTObjectService {
     const iotObject = await this.objectRepository
       .createQueryBuilder('iotObject')
       .where('iotObject.id = :id', { id })
-      .leftJoinAndSelect('iotObject.iotProjects', 'iotProject')
+      .leftJoinAndSelect('iotObject.currentIotProject', 'iotProject')
       .getOne();
     if (!iotObject) throw new HttpException('IoTObject not found', HttpStatus.NOT_FOUND);
     return iotObject;

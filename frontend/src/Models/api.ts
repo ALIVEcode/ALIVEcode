@@ -45,6 +45,7 @@ import { Activity } from './Course/activity.entity';
 import { QueryResources } from './Resource/dto/query_resources.dto';
 import { SetStateAction } from 'react';
 import { GetMimeType } from '../Types/files.type';
+import { IoTProjectObject } from './Iot/IoTprojectObject.entity';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;
@@ -437,7 +438,7 @@ const api = {
 				get: apiGet('iot/projects/:id', IoTProject, false),
 				deleteRoute: apiDelete('iot/routes/projects/:projectId/:id'),
 				getRoutes: apiGet('iot/projects/:id/routes', IotRoute, true),
-				getObjects: apiGet('iot/projects/:id/objects', IoTObject, true),
+				getObjects: apiGet('iot/projects/:id/objects', IoTProjectObject, true),
 				async updateLayout(id: string, layout: IoTProjectLayout) {
 					await axios.patch(`iot/projects/${id}/layout`, layout);
 				},

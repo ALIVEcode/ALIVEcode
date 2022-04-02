@@ -142,7 +142,7 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 	const addIoTObject = useCallback(
 		(iotObject: IoTObject) => {
 			if (!canEdit || !project) return;
-			project.iotObjects?.push(iotObject);
+			project.iotProjectObjects?.push(iotObject);
 			alert.success(t('iot.project.add_object.success'));
 		},
 		[alert, canEdit, project, t],

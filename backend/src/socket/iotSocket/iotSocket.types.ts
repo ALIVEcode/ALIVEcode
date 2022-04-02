@@ -1,4 +1,3 @@
-import { WsException } from '@nestjs/websockets';
 import { WebSocket } from 'ws';
 import { IoTProjectDocument, IoTProjectLayout, JsonObj } from '../../models/iot/IoTproject/entities/IoTproject.entity';
 
@@ -18,14 +17,18 @@ export enum IOT_EVENT {
 
   /** Update project document */
   UPDATE_DOC = 'update_doc',
+  /** Receive updated doc */
+  RECEIVE_DOC = 'receive_doc',
   /** Subscribe a listener to a project */
-  SUBSCRIBE_LISTEN = 'subscribe_listen',
+  SUBSCRIBE_LISTENER = 'subscribe_listener',
   /** Unsubscribe a listener to a project */
-  UNSUBSCRIBE_LISTEN = 'unsubscribe_listen',
+  UNSUBSCRIBE_LISTENER = 'unsubscribe_listener',
   /** Callback when the subscription to a listener worked */
   SUBSCRIBE_LISTENER_SUCCESS = 'subscribe_listener_success',
   /** Callback when the unsubscription to a listener worked */
   UNSUBSCRIBE_LISTENER_SUCCESS = 'subscribe_listener_success',
+  /** Receives a listen callback */
+  RECEIVE_LISTEN = 'receive_listen',
 
   /*---------- Broadcast Events ----------*/
 
@@ -47,6 +50,10 @@ export enum IOT_EVENT {
   RECEIVE_ACTION = 'receive_action',
   /** A route of the project is triggered */
   SEND_ROUTE = 'send_route',
+  /** Update the interface of an interface */
+  UPDATE_INTERFACE = 'update_interface',
+  /** Receiveds an updated interface request */
+  RECEIVE_INTERFACE = 'receive_interface',
 
   /*---- Deprecated events ----*/
   SEND_UPDATE = 'send_update',
@@ -54,9 +61,9 @@ export enum IOT_EVENT {
   /*---- Http requests ----*/
 
   /** Get the document of a project */
-  GET_DOC = 'get_doc',
+  GET_DOC = 'getDoc',
   /** Get the field of a document of a project */
-  GET_FIELD = 'get_field',
+  GET_FIELD = 'getField',
 }
 
 // REQUESTS FROM OBJECT
@@ -97,7 +104,7 @@ export type IoTBroadcastRequestFromBoth = {
 // REQUESTS TO OBJECTS
 
 export type IoTSendActionRequestToObject = {
-  event: 'action';
+  event: IOT_EVENT.RECEIVE_ACTION;
   data: {
     id: string;
     value: any;
@@ -105,14 +112,14 @@ export type IoTSendActionRequestToObject = {
 };
 
 export type IoTListenRequestToObject = {
-  event: 'listen';
+  event: IOT_EVENT.RECEIVE_LISTEN;
   data: {
     fields: { [key: string]: any };
   };
 };
 
 export type IoTBroadcastRequestToObject = {
-  event: 'broadcast';
+  event: IOT_EVENT.RECEIVE_BROADCAST;
   data: {
     data: any;
   };
@@ -154,12 +161,8 @@ export class Client {
     return this.socket;
   }
 
-  send(data: any) {
-    this.socket.send(JSON.stringify(data));
-  }
-
-  sendEvent(event: string, data: any) {
-    this.send({ event, data });
+  sendEvent(event: IOT_EVENT, data: any) {
+    this.socket.send(JSON.stringify({ event, data }));
   }
 
   removeSocket() {
@@ -178,15 +181,19 @@ export class Client {
 
 export class WatcherClient extends Client {
   static watchers: WatcherClient[] = [];
-  private projectId: string;
+  private _projectId: string;
 
   constructor(socket: WebSocket, projectId: string) {
     super(socket);
-    this.projectId = projectId;
+    this._projectId = projectId;
+  }
+
+  get projectId() {
+    return this._projectId;
   }
 
   setProjectId(projectId: string) {
-    this.projectId = projectId;
+    this._projectId = projectId;
   }
 
   register() {
@@ -199,26 +206,11 @@ export class WatcherClient extends Client {
   }
 
   static getClientsByProject(projectId: string) {
-    return WatcherClient.watchers.filter(w => w.projectId === projectId);
+    return WatcherClient.watchers.filter(w => w._projectId === projectId);
   }
 
   static isSocketAlreadyWatcher(socket: WebSocket) {
     return WatcherClient.watchers.find(w => w.getSocket() === socket) != null;
-  }
-
-  sendActionToObject(updateData: IoTActionRequestFromWatcher) {
-    const object = ObjectClient.getClientById(updateData.targetId);
-    if (!object) throw new WsException('No matching object');
-
-    const data: IoTSendActionRequestToObject = {
-      event: 'action',
-      data: {
-        id: updateData.actionId,
-        value: updateData.value,
-      },
-    };
-
-    object.send(data);
   }
 }
 
@@ -263,13 +255,13 @@ export class ObjectClient extends Client {
           if (o.listeners[projectId].includes(entry[0])) fieldsToSendNotification[entry[0]] = entry[1];
         });
 
-        const data: IoTListenRequestToObject = {
-          event: 'listen',
+        const req: IoTListenRequestToObject = {
+          event: IOT_EVENT.RECEIVE_LISTEN,
           data: {
             fields: fieldsToSendNotification,
           },
         };
-        o.send(data);
+        o.sendEvent(req.event, req.data);
       }
     });
   }

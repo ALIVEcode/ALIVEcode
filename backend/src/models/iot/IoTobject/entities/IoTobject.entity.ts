@@ -24,9 +24,9 @@ export class IoTObjectEntity extends CreatedByUser {
   @Exclude({ toClassOnly: true })
   logs: IoTLog[];
 
-  @ManyToOne(() => IoTProjectEntity)
+  @ManyToOne(() => IoTProjectEntity, { nullable: true, onDelete: 'SET NULL' })
   @Exclude({ toClassOnly: true })
-  currentIotProject: IoTProjectEntity;
+  currentIotProject?: IoTProjectEntity;
 
   @OneToMany(() => IoTProjectObjectEntity, obj => obj.iotObject, { onDelete: 'SET NULL' })
   @Exclude({ toClassOnly: true })

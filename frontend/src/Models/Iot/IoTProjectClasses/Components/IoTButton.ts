@@ -1,5 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
 import { IoTComponent, IOT_COMPONENT_TYPE } from '../IoTComponent';
+import { TFunction } from 'i18next';
 
 @Exclude()
 export class IoTButton extends IoTComponent {
@@ -59,11 +60,13 @@ export class IoTButton extends IoTComponent {
 	}
 }
 
-export const createDefaultIoTButton = () => {
-	const progress = new IoTButton();
-	progress.value = 'Click me';
-	progress.name = 'Default Button';
-	progress.id = '';
+export const createDefaultIoTButton = (t: TFunction) => {
+	const button = new IoTButton();
+	button.name = t('iot.project.interface.components.button.name');
+	button.value = t(
+		'iot.project.interface.components_form.button.value.placeholder',
+	);
+	button.id = '';
 
-	return progress;
+	return button;
 };

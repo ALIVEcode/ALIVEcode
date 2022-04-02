@@ -40,7 +40,7 @@ const Button = forwardRef<
 			variant === 'primary' && 'bg-[color:var(--primary-color)]',
 			variant === 'secondary' && 'bg-[color:var(--secondary-color)]',
 			variant === 'third' && 'bg-[color:var(--third-color)]',
-			variant === 'danger' && 'bg-red-600',
+			variant === 'danger' && 'bg-[color:var(--danger-color)]',
 			className,
 		),
 		variant,

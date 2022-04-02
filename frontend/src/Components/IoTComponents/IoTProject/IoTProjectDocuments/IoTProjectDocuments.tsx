@@ -8,9 +8,18 @@ import { StyledLineInterface } from '../../../ChallengeComponents/LineInterface/
 const IoTProjectDocuments = () => {
 	const { project, updateDocument } = useContext(IoTProjectContext);
 
+	const defaultState = JSON.stringify(project?.document, null, '\t');
+
 	const [doc, setDoc] = useWaitBeforeUpdate<string>(
-		{ wait: 1000, onUpdate: () => updateDocument(JSON.parse(doc)) },
-		JSON.stringify(project?.document, null, '\t'),
+		{
+			wait: 1000,
+			onUpdate: () => {
+				try {
+					updateDocument(JSON.parse(doc));
+				} catch {}
+			},
+		},
+		defaultState,
 	);
 
 	return (

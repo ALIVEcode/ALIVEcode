@@ -1,6 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
 import { IoTComponent, IOT_COMPONENT_TYPE } from '../IoTComponent';
 import { Oscillator } from 'tone';
+import { TFunction } from 'i18next';
 
 @Exclude()
 export class IoTBuzzer extends IoTComponent {
@@ -77,9 +78,9 @@ export class IoTBuzzer extends IoTComponent {
 	}
 }
 
-export const createDefaultIoTBuzzer = () => {
-	const label = new IoTBuzzer();
-	label.name = 'Default Buzzer';
+export const createDefaultIoTBuzzer = (t: TFunction) => {
+	const buzzer = new IoTBuzzer();
+	buzzer.name = t('iot.project.interface.components.buzzer.name');
 
-	return label;
+	return buzzer;
 };

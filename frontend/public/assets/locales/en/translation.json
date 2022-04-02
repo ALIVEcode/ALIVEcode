@@ -458,10 +458,155 @@
 	},
 	"iot": {
 		"project": {
-			"name": "IoT Project"
+			"name": "IoT Project",
+			"settings": "Settings",
+			"routes": "Routing",
+			"documents": {
+				"name": "Documents"
+			},
+			"interface": {
+				"name": "Interface",
+				"add_component": "Add a component",
+				"delete_component": "Delete the component",
+				"delete_component_confirm": "Are you sure you want to delete the component",
+				"edit_component": "Edit the component",
+				"copy_project_id": "Copy project ID",
+				"errors": {
+					"ref": "ERROR",
+					"no_id": "The component has no ID"
+				},
+				"components": {
+					"progress": {
+						"name": "Progress"
+					},
+					"button": {
+						"name": "Button"
+					},
+					"logs": {
+						"name": "Logs",
+						"clear": "Clear logs",
+						"add": "Add a log",
+						"empty": "No logs"
+					},
+					"led": {
+						"name": "LED"
+					},
+					"label": {
+						"name": "Label"
+					},
+					"buzzer": {
+						"name": "Buzzer",
+						"sine": "Sine",
+						"sawtooth": "Sawtooth",
+						"square": "Square",
+						"triangle": "Triangle",
+						"start": "Activate the buzzer",
+						"stop": "Stop the buzzer"
+					},
+					"traffic_light": {
+						"name": "Traffic Light",
+						"red": "red",
+						"yellow": "yellow",
+						"green": "green",
+						"off": "off"
+					}
+				},
+				"components_form": {
+					"name": {
+						"label": "Name of the component",
+						"placeholder": "Name"
+					},
+					"id": {
+						"label": "ID of the component",
+						"placeholder": "ID"
+					},
+					"ref": {
+						"label": "Reference to a document field",
+						"static": "Valeur statique",
+						"invalid": "INVALID VALUE"
+					},
+					"progress": {
+						"value": {
+							"label": "Value of the progress"
+						},
+						"min": {
+							"label": "Minimum value of the progress",
+							"placeholder": "0"
+						},
+						"max": {
+							"label": "Maximum value of the progress",
+							"placeholder": "100"
+						},
+						"is_percentage": {
+							"label": "Is percentage?"
+						}
+					},
+					"button": {
+						"on_click": "When the button gets pressed",
+						"value": {
+							"label": "Displayed text of the button",
+							"placeholder": "Click me"
+						},
+						"target": {
+							"label": "Object that will be affected by the button click",
+							"placeholder": "Targetted object"
+						},
+						"action_id": {
+							"label": "ID of the action to perform on the object",
+							"placeholder": "forward"
+						},
+						"action_data": {
+							"label": "Data for the event",
+							"placeholder": "{}"
+						}
+					},
+					"logs": {
+						"value": {
+							"label": "Logs"
+						}
+					},
+					"led": {
+						"value": {
+							"label": "State ON/OFF of the LED"
+						}
+					},
+					"label": {
+						"value": {
+							"label": "Displayed text",
+							"placeholder": "Hello World!"
+						},
+						"font_size": {
+							"label": "Font size"
+						}
+					},
+					"buzzer": {
+						"value": {
+							"label": "Frequency to play",
+							"placeholder": "500"
+						},
+						"duration": {
+							"label": "Duration of the sound (seconds)"
+						},
+						"frequency_type": {
+							"label": "Type of the frequency",
+							"placeholder": "Sine"
+						}
+					},
+					"traffic_light": {
+						"value": {
+							"label": "State of the traffic light",
+							"placeholder": "OFF"
+						}
+					}
+				}
+			},
+			"scripting": {
+				"name": "Scripting"
+			}
 		},
 		"object": {
-			"name": "IoT Object"
+			"name": "IoT Object",
+			"copy_id": "Copy ID of object"
 		}
 	},
 	"user": {

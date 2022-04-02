@@ -458,10 +458,155 @@
 	},
 	"iot": {
 		"project": {
-			"name": "Projet IoT"
+			"name": "Projet IoT",
+			"settings": "Paramètres",
+			"routes": "Routage",
+			"documents": {
+				"name": "Documents"
+			},
+			"interface": {
+				"name": "Interface",
+				"add_component": "Ajouter un composant",
+				"delete_component": "Supprimer le composant",
+				"delete_component_confirm": "Êtes-vous sûr de vouloir supprimer le composant",
+				"edit_component": "Modifier le composant",
+				"copy_project_id": "Copier l'ID du projet",
+				"errors": {
+					"ref": "ERREUR",
+					"no_id": "Le composant n'a pas d'ID"
+				},
+				"components": {
+					"progress": {
+						"name": "Jauge de progression"
+					},
+					"button": {
+						"name": "Bouton"
+					},
+					"logs": {
+						"name": "Journaux",
+						"clear": "Supprimer toutes les entrées",
+						"add": "Ajouter une entrée",
+						"empty": "Aucune entrée"
+					},
+					"led": {
+						"name": "LED"
+					},
+					"label": {
+						"name": "Étiquette"
+					},
+					"buzzer": {
+						"name": "Avertisseur sonore",
+						"sine": "Sinus",
+						"sawtooth": "Dents de scie",
+						"square": "Carré",
+						"triangle": "Triangle",
+						"start": "Activer l'avertisseur",
+						"stop": "Arrêter l'avertisseur"
+					},
+					"traffic_light": {
+						"name": "Feu de circulation",
+						"red": "rouge",
+						"yellow": "jaune",
+						"green": "vert",
+						"off": "éteint"
+					}
+				},
+				"components_form": {
+					"name": {
+						"label": "Nom du composant",
+						"placeholder": "Nom"
+					},
+					"id": {
+						"label": "Identifiant du composant",
+						"placeholder": "ID"
+					},
+					"ref": {
+						"label": "Référence à une entrée du document",
+						"static": "Valeur statique",
+						"invalid": "VALEUR INVALIDE"
+					},
+					"progress": {
+						"value": {
+							"label": "Progression de la jauge"
+						},
+						"min": {
+							"label": "Minimum de la jauge",
+							"placeholder": "0"
+						},
+						"max": {
+							"label": "Maximum de la jauge",
+							"placeholder": "100"
+						},
+						"is_percentage": {
+							"label": "Est sous forme de pourcentage?"
+						}
+					},
+					"button": {
+						"on_click": "Lors du clic du bouton",
+						"value": {
+							"label": "Affichage du bouton",
+							"placeholder": "Clic-moi"
+						},
+						"target": {
+							"label": "Objet qui subira une action lors du clic du bouton",
+							"placeholder": "Objet visé"
+						},
+						"action_id": {
+							"label": "Identifiant de l'action à faire subir",
+							"placeholder": "avancer"
+						},
+						"action_data": {
+							"label": "Données concernant l'action",
+							"placeholder": "{}"
+						}
+					},
+					"logs": {
+						"value": {
+							"label": "Journaux"
+						}
+					},
+					"led": {
+						"value": {
+							"label": "État éteint/allumé du LED"
+						}
+					},
+					"label": {
+						"value": {
+							"label": "Texte d'affichage",
+							"placeholder": "Bonjour Monde!"
+						},
+						"font_size": {
+							"label": "Taille de la police"
+						}
+					},
+					"buzzer": {
+						"value": {
+							"label": "Fréquence à jouer",
+							"placeholder": "500"
+						},
+						"duration": {
+							"label": "Durée du son à jouer (secondes)"
+						},
+						"frequency_type": {
+							"label": "Type de fréquence",
+							"placeholder": "Sinus"
+						}
+					},
+					"traffic_light": {
+						"value": {
+							"label": "État du feu de circulation",
+							"placeholder": "Éteint"
+						}
+					}
+				}
+			},
+			"scripting": {
+				"name": "Script"
+			}
 		},
 		"object": {
-			"name": "Objet IoT"
+			"name": "Objet IoT",
+			"copy_id": "Copier l'ID de l'objet"
 		}
 	},
 	"user": {

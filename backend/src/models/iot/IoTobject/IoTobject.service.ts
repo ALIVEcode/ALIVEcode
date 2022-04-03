@@ -4,6 +4,7 @@ import { IoTLog, IoTObjectEntity } from './entities/IoTobject.entity';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../../user/entities/user.entity';
 import { IoTSendActionRequestToObject, IOT_EVENT, ObjectClient } from '../../../socket/iotSocket/iotSocket.types';
+import { IoTProjectEntity } from '../IoTproject/entities/IoTproject.entity';
 
 @Injectable()
 export class IoTObjectService {
@@ -49,6 +50,48 @@ export class IoTObjectService {
     const client = ObjectClient.getClientById(object.id);
     if (!client) throw new HttpException('IoTObject is not connected', HttpStatus.NOT_FOUND);
     return client;
+  }
+
+  /**
+   * Assigns a current IoTProject (working project) to an IoTObject
+   * @param object IoTObject to assign the project to
+   * @param project IoTProject to assign to the object
+   * @returns The updated object
+   */
+  async connectToProject(object: IoTObjectEntity, project: IoTProjectEntity) {
+    object.currentIotProject = project;
+    object = await this.addIoTObjectLog(
+      object,
+      IOT_EVENT.CONNECT_PROJECT,
+      `Connected to project "${project.name}" (${project.id})`,
+      false,
+    );
+    const updatedObject = await this.objectRepository.save(object);
+    delete updatedObject['currentIotProject'];
+    return updatedObject;
+  }
+
+  /**
+   * Removes the current IoTProject (working project) from an IoTObject.
+   * Makes sure the object was connected to the project to make sure the person
+   * has the permission to disconnect.
+   * @param object IoTObject to remove the project from
+   * @param project IoTProject to remove from the object
+   * @returns The updated object
+   */
+  async disconnectFromProject(object: IoTObjectEntity, project: IoTProjectEntity) {
+    // Object was not connected to the project it wants to disconnect from
+    if (object.currentIoTProjectId !== project.id) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+
+    object.currentIotProject = null;
+    object = await this.addIoTObjectLog(
+      object,
+      IOT_EVENT.DISCONNECT_PROJECT,
+      `Disonnected from project "${project.name}" (${project.id})`,
+      false,
+    );
+    const updatedObject = await this.objectRepository.save(object);
+    return updatedObject;
   }
 
   /**

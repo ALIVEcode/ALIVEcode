@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export type IoTProjectOptions = 'settings' | 'routes';
-export type IoTProjectTabs = 'documents' | 'scripting' | 'interface';
+export type IoTProjectTabs = 'documents' | 'scripts' | 'objects' | 'interface';
 export type IoTProjectTab = {
 	name: string;
 	type: IoTProjectTabs;

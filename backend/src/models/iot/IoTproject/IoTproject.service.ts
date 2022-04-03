@@ -31,6 +31,7 @@ export class IoTProjectService {
     @InjectRepository(AsScriptEntity) private scriptRepo: Repository<AsScriptEntity>,
     @InjectRepository(ChallengeProgressionEntity) private progressionRepo: Repository<ChallengeProgressionEntity>,
     @InjectRepository(IoTObjectEntity) private objRepo: Repository<IoTObjectEntity>,
+    @InjectRepository(IoTProjectObjectEntity) private projectObjRepo: Repository<IoTProjectObjectEntity>,
     private challengeService: ChallengeService,
     @Inject(forwardRef(() => AsScriptService)) private asScriptService: AsScriptService,
     @Inject(forwardRef(() => IoTObjectService)) private objService: IoTObjectService,
@@ -86,7 +87,7 @@ export class IoTProjectService {
   }
 
   async update(id: string, updateIoTprojectDto: IoTProjectUpdateDTO) {
-    return await this.projectRepository.save({ id, ...updateIoTprojectDto });
+    return await this.projectRepository.save({ ...updateIoTprojectDto, id });
   }
 
   async remove(id: string) {
@@ -147,7 +148,7 @@ export class IoTProjectService {
     ObjectClient.sendToListeners(id, updatedFields);
 
     // SAVE PROJECT
-    return await this.projectRepository.save({ id, document });
+    return await this.projectRepository.save({ document, id });
   }
 
   async getRoutes(project: IoTProjectEntity) {
@@ -164,14 +165,18 @@ export class IoTProjectService {
   }
 
   async getObjects(project: IoTProjectEntity) {
-    return (await this.projectRepository.findOne(project.id, { relations: ['iotObjects'] })).iotProjectObjects;
+    return (await this.projectRepository.findOne(project.id, { relations: ['iotProjectObjects'] })).iotProjectObjects;
   }
 
-  async addObject(project: IoTProjectEntity, object: IoTProjectObjectEntity) {
-    project = await this.projectRepository.findOne(project.id, { relations: ['iotObjects'] });
-    project.iotProjectObjects.push(object);
+  async addObject(project: IoTProjectEntity, object: IoTObjectEntity) {
+    const projectObject = await this.projectObjRepo.save({ iotObject: object, iotProject: project });
+
+    if (!Array.isArray(project.iotProjectObjects))
+      project = await this.projectRepository.findOne(project.id, { relations: ['iotProjectObjects'] });
+
+    project.iotProjectObjects.push(projectObject);
     await this.projectRepository.save(project);
-    return object;
+    return projectObject;
   }
 
   async addScript(project: IoTProjectEntity, user: UserEntity, scriptDto: IoTProjectAddScriptDTO) {
@@ -292,24 +297,6 @@ export class IoTProjectService {
 
       watchers.forEach(w => w.sendEvent(IOT_EVENT.RECEIVE_UPDATE_COMPONENT, data));
     }
-  }
-
-  /**
-   * Assigns a current IoTProject (working project) to an IoTObject
-   * @param object IoTObject to assign the project to
-   * @param project IoTProject to assign to the object
-   * @returns The updated object
-   */
-  async assignCurrentProject(object: IoTObjectEntity, project: IoTProjectEntity) {
-    object.currentIotProject = project;
-    object = await this.objService.addIoTObjectLog(
-      object,
-      IOT_EVENT.CONNECT_PROJECT,
-      `Connected to project "${project.name}" (${project.id})`,
-      false,
-    );
-    const updatedObject = await this.objRepo.save(object);
-    return updatedObject;
   }
 
   /**

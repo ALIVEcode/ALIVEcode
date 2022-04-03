@@ -14,7 +14,7 @@ import {
 	faChevronDown,
 } from '@fortawesome/free-solid-svg-icons';
 import IoTProjectInterface from '../../../Components/IoTComponents/IoTProject/IoTProjectInterface/IotProjectInterface';
-import IoTProjectAccess from '../../../Components/IoTComponents/IoTProject/IoTProjectAccess/IoTProjectAccess';
+import IoTProjectAccess from '../../../Components/IoTComponents/IoTProject/IoTProjectObjects/IoTProjectObjects';
 import IoTProjectRoutes from '../../../Components/IoTComponents/IoTProject/IoTProjectRoutes/IoTProjectRoutes';
 import IoTProjectSettings from '../../../Components/IoTComponents/IoTProject/IoTProjectSettings/IoTProjectSettings';
 import { IoTProjectContext } from '../../../state/contexts/IoTProjectContext';
@@ -22,6 +22,7 @@ import { Disclosure } from '@headlessui/react';
 import { classNames } from '../../../Types/utils';
 import IoTProjectDocuments from '../../../Components/IoTComponents/IoTProject/IoTProjectDocuments/IoTProjectDocuments';
 import { useTranslation } from 'react-i18next';
+import IoTProjectScripts from '../../../Components/IoTComponents/IoTProject/IoTProjectScripts/IoTProjectScripts';
 
 /**
  * IoTProject. On this page are all the components essential in the functionning of an IoTProject.
@@ -48,8 +49,12 @@ const IoTProjectPage = () => {
 			type: 'documents',
 		},
 		{
-			name: t('iot.project.scripting.name'),
-			type: 'scripting',
+			name: t('iot.project.objects.name'),
+			type: 'objects',
+		},
+		{
+			name: t('iot.project.scripts.name'),
+			type: 'scripts',
 		},
 	];
 
@@ -72,8 +77,10 @@ const IoTProjectPage = () => {
 				return <IoTProjectInterface />;
 			case 'documents':
 				return <IoTProjectDocuments />;
-			case 'scripting':
+			case 'objects':
 				return <IoTProjectAccess />;
+			case 'scripts':
+				return <IoTProjectScripts />;
 		}
 	};
 	return (
@@ -148,19 +155,19 @@ const IoTProjectPage = () => {
 						className="flex-grow flex flex-col h-2/5 tablet:h-full order-2"
 						id="project-body"
 					>
-						<div className="text-lg h-[50px] border-b border-t border-[color:var(--bg-shade-four-color)] tablet:border-t-0 flex flex-row justify-evenly text-center">
+						<div className="text-sm tablet:text-base laptop:text-lg overflow-x-auto h-[50px] border-b border-t border-[color:var(--bg-shade-four-color)] tablet:border-t-0 flex flex-row justify-evenly text-center">
 							{tabs.map((t, idx) => (
 								<div
 									key={idx}
 									onClick={() => setSelectedTab(t.type)}
 									className={classNames(
-										'w-full cursor-pointer  p-2',
+										'w-full cursor-pointer p-2 flex items-center justify-center',
 										t.type === selectedTab
 											? 'bg-[color:var(--bg-shade-two-color)]'
 											: 'hover:bg-[color:var(--bg-shade-one-color)]',
 									)}
 								>
-									{t.name}
+									<div>{t.name}</div>
 								</div>
 							))}
 						</div>

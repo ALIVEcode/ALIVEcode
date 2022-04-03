@@ -9,6 +9,7 @@ import {
   HttpStatus,
   HttpException,
   UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import { Auth } from '../../../utils/decorators/auth.decorator';
 import { User } from '../../../utils/decorators/user.decorator';
@@ -28,6 +29,8 @@ import { IoTProjectAddScriptDTO } from './dto/addScript.dto';
 import { IoTProjectUpdateDTO } from './dto/updateProject.dto';
 import { IoTProjectService } from './IoTproject.service';
 import { IoTObjectService } from '../IoTobject/IoTobject.service';
+import { IoTProjectCreator } from '../../../utils/guards/iotProject.guard';
+import { IoTProject } from '../../../utils/decorators/iotProject.decorator';
 
 @Controller('iot/projects')
 @UseInterceptors(DTOInterceptor)
@@ -63,47 +66,30 @@ export class IoTProjectController {
 
   @Patch(':id')
   @Auth()
-  async update(@User() user: UserEntity, @Param('id') id: string, @Body() updateIoTobjectDto: IoTProjectUpdateDTO) {
-    const project = await this.IoTProjectService.findOne(id);
-
-    if (project.creator.id !== user.id && !hasRole(user, Role.STAFF))
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-
-    return await this.IoTProjectService.update(project.id, updateIoTobjectDto);
+  @UseGuards(IoTProjectCreator)
+  async update(@Param('id') id: string, @Body() updateIoTobjectDto: IoTProjectUpdateDTO) {
+    return await this.IoTProjectService.update(id, updateIoTobjectDto);
   }
 
   @Delete(':id')
   @Auth()
-  async remove(@User() user: UserEntity, @Param('id') id: string) {
-    const project = await this.IoTProjectService.findOne(id);
-
-    if (project.creator.id !== user.id && !hasRole(user, Role.STAFF))
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-
+  @UseGuards(IoTProjectCreator)
+  async remove(@Param('id') id: string) {
     return await this.IoTProjectService.remove(id);
   }
 
   @Patch(':id/layout')
   @Auth()
-  async updateLayout(@User() user: UserEntity, @Param('id') id: string, @Body() layout: IoTProjectLayout) {
-    const project = await this.IoTProjectService.findOne(id);
-
-    if (project.creator.id !== user.id && !hasRole(user, Role.STAFF))
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-
+  @UseGuards(IoTProjectCreator)
+  async updateLayout(@Param('id') id: string, @Body() layout: IoTProjectLayout) {
     return await this.IoTProjectService.updateLayout(id, layout);
   }
 
   @Patch(':id/document')
   @Auth()
-  async updateDocument(@User() user: UserEntity, @Param('id') id: string, @Body() document: IoTProjectDocument) {
+  @UseGuards(IoTProjectCreator)
+  async updateDocument(@Param('id') id: string, @Body() document: IoTProjectDocument) {
     if (typeof document !== 'object') throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
-
-    const project = await this.IoTProjectService.findOne(id);
-
-    if (project.creator.id !== user.id && !hasRole(user, Role.STAFF))
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-
     return await this.IoTProjectService.setDocument(id, document);
   }
 
@@ -122,12 +108,8 @@ export class IoTProjectController {
 
   @Post(':id/routes')
   @Auth()
-  async addRoute(@User() user: UserEntity, @Param('id') id: string, @Body() routeDTO: IoTRouteEntity) {
-    const project = await this.IoTProjectService.findOne(id);
-
-    if (project.creator.id !== user.id && !hasRole(user, Role.STAFF))
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-
+  @UseGuards(IoTProjectCreator)
+  async addRoute(@IoTProject() project: IoTProjectEntity, @Body() routeDTO: IoTRouteEntity) {
     return await this.IoTProjectService.addRoute(project, routeDTO);
   }
 
@@ -146,32 +128,20 @@ export class IoTProjectController {
 
   @Post(':id/objects')
   @Auth()
-  async addObject(@User() user: UserEntity, @Param('id') id: string, @Body() addObjectDTO: AddObjectDTO) {
-    throw new HttpException('Not implemented', HttpStatus.NOT_IMPLEMENTED);
-
-    /*
-    const project = await this.IoTProjectService.findOne(id);
-
-    if (project.creator.id !== user.id && !hasRole(user, Role.STAFF))
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-
+  @UseGuards(IoTProjectCreator)
+  async addObject(@IoTProject() project: IoTProjectEntity, @Body() addObjectDTO: AddObjectDTO) {
     const object = await this.IoTObjectService.findOne(addObjectDTO.id);
     return await this.IoTProjectService.addObject(project, object);
-    */
   }
 
   @Post(':id/as/create')
   @Auth()
+  @UseGuards(IoTProjectCreator)
   async addAndCreateScript(
+    @IoTProject() project: IoTProjectEntity,
     @User() user: UserEntity,
-    @Param('id') id: string,
     @Body() scriptDTO: IoTProjectAddScriptDTO,
   ) {
-    const project = await this.IoTProjectService.findOne(id);
-
-    if (project.creator.id !== user.id && !hasRole(user, Role.STAFF))
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-
     return await this.IoTProjectService.addScript(project, user, scriptDTO);
   }
 }

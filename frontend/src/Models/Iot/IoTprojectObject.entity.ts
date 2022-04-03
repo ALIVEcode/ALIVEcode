@@ -9,9 +9,11 @@ export class IoTProjectObject {
 
 	iotProject: IoTProject;
 
-	iotObject?: IoTObject;
+	iotObject: IoTObject;
 
 	iotTestObject?: IoTObject;
 
 	iotScript?: IoTScript;
+
+	iotScriptId?: string;
 }

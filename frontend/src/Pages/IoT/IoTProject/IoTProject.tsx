@@ -22,7 +22,6 @@ import {
 	IoTProjectContextValues,
 } from '../../../state/contexts/IoTProjectContext';
 import { IotRoute } from '../../../Models/Iot/IoTroute.entity';
-import { IoTObject } from '../../../Models/Iot/IoTobject.entity';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import { useParams } from 'react-router';
 import IoTProjectPage from '../IoTProjectPage/IoTProjectPage';
@@ -32,6 +31,8 @@ import { useNavigate } from 'react-router-dom';
 import { IoTProjectDocument } from '../../../../../backend/src/models/iot/IoTproject/entities/IoTproject.entity';
 import { IoTSocket } from '../../../Models/Iot/IoTProjectClasses/IoTSocket';
 import { instanceToPlain } from 'class-transformer';
+import { IoTProjectObject } from '../../../Models/Iot/IoTprojectObject.entity';
+import { IoTObject } from '../../../Models/Iot/IoTobject.entity';
 
 /**
  * IoTProject. On this page are all the components essential in the functionning of an IoTProject.
@@ -140,7 +141,7 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 	);
 
 	const addIoTObject = useCallback(
-		(iotObject: IoTObject) => {
+		(iotObject: IoTProjectObject) => {
 			if (!canEdit || !project) return;
 			project.iotProjectObjects?.push(iotObject);
 			alert.success(t('iot.project.add_object.success'));
@@ -151,6 +152,12 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 	const loadIoTObjects = useCallback(async () => {
 		if (!project) return;
 		await project.getIoTObjects();
+		forceUpdate();
+	}, [project, forceUpdate]);
+
+	const loadIoTScripts = useCallback(async () => {
+		if (!project) return;
+		await project.getIoTScripts();
 		forceUpdate();
 	}, [project, forceUpdate]);
 
@@ -204,6 +211,28 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 		[forceUpdate, project],
 	);
 
+	const connectObjectToProject = useCallback(
+		async (object: IoTObject) => {
+			if (!project) return;
+			object.currentIoTProjectId = (
+				await api.db.iot.objects.connectObjectToProject(object, project)
+			).currentIoTProjectId;
+			forceUpdate();
+		},
+		[project, forceUpdate],
+	);
+
+	const disconnectObjectFromProject = useCallback(
+		async (object: IoTObject) => {
+			if (!project) return;
+			object.currentIoTProjectId = (
+				await api.db.iot.objects.disconnectObjectFromProject(object, project)
+			).currentIoTProjectId;
+			forceUpdate();
+		},
+		[project, forceUpdate],
+	);
+
 	const providerValues: IoTProjectContextValues = useMemo(() => {
 		return {
 			project: project ?? null,
@@ -216,9 +245,12 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 			updateRoute,
 			addIoTObject,
 			loadIoTObjects,
+			loadIoTScripts,
 			updateProjectData,
 			updateScript,
 			updateDocument,
+			connectObjectToProject,
+			disconnectObjectFromProject,
 		};
 	}, [
 		project,
@@ -231,9 +263,12 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 		updateRoute,
 		addIoTObject,
 		loadIoTObjects,
+		loadIoTScripts,
 		updateProjectData,
 		updateScript,
 		updateDocument,
+		connectObjectToProject,
+		disconnectObjectFromProject,
 	]);
 
 	if (!project) {

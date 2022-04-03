@@ -1,5 +1,5 @@
 import { IsEmpty } from 'class-validator';
-import { Entity, ManyToOne, OneToMany, Column } from 'typeorm';
+import { Entity, ManyToOne, OneToMany, Column, JoinColumn } from 'typeorm';
 import { CreatedByUser } from '../../../../generics/entities/createdByUser.entity';
 import { UserEntity } from '../../../user/entities/user.entity';
 import { IoTProjectEntity } from '../../IoTproject/entities/IoTproject.entity';
@@ -25,8 +25,12 @@ export class IoTObjectEntity extends CreatedByUser {
   logs: IoTLog[];
 
   @ManyToOne(() => IoTProjectEntity, { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'currentIoTProjectId' })
   @Exclude({ toClassOnly: true })
   currentIotProject?: IoTProjectEntity;
+
+  @Column({ name: 'currentIoTProjectId', type: 'varchar', nullable: true })
+  currentIoTProjectId?: string;
 
   @OneToMany(() => IoTProjectObjectEntity, obj => obj.iotObject, { onDelete: 'SET NULL' })
   @Exclude({ toClassOnly: true })

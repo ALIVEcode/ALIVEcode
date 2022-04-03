@@ -600,8 +600,11 @@
 					}
 				}
 			},
-			"scripting": {
-				"name": "Scripting"
+			"objects": {
+				"name": "Objects"
+			},
+			"scripts": {
+				"name": "Scripts"
 			}
 		},
 		"object": {

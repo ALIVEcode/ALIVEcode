@@ -10,6 +10,8 @@ export enum IOT_EVENT {
   CONNECT_OBJECT = 'connect_object',
   /** Connect IoTObject to a project */
   CONNECT_PROJECT = 'connect_project',
+  /** Connect IoTObject to a project */
+  DISCONNECT_PROJECT = 'disconnect_project',
   /** Connect object as watcher */
   CONNECT_SUCCESS = 'connect_success',
 

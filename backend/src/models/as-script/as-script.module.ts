@@ -10,9 +10,13 @@ import { UserEntity } from '../user/entities/user.entity';
 import { ChallengeModule } from '../challenge/challenge.module';
 import { ChallengeService } from '../challenge/challenge.service';
 import { IoTObjectService } from '../iot/IoTobject/IoTobject.service';
+import { IoTProjectObjectEntity } from '../iot/IoTproject/entities/IoTprojectObject.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([IoTProjectEntity, IoTRouteEntity, AsScriptEntity, UserEntity]), ChallengeModule],
+  imports: [
+    TypeOrmModule.forFeature([IoTProjectEntity, IoTRouteEntity, AsScriptEntity, UserEntity, IoTProjectObjectEntity]),
+    ChallengeModule,
+  ],
   controllers: [AsScriptController],
   providers: [AsScriptService, IoTObjectService, IoTProjectService, ChallengeService],
 })

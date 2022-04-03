@@ -46,6 +46,7 @@ import { QueryResources } from './Resource/dto/query_resources.dto';
 import { SetStateAction } from 'react';
 import { GetMimeType } from '../Types/files.type';
 import { IoTProjectObject } from './Iot/IoTprojectObject.entity';
+import { IoTScript } from './Iot/IoTscript.entity';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;
@@ -439,6 +440,7 @@ const api = {
 				deleteRoute: apiDelete('iot/routes/projects/:projectId/:id'),
 				getRoutes: apiGet('iot/projects/:id/routes', IotRoute, true),
 				getObjects: apiGet('iot/projects/:id/objects', IoTProjectObject, true),
+				getScripts: apiGet('iot/projects/:id/scripts', IoTScript, true),
 				async updateLayout(id: string, layout: IoTProjectLayout) {
 					await axios.patch(`iot/projects/${id}/layout`, layout);
 				},
@@ -463,6 +465,29 @@ const api = {
 			},
 			objects: {
 				delete: apiDelete('iot/objects/:id'),
+				async connectObjectToProject(object: IoTObject, project: IoTProject) {
+					return plainToInstance(
+						IoTObject,
+						(
+							await axios.patch(`iot/objects/${object.id}/connectProject`, {
+								projectId: project.id,
+							})
+						).data,
+					);
+				},
+				async disconnectObjectFromProject(
+					object: IoTObject,
+					project: IoTProject,
+				) {
+					return plainToInstance(
+						IoTObject,
+						(
+							await axios.patch(`iot/objects/${object.id}/disconnectProject`, {
+								projectId: project.id,
+							})
+						).data,
+					);
+				},
 			},
 		},
 		asScript: {

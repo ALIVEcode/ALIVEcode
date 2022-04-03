@@ -165,4 +165,11 @@ export class IoTProject extends CreatedByUser {
 		});
 		return this.iotProjectObjects;
 	}
+
+	async getIoTScripts() {
+		this.iotScripts = await api.db.iot.projects.getScripts({
+			id: this.id,
+		});
+		return this.iotScripts;
+	}
 }

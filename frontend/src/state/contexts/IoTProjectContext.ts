@@ -6,9 +6,10 @@ import {
 	IOTPROJECT_INTERACT_RIGHTS,
 } from '../../Models/Iot/IoTproject.entity';
 import { IotRoute } from '../../Models/Iot/IoTroute.entity';
-import { IoTObject } from '../../Models/Iot/IoTobject.entity';
 import { AsScript } from '../../Models/AsScript/as-script.entity';
 import { IoTSocket } from '../../Models/Iot/IoTProjectClasses/IoTSocket';
+import { IoTProjectObject } from '../../Models/Iot/IoTprojectObject.entity';
+import { IoTObject } from '../../Models/Iot/IoTobject.entity';
 
 export type IoTProjectContextValues = {
 	project: IoTProject | null;
@@ -19,8 +20,9 @@ export type IoTProjectContextValues = {
 	addRoute: (route: IotRoute) => void;
 	deleteRoute: (route: IotRoute) => void;
 	updateRoute: (route: IotRoute) => void;
-	addIoTObject: (iotObject: IoTObject) => void;
+	addIoTObject: (iotProjectObject: IoTProjectObject) => void;
 	loadIoTObjects: () => void;
+	loadIoTScripts: () => Promise<void>;
 	updateProjectData: (
 		name: string,
 		desc: string,
@@ -29,6 +31,8 @@ export type IoTProjectContextValues = {
 	) => void;
 	updateScript: (route: IotRoute, asScript: AsScript) => void;
 	updateDocument: (doc: IoTProjectDocument) => void;
+	connectObjectToProject: (iotObject: IoTObject) => Promise<void>;
+	disconnectObjectFromProject: (iotObject: IoTObject) => Promise<void>;
 };
 
 export const IoTProjectContext = createContext<IoTProjectContextValues>({
@@ -42,7 +46,10 @@ export const IoTProjectContext = createContext<IoTProjectContextValues>({
 	updateRoute: () => {},
 	addIoTObject: () => {},
 	loadIoTObjects: () => {},
+	loadIoTScripts: async () => {},
 	updateProjectData: () => {},
 	updateScript: () => {},
 	updateDocument: () => {},
+	connectObjectToProject: async () => {},
+	disconnectObjectFromProject: async () => {},
 });

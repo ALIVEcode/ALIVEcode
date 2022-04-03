@@ -1,8 +1,14 @@
+import { Type } from 'class-transformer';
 import { CreatedByUser } from '../Generics/createdByUser.entity';
 import { User } from '../User/user.entity';
 import { IoTProject } from './IoTproject.entity';
 
 export class IoTObject extends CreatedByUser {
+	@Type(() => User)
 	creator: User;
-	currentIotProject: IoTProject;
+
+	@Type(() => IoTProject)
+	currentIotProject?: IoTProject;
+
+	currentIoTProjectId?: string;
 }

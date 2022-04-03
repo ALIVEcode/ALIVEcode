@@ -15,12 +15,14 @@ import { ChallengeCodeEntity } from '../../models/challenge/entities/challenges/
 import { ChallengeAIEntity } from '../../models/challenge/entities/challenges/challenge_ai.entity';
 import { ChallengeIoTEntity } from '../../models/challenge/entities/challenges/challenge_iot.entity';
 import { ChallengeProgressionEntity } from '../../models/challenge/entities/challenge_progression.entity';
+import { IoTProjectObjectEntity } from '../../models/iot/IoTproject/entities/IoTprojectObject.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       IoTObjectEntity,
       IoTProjectEntity,
+      IoTProjectObjectEntity,
       IoTRouteEntity,
       AsScriptEntity,
       ChallengeEntity,
@@ -34,4 +36,4 @@ import { ChallengeProgressionEntity } from '../../models/challenge/entities/chal
   controllers: [IoTGateway],
   providers: [IoTObjectService, IoTProjectService, IoTGateway, AsScriptService, ChallengeService],
 })
-export class IoTModule {}
+export class IoTSocketModule {}

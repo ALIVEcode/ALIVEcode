@@ -138,11 +138,11 @@ export class UserService {
   }
 
   async nameMigration(userId: string, nameMigrationDto: NameMigrationDTO) {
-    return await this.studentRepository.save({ id: userId, oldStudentName: null, ...nameMigrationDto });
+    return await this.studentRepository.save({ ...nameMigrationDto, id: userId, oldStudentName: null });
   }
 
   async update(userId: string, updateUserDto: UserEntity) {
-    return await this.userRepository.save({ id: userId, ...updateUserDto });
+    return await this.userRepository.save({ ...updateUserDto, id: userId });
   }
 
   remove(user: UserEntity) {

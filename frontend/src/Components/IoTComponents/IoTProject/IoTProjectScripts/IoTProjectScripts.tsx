@@ -19,8 +19,6 @@ const IoTProjectScripts = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	console.log(project?.scripts);
-
 	return (
 		<div className="w-full h-full overflow-y-auto">
 			<h6>

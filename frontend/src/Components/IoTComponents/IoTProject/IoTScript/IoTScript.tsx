@@ -4,13 +4,16 @@ import Link from '../../../UtilsComponents/Link/Link';
 import { classNames } from '../../../../Types/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { useContext } from 'react';
+import { IoTProjectContext } from '../../../../state/contexts/IoTProjectContext';
 
 const IoTScript = ({ script, odd }: IoTScriptProps) => {
+	const { setScriptOpen } = useContext(IoTProjectContext);
+
 	const iconProps: { size: SizeProp; className: string } = {
 		size: '3x',
 		className: 'cursor-pointer',
 	};
-	console.log(script);
 
 	return (
 		<div
@@ -28,20 +31,26 @@ const IoTScript = ({ script, odd }: IoTScriptProps) => {
 				<div>
 					<label className="text-normal tablet:text-xl">{script.name}</label>
 				</div>
-				{!script.iotProjectObject && (
-					<div>
-						<Link
-							className="cursor-pointer"
-							onClick={() => console.log('Not implemented')}
-						>
-							Link script to object
-						</Link>
-					</div>
-				)}
+				{
+					/* TODO : Find way to check if link is there */ true && (
+						<div>
+							<Link
+								className="cursor-pointer"
+								onClick={() => console.log('Not implemented')}
+							>
+								Link script to object
+							</Link>
+						</div>
+					)
+				}
 			</div>
 			<div className="flex gap-4">
 				<div>
-					<FontAwesomeIcon icon={faPencilAlt} {...iconProps} />
+					<FontAwesomeIcon
+						onClick={() => setScriptOpen(script)}
+						icon={faPencilAlt}
+						{...iconProps}
+					/>
 				</div>
 				<div>
 					<FontAwesomeIcon icon={faTrash} {...iconProps} />

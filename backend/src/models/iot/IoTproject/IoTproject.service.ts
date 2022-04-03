@@ -164,11 +164,11 @@ export class IoTProjectService {
   }
 
   async getObjects(project: IoTProjectEntity) {
-    return (await this.projectRepository.findOne(project.id, { relations: ['iotProjectObjects'] })).iotProjectObjects;
+    return await this.projectObjRepo.find({ where: { iotProject: project.id } });
   }
 
   async getScripts(project: IoTProjectEntity) {
-    return (await this.projectRepository.findOne(project.id, { relations: ['scripts'] })).scripts;
+    return await this.asScriptService.findByIoTProject(project);
   }
 
   async addObject(project: IoTProjectEntity, object: IoTObjectEntity) {

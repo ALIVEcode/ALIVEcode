@@ -8,6 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { AsScriptEntity } from './entities/as-script.entity';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../user/entities/user.entity';
+import { IoTProjectEntity } from '../iot/IoTproject/entities/IoTproject.entity';
 
 @Injectable()
 export class AsScriptService {
@@ -55,7 +56,11 @@ export class AsScriptService {
   }
 
   findAll() {
-    return `This action returns all asScript`;
+    throw new HttpException('Not implemented', HttpStatus.NOT_IMPLEMENTED);
+  }
+
+  async findByIoTProject(project: IoTProjectEntity) {
+    return await this.asScriptRepo.find({ where: { iotProjectId: project.id }, order: { updateDate: 'DESC' } });
   }
 
   async findOne(id: string) {

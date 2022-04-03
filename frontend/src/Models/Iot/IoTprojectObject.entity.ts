@@ -1,7 +1,7 @@
 import { Exclude, Type } from 'class-transformer';
 import { IoTObject } from './IoTobject.entity';
 import { IoTProject } from './IoTproject.entity';
-import { IoTScript } from './IoTscript.entity';
+import { AsScript } from '../AsScript/as-script.entity';
 
 export enum PROJECT_OBJECT_TARGET {
 	OBJECT = 'O',
@@ -20,10 +20,10 @@ export class IoTProjectObject {
 	@Type(() => IoTObject)
 	iotTestObject?: IoTObject;
 
-	@Type(() => IoTScript)
-	iotScript?: IoTScript;
+	@Type(() => AsScript)
+	script?: AsScript;
 
-	iotScriptId?: string;
+	scriptId?: string;
 
 	private currentTarget: PROJECT_OBJECT_TARGET;
 

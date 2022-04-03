@@ -7,7 +7,7 @@ import { IoTLayoutManager } from '../IoTLayoutManager';
 import { Type } from 'class-transformer';
 import { IoTProjectObjectEntity } from './IoTprojectObject.entity';
 import { ChallengeProgressionEntity } from '../../../challenge/entities/challenge_progression.entity';
-import { IoTScriptEntity } from './IoTscript.entity';
+import { AsScriptEntity } from '../../../as-script/entities/as-script.entity';
 
 export enum IOTPROJECT_INTERACT_RIGHTS {
   ANYONE = 'AN',
@@ -75,8 +75,8 @@ export class IoTProjectEntity extends CreatedByUser {
   @OneToOne(() => ChallengeProgressionEntity, progress => progress.challenge)
   progression?: ChallengeProgressionEntity;
 
-  @OneToMany(() => IoTScriptEntity, script => script.iotProject)
-  iotScripts: IoTScriptEntity[];
+  @OneToMany(() => AsScriptEntity, script => script.iotProject)
+  scripts: AsScriptEntity[];
 
   @OneToMany(() => IoTProjectObjectEntity, obj => obj.iotProject)
   @JoinTable()

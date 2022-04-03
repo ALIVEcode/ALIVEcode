@@ -233,6 +233,16 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 		[project, forceUpdate],
 	);
 
+	const createScript = useCallback(
+		async (script: AsScript) => {
+			if (!project) return;
+			const newScript = await api.db.iot.projects.createScript(project, script);
+			project.scripts.push(newScript);
+			forceUpdate();
+		},
+		[forceUpdate, project],
+	);
+
 	const providerValues: IoTProjectContextValues = useMemo(() => {
 		return {
 			project: project ?? null,
@@ -251,6 +261,7 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 			updateDocument,
 			connectObjectToProject,
 			disconnectObjectFromProject,
+			createScript,
 		};
 	}, [
 		project,
@@ -269,6 +280,7 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 		updateDocument,
 		connectObjectToProject,
 		disconnectObjectFromProject,
+		createScript,
 	]);
 
 	if (!project) {

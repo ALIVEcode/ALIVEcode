@@ -1,5 +1,6 @@
-import { IoTScript } from '../../../../Models/Iot/IoTscript.entity';
+import { AsScript } from '../../../../Models/AsScript/as-script.entity';
 
 export type IoTScriptProps = {
-	script: IoTScript;
+	script: AsScript;
+	odd?: boolean;
 };

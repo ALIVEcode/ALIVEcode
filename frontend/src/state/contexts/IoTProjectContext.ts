@@ -33,6 +33,7 @@ export type IoTProjectContextValues = {
 	updateDocument: (doc: IoTProjectDocument) => void;
 	connectObjectToProject: (iotObject: IoTObject) => Promise<void>;
 	disconnectObjectFromProject: (iotObject: IoTObject) => Promise<void>;
+	createScript: (asScript: AsScript) => Promise<void>;
 };
 
 export const IoTProjectContext = createContext<IoTProjectContextValues>({
@@ -52,4 +53,5 @@ export const IoTProjectContext = createContext<IoTProjectContextValues>({
 	updateDocument: () => {},
 	connectObjectToProject: async () => {},
 	disconnectObjectFromProject: async () => {},
+	createScript: async () => {},
 });

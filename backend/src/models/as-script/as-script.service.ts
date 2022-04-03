@@ -7,6 +7,7 @@ import { IoTProjectService } from '../iot/IoTproject/IoTproject.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AsScriptEntity } from './entities/as-script.entity';
 import { Repository } from 'typeorm';
+import { UserEntity } from '../user/entities/user.entity';
 
 @Injectable()
 export class AsScriptService {
@@ -65,6 +66,11 @@ export class AsScriptService {
 
   async updateContent(script: AsScriptEntity, content: string) {
     return await this.asScriptRepo.save({ ...script, content });
+  }
+
+  async create(creator: UserEntity, dto: AsScriptEntity) {
+    delete dto['id'];
+    return await this.asScriptRepo.save({ ...dto, creator });
   }
 
   remove(id: number) {

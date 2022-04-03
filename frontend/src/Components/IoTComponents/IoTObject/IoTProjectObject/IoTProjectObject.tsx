@@ -10,6 +10,7 @@ import {
 import { useContext } from 'react';
 import { IoTProjectContext } from '../../../../state/contexts/IoTProjectContext';
 import Link from '../../../UtilsComponents/Link/Link';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const IoTProjectObject = ({ object, odd }: IoTProjectObjectProps) => {
 	const { project, connectObjectToProject, disconnectObjectFromProject } =
@@ -17,7 +18,7 @@ const IoTProjectObject = ({ object, odd }: IoTProjectObjectProps) => {
 
 	const iconProps: { size: SizeProp; className: string } = {
 		size: '3x',
-		className: 'cursor-pointer',
+		className: 'cursor-pointer text-[color:var(--fg-shade-four-color)]',
 	};
 
 	const target = object.target;
@@ -35,51 +36,52 @@ const IoTProjectObject = ({ object, odd }: IoTProjectObjectProps) => {
 			)}
 		>
 			<div>
-				<div>
-					<label className="text-normal tablet:text-xl">
-						{object.iotObject.name}
-					</label>
+				<div className="text-normal text-center tablet:text-left tablet:text-xl">
+					{object.iotObject.name}
 				</div>
-				{target ? (
-					object.iotObject.currentIoTProjectId !== project?.id ? (
-						<div>
+				<div>
+					{target ? (
+						object.iotObject.currentIoTProjectId !== project?.id ? (
 							<Link
-								className="cursor-pointer"
+								className="cursor-pointer text-center tablet:text-left"
 								onClick={() => connectObjectToProject(target)}
 							>
 								Connect object to project
 							</Link>
-						</div>
-					) : (
-						<div>
+						) : (
 							<Link
-								className="cursor-pointer !text-[color:var(--danger-color)]"
+								className="cursor-pointer text-center tablet:text-left !text-[color:var(--danger-color)]"
 								onClick={() => disconnectObjectFromProject(target)}
 							>
 								Disconnect object from project
 							</Link>
-						</div>
-					)
-				) : (
-					<div>
+						)
+					) : (
 						<Link
-							className="cursor-pointer"
+							className="cursor-pointer text-center tablet:text-left"
 							onClick={() => console.log('Not Implemented')}
 						>
 							Select target
 						</Link>
-					</div>
-				)}
+					)}
+				</div>
 			</div>
-			<div className="flex gap-4">
-				<div className="">
+			<div className="flex items-center gap-4">
+				<div>
 					<FontAwesomeIcon icon={faPlayCircle} {...iconProps} />
 				</div>
-				<div className="">
+				<div>
 					<FontAwesomeIcon icon={faStopCircle} {...iconProps} />
 				</div>
-				<div className="">
+				<div>
 					<FontAwesomeIcon icon={faServer} {...iconProps} />
+				</div>
+				<div>
+					<FontAwesomeIcon
+						className="ml-4 cursor-pointer"
+						size="lg"
+						icon={faTimes}
+					/>
 				</div>
 			</div>
 		</div>

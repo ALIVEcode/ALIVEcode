@@ -21,8 +21,8 @@ import { IoTBuzzer } from './IoTProjectClasses/Components/IoTBuzzer';
 import { isArray } from 'tone';
 import { IoTTrafficLight } from './IoTProjectClasses/Components/IoTTrafficLight';
 import { IoTProjectObject } from './IoTprojectObject.entity';
-import { IoTScript } from './IoTscript.entity';
 import { ChallengeProgression } from '../Challenge/challengeProgression';
+import { AsScript } from '../AsScript/as-script.entity';
 
 export enum IOTPROJECT_INTERACT_RIGHTS {
 	ANYONE = 'AN',
@@ -144,8 +144,8 @@ export class IoTProject extends CreatedByUser {
 	@Type(() => IoTProjectObject)
 	iotProjectObjects?: IoTProjectObject[];
 
-	@Type(() => IoTScript)
-	iotScripts: IoTScript[];
+	@Type(() => AsScript)
+	scripts: AsScript[] = [];
 
 	access: IOTPROJECT_ACCESS;
 
@@ -167,9 +167,9 @@ export class IoTProject extends CreatedByUser {
 	}
 
 	async getIoTScripts() {
-		this.iotScripts = await api.db.iot.projects.getScripts({
+		this.scripts = await api.db.iot.projects.getScripts({
 			id: this.id,
 		});
-		return this.iotScripts;
+		return this.scripts;
 	}
 }

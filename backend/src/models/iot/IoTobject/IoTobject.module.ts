@@ -9,7 +9,6 @@ import { IoTProjectModule } from '../IoTproject/IoTproject.module';
 import { IoTProjectEntity } from '../IoTproject/entities/IoTproject.entity';
 import { IoTRouteEntity } from '../IoTroute/entities/IoTroute.entity';
 import { IoTProjectObjectEntity } from '../IoTproject/entities/IoTprojectObject.entity';
-import { IoTScriptEntity } from '../IoTproject/entities/IoTscript.entity';
 import { AsScriptEntity } from '../../as-script/entities/as-script.entity';
 import { ChallengeProgressionEntity } from '../../challenge/entities/challenge_progression.entity';
 import { ChallengeService } from '../../challenge/challenge.service';
@@ -27,7 +26,6 @@ import { ChallengeCodeEntity } from '../../challenge/entities/challenges/challen
       IoTProjectEntity,
       IoTRouteEntity,
       IoTProjectObjectEntity,
-      IoTScriptEntity,
       AsScriptEntity,
       ChallengeProgressionEntity,
       ChallengeEntity,

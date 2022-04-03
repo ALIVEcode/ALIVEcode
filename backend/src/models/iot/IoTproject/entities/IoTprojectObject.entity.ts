@@ -1,9 +1,9 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { IoTObjectEntity } from '../../IoTobject/entities/IoTobject.entity';
 import { IoTProjectEntity } from './IoTproject.entity';
 import { IsEmpty } from 'class-validator';
 import { Exclude } from 'class-transformer';
-import { IoTScriptEntity } from './IoTscript.entity';
+import { AsScriptEntity } from '../../../as-script/entities/as-script.entity';
 
 export enum PROJECT_OBJECT_TARGET {
   OBJECT = 'O',
@@ -29,14 +29,14 @@ export class IoTProjectObjectEntity {
   @Exclude({ toClassOnly: true })
   iotTestObject?: IoTObjectEntity;
 
-  @OneToOne(() => IoTScriptEntity, script => script.iotProjectObject, { onDelete: 'SET NULL' })
+  @ManyToOne(() => AsScriptEntity, { onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'scriptId' })
   @Exclude({ toClassOnly: true })
-  @JoinColumn({ name: 'iotScriptId' })
-  iotScript?: IoTScriptEntity;
+  script?: AsScriptEntity;
 
-  @Column({ name: 'iotScriptId', type: 'varchar', nullable: true })
+  @Column({ name: 'scriptId', type: 'varchar', nullable: true })
   @Exclude({ toClassOnly: true })
-  iotScriptId?: string;
+  scriptId?: string;
 
   @Column({ type: 'enum', enum: PROJECT_OBJECT_TARGET, default: PROJECT_OBJECT_TARGET.OBJECT, nullable: false })
   @Exclude({ toClassOnly: true })

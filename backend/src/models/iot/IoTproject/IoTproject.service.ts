@@ -12,7 +12,6 @@ import {
   WatcherClient,
 } from '../../../socket/iotSocket/iotSocket.types';
 import { validUUID } from '../../../utils/types/validation.types';
-import { IoTProjectAddScriptDTO } from './dto/addScript.dto';
 import { AsScriptEntity } from '../../as-script/entities/as-script.entity';
 import { AsScriptService } from '../../as-script/as-script.service';
 import { ChallengeService } from '../../challenge/challenge.service';
@@ -168,6 +167,10 @@ export class IoTProjectService {
     return (await this.projectRepository.findOne(project.id, { relations: ['iotProjectObjects'] })).iotProjectObjects;
   }
 
+  async getScripts(project: IoTProjectEntity) {
+    return (await this.projectRepository.findOne(project.id, { relations: ['scripts'] })).scripts;
+  }
+
   async addObject(project: IoTProjectEntity, object: IoTObjectEntity) {
     const projectObject = await this.projectObjRepo.save({ iotObject: object, iotProject: project });
 
@@ -179,20 +182,24 @@ export class IoTProjectService {
     return projectObject;
   }
 
-  async addScript(project: IoTProjectEntity, user: UserEntity, scriptDto: IoTProjectAddScriptDTO) {
-    const newScript = this.scriptRepo.create(scriptDto.script);
-    newScript.creator = user;
-    await this.scriptRepo.save(newScript);
-
+  async addScriptToRoute(project: IoTProjectEntity, routeId: string, script: AsScriptEntity) {
     project = await this.projectRepository.findOne(project.id, { relations: ['routes'] });
 
-    const route = project.routes.find(r => r.id === scriptDto.routeId);
+    const route = project.routes.find(r => r.id === routeId);
     if (!route) throw new HttpException('No route found', HttpStatus.NOT_FOUND);
 
-    route.asScript = newScript;
+    route.asScript = script;
 
     await this.routeRepository.save(route);
-    return newScript;
+    return script;
+  }
+
+  async addScriptToProject(project: IoTProjectEntity, script: AsScriptEntity) {
+    if (!Array.isArray(project.scripts))
+      project = await this.projectRepository.findOne(project.id, { relations: ['scripts'] });
+
+    await this.projectRepository.save(project);
+    return script;
   }
 
   async getProjectOrProgression(id: string): Promise<IoTProjectEntity | ChallengeProgressionEntity> {

@@ -20,6 +20,8 @@ const IoTProjectObject = ({ object, odd }: IoTProjectObjectProps) => {
 		className: 'cursor-pointer',
 	};
 
+	const target = object.target;
+
 	return (
 		<div
 			className={classNames(
@@ -38,22 +40,33 @@ const IoTProjectObject = ({ object, odd }: IoTProjectObjectProps) => {
 						{object.iotObject.name}
 					</label>
 				</div>
-				{object.iotObject.currentIoTProjectId !== project?.id ? (
-					<div>
-						<Link
-							className="cursor-pointer"
-							onClick={() => connectObjectToProject(object.iotObject)}
-						>
-							Connect object to project
-						</Link>
-					</div>
+				{target ? (
+					object.iotObject.currentIoTProjectId !== project?.id ? (
+						<div>
+							<Link
+								className="cursor-pointer"
+								onClick={() => connectObjectToProject(target)}
+							>
+								Connect object to project
+							</Link>
+						</div>
+					) : (
+						<div>
+							<Link
+								className="cursor-pointer !text-[color:var(--danger-color)]"
+								onClick={() => disconnectObjectFromProject(target)}
+							>
+								Disconnect object from project
+							</Link>
+						</div>
+					)
 				) : (
 					<div>
 						<Link
-							className="cursor-pointer !text-[color:var(--danger-color)]"
-							onClick={() => disconnectObjectFromProject(object.iotObject)}
+							className="cursor-pointer"
+							onClick={() => console.log('Not Implemented')}
 						>
-							Disconnect object from project
+							Select target
 						</Link>
 					</div>
 				)}

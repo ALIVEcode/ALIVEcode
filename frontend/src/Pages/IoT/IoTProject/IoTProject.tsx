@@ -35,6 +35,7 @@ import { IoTProjectObject } from '../../../Models/Iot/IoTprojectObject.entity';
 import { IoTObject } from '../../../Models/Iot/IoTobject.entity';
 import Modal from '../../../Components/UtilsComponents/Modal/Modal';
 import AsScript from '../../../Components/AliveScriptComponents/AsScript/AsScript';
+import IoTObjectLogs from '../../../Components/IoTComponents/IoTObject/IoTObjectLogs/IoTObjectLogs';
 
 /**
  * IoTProject. On this page are all the components essential in the functionning of an IoTProject.
@@ -64,6 +65,7 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 	const [lastSaved, setLastSaved] = useState<number>(Date.now() - 4000);
 
 	const [scriptOpen, setScriptOpen] = useState<AsScriptModel>();
+	const [logsOpen, setLogsOpen] = useState<IoTObject>();
 
 	const saveComponents = useCallback(async () => {
 		if (!canEdit || !project) return;
@@ -267,6 +269,7 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 			disconnectObjectFromProject,
 			createScript,
 			setScriptOpen,
+			setLogsOpen,
 		};
 	}, [
 		project,
@@ -311,6 +314,14 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 						asScript={scriptOpen}
 					/>
 				)}
+			</Modal>
+			<Modal
+				title="Script"
+				open={logsOpen !== undefined}
+				setOpen={state => !state && setLogsOpen(undefined)}
+				size="lg"
+			>
+				{logsOpen && <IoTObjectLogs object={logsOpen} />}
 			</Modal>
 		</IoTProjectContext.Provider>
 	);

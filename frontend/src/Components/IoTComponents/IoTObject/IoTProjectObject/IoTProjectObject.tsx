@@ -13,8 +13,12 @@ import Link from '../../../UtilsComponents/Link/Link';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const IoTProjectObject = ({ object, odd }: IoTProjectObjectProps) => {
-	const { project, connectObjectToProject, disconnectObjectFromProject } =
-		useContext(IoTProjectContext);
+	const {
+		project,
+		connectObjectToProject,
+		disconnectObjectFromProject,
+		setLogsOpen,
+	} = useContext(IoTProjectContext);
 
 	const iconProps: { size: SizeProp; className: string } = {
 		size: '3x',
@@ -74,7 +78,11 @@ const IoTProjectObject = ({ object, odd }: IoTProjectObjectProps) => {
 					<FontAwesomeIcon icon={faStopCircle} {...iconProps} />
 				</div>
 				<div>
-					<FontAwesomeIcon icon={faServer} {...iconProps} />
+					<FontAwesomeIcon
+						onClick={() => setLogsOpen(target)}
+						icon={faServer}
+						{...iconProps}
+					/>
 				</div>
 				<div>
 					<FontAwesomeIcon

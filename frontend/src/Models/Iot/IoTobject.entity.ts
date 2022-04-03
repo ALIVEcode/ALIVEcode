@@ -5,6 +5,7 @@ import { IoTProject } from './IoTproject.entity';
 import { IOT_EVENT } from './IoTProjectClasses/IoTTypes';
 
 export class IoTLog {
+	@Type(() => Date)
 	public date: Date;
 	public event: IOT_EVENT;
 	public text: string;

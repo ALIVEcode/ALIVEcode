@@ -1,7 +1,8 @@
-import { IoTObject } from '../../../../Models/Iot/IoTobject.entity';
+import { IoTLog, IoTObject } from '../../../../Models/Iot/IoTobject.entity';
 import Cmd from '../../../ChallengeComponents/Cmd/Cmd';
 import { useRef, useEffect } from 'react';
 import $ from 'jquery';
+import { IOT_EVENT } from '../../../../Models/Iot/IoTProjectClasses/IoTTypes';
 
 const IoTObjectLogs = ({ object }: { object: IoTObject }) => {
 	const cmd = useRef<HTMLDivElement>(null);
@@ -9,12 +10,23 @@ const IoTObjectLogs = ({ object }: { object: IoTObject }) => {
 	const make_safe = (msg: string) =>
 		msg.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-	const print = (msg: string) => {
+	const printLog = ({ event, date, text }: IoTLog) => {
 		if (!cmd.current) return;
 		const $cmd = $(cmd.current);
-		msg = make_safe(msg);
-		//cmd.append(`<span><u><i>${heures}:${minutes}:${secondes}:</i></u> ${msg}</span><br>`)
-		$cmd.append(`<pre>${msg}</pre>`);
+
+		const hours = ('0' + date.getHours()).slice(-2);
+		const minutes = ('0' + date.getMinutes()).slice(-2);
+		const seconds = ('0' + date.getSeconds()).slice(-2);
+
+		text = make_safe(text);
+		const entry = Object.entries(IOT_EVENT).find(entry => entry[1] === event);
+		if (!entry) return;
+		const eventStr = make_safe(entry[0]);
+		$cmd.append(
+			`<div style="color:${
+				event === IOT_EVENT.ERROR ? 'red' : 'green'
+			}"><u><i>${hours}:${minutes}:${seconds}:</i></u><strong> ${eventStr}</strong></div><div style="margin-bottom:0.40rem">${text}</div>`,
+		);
 		$cmd.scrollTop(cmd.current.scrollHeight);
 	};
 
@@ -41,12 +53,16 @@ const IoTObjectLogs = ({ object }: { object: IoTObject }) => {
 
 	useEffect(() => {
 		object.logs.forEach(log => {
-			print(log.text);
+			printLog(log);
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [cmd]);
 
-	return <Cmd ref={cmd} />;
+	return (
+		<div className="h-[500px]">
+			<Cmd ref={cmd} />;
+		</div>
+	);
 };
 
 export default IoTObjectLogs;

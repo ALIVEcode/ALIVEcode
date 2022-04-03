@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 import LoadingScreen from '../../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
 import IoTProjectInterface from '../../../Components/IoTComponents/IoTProject/IoTProjectInterface/IotProjectInterface';
 import { IoTProjectContext } from '../../../state/contexts/IoTProjectContext';
@@ -22,7 +22,7 @@ import AliotASExecutor from './AliotASExecutor';
  *
  * @author Enric Soldevila
  */
-const IoTChallenge = ({ initialCode }: { initialCode: string }) => {
+const IoTChallenge2 = ({ initialCode }: { initialCode: string }) => {
 	const { project } = useContext(IoTProjectContext);
 	const { user } = useContext(UserContext);
 	const {
@@ -38,14 +38,14 @@ const IoTChallenge = ({ initialCode }: { initialCode: string }) => {
 
 	const challenge = challengeUntyped as ChallengeIoTModel;
 	const executor =
-		executorUntyped as React.MutableRefObject<ChallengeIoTExecutor | null>;
+		executorUntyped as React.MutableRefObject<AliotASExecutor | null>;
 
 	const forceUpdate = useForceUpdate();
 	const [cmdRef, cmd] = useCmd();
 
 	executor.current = useMemo(
 		() =>
-			(executor.current = new ChallengeIoTExecutor(challenge.name, askForUserInput)),
+			(executor.current = new AliotASExecutor(challenge.name, askForUserInput)),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[challenge?.id, user],
 	);
@@ -75,6 +75,14 @@ const IoTChallenge = ({ initialCode }: { initialCode: string }) => {
 				{/* Left Side of screen */}
 				<div className="w-1/2 h-full flex flex-col">
 					<ChallengeToolsBar />
+					<button
+						onClick={() => {
+							executor.current &&
+								executor.current.docFieldChanged('/document/led', 'red');
+						}}
+					>
+						Click me
+					</button>
 					{editMode ? (
 						<LineInterface
 							key="edit-mode"
@@ -114,7 +122,7 @@ const IoTChallenge = ({ initialCode }: { initialCode: string }) => {
 						<IoTProjectInterface noTopRow />
 					</div>
 					<div className="h-1/3">
-						<Cmd ref={cmdRef} />
+						<Cmd ref={cmdRef}></Cmd>
 					</div>
 				</div>
 			</div>
@@ -122,4 +130,4 @@ const IoTChallenge = ({ initialCode }: { initialCode: string }) => {
 	);
 };
 
-export default IoTChallenge;
+export default IoTChallenge2;

@@ -131,7 +131,7 @@ export class ChallengeExecutor {
 		}
 	}
 
-	private async executeNext(res: string[], firstTime = false) {
+	protected async executeNext(res: string[], firstTime = false) {
 		const data = await this.sendDataToAsServer(
 			firstTime
 				? {
@@ -215,7 +215,7 @@ export class ChallengeExecutor {
 		this.current_execution && this.current_execution.next();
 	}
 
-	private execute(actions: any[]): void {
+	protected execute(actions: any[]): void {
 		const ID = 'id';
 		const DODO = 'd';
 		const PARAMS = 'p';

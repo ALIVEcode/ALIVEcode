@@ -221,12 +221,9 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 	const connectObjectToProject = useCallback(
 		async (object: IoTObject) => {
 			if (!project) return;
-			const newProject = (await api.db.iot.objects.connectObjectToProject(
-				object,
-				project,
-			)) as unknown as IoTProjectModel;
-			object.currentIotProject = newProject;
-			object.currentIoTProjectId = newProject.id;
+			await api.db.iot.objects.connectObjectToProject(object, project);
+			object.currentIotProject = project;
+			object.currentIoTProjectId = project.id;
 			forceUpdate();
 		},
 		[project, forceUpdate],

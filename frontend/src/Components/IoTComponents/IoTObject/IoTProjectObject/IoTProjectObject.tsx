@@ -7,10 +7,12 @@ import {
 	faServer,
 	faStopCircle,
 } from '@fortawesome/free-solid-svg-icons';
-import { useContext } from 'react';
+import { useContext, useRef, useMemo, useEffect } from 'react';
 import { IoTProjectContext } from '../../../../state/contexts/IoTProjectContext';
 import Link from '../../../UtilsComponents/Link/Link';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import AliotASExecutor from '../../../../Pages/Challenge/ChallengeIoT/AliotASExecutor';
+import { UserContext } from '../../../../state/contexts/UserContext';
 
 const IoTProjectObject = ({
 	object,
@@ -25,6 +27,7 @@ const IoTProjectObject = ({
 		setLogsOpen,
 		setScriptOfObject,
 	} = useContext(IoTProjectContext);
+	const { user } = useContext(UserContext);
 
 	const iconProps: { size: SizeProp; className: string } = {
 		size: '3x',
@@ -32,6 +35,17 @@ const IoTProjectObject = ({
 	};
 
 	const target = object.target;
+
+	const executor = useRef<AliotASExecutor | null>(null);
+
+	executor.current = useMemo(
+		() =>
+			(executor.current = new AliotASExecutor(object.id.toString(), () => {})),
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[user],
+	);
+
+	useEffect(() => {}, [object.script]);
 
 	return (
 		<div
@@ -96,7 +110,11 @@ const IoTProjectObject = ({
 				{mode !== 'script-linking' && (
 					<>
 						<div>
-							<FontAwesomeIcon icon={faPlayCircle} {...iconProps} />
+							<FontAwesomeIcon
+								onClick={() => executor.current?.run()}
+								icon={faPlayCircle}
+								{...iconProps}
+							/>
 						</div>
 						<div>
 							<FontAwesomeIcon icon={faStopCircle} {...iconProps} />

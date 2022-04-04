@@ -8,7 +8,7 @@ export default interface DataTypes {
     id: number;
     x: number;
     y: number;
-} | {})[];
+  } | {})[];
   backgroundColor?: string;
   borderColor?: string;
 	borderWidth?: number;

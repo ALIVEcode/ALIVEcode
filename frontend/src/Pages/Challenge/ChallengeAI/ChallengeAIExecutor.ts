@@ -22,6 +22,7 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 		});
 
 		this.registerActions([
+			
 			{
 				actionId: 800,
 				action: {
@@ -66,17 +67,25 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					apply: () => this.executableFuncs.showDataCloud(),
 				},
 			},
+
 			{
 				actionId: 803,
 				action: {
 					label: 'Evaluate',
-					type: 'NORMAL',
+					type: 'GET',
 					apply: (params, _, response) => {
-						if (typeof params[0] === 'number')
-							this.cmd?.print(this.executableFuncs.evaluate(params[0]));
+						if (typeof params[0] === 'number') {
+							response?.push(this.executableFuncs.evaluate(params[0]));
+							console.log("Response sent : " + this.executableFuncs.evaluate(params[0]));
+							//this.cmd?.print("Modèle évalué avec " + params[0] + " => " + this.executableFuncs.evaluate(params[0]));
+
+							this.perform_next();
+						}
+							
 					},
 				},
-			},
+			}, 
+			
 			{
 				actionId: 804,
 				action: {
@@ -88,6 +97,16 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					},
 				},
 			},
+			{
+				actionId: 805,
+				action: {
+					label: 'Test ANN',
+					type: 'NORMAL',
+					apply: () => {
+						this.executableFuncs.testNeuralNetwork(this.cmd);
+					}
+				}
+			}
 		]);
 
 		this.executableFuncs = executables;

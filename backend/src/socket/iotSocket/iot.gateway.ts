@@ -18,6 +18,7 @@ import {
   IoTUpdateDocumentRequestFromObject,
   IoTGetDocRequestFromObject,
   IOT_EVENT,
+  Client,
 } from './iotSocket.types';
 import { IoTObjectService } from '../../models/iot/IoTobject/IoTobject.service';
 import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
@@ -49,16 +50,43 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
 
   afterInit() {
     this.logger.log(`Initialized`);
+
+    // Set the ping interval to ping each connected object (each 15 seconds)
+    setInterval(() => {
+      Client.getClients().forEach(client => {
+        // Client still hasn't responded to the ping, it is presumed dead
+        if (!client.isAlive) {
+          client.removeClient();
+          return client.getSocket().terminate();
+        }
+
+        // Client is ping to see if it is still alive
+        client.isAlive = false;
+        client.getSocket().ping();
+      });
+    }, 15000); // Each 15 secondes
   }
 
-  handleConnection() {
+  handleConnection(ws: WebSocket) {
     this.logger.log(`Client connected`);
+
+    /** Register pong action for client socket */
+    ws.on('pong', this.receivePong);
+  }
+
+  receivePong(socket: WebSocket) {
+    const client = Client.getClientBySocket(socket);
+    if (client) client.isAlive = true;
   }
 
   handleDisconnect(@ConnectedSocket() socket: WebSocket) {
     this.logger.log(`Client disconnected`);
-    ObjectClient.objects = ObjectClient.objects.filter(obj => obj.getSocket() !== socket);
-    WatcherClient.clients = WatcherClient.watchers.filter(w => w.getSocket() !== socket);
+    Client.removeClientBySocket(socket);
+  }
+
+  @SubscribeMessage('pong')
+  pong(@ConnectedSocket() socket: WebSocket) {
+    this.receivePong(socket);
   }
 
   @UseFilters(new IoTExceptionFilter())
@@ -82,8 +110,8 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   async connect_object(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: ObjectClientConnectPayload) {
     if (!payload.id) throw new WsException('Bad payload');
     if (WatcherClient.isSocketAlreadyWatcher(socket)) throw new WsException('Already connected as a watcher');
-    if (ObjectClient.getClientById(payload.id))
-      throw new WsException(`An IoTObject is already connected with the id "${payload.id}"`);
+    const alreadyConnectedObj = ObjectClient.getClientById(payload.id);
+    if (alreadyConnectedObj) throw new WsException(`An IoTObject is already connected with the id "${payload.id}"`);
 
     // Checks if the object exists in the database and checks for permissions for projects
     let iotObject: IoTObjectEntity;

@@ -4,11 +4,15 @@ import Link from '../../../UtilsComponents/Link/Link';
 import { classNames } from '../../../../Types/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { IoTProjectContext } from '../../../../state/contexts/IoTProjectContext';
+import Modal from '../../../UtilsComponents/Modal/Modal';
+import IoTProjectObjects from '../IoTProjectObjects/IoTProjectObjects';
 
 const IoTScript = ({ script, odd }: IoTScriptProps) => {
-	const { setScriptOpen } = useContext(IoTProjectContext);
+	const { setScriptOpen, setScriptOfObject: setScriptToObject } =
+		useContext(IoTProjectContext);
+	const [open, setOpen] = useState(false);
 
 	const iconProps: { size: SizeProp; className: string } = {
 		size: '3x',
@@ -34,10 +38,7 @@ const IoTScript = ({ script, odd }: IoTScriptProps) => {
 				{
 					/* TODO : Find way to check if link is there */ true && (
 						<div>
-							<Link
-								className="cursor-pointer"
-								onClick={() => console.log('Not implemented')}
-							>
+							<Link className="cursor-pointer" onClick={() => setOpen(true)}>
 								Link script to object
 							</Link>
 						</div>
@@ -56,6 +57,12 @@ const IoTScript = ({ script, odd }: IoTScriptProps) => {
 					<FontAwesomeIcon icon={faTrash} {...iconProps} />
 				</div>
 			</div>
+			<Modal title="Linking" open={open} setOpen={setOpen} size="lg">
+				<IoTProjectObjects
+					scriptToLink={script}
+					mode="script-linking"
+				></IoTProjectObjects>
+			</Modal>
 		</div>
 	);
 };

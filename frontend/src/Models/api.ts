@@ -471,6 +471,23 @@ const api = {
 						).data,
 					);
 				},
+				async setScriptOfObject(
+					project: IoTProject,
+					projectObject: IoTProjectObject,
+					script: AsScript,
+				) {
+					return plainToInstance(
+						AsScript,
+						(
+							await axios.patch(
+								`iot/projects/${project.id}/objects/${projectObject.id}/setScript`,
+								{
+									scriptId: script.id,
+								},
+							)
+						).data,
+					);
+				},
 			},
 			objects: {
 				delete: apiDelete('iot/objects/:id'),

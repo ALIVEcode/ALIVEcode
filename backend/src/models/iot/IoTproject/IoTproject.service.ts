@@ -164,7 +164,7 @@ export class IoTProjectService {
   }
 
   async getObjects(project: IoTProjectEntity) {
-    return await this.projectObjRepo.find({ where: { iotProject: project.id } });
+    return await this.projectObjRepo.find({ where: { iotProjectId: project.id } });
   }
 
   async getScripts(project: IoTProjectEntity) {
@@ -172,11 +172,15 @@ export class IoTProjectService {
   }
 
   async addObject(project: IoTProjectEntity, object: IoTObjectEntity) {
-    const projectObject = await this.projectObjRepo.save({ iotObject: object, iotProject: project });
+    const projectObject = this.projectObjRepo.create({ iotObject: object, iotProject: project });
 
     if (!Array.isArray(project.iotProjectObjects))
       project = await this.projectRepository.findOne(project.id, { relations: ['iotProjectObjects'] });
 
+    if (project.iotProjectObjects.find(obj => obj.iotObjectId === object.id) != null)
+      throw new HttpException('Object already inside project', HttpStatus.CONFLICT);
+
+    await this.projectObjRepo.save(projectObject);
     project.iotProjectObjects.push(projectObject);
     await this.projectRepository.save(project);
     return projectObject;
@@ -200,6 +204,11 @@ export class IoTProjectService {
 
     await this.projectRepository.save(project);
     return script;
+  }
+
+  async setScriptOfObject(object: IoTProjectObjectEntity, script: AsScriptEntity) {
+    object.script = script;
+    return await this.projectObjRepo.save(object);
   }
 
   async getProjectOrProgression(id: string): Promise<IoTProjectEntity | ChallengeProgressionEntity> {
@@ -304,6 +313,13 @@ export class IoTProjectService {
 
       watchers.forEach(w => w.sendEvent(IOT_EVENT.RECEIVE_UPDATE_COMPONENT, data));
     }
+  }
+
+  async findProjectObject(id: string, project: IoTProjectEntity) {
+    if (!id) return;
+    const obj = await this.projectObjRepo.findOne({ where: { id, iotProjectId: project.id } });
+    if (!obj) throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    return obj;
   }
 
   /**

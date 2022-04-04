@@ -11,7 +11,6 @@ import { ChallengeIoT as ChallengeIoTModel } from '../../../Models/Challenge/cha
 import ChallengeToolsBar from '../../../Components/ChallengeComponents/ChallengeToolsBar/ChallengeToolsBar';
 import LineInterface from '../../../Components/ChallengeComponents/LineInterface/LineInterface';
 import Cmd from '../../../Components/ChallengeComponents/Cmd/Cmd';
-import ChallengeIoTExecutor from './ChallengeIoTExecutor';
 import AliotASExecutor from './AliotASExecutor';
 
 /**
@@ -51,7 +50,6 @@ const IoTChallenge2 = ({ initialCode }: { initialCode: string }) => {
 	);
 
 	const lineInterfaceContentChanges = (content: any) => {
-		console.log(executor.current);
 		if (executor.current) executor.current.lineInterfaceContent = content;
 		if (!editMode && progression) {
 			progression.data.code = content;

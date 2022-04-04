@@ -19,3 +19,9 @@ export class IoTProjectAddScriptDTO {
   @ValidateNested()
   script: AsScriptEntity;
 }
+
+export class IoTProjectSetScriptOfObject {
+  @IsNotEmpty()
+  @IsString()
+  scriptId: string;
+}

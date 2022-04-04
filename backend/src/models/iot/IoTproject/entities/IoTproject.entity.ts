@@ -79,7 +79,6 @@ export class IoTProjectEntity extends CreatedByUser {
   scripts: AsScriptEntity[];
 
   @OneToMany(() => IoTProjectObjectEntity, obj => obj.iotProject)
-  @JoinTable()
   @IsEmpty()
   iotProjectObjects: IoTProjectObjectEntity[];
 

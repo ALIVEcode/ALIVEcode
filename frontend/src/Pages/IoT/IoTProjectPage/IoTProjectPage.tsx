@@ -14,7 +14,7 @@ import {
 	faChevronDown,
 } from '@fortawesome/free-solid-svg-icons';
 import IoTProjectInterface from '../../../Components/IoTComponents/IoTProject/IoTProjectInterface/IotProjectInterface';
-import IoTProjectAccess from '../../../Components/IoTComponents/IoTProject/IoTProjectObjects/IoTProjectObjects';
+import IoTProjectObjects from '../../../Components/IoTComponents/IoTProject/IoTProjectObjects/IoTProjectObjects';
 import IoTProjectRoutes from '../../../Components/IoTComponents/IoTProject/IoTProjectRoutes/IoTProjectRoutes';
 import IoTProjectSettings from '../../../Components/IoTComponents/IoTProject/IoTProjectSettings/IoTProjectSettings';
 import { IoTProjectContext } from '../../../state/contexts/IoTProjectContext';
@@ -78,7 +78,7 @@ const IoTProjectPage = () => {
 			case 'documents':
 				return <IoTProjectDocuments />;
 			case 'objects':
-				return <IoTProjectAccess />;
+				return <IoTProjectObjects />;
 			case 'scripts':
 				return <IoTProjectScripts />;
 		}

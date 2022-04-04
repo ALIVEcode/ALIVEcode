@@ -43,7 +43,6 @@ import { CHALLENGE_TYPE } from '../../Models/Challenge/challenge.entity';
 import Dashboard from '../../Pages/Dashboard/Dashboard';
 import ClassroomBrowse from '../../Components/ClassroomComponents/ClassroomBrowse/ClassroomBrowse';
 import { UnderDevelopment } from '../../Pages/Errors/UnderDevelopment/UnderDevelopment';
-import ChallengeIoTv2 from '../../Pages/Challenge/ChallengeIoT/ChallengeIoTv2';
 
 export interface Route {
 	path: string;

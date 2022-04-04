@@ -33,6 +33,7 @@ import { IoTSocket } from '../../../Models/Iot/IoTProjectClasses/IoTSocket';
 import { instanceToPlain } from 'class-transformer';
 import { IoTProjectObject } from '../../../Models/Iot/IoTprojectObject.entity';
 import { IoTObject } from '../../../Models/Iot/IoTobject.entity';
+import { IoTProject as IoTProjectModel } from '../../../Models/Iot/IoTproject.entity';
 import Modal from '../../../Components/UtilsComponents/Modal/Modal';
 import AsScript from '../../../Components/AliveScriptComponents/AsScript/AsScript';
 import IoTObjectLogs from '../../../Components/IoTComponents/IoTObject/IoTObjectLogs/IoTObjectLogs';
@@ -220,9 +221,12 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 	const connectObjectToProject = useCallback(
 		async (object: IoTObject) => {
 			if (!project) return;
-			object.currentIoTProjectId = (
-				await api.db.iot.objects.connectObjectToProject(object, project)
-			).currentIoTProjectId;
+			const newProject = (await api.db.iot.objects.connectObjectToProject(
+				object,
+				project,
+			)) as unknown as IoTProjectModel;
+			object.currentIotProject = newProject;
+			object.currentIoTProjectId = newProject.id;
 			forceUpdate();
 		},
 		[project, forceUpdate],
@@ -231,9 +235,9 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 	const disconnectObjectFromProject = useCallback(
 		async (object: IoTObject) => {
 			if (!project) return;
-			object.currentIoTProjectId = (
-				await api.db.iot.objects.disconnectObjectFromProject(object, project)
-			).currentIoTProjectId;
+			await api.db.iot.objects.disconnectObjectFromProject(object, project);
+			object.currentIoTProjectId = undefined;
+			object.currentIotProject = undefined;
 			forceUpdate();
 		},
 		[project, forceUpdate],
@@ -244,6 +248,21 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 			if (!project) return;
 			const newScript = await api.db.iot.projects.createScript(project, script);
 			project.scripts.push(newScript);
+			forceUpdate();
+		},
+		[forceUpdate, project],
+	);
+
+	const setScriptOfObject = useCallback(
+		async (projectObject: IoTProjectObject, script: AsScriptModel) => {
+			if (!project) return;
+			await api.db.iot.projects.setScriptOfObject(
+				project,
+				projectObject,
+				script,
+			);
+			projectObject.script = script;
+			projectObject.scriptId = script.id;
 			forceUpdate();
 		},
 		[forceUpdate, project],
@@ -270,6 +289,7 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 			createScript,
 			setScriptOpen,
 			setLogsOpen,
+			setScriptOfObject,
 		};
 	}, [
 		project,
@@ -289,6 +309,7 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 		connectObjectToProject,
 		disconnectObjectFromProject,
 		createScript,
+		setScriptOfObject,
 	]);
 
 	if (!project) {

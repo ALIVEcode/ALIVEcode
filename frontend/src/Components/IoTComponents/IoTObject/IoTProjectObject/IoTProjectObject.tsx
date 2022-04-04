@@ -12,12 +12,18 @@ import { IoTProjectContext } from '../../../../state/contexts/IoTProjectContext'
 import Link from '../../../UtilsComponents/Link/Link';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
-const IoTProjectObject = ({ object, odd }: IoTProjectObjectProps) => {
+const IoTProjectObject = ({
+	object,
+	odd,
+	mode,
+	scriptToLink,
+}: IoTProjectObjectProps) => {
 	const {
 		project,
 		connectObjectToProject,
 		disconnectObjectFromProject,
 		setLogsOpen,
+		setScriptOfObject,
 	} = useContext(IoTProjectContext);
 
 	const iconProps: { size: SizeProp; className: string } = {
@@ -44,7 +50,23 @@ const IoTProjectObject = ({ object, odd }: IoTProjectObjectProps) => {
 					{object.iotObject.name}
 				</div>
 				<div>
-					{target ? (
+					{mode === 'script-linking' && scriptToLink ? (
+						scriptToLink.id === object.scriptId ? (
+							<Link
+								className="cursor-pointer text-center tablet:text-left !text-[color:var(--danger-color)]"
+								onClick={() => setScriptOfObject(object, scriptToLink)}
+							>
+								Unlink
+							</Link>
+						) : (
+							<Link
+								className="cursor-pointer text-center tablet:text-left"
+								onClick={() => setScriptOfObject(object, scriptToLink)}
+							>
+								Link
+							</Link>
+						)
+					) : target ? (
 						object.iotObject.currentIoTProjectId !== project?.id ? (
 							<Link
 								className="cursor-pointer text-center tablet:text-left"
@@ -71,19 +93,23 @@ const IoTProjectObject = ({ object, odd }: IoTProjectObjectProps) => {
 				</div>
 			</div>
 			<div className="flex items-center gap-4">
-				<div>
-					<FontAwesomeIcon icon={faPlayCircle} {...iconProps} />
-				</div>
-				<div>
-					<FontAwesomeIcon icon={faStopCircle} {...iconProps} />
-				</div>
-				<div>
-					<FontAwesomeIcon
-						onClick={() => setLogsOpen(target)}
-						icon={faServer}
-						{...iconProps}
-					/>
-				</div>
+				{mode !== 'script-linking' && (
+					<>
+						<div>
+							<FontAwesomeIcon icon={faPlayCircle} {...iconProps} />
+						</div>
+						<div>
+							<FontAwesomeIcon icon={faStopCircle} {...iconProps} />
+						</div>
+						<div>
+							<FontAwesomeIcon
+								onClick={() => setLogsOpen(target)}
+								icon={faServer}
+								{...iconProps}
+							/>
+						</div>
+					</>
+				)}
 				<div>
 					<FontAwesomeIcon
 						className="ml-4 cursor-pointer"

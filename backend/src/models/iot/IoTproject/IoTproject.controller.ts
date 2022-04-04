@@ -25,7 +25,7 @@ import { DTOInterceptor } from '../../../utils/interceptors/dto.interceptor';
 import { IoTRouteEntity } from '../IoTroute/entities/IoTroute.entity';
 import { hasRole } from '../../user/auth';
 import { AddObjectDTO } from './dto/addObject.dto';
-import { IoTProjectAddRouteScriptDTO, IoTProjectAddScriptDTO } from './dto/addScript.dto';
+import { IoTProjectAddRouteScriptDTO, IoTProjectAddScriptDTO, IoTProjectSetScriptOfObject } from './dto/addScript.dto';
 import { IoTProjectUpdateDTO } from './dto/updateProject.dto';
 import { IoTProjectService } from './IoTproject.service';
 import { IoTObjectService } from '../IoTobject/IoTobject.service';
@@ -173,5 +173,17 @@ export class IoTProjectController {
     if (project.access === IOTPROJECT_ACCESS.RESTRICTED) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
 
     return await this.projectService.getScripts(project);
+  }
+
+  @Patch(':id/objects/:objectId/setScript')
+  @UseGuards(IoTProjectCreator)
+  async setScriptOfObject(
+    @IoTProject() project: IoTProjectEntity,
+    @Param('objectId') objectId: string,
+    @Body() dto: IoTProjectSetScriptOfObject,
+  ) {
+    const object = await this.projectService.findProjectObject(objectId, project);
+    const script = await this.asService.findOneByIoTProject(dto.scriptId, project);
+    return await this.projectService.setScriptOfObject(object, script);
   }
 }

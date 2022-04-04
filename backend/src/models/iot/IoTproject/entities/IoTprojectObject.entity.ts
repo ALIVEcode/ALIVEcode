@@ -18,12 +18,21 @@ export class IoTProjectObjectEntity {
   id: number;
 
   @ManyToOne(() => IoTProjectEntity, project => project.iotProjectObjects)
+  @JoinColumn({ name: 'iotProjectId' })
   @Exclude({ toClassOnly: true })
   iotProject: IoTProjectEntity;
 
+  @Column({ name: 'iotProjectId', type: 'varchar', nullable: false })
+  @Exclude({ toClassOnly: true })
+  iotProjectId: string;
+
   @ManyToOne(() => IoTObjectEntity, obj => obj.iotProjectObjects, { eager: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'iotObjectId' })
   @Exclude({ toClassOnly: true })
   iotObject?: IoTObjectEntity;
+
+  @Column({ name: 'iotObjectId', type: 'varchar', nullable: true })
+  iotObjectId?: string;
 
   @ManyToOne(() => IoTObjectEntity, obj => obj.iotProjectObjects, { eager: true, onDelete: 'SET NULL' })
   @Exclude({ toClassOnly: true })

@@ -63,7 +63,15 @@ export class AsScriptService {
     return await this.asScriptRepo.find({ where: { iotProjectId: project.id }, order: { updateDate: 'DESC' } });
   }
 
+  async findOneByIoTProject(id: string, project: IoTProjectEntity) {
+    if (!id) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+    const script = await this.asScriptRepo.findOne({ where: { id, iotProjectId: project.id } });
+    if (!script) throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    return script;
+  }
+
   async findOne(id: string) {
+    if (!id) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     const script = await this.asScriptRepo.findOne(id);
     if (!script) throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     return script;

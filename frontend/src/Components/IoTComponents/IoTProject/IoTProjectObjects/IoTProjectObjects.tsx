@@ -12,8 +12,15 @@ import api from '../../../../Models/api';
 import { FORM_ACTION } from '../../../UtilsComponents/Form/formTypes';
 import { IoTProjectObject as IoTProjectObjectModel } from '../../../../Models/Iot/IoTprojectObject.entity';
 import IoTProjectObject from '../../IoTObject/IoTProjectObject/IoTProjectObject';
+import { AsScript } from '../../../../Models/AsScript/as-script.entity';
 
-export const IoTProjectAccess = () => {
+export const IoTProjectObjects = ({
+	mode,
+	scriptToLink,
+}: {
+	mode?: 'script-linking';
+	scriptToLink?: AsScript;
+}) => {
 	const [addObjectModalOpen, setAddObjectModalOpen] = useState(false);
 	const { project, canEdit, loadIoTObjects, addIoTObject } =
 		useContext(IoTProjectContext);
@@ -60,7 +67,13 @@ export const IoTProjectAccess = () => {
 			{project.iotProjectObjects ? (
 				project.iotProjectObjects.length > 0 ? (
 					project.iotProjectObjects.map((obj, idx) => (
-						<IoTProjectObject key={idx} object={obj} odd={idx % 2 !== 0} />
+						<IoTProjectObject
+							key={idx}
+							mode={mode}
+							scriptToLink={scriptToLink}
+							object={obj}
+							odd={idx % 2 !== 0}
+						/>
 					))
 				) : (
 					'No IoTObjects'
@@ -107,4 +120,4 @@ export const IoTProjectAccess = () => {
 	);
 };
 
-export default IoTProjectAccess;
+export default IoTProjectObjects;

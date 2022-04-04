@@ -36,6 +36,10 @@ export type IoTProjectContextValues = {
 	createScript: (asScript: AsScript) => Promise<void>;
 	setScriptOpen: (asScript: AsScript | undefined) => void;
 	setLogsOpen: (object: IoTObject | undefined) => void;
+	setScriptOfObject: (
+		projectObject: IoTProjectObject,
+		script: AsScript,
+	) => Promise<void>;
 };
 
 export const IoTProjectContext = createContext<IoTProjectContextValues>({
@@ -58,4 +62,5 @@ export const IoTProjectContext = createContext<IoTProjectContextValues>({
 	createScript: async () => {},
 	setScriptOpen: () => {},
 	setLogsOpen: () => {},
+	setScriptOfObject: async () => {},
 });

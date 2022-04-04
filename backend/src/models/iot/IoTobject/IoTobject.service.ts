@@ -143,6 +143,12 @@ export class IoTObjectService {
     const client = ObjectClient.getClientById(object.id);
     if (!client) throw new HttpException('Object is not connected', HttpStatus.NOT_FOUND);
 
+    this.addIoTObjectLog(
+      object,
+      IOT_EVENT.RECEIVE_ACTION,
+      `Received action id "${object.id}" with data "${JSON.stringify(value)}"`,
+    );
+
     const req: IoTSendActionRequestToObject = {
       event: IOT_EVENT.RECEIVE_ACTION,
       data: {
@@ -158,7 +164,11 @@ export class IoTObjectService {
     const client = await this.getCurrentObjectClient(object);
 
     client.subscribeListener(fields);
-    this.addIoTObjectLog(object, IOT_EVENT.SUBSCRIBE_LISTENER, `Subscribed listener for document fields : ${fields}`);
+    this.addIoTObjectLog(
+      object,
+      IOT_EVENT.SUBSCRIBE_LISTENER_SUCCESS,
+      `Subscribed listener for document fields : ${JSON.stringify(fields)}`,
+    );
     client.sendEvent(IOT_EVENT.SUBSCRIBE_LISTENER_SUCCESS, null);
   }
 

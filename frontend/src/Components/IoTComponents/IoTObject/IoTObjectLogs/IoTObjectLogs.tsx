@@ -6,7 +6,7 @@ import {
 	dangerLogs,
 	IOT_EVENT,
 	infoLogs,
-	warningLogs,
+	orangeLogs,
 	successLogs,
 } from '../../../../Models/Iot/IoTProjectClasses/IoTTypes';
 
@@ -24,9 +24,9 @@ const IoTObjectLogs = ({ object }: { object: IoTObject }) => {
 		const minutes = ('0' + date.getMinutes()).slice(-2);
 		const seconds = ('0' + date.getSeconds()).slice(-2);
 
-		const getColor = () => {
+		const getLogColor = () => {
 			if (dangerLogs.includes(event)) return 'var(--danger-color)';
-			if (warningLogs.includes(event)) return 'orange';
+			if (orangeLogs.includes(event)) return 'orange';
 			if (successLogs.includes(event)) return 'green';
 			if (infoLogs.includes(event)) return 'var(--fg-shade-four-color)';
 			return 'var(--foreground-color)';
@@ -37,9 +37,7 @@ const IoTObjectLogs = ({ object }: { object: IoTObject }) => {
 		if (!entry) return;
 		const eventStr = make_safe(entry[0]);
 		$cmd.append(
-			`<div style="color:${
-				dangerLogs.includes(event) ? 'red' : 'green'
-			}"><u><i>${hours}:${minutes}:${seconds}:</i></u><strong> ${eventStr}</strong></div><div style="margin-bottom:0.40rem">${text}</div>`,
+			`<div style="color:${getLogColor()}"><u><i>${hours}:${minutes}:${seconds}:</i></u><strong> ${eventStr}</strong></div><div style="margin-bottom:0.40rem">${text}</div>`,
 		);
 		$cmd.scrollTop(cmd.current.scrollHeight);
 	};

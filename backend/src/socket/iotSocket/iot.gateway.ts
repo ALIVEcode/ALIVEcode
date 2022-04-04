@@ -151,6 +151,13 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
         'Your object is not connected to any project on ALIVEcode. Make sure to add the object inside one of your IoTObject and click the connect button.',
       );
 
+    const object = await this.iotObjectService.findOne(client.id);
+    this.iotObjectService.addIoTObjectLog(
+      object,
+      IOT_EVENT.UPDATE_COMPONENT,
+      `Updated interface component of id "${payload.id}" using "${JSON.stringify(payload.value)}"`,
+    );
+
     await this.iotProjectService.updateComponent(client.projectId, payload.id, payload.value);
   }
 
@@ -164,6 +171,13 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
       throw new WsException(
         'Your object is not connected to any project on ALIVEcode. Make sure to add the object inside one of your IoTObject and click the connect button.',
       );
+
+    const object = await this.iotObjectService.findOne(client.id);
+    this.iotObjectService.addIoTObjectLog(
+      object,
+      IOT_EVENT.UPDATE_DOC,
+      `Updated document using "${JSON.stringify(payload.fields)}"`,
+    );
 
     await this.iotProjectService.updateDocumentFields(client.projectId, payload.fields);
   }
@@ -210,6 +224,14 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
       );
 
     const { route } = await this.iotProjectService.findOneWithRoute(client.projectId, payload.routePath);
+
+    const object = await this.iotObjectService.findOne(client.id);
+    this.iotObjectService.addIoTObjectLog(
+      object,
+      IOT_EVENT.SEND_ROUTE,
+      `Sent route execution request for route "${route.path}" with context "${JSON.stringify(payload.data)}"`,
+    );
+
     await this.iotProjectService.sendRoute(route, payload.data);
   }
 
@@ -223,6 +245,13 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
       throw new WsException(
         'Your object is not connected to any project on ALIVEcode. Make sure to add the object inside one of your IoTObject and click the connect button.',
       );
+
+    const object = await this.iotObjectService.findOne(client.id);
+    this.iotObjectService.addIoTObjectLog(
+      object,
+      IOT_EVENT.SEND_BROADCAST,
+      `Sent broadcast using "${JSON.stringify(payload.data)}"`,
+    );
 
     const project = await this.iotProjectService.findOne(client.projectId);
     await this.iotProjectService.broadcast(project, payload.data);
@@ -241,6 +270,9 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
         HttpStatus.FORBIDDEN,
       );
 
+    const object = await this.iotObjectService.findOne(client.id);
+    this.iotObjectService.addIoTObjectLog(object, IOT_EVENT.SEND_BROADCAST, `Retrieved document of project`);
+
     return await this.iotProjectService.getDocument(client.projectId);
   }
 
@@ -254,6 +286,13 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
         'Your object is not connected to any project on ALIVEcode. Make sure to add the object inside one of your IoTObject and click the connect button.',
         HttpStatus.FORBIDDEN,
       );
+
+    const object = await this.iotObjectService.findOne(client.id);
+    this.iotObjectService.addIoTObjectLog(
+      object,
+      IOT_EVENT.GET_FIELD,
+      `Retrieved field "${payload.field}" from project`,
+    );
 
     return await this.iotProjectService.getField(client.projectId, payload.field);
   }

@@ -1,4 +1,5 @@
 import { WebSocket } from 'ws';
+import { IoTObjectService } from '../../models/iot/IoTobject/IoTobject.service';
 import { IoTProjectDocument, IoTProjectLayout, JsonObj } from '../../models/iot/IoTproject/entities/IoTproject.entity';
 
 export enum IOT_EVENT {
@@ -206,26 +207,39 @@ export class Client {
     this.listeners.push(...fields);
   }
 
-  static sendToListeners(projectId: string, fieldsUpdated: { [key: string]: any }) {
-    Client.getClients().forEach(o => {
-      if (o.projectId === projectId) {
+  static async sendToListeners(
+    projectId: string,
+    fieldsUpdated: { [key: string]: any },
+    iotObjectService: IoTObjectService,
+  ) {
+    Client.getClients().forEach(async client => {
+      if (client.projectId === projectId) {
         const fieldsToSendNotification: { [key: string]: any } = {};
         let nbFields = 0;
         Object.entries(fieldsUpdated).forEach(entry => {
-          if (o.listeners.includes(entry[0])) {
+          if (client.listeners.includes(entry[0])) {
             fieldsToSendNotification[entry[0]] = entry[1];
             nbFields++;
           }
         });
 
         if (nbFields > 0) {
+          if (client instanceof ObjectClient) {
+            const object = await iotObjectService.findOne(client.id);
+            iotObjectService.addIoTObjectLog(
+              object,
+              IOT_EVENT.RECEIVE_LISTEN,
+              `Received listen callback because those fields were modified: "${JSON.stringify(fieldsUpdated)}"`,
+            );
+          }
+
           const req: IoTListenRequestToObject = {
             event: IOT_EVENT.RECEIVE_LISTEN,
             data: {
               fields: fieldsToSendNotification,
             },
           };
-          o.sendEvent(req.event, req.data);
+          client.sendEvent(req.event, req.data);
         }
       }
     });

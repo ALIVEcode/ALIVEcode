@@ -24,21 +24,28 @@ export type IoTSocketUpdateLayoutRequest = {
 export class IoTSocket {
 	private socket: WebSocket;
 	private id: string;
+	private userId: string;
 	private project: IoTProject;
 	private name: string;
 	private iotComponentManager: IoTComponentManager;
 	private onRender: (saveLayout: boolean) => void;
+	private onReceiveListen: (fields: { [key: string]: any }) => void;
+	private openedOnce: boolean = false;
 
 	constructor(
-		id: string,
+		projectId: string,
+		userId: string,
 		project: IoTProject,
 		name: string,
 		onRender: (saveLayout: boolean) => void,
+		onReceiveListen: (fields: { [key: string]: any }) => void,
 	) {
-		this.id = id;
+		this.id = projectId;
+		this.userId = userId;
 		this.project = project;
 		this.name = name;
 		this.onRender = onRender;
+		this.onReceiveListen = onReceiveListen;
 
 		this.iotComponentManager = new IoTComponentManager(
 			this.project,
@@ -65,30 +72,41 @@ export class IoTSocket {
 		this.socket.onopen = () => {
 			if (process.env.DEBUG) console.log('Connected to IoTProjectSocket');
 
-			this.socket.onmessage = e => {
-				const data = JSON.parse(e.data);
-				switch (data.event) {
-					case IOT_EVENT.RECEIVE_UPDATE_COMPONENT:
-						this.onReceiveUpdate(data.data);
-						break;
-					case IOT_EVENT.RECEIVE_DOC:
-						this.onDocumentUpdate(data.data);
-						break;
-					case IOT_EVENT.RECEIVE_INTERFACE:
-						this.onLayoutUpdate(data.data);
-						break;
-				}
-			};
-
 			this.socket.send(
 				JSON.stringify({
 					event: IOT_EVENT.CONNECT_WATCHER,
 					data: {
+						userId: this.userId,
 						iotProjectId: this.id,
 						iotProjectName: this.name,
 					},
 				}),
 			);
+
+			setTimeout(() => {
+				this.registerListener(['/document/light', '/document/test']);
+			}, 2000);
+		};
+
+		this.socket.onmessage = e => {
+			const req = JSON.parse(e.data);
+			switch (req.event) {
+				case IOT_EVENT.PING:
+					this.sendEvent(IOT_EVENT.PONG, null);
+					break;
+				case IOT_EVENT.RECEIVE_UPDATE_COMPONENT:
+					this.onReceiveUpdate(req.data);
+					break;
+				case IOT_EVENT.RECEIVE_DOC:
+					this.onDocumentUpdate(req.data);
+					break;
+				case IOT_EVENT.RECEIVE_INTERFACE:
+					this.onLayoutUpdate(req.data);
+					break;
+				case IOT_EVENT.RECEIVE_LISTEN:
+					this.onReceiveListen(req.data.fields);
+					break;
+			}
 		};
 
 		this.socket.onerror = (ev: Event) => {
@@ -100,7 +118,16 @@ export class IoTSocket {
 		if (this.socket && this.socket.OPEN) this.socket.close();
 	}
 
-	public sendData(targetId: string, actionId: number, data: string) {
+	public sendEvent(event: IOT_EVENT, data: any) {
+		this.socket.send(
+			JSON.stringify({
+				event,
+				data,
+			}),
+		);
+	}
+
+	public sendAction(targetId: string, actionId: number, data: string) {
 		if (this.socket.OPEN) {
 			let value = {};
 
@@ -120,6 +147,10 @@ export class IoTSocket {
 				}),
 			);
 		}
+	}
+
+	public registerListener(fields: string[]) {
+		this.sendEvent(IOT_EVENT.SUBSCRIBE_LISTENER, { fields });
 	}
 
 	public onDocumentUpdate(request: IoTSocketUpdateDocumentRequest) {

@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { UserEntity } from '../../user/entities/user.entity';
 import { IoTRouteEntity } from '../IoTroute/entities/IoTroute.entity';
 import {
+  Client,
   IoTBroadcastRequestToObject,
   IoTUpdateDocumentRequestToWatcher,
   IoTUpdateRequestToWatcher,
@@ -144,7 +145,7 @@ export class IoTProjectService {
     });
 
     // SEND CHANGES DETECTED TO OBJECTS LISTENING
-    ObjectClient.sendToListeners(id, updatedFields);
+    Client.sendToListeners(id, updatedFields);
 
     // SAVE PROJECT
     return await this.projectRepository.save({ document, id });
@@ -337,6 +338,10 @@ export class IoTProjectService {
 
     const objects = ObjectClient.getClientsByProject(project.id);
     objects.map(o => o.sendEvent(req.event, req.data));
+  }
+
+  async isUserProjectCreator(userId: string, projectId: string) {
+    return (await this.projectRepository.find({ where: { id: projectId, creatorId: userId } })) != null;
   }
 
   async getComponentValue(id: string, componentId: string) {

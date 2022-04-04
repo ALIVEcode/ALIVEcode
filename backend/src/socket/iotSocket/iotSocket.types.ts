@@ -14,6 +14,10 @@ export enum IOT_EVENT {
   DISCONNECT_PROJECT = 'disconnect_project',
   /** Connect object as watcher */
   CONNECT_SUCCESS = 'connect_success',
+  /** PING */
+  PING = 'ping',
+  /** PONG */
+  PONG = 'pong',
 
   /*---------- Document Events ----------*/
 
@@ -153,8 +157,13 @@ export type IoTUpdateLayoutRequestToWatcher = {
 
 export class Client {
   public isAlive: boolean;
+  private listeners: string[] = [];
 
-  constructor(private socket: WebSocket) {}
+  constructor(private socket: WebSocket, private _id: string) {}
+
+  get id() {
+    return this._id;
+  }
 
   static getClients() {
     const clients: Array<ObjectClient | WatcherClient> = [];
@@ -185,6 +194,35 @@ export class Client {
       ObjectClient.objects = ObjectClient.objects.filter(w => w.socket !== this.socket);
   }
 
+  subscribeListener(fields: string[]) {
+    this.listeners.push(...fields);
+  }
+
+  static sendToListeners(projectId: string, fieldsUpdated: { [key: string]: any }) {
+    Client.getClients().forEach(o => {
+      if (o.projectId === projectId) {
+        const fieldsToSendNotification: { [key: string]: any } = {};
+        let nbFields = 0;
+        Object.entries(fieldsUpdated).forEach(entry => {
+          if (o.listeners.includes(entry[0])) {
+            fieldsToSendNotification[entry[0]] = entry[1];
+            nbFields++;
+          }
+        });
+
+        if (nbFields > 0) {
+          const req: IoTListenRequestToObject = {
+            event: IOT_EVENT.RECEIVE_LISTEN,
+            data: {
+              fields: fieldsToSendNotification,
+            },
+          };
+          o.sendEvent(req.event, req.data);
+        }
+      }
+    });
+  }
+
   static getClientBySocket(socket: WebSocket) {
     return this.getClients().find(c => c.socket === socket);
   }
@@ -193,10 +231,12 @@ export class Client {
 export class WatcherClient extends Client {
   static watchers: WatcherClient[] = [];
   private _projectId: string;
+  private _isCreator: boolean;
 
-  constructor(socket: WebSocket, projectId: string) {
-    super(socket);
+  constructor(socket: WebSocket, id: string, projectId: string, isCreator = false) {
+    super(socket, id);
     this._projectId = projectId;
+    this._isCreator = isCreator;
   }
 
   get projectId() {
@@ -210,6 +250,12 @@ export class WatcherClient extends Client {
   register() {
     super.register();
     WatcherClient.watchers.push(this);
+  }
+
+  static getClientById(id: string) {
+    return WatcherClient.watchers.find(o => {
+      return o.id === id;
+    });
   }
 
   static getClientBySocket(socket: WebSocket) {
@@ -227,18 +273,11 @@ export class WatcherClient extends Client {
 
 export class ObjectClient extends Client {
   static objects: ObjectClient[] = [];
-  private _id: string;
   private _projectId: string;
-  private listeners: string[];
 
   constructor(socket: WebSocket, id: string, projectId: string) {
-    super(socket);
-    this._id = id;
+    super(socket, id);
     this._projectId = projectId;
-  }
-
-  get id() {
-    return this._id;
   }
 
   get projectId() {
@@ -254,29 +293,6 @@ export class ObjectClient extends Client {
     ObjectClient.objects.push(this);
   }
 
-  listen(fields: string[]) {
-    this.listeners.push(...fields);
-  }
-
-  static sendToListeners(projectId: string, fieldsUpdated: { [key: string]: any }) {
-    ObjectClient.objects.forEach(o => {
-      if (projectId in o.listeners) {
-        const fieldsToSendNotification: { [key: string]: any } = {};
-        Object.entries(fieldsUpdated).forEach(entry => {
-          if (o.listeners[projectId].includes(entry[0])) fieldsToSendNotification[entry[0]] = entry[1];
-        });
-
-        const req: IoTListenRequestToObject = {
-          event: IOT_EVENT.RECEIVE_LISTEN,
-          data: {
-            fields: fieldsToSendNotification,
-          },
-        };
-        o.sendEvent(req.event, req.data);
-      }
-    });
-  }
-
   static getClientBySocket(socket: WebSocket) {
     return ObjectClient.objects.find(w => {
       return w.getSocket() === socket;
@@ -285,7 +301,7 @@ export class ObjectClient extends Client {
 
   static getClientById(id: string) {
     return ObjectClient.objects.find(o => {
-      return o._id === id;
+      return o.id === id;
     });
   }
 
@@ -299,6 +315,7 @@ export class ObjectClient extends Client {
 }
 
 export type WatcherClientConnectPayload = {
+  userId: string;
   iotProjectName: string;
   iotProjectId: string;
 };

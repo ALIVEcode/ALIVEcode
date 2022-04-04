@@ -40,6 +40,7 @@ export type IoTProjectContextValues = {
 		projectObject: IoTProjectObject,
 		script: AsScript,
 	) => Promise<void>;
+	lastChangedFields: { [key: string]: any };
 };
 
 export const IoTProjectContext = createContext<IoTProjectContextValues>({
@@ -63,4 +64,5 @@ export const IoTProjectContext = createContext<IoTProjectContextValues>({
 	setScriptOpen: () => {},
 	setLogsOpen: () => {},
 	setScriptOfObject: async () => {},
+	lastChangedFields: {},
 });

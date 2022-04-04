@@ -26,6 +26,8 @@ const IoTProjectObject = ({
 		disconnectObjectFromProject,
 		setLogsOpen,
 		setScriptOfObject,
+		lastChangedFields,
+		socket,
 	} = useContext(IoTProjectContext);
 	const { user } = useContext(UserContext);
 
@@ -39,13 +41,28 @@ const IoTProjectObject = ({
 	const executor = useRef<AliotASExecutor | null>(null);
 
 	executor.current = useMemo(
-		() =>
-			(executor.current = new AliotASExecutor(object.id.toString(), () => {})),
+		() => {
+			if (!socket) return null;
+			return new AliotASExecutor(object.id.toString(), () => {}, socket);
+		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[user],
+		[user, socket],
 	);
 
-	useEffect(() => {}, [object.script]);
+	useEffect(() => {
+		const exec = executor.current;
+		if (!exec || !object.script?.content) return;
+		exec.lineInterfaceContent = object.script?.content;
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [executor]);
+
+	useEffect(() => {
+		const exec = executor.current;
+		if (!exec) return;
+		Object.entries(lastChangedFields).forEach(
+			field => !exec.running && exec.docFieldChanged(field[0], field[1]),
+		);
+	}, [lastChangedFields]);
 
 	return (
 		<div

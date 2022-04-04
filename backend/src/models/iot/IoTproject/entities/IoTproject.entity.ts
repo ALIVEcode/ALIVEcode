@@ -4,7 +4,7 @@ import { CreatedByUser } from '../../../../generics/entities/createdByUser.entit
 import { IoTRouteEntity } from '../../IoTroute/entities/IoTroute.entity';
 import { UserEntity } from '../../../user/entities/user.entity';
 import { IoTLayoutManager } from '../IoTLayoutManager';
-import { Type } from 'class-transformer';
+import { Exclude, Type } from 'class-transformer';
 import { IoTProjectObjectEntity } from './IoTprojectObject.entity';
 import { ChallengeProgressionEntity } from '../../../challenge/entities/challenge_progression.entity';
 import { AsScriptEntity } from '../../../as-script/entities/as-script.entity';
@@ -48,9 +48,14 @@ export type IoTProjectDocument = JsonObj;
 
 @Entity()
 export class IoTProjectEntity extends CreatedByUser {
-  @ManyToOne(() => UserEntity, user => user.IoTProjects, { eager: true, onDelete: 'CASCADE' })
-  @IsEmpty()
+  @ManyToOne(() => UserEntity, user => user.IoTProjects, { nullable: false, eager: true, onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'creatorId' })
+  @Exclude({ toClassOnly: true })
   creator: UserEntity;
+
+  @Column({ name: 'creatorId', type: 'varchar', nullable: false })
+  @Exclude({ toClassOnly: true })
+  creatorId: string;
 
   @ManyToOne(() => IoTProjectEntity, project => project.copied, { nullable: true })
   @JoinColumn({ name: 'originalId' })

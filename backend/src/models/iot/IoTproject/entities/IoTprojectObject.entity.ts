@@ -38,7 +38,7 @@ export class IoTProjectObjectEntity {
   @Exclude({ toClassOnly: true })
   iotTestObject?: IoTObjectEntity;
 
-  @ManyToOne(() => AsScriptEntity, { onDelete: 'SET NULL' })
+  @ManyToOne(() => AsScriptEntity, { eager: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'scriptId' })
   @Exclude({ toClassOnly: true })
   script?: AsScriptEntity;

@@ -63,15 +63,13 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
         // Client is ping to see if it is still alive
         client.isAlive = false;
         client.getSocket().ping();
+        client.sendEvent(IOT_EVENT.PING, null);
       });
     }, 15000); // Each 15 secondes
   }
 
-  handleConnection(ws: WebSocket) {
+  handleConnection() {
     this.logger.log(`Client connected`);
-
-    /** Register pong action for client socket */
-    ws.on('pong', this.receivePong);
   }
 
   receivePong(socket: WebSocket) {
@@ -84,18 +82,21 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     Client.removeClientBySocket(socket);
   }
 
-  @SubscribeMessage('pong')
+  @SubscribeMessage(IOT_EVENT.PONG)
   pong(@ConnectedSocket() socket: WebSocket) {
     this.receivePong(socket);
   }
 
   @UseFilters(new IoTExceptionFilter())
   @SubscribeMessage(IOT_EVENT.CONNECT_WATCHER)
-  connect_watcher(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: WatcherClientConnectPayload) {
-    if (!payload.iotProjectId || !payload.iotProjectName) throw new WsException('Bad payload');
+  async connect_watcher(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: WatcherClientConnectPayload) {
+    if (!payload.iotProjectId || !payload.userId || !payload.iotProjectName) throw new WsException('Bad payload');
     if (WatcherClient.isSocketAlreadyWatcher(socket)) throw new WsException('Already connected as a watcher');
 
-    const client = new WatcherClient(socket, payload.iotProjectId);
+    // TODO : User token verification
+    const isCreator = await this.iotProjectService.isUserProjectCreator(payload.userId, payload.iotProjectId);
+
+    const client = new WatcherClient(socket, payload.userId, payload.iotProjectId, isCreator);
     client.register();
 
     this.logger.log(
@@ -158,13 +159,17 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   @SubscribeMessage(IOT_EVENT.SUBSCRIBE_LISTENER)
   async listen(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTListenRequestFromObject) {
     if (!Array.isArray(payload.fields)) throw new WsException('Bad payload');
-    const client = ObjectClient.getClientBySocket(socket);
+    const client = Client.getClientBySocket(socket);
     if (!client) throw new WsException('Forbidden');
 
     const fields = payload.fields.filter(f => typeof f === 'string');
-    const object = await this.iotObjectService.findOne(client.id);
 
-    await this.iotObjectService.subscribeListener(object, fields);
+    if (client instanceof ObjectClient) {
+      const object = await this.iotObjectService.findOne(client.id);
+      await this.iotObjectService.subscribeListenerObject(object, fields);
+    } else if (client instanceof WatcherClient) {
+      await this.iotObjectService.subscribeListenerUser(client.id, fields);
+    }
   }
 
   @UseFilters(new IoTExceptionFilter())

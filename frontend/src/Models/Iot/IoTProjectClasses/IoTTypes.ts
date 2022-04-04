@@ -24,6 +24,10 @@ export enum IOT_EVENT {
 	DISCONNECT_PROJECT = 'disconnect_project',
 	/** Connect object as watcher */
 	CONNECT_SUCCESS = 'connect_success',
+	/** PING */
+	PING = 'ping',
+	/** PONG */
+	PONG = 'pong',
 
 	/*---------- Document Events ----------*/
 

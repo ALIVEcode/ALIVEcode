@@ -52,7 +52,7 @@ export class IoTButton extends IoTComponent {
 		if (this.targetId != null)
 			this.getComponentManager()
 				?.getSocket()
-				.sendData(this.targetId, this.actionId, this.actionData);
+				.sendAction(this.targetId, this.actionId, this.actionData);
 	}
 
 	update(data: any): void {

@@ -31,12 +31,11 @@ import { useNavigate } from 'react-router-dom';
 import { IoTProjectDocument } from '../../../../../backend/src/models/iot/IoTproject/entities/IoTproject.entity';
 import { IoTSocket } from '../../../Models/Iot/IoTProjectClasses/IoTSocket';
 import { instanceToPlain } from 'class-transformer';
-import { IoTProjectObject } from '../../../Models/Iot/IoTprojectObject.entity';
 import { IoTObject } from '../../../Models/Iot/IoTobject.entity';
-import { IoTProject as IoTProjectModel } from '../../../Models/Iot/IoTproject.entity';
 import Modal from '../../../Components/UtilsComponents/Modal/Modal';
 import AsScript from '../../../Components/AliveScriptComponents/AsScript/AsScript';
 import IoTObjectLogs from '../../../Components/IoTComponents/IoTObject/IoTObjectLogs/IoTObjectLogs';
+import { IoTProjectObject } from '../../../Models/Iot/IoTprojectObject.entity';
 
 /**
  * IoTProject. On this page are all the components essential in the functionning of an IoTProject.
@@ -67,6 +66,9 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 
 	const [scriptOpen, setScriptOpen] = useState<AsScriptModel>();
 	const [logsOpen, setLogsOpen] = useState<IoTObject>();
+	const [lastChangedFields, setLastChangedFields] = useState<{
+		[key: string]: any;
+	}>({});
 
 	const saveComponents = useCallback(async () => {
 		if (!canEdit || !project) return;
@@ -94,10 +96,22 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 		[forceUpdate, saveComponentsTimed],
 	);
 
-	const socket = useMemo(() => {
-		if (!project) return;
+	const handleOnReceiveListen = (fields: { [key: string]: any }) => {
+		console.log(fields);
+		setLastChangedFields(fields);
+	};
 
-		return new IoTSocket(project.id, project, project.name, onRequestRender);
+	const socket = useMemo(() => {
+		if (!project || !user) return;
+
+		return new IoTSocket(
+			project.id,
+			user.id,
+			project,
+			project.name,
+			onRequestRender,
+			handleOnReceiveListen,
+		);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [project]);
 
@@ -287,6 +301,7 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 			setScriptOpen,
 			setLogsOpen,
 			setScriptOfObject,
+			lastChangedFields,
 		};
 	}, [
 		project,
@@ -307,6 +322,7 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 		disconnectObjectFromProject,
 		createScript,
 		setScriptOfObject,
+		lastChangedFields,
 	]);
 
 	if (!project) {

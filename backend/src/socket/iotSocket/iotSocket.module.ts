@@ -16,6 +16,8 @@ import { ChallengeAIEntity } from '../../models/challenge/entities/challenges/ch
 import { ChallengeIoTEntity } from '../../models/challenge/entities/challenges/challenge_iot.entity';
 import { ChallengeProgressionEntity } from '../../models/challenge/entities/challenge_progression.entity';
 import { IoTProjectObjectEntity } from '../../models/iot/IoTproject/entities/IoTprojectObject.entity';
+import { UserService } from '../../models/user/user.service';
+import { UserModule } from '../../models/user/user.module';
 
 @Module({
   imports: [
@@ -32,8 +34,9 @@ import { IoTProjectObjectEntity } from '../../models/iot/IoTproject/entities/IoT
       ChallengeIoTEntity,
       ChallengeProgressionEntity,
     ]),
+    UserModule,
   ],
   controllers: [IoTGateway],
-  providers: [IoTObjectService, IoTProjectService, IoTGateway, AsScriptService, ChallengeService],
+  providers: [IoTObjectService, IoTProjectService, IoTGateway, AsScriptService, ChallengeService, UserService],
 })
 export class IoTSocketModule {}

@@ -3,7 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { IoTLog, IoTObjectEntity } from './entities/IoTobject.entity';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../../user/entities/user.entity';
-import { IoTSendActionRequestToObject, IOT_EVENT, ObjectClient } from '../../../socket/iotSocket/iotSocket.types';
+import {
+  IoTSendActionRequestToObject,
+  IOT_EVENT,
+  ObjectClient,
+  WatcherClient,
+} from '../../../socket/iotSocket/iotSocket.types';
 import { IoTProjectEntity } from '../IoTproject/entities/IoTproject.entity';
 
 @Injectable()
@@ -46,8 +51,14 @@ export class IoTObjectService {
     return await this.objectRepository.delete(id);
   }
 
-  async getCurrentClient(object: IoTObjectEntity) {
+  async getCurrentObjectClient(object: IoTObjectEntity) {
     const client = ObjectClient.getClientById(object.id);
+    if (!client) throw new HttpException('IoTObject is not connected', HttpStatus.NOT_FOUND);
+    return client;
+  }
+
+  async getCurrentWatcherClient(userId: string) {
+    const client = WatcherClient.getClientById(userId);
     if (!client) throw new HttpException('IoTObject is not connected', HttpStatus.NOT_FOUND);
     return client;
   }
@@ -131,11 +142,18 @@ export class IoTObjectService {
     client.sendEvent(req.event, req.data);
   }
 
-  async subscribeListener(object: IoTObjectEntity, fields: string[]) {
-    const client = await this.getCurrentClient(object);
+  async subscribeListenerObject(object: IoTObjectEntity, fields: string[]) {
+    const client = await this.getCurrentObjectClient(object);
 
-    client.listen(fields);
+    client.subscribeListener(fields);
     this.addIoTObjectLog(object, IOT_EVENT.SUBSCRIBE_LISTENER, `Subscribed listener for document fields : ${fields}`);
+    client.sendEvent(IOT_EVENT.SUBSCRIBE_LISTENER_SUCCESS, null);
+  }
+
+  async subscribeListenerUser(userId: string, fields: string[]) {
+    const client = await this.getCurrentWatcherClient(userId);
+
+    client.subscribeListener(fields);
     client.sendEvent(IOT_EVENT.SUBSCRIBE_LISTENER_SUCCESS, null);
   }
 }

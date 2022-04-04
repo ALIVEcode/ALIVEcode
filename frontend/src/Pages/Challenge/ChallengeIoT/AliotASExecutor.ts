@@ -2,6 +2,7 @@ import { v4 as uuid } from 'uuid';
 import ChallengeCodeExecutor from '../ChallengeCode/ChallengeCodeExecutor';
 import { CompileDTO, SupportedLanguagesAS } from '../../../Models/ASModels';
 import { typeAskForUserInput } from '../challengeTypes';
+import { IoTSocket } from '../../../Models/Iot/IoTProjectClasses/IoTSocket';
 
 export default class AliotASExecutor extends ChallengeCodeExecutor {
 	tokenId: string;
@@ -9,10 +10,12 @@ export default class AliotASExecutor extends ChallengeCodeExecutor {
 	ws: WebSocket;
 	ASListeners: Array<{ field: string; funcName: string }> = [];
 	running: boolean = false;
+	aliotSocket: IoTSocket;
 
 	constructor(
 		challengeName: string,
 		askForUserInput: typeAskForUserInput,
+		aliotSocket: IoTSocket,
 		lang?: SupportedLanguagesAS,
 	) {
 		super(challengeName, askForUserInput, lang);
@@ -20,6 +23,7 @@ export default class AliotASExecutor extends ChallengeCodeExecutor {
 		if (url === undefined) {
 			throw new Error('MISSING AS_WS_URL IN .env');
 		}
+		this.aliotSocket = aliotSocket;
 		this.registerActions([
 			{
 				actionId: 901,
@@ -36,6 +40,7 @@ export default class AliotASExecutor extends ChallengeCodeExecutor {
 								)
 							) {
 								this.ASListeners.push({ field, funcName: params[1] });
+								this.aliotSocket.registerListener([field]);
 							}
 						}
 					},
@@ -75,21 +80,21 @@ export default class AliotASExecutor extends ChallengeCodeExecutor {
 		this.ws.onclose = event => {};
 	}
 
-	docFieldChanged(fieldChange: string, newFieldValue: string) {
+	docFieldChanged(fieldChanged: string, newFieldValue: string) {
 		if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
 			return;
 		}
-		this.ASListeners.filter(listener => listener.field === fieldChange).forEach(
-			listener => {
-				this.ws.send(
-					JSON.stringify({
-						type: 'EXEC_FUNC',
-						funcName: listener.funcName,
-						args: [newFieldValue],
-					}),
-				);
-			},
-		);
+		this.ASListeners.filter(
+			listener => listener.field === fieldChanged,
+		).forEach(listener => {
+			this.ws.send(
+				JSON.stringify({
+					type: 'EXEC_FUNC',
+					funcName: listener.funcName,
+					args: [newFieldValue],
+				}),
+			);
+		});
 	}
 
 	protected async sendDataToAsServer(data: CompileDTO): Promise<any> {}

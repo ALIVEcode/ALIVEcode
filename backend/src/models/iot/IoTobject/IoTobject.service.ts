@@ -32,7 +32,7 @@ export class IoTObjectService {
     return iotObject;
   }
 
-  async findOneWithLoadedProjects(id: string) {
+  async findOneWithLoadedProject(id: string) {
     if (!id) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     const iotObject = await this.objectRepository
       .createQueryBuilder('iotObject')
@@ -78,6 +78,12 @@ export class IoTObjectService {
       false,
     );
     const updatedObject = await this.objectRepository.save(object);
+
+    try {
+      const client = await this.getCurrentObjectClient(updatedObject);
+      client.setProjectId(project.id);
+    } catch {}
+
     delete updatedObject['currentIotProject'];
     return updatedObject;
   }
@@ -102,6 +108,12 @@ export class IoTObjectService {
       false,
     );
     const updatedObject = await this.objectRepository.save(object);
+
+    try {
+      const client = await this.getCurrentObjectClient(updatedObject);
+      client.setProjectId(null);
+    } catch {}
+
     return updatedObject;
   }
 

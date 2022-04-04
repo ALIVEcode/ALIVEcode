@@ -8,6 +8,8 @@ export enum IOT_EVENT {
   CONNECT_WATCHER = 'connect_watcher',
   /** Connect as IoTObject (arduino, raspberrpi, etc.) */
   CONNECT_OBJECT = 'connect_object',
+  /** Connect as IoTObject (arduino, raspberrpi, etc.) */
+  DISCONNECT_OBJECT = 'disconnect_object',
   /** Connect IoTObject to a project */
   CONNECT_PROJECT = 'connect_project',
   /** Connect IoTObject to a project */
@@ -80,12 +82,10 @@ export type IoTUpdateDocumentRequestFromObject = {
 };
 
 export type IoTGetDocRequestFromObject = {
-  projectId: string;
   objectId: string;
 };
 
 export type IoTGetFieldRequestFromObject = {
-  projectId: string;
   objectId: string;
   field: string;
 };
@@ -159,10 +159,18 @@ export class Client {
   public isAlive: boolean;
   private listeners: string[] = [];
 
-  constructor(private socket: WebSocket, private _id: string) {}
+  constructor(private socket: WebSocket, private _id: string, private _projectId: string | null) {}
 
   get id() {
     return this._id;
+  }
+
+  get projectId() {
+    return this._projectId;
+  }
+
+  setProjectId(projectId: string) {
+    this._projectId = projectId;
   }
 
   static getClients() {
@@ -230,21 +238,11 @@ export class Client {
 
 export class WatcherClient extends Client {
   static watchers: WatcherClient[] = [];
-  private _projectId: string;
   private _isCreator: boolean;
 
-  constructor(socket: WebSocket, id: string, projectId: string, isCreator = false) {
-    super(socket, id);
-    this._projectId = projectId;
+  constructor(socket: WebSocket, id: string, projectId: string | null, isCreator = false) {
+    super(socket, id, projectId);
     this._isCreator = isCreator;
-  }
-
-  get projectId() {
-    return this._projectId;
-  }
-
-  setProjectId(projectId: string) {
-    this._projectId = projectId;
   }
 
   register() {
@@ -263,7 +261,7 @@ export class WatcherClient extends Client {
   }
 
   static getClientsByProject(projectId: string) {
-    return WatcherClient.watchers.filter(w => w._projectId === projectId);
+    return WatcherClient.watchers.filter(w => w.projectId === projectId);
   }
 
   static isSocketAlreadyWatcher(socket: WebSocket) {
@@ -273,19 +271,9 @@ export class WatcherClient extends Client {
 
 export class ObjectClient extends Client {
   static objects: ObjectClient[] = [];
-  private _projectId: string;
 
-  constructor(socket: WebSocket, id: string, projectId: string) {
-    super(socket, id);
-    this._projectId = projectId;
-  }
-
-  get projectId() {
-    return this._projectId;
-  }
-
-  public setProjectId(projectId: string) {
-    this._projectId = projectId;
+  constructor(socket: WebSocket, id: string, projectId: string | null) {
+    super(socket, id, projectId);
   }
 
   register() {
@@ -306,7 +294,7 @@ export class ObjectClient extends Client {
   }
 
   static getClientsByProject(projectId: string) {
-    return ObjectClient.objects.filter(o => o._projectId === projectId);
+    return ObjectClient.objects.filter(o => o.projectId === projectId);
   }
 
   static isSocketAlreadyWatcher(socket: WebSocket) {

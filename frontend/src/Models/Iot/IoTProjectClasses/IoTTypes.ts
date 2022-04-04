@@ -18,9 +18,11 @@ export enum IOT_EVENT {
 	CONNECT_WATCHER = 'connect_watcher',
 	/** Connect as IoTObject (arduino, raspberrpi, etc.) */
 	CONNECT_OBJECT = 'connect_object',
+	/** Connect as IoTObject (arduino, raspberrpi, etc.) */
+	DISCONNECT_OBJECT = 'disconnect_object',
 	/** Connect IoTObject to a project */
 	CONNECT_PROJECT = 'connect_project',
-	/** Disconnect IoTObject to a project */
+	/** Connect IoTObject to a project */
 	DISCONNECT_PROJECT = 'disconnect_project',
 	/** Connect object as watcher */
 	CONNECT_SUCCESS = 'connect_success',
@@ -82,3 +84,19 @@ export enum IOT_EVENT {
 	/** Get the field of a document of a project */
 	GET_FIELD = 'getField',
 }
+
+export const dangerLogs = [IOT_EVENT.ERROR, IOT_EVENT.DISCONNECT_OBJECT];
+export const warningLogs = [IOT_EVENT.DISCONNECT_PROJECT];
+export const infoLogs = [
+	IOT_EVENT.RECEIVE_ACTION,
+	IOT_EVENT.RECEIVE_LISTEN,
+	IOT_EVENT.RECEIVE_DOC,
+	IOT_EVENT.RECEIVE_BROADCAST,
+	IOT_EVENT.GET_FIELD,
+];
+export const successLogs = [
+	IOT_EVENT.SUBSCRIBE_LISTENER_SUCCESS,
+	IOT_EVENT.UNSUBSCRIBE_LISTENER_SUCCESS,
+	IOT_EVENT.CONNECT_SUCCESS,
+	IOT_EVENT.CONNECT_PROJECT,
+];

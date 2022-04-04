@@ -2,7 +2,13 @@ import { IoTLog, IoTObject } from '../../../../Models/Iot/IoTobject.entity';
 import Cmd from '../../../ChallengeComponents/Cmd/Cmd';
 import { useRef, useEffect } from 'react';
 import $ from 'jquery';
-import { IOT_EVENT } from '../../../../Models/Iot/IoTProjectClasses/IoTTypes';
+import {
+	dangerLogs,
+	IOT_EVENT,
+	infoLogs,
+	warningLogs,
+	successLogs,
+} from '../../../../Models/Iot/IoTProjectClasses/IoTTypes';
 
 const IoTObjectLogs = ({ object }: { object: IoTObject }) => {
 	const cmd = useRef<HTMLDivElement>(null);
@@ -18,13 +24,21 @@ const IoTObjectLogs = ({ object }: { object: IoTObject }) => {
 		const minutes = ('0' + date.getMinutes()).slice(-2);
 		const seconds = ('0' + date.getSeconds()).slice(-2);
 
+		const getColor = () => {
+			if (dangerLogs.includes(event)) return 'var(--danger-color)';
+			if (warningLogs.includes(event)) return 'orange';
+			if (successLogs.includes(event)) return 'green';
+			if (infoLogs.includes(event)) return 'var(--fg-shade-four-color)';
+			return 'var(--foreground-color)';
+		};
+
 		text = make_safe(text);
 		const entry = Object.entries(IOT_EVENT).find(entry => entry[1] === event);
 		if (!entry) return;
 		const eventStr = make_safe(entry[0]);
 		$cmd.append(
 			`<div style="color:${
-				event === IOT_EVENT.ERROR ? 'red' : 'green'
+				dangerLogs.includes(event) ? 'red' : 'green'
 			}"><u><i>${hours}:${minutes}:${seconds}:</i></u><strong> ${eventStr}</strong></div><div style="margin-bottom:0.40rem">${text}</div>`,
 		);
 		$cmd.scrollTop(cmd.current.scrollHeight);

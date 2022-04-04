@@ -60,7 +60,7 @@ const IoTProjectObject = ({
 		const exec = executor.current;
 		if (!exec) return;
 		Object.entries(lastChangedFields).forEach(
-			field => !exec.running && exec.docFieldChanged(field[0], field[1]),
+			field => exec.running && exec.docFieldChanged(field[0], field[1]),
 		);
 	}, [lastChangedFields]);
 

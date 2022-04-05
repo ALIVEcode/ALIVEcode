@@ -13,13 +13,16 @@ import { FORM_ACTION } from '../../../UtilsComponents/Form/formTypes';
 import { IoTProjectObject as IoTProjectObjectModel } from '../../../../Models/Iot/IoTprojectObject.entity';
 import IoTProjectObject from '../../IoTObject/IoTProjectObject/IoTProjectObject';
 import { AsScript } from '../../../../Models/AsScript/as-script.entity';
+import AliotASExecutor from '../../../../Pages/Challenge/ChallengeIoT/AliotASExecutor';
 
 export const IoTProjectObjects = ({
 	mode,
 	scriptToLink,
+	scriptsRunningRef,
 }: {
 	mode?: 'script-linking';
 	scriptToLink?: AsScript;
+	scriptsRunningRef?: React.MutableRefObject<AliotASExecutor[]>;
 }) => {
 	const [addObjectModalOpen, setAddObjectModalOpen] = useState(false);
 	const { project, canEdit, loadIoTObjects, addIoTObject } =

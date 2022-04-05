@@ -4,7 +4,7 @@ import {
 	StyledIoTProject,
 	IoTProjectTab,
 } from './iotProjectPageTypes';
-import { useState, useContext } from 'react';
+import { useState, useContext, useRef } from 'react';
 import LoadingScreen from '../../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -23,6 +23,7 @@ import { classNames } from '../../../Types/utils';
 import IoTProjectDocuments from '../../../Components/IoTComponents/IoTProject/IoTProjectDocuments/IoTProjectDocuments';
 import { useTranslation } from 'react-i18next';
 import IoTProjectScripts from '../../../Components/IoTComponents/IoTProject/IoTProjectScripts/IoTProjectScripts';
+import AliotASExecutor from '../../Challenge/ChallengeIoT/AliotASExecutor';
 
 /**
  * IoTProject. On this page are all the components essential in the functionning of an IoTProject.
@@ -33,7 +34,7 @@ import IoTProjectScripts from '../../../Components/IoTComponents/IoTProject/IoTP
  * @author Enric Soldevila
  */
 const IoTProjectPage = () => {
-	const { project } = useContext(IoTProjectContext);
+	const { project, objectsRunning } = useContext(IoTProjectContext);
 	const { t } = useTranslation();
 	const [selectedOption, setSelectedOption] =
 		useState<IoTProjectOptions>('settings');
@@ -103,7 +104,7 @@ const IoTProjectPage = () => {
 								as={FontAwesomeIcon}
 								icon={open ? faChevronDown : faChevronUp}
 								className="cursor-pointer tablet:hidden"
-							></Disclosure.Button>
+							/>
 						</div>
 
 						<div
@@ -155,6 +156,12 @@ const IoTProjectPage = () => {
 						className="flex-grow flex flex-col h-2/5 tablet:h-full order-2"
 						id="project-body"
 					>
+						<div className="flex flex-row border-b">
+							<h2 className="pr-2">Running script: </h2>
+							{objectsRunning.current.map((object, idx) => (
+								<label key={idx} className="pr-3 border rounded-sm">{object.iotObject.name}</label>
+							))}
+						</div>
 						<div className="text-sm tablet:text-base laptop:text-lg overflow-x-auto h-[50px] border-b border-t border-[color:var(--bg-shade-four-color)] tablet:border-t-0 flex flex-row justify-evenly text-center">
 							{tabs.map((t, idx) => (
 								<div

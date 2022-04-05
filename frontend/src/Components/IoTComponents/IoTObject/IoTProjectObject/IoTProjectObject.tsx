@@ -7,7 +7,14 @@ import {
 	faServer,
 	faStopCircle,
 } from '@fortawesome/free-solid-svg-icons';
-import { useContext, useRef, useMemo, useEffect, useCallback } from 'react';
+import {
+	useContext,
+	useRef,
+	useMemo,
+	useEffect,
+	useCallback,
+	useState,
+} from 'react';
 import { IoTProjectContext } from '../../../../state/contexts/IoTProjectContext';
 import Link from '../../../UtilsComponents/Link/Link';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -29,6 +36,7 @@ const IoTProjectObject = ({
 		setScriptOfObject,
 		lastChangedFields,
 		socket,
+		objectsRunning,
 	} = useContext(IoTProjectContext);
 	const { user } = useContext(UserContext);
 
@@ -36,6 +44,8 @@ const IoTProjectObject = ({
 		size: '3x',
 		className: 'cursor-pointer text-[color:var(--fg-shade-four-color)]',
 	};
+
+	const [executing, setExecuting] = useState(false);
 
 	const target = object.target;
 
@@ -47,7 +57,16 @@ const IoTProjectObject = ({
 		() => {
 			if (!socket) return null;
 
-			const exec = new AliotASExecutor(object.id.toString(), () => {}, socket);
+			const exec = new AliotASExecutor(
+				object.id.toString(),
+				() => {},
+				socket,
+				'fr',
+				object.iotObject.name,
+			);
+			exec.doBeforeStop(() => {
+				setExecuting(false);
+			});
 			forceUpdate();
 			return exec;
 		},
@@ -140,16 +159,26 @@ const IoTProjectObject = ({
 					<>
 						<div>
 							<FontAwesomeIcon
-								onClick={() => executor.current?.toggleExecution()}
-								icon={faPlayCircle}
+								onClick={() => {
+									if (!executor.current) return;
+									executor.current.toggleExecution();
+									setExecuting(!executing);
+									if (executor.current.running)
+										objectsRunning.current.push(object);
+									else
+										objectsRunning.current = objectsRunning.current.filter(
+											obj => obj.id !== object.id,
+										);
+									forceUpdate();
+								}}
+								icon={executing ? faStopCircle : faPlayCircle}
 								{...iconProps}
-							/>
-						</div>
-						<div>
-							<FontAwesomeIcon
-								icon={faStopCircle}
-								{...iconProps}
-								onClick={() => executor.current?.toggleExecution()}
+								className={
+									'cursor-pointer ' +
+									(executing
+										? ' text-[color:var(--fourth-color)] hover:text-[color:rgb(var(--fourth-color-rgb),0.7)]'
+										: ' text-[color:var(--fg-shade-four-color)] hover:text-[color:rgb(var(--fg-shade-four-color-rgb),0.7)]')
+								}
 							/>
 						</div>
 						<div>

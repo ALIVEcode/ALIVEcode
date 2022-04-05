@@ -13,6 +13,8 @@ import 'ace-builds/src-noconflict/theme-cobalt';
 import 'ace-builds/src-noconflict/theme-dracula';
 import 'ace-builds/src-noconflict/theme-github';
 import 'ace-builds/src-noconflict/theme-twilight';
+import 'ace-builds/src-noconflict/theme-solarized_dark';
+import 'ace-builds/src-noconflict/theme-xcode';
 import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/webpack-resolver';
 import './mode-alivescript';
@@ -36,6 +38,8 @@ enum Theme {
 	DRACULA = 'dracula',
 	GITHUB = 'github',
 	TWILIGHT = 'twilight',
+	SOLARIZED_DARK = "solarized_dark",
+	XCODE = "xcode"
 }
 
 /**
@@ -78,7 +82,7 @@ const LineInterface = memo(
 		const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
 
 		useEffect(() => {
-			setCodeTheme(theme.name === 'light' ? Theme.GITHUB : Theme.COBALT);
+			setCodeTheme(theme.name === 'light' ? Theme.XCODE : Theme.COBALT);
 		}, [theme]);
 
 		const ref = useRef<AceEditor | null>(null);

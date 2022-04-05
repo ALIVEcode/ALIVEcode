@@ -1,6 +1,7 @@
 import {
 	IoTProject,
 	IoTProjectDocument,
+	JsonObj,
 	parseIoTProjectDocument,
 } from '../IoTproject.entity';
 import { IoTComponentManager } from './IoTComponentManager';
@@ -132,14 +133,22 @@ export class IoTSocket {
 		);
 	}
 
-	public sendAction(targetId: string, actionId: number, data: string) {
+	public sendAction(
+		targetId: string,
+		actionId: number,
+		data: string | JsonObj,
+	) {
 		if (this.socket.OPEN) {
-			let value = {};
+			let value;
 
 			// Try to get JSON, if invalid set empty object
-			try {
-				value = JSON.parse(data);
-			} catch {}
+			if (typeof data === 'string') {
+				try {
+					value = JSON.parse(data);
+				} catch {}
+			} else {
+				value = data;
+			}
 
 			this.socket.send(
 				JSON.stringify({

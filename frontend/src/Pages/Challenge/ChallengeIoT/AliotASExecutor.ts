@@ -67,6 +67,24 @@ export default class AliotASExecutor extends ChallengeCodeExecutor {
 					},
 				},
 			},
+			{
+				actionId: 903,
+				action: {
+					label: 'Send Action',
+					type: 'NORMAL',
+					apply: params => {
+						console.log(params);
+						// implicit target
+						if (params.length === 2) {
+							this.aliotSocket.sendAction('targetId', params[0], params[1]);
+						}
+						// explicit target
+						else {
+							this.aliotSocket.sendAction(params[2], params[0], params[1]);
+						}
+					},
+				},
+			},
 		]);
 
 		this.tokenId = uuid();

@@ -59,7 +59,7 @@ const IoTProjectDocuments = () => {
 				<AceEditor
 					className="!w-full !h-full"
 					mode="json"
-					theme="cobalt"
+					theme="twilight"
 					fontSize="14px"
 					value={doc}
 					onChange={content => setDoc(content)}

@@ -7,19 +7,10 @@ import {
 	faServer,
 	faStopCircle,
 } from '@fortawesome/free-solid-svg-icons';
-import {
-	useContext,
-	useRef,
-	useMemo,
-	useEffect,
-	useCallback,
-	useState,
-} from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { IoTProjectContext } from '../../../../state/contexts/IoTProjectContext';
 import Link from '../../../UtilsComponents/Link/Link';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import AliotASExecutor from '../../../../Pages/Challenge/ChallengeIoT/AliotASExecutor';
-import { UserContext } from '../../../../state/contexts/UserContext';
 import { useForceUpdate } from '../../../../state/hooks/useForceUpdate';
 
 const IoTProjectObject = ({
@@ -37,62 +28,36 @@ const IoTProjectObject = ({
 		lastChangedFields,
 		socket,
 		objectsRunning,
+		setObjectsRunning,
 	} = useContext(IoTProjectContext);
-	const { user } = useContext(UserContext);
 
 	const iconProps: { size: SizeProp; className: string } = {
 		size: '3x',
 		className: 'cursor-pointer text-[color:var(--fg-shade-four-color)]',
 	};
 
-	const [executing, setExecuting] = useState(false);
-
 	const target = object.target;
-
-	const executor = useRef<AliotASExecutor | null>(null);
 
 	const forceUpdate = useForceUpdate();
 
-	executor.current = useMemo(
-		() => {
-			if (!socket) return null;
+	if (!object.hasExecutor() && socket) {
+		object.initializeExecutor(socket);
+	}
 
-			const exec = new AliotASExecutor(
-				object.id.toString(),
-				() => {},
-				socket,
-				'fr',
-				object.iotObject.name,
-			);
-			exec.doBeforeStop(() => {
-				setExecuting(false);
-			});
-			forceUpdate();
-			return exec;
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[user, socket],
-	);
+	const executor = object.executor;
 
-	const updateFields = useCallback(
-		(fields: { [key: string]: any }) => {
-			const exec = executor.current;
-			if (!exec) return;
-		},
-		[lastChangedFields],
-	);
+	const [executing, setExecuting] = useState(executor?.running);
 
 	useEffect(() => {
-		const exec = executor.current;
-		if (!exec || !object.script?.content) return;
-		exec.lineInterfaceContent = object.script?.content;
+		if (!executor || !object.script?.content) return;
+		executor.lineInterfaceContent = object.script?.content;
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [executor]);
 
 	useEffect(() => {
-		const exec = executor.current;
-		if (!exec) return;
-		exec.running && exec.docFieldChanged(lastChangedFields);
+		if (!executor) return;
+		executor.running && executor.docFieldChanged(lastChangedFields);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [lastChangedFields]);
 
 	return (
@@ -160,25 +125,26 @@ const IoTProjectObject = ({
 						<div>
 							<FontAwesomeIcon
 								onClick={() => {
-									if (!executor.current) return;
-									executor.current.toggleExecution();
+									if (!executor || !object.script) return;
+									executor.toggleExecution();
 									setExecuting(!executing);
-									if (executor.current.running)
-										objectsRunning.current.push(object);
-									else
-										objectsRunning.current = objectsRunning.current.filter(
-											obj => obj.id !== object.id,
+									if (executor.running) {
+										setObjectsRunning([...objectsRunning, object]);
+									} else
+										setObjectsRunning(
+											objectsRunning.filter(obj => obj.id !== object.id),
 										);
 									forceUpdate();
 								}}
 								icon={executing ? faStopCircle : faPlayCircle}
 								{...iconProps}
-								className={
-									'cursor-pointer ' +
-									(executing
+								className={classNames(
+									'cursor-pointer',
+									executing
 										? ' text-[color:var(--fourth-color)] hover:text-[color:rgb(var(--fourth-color-rgb),0.7)]'
-										: ' text-[color:var(--fg-shade-four-color)] hover:text-[color:rgb(var(--fg-shade-four-color-rgb),0.7)]')
-								}
+										: ' text-[color:var(--fg-shade-four-color)] hover:text-[color:rgb(var(--fg-shade-four-color-rgb),0.7)]',
+									!object.script && 'opacity-50 cursor-not-allowed',
+								)}
 							/>
 						</div>
 						<div>

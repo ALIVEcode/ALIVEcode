@@ -18,7 +18,7 @@ export default class AliotASExecutor extends ChallengeCodeExecutor {
 		askForUserInput: typeAskForUserInput,
 		aliotSocket: IoTSocket,
 		lang?: SupportedLanguagesAS,
-		public readonly name?: string
+		public readonly objectId?: string,
 	) {
 		super(challengeName, askForUserInput, lang);
 		const url = process.env['AS_WS_URL'];

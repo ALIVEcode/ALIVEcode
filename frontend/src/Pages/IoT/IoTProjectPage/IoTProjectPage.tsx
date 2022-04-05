@@ -158,8 +158,10 @@ const IoTProjectPage = () => {
 					>
 						<div className="flex flex-row border-b">
 							<h2 className="pr-2">Running script: </h2>
-							{objectsRunning.current.map((object, idx) => (
-								<label key={idx} className="pr-3 border rounded-sm">{object.iotObject.name}</label>
+							{objectsRunning.map((object, idx) => (
+								<label key={idx} className="pr-3 border rounded-sm">
+									{object.target?.name}
+								</label>
 							))}
 						</div>
 						<div className="text-sm tablet:text-base laptop:text-lg overflow-x-auto h-[50px] border-b border-t border-[color:var(--bg-shade-four-color)] tablet:border-t-0 flex flex-row justify-evenly text-center">

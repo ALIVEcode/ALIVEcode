@@ -148,7 +148,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     if (!client) throw new WsException('Forbidden');
     if (!client.projectId)
       throw new WsException(
-        'Your object is not connected to any project on ALIVEcode. Make sure to add the object inside one of your IoTObject and click the connect button.',
+        'Your object is not connected to any project on ALIVEcode. Make sure to add the object inside one of your IoTProject and click the connect button.',
       );
 
     const object = await this.iotObjectService.findOne(client.id);
@@ -169,10 +169,10 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     if (!client) throw new WsException('Forbidden');
     if (!client.projectId)
       throw new WsException(
-        'Your object is not connected to any project on ALIVEcode. Make sure to add the object inside one of your IoTObject and click the connect button.',
+        'Your object is not connected to any project on ALIVEcode. Make sure to add the object inside one of your IoTProject and click the connect button.',
       );
 
-    if(client instanceof ObjectClient) {
+    if (client instanceof ObjectClient) {
       const object = await this.iotObjectService.findOne(client.id);
       this.iotObjectService.addIoTObjectLog(
         object,
@@ -223,7 +223,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     if (!client) throw new WsException('Forbidden');
     if (!client.projectId)
       throw new WsException(
-        'Your object is not connected to any project on ALIVEcode. Make sure to add the object inside one of your IoTObject and click the connect button.',
+        'Your object is not connected to any project on ALIVEcode. Make sure to add the object inside one of your IoTProject and click the connect button.',
       );
 
     const { route } = await this.iotProjectService.findOneWithRoute(client.projectId, payload.routePath);
@@ -246,7 +246,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     if (!client) throw new WsException('Forbidden');
     if (!client.projectId)
       throw new WsException(
-        'Your object is not connected to any project on ALIVEcode. Make sure to add the object inside one of your IoTObject and click the connect button.',
+        'Your object is not connected to any project on ALIVEcode. Make sure to add the object inside one of your IoTProject and click the connect button.',
       );
 
     const object = await this.iotObjectService.findOne(client.id);
@@ -269,7 +269,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     if (!client) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     if (!client.projectId)
       throw new HttpException(
-        'Your object is not connected to any project on ALIVEcode. Make sure to add the object inside one of your IoTObject and click the connect button.',
+        'Your object is not connected to any project on ALIVEcode. Make sure to add the object inside one of your IoTProject and click the connect button.',
         HttpStatus.FORBIDDEN,
       );
 
@@ -286,7 +286,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     if (!client) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     if (!client.projectId)
       throw new HttpException(
-        'Your object is not connected to any project on ALIVEcode. Make sure to add the object inside one of your IoTObject and click the connect button.',
+        'Your object is not connected to any project on ALIVEcode. Make sure to add the object inside one of your IoTProject and click the connect button.',
         HttpStatus.FORBIDDEN,
       );
 

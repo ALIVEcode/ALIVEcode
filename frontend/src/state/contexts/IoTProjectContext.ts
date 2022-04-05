@@ -1,4 +1,4 @@
-import { createContext, MutableRefObject, useRef } from 'react';
+import { createContext, MutableRefObject } from 'react';
 import {
 	IoTProject,
 	IoTProjectDocument,
@@ -10,7 +10,6 @@ import { AsScript } from '../../Models/AsScript/as-script.entity';
 import { IoTSocket } from '../../Models/Iot/IoTProjectClasses/IoTSocket';
 import { IoTProjectObject } from '../../Models/Iot/IoTprojectObject.entity';
 import { IoTObject } from '../../Models/Iot/IoTobject.entity';
-import AliotASExecutor from '../../Pages/Challenge/ChallengeIoT/AliotASExecutor';
 
 export type IoTProjectContextValues = {
 	project: IoTProject | null;
@@ -18,7 +17,8 @@ export type IoTProjectContextValues = {
 	updateId: string;
 	isChallenge: boolean;
 	socket: IoTSocket | null;
-	objectsRunning: MutableRefObject<IoTProjectObject[]>;
+	objectsRunning: IoTProjectObject[];
+	setObjectsRunning: React.Dispatch<IoTProjectObject[]>;
 	addRoute: (route: IotRoute) => void;
 	deleteRoute: (route: IotRoute) => void;
 	updateRoute: (route: IotRoute) => void;
@@ -51,7 +51,7 @@ export const IoTProjectContext = createContext<IoTProjectContextValues>({
 	updateId: '',
 	isChallenge: false,
 	socket: null,
-	objectsRunning: { current: [] },
+	objectsRunning: [],
 	addRoute: () => {},
 	deleteRoute: () => {},
 	updateRoute: () => {},
@@ -68,4 +68,5 @@ export const IoTProjectContext = createContext<IoTProjectContextValues>({
 	setLogsOpen: () => {},
 	setScriptOfObject: async () => {},
 	lastChangedFields: {},
+	setObjectsRunning: () => {},
 });

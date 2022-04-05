@@ -36,7 +36,6 @@ import Modal from '../../../Components/UtilsComponents/Modal/Modal';
 import AsScript from '../../../Components/AliveScriptComponents/AsScript/AsScript';
 import IoTObjectLogs from '../../../Components/IoTComponents/IoTObject/IoTObjectLogs/IoTObjectLogs';
 import { IoTProjectObject } from '../../../Models/Iot/IoTprojectObject.entity';
-import AliotASExecutor from '../../Challenge/ChallengeIoT/AliotASExecutor';
 
 /**
  * IoTProject. On this page are all the components essential in the functionning of an IoTProject.
@@ -55,7 +54,7 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 	const { t } = useTranslation();
 	const { user } = useContext(UserContext);
 	const { id: paramId } = useParams<{ id: string | undefined }>();
-	const objectsRunning = useRef<IoTObject[]>([]);
+	const [objectsRunning, setObjectsRunning] = useState<IoTProjectObject[]>([]);
 	const forceUpdate = useForceUpdate();
 
 	const id = challenge?.id ?? paramId;
@@ -289,6 +288,7 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 			isChallenge,
 			socket: socket ?? null,
 			objectsRunning,
+			setObjectsRunning,
 			addRoute,
 			deleteRoute,
 			updateRoute,
@@ -326,6 +326,7 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 		createScript,
 		setScriptOfObject,
 		lastChangedFields,
+		objectsRunning,
 	]);
 
 	if (!project) {

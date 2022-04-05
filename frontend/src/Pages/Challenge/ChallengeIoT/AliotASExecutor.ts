@@ -5,8 +5,9 @@ import { typeAskForUserInput } from '../challengeTypes';
 import { IoTSocket } from '../../../Models/Iot/IoTProjectClasses/IoTSocket';
 import { IOT_EVENT } from '../../../Models/Iot/IoTProjectClasses/IoTTypes';
 import { AlertManager, useAlert } from 'react-alert';
+import { ChallengeExecutor } from '../AbstractChallengeExecutor';
 
-export default class AliotASExecutor extends ChallengeCodeExecutor {
+export default class AliotASExecutor extends ChallengeExecutor {
 	tokenId: string;
 	url: string;
 	ws: WebSocket;
@@ -17,19 +18,35 @@ export default class AliotASExecutor extends ChallengeCodeExecutor {
 
 	constructor(
 		challengeName: string,
-		askForUserInput: typeAskForUserInput,
 		aliotSocket: IoTSocket,
 		lang?: SupportedLanguagesAS,
 		public readonly objectId?: string,
 		private alert?: AlertManager,
 	) {
-		super(challengeName, askForUserInput, lang);
+		super(challengeName, lang);
 		const url = process.env['AS_WS_URL'];
 		if (url === undefined) {
 			throw new Error('MISSING AS_WS_URL IN .env');
 		}
 		this.aliotSocket = aliotSocket;
 		this.registerActions([
+			{
+				actionId: 301,
+				action: {
+					label: 'Wait',
+					type: 'NORMAL',
+					apply: params => {
+						if (params.length > 0 && typeof params[0] === 'number') {
+							this.wait(() => {
+								this.perform_next();
+							}, params[0] * 1000);
+						} else {
+							this.perform_next();
+						}
+					},
+					handleNext: true,
+				},
+			},
 			{
 				actionId: 302,
 				action: {

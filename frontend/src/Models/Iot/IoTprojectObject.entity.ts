@@ -47,7 +47,6 @@ export class IoTProjectObject {
 		const object = this.target;
 		this.executor = new AliotASExecutor(
 			object.id.toString(),
-			() => {},
 			socket,
 			'fr',
 			object.id,

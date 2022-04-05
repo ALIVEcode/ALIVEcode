@@ -53,7 +53,7 @@ const IoTProjectObject = ({
 	const [executing, setExecuting] = useState(executor?.running);
 
 	const [executionError, setExecutionError] = useState(
-		executor?.error !== undefined,
+		executor?.running && executor?.error !== undefined,
 	);
 
 	useEffect(() => {

@@ -16,7 +16,7 @@ const IoTProjectDocuments = () => {
 
 	const [doc, setDoc] = useWaitBeforeUpdate<string>(
 		{
-			wait: 1000,
+			wait: 300,
 			onUpdate: () => {
 				try {
 					updateDocument(JSON.parse(doc));

@@ -4,6 +4,7 @@ import { CompileDTO, SupportedLanguagesAS } from '../../../Models/ASModels';
 import { typeAskForUserInput } from '../challengeTypes';
 import { IoTSocket } from '../../../Models/Iot/IoTProjectClasses/IoTSocket';
 import { IOT_EVENT } from '../../../Models/Iot/IoTProjectClasses/IoTTypes';
+import { AlertManager, useAlert } from 'react-alert';
 
 export default class AliotASExecutor extends ChallengeCodeExecutor {
 	tokenId: string;
@@ -19,6 +20,7 @@ export default class AliotASExecutor extends ChallengeCodeExecutor {
 		aliotSocket: IoTSocket,
 		lang?: SupportedLanguagesAS,
 		public readonly objectId?: string,
+		private alert?: AlertManager,
 	) {
 		super(challengeName, askForUserInput, lang);
 		const url = process.env['AS_WS_URL'];
@@ -27,6 +29,32 @@ export default class AliotASExecutor extends ChallengeCodeExecutor {
 		}
 		this.aliotSocket = aliotSocket;
 		this.registerActions([
+			{
+				actionId: 302,
+				action: {
+					label: 'Notif',
+					type: 'NORMAL',
+					apply: params => {
+						alert?.info(params[0]);
+					},
+				},
+			},
+			{
+				actionId: 400,
+				action: {
+					label: 'Error',
+					type: 'NORMAL',
+					apply: params => {
+						if (
+							params.length >= 3 &&
+							typeof params[0] === 'string' &&
+							typeof params[1] === 'string' &&
+							typeof params[2] === 'number'
+						)
+							alert?.error(`${params[0]}: ${params[1]} (at line ${params[2]})`);
+					},
+				},
+			},
 			{
 				actionId: 900,
 				action: {

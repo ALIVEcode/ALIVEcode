@@ -12,6 +12,7 @@ import { IoTProjectContext } from '../../../../state/contexts/IoTProjectContext'
 import Link from '../../../UtilsComponents/Link/Link';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useForceUpdate } from '../../../../state/hooks/useForceUpdate';
+import { useAlert } from 'react-alert';
 
 const IoTProjectObject = ({
 	object,
@@ -40,8 +41,10 @@ const IoTProjectObject = ({
 
 	const forceUpdate = useForceUpdate();
 
+	const alert = useAlert();
+
 	if (!object.hasExecutor() && socket) {
-		object.initializeExecutor(socket);
+		object.initializeExecutor(socket, alert);
 	}
 
 	const executor = object.executor;

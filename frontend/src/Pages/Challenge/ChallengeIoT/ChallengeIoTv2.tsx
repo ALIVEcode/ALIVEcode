@@ -44,7 +44,7 @@ const IoTChallenge2 = ({ initialCode }: { initialCode: string }) => {
 
 	executor.current = useMemo(
 		() =>
-			(executor.current = new AliotASExecutor(challenge.name, askForUserInput)),
+			(executor.current = new AliotASExecutor(challenge.name, askForUserInput, )),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[challenge?.id, user],
 	);

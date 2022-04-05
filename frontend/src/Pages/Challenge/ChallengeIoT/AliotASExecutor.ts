@@ -32,7 +32,6 @@ export default class AliotASExecutor extends ChallengeCodeExecutor {
 					label: 'Update doc',
 					type: 'NORMAL',
 					apply: params => {
-						params.forEach(param => console.log(param));
 						this.aliotSocket.sendEvent(IOT_EVENT.UPDATE_DOC, {
 							fields: params[0],
 						});
@@ -78,7 +77,7 @@ export default class AliotASExecutor extends ChallengeCodeExecutor {
 		this.doAfterStop(() => {
 			this.ws.close();
 			this.running = false;
-			console.log('Stopping aliotASExecutor');
+			// console.log('Stopping aliotASExecutor');
 		});
 	}
 
@@ -96,37 +95,37 @@ export default class AliotASExecutor extends ChallengeCodeExecutor {
 		this.ws = new WebSocket(`${this.url}/execute/${this.tokenId}`);
 
 		this.ws.onopen = event => {
-			console.log('Connected ' + this.tokenId);
+			// console.log('Connected ' + this.tokenId);
 			const request = { type: 'COMPILE', lines: this.lineInterfaceContent };
 			this.ws.send(JSON.stringify(request));
-			console.log('Send compile request ' + request);
+			// console.log('Send compile request ' + request);
 		};
 		this.ws.onmessage = async event => {
 			if (!event || !this.execution) {
-				console.log('Ending execution');
+				// console.log('Ending execution');
 				await this.interrupt();
 				return;
 			}
-			console.log(event.data);
+			// console.log(event.data);
 			this.execute(JSON.parse(event.data));
 		};
 		this.ws.onerror = event => {
-			console.log(event);
+			// console.log(event);
 		};
 		this.ws.onclose = event => {
-			console.log('Closing ' + this.tokenId);
+			// console.log('Closing ' + this.tokenId);
 			this.running = false;
 		};
 	}
 
 	docFieldChanged(fieldChanged: { [key: string]: any }) {
 		if (this.ws?.readyState !== WebSocket.OPEN) {
-			console.log("Can't send doc field changed");
+			// console.log("Can't send doc field changed");
 			return;
 		}
 		Object.entries(fieldChanged).forEach(([fieldName, newFieldValue]) => {
-			console.log('Fields changed ' + fieldName + ': ' + newFieldValue);
-			console.log(this.ASListeners);
+			// console.log('Fields changed ' + fieldName + ': ' + newFieldValue);
+			// console.log(this.ASListeners);
 			this.ASListeners.filter(listener =>
 				listener.fields.includes(fieldName),
 			).forEach(listener => {

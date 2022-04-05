@@ -109,7 +109,7 @@ export class IoTSocket {
 					this.onReceiveListen(req.data.fields);
 					break;
 				default:
-					console.log('Unknown event', req);
+					// console.log('Unknown event', req);
 					break;
 			}
 		};

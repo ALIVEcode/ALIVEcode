@@ -3,14 +3,15 @@ import ChallengeCodeExecutor from '../ChallengeCode/ChallengeCodeExecutor';
 import { CompileDTO, SupportedLanguagesAS } from '../../../Models/ASModels';
 import { typeAskForUserInput } from '../challengeTypes';
 import { IoTSocket } from '../../../Models/Iot/IoTProjectClasses/IoTSocket';
+import { IOT_EVENT } from '../../../Models/Iot/IoTProjectClasses/IoTTypes';
 
 export default class AliotASExecutor extends ChallengeCodeExecutor {
 	tokenId: string;
 	url: string;
 	ws: WebSocket;
-	ASListeners: Array<{ field: string; funcName: string }> = [];
-	running: boolean = false;
+	ASListeners: Array<{ fields: string[]; funcName: string }> = [];
 	aliotSocket: IoTSocket;
+	running: boolean = false;
 
 	constructor(
 		challengeName: string,
@@ -26,74 +27,117 @@ export default class AliotASExecutor extends ChallengeCodeExecutor {
 		this.aliotSocket = aliotSocket;
 		this.registerActions([
 			{
+				actionId: 900,
+				action: {
+					label: 'Update doc',
+					type: 'NORMAL',
+					apply: params => {
+						params.forEach(param => console.log(param));
+						this.aliotSocket.sendEvent(IOT_EVENT.UPDATE_DOC, {
+							fields: params[0],
+						});
+					},
+				},
+			},
+			{
 				actionId: 901,
 				action: {
 					label: 'Subscribe listener',
 					type: 'NORMAL',
 					apply: params => {
-						for (const field of params[0]) {
-							// params[1] -> funcName
-							if (
-								!this.ASListeners.some(
-									listener =>
-										listener.field === field && listener.funcName === params[1],
-								)
-							) {
-								this.ASListeners.push({ field, funcName: params[1] });
-								this.aliotSocket.registerListener([field]);
-							}
-						}
+						const [fields, funcName]: [string[], string] = params as [
+							string[],
+							string,
+						];
+						this.ASListeners.push({ fields, funcName });
+						this.aliotSocket.registerListener(fields);
+					},
+				},
+			},
+			{
+				actionId: 902,
+				action: {
+					label: 'Unsubscribe listener',
+					type: 'NORMAL',
+					apply: params => {
+						const [funcName] = params;
+						this.ASListeners = this.ASListeners.filter(
+							listener => listener.funcName !== funcName,
+						);
 					},
 				},
 			},
 		]);
 
-		this.doAfterStop(() => {
-			// this.ws.close();
-		});
-
 		this.tokenId = uuid();
 		this.url = url;
+		this.doBeforeRun(() => {
+			this.connect();
+			this.running = true;
+		});
+		this.doAfterStop(() => {
+			this.ws.close();
+			this.running = false;
+			console.log('Stopping aliotASExecutor');
+		});
 	}
 
 	connect() {
-		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+		this.aliotSocket.openSocket();
+
+		if (
+			this.ws &&
+			(this.ws.readyState === WebSocket.OPEN ||
+				this.ws.readyState === WebSocket.CONNECTING)
+		) {
 			this.ws.close();
-			this.tokenId = uuid();
 		}
+
 		this.ws = new WebSocket(`${this.url}/execute/${this.tokenId}`);
 
 		this.ws.onopen = event => {
-			this.ws.send(
-				JSON.stringify({ type: 'COMPILE', lines: this.lineInterfaceContent }),
-			);
+			console.log('Connected ' + this.tokenId);
+			const request = { type: 'COMPILE', lines: this.lineInterfaceContent };
+			this.ws.send(JSON.stringify(request));
+			console.log('Send compile request ' + request);
 		};
 		this.ws.onmessage = async event => {
 			if (!event || !this.execution) {
+				console.log('Ending execution');
 				await this.interrupt();
-				this.ws.close();
 				return;
 			}
+			console.log(event.data);
 			this.execute(JSON.parse(event.data));
 		};
-		this.ws.onerror = event => {};
-		this.ws.onclose = event => {};
+		this.ws.onerror = event => {
+			console.log(event);
+		};
+		this.ws.onclose = event => {
+			console.log('Closing ' + this.tokenId);
+			this.running = false;
+		};
 	}
 
-	docFieldChanged(fieldChanged: string, newFieldValue: string) {
-		if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
+	docFieldChanged(fieldChanged: { [key: string]: any }) {
+		if (this.ws?.readyState !== WebSocket.OPEN) {
+			console.log("Can't send doc field changed");
 			return;
 		}
-		this.ASListeners.filter(
-			listener => listener.field === fieldChanged,
-		).forEach(listener => {
-			this.ws.send(
-				JSON.stringify({
-					type: 'EXEC_FUNC',
-					funcName: listener.funcName,
-					args: [newFieldValue],
-				}),
-			);
+		Object.entries(fieldChanged).forEach(([fieldName, newFieldValue]) => {
+			console.log('Fields changed ' + fieldName + ': ' + newFieldValue);
+			console.log(this.ASListeners);
+			this.ASListeners.filter(listener =>
+				listener.fields.includes(fieldName),
+			).forEach(listener => {
+				this.ws.send(
+					JSON.stringify({
+						type: 'EXEC_FUNC',
+						funcName: listener.funcName,
+						args: [fieldName, newFieldValue],
+					}),
+				);
+			});
 		});
 	}
 
@@ -101,9 +145,6 @@ export default class AliotASExecutor extends ChallengeCodeExecutor {
 
 	protected async executeNext(res: string[], firstTime: boolean = false) {
 		if (firstTime) {
-			this.connect();
-		} else {
-			// TODO complété cette section qui est déclenchée en cas de commande comme `lire`
 		}
 	}
 }

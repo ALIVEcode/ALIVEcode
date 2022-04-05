@@ -446,7 +446,8 @@ const api = {
 				async updateDocument(id: string, document: IoTProjectDocument) {
 					return plainToInstance(
 						IoTProject,
-						(await axios.patch(`iot/projects/${id}/document`, document)).data,
+						(await axios.patch(`iot/projects/${id}/document`, document))
+							.data as object,
 					);
 				},
 				async createScriptRoute(
@@ -468,7 +469,7 @@ const api = {
 							await axios.post(`iot/projects/${project.id}/createScript`, {
 								script,
 							})
-						).data,
+						).data as object,
 					);
 				},
 				async setScriptOfObject(
@@ -498,7 +499,7 @@ const api = {
 							await axios.patch(`iot/objects/${object.id}/connectProject`, {
 								projectId: project.id,
 							})
-						).data,
+						).data as object,
 					);
 				},
 				async disconnectObjectFromProject(
@@ -511,7 +512,7 @@ const api = {
 							await axios.patch(`iot/objects/${object.id}/disconnectProject`, {
 								projectId: project.id,
 							})
-						).data,
+						).data as object,
 					);
 				},
 			},

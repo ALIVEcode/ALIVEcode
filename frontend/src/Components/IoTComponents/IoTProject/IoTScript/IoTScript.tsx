@@ -58,10 +58,7 @@ const IoTScript = ({ script, odd }: IoTScriptProps) => {
 				</div>
 			</div>
 			<Modal title="Linking" open={open} setOpen={setOpen} size="lg">
-				<IoTProjectObjects
-					scriptToLink={script}
-					mode="script-linking"
-				></IoTProjectObjects>
+				<IoTProjectObjects scriptToLink={script} mode="script-linking" />
 			</Modal>
 		</div>
 	);

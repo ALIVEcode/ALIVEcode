@@ -65,7 +65,12 @@ export class IoTSocket {
 	public openSocket() {
 		if (!process.env.IOT_URL) throw new Error('Env variable IOT_URL not set');
 
-		if (this.socket && (this.socket.CONNECTING || this.socket.OPEN)) return;
+		if (
+			this.socket &&
+			(this.socket.readyState === WebSocket.OPEN ||
+				this.socket.readyState === WebSocket.CONNECTING)
+		)
+			return;
 
 		this.socket = new WebSocket(process.env.IOT_URL);
 
@@ -82,10 +87,6 @@ export class IoTSocket {
 					},
 				}),
 			);
-
-			setTimeout(() => {
-				this.registerListener(['/document/light', '/document/test']);
-			}, 2000);
 		};
 
 		this.socket.onmessage = e => {
@@ -104,7 +105,11 @@ export class IoTSocket {
 					this.onLayoutUpdate(req.data);
 					break;
 				case IOT_EVENT.RECEIVE_LISTEN:
+					console.log(req.data.fields);
 					this.onReceiveListen(req.data.fields);
+					break;
+				default:
+					console.log('Unknown event', req);
 					break;
 			}
 		};

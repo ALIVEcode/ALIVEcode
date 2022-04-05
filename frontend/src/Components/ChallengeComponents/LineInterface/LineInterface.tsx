@@ -144,6 +144,11 @@ const LineInterface = memo(
 						{tabs.map((t, idx) => {
 							return (
 								<AceEditor
+									onInput={(event: KeyboardEvent) => {
+										if (event.key === "Escape") {
+											event.preventDefault();
+										}
+									}}
 									key={idx}
 									ref={el => {
 										if (el) refList.current[idx] = el;
@@ -195,6 +200,11 @@ const LineInterface = memo(
 				) : (
 					<AceEditor
 						ref={ref}
+						onInput={(event: KeyboardEvent) => {
+							if (event.key === "Escape") {
+								event.preventDefault();
+							}
+						}}
 						className="ace-editor relative"
 						mode="alivescript"
 						theme={codeTheme}

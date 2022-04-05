@@ -28,7 +28,7 @@ const IoTProjectScripts = () => {
 						onClick={() =>
 							user &&
 							createScript(
-								new AsScript('Untitled', '# Write your code here', user),
+								new AsScript('Untitled', '# Write your code here\n\nutiliser Aliot', user),
 							)
 						}
 						icon={faPlus}
@@ -37,7 +37,7 @@ const IoTProjectScripts = () => {
 			</h6>
 			{project?.scripts && project?.scripts.length > 0 ? (
 				project.scripts.map((script, idx) => (
-					<IoTScript key={idx} script={script} odd={idx % 2 !== 0}></IoTScript>
+					<IoTScript key={idx} script={script} odd={idx % 2 !== 0} />
 				))
 			) : (
 				<label>Empty</label>

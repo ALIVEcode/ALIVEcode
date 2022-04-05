@@ -36,7 +36,7 @@ export const AsScript = ({ asScript, onSave }: AsScriptProps) => {
 					initialContent={asScript.content}
 				/>
 			</div>
-			{saving && 'Saving...'}
+			{saving ? 'Saving...' : 'Saved'}
 		</>
 	);
 };

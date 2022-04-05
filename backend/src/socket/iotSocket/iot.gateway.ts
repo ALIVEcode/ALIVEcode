@@ -165,19 +165,21 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   @SubscribeMessage(IOT_EVENT.UPDATE_DOC)
   async update(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTUpdateDocumentRequestFromObject) {
     if (payload.fields == null || typeof payload.fields !== 'object') throw new WsException('Bad payload');
-    const client = ObjectClient.getClientBySocket(socket);
+    const client = Client.getClientBySocket(socket);
     if (!client) throw new WsException('Forbidden');
     if (!client.projectId)
       throw new WsException(
         'Your object is not connected to any project on ALIVEcode. Make sure to add the object inside one of your IoTObject and click the connect button.',
       );
 
-    const object = await this.iotObjectService.findOne(client.id);
-    this.iotObjectService.addIoTObjectLog(
-      object,
-      IOT_EVENT.UPDATE_DOC,
-      `Updated document using "${JSON.stringify(payload.fields)}"`,
-    );
+    if(client instanceof ObjectClient) {
+      const object = await this.iotObjectService.findOne(client.id);
+      this.iotObjectService.addIoTObjectLog(
+        object,
+        IOT_EVENT.UPDATE_DOC,
+        `Updated document using "${JSON.stringify(payload.fields)}"`,
+      );
+    }
 
     await this.iotProjectService.updateDocumentFields(client.projectId, payload.fields);
   }
@@ -185,6 +187,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   @UseFilters(new IoTExceptionFilter())
   @SubscribeMessage(IOT_EVENT.SUBSCRIBE_LISTENER)
   async listen(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTListenRequestFromObject) {
+    console.log(payload);
     if (!Array.isArray(payload.fields)) throw new WsException('Bad payload');
     const client = Client.getClientBySocket(socket);
     if (!client) throw new WsException('Forbidden');

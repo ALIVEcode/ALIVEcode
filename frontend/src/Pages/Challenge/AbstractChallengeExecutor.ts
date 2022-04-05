@@ -230,7 +230,7 @@ export class ChallengeExecutor {
 				Array.isArray(action[PARAMS])
 			);
 		};
-		console.log(actions);
+
 		const formatedActions = actions.map(action => {
 			if (!hasValidDataStructure(action)) {
 				(async () => await this.interrupt())();

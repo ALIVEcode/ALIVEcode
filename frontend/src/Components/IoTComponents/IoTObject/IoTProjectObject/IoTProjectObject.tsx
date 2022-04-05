@@ -7,12 +7,13 @@ import {
 	faServer,
 	faStopCircle,
 } from '@fortawesome/free-solid-svg-icons';
-import { useContext, useRef, useMemo, useEffect } from 'react';
+import { useContext, useRef, useMemo, useEffect, useCallback } from 'react';
 import { IoTProjectContext } from '../../../../state/contexts/IoTProjectContext';
 import Link from '../../../UtilsComponents/Link/Link';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import AliotASExecutor from '../../../../Pages/Challenge/ChallengeIoT/AliotASExecutor';
 import { UserContext } from '../../../../state/contexts/UserContext';
+import { useForceUpdate } from '../../../../state/hooks/useForceUpdate';
 
 const IoTProjectObject = ({
 	object,
@@ -40,13 +41,26 @@ const IoTProjectObject = ({
 
 	const executor = useRef<AliotASExecutor | null>(null);
 
+	const forceUpdate = useForceUpdate();
+
 	executor.current = useMemo(
 		() => {
 			if (!socket) return null;
-			return new AliotASExecutor(object.id.toString(), () => {}, socket);
+
+			const exec = new AliotASExecutor(object.id.toString(), () => {}, socket);
+			forceUpdate();
+			return exec;
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[user, socket],
+	);
+
+	const updateFields = useCallback(
+		(fields: { [key: string]: any }) => {
+			const exec = executor.current;
+			if (!exec) return;
+		},
+		[lastChangedFields],
 	);
 
 	useEffect(() => {
@@ -59,9 +73,7 @@ const IoTProjectObject = ({
 	useEffect(() => {
 		const exec = executor.current;
 		if (!exec) return;
-		Object.entries(lastChangedFields).forEach(
-			field => exec.running && exec.docFieldChanged(field[0], field[1]),
-		);
+		exec.running && exec.docFieldChanged(lastChangedFields);
 	}, [lastChangedFields]);
 
 	return (
@@ -128,13 +140,17 @@ const IoTProjectObject = ({
 					<>
 						<div>
 							<FontAwesomeIcon
-								onClick={() => executor.current?.run()}
+								onClick={() => executor.current?.toggleExecution()}
 								icon={faPlayCircle}
 								{...iconProps}
 							/>
 						</div>
 						<div>
-							<FontAwesomeIcon icon={faStopCircle} {...iconProps} />
+							<FontAwesomeIcon
+								icon={faStopCircle}
+								{...iconProps}
+								onClick={() => executor.current?.toggleExecution()}
+							/>
 						</div>
 						<div>
 							<FontAwesomeIcon

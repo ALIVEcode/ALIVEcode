@@ -145,7 +145,7 @@ export class IoTProjectService {
     });
 
     // SEND CHANGES DETECTED TO OBJECTS LISTENING
-    Client.sendToListeners(id, updatedFields, this.objService);
+    await Client.sendToListeners(id, updatedFields, this.objService);
 
     // SAVE PROJECT
     return await this.projectRepository.save({ document, id });

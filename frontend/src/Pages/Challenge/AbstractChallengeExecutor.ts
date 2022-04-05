@@ -58,7 +58,7 @@ export class ChallengeExecutor {
 	private _beforeRun: () => void;
 
 	/** function called before the interruption of the execution of the code */
-	private _beforeInterrupt: () => void;
+	protected _beforeInterrupt: () => void;
 	/** function called before the end of the exection of the code */
 	private _beforeStop: () => void;
 	/** function called after the end or the interruption of the exection of the code */

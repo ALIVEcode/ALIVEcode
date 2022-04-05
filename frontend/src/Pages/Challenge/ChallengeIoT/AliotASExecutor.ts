@@ -13,6 +13,7 @@ export default class AliotASExecutor extends ChallengeCodeExecutor {
 	ASListeners: Array<{ fields: string[]; funcName: string }> = [];
 	aliotSocket: IoTSocket;
 	running: boolean = false;
+	error?: string;
 
 	constructor(
 		challengeName: string,
@@ -32,10 +33,20 @@ export default class AliotASExecutor extends ChallengeCodeExecutor {
 			{
 				actionId: 302,
 				action: {
-					label: 'Notif',
+					label: 'Notif Info',
 					type: 'NORMAL',
 					apply: params => {
 						alert?.info(params[0]);
+					},
+				},
+			},
+			{
+				actionId: 303,
+				action: {
+					label: 'Notif Error',
+					type: 'NORMAL',
+					apply: params => {
+						alert?.error(params[0]);
 					},
 				},
 			},
@@ -44,14 +55,17 @@ export default class AliotASExecutor extends ChallengeCodeExecutor {
 				action: {
 					label: 'Error',
 					type: 'NORMAL',
-					apply: params => {
+					apply: async params => {
 						if (
 							params.length >= 3 &&
 							typeof params[0] === 'string' &&
 							typeof params[1] === 'string' &&
 							typeof params[2] === 'number'
-						)
-							alert?.error(`${params[0]}: ${params[1]} (at line ${params[2]})`);
+						) {
+							this.error = `${params[0]}: ${params[1]} (at line ${params[2]})`;
+							alert?.error(this.error);
+							await this.interrupt();
+						}
 					},
 				},
 			},
@@ -119,10 +133,12 @@ export default class AliotASExecutor extends ChallengeCodeExecutor {
 		this.url = url;
 		this.doBeforeRun(() => {
 			this.connect();
+			this.error = undefined;
 			this.running = true;
 		});
 		this.doAfterStop(() => {
 			this.ws.close();
+			this.error = undefined;
 			this.running = false;
 			// console.log('Stopping aliotASExecutor');
 		});
@@ -187,10 +203,12 @@ export default class AliotASExecutor extends ChallengeCodeExecutor {
 		});
 	}
 
-	protected async sendDataToAsServer(data: CompileDTO): Promise<any> {}
-
-	protected async executeNext(res: string[], firstTime: boolean = false) {
-		if (firstTime) {
-		}
+	override async interrupt() {
+		this._beforeInterrupt && this._beforeInterrupt();
+		this.stop();
 	}
+
+	override async sendDataToAsServer(data: CompileDTO): Promise<any> {}
+
+	override async executeNext(res: string[], firstTime: boolean = false) {}
 }

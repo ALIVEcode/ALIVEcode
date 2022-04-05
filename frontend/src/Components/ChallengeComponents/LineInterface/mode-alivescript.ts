@@ -203,7 +203,7 @@ ace.define(
 						token: function (variable: string, dot?: string) {
 							const lst = importedModules.includes(variable)
 								? ['support.class']
-								: ['empty'];
+								: ['support'];
 
 							if (dot !== undefined) lst.push('empty');
 							return lst;

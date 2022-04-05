@@ -6,6 +6,7 @@ import {
 	faPlayCircle,
 	faServer,
 	faStopCircle,
+	faTimesCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import { useContext, useEffect, useState } from 'react';
 import { IoTProjectContext } from '../../../../state/contexts/IoTProjectContext';
@@ -51,9 +52,16 @@ const IoTProjectObject = ({
 
 	const [executing, setExecuting] = useState(executor?.running);
 
+	const [executionError, setExecutionError] = useState(
+		executor?.error !== undefined,
+	);
+
 	useEffect(() => {
 		if (!executor || !object.script?.content) return;
 		executor.lineInterfaceContent = object.script?.content;
+		executor.doBeforeInterrupt(() => {
+			setExecutionError(true);
+		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [executor]);
 
@@ -131,6 +139,7 @@ const IoTProjectObject = ({
 									if (!executor || !object.script) return;
 									executor.toggleExecution();
 									setExecuting(!executing);
+									setExecutionError(false);
 									if (executor.running) {
 										setObjectsRunning([...objectsRunning, object]);
 									} else
@@ -139,12 +148,21 @@ const IoTProjectObject = ({
 										);
 									forceUpdate();
 								}}
-								icon={executing ? faStopCircle : faPlayCircle}
+								icon={
+									executing
+										? executionError
+											? faTimesCircle
+											: faStopCircle
+										: faPlayCircle
+								}
 								{...iconProps}
+								title={executor?.error}
 								className={classNames(
 									'cursor-pointer',
 									executing
-										? ' text-[color:var(--fourth-color)] hover:text-[color:rgb(var(--fourth-color-rgb),0.7)]'
+										? executionError
+											? ' text-[color:#FF4C29] hover:text-[color:rgb(#FF4C29,0.7)]'
+											: ' text-[color:var(--fourth-color)] hover:text-[color:rgb(var(--fourth-color-rgb),0.7)]'
 										: ' text-[color:var(--fg-shade-four-color)] hover:text-[color:rgb(var(--fg-shade-four-color-rgb),0.7)]',
 									!object.script && 'opacity-50 cursor-not-allowed',
 								)}

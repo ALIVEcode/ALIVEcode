@@ -18,7 +18,7 @@ export const AsScript = ({ asScript, onSave }: AsScriptProps) => {
 		setSaving(true);
 		content.current = newContent;
 		if (saveTimeout.current) clearTimeout(saveTimeout.current);
-		saveTimeout.current = setTimeout(save, 2000);
+		saveTimeout.current = setTimeout(save, 1000);
 	};
 
 	const save = async () => {
@@ -30,7 +30,17 @@ export const AsScript = ({ asScript, onSave }: AsScriptProps) => {
 
 	return (
 		<>
-			<div className="flex flex-col h-[500px] relative">
+			<div
+				className="flex flex-col h-[500px] relative"
+				onKeyDown={async event => {
+					if (event.ctrlKey && event.key === 's') {
+						event.preventDefault();
+						setSaving(true);
+						if (saveTimeout.current) clearTimeout(saveTimeout.current);
+						saveTimeout.current = setTimeout(save, 1000);
+					}
+				}}
+			>
 				<LineInterface
 					handleChange={handleChange}
 					initialContent={asScript.content}

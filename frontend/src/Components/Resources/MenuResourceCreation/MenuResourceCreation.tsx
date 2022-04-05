@@ -20,7 +20,6 @@ import {
 } from './menuResourceCreationTypes';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import MenuCreation from '../../UtilsComponents/MenuCreation/MenuCreation';
-import Button from '../../UtilsComponents/Buttons/Button';
 import ProgressBar from '../../UtilsComponents/ProgressBar/ProgressBar';
 
 /**
@@ -45,6 +44,7 @@ const MenuResourceCreation = ({
 	const [challenges, setChallenges] = useState<Challenge[]>([]);
 	const [file, setFile] = useState<File | null>(null);
 	const [uploadProgress, setUploadProgress] = useState<number>(0);
+	const [resourceIsFile, setResourceIsFile] = useState<boolean>(true);
 
 	const { t } = useTranslation();
 	const { setResources, resources } = useContext(UserContext);
@@ -104,7 +104,7 @@ const MenuResourceCreation = ({
 		if (!type) return;
 		formValues.type = type;
 
-		if (file) formValues.file = file;
+		if (resourceIsFile) formValues.file = file;
 
 		if (updateMode && defaultResource) {
 			const updatedRes = await api.db.resources.update(
@@ -122,6 +122,15 @@ const MenuResourceCreation = ({
 			setResources([...resources, resource]);
 		}
 		setOpen(false);
+		// reset
+		setFile(null);
+		setUploadProgress(0);
+	};
+
+	const onChangeRadio = event => {
+		const value = event.target.value === 'file';
+		console.log(value);
+		setResourceIsFile(value);
 	};
 
 	/**
@@ -163,40 +172,73 @@ const MenuResourceCreation = ({
 			case RESOURCE_TYPE.VIDEO:
 				return (
 					<>
-						<InputGroup
-							label={t('resources.video.form.url')}
-							errors={errors.resource?.url}
-							{...register('resource.url', { required: false })}
-						/>
-						<InputGroup
-							type="file"
-							label={t('resources.image.form.file')}
-							errors={errors.resource?.url}
-							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-								e.target.files && setFile(e.target.files[0])
-							}
-						/>
-						{/* <Button variant="primary" onClick={handleUploadFile}>
-							  upload
-						    </Button> */}
-						<ProgressBar progress={uploadProgress} />
+						<div onChange={onChangeRadio}>
+							<input
+								type="radio"
+								name="resource"
+								value="file"
+								id="file"
+								defaultChecked
+							/>
+							<label htmlFor="file">file</label>
+							<input type="radio" name="resource" value="url" id="url" />
+							<label htmlFor="url">url</label>
+						</div>
+						{resourceIsFile ? (
+							<>
+								<InputGroup
+									type="file"
+									label={t('resources.image.form.file')}
+									errors={errors.resource?.url}
+									onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+										e.target.files && setFile(e.target.files[0])
+									}
+								/>
+								<ProgressBar progress={uploadProgress} />
+							</>
+						) : (
+							<InputGroup
+								label={t('resources.video.form.url')}
+								errors={errors.resource?.url}
+								{...register('resource.url', { required: false })}
+							/>
+						)}
 					</>
 				);
 			case RESOURCE_TYPE.IMAGE:
 				return (
 					<>
-						<InputGroup
-							type="file"
-							label={t('resources.image.form.file')}
-							errors={errors.resource?.url}
-							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-								e.target.files && setFile(e.target.files[0])
-							}
-						/>
-						{/* <Button variant="primary" onClick={handleUploadFile}>
-							  upload
-						    </Button> */}
-						<ProgressBar progress={uploadProgress} />
+						<div onChange={onChangeRadio}>
+							<input
+								type="radio"
+								name="resource"
+								value="file"
+								id="file"
+								defaultChecked
+							/>
+							<label htmlFor="file">file</label>
+							<input type="radio" name="resource" value="url" id="url" />
+							<label htmlFor="url">url</label>
+						</div>
+						{resourceIsFile ? (
+							<>
+								<InputGroup
+									type="file"
+									label={t('resources.image.form.file')}
+									errors={errors.resource?.url}
+									onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+										e.target.files && setFile(e.target.files[0])
+									}
+								/>
+								<ProgressBar progress={uploadProgress} />
+							</>
+						) : (
+							<InputGroup
+								label={t('resources.image.form.url')}
+								errors={errors.resource?.url}
+								{...register('resource.url', { required: false })}
+							/>
+						)}
 					</>
 				);
 			case RESOURCE_TYPE.FILE:
@@ -210,9 +252,6 @@ const MenuResourceCreation = ({
 								e.target.files && setFile(e.target.files[0])
 							}
 						/>
-						{/* <Button variant="primary" onClick={handleUploadFile}>
-							  upload
-						    </Button> */}
 						<ProgressBar progress={uploadProgress} />
 					</>
 				);

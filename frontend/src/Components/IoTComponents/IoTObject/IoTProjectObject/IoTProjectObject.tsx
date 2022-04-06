@@ -14,6 +14,8 @@ import Link from '../../../UtilsComponents/Link/Link';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useForceUpdate } from '../../../../state/hooks/useForceUpdate';
 import { useAlert } from 'react-alert';
+import Modal from '../../../UtilsComponents/Modal/Modal';
+import IoTProjectScripts from '../../IoTProject/IoTProjectScripts/IoTProjectScripts';
 
 const IoTProjectObject = ({
 	object,
@@ -31,6 +33,8 @@ const IoTProjectObject = ({
 		addRunningObject,
 		removeRunningObject,
 	} = useContext(IoTProjectContext);
+
+	const [open, setOpen] = useState(false);
 
 	const iconProps: { size: SizeProp; className: string } = {
 		size: '3x',
@@ -98,21 +102,30 @@ const IoTProjectObject = ({
 							</Link>
 						)
 					) : target ? (
-						object.iotObject.currentIoTProjectId !== project?.id ? (
+						<>
+							{object.iotObject.currentIoTProjectId !== project?.id ? (
+								<Link
+									className="cursor-pointer text-center tablet:text-left"
+									onClick={() => connectObjectToProject(target)}
+								>
+									Connect object to project
+								</Link>
+							) : (
+								<Link
+									className="cursor-pointer text-center tablet:text-left !text-[color:var(--danger-color)]"
+									onClick={() => disconnectObjectFromProject(target)}
+								>
+									Disconnect object from project
+								</Link>
+							)}
+							<br />
 							<Link
 								className="cursor-pointer text-center tablet:text-left"
-								onClick={() => connectObjectToProject(target)}
+								onClick={() => setOpen(true)}
 							>
-								Connect object to project
+								{object.script ? 'Change script' : 'Add script'}
 							</Link>
-						) : (
-							<Link
-								className="cursor-pointer text-center tablet:text-left !text-[color:var(--danger-color)]"
-								onClick={() => disconnectObjectFromProject(target)}
-							>
-								Disconnect object from project
-							</Link>
-						)
+						</>
 					) : (
 						<Link
 							className="cursor-pointer text-center tablet:text-left"
@@ -174,6 +187,9 @@ const IoTProjectObject = ({
 					/>
 				</div>
 			</div>
+			<Modal title="Linking" open={open} setOpen={setOpen} size="lg">
+				<IoTProjectScripts objectToLink={object} mode="script-linking" />
+			</Modal>
 		</div>
 	);
 };

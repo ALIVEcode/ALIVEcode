@@ -9,9 +9,8 @@ import { IoTProjectContext } from '../../../../state/contexts/IoTProjectContext'
 import Modal from '../../../UtilsComponents/Modal/Modal';
 import IoTProjectObjects from '../IoTProjectObjects/IoTProjectObjects';
 
-const IoTScript = ({ script, odd }: IoTScriptProps) => {
-	const { setScriptOpen, setScriptOfObject: setScriptToObject } =
-		useContext(IoTProjectContext);
+const IoTScript = ({ script, odd, mode, objectToLink }: IoTScriptProps) => {
+	const { setScriptOpen, setScriptOfObject } = useContext(IoTProjectContext);
 	const [open, setOpen] = useState(false);
 
 	const iconProps: { size: SizeProp; className: string } = {
@@ -38,24 +37,46 @@ const IoTScript = ({ script, odd }: IoTScriptProps) => {
 				{
 					/* TODO : Find way to check if link is there */ true && (
 						<div>
-							<Link className="cursor-pointer" onClick={() => setOpen(true)}>
-								Link script to object
-							</Link>
+							{mode === 'script-linking' && objectToLink ? (
+								objectToLink.script?.id === script.id ? (
+									<Link
+										className="cursor-pointer !text-[color:var(--danger-color)]"
+										onClick={() => console.error('Not implemented')}
+									>
+										<>Unlink script</>
+									</Link>
+								) : (
+									<Link
+										className="cursor-pointer"
+										onClick={() => setScriptOfObject(objectToLink, script)}
+									>
+										<>Link script with object "{objectToLink.target?.name}"</>
+									</Link>
+								)
+							) : (
+								<Link className="cursor-pointer" onClick={() => setOpen(true)}>
+									Link script to object
+								</Link>
+							)}
 						</div>
 					)
 				}
 			</div>
 			<div className="flex gap-4">
-				<div>
-					<FontAwesomeIcon
-						onClick={() => setScriptOpen(script)}
-						icon={faPencilAlt}
-						{...iconProps}
-					/>
-				</div>
-				<div>
-					<FontAwesomeIcon icon={faTrash} {...iconProps} />
-				</div>
+				{mode !== 'script-linking' && (
+					<>
+						<div>
+							<FontAwesomeIcon
+								onClick={() => setScriptOpen(script)}
+								icon={faPencilAlt}
+								{...iconProps}
+							/>
+						</div>
+						<div>
+							<FontAwesomeIcon icon={faTrash} {...iconProps} />
+						</div>
+					</>
+				)}
 			</div>
 			<Modal title="Linking" open={open} setOpen={setOpen} size="lg">
 				<IoTProjectObjects scriptToLink={script} mode="script-linking" />

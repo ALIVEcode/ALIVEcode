@@ -5,8 +5,15 @@ import IoTScript from '../IoTScript/IoTScript';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { AsScript } from '../../../../Models/AsScript/as-script.entity';
 import { UserContext } from '../../../../state/contexts/UserContext';
+import { IoTProjectObject } from '../../../../Models/Iot/IoTprojectObject.entity';
 
-const IoTProjectScripts = () => {
+const IoTProjectScripts = ({
+	mode,
+	objectToLink,
+}: {
+	mode?: 'script-linking';
+	objectToLink?: IoTProjectObject;
+}) => {
 	const { canEdit, project, loadIoTScripts, createScript } =
 		useContext(IoTProjectContext);
 	const { user } = useContext(UserContext);
@@ -28,7 +35,11 @@ const IoTProjectScripts = () => {
 						onClick={() =>
 							user &&
 							createScript(
-								new AsScript('Untitled', '# Write your code here\n\nutiliser Aliot', user),
+								new AsScript(
+									'Untitled',
+									'# Write your code here\n\nutiliser Aliot',
+									user,
+								),
 							)
 						}
 						icon={faPlus}
@@ -37,7 +48,13 @@ const IoTProjectScripts = () => {
 			</h6>
 			{project?.scripts && project?.scripts.length > 0 ? (
 				project.scripts.map((script, idx) => (
-					<IoTScript key={idx} script={script} odd={idx % 2 !== 0} />
+					<IoTScript
+						mode={mode}
+						objectToLink={objectToLink}
+						key={idx}
+						script={script}
+						odd={idx % 2 !== 0}
+					/>
 				))
 			) : (
 				<label>Empty</label>

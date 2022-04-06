@@ -156,9 +156,9 @@ const IoTProjectPage = () => {
 						id="project-body"
 					>
 						<div className="flex flex-row border-b">
-							<h2 className="pr-2">Running script: </h2>
+							<h2 className="pr-2">Running scripts: </h2>
 							{objectsRunning.map((object, idx) => (
-								<label key={idx} className="pr-3 border rounded-sm">
+								<label key={idx} className="px-3 border-x rounded-sm">
 									{object.target?.name}
 								</label>
 							))}

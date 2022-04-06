@@ -20,7 +20,6 @@ import {
 } from './menuResourceCreationTypes';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import MenuCreation from '../../UtilsComponents/MenuCreation/MenuCreation';
-import ProgressBar from '../../UtilsComponents/ProgressBar/ProgressBar';
 
 /**
  * Menu that allows for the creation and updating of a resource
@@ -127,7 +126,7 @@ const MenuResourceCreation = ({
 		setUploadProgress(0);
 	};
 
-	const onChangeRadio = event => {
+	const onChangeRadio = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const value = event.target.value === 'file';
 		console.log(value);
 		setResourceIsFile(value);
@@ -193,8 +192,8 @@ const MenuResourceCreation = ({
 									onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 										e.target.files && setFile(e.target.files[0])
 									}
+									progress={uploadProgress}
 								/>
-								<ProgressBar progress={uploadProgress} />
 							</>
 						) : (
 							<InputGroup
@@ -229,8 +228,8 @@ const MenuResourceCreation = ({
 									onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 										e.target.files && setFile(e.target.files[0])
 									}
+									progress={uploadProgress}
 								/>
-								<ProgressBar progress={uploadProgress} />
 							</>
 						) : (
 							<InputGroup
@@ -251,8 +250,8 @@ const MenuResourceCreation = ({
 							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 								e.target.files && setFile(e.target.files[0])
 							}
+							progress={uploadProgress}
 						/>
-						<ProgressBar progress={uploadProgress} />
 					</>
 				);
 		}

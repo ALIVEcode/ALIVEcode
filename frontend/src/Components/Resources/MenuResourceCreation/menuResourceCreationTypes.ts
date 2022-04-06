@@ -20,7 +20,7 @@ export type MenuResourceCreationProps = {
  */
 export type MenuResourceCreationDTO = {
 	type: RESOURCE_TYPE;
-	file: File;
+	file: File | null;
 	resource: {
 		name: string;
 		url?: string;

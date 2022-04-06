@@ -20,6 +20,7 @@ type FullSelectProps = SelectProps &
 type InputProps = {
 	errors: FieldError | undefined;
 	label: string;
+	progress?: number;
 	messages?: { [key: string]: string };
 	as?: 'select';
 };
@@ -38,7 +39,7 @@ type Props = FullSelectProps | FullInputProps;
  * @author Enric Soldevila
  */
 const FormInput = React.forwardRef<any, any>(
-	({ className, errors, ...props }, ref) => {
+	({ className, errors, progress, ...props }, ref) => {
 		if (props.as === 'select')
 			return (
 				<select
@@ -76,6 +77,31 @@ const FormInput = React.forwardRef<any, any>(
 					ref={ref}
 					{...props}
 				/>
+			);
+		}
+
+		if (props.type === 'file') {
+			return (
+				<div className="relative w-full">
+					<div className="absolute rounded bg-[color:var(--background-color)] w-full h-full z-[-2]"></div>
+					<div
+						className={classNames(
+							'absolute rounded h-full z-[-2]',
+							errors ? 'w-[0] border-red-500' : `w-[${progress}%] bg-blue-400`,
+						)}
+					></div>
+					<input
+						className={classNames(
+							'shadow border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-[color:var(--fg-shade-two-color)]',
+							errors
+								? 'border-red-500'
+								: 'border-[color:var(--bg-shade-four-color)]',
+							className,
+						)}
+						ref={ref}
+						{...props}
+					/>
+				</div>
 			);
 		}
 

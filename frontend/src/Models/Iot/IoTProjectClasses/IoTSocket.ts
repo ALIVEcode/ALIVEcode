@@ -30,7 +30,7 @@ export class IoTSocket {
 	private name: string;
 	private iotComponentManager: IoTComponentManager;
 	private onRender: (saveLayout: boolean) => void;
-	private onReceiveListen: (fields: { [key: string]: any }) => void;
+	public onReceiveListen: (fields: { [key: string]: any }) => void;
 	private openedOnce: boolean = false;
 
 	constructor(
@@ -106,7 +106,6 @@ export class IoTSocket {
 					this.onLayoutUpdate(req.data);
 					break;
 				case IOT_EVENT.RECEIVE_LISTEN:
-					console.log(req.data.fields);
 					this.onReceiveListen(req.data.fields);
 					break;
 				default:

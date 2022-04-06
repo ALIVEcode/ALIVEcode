@@ -4,7 +4,7 @@ import {
 	StyledIoTProject,
 	IoTProjectTab,
 } from './iotProjectPageTypes';
-import { useState, useContext, useRef } from 'react';
+import { useState, useContext } from 'react';
 import LoadingScreen from '../../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -23,7 +23,6 @@ import { classNames } from '../../../Types/utils';
 import IoTProjectDocuments from '../../../Components/IoTComponents/IoTProject/IoTProjectDocuments/IoTProjectDocuments';
 import { useTranslation } from 'react-i18next';
 import IoTProjectScripts from '../../../Components/IoTComponents/IoTProject/IoTProjectScripts/IoTProjectScripts';
-import AliotASExecutor from '../../Challenge/ChallengeIoT/AliotASExecutor';
 
 /**
  * IoTProject. On this page are all the components essential in the functionning of an IoTProject.

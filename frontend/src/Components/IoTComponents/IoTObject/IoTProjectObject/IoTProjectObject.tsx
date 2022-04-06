@@ -27,10 +27,9 @@ const IoTProjectObject = ({
 		disconnectObjectFromProject,
 		setLogsOpen,
 		setScriptOfObject,
-		lastChangedFields,
 		socket,
-		objectsRunning,
-		setObjectsRunning,
+		addRunningObject,
+		removeRunningObject,
 	} = useContext(IoTProjectContext);
 
 	const iconProps: { size: SizeProp; className: string } = {
@@ -64,12 +63,6 @@ const IoTProjectObject = ({
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [executor]);
-
-	useEffect(() => {
-		if (!executor) return;
-		executor.running && executor.docFieldChanged(lastChangedFields);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [lastChangedFields]);
 
 	return (
 		<div
@@ -140,12 +133,8 @@ const IoTProjectObject = ({
 									executor.toggleExecution();
 									setExecuting(!executing);
 									setExecutionError(false);
-									if (executor.running) {
-										setObjectsRunning([...objectsRunning, object]);
-									} else
-										setObjectsRunning(
-											objectsRunning.filter(obj => obj.id !== object.id),
-										);
+									if (executor.running) addRunningObject(object);
+									else removeRunningObject(object);
 									forceUpdate();
 								}}
 								icon={

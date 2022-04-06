@@ -36,6 +36,7 @@ import Modal from '../../../Components/UtilsComponents/Modal/Modal';
 import AsScript from '../../../Components/AliveScriptComponents/AsScript/AsScript';
 import IoTObjectLogs from '../../../Components/IoTComponents/IoTObject/IoTObjectLogs/IoTObjectLogs';
 import { IoTProjectObject } from '../../../Models/Iot/IoTprojectObject.entity';
+import AliotASExecutor from '../../Challenge/ChallengeIoT/AliotASExecutor';
 
 /**
  * IoTProject. On this page are all the components essential in the functionning of an IoTProject.
@@ -54,7 +55,7 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 	const { t } = useTranslation();
 	const { user } = useContext(UserContext);
 	const { id: paramId } = useParams<{ id: string | undefined }>();
-	const [objectsRunning, setObjectsRunning] = useState<IoTProjectObject[]>([]);
+	const objectsRunning = useRef<IoTProjectObject[]>([]);
 	const forceUpdate = useForceUpdate();
 
 	const id = challenge?.id ?? paramId;
@@ -67,9 +68,6 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 
 	const [scriptOpen, setScriptOpen] = useState<AsScriptModel>();
 	const [logsOpen, setLogsOpen] = useState<IoTObject>();
-	const [lastChangedFields, setLastChangedFields] = useState<{
-		[key: string]: any;
-	}>({});
 
 	const saveComponents = useCallback(async () => {
 		if (!canEdit || !project) return;
@@ -98,8 +96,13 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 	);
 
 	const handleOnReceiveListen = (fields: { [key: string]: any }) => {
-		console.log(fields);
-		setLastChangedFields(fields);
+		objectsRunning.current.forEach(o => {
+			if (o.hasExecutor()) {
+				const executor = o.executor as AliotASExecutor;
+				executor.running && executor.docFieldChanged(fields);
+			}
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	};
 
 	const socket = useMemo(() => {
@@ -280,6 +283,25 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 		[forceUpdate, project],
 	);
 
+	const addRunningObject = useCallback(
+		(obj: IoTProjectObject) => {
+			if (objectsRunning.current.includes(obj)) return;
+			objectsRunning.current.push(obj);
+			forceUpdate();
+		},
+		[forceUpdate],
+	);
+
+	const removeRunningObject = useCallback(
+		(obj: IoTProjectObject) => {
+			objectsRunning.current = objectsRunning.current.filter(
+				o => o.id !== obj.id,
+			);
+			forceUpdate();
+		},
+		[forceUpdate],
+	);
+
 	const providerValues: IoTProjectContextValues = useMemo(() => {
 		return {
 			project: project ?? null,
@@ -287,8 +309,9 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 			updateId: updateId ? updateId : project ? project.id : '',
 			isChallenge,
 			socket: socket ?? null,
-			objectsRunning,
-			setObjectsRunning,
+			objectsRunning: objectsRunning.current,
+			addRunningObject,
+			removeRunningObject,
 			addRoute,
 			deleteRoute,
 			updateRoute,
@@ -304,7 +327,6 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 			setScriptOpen,
 			setLogsOpen,
 			setScriptOfObject,
-			lastChangedFields,
 		};
 	}, [
 		project,
@@ -312,6 +334,8 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 		updateId,
 		isChallenge,
 		socket,
+		addRunningObject,
+		removeRunningObject,
 		addRoute,
 		deleteRoute,
 		updateRoute,
@@ -325,8 +349,6 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 		disconnectObjectFromProject,
 		createScript,
 		setScriptOfObject,
-		lastChangedFields,
-		objectsRunning,
 	]);
 
 	if (!project) {

@@ -1,4 +1,4 @@
-import { createContext, MutableRefObject } from 'react';
+import { createContext } from 'react';
 import {
 	IoTProject,
 	IoTProjectDocument,
@@ -18,7 +18,8 @@ export type IoTProjectContextValues = {
 	isChallenge: boolean;
 	socket: IoTSocket | null;
 	objectsRunning: IoTProjectObject[];
-	setObjectsRunning: React.Dispatch<IoTProjectObject[]>;
+	addRunningObject: (obj: IoTProjectObject) => void;
+	removeRunningObject: (obj: IoTProjectObject) => void;
 	addRoute: (route: IotRoute) => void;
 	deleteRoute: (route: IotRoute) => void;
 	updateRoute: (route: IotRoute) => void;
@@ -42,7 +43,6 @@ export type IoTProjectContextValues = {
 		projectObject: IoTProjectObject,
 		script: AsScript,
 	) => Promise<void>;
-	lastChangedFields: { [key: string]: any };
 };
 
 export const IoTProjectContext = createContext<IoTProjectContextValues>({
@@ -67,6 +67,6 @@ export const IoTProjectContext = createContext<IoTProjectContextValues>({
 	setScriptOpen: () => {},
 	setLogsOpen: () => {},
 	setScriptOfObject: async () => {},
-	lastChangedFields: {},
-	setObjectsRunning: () => {},
+	removeRunningObject: () => {},
+	addRunningObject: () => {},
 });

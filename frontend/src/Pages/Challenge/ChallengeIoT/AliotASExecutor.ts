@@ -1,10 +1,8 @@
 import { v4 as uuid } from 'uuid';
-import ChallengeCodeExecutor from '../ChallengeCode/ChallengeCodeExecutor';
 import { CompileDTO, SupportedLanguagesAS } from '../../../Models/ASModels';
-import { typeAskForUserInput } from '../challengeTypes';
 import { IoTSocket } from '../../../Models/Iot/IoTProjectClasses/IoTSocket';
 import { IOT_EVENT } from '../../../Models/Iot/IoTProjectClasses/IoTTypes';
-import { AlertManager, useAlert } from 'react-alert';
+import { AlertManager } from 'react-alert';
 import { ChallengeExecutor } from '../AbstractChallengeExecutor';
 
 export default class AliotASExecutor extends ChallengeExecutor {

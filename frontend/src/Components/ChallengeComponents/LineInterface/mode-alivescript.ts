@@ -182,7 +182,7 @@ ace.define(
 					},
 					{
 						token: 'support.type.italic',
-						regex: /(?!\.)/ + lintInfo.fonctions_builtin.join('|'),
+						regex: /(!?\.)/ + '(' + lintInfo.fonctions_builtin.join('|') + ')',
 					},
 					{
 						token: function (name: string, parenthesis: string) {

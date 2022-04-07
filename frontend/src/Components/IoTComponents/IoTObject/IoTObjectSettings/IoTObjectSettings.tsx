@@ -11,7 +11,11 @@ import Button from '../../../UtilsComponents/Buttons/Button';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import api from '../../../../Models/api';
 
-const IoTObjectSettings = ({ object, onUpdate }: IoTObjectSettingsProps) => {
+const IoTObjectSettings = ({
+	object,
+	onUpdate,
+	onDelete,
+}: IoTObjectSettingsProps) => {
 	const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 	const { routes, goTo } = useRoutes();
 	const alert = useAlert();
@@ -59,7 +63,8 @@ const IoTObjectSettings = ({ object, onUpdate }: IoTObjectSettingsProps) => {
 				onConfirm={async () => {
 					await api.db.iot.objects.delete({ id: object.id });
 					goTo(routes.auth.iot_dashboard.path);
-					alert.success('Iot Project Deleted');
+					alert.success(t('iot.object.deleted'));
+					onDelete && onDelete(object);
 				}}
 			/>
 			<br />

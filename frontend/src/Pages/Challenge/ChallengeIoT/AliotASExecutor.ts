@@ -17,8 +17,8 @@ export default class AliotASExecutor extends ChallengeExecutor {
 	constructor(
 		challengeName: string,
 		aliotSocket: IoTSocket,
+		public readonly objectId: string,
 		lang?: SupportedLanguagesAS,
-		public readonly objectId?: string,
 		private alert?: AlertManager,
 	) {
 		super(challengeName, lang);

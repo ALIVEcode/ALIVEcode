@@ -457,6 +457,11 @@
     }
   },
   "iot": {
+    "dashboard": {
+      "title": "IoT Dashboard",
+      "no_object": "No IoT Object",
+      "no_project": "No IoT Project"
+    },
     "project": {
       "name": "IoT Project",
       "settings": "Settings",

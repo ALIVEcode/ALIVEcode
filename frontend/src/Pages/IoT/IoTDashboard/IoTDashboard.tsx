@@ -50,7 +50,7 @@ const IoTDashboard = (props: iotDashboardProps) => {
 	return (
 		<StyledDiv>
 			<div>
-				<div className="text-5xl">IoT Dashboard</div>
+				<div className="text-5xl">{t('iot.dashboard.title')}</div>
 			</div>
 			<div>
 				<CardContainer
@@ -71,7 +71,7 @@ const IoTDashboard = (props: iotDashboardProps) => {
 							/>
 						))
 					) : (
-						<div>Aucun projet</div>
+						<div>{t('iot.dashboard.no_project')}</div>
 					)}
 				</CardContainer>
 				<CardContainer
@@ -100,7 +100,7 @@ const IoTDashboard = (props: iotDashboardProps) => {
 							/>
 						))
 					) : (
-						<div>Aucun objet connecté</div>
+						<div>{t('iot.dashboard.no_object')}</div>
 					)}
 				</CardContainer>
 			</div>

@@ -457,6 +457,11 @@
     }
   },
   "iot": {
+    "dashboard": {
+      "title": "Tableau de bord IoT",
+      "no_object": "Aucun objet IoT",
+      "no_project": "Aucun projet IoT"
+    },
     "project": {
       "name": "Projet IoT",
       "settings": "Paramètres",

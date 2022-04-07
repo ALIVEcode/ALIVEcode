@@ -17,8 +17,8 @@ export default class AliotASExecutor extends ChallengeExecutor {
 	constructor(
 		challengeName: string,
 		aliotSocket: IoTSocket,
+		public readonly objectId: string,
 		lang?: SupportedLanguagesAS,
-		public readonly objectId?: string,
 		private alert?: AlertManager,
 	) {
 		super(challengeName, lang);
@@ -133,7 +133,7 @@ export default class AliotASExecutor extends ChallengeExecutor {
 						console.log(params);
 						// implicit target
 						if (params.length === 2) {
-							this.aliotSocket.sendAction('targetId', params[0], params[1]);
+							this.aliotSocket.sendAction(this.objectId, params[0], params[1]);
 						}
 						// explicit target
 						else {

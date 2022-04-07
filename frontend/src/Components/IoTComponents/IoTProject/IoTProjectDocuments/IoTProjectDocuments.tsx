@@ -2,10 +2,11 @@ import { IoTProjectContext } from '../../../../state/contexts/IoTProjectContext'
 import { useContext, useEffect, useState } from 'react';
 import AceEditor from 'react-ace';
 import useWaitBeforeUpdate from '../../../../state/hooks/useWaitBeforeUpdate';
-import 'ace-builds/src-noconflict/mode-json';
 import { StyledLineInterface } from '../../../ChallengeComponents/LineInterface/lineInterfaceTypes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
+
+import 'brace/mode/json';
 
 const IoTProjectDocuments = () => {
 	const { project, updateDocument } = useContext(IoTProjectContext);

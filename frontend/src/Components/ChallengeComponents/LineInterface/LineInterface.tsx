@@ -9,8 +9,6 @@ import { ThemeContext } from '../../../state/contexts/ThemeContext';
 import { Autocomplete, setAutocomplete } from './autocomplete/autocomplete';
 import ace from 'ace-builds';
 import AceEditor from 'react-ace';
-import 'ace-builds/src-noconflict/ext-language_tools';
-import 'ace-builds/webpack-resolver';
 import './mode-alivescript';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
 import IconButton from '../../DashboardComponents/IconButton/IconButton';
@@ -27,6 +25,7 @@ import 'brace/theme/github';
 import 'brace/theme/twilight';
 import 'brace/theme/solarized_dark';
 import 'brace/theme/xcode';
+import 'brace/ext/language_tools';
 
 enum FontSize {
 	SMALL = 'small',

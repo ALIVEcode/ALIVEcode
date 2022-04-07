@@ -1,4 +1,4 @@
-import ace from 'ace-builds/src-noconflict/ace'
+import ace from 'ace-builds/src-noconflict/ace';
 import cacheLintInfo from './cache_lintinfo.json';
 import api from '../../../Models/api';
 
@@ -319,4 +319,3 @@ ace.define(
 		exports.CustomHighlightRules = CustomHighlightRules;
 	},
 );
-

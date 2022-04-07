@@ -1,5 +1,5 @@
-import { command, Position, snippetsType } from "./autocompleteTypes";
-import ace from 'ace-builds'
+import { command, Position, snippetsType } from './autocompleteTypes';
+import ace from 'ace-builds';
 
 export let editor: any;
 export function setEditor(e: any) {

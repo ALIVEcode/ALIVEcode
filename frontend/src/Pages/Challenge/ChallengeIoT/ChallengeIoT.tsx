@@ -12,7 +12,6 @@ import ChallengeToolsBar from '../../../Components/ChallengeComponents/Challenge
 import LineInterface from '../../../Components/ChallengeComponents/LineInterface/LineInterface';
 import Cmd from '../../../Components/ChallengeComponents/Cmd/Cmd';
 import ChallengeIoTExecutor from './ChallengeIoTExecutor';
-import AliotASExecutor from './AliotASExecutor';
 
 /**
  * IoTProject. On this page are all the components essential in the functionning of an IoTProject.
@@ -45,13 +44,15 @@ const IoTChallenge = ({ initialCode }: { initialCode: string }) => {
 
 	executor.current = useMemo(
 		() =>
-			(executor.current = new ChallengeIoTExecutor(challenge.name, askForUserInput)),
+			(executor.current = new ChallengeIoTExecutor(
+				challenge.name,
+				askForUserInput,
+			)),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[challenge?.id, user],
 	);
 
 	const lineInterfaceContentChanges = (content: any) => {
-		console.log(executor.current);
 		if (executor.current) executor.current.lineInterfaceContent = content;
 		if (!editMode && progression) {
 			progression.data.code = content;

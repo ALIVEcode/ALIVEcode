@@ -91,6 +91,10 @@ const IoTDashboard = (props: iotDashboardProps) => {
 									);
 									//forceUpdate();
 								}}
+								onDelete={(iotObject: IoTObject) => {
+									setObjects(objects.filter(o => o.id !== iotObject.id));
+									//forceUpdate();
+								}}
 								key={idx}
 								object={obj}
 							/>

@@ -9,23 +9,24 @@ import { ThemeContext } from '../../../state/contexts/ThemeContext';
 import { Autocomplete, setAutocomplete } from './autocomplete/autocomplete';
 import ace from 'ace-builds';
 import AceEditor from 'react-ace';
-import 'ace-builds/src-noconflict/theme-cobalt';
-import 'ace-builds/src-noconflict/theme-dracula';
-import 'ace-builds/src-noconflict/theme-github';
-import 'ace-builds/src-noconflict/theme-twilight';
-import 'ace-builds/src-noconflict/theme-solarized_dark';
-import 'ace-builds/src-noconflict/theme-xcode';
 import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/webpack-resolver';
 import './mode-alivescript';
-import { faCog, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faCog } from '@fortawesome/free-solid-svg-icons';
 import IconButton from '../../DashboardComponents/IconButton/IconButton';
 import Modal from '../../UtilsComponents/Modal/Modal';
 import Form from '../../UtilsComponents/Form/Form';
 import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
 import { useTranslation } from 'react-i18next';
-import { UserContext } from '../../../state/contexts/UserContext';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import brace from 'brace';
+import 'brace/theme/cobalt';
+import 'brace/theme/dracula';
+import 'brace/theme/github';
+import 'brace/theme/twilight';
+import 'brace/theme/solarized_dark';
+import 'brace/theme/xcode';
 
 enum FontSize {
 	SMALL = 'small',
@@ -38,8 +39,8 @@ enum Theme {
 	DRACULA = 'dracula',
 	GITHUB = 'github',
 	TWILIGHT = 'twilight',
-	SOLARIZED_DARK = "solarized_dark",
-	XCODE = "xcode"
+	SOLARIZED_DARK = 'solarized_dark',
+	XCODE = 'xcode',
 }
 
 /**
@@ -149,7 +150,7 @@ const LineInterface = memo(
 							return (
 								<AceEditor
 									onInput={(event: KeyboardEvent) => {
-										if (event.key === "Escape") {
+										if (event.key === 'Escape') {
 											event.preventDefault();
 										}
 									}}
@@ -205,7 +206,7 @@ const LineInterface = memo(
 					<AceEditor
 						ref={ref}
 						onInput={(event: KeyboardEvent) => {
-							if (event.key === "Escape") {
+							if (event.key === 'Escape') {
 								event.preventDefault();
 							}
 						}}

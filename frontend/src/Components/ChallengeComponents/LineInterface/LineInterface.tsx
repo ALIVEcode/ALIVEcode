@@ -9,6 +9,7 @@ import { ThemeContext } from '../../../state/contexts/ThemeContext';
 import { Autocomplete, setAutocomplete } from './autocomplete/autocomplete';
 import ace from 'ace-builds';
 import AceEditor from 'react-ace';
+import 'ace-builds/webpack-resolver';
 import './mode-alivescript';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
 import IconButton from '../../DashboardComponents/IconButton/IconButton';

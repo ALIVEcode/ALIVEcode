@@ -130,10 +130,10 @@ export default class AliotASExecutor extends ChallengeExecutor {
 					label: 'Send Action',
 					type: 'NORMAL',
 					apply: params => {
-						console.log(params);
 						// implicit target
 						if (params.length === 2) {
-							this.aliotSocket.sendAction('targetId', params[0], params[1]);
+							if (!this.objectId) return;
+							this.aliotSocket.sendAction(this.objectId, params[0], params[1]);
 						}
 						// explicit target
 						else {

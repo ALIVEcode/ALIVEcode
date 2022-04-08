@@ -17,16 +17,6 @@ const IoTProjectDocuments = () => {
 
 	const [saving, setSaving] = useState(false);
 
-	const [isWriting, setIsWriting] = useWaitBeforeUpdate(
-		{
-			wait: 500,
-			onUpdate: () => {
-				isWriting && setIsWriting(false);
-			},
-		},
-		false,
-	);
-
 	const [doc, setDoc] = useWaitBeforeUpdate<string>(
 		{
 			wait: 500,
@@ -83,9 +73,6 @@ const IoTProjectDocuments = () => {
 					theme="twilight"
 					fontSize="14px"
 					value={doc}
-					onInput={e => {
-						setIsWriting(true);
-					}}
 					onChange={content => {
 						setDoc(content);
 						setSaving(true);

@@ -143,6 +143,12 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [id, user]);
 
+	useEffect(() => {
+		return () => {
+			socket?.closeSocket();
+		};
+	}, [socket]);
+
 	const addRoute = useCallback(
 		(route: IotRoute) => {
 			if (!canEdit || !project) return;

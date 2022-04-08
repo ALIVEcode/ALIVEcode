@@ -82,7 +82,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     const client = Client.getClientBySocket(socket);
     if (client instanceof ObjectClient) {
       const object = await this.iotObjectService.findOne(client.id);
-      await this.iotObjectService.addIoTObjectLog(object, IOT_EVENT.DISCONNECT_OBJECT, 'DIsconnected from ALIVEcode');
+      await this.iotObjectService.addIoTObjectLog(object, IOT_EVENT.DISCONNECT_OBJECT, 'Disconnected from ALIVEcode');
     }
     Client.removeClientBySocket(socket);
   }
@@ -97,6 +97,8 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   async connect_watcher(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: WatcherClientConnectPayload) {
     if (!payload.iotProjectId || !payload.userId || !payload.iotProjectName) throw new WsException('Bad payload');
     if (WatcherClient.isSocketAlreadyWatcher(socket)) throw new WsException('Already connected as a watcher');
+    const alreadyConnectedSocket = WatcherClient.getClientBySocket(socket);
+    if (alreadyConnectedSocket) alreadyConnectedSocket.getSocket().terminate();
 
     // TODO : User token verification
     const isCreator = await this.iotProjectService.isUserProjectCreator(payload.userId, payload.iotProjectId);

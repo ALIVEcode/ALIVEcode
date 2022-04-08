@@ -111,11 +111,9 @@ export class IoTProjectService {
     return await this.projectRepository.save({ ...project, layout });
   }
 
-  async setDocument(id: string, document: IoTProjectDocument, oldDocument?: IoTProjectDocument) {
-    if (!oldDocument) {
-      const project = await this.findOne(id);
-      oldDocument = project.document;
-    }
+  async setDocument(id: string, document: IoTProjectDocument) {
+    const project = await this.findOne(id);
+    const oldDocument = project.document;
 
     // SEND TO WATCHERS
     const watchers = WatcherClient.getClientsByProject(id);
@@ -237,12 +235,11 @@ export class IoTProjectService {
     const project = await this.findOne(id);
     const document = { ...project.document, ...fields };
 
-    return await this.setDocument(id, document, project.document);
+    return await this.setDocument(id, document);
   }
 
   async updateDocumentFields(id: string, fields: JsonObj) {
     const project = await this.findOne(id);
-    const oldDocument = { ...project.document };
     const newDoc = project.document;
 
     Object.entries(fields).forEach(entry => {
@@ -270,7 +267,7 @@ export class IoTProjectService {
       recursiveSetter(newDoc, pathParts, 0);
     });
 
-    return await this.setDocument(id, newDoc, oldDocument);
+    return await this.setDocument(id, newDoc);
   }
 
   async getDocument(projectId: string) {

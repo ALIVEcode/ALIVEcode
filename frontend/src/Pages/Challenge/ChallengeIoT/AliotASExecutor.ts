@@ -4,6 +4,7 @@ import { IoTSocket } from '../../../Models/Iot/IoTProjectClasses/IoTSocket';
 import { IOT_EVENT } from '../../../Models/Iot/IoTProjectClasses/IoTTypes';
 import { AlertManager } from 'react-alert';
 import { ChallengeExecutor } from '../AbstractChallengeExecutor';
+import api from '../../../Models/api';
 
 export default class AliotASExecutor extends ChallengeExecutor {
 	tokenId: string;
@@ -18,6 +19,7 @@ export default class AliotASExecutor extends ChallengeExecutor {
 		challengeName: string,
 		aliotSocket: IoTSocket,
 		public readonly objectId: string,
+		public readonly userId: string,
 		lang?: SupportedLanguagesAS,
 		private alert?: AlertManager,
 	) {
@@ -140,6 +142,49 @@ export default class AliotASExecutor extends ChallengeExecutor {
 							this.aliotSocket.sendAction(params[2], params[0], params[1]);
 						}
 					},
+				},
+			},
+			{
+				actionId: 907,
+				action: {
+					label: 'Get doc',
+					type: 'NORMAL',
+					apply: async params => {
+						console.log(params);
+						const response = await api.db.iot.projects.aliot.getDoc(
+							this.userId,
+						);
+						this.ws.send(
+							JSON.stringify({
+								type: 'RESUME',
+								responseData: [response],
+							}),
+						);
+						this.perform_next();
+					},
+					handleNext: true,
+				},
+			},
+			{
+				actionId: 908,
+				action: {
+					label: 'Get field',
+					type: 'NORMAL',
+					apply: async params => {
+						console.log(params);
+						const response = await api.db.iot.projects.aliot.getField(
+							this.userId,
+							params[0],
+						);
+						this.ws.send(
+							JSON.stringify({
+								type: 'RESUME',
+								responseData: [response],
+							}),
+						);
+						this.perform_next();
+					},
+					handleNext: true,
 				},
 			},
 		]);

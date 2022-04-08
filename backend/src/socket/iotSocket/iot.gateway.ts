@@ -137,7 +137,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     // Logging
     this.logger.log(`IoTObject connect with id : ${payload.id}`);
 
-    this.iotObjectService.addIoTObjectLog(iotObject, IOT_EVENT.CONNECT_SUCCESS, 'Connected to ALIVEcode');
+    await this.iotObjectService.addIoTObjectLog(iotObject, IOT_EVENT.CONNECT_SUCCESS, 'Connected to ALIVEcode');
 
     client.sendEvent(IOT_EVENT.CONNECT_SUCCESS, null);
   }
@@ -154,7 +154,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
       );
 
     const object = await this.iotObjectService.findOne(client.id);
-    this.iotObjectService.addIoTObjectLog(
+    await this.iotObjectService.addIoTObjectLog(
       object,
       IOT_EVENT.UPDATE_COMPONENT,
       `Updated interface component of id "${payload.id}" using "${JSON.stringify(payload.value)}"`,
@@ -176,7 +176,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
 
     if (client instanceof ObjectClient) {
       const object = await this.iotObjectService.findOne(client.id);
-      this.iotObjectService.addIoTObjectLog(
+      await this.iotObjectService.addIoTObjectLog(
         object,
         IOT_EVENT.UPDATE_DOC,
         `Updated document using "${JSON.stringify(payload.fields)}"`,
@@ -231,7 +231,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     const { route } = await this.iotProjectService.findOneWithRoute(client.projectId, payload.routePath);
 
     const object = await this.iotObjectService.findOne(client.id);
-    this.iotObjectService.addIoTObjectLog(
+    await this.iotObjectService.addIoTObjectLog(
       object,
       IOT_EVENT.SEND_ROUTE,
       `Sent route execution request for route "${route.path}" with context "${JSON.stringify(payload.data)}"`,
@@ -252,7 +252,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
       );
 
     const object = await this.iotObjectService.findOne(client.id);
-    this.iotObjectService.addIoTObjectLog(
+    await this.iotObjectService.addIoTObjectLog(
       object,
       IOT_EVENT.SEND_BROADCAST,
       `Sent broadcast using "${JSON.stringify(payload.data)}"`,
@@ -267,7 +267,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   @Post(IOT_EVENT.GET_DOC)
   async getAll(@Body() payload: IoTGetDocRequestFromObject) {
     if (!payload.objectId) throw new HttpException('Bad payload', HttpStatus.BAD_REQUEST);
-    const client = ObjectClient.getClientById(payload.objectId);
+    const client = Client.getClientById(payload.objectId);
     if (!client) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     if (!client.projectId)
       throw new HttpException(
@@ -275,16 +275,18 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
         HttpStatus.FORBIDDEN,
       );
 
-    const object = await this.iotObjectService.findOne(client.id);
-    this.iotObjectService.addIoTObjectLog(object, IOT_EVENT.SEND_BROADCAST, `Retrieved document of project`);
+    if (client instanceof ObjectClient) {
+      const object = await this.iotObjectService.findOne(client.id);
+      await this.iotObjectService.addIoTObjectLog(object, IOT_EVENT.SEND_BROADCAST, `Retrieved document of project`);
+    }
 
     return await this.iotProjectService.getDocument(client.projectId);
   }
 
   @Post(IOT_EVENT.GET_FIELD)
   async getField(@Body() payload: IoTGetFieldRequestFromObject) {
-    if (!payload.objectId || !payload.field) throw new HttpException('Bad payload', HttpStatus.BAD_REQUEST);
-    const client = ObjectClient.getClientById(payload.objectId);
+    if (!payload.id || !payload.field) throw new HttpException('Bad payload', HttpStatus.BAD_REQUEST);
+    const client = Client.getClientById(payload.id);
     if (!client) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     if (!client.projectId)
       throw new HttpException(
@@ -292,12 +294,14 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
         HttpStatus.FORBIDDEN,
       );
 
-    const object = await this.iotObjectService.findOne(client.id);
-    this.iotObjectService.addIoTObjectLog(
-      object,
-      IOT_EVENT.GET_FIELD,
-      `Retrieved field "${payload.field}" from project`,
-    );
+    if (client instanceof ObjectClient) {
+      const object = await this.iotObjectService.findOne(client.id);
+      await this.iotObjectService.addIoTObjectLog(
+        object,
+        IOT_EVENT.GET_FIELD,
+        `Retrieved field "${payload.field}" from project`,
+      );
+    }
 
     return await this.iotProjectService.getField(client.projectId, payload.field);
   }

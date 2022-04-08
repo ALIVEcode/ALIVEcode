@@ -46,6 +46,7 @@ import { QueryResources } from './Resource/dto/query_resources.dto';
 import { SetStateAction } from 'react';
 import { GetMimeType } from '../Types/files.type';
 import { IoTProjectObject } from './Iot/IoTprojectObject.entity';
+import { IOT_EVENT } from './Iot/IoTProjectClasses/IoTTypes';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;
@@ -434,6 +435,21 @@ const api = {
 		},
 		iot: {
 			projects: {
+				aliot: {
+					getDoc: async (userId: string) => {
+						return (
+							await axios.post(`iot/aliot/${IOT_EVENT.GET_DOC}`, { id: userId })
+						).data;
+					},
+					getField: async (userId: string, field: string) => {
+						return (
+							await axios.post(`iot/aliot/${IOT_EVENT.GET_FIELD}`, {
+								id: userId,
+								field,
+							})
+						).data;
+					},
+				},
 				delete: apiDelete('iot/projects/:id'),
 				get: apiGet('iot/projects/:id', IoTProject, false),
 				deleteRoute: apiDelete('iot/routes/projects/:projectId/:id'),

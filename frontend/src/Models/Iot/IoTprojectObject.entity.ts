@@ -5,6 +5,7 @@ import { AsScript } from '../AsScript/as-script.entity';
 import AliotASExecutor from '../../Pages/Challenge/ChallengeIoT/AliotASExecutor';
 import { IoTSocket } from './IoTProjectClasses/IoTSocket';
 import { AlertManager } from 'react-alert';
+import { User } from '../User/user.entity';
 
 export enum PROJECT_OBJECT_TARGET {
 	OBJECT = 'O',
@@ -42,13 +43,14 @@ export class IoTProjectObject {
 		return this.executor != null;
 	}
 
-	initializeExecutor(socket: IoTSocket, alert?: AlertManager) {
+	initializeExecutor(socket: IoTSocket, user: User, alert?: AlertManager) {
 		if (!this.target) throw new Error('No target set for execution');
 		const object = this.target;
 		this.executor = new AliotASExecutor(
 			object.id.toString(),
 			socket,
 			object.id,
+			user.id,
 			'fr',
 			alert
 		);

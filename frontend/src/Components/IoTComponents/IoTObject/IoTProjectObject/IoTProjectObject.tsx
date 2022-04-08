@@ -16,6 +16,7 @@ import { useForceUpdate } from '../../../../state/hooks/useForceUpdate';
 import { useAlert } from 'react-alert';
 import Modal from '../../../UtilsComponents/Modal/Modal';
 import IoTProjectScripts from '../../IoTProject/IoTProjectScripts/IoTProjectScripts';
+import { UserContext } from '../../../../state/contexts/UserContext';
 
 const IoTProjectObject = ({
 	object,
@@ -46,9 +47,10 @@ const IoTProjectObject = ({
 	const forceUpdate = useForceUpdate();
 
 	const alert = useAlert();
+	const { user } = useContext(UserContext);
 
-	if (!object.hasExecutor() && socket) {
-		object.initializeExecutor(socket, alert);
+	if (!object.hasExecutor() && socket && user) {
+		object.initializeExecutor(socket, user, alert);
 	}
 
 	const executor = object.executor;

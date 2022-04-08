@@ -87,7 +87,7 @@ export type IoTGetDocRequestFromObject = {
 };
 
 export type IoTGetFieldRequestFromObject = {
-  objectId: string;
+  id: string;
   field: string;
 };
 
@@ -207,6 +207,12 @@ export class Client {
     this.listeners.push(...fields);
   }
 
+  static getClientById(id: string) {
+    return Client.getClients().find(o => {
+      return o.id === id;
+    });
+  }
+
   static async sendToListeners(
     projectId: string,
     fieldsUpdated: { [key: string]: any },
@@ -264,12 +270,6 @@ export class WatcherClient extends Client {
     WatcherClient.watchers.push(this);
   }
 
-  static getClientById(id: string) {
-    return WatcherClient.watchers.find(o => {
-      return o.id === id;
-    });
-  }
-
   static getClientBySocket(socket: WebSocket) {
     return WatcherClient.watchers.find(w => w.getSocket() === socket);
   }
@@ -280,6 +280,12 @@ export class WatcherClient extends Client {
 
   static isSocketAlreadyWatcher(socket: WebSocket) {
     return WatcherClient.watchers.find(w => w.getSocket() === socket) != null;
+  }
+
+  static getClientById(id: string) {
+    return WatcherClient.getClients().find(o => {
+      return o.id === id;
+    });
   }
 }
 
@@ -301,18 +307,18 @@ export class ObjectClient extends Client {
     });
   }
 
-  static getClientById(id: string) {
-    return ObjectClient.objects.find(o => {
-      return o.id === id;
-    });
-  }
-
   static getClientsByProject(projectId: string) {
     return ObjectClient.objects.filter(o => o.projectId === projectId);
   }
 
   static isSocketAlreadyWatcher(socket: WebSocket) {
     return ObjectClient.objects.find(w => w.getSocket() === socket) != null;
+  }
+
+  static getClientById(id: string) {
+    return ObjectClient.getClients().find(o => {
+      return o.id === id;
+    });
   }
 }
 

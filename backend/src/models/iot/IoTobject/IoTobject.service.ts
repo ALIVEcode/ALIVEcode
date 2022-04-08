@@ -59,7 +59,7 @@ export class IoTObjectService {
 
   async getCurrentWatcherClient(userId: string) {
     const client = WatcherClient.getClientById(userId);
-    if (!client) throw new HttpException('IoTObject is not connected', HttpStatus.NOT_FOUND);
+    if (!client) throw new HttpException('WatcherClient is not connected', HttpStatus.NOT_FOUND);
     return client;
   }
 

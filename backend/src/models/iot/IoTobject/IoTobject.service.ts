@@ -146,7 +146,7 @@ export class IoTObjectService {
     this.addIoTObjectLog(
       object,
       IOT_EVENT.RECEIVE_ACTION,
-      `Received action id "${object.id}" with data "${JSON.stringify(value)}"`,
+      `Received action id "${actionId}" with data "${JSON.stringify(value)}"`,
     );
 
     const req: IoTSendActionRequestToObject = {

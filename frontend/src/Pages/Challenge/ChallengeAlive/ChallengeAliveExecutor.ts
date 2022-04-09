@@ -8,6 +8,7 @@ import { Serializer } from '../../../Components/ChallengeComponents/Simulation/S
 import { makeShapeEditable } from '../../../Components/ChallengeComponents/Simulation/Sketch/simulation/editMode';
 import { PlaySocket } from '../PlaySocket';
 import { typeAskForUserInput } from '../challengeTypes';
+import { AlertManager } from 'react-alert';
 
 // TODO: robotConnected
 // const robotConnected = false;
@@ -34,8 +35,9 @@ class ChallengeAliveExecutor extends ChallengeCodeExecutor {
 		private editMode: boolean,
 		playSocket: PlaySocket | null,
 		askForUserInput: typeAskForUserInput,
+		alert?: AlertManager,
 	) {
-		super(challengelName, askForUserInput);
+		super(challengelName, askForUserInput, alert);
 
 		this.doBeforeRun(() => {
 			// Set focus

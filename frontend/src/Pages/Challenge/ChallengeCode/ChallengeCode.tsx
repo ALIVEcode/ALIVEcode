@@ -11,6 +11,7 @@ import ChallengeToolsBar from '../../../Components/ChallengeComponents/Challenge
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import ChallengeCodeExecutor from './ChallengeCodeExecutor';
 import FillContainer from '../../../Components/UtilsComponents/FillContainer/FillContainer';
+import { useAlert } from 'react-alert';
 
 /**
  * Code challenge page. Contains all the components to display and make the code challenge functional.
@@ -39,12 +40,14 @@ const ChallengeCode = ({ initialCode }: ChallengeCodeProps) => {
 
 	const forceUpdate = useForceUpdate();
 	const [cmdRef, cmd] = useCmd();
+	const alert = useAlert();
 
 	executor.current = useMemo(
 		() =>
 			(executor.current = new ChallengeCodeExecutor(
 				challenge.name,
 				askForUserInput,
+				alert,
 			)),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[challenge?.id, user],

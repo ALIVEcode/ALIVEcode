@@ -1,5 +1,6 @@
 import ChallengeCodeExecutor from '../ChallengeCode/ChallengeCodeExecutor';
 import { typeAskForUserInput } from '../challengeTypes';
+import { AlertManager } from 'react-alert';
 
 // TODO: robotConnected
 
@@ -10,8 +11,9 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 		executables: { [key: string]: CallableFunction },
 		challengeName: string,
 		askForUserInput: typeAskForUserInput,
+		alert?: AlertManager,
 	) {
-		super(challengeName, askForUserInput);
+		super(challengeName, askForUserInput, alert);
 
 		this.doBeforeRun(() => {
 			this.executableFuncs.resetGraph();

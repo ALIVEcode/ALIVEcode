@@ -182,7 +182,6 @@ export default class AliotASExecutor extends ChallengeExecutor {
 								responseData: [response],
 							}),
 						);
-						this.perform_next();
 					},
 					handleNext: true,
 				},

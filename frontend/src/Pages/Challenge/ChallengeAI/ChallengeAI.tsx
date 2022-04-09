@@ -19,6 +19,7 @@ import ChallengeToolsBar from '../../../Components/ChallengeComponents/Challenge
 import { NeuralNetwork } from './artificial_intelligence/ai_models/ai_neural_networks/NeuralNetwork';
 import { ActivationFunction } from './artificial_intelligence/ai_functions/Function';
 import { Matrix } from './artificial_intelligence/AIUtils';
+import { useAlert } from 'react-alert';
 
 /**
  * Ai challenge page. Contains all the components to display and make the ai challenge functionnal.
@@ -50,6 +51,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	const forceUpdate = useForceUpdate();
 	const [cmdRef, cmd] = useCmd();
+	const alert = useAlert();
 
 	executor.current = useMemo(
 		() =>
@@ -66,6 +68,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				},
 				challenge.name,
 				askForUserInput,
+				alerts,
 			)),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[challenge?.id, user],
@@ -138,6 +141,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		} else datasets.current[1] = newData;
 		setChart();
 	}
+
 	//-------------------------- Alivescript functions ----------------------------//
 
 	/**

@@ -1,11 +1,13 @@
 import { ChallengeExecutor } from '../AbstractChallengeExecutor';
 import { typeAskForUserInput } from '../challengeTypes';
 import { SupportedLanguagesAS } from '../../../Models/ASModels';
+import { AlertManager } from 'react-alert';
 
 export default class ChallengeCodeExecutor extends ChallengeExecutor {
 	constructor(
 		public challengeName: string,
 		protected askForUserInput: typeAskForUserInput,
+		protected alert?: AlertManager,
 		lang?: SupportedLanguagesAS,
 	) {
 		super(challengeName, lang);
@@ -38,6 +40,26 @@ export default class ChallengeCodeExecutor extends ChallengeExecutor {
 						}
 					},
 					handleNext: true,
+				},
+			},
+			{
+				actionId: 302,
+				action: {
+					label: 'Notif Info',
+					type: 'NORMAL',
+					apply: params => {
+						alert?.info(params[0]);
+					},
+				},
+			},
+			{
+				actionId: 303,
+				action: {
+					label: 'Notif Error',
+					type: 'NORMAL',
+					apply: params => {
+						alert?.error(params[0]);
+					},
 				},
 			},
 			{

@@ -102,11 +102,6 @@
 		"\\bval\\b",
 		"\\binfo\\b",
 		"\\bgetVar\\b",
-		"\\barreter\\b",
-		"\\bavancer\\b",
-		"\\breculer\\b",
-		"\\bdroite\\b",
-		"\\bgauche\\b",
 		"\\blist\\b",
 		"\\breverse\\b",
 		"\\bmap\\b",
@@ -141,11 +136,13 @@
 		"\\blire\\b",
 		"\\bvar\\b",
 		"\\bafficher\\b",
+		"\\bnotif\\b",
+		"\\bnotif_err\\b",
 		"\\battendre\\b",
-		"\\bmodules.builtins.functions.forward\\b",
-		"\\bmodules.builtins.functions.backward\\b",
-		"\\bmodules.builtins.functions.left\\b",
-		"\\bmodules.builtins.functions.right\\b",
-		"\\bmodules.builtins.functions.stop\\b"
+		"\\bavancer\\b",
+		"\\breculer\\b",
+		"\\bgauche\\b",
+		"\\bdroite\\b",
+		"\\barreter\\b"
 	]
 }

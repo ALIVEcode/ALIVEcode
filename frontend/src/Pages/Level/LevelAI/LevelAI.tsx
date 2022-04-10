@@ -230,10 +230,11 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 
 	function testNeuralNetwork(cmd: any) {
 
+		/*
 		mainAIUtilsTest();
 		mainAINeuralNetworkTest();
 		
-		/*
+		*/
 		const neuronsByLayer: number[] = [2, 2]
 		const nbInputs: number = 3;
 		const nbOutputs: number = 1;
@@ -245,13 +246,13 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 		const costFunc: CostFunction = new MeanSquaredError();
 
 		const data: Matrix = new Matrix([
-			[10, 20, 3, 6, 4],
-			[3, 5, 1, 2, 2],
-			[2, 4, 1, 1, 1]
+			[3, 5, 4, 1, 2],
+			[3, 5, 4, 1, 2],
+			[3, 5, 4, 1, 2]
 		]);
 
 		const real: Matrix = new Matrix([
-			[1500, 2000, 500, 800, 700]
+			[10, 20, 15, 2, 3]
 		])
 
 		cmd?.print("Les données entrées :");
@@ -270,20 +271,26 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 		cmd?.print(str + "]");
 
 		let myNetwork: NeuralNetwork = new NeuralNetwork(nbInputs, nbOutputs, neuronsByLayer, activations, outputAct)
-		let myOpt: GradientDescent = new GradientDescent(myNetwork, costFunc, 0.1, 1000);
+		let myOpt: GradientDescent = new GradientDescent(myNetwork, costFunc, 0.1, 50);
 
 		let predictions: Matrix = myNetwork.predict(data);
 		predictions.displayInCmd(cmd);
+		console.log("Erreur : " + costFunc.matCompute(predictions, real))
 		cmd?.print("");
 		
-		//let testCost: Matrix = activations[0].matDerivative(predictions);
-		//testCost.displayInCmd(cmd);
-		//let allPredictions: Matrix[] = myNetwork.predictReturnAll(data);
-		//myOpt.optimizeOneEpoch(data, allPredictions, real);
+		//myNetwork.getWeightsByLayer(0).displayInCmd(cmd);
+
+		myNetwork = myOpt.optimize(data, real, cmd);
 		
-		//predictions = myNetwork.predict(data);
-		//predictions.displayInCmd(cmd);
-		*/
+		//myNetwork.getWeightsByLayer(0).displayInCmd(cmd);
+
+		predictions = myNetwork.predict(data);
+		predictions.displayInCmd(cmd);
+		
+		console.log("Erreur : " + costFunc.matCompute(predictions, real))
+		console.log(predictions.getRows() + " par " + predictions.getColumns())
+		console.log(real.getRows() + " par " + real.getColumns())
+		
 	}
 
 

@@ -265,7 +265,7 @@ export function matAdd(mat1: Matrix, mat2: Matrix): Matrix {
   const value1: number[][] = mat1.getValue();
   const value2: number[][] = mat2.getValue();
   let output: number[][] = value1;
-  
+
   for (let row: number = 0; row < mat1.getRows(); row++) {
     for (let col: number = 0; col < mat1.getColumns(); col++) {
       // If both Matrices are of the same size, element-wise addition.

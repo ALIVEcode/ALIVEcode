@@ -1,4 +1,5 @@
-import { Matrix, matMulConstant, matSubtract, matDivElementWise, matAbs } from '../AIUtils';
+import { Subtract } from 'tone';
+import { Matrix, matMulConstant, matSubtract, matDivElementWise, matAbs, matMulElementWise } from '../AIUtils';
 
 /**
  * This class contains all the available cost functions in the AI module.
@@ -16,29 +17,26 @@ export abstract class CostFunction {
   * Computes the cost function on the given predicted Matrix and real Matrix. Returns -1
   * if the format of a Matrix doesn't fit the requirements.
   * 
-  * @param predicted the Matrix of predicted values. Has to be sized as (nbElements x 1).
+  * @param predicted the Matrix of predicted values. Has to be sized as (nbOutputs x nbData).
   * @param real the Matrix of real values. Has to be the same size as the predicted Matrix.
-  * @returns the computed error depending on the choosen cost function, or -1 if one of  the Matrices
+  * @returns the computed error depending on the choosen cost function, or -1 if one of the Matrices
   * is not of the correct size.
   */
-  public matCompute(predicted: Matrix, real: Matrix): number
-  {
+  public matCompute(predicted: Matrix, real: Matrix): number {
     // The number of rows has to be equal for the two Matrices.
-    if (predicted.getRows() !== real.getRows()) return -1;
-    // The number of columns has to be equal to 1.
-    if (predicted.getColumns() !== 1 || real.getColumns() !== 1) return -1;
+    if (predicted.getRows() !== real.getRows() || predicted.getColumns() !== real.getColumns()) return -1;
 
-    return this.compute(predicted.getValue(), real.getValue());
+    return this.compute(predicted, real);
   }
 
   /**
-  * Computes the cost function on the given predicted values and real values.
-  * Both arrays must have the same size.
-  * @param predicted the predicted values.
-  * @param real the corresponding real values.
+  * Computes the cost function on the given predicted Matrix and real Matrix.
+  * Both Matrices must have the same size.
+  * @param predicted the predicted Matrix.
+  * @param real the corresponding real Matrix.
   * @return the value of the cost function.
   */
-  public abstract compute(predicted: number[][], real: number[][]): number;
+  public abstract compute(predicted: Matrix, real: Matrix): number;
 
   /**
   * Computes the derivative of the cost function on all elements in a Matrix by
@@ -56,22 +54,17 @@ export abstract class CostFunction {
 * an array of predicted values and their corresponding real
 * values.
 */
-export class MeanSquaredError extends CostFunction
-{
-  public compute(predicted: number[][], real: number[][]): number
-  {
-    const nbElements: number = predicted.length;
-    let sum: number = 0;
+export class MeanSquaredError extends CostFunction {
+  public compute(predicted: Matrix, real: Matrix): number {
+    const nbElements: number = predicted.getColumns() * predicted.getRows(); //The total number of generated outputs
+    let sum: number;
 
-    for (let row: number = 0; row < nbElements; row++)
-    {
-      sum += Math.pow((predicted[row][0] - real[row][0]), 2);
-    }
+    let diff: Matrix = matSubtract(predicted, real);
+    sum = matMulElementWise(diff, diff).sumOfAll();
     return sum / nbElements;
   }
 
-  public matDerivative(predicted: Matrix, real: Matrix): Matrix 
-  {
+  public matDerivative(predicted: Matrix, real: Matrix): Matrix {
     return matMulConstant(matSubtract(predicted, real), 2);
   }
 }
@@ -81,24 +74,20 @@ export class MeanSquaredError extends CostFunction
 * an array of predicted values and their corresponding real
 * values.
 */
-export class MeanAbsoluteError extends CostFunction
-{
-  public compute(predicted: number[][], real: number[][]): number
-  {
+export class MeanAbsoluteError extends CostFunction {
+  
+  public compute(predicted: Matrix, real: Matrix): number {
     
-    const nbElements: number = predicted.length;
-    let sum: number = 0;
+    const nbElements: number = predicted.getColumns() * predicted.getRows(); //The total number of generated outputs
+    let sum: number;
 
     // Formula : 1/m * |a - y|
-    for (let row: number = 0; row < nbElements; row++)
-    {
-      sum += Math.abs((predicted[row][0] - real[row][0]));
-    }
+    let diff: Matrix = matAbs(matSubtract(predicted, real));
+    sum = diff.sumOfAll();
     return sum / nbElements;
   }
 
-  public matDerivative(predicted: Matrix, real: Matrix): Matrix
-  {
+  public matDerivative(predicted: Matrix, real: Matrix): Matrix {
     // Formula : (a - y) / |a - y|
     return matDivElementWise(matSubtract(predicted, real), matAbs(matSubtract(predicted, real)));
   }
@@ -109,25 +98,25 @@ export class MeanAbsoluteError extends CostFunction
 * an array of predicted values and their corresponding real
 * values. Its outputs are in the range [0, 1]
 */
-export class BinaryCrossEntropy extends CostFunction
-{
-  public compute(predicted: number[][], real: number[][]): number
-  {
-    const nbElements: number = predicted.length;
+export class BinaryCrossEntropy extends CostFunction {
+  public compute(matPredicted: Matrix, matReal: Matrix): number {
+    const predicted: number[][] = matPredicted.getValue();
+    const real: number[][] = matReal.getValue();
+    const nbElements: number = matPredicted.getColumns() * matPredicted.getRows(); //The total number of generated outputs
     let sum: number = 0;
     let pred: number, expec: number;
 
-    for (let row: number = 0; row < nbElements; row++)
-    {
-      pred = predicted[row][0];
-      expec = real[row][0];
-      sum += -(expec * Math.log(pred) + (1 - expec) * Math.log(1 - pred));
+    for (let row: number = 0; row < matPredicted.getRows(); row++) {
+      for (let col: number = 0; col < matPredicted.getColumns(); col++) {
+        pred = predicted[row][col];
+        expec = real[row][col];
+        sum += -(expec * Math.log(pred) + (1 - expec) * Math.log(1 - pred));        
+      }
     }
     return sum / nbElements;
 }
 
-  public matDerivative(predicted: Matrix, real: Matrix): Matrix 
-  {
+  public matDerivative(predicted: Matrix, real: Matrix): Matrix {
     // Formula : a - y
     return matSubtract(predicted, real);
   }

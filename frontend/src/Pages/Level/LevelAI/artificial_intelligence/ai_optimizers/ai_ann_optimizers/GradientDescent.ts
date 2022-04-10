@@ -3,7 +3,6 @@ import { ActivationFunction } from '../../ai_functions/ActivationFunction';
 import { CostFunction } from '../../ai_functions/CostFunction';
 import { NeuralNetwork } from '../../ai_models/ai_neural_networks/NeuralNetwork';
 
-
 export class GradientDescent
 {
   private learningRate: number;
@@ -18,7 +17,7 @@ export class GradientDescent
     this.costFunc = costFunc;
   }
 
-  public optimizeOneEpoch(inputs: Matrix, outputArray: Matrix[], real: Matrix, ) {
+  public optimizeOneEpoch(inputs: Matrix, outputArray: Matrix[], real: Matrix, cmd?: any) {
     const activations: ActivationFunction[] = this.model.getAllActivations();
     const nbLayers: number = this.model.getAllActivations().length;
     const inputArray: Matrix[] = [inputs].concat(outputArray).slice(0, -1);
@@ -33,20 +32,17 @@ export class GradientDescent
 
     for (let layer: number = nbLayers - 1; layer >= 0; layer--) {
       if (layer !== nbLayers - 1) { // Calculation of dz for the output layer
-        dz = matMul(this.model.getWeightsByLayer(layer + 1), dz)
+        dz = matMul(this.model.getWeightsByLayer(layer + 1).transpose(), dz)
         dz = matMulElementWise(dz, activations[layer].matDerivative(outputArray[layer]));
       } 
       else { // Calculation of dz for hidden layers
-        dz = matMulElementWise(
-          this.costFunc.matDerivative(predicted, real), 
-          activations[layer].matDerivative(outputArray[layer]));
+        let actDev: Matrix = activations[layer].matDerivative(outputArray[layer]);
+        dz = matMulElementWise(this.costFunc.matDerivative(predicted, real), actDev);
       }
-      console.log("dz calculated")
       
       // Calculation of dw for each layer
-      console.log(dz.getRows() + " and " + dz.getColumns())
       dw = matMulConstant(matMul(dz, inputArray[layer].transpose()), 1 / nbData);
-      console.log("dw calculated")
+
       // Calculation of new weights for each layer
       newWeights = matSubtract(this.model.getWeightsByLayer(layer), matMulConstant(dw, this.learningRate));
       this.model.setWeightsByLayer(layer, newWeights);
@@ -55,13 +51,24 @@ export class GradientDescent
       db = matMulConstant( dz.sumOfAllRows(), 1 / nbData);
       // Calculation of new biases for each layer
       newBiases = matSubtract(this.model.getBiasesByLayer(layer), matMulConstant(db, this.learningRate));
-      this.model.setWeightsByLayer(layer, newBiases);
+      this.model.setBiasesByLayer(layer, newBiases);
 
-
-      /*
-      ERREUR DE TAILLES POUR MULTIPLICATION MATRICIELLE
-      ERREUR DE TAILLES POUR ADDITION DE MATRICES
-      */
     }
+
+    
+  }
+
+  public optimize(inputs: Matrix, real: Matrix, cmd?: any): NeuralNetwork {
+    let predictions: Matrix[];
+    
+    for (let i: number = 0; i < this.epochs; i++) {
+      predictions = this.model.predictReturnAll(inputs);
+      this.optimizeOneEpoch(inputs, predictions, real, cmd);
+    }
+    return this.model;
+  }
+
+  public getModel() {
+    return this.model;
   }
 }

@@ -6,7 +6,7 @@ import { StyledLineInterface } from '../../../ChallengeComponents/LineInterface/
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 
-import 'brace/mode/json';
+import 'ace-builds/src-noconflict/mode-json';
 
 const IoTProjectDocuments = () => {
 	const { project, updateDocument } = useContext(IoTProjectContext);
@@ -17,14 +17,23 @@ const IoTProjectDocuments = () => {
 
 	const [saving, setSaving] = useState(false);
 
+	const [error, setError] = useState(false);
+
 	const [doc, setDoc] = useWaitBeforeUpdate<string>(
 		{
 			wait: 500,
 			onUpdate: () => {
 				try {
-					updateDocument(JSON.parse(doc));
+					const c = JSON.parse(doc, (key: string, value: any) => {
+						if (value === null) throw new Error('null');
+						return value;
+					});
+					updateDocument(c);
 					setSaving(false);
-				} catch {}
+					setError(false);
+				} catch {
+					setError(true);
+				}
 			},
 		},
 		defaultState,
@@ -63,19 +72,29 @@ const IoTProjectDocuments = () => {
 								/>
 								LIVE
 							</button>
+							{error && (
+								<span className="text-red-600 pl-4 text-sm">
+									<i>Cannot save, there's an error in the document</i>
+								</span>
+							)}
 						</div>
 					</div>
 					<span className="pr-3">{saving ? 'Saving...' : 'Saved'}</span>
 				</div>
 				<AceEditor
+					onInput={e => {
+						if (e.ctrlKey && e.key === 's') {
+							setSaving(true);
+						}
+					}}
 					className="!w-full !h-full"
 					mode="json"
 					theme="twilight"
 					fontSize="14px"
 					value={doc}
 					onChange={content => {
-						setDoc(content);
 						setSaving(true);
+						setDoc(content);
 					}}
 				/>
 			</div>

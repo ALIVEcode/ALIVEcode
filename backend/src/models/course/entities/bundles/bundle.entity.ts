@@ -17,6 +17,9 @@ export class BundleEntity {
   @Column({ type: 'varchar', nullable: false })
   description: string;
 
+  @Column({ nullable: false })
+  price: number;
+
   @ManyToMany(() => CourseTemplateEntity)
   @JoinTable()
   templates: CourseTemplateEntity[];

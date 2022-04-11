@@ -16,7 +16,7 @@ export class CourseTemplateEntity {
   @Column({ type: 'varchar', nullable: false })
   description: string;
 
-  @Column({ type: 'bool' })
+  @Column({ type: 'bool', default: false, nullable: false })
   isPublic: boolean;
 
   @ManyToOne(() => CourseEntity, { nullable: false })

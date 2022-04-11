@@ -3,7 +3,7 @@ import { Activity } from '../../Models/Course/activity.entity';
 import { Course } from '../../Models/Course/course.entity';
 import {
 	CourseContent,
-	CourseElement,
+	CourseElement, CourseParent,
 } from '../../Models/Course/course_element.entity';
 import { Section } from '../../Models/Course/section.entity';
 import { CourseElementActivity } from '../../Models/Course/course_element.entity';
@@ -39,7 +39,7 @@ export type CourseContextValues = {
 	moveElement: (
 		element: CourseElement,
 		newIdx: number,
-		newParent: CourseElement,
+		newParent: CourseParent,
 	) => Promise<void>;
 	openSectionForm: (sectionParent?: Section) => void;
 	openActivityForm: (sectionParent?: Section) => void;

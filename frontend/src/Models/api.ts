@@ -43,14 +43,20 @@ import { GenericResourceTransformer } from './Resource/transformer/GenericResour
 import { MenuResourceCreationDTO } from '../Components/Resources/MenuResourceCreation/menuResourceCreationTypes';
 import { Activity } from './Course/activity.entity';
 import { QueryResources } from './Resource/dto/query_resources.dto';
-import { SetStateAction } from 'react';
+import React, { SetStateAction } from 'react';
 import { GetMimeType } from '../Types/files.type';
 import { IoTProjectObject } from './Iot/IoTprojectObject.entity';
 import { IOT_EVENT } from './Iot/IoTProjectClasses/IoTTypes';
+import { MoveElementDTO } from './Course/dtos/MoveElement.dto';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;
 	newOrder: number[];
+};
+
+export type ResultPatchMoveElement = {
+	newOrder: number[];
+	oldOrder: number[];
 };
 
 type urlArgType<S extends string> = S extends `${infer _}:${infer A}/${infer B}`
@@ -347,6 +353,11 @@ const api = {
 				'courses/:courseId/activities/:activityId',
 				Activity as any,
 			),
+			moveElement: async (courseId: string, dto: MoveElementDTO) => {
+				const res = (await axios.patch(`courses/${courseId}/moveElement`, dto))
+					.data;
+				return res as ResultPatchMoveElement;
+			},
 		},
 		resources: {
 			delete: apiDelete('resources/:id'),

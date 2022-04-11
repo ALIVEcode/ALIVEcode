@@ -1,6 +1,6 @@
 import { faBars, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useContext, useRef, useState } from 'react';
+import React, { useCallback, useContext, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import AlertConfirm from '../../UtilsComponents/Alert/AlertConfirm/AlertConfirm';
@@ -9,9 +9,13 @@ import CourseLayoutActivity from './CourseLayoutActivity';
 import CourseLayoutSection from './CourseLayoutSection';
 import { CourseLayoutElementProps } from './courseLayoutTypes';
 import {
+	CourseElement,
 	CourseElementActivity,
 	CourseElementSection,
 } from '../../../Models/Course/course_element.entity';
+import { instanceToPlain, plainToInstance } from 'class-transformer';
+import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
+import { Section } from '../../../Models/Course/section.entity';
 
 /**
  * Component that wraps a CourseElement to show it properly on the layout view
@@ -26,12 +30,15 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 		deleteElement,
 		isNewCourseElement,
 		setCourseElementNotNew,
+		courseElements,
+		moveElement,
 	} = useContext(CourseContext);
 	const { t } = useTranslation();
 	const [confirmDelete, setConfirmDelete] = useState(false);
 	const [isRenaming, setIsRenaming] = useState(false);
 	const inputRef = useRef<HTMLInputElement>();
-
+	const [isDragged, setIsDragged] = useState(false);
+	const forceUpdate = useForceUpdate();
 	/**
 	 * Handles the renaming of an element
 	 *
@@ -52,15 +59,65 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 		}
 	};
 
+	const onDragStart = useCallback(
+		(event: React.DragEvent<HTMLDivElement | SVGElement>) => {
+			event.dataTransfer.setData('text/plain', element.id.toString());
+			console.log('drag start');
+			setIsDragged(true);
+		},
+		[element],
+	);
+
+	const onDragOver = useCallback(
+		(event: React.DragEvent<HTMLDivElement | SVGElement>) => {
+			event.preventDefault();
+			setIsDragged(false);
+		},
+		[],
+	);
+
+	const onDrop = useCallback(
+		async (event: React.DragEvent<HTMLDivElement | SVGElement>) => {
+			event.preventDefault();
+			const data = event.dataTransfer.getData('text/plain');
+			if (data === '') return;
+			if (!courseElements?.current) return;
+
+			const id = Number(data);
+			if (id === element.id) return;
+
+			const draggedElement = courseElements.current[id];
+
+			await moveElement(
+				draggedElement,
+				element.parent.elementsOrder.findIndex(id => id === element.id),
+				element.parent,
+			);
+		},
+		[courseElements, element, moveElement],
+	);
+
 	return (
 		<div className="py-2 pl-2 laptop:pl-3 desktop:pl-4">
 			<div className="group text-base flex items-center" onClick={() => {}}>
-				<FontAwesomeIcon
-					icon={faBars}
-					size="lg"
-					className="text-[color:var(--foreground-color)] transition-all duration-75 group-hover:cursor-grab group-hover:opacity-50 opacity-0"
-				/>
-				<div className="ml-2 py-3 rounded-sm border p-[0.2rem] border-[color:var(--bg-shade-four-color)] text-[color:var(--foreground-color)] flex items-center w-full justify-between">
+				<div
+					draggable
+					onDragStart={e => onDragStart(e)}
+					onDragOver={e => onDragOver(e)}
+					onDrop={e => onDrop(e)}
+				>
+					<FontAwesomeIcon
+						icon={faBars}
+						size="lg"
+						className="text-[color:var(--foreground-color)] transition-all duration-75
+					group-hover:cursor-grab group-hover:opacity-50 opacity-0"
+					/>
+				</div>
+				<div
+					className="ml-2 py-3 rounded-sm border p-[0.2rem]
+				border-[color:var(--bg-shade-four-color)] text-[color:var(--foreground-color)]
+				flex items-center w-full justify-between"
+				>
 					<div className="flex flex-row">
 						{element?.activity && element?.icon ? (
 							<FontAwesomeIcon
@@ -129,7 +186,9 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 				}}
 				hideFooter
 			>
-				<p className="text-red-600 pb-5 font-bold text-lg">{t('action.irreversible')}</p>
+				<p className="text-red-600 pb-5 font-bold text-lg">
+					{t('action.irreversible')}
+				</p>
 			</AlertConfirm>
 		</div>
 	);

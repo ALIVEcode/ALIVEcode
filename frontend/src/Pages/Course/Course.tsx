@@ -542,6 +542,38 @@ const Course = () => {
 		});
 	};
 
+	const moveElement = async (
+		element: CourseElement,
+		newIdx: number,
+		newParent: CourseParent,
+	) => {
+		if (!course.current) return;
+
+		const { newOrder, oldOrder } = await api.db.courses.moveElement(
+			course.current.id,
+			{
+				elementId: element.id.toString(),
+				index: newIdx,
+				parentId: newParent.id.toString(),
+			},
+		);
+
+		element.parent.elementsOrder = oldOrder;
+		newParent.elementsOrder = newOrder;
+
+		// if (element.parent instanceof Section) {
+		// 	courseElements.current[element.parent.courseElement.id] =
+		// 		element.parent.courseElement;
+		// } else {
+		// 	course.current.elements = course.current.elements.filter(
+		// 		e => e.id !== element.id,
+		// 	);
+		// }
+		element.parent = newParent;
+		// courseElements.current[element.id] = element;
+		forceUpdate();
+	};
+
 	/** Values for the course context used by the other components inside of it */
 	const contextValue: CourseContextValues = {
 		course: course.current,
@@ -557,7 +589,7 @@ const Course = () => {
 		loadSectionElements,
 		setIsNavigationOpen,
 		deleteElement,
-		moveElement: async (..._) => {},
+		moveElement,
 		updateActivity,
 		openActivityForm,
 		openSectionForm,

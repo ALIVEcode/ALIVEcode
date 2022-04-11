@@ -83,6 +83,14 @@ export class CourseElement {
 		return this.getParent();
 	}
 
+	set parent(newParent: CourseParent) {
+		if (newParent instanceof Section) {
+			this.sectionParent = newParent;
+		} else {
+			this.sectionParent = undefined;
+		}
+	}
+
 	get icon() {
 		return this.activity?.icon ?? this.section?.icon;
 	}
@@ -95,6 +103,7 @@ export class CourseElement {
 	get isSection() {
 		return this.section != null;
 	}
+
 	/**
 	 * Check if the element is an activity
 	 * @returns if the element is an activity

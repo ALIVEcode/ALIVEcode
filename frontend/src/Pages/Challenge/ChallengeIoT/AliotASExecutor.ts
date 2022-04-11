@@ -237,6 +237,7 @@ export default class AliotASExecutor extends ChallengeExecutor {
 		this.ws.onclose = event => {
 			// console.log('Closing ' + this.tokenId);
 			this.running = false;
+			this.ASListeners = [];
 		};
 	}
 

@@ -40,7 +40,7 @@ export class ResourceService {
       case RESOURCE_TYPE.FILE:
         return await this.resFileRepo.save({ ...dto.resource, type: RESOURCE_TYPE.FILE });
       case RESOURCE_TYPE.IMAGE:
-        return await this.resImageRepo.save({ ...dto.resource, type: RESOURCE_TYPE.IMAGE, id: dto.uuid });
+        return await this.resImageRepo.save({ ...dto.resource, type: RESOURCE_TYPE.IMAGE });
       case RESOURCE_TYPE.THEORY:
         return await this.resTheoryRepo.save({ ...dto.resource, type: RESOURCE_TYPE.THEORY });
       case RESOURCE_TYPE.VIDEO:

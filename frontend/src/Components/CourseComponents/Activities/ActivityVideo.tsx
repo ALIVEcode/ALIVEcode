@@ -20,20 +20,31 @@ const ActivityVideo = ({ activity }: { activity: ActivityVideoModel }) => {
 		[activity.resource?.url],
 	);
 
-	if (!matches) return <i>{t('course.activity.invalid_url')}</i>;
+	/* if (!matches) return <i>{t('course.activity.invalid_url')}</i>; */
 
-	const videoId = matches[6];
+	/* const videoId = matches[6]; */
+
+	const videoId = matches && matches[6];
 
 	return (
 		<div className="w-full desktop:px-16">
-			<iframe
-				className="m-auto w-full aspect-video"
-				src={`https://youtube.com/embed/${videoId}`}
-				title="YouTube video player"
-				frameBorder="0"
-				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-				allowFullScreen
-			/>
+			{matches ? (
+				<iframe
+					className="m-auto w-full aspect-video"
+					src={`https://youtube.com/embed/${videoId}`}
+					title="YouTube video player"
+					frameBorder="0"
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+					allowFullScreen
+				/>
+			) : (
+				<video
+					className="m-auto w-full aspect-video"
+					src={`http://localhost:8000/api/courses/${activity.courseElement.course.id}/activities/${activity.courseElement.activity.id}/video`}
+					preload="none"
+					controls
+				/>
+			)}
 		</div>
 	);
 };

@@ -43,6 +43,7 @@ const InputGroup = React.forwardRef<any, any>(
 	(
 		{
 			errors,
+			progress,
 			messages,
 			className,
 			label,
@@ -86,6 +87,7 @@ const InputGroup = React.forwardRef<any, any>(
 					name={name}
 					className={inputClassName}
 					errors={errors}
+					progress={progress}
 					{...props}
 				/>
 				<p className="text-red-500 text-sm italic mt-1">

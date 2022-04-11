@@ -350,9 +350,28 @@ const api = {
 		},
 		resources: {
 			delete: apiDelete('resources/:id'),
-			create: async (dto: MenuResourceCreationDTO) => {
+			create: async (
+				dto: MenuResourceCreationDTO,
+				progressSetter: React.Dispatch<React.SetStateAction<number>>,
+			) => {
+				let formdata = null;
+				if (dto.file) {
+					formdata = new FormData();
+					formdata.append('data', JSON.stringify(dto));
+					formdata.append('file', dto.file);
+				}
 				return plainToInstance(GenericResourceTransformer, {
-					resource: (await axios.post(`resources`, dto)).data,
+					resource: (
+						await axios.post(`resources`, formdata || dto, {
+							onUploadProgress: progressEvent => {
+								progressSetter(
+									Math.round(
+										(progressEvent.loaded * 100) / progressEvent.total,
+									),
+								);
+							},
+						})
+					).data,
 				}).resource;
 			},
 			update: async <T extends Resource>(
@@ -376,21 +395,6 @@ const api = {
 				return plainToInstance(GenericResourceTransformer, {
 					resource: axiosRes,
 				}).resource;
-			},
-			upload: async (
-				formdata: FormData,
-				progressSetter: React.Dispatch<React.SetStateAction<number>>,
-			) => {
-				return (
-					await axios.post(`resources/file`, formdata, {
-						onUploadProgress: progressEvent => {
-							progressSetter(
-								Math.round((progressEvent.loaded * 100) / progressEvent.total),
-							);
-						},
-						headers: { 'Content-Type': 'multipart/formdata' },
-					})
-				).data;
 			},
 		},
 		challenges: {

@@ -19,8 +19,8 @@ export type MenuResourceCreationProps = {
  * DTO model for creating or updating a resource
  */
 export type MenuResourceCreationDTO = {
-	uuid?: string;
 	type: RESOURCE_TYPE;
+	file: File | null;
 	resource: {
 		name: string;
 		url?: string;

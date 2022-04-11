@@ -4,8 +4,7 @@ import { ActivityProps } from './activityTypes';
 import api from '../../../Models/api';
 import useWaitBeforeUpdate from '../../../state/hooks/useWaitBeforeUpdate';
 import { ResourceTheory } from '../../../Models/Resource/resources/resource_theory.entity';
-import { Descendant } from 'slate';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 
 /**
@@ -19,24 +18,22 @@ import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
  */
 const ActivityTheory = ({ courseElement, editMode }: ActivityProps) => {
 	const activity = courseElement.activity as ActivityTheoryModel;
-	const contentChanged = useRef(false);
+	const [contentChanged, setContentChanged] = useState(false);
 
 	const [value, setValue] = useWaitBeforeUpdate(
 		{
 			wait: 500,
 			onUpdate: () => {
 				(async () => {
-					if (
-						!activity.resource ||
-						!activity.resource.id ||
-						!contentChanged.current
-					)
+					if (!activity.resource || !activity.resource.id || !contentChanged) {
 						return;
+					}
 					activity.resource = await api.db.resources.update<ResourceTheory>(
 						activity.resource,
 						{ document: value },
 					);
-					contentChanged.current = false;
+					activity.resourceId = activity.resource.id;
+					setContentChanged(false);
 				})();
 			},
 		},
@@ -47,10 +44,15 @@ const ActivityTheory = ({ courseElement, editMode }: ActivityProps) => {
 		activity.resource.document ? (
 			<div className="w-full">
 				<div>
+					{editMode && (
+						<div className="flex w-full justify-end opacity-50">
+							{contentChanged ? <span>Saving...</span> : <span>Saved</span>}
+						</div>
+					)}
 					<RichTextDocument
 						onChange={newValue => {
 							setValue(newValue);
-							contentChanged.current = true;
+							setContentChanged(true);
 						}}
 						defaultText={activity.resource.document}
 						readOnly={!editMode}

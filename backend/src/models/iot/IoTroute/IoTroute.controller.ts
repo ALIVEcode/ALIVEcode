@@ -23,30 +23,27 @@ import { hasRole } from '../../user/auth';
 @Controller('iot/routes')
 @UseInterceptors(DTOInterceptor)
 export class IoTRouteController {
-  constructor(
-    private readonly IoTRouteService: IoTRouteService,
-    private readonly IoTProjectService: IoTProjectService,
-  ) {}
+  constructor(private readonly routeService: IoTRouteService, private readonly projectService: IoTProjectService) {}
 
   @Post('projects/:id/routes')
   @Auth()
   async create(@User() user: UserEntity, @Param('id') id: string, @Body() createIoTobjectDto: IoTRouteEntity) {
-    const project = await this.IoTProjectService.findOne(id);
+    const project = await this.projectService.findOne(id);
     if (project.creator.id !== user.id && !hasRole(user, Role.STAFF))
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-    return await this.IoTRouteService.create(project, createIoTobjectDto);
+    return await this.routeService.create(project, createIoTobjectDto);
   }
 
   @Get('projects/:id/routes')
   @Auth(Role.STAFF)
   async findAll() {
-    return await this.IoTRouteService.findAll();
+    return await this.routeService.findAll();
   }
 
   @Get('projects/:id/routes')
   @Auth(Role.STAFF)
   async findOne(@Param('id') id: string) {
-    return await this.IoTRouteService.findOne(id);
+    return await this.routeService.findOne(id);
   }
 
   @Patch('projects/:projectId/:id')
@@ -58,21 +55,21 @@ export class IoTRouteController {
     @Body() updateIoTobjectDto: IoTRouteEntity,
   ) {
     if (!id) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
-    const project = await this.IoTProjectService.findOne(projectId);
+    const project = await this.projectService.findOne(projectId);
     if (project.creator.id !== user.id && !hasRole(user, Role.STAFF))
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
 
-    return await this.IoTRouteService.update(id, updateIoTobjectDto);
+    return await this.routeService.update(id, updateIoTobjectDto);
   }
 
   @Delete('projects/:projectId/:id')
   @Auth()
   async remove(@User() user: UserEntity, @Param('projectId') projectId: string, @Param('id') id: string) {
     if (!id) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
-    const project = await this.IoTProjectService.findOne(projectId);
+    const project = await this.projectService.findOne(projectId);
     if (project.creator.id !== user.id && !hasRole(user, Role.STAFF))
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
 
-    return await this.IoTRouteService.remove(id);
+    return await this.routeService.remove(id);
   }
 }

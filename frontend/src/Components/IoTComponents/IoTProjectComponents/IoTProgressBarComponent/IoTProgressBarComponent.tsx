@@ -1,11 +1,13 @@
 import { IoTProgressBar } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTProgressBar';
 import { StyledIoTProgressBar } from './iotProgressBarComponentTypes';
+import { useTranslation } from 'react-i18next';
 
 const IoTProgressBarComponent = ({
 	component,
 }: {
 	component: IoTProgressBar;
 }) => {
+	const { t } = useTranslation();
 	const percentage =
 		component.displayedValue != null
 			? (component.displayedValue - component.getMin()) /
@@ -28,7 +30,7 @@ const IoTProgressBarComponent = ({
 					></div>
 				</div>
 				<span className="my-progress-span">
-					{component.displayedValue ?? 'ERROR'}
+					{component.displayedValue ?? t('iot.project.interace.errors.ref')}
 					{component.isPercentage && '%'}
 					{!component.displayedValue && !component.isPercentage && '\u00A0'}
 				</span>

@@ -22,16 +22,21 @@ import {
 	IoTProjectContextValues,
 } from '../../../state/contexts/IoTProjectContext';
 import { IotRoute } from '../../../Models/Iot/IoTroute.entity';
-import { IoTObject } from '../../../Models/Iot/IoTobject.entity';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import { useParams } from 'react-router';
 import IoTProjectPage from '../IoTProjectPage/IoTProjectPage';
 import IoTChallenge from '../../Challenge/ChallengeIoT/ChallengeIoT';
-import { AsScript } from '../../../Models/AsScript/as-script.entity';
+import { AsScript as AsScriptModel } from '../../../Models/AsScript/as-script.entity';
 import { useNavigate } from 'react-router-dom';
 import { IoTProjectDocument } from '../../../../../backend/src/models/iot/IoTproject/entities/IoTproject.entity';
 import { IoTSocket } from '../../../Models/Iot/IoTProjectClasses/IoTSocket';
 import { instanceToPlain } from 'class-transformer';
+import { IoTObject } from '../../../Models/Iot/IoTobject.entity';
+import Modal from '../../../Components/UtilsComponents/Modal/Modal';
+import AsScript from '../../../Components/AliveScriptComponents/AsScript/AsScript';
+import IoTObjectLogs from '../../../Components/IoTComponents/IoTObject/IoTObjectLogs/IoTObjectLogs';
+import { IoTProjectObject } from '../../../Models/Iot/IoTprojectObject.entity';
+import AliotASExecutor from '../../Challenge/ChallengeIoT/AliotASExecutor';
 
 /**
  * IoTProject. On this page are all the components essential in the functionning of an IoTProject.
@@ -50,6 +55,7 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 	const { t } = useTranslation();
 	const { user } = useContext(UserContext);
 	const { id: paramId } = useParams<{ id: string | undefined }>();
+	const objectsRunning = useRef<IoTProjectObject[]>([]);
 	const forceUpdate = useForceUpdate();
 
 	const id = challenge?.id ?? paramId;
@@ -59,6 +65,9 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 
 	const saveTimeout = useRef<any>(null);
 	const [lastSaved, setLastSaved] = useState<number>(Date.now() - 4000);
+
+	const [scriptOpen, setScriptOpen] = useState<AsScriptModel>();
+	const [logsOpen, setLogsOpen] = useState<IoTObject>();
 
 	const saveComponents = useCallback(async () => {
 		if (!canEdit || !project) return;
@@ -86,10 +95,27 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 		[forceUpdate, saveComponentsTimed],
 	);
 
-	const socket = useMemo(() => {
-		if (!project) return;
+	const handleOnReceiveListen = (fields: { [key: string]: any }) => {
+		objectsRunning.current.forEach(o => {
+			if (o.hasExecutor()) {
+				const executor = o.executor as AliotASExecutor;
+				executor.running && executor.docFieldChanged(fields);
+			}
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	};
 
-		return new IoTSocket(project.id, project, project.name, onRequestRender);
+	const socket = useMemo(() => {
+		if (!project || !user) return;
+
+		return new IoTSocket(
+			project.id,
+			user.id,
+			project,
+			project.name,
+			onRequestRender,
+			handleOnReceiveListen,
+		);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [project]);
 
@@ -117,6 +143,12 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [id, user]);
 
+	useEffect(() => {
+		return () => {
+			socket?.closeSocket();
+		};
+	}, [socket]);
+
 	const addRoute = useCallback(
 		(route: IotRoute) => {
 			if (!canEdit || !project) return;
@@ -140,9 +172,9 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 	);
 
 	const addIoTObject = useCallback(
-		(iotObject: IoTObject) => {
+		(iotObject: IoTProjectObject) => {
 			if (!canEdit || !project) return;
-			project.iotObjects?.push(iotObject);
+			project.iotProjectObjects?.push(iotObject);
 			alert.success(t('iot.project.add_object.success'));
 		},
 		[alert, canEdit, project, t],
@@ -151,6 +183,12 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 	const loadIoTObjects = useCallback(async () => {
 		if (!project) return;
 		await project.getIoTObjects();
+		forceUpdate();
+	}, [project, forceUpdate]);
+
+	const loadIoTScripts = useCallback(async () => {
+		if (!project) return;
+		await project.getIoTScripts();
 		forceUpdate();
 	}, [project, forceUpdate]);
 
@@ -183,7 +221,7 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 	);
 
 	const updateScript = useCallback(
-		(route: IotRoute, asScript: AsScript) => {
+		(route: IotRoute, asScript: AsScriptModel) => {
 			const routeFound = project?.routes.find(r => r.id === route.id);
 			if (routeFound) {
 				routeFound.asScript = asScript;
@@ -204,6 +242,72 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 		[forceUpdate, project],
 	);
 
+	const connectObjectToProject = useCallback(
+		async (object: IoTObject) => {
+			if (!project) return;
+			await api.db.iot.objects.connectObjectToProject(object, project);
+			object.currentIotProject = project;
+			object.currentIoTProjectId = project.id;
+			forceUpdate();
+		},
+		[project, forceUpdate],
+	);
+
+	const disconnectObjectFromProject = useCallback(
+		async (object: IoTObject) => {
+			if (!project) return;
+			await api.db.iot.objects.disconnectObjectFromProject(object, project);
+			object.currentIoTProjectId = undefined;
+			object.currentIotProject = undefined;
+			forceUpdate();
+		},
+		[project, forceUpdate],
+	);
+
+	const createScript = useCallback(
+		async (script: AsScriptModel) => {
+			if (!project) return;
+			const newScript = await api.db.iot.projects.createScript(project, script);
+			project.scripts.push(newScript);
+			forceUpdate();
+		},
+		[forceUpdate, project],
+	);
+
+	const setScriptOfObject = useCallback(
+		async (projectObject: IoTProjectObject, script: AsScriptModel) => {
+			if (!project) return;
+			await api.db.iot.projects.setScriptOfObject(
+				project,
+				projectObject,
+				script,
+			);
+			projectObject.script = script;
+			projectObject.scriptId = script.id;
+			forceUpdate();
+		},
+		[forceUpdate, project],
+	);
+
+	const addRunningObject = useCallback(
+		(obj: IoTProjectObject) => {
+			if (objectsRunning.current.includes(obj)) return;
+			objectsRunning.current.push(obj);
+			forceUpdate();
+		},
+		[forceUpdate],
+	);
+
+	const removeRunningObject = useCallback(
+		(obj: IoTProjectObject) => {
+			objectsRunning.current = objectsRunning.current.filter(
+				o => o.id !== obj.id,
+			);
+			forceUpdate();
+		},
+		[forceUpdate],
+	);
+
 	const providerValues: IoTProjectContextValues = useMemo(() => {
 		return {
 			project: project ?? null,
@@ -211,14 +315,24 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 			updateId: updateId ? updateId : project ? project.id : '',
 			isChallenge,
 			socket: socket ?? null,
+			objectsRunning: objectsRunning.current,
+			addRunningObject,
+			removeRunningObject,
 			addRoute,
 			deleteRoute,
 			updateRoute,
 			addIoTObject,
 			loadIoTObjects,
+			loadIoTScripts,
 			updateProjectData,
 			updateScript,
 			updateDocument,
+			connectObjectToProject,
+			disconnectObjectFromProject,
+			createScript,
+			setScriptOpen,
+			setLogsOpen,
+			setScriptOfObject,
 		};
 	}, [
 		project,
@@ -226,14 +340,21 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 		updateId,
 		isChallenge,
 		socket,
+		addRunningObject,
+		removeRunningObject,
 		addRoute,
 		deleteRoute,
 		updateRoute,
 		addIoTObject,
 		loadIoTObjects,
+		loadIoTScripts,
 		updateProjectData,
 		updateScript,
 		updateDocument,
+		connectObjectToProject,
+		disconnectObjectFromProject,
+		createScript,
+		setScriptOfObject,
 	]);
 
 	if (!project) {
@@ -247,6 +368,27 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 			) : (
 				<IoTProjectPage />
 			)}
+			<Modal
+				title="Script"
+				open={scriptOpen !== undefined}
+				setOpen={state => !state && setScriptOpen(undefined)}
+				size="lg"
+			>
+				{scriptOpen && (
+					<AsScript
+						onSave={(asScript: AsScriptModel) => {}}
+						asScript={scriptOpen}
+					/>
+				)}
+			</Modal>
+			<Modal
+				title="Script"
+				open={logsOpen !== undefined}
+				setOpen={state => !state && setLogsOpen(undefined)}
+				size="lg"
+			>
+				{logsOpen && <IoTObjectLogs object={logsOpen} />}
+			</Modal>
 		</IoTProjectContext.Provider>
 	);
 };

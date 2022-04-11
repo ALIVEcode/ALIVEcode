@@ -54,6 +54,7 @@ const ChallengeAlive = ({ initialCode }: ChallengeAliveProps) => {
 				editMode,
 				playSocket,
 				askForUserInput,
+				alert,
 			)),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[challenge?.id, user],

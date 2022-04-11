@@ -2,11 +2,11 @@ import styled from 'styled-components';
 
 export interface ChallengeTableProps {
 	data: (
-		| {
-				id: number;
-				x: number;
-				y: number;
-		  }
+		{
+			id: number;
+			x: number;
+			y: number;
+		}
 		| {}
 	)[];
 	xData: string;

@@ -3,9 +3,14 @@ import styled from 'styled-components';
 import React from 'react';
 import Button from '../../UtilsComponents/Buttons/Button';
 import { useTranslation } from 'react-i18next';
+import { useContext } from 'react';
+import { ThemeContext } from '../../../state/contexts/ThemeContext';
 
 const StyledDiv = styled.div`
-	background-color: var(--bg-shade-two-color);
+	background-color: ${({ theme }) =>
+		theme.name === 'light'
+			? 'var(--bg-shade-two-color)'
+			: 'var(--almost-black-color)'};
 	border-left: 1px solid var(--bg-shade-three-color);
 	color: var(--foreground-color);
 	padding: 15px;
@@ -38,9 +43,10 @@ const StyledDiv = styled.div`
  */
 const Cmd = React.forwardRef<HTMLDivElement>((props: CmdProps, ref) => {
 	const { t } = useTranslation();
+	const { theme } = useContext(ThemeContext);
 
 	return (
-		<StyledDiv>
+		<StyledDiv theme={theme}>
 			<Button
 				variant="third"
 				onClick={() => {
@@ -51,7 +57,7 @@ const Cmd = React.forwardRef<HTMLDivElement>((props: CmdProps, ref) => {
 			>
 				{t('cmd.clear')}
 			</Button>
-			<div className="w-full h-[1px] py-1.5 border-b-2 border-[color:var(--bg-shade-one-color)]"/>
+			<div className="w-full h-[1px] py-1.5 border-b-2 border-[color:var(--bg-shade-one-color)]" />
 			<div ref={ref} />
 		</StyledDiv>
 	);

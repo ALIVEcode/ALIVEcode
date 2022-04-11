@@ -26,7 +26,7 @@ export class CourseElementEntity {
   /*****---Parents---*****/
 
   /** The course that the element belongs to */
-  @ManyToOne(() => CourseEntity, course => course.elements)
+  @ManyToOne(() => CourseEntity, course => course.elements, { nullable: false })
   course: CourseEntity;
 
   /** If the section is not at top level (inside another section), it contains that parent section */

@@ -21,6 +21,7 @@ import IoTBuzzerComponent from '../IoTBuzzerComponent/IoTBuzzerComponent';
 import { IoTBuzzer } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTBuzzer';
 import IoTTrafficLightComponent from '../IoTTrafficLightComponent/IoTTrafficLightComponent';
 import { IoTTrafficLight } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTTrafficLight';
+import { useTranslation } from 'react-i18next';
 
 const IoTGenericComponent = ({
 	component,
@@ -28,6 +29,7 @@ const IoTGenericComponent = ({
 	onSelect,
 	setEditingComponent,
 }: IoTGenericComponentProps) => {
+	const { t } = useTranslation();
 	const [isHovering, setIsHovering] = useState(false);
 	const alert = useAlert();
 
@@ -67,7 +69,9 @@ const IoTGenericComponent = ({
 				<label className="component-name">{component.name}</label>
 				{!component.isRefValueValid() && (
 					<i>
-						<div className="font-bold text-red-600">ERROR</div>
+						<div className="font-bold text-red-600">
+							{t('iot.project.interface.errors.ref')}
+						</div>
 					</i>
 				)}
 				{renderSpecificComponent()}
@@ -79,16 +83,18 @@ const IoTGenericComponent = ({
 						size="2x"
 					/>
 				)}
-				<FontAwesomeIcon
-					onClick={() => {
-						if (!component.id) return alert.error('The component has no id');
-						navigator.clipboard.writeText(component.id);
-						alert.success('Copied');
-					}}
-					className="component-btn copyid-component-btn"
-					icon={faClipboard}
-					size="2x"
-				/>
+				{!selectable && (
+					<FontAwesomeIcon
+						onClick={() => {
+							if (!component.id) return alert.error('The component has no id');
+							navigator.clipboard.writeText(component.id);
+							alert.success('Copied');
+						}}
+						className="component-btn copyid-component-btn"
+						icon={faClipboard}
+						size="2x"
+					/>
+				)}
 			</div>
 		</StyledIoTGenericComponent>
 	);

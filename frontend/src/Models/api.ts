@@ -45,6 +45,8 @@ import { Activity } from './Course/activity.entity';
 import { QueryResources } from './Resource/dto/query_resources.dto';
 import { SetStateAction } from 'react';
 import { GetMimeType } from '../Types/files.type';
+import { IoTProjectObject } from './Iot/IoTprojectObject.entity';
+import { IOT_EVENT } from './Iot/IoTProjectClasses/IoTTypes';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;
@@ -433,18 +435,35 @@ const api = {
 		},
 		iot: {
 			projects: {
+				aliot: {
+					getDoc: async (userId: string) => {
+						return (
+							await axios.post(`iot/aliot/${IOT_EVENT.GET_DOC}`, { id: userId })
+						).data;
+					},
+					getField: async (userId: string, field: string) => {
+						return (
+							await axios.post(`iot/aliot/${IOT_EVENT.GET_FIELD}`, {
+								id: userId,
+								field,
+							})
+						).data;
+					},
+				},
 				delete: apiDelete('iot/projects/:id'),
 				get: apiGet('iot/projects/:id', IoTProject, false),
 				deleteRoute: apiDelete('iot/routes/projects/:projectId/:id'),
 				getRoutes: apiGet('iot/projects/:id/routes', IotRoute, true),
-				getObjects: apiGet('iot/projects/:id/objects', IoTObject, true),
+				getObjects: apiGet('iot/projects/:id/objects', IoTProjectObject, true),
+				getScripts: apiGet('iot/projects/:id/scripts', AsScript, true),
 				async updateLayout(id: string, layout: IoTProjectLayout) {
 					await axios.patch(`iot/projects/${id}/layout`, layout);
 				},
 				async updateDocument(id: string, document: IoTProjectDocument) {
-					return plainToClass(
+					return plainToInstance(
 						IoTProject,
-						(await axios.patch(`iot/projects/${id}/document`, document)).data,
+						(await axios.patch(`iot/projects/${id}/document`, document))
+							.data as object,
 					);
 				},
 				async createScriptRoute(
@@ -459,9 +478,59 @@ const api = {
 						})
 					).data;
 				},
+				async createScript(project: IoTProject, script: AsScript) {
+					return plainToInstance(
+						AsScript,
+						(
+							await axios.post(`iot/projects/${project.id}/createScript`, {
+								script,
+							})
+						).data as object,
+					);
+				},
+				async setScriptOfObject(
+					project: IoTProject,
+					projectObject: IoTProjectObject,
+					script: AsScript,
+				) {
+					return plainToInstance(
+						AsScript,
+						(
+							await axios.patch(
+								`iot/projects/${project.id}/objects/${projectObject.id}/setScript`,
+								{
+									scriptId: script.id,
+								},
+							)
+						).data,
+					);
+				},
 			},
 			objects: {
 				delete: apiDelete('iot/objects/:id'),
+				async connectObjectToProject(object: IoTObject, project: IoTProject) {
+					return plainToInstance(
+						IoTObject,
+						(
+							await axios.patch(`iot/objects/${object.id}/connectProject`, {
+								projectId: project.id,
+							})
+						).data as object,
+					);
+				},
+				async disconnectObjectFromProject(
+					object: IoTObject,
+					project: IoTProject,
+				) {
+					return plainToInstance(
+						IoTObject,
+						(
+							await axios.patch(`iot/objects/${object.id}/disconnectProject`, {
+								projectId: project.id,
+							})
+						).data as object,
+					);
+				},
 			},
 		},
 		asScript: {

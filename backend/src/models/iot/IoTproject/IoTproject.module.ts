@@ -3,7 +3,6 @@ import { IoTProjectService } from './IoTproject.service';
 import { IoTProjectController } from './IoTproject.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { IoTProjectEntity } from './entities/IoTproject.entity';
-import { UserEntity } from '../../user/entities/user.entity';
 import { IoTRouteEntity } from '../IoTroute/entities/IoTroute.entity';
 import { IoTObjectService } from '../IoTobject/IoTobject.service';
 import { IoTObjectEntity } from '../IoTobject/entities/IoTobject.entity';
@@ -16,6 +15,9 @@ import { ChallengeAIEntity } from '../../challenge/entities/challenges/challenge
 import { ChallengeCodeEntity } from '../../challenge/entities/challenges/challenge_code.entity';
 import { ChallengeIoTEntity } from '../../challenge/entities/challenges/challenge_iot.entity';
 import { ChallengeProgressionEntity } from '../../challenge/entities/challenge_progression.entity';
+import { IoTProjectObjectEntity } from './entities/IoTprojectObject.entity';
+import { UserService } from '../../user/user.service';
+import { UserModule } from '../../user/user.module';
 
 @Module({
   imports: [
@@ -23,7 +25,7 @@ import { ChallengeProgressionEntity } from '../../challenge/entities/challenge_p
       IoTProjectEntity,
       IoTRouteEntity,
       IoTObjectEntity,
-      UserEntity,
+      IoTProjectObjectEntity,
       AsScriptEntity,
       ChallengeEntity,
       ChallengeAliveEntity,
@@ -32,8 +34,9 @@ import { ChallengeProgressionEntity } from '../../challenge/entities/challenge_p
       ChallengeIoTEntity,
       ChallengeProgressionEntity,
     ]),
+    UserModule,
   ],
   controllers: [IoTProjectController],
-  providers: [IoTProjectService, IoTObjectService, AsScriptService, ChallengeService],
+  providers: [IoTProjectService, IoTObjectService, AsScriptService, ChallengeService, UserService],
 })
 export class IoTProjectModule {}

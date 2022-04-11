@@ -1,12 +1,17 @@
-import { IsNotEmpty, IsEmpty } from 'class-validator';
-import { Column, Entity, ManyToOne, ManyToMany } from 'typeorm';
+import { IsEmpty } from 'class-validator';
+import { Entity, ManyToOne, OneToMany, Column, JoinColumn } from 'typeorm';
 import { CreatedByUser } from '../../../../generics/entities/createdByUser.entity';
 import { UserEntity } from '../../../user/entities/user.entity';
 import { IoTProjectEntity } from '../../IoTproject/entities/IoTproject.entity';
+import { IoTProjectObjectEntity } from '../../IoTproject/entities/IoTprojectObject.entity';
+import { Exclude } from 'class-transformer';
+import { IOT_EVENT } from '../../../../socket/iotSocket/iotSocket.types';
 
-export enum IoTObjectLabel {
-  HOME = 'HO',
-  OTHER = 'OT',
+export class IoTLog {
+  public date: Date;
+  constructor(public event: IOT_EVENT, public text: string) {
+    this.date = new Date();
+  }
 }
 
 @Entity()
@@ -15,11 +20,23 @@ export class IoTObjectEntity extends CreatedByUser {
   @IsEmpty()
   creator: UserEntity;
 
-  @Column({ type: 'enum', enum: IoTObjectLabel, default: IoTObjectLabel.OTHER })
-  @IsNotEmpty()
-  label: IoTObjectLabel;
+  @Column({ type: 'jsonb', name: 'logs', default: [], nullable: false })
+  @Exclude({ toClassOnly: true })
+  logs: IoTLog[];
 
-  @ManyToMany(() => IoTProjectEntity, project => project.iotObjects, { onDelete: 'CASCADE' })
-  @IsEmpty()
-  iotProjects: IoTProjectEntity[];
+  @ManyToOne(() => IoTProjectEntity, { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'currentIoTProjectId' })
+  @Exclude({ toClassOnly: true })
+  currentIotProject?: IoTProjectEntity;
+
+  @Column({ name: 'currentIoTProjectId', type: 'varchar', nullable: true })
+  currentIoTProjectId?: string;
+
+  @OneToMany(() => IoTProjectObjectEntity, obj => obj.iotObject, { onDelete: 'SET NULL' })
+  @Exclude({ toClassOnly: true })
+  iotProjectObjects: IoTProjectObjectEntity[];
+
+  @OneToMany(() => IoTProjectObjectEntity, obj => obj.iotTestObject, { onDelete: 'SET NULL' })
+  @Exclude({ toClassOnly: true })
+  iotProjectTestObjects: IoTProjectObjectEntity[];
 }

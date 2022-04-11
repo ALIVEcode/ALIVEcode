@@ -9,6 +9,7 @@ import {
   HttpStatus,
   HttpException,
   UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import { Auth } from '../../../utils/decorators/auth.decorator';
 import { User } from '../../../utils/decorators/user.decorator';
@@ -24,35 +25,39 @@ import { DTOInterceptor } from '../../../utils/interceptors/dto.interceptor';
 import { IoTRouteEntity } from '../IoTroute/entities/IoTroute.entity';
 import { hasRole } from '../../user/auth';
 import { AddObjectDTO } from './dto/addObject.dto';
+import { IoTProjectAddRouteScriptDTO, IoTProjectAddScriptDTO, IoTProjectSetScriptOfObject } from './dto/addScript.dto';
+import { IoTProjectUpdateDTO } from './dto/updateProject.dto';
 import { IoTProjectService } from './IoTproject.service';
 import { IoTObjectService } from '../IoTobject/IoTobject.service';
-import { IoTProjectAddScriptDTO } from './dto/addScript.dto';
-import { IoTProjectUpdateDTO } from './dto/updateProject.dto';
+import { IoTProjectCreator } from '../../../utils/guards/iotProject.guard';
+import { IoTProject } from '../../../utils/decorators/iotProject.decorator';
+import { AsScriptService } from '../../as-script/as-script.service';
 
 @Controller('iot/projects')
 @UseInterceptors(DTOInterceptor)
 export class IoTProjectController {
   constructor(
-    private readonly IoTProjectService: IoTProjectService,
-    private readonly IoTObjectService: IoTObjectService,
+    private readonly projectService: IoTProjectService,
+    private readonly objectService: IoTObjectService,
+    private readonly asService: AsScriptService,
   ) {}
 
   @Post()
   @Auth()
   async create(@User() user: UserEntity, @Body() createIoTobjectDto: IoTProjectEntity) {
-    return await this.IoTProjectService.create(user, createIoTobjectDto);
+    return await this.projectService.create(user, createIoTobjectDto);
   }
 
   @Get()
   @Auth(Role.STAFF)
   async findAll() {
-    return await this.IoTProjectService.findAll();
+    return await this.projectService.findAll();
   }
 
   @Get(':id')
   @Auth()
   async findOne(@User() user: UserEntity, @Param('id') id: string) {
-    const project = await this.IoTProjectService.findOne(id);
+    const project = await this.projectService.findOne(id);
 
     if (project.creator.id === user.id || hasRole(user, Role.STAFF)) return project;
     if (project.access === IOTPROJECT_ACCESS.PRIVATE) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
@@ -63,111 +68,122 @@ export class IoTProjectController {
 
   @Patch(':id')
   @Auth()
-  async update(@User() user: UserEntity, @Param('id') id: string, @Body() updateIoTobjectDto: IoTProjectUpdateDTO) {
-    const project = await this.IoTProjectService.findOne(id);
-
-    if (project.creator.id !== user.id && !hasRole(user, Role.STAFF))
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-
-    return await this.IoTProjectService.update(project.id, updateIoTobjectDto);
+  @UseGuards(IoTProjectCreator)
+  async update(@Param('id') id: string, @Body() updateIoTobjectDto: IoTProjectUpdateDTO) {
+    return await this.projectService.update(id, updateIoTobjectDto);
   }
 
   @Delete(':id')
   @Auth()
-  async remove(@User() user: UserEntity, @Param('id') id: string) {
-    const project = await this.IoTProjectService.findOne(id);
-
-    if (project.creator.id !== user.id && !hasRole(user, Role.STAFF))
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-
-    return await this.IoTProjectService.remove(id);
+  @UseGuards(IoTProjectCreator)
+  async remove(@Param('id') id: string) {
+    return await this.projectService.remove(id);
   }
 
   @Patch(':id/layout')
   @Auth()
-  async updateLayout(@User() user: UserEntity, @Param('id') id: string, @Body() layout: IoTProjectLayout) {
-    const project = await this.IoTProjectService.findOne(id);
-
-    if (project.creator.id !== user.id && !hasRole(user, Role.STAFF))
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-
-    return await this.IoTProjectService.updateLayout(id, layout);
+  @UseGuards(IoTProjectCreator)
+  async updateLayout(@Param('id') id: string, @Body() layout: IoTProjectLayout) {
+    return await this.projectService.updateLayout(id, layout);
   }
 
   @Patch(':id/document')
   @Auth()
-  async updateDocument(@User() user: UserEntity, @Param('id') id: string, @Body() document: IoTProjectDocument) {
+  @UseGuards(IoTProjectCreator)
+  async updateDocument(@Param('id') id: string, @Body() document: IoTProjectDocument) {
     if (typeof document !== 'object') throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
-
-    const project = await this.IoTProjectService.findOne(id);
-
-    if (project.creator.id !== user.id && !hasRole(user, Role.STAFF))
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-
-    return await this.IoTProjectService.setDocument(id, document);
+    return await this.projectService.setDocument(id, document);
   }
 
   @Get(':id/routes')
   @Auth()
   async getRoutes(@User() user: UserEntity, @Param('id') id: string) {
-    const project = await this.IoTProjectService.findOne(id);
+    const project = await this.projectService.findOne(id);
 
     if (project.creator.id === user.id || hasRole(user, Role.STAFF))
-      return await this.IoTProjectService.getRoutes(project);
+      return await this.projectService.getRoutes(project);
     if (project.access === IOTPROJECT_ACCESS.PRIVATE) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     // TODO : Add restriction
     if (project.access === IOTPROJECT_ACCESS.RESTRICTED) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-    return await this.IoTProjectService.getRoutes(project);
+    return await this.projectService.getRoutes(project);
   }
 
   @Post(':id/routes')
   @Auth()
-  async addRoute(@User() user: UserEntity, @Param('id') id: string, @Body() routeDTO: IoTRouteEntity) {
-    const project = await this.IoTProjectService.findOne(id);
-
-    if (project.creator.id !== user.id && !hasRole(user, Role.STAFF))
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-
-    return await this.IoTProjectService.addRoute(project, routeDTO);
+  @UseGuards(IoTProjectCreator)
+  async addRoute(@IoTProject() project: IoTProjectEntity, @Body() routeDTO: IoTRouteEntity) {
+    return await this.projectService.addRoute(project, routeDTO);
   }
 
   @Get(':id/objects')
   @Auth()
   async getObjects(@User() user: UserEntity, @Param('id') id: string) {
-    const project = await this.IoTProjectService.findOne(id);
+    const project = await this.projectService.findOne(id);
 
     if (project.creator.id === user.id || hasRole(user, Role.STAFF))
-      return await this.IoTProjectService.getObjects(project);
+      return await this.projectService.getObjects(project);
     if (project.access === IOTPROJECT_ACCESS.PRIVATE) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     // TODO : Add restriction
     if (project.access === IOTPROJECT_ACCESS.RESTRICTED) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-    return await this.IoTProjectService.getObjects(project);
+    return await this.projectService.getObjects(project);
   }
 
   @Post(':id/objects')
   @Auth()
-  async addObject(@User() user: UserEntity, @Param('id') id: string, @Body() addObjectDTO: AddObjectDTO) {
-    const project = await this.IoTProjectService.findOne(id);
-
-    if (project.creator.id !== user.id && !hasRole(user, Role.STAFF))
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-
-    const object = await this.IoTObjectService.findOne(addObjectDTO.id);
-    return await this.IoTProjectService.addObject(project, object);
+  @UseGuards(IoTProjectCreator)
+  async addObject(@IoTProject() project: IoTProjectEntity, @Body() addObjectDTO: AddObjectDTO) {
+    const object = await this.objectService.findOne(addObjectDTO.id);
+    return await this.projectService.addObject(project, object);
   }
 
-  @Post(':id/as/create')
+  @Post(':id/createRouteScript')
   @Auth()
-  async addAndCreateScript(
+  @UseGuards(IoTProjectCreator)
+  async addAndCreateRouteScript(
+    @IoTProject() project: IoTProjectEntity,
     @User() user: UserEntity,
-    @Param('id') id: string,
-    @Body() scriptDTO: IoTProjectAddScriptDTO,
+    @Body() dto: IoTProjectAddRouteScriptDTO,
   ) {
-    const project = await this.IoTProjectService.findOne(id);
+    const script = await this.asService.create(user, dto.script);
+    return await this.projectService.addScriptToRoute(project, dto.routeId, script);
+  }
 
-    if (project.creator.id !== user.id && !hasRole(user, Role.STAFF))
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+  @Post(':id/createScript')
+  @Auth()
+  @UseGuards(IoTProjectCreator)
+  async addAndCreateScript(
+    @IoTProject() project: IoTProjectEntity,
+    @User() user: UserEntity,
+    @Body() dto: IoTProjectAddScriptDTO,
+  ) {
+    dto.script.iotProject = project;
+    const script = await this.asService.create(user, dto.script);
+    return await this.projectService.addScriptToProject(project, script);
+  }
 
-    return await this.IoTProjectService.addScript(project, user, scriptDTO);
+  @Get(':id/scripts')
+  @Auth()
+  async getScripts(@User() user: UserEntity, @Param('id') id: string) {
+    const project = await this.projectService.findOne(id);
+
+    if (project.creator.id === user.id || hasRole(user, Role.STAFF))
+      return await this.projectService.getScripts(project);
+    if (project.access === IOTPROJECT_ACCESS.PRIVATE) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    // TODO : Add restriction`
+    if (project.access === IOTPROJECT_ACCESS.RESTRICTED) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+
+    return await this.projectService.getScripts(project);
+  }
+
+  @Patch(':id/objects/:objectId/setScript')
+  @UseGuards(IoTProjectCreator)
+  async setScriptOfObject(
+    @IoTProject() project: IoTProjectEntity,
+    @Param('objectId') objectId: string,
+    @Body() dto: IoTProjectSetScriptOfObject,
+  ) {
+    const object = await this.projectService.findProjectObject(objectId, project);
+    const script = await this.asService.findOneByIoTProject(dto.scriptId, project);
+    return await this.projectService.setScriptOfObject(object, script);
   }
 }

@@ -58,7 +58,7 @@ export class ChallengeExecutor {
 	private _beforeRun: () => void;
 
 	/** function called before the interruption of the execution of the code */
-	private _beforeInterrupt: () => void;
+	protected _beforeInterrupt: () => void;
 	/** function called before the end of the exection of the code */
 	private _beforeStop: () => void;
 	/** function called after the end or the interruption of the exection of the code */
@@ -131,7 +131,7 @@ export class ChallengeExecutor {
 		}
 	}
 
-	private async executeNext(res: string[], firstTime = false) {
+	protected async executeNext(res: string[], firstTime = false) {
 		const data = await this.sendDataToAsServer(
 			firstTime
 				? {
@@ -215,7 +215,7 @@ export class ChallengeExecutor {
 		this.current_execution && this.current_execution.next();
 	}
 
-	private execute(actions: any[]): void {
+	protected execute(actions: any[]): void {
 		const ID = 'id';
 		const DODO = 'd';
 		const PARAMS = 'p';
@@ -230,7 +230,7 @@ export class ChallengeExecutor {
 				Array.isArray(action[PARAMS])
 			);
 		};
-		console.log(actions);
+
 		const formatedActions = actions.map(action => {
 			if (!hasValidDataStructure(action)) {
 				(async () => await this.interrupt())();

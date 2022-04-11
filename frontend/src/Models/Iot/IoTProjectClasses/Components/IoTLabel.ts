@@ -1,5 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
 import { IoTComponent, IOT_COMPONENT_TYPE } from '../IoTComponent';
+import { TFunction } from 'i18next';
 
 @Exclude()
 export class IoTLabel extends IoTComponent {
@@ -32,9 +33,12 @@ export class IoTLabel extends IoTComponent {
 	}
 }
 
-export const createDefaultIoTLabel = () => {
+export const createDefaultIoTLabel = (t: TFunction) => {
 	const label = new IoTLabel();
-	label.name = 'Default Label';
+	label.name = t('iot.project.interface.components.label.name');
+	label.value = t(
+		'iot.project.interface.components_form.label.value.placeholder',
+	);
 
 	return label;
 };

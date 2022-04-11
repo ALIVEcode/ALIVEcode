@@ -74,7 +74,7 @@ export default styled(Link)`
 	color: ${(props: StyledLinkProps) => {
 		if (props.dark) return 'var(--contrast-color)';
 		if (props.pale) return 'var(--pale-color)';
-		else return 'var(--primary-color)';
+		else return 'var(--logo-color)';
 	}};
 	transition: 0.3s;
 	cursor: pointer;

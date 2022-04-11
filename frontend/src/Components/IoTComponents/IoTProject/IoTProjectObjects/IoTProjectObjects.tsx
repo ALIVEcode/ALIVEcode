@@ -1,7 +1,6 @@
 import IconButton from '../../../DashboardComponents/IconButton/IconButton';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState, useContext } from 'react';
-import { IoTObjectCard } from '../../IoTObject/IoTObjectCard/IoTObjectCard';
 import LoadingScreen from '../../../UtilsComponents/LoadingScreen/LoadingScreen';
 import { plainToClass } from 'class-transformer';
 import FormModal from '../../../UtilsComponents/FormModal/FormModal';
@@ -11,8 +10,17 @@ import Modal from '../../../UtilsComponents/Modal/Modal';
 import { IoTProjectContext } from '../../../../state/contexts/IoTProjectContext';
 import api from '../../../../Models/api';
 import { FORM_ACTION } from '../../../UtilsComponents/Form/formTypes';
+import { IoTProjectObject as IoTProjectObjectModel } from '../../../../Models/Iot/IoTprojectObject.entity';
+import IoTProjectObject from '../../IoTObject/IoTProjectObject/IoTProjectObject';
+import { AsScript } from '../../../../Models/AsScript/as-script.entity';
 
-export const IoTProjectAccess = () => {
+export const IoTProjectObjects = ({
+	mode,
+	scriptToLink,
+}: {
+	mode?: 'script-linking';
+	scriptToLink?: AsScript;
+}) => {
 	const [addObjectModalOpen, setAddObjectModalOpen] = useState(false);
 	const { project, canEdit, loadIoTObjects, addIoTObject } =
 		useContext(IoTProjectContext);
@@ -22,7 +30,7 @@ export const IoTProjectAccess = () => {
 		if (!project) return;
 
 		// Load project objects
-		if (!project.iotObjects) loadIoTObjects();
+		if (!project.iotProjectObjects) loadIoTObjects();
 
 		if (!canEdit) return;
 
@@ -37,7 +45,8 @@ export const IoTProjectAccess = () => {
 	if (!project) return <></>;
 
 	const iotObjectOptions = userIotObjects?.flatMap(obj => {
-		if (project.iotObjects?.find(o => o.id === obj.id)) return [];
+		if (project.iotProjectObjects?.find(o => o.iotObject?.id === obj.id))
+			return [];
 		return {
 			value: obj.id,
 			display: obj.name,
@@ -45,8 +54,7 @@ export const IoTProjectAccess = () => {
 	});
 
 	return (
-		<>
-			<div className="project-details-content-header">Access</div>
+		<div className="w-full h-full overflow-y-auto">
 			<h6>
 				IoTObjects{' '}
 				{canEdit && (
@@ -56,10 +64,16 @@ export const IoTProjectAccess = () => {
 					/>
 				)}
 			</h6>
-			{project.iotObjects ? (
-				project.iotObjects.length > 0 ? (
-					project.iotObjects.map((obj, idx) => (
-						<IoTObjectCard key={idx} object={obj} />
+			{project.iotProjectObjects ? (
+				project.iotProjectObjects.length > 0 ? (
+					project.iotProjectObjects.map((obj, idx) => (
+						<IoTProjectObject
+							key={idx}
+							mode={mode}
+							scriptToLink={scriptToLink}
+							object={obj}
+							odd={idx % 2 !== 0}
+						/>
 					))
 				) : (
 					'No IoTObjects'
@@ -79,7 +93,7 @@ export const IoTProjectAccess = () => {
 			) : (
 				<FormModal
 					onSubmit={res => {
-						addIoTObject(plainToClass(IoTObject, res.data));
+						addIoTObject(plainToClass(IoTProjectObjectModel, res.data));
 						setAddObjectModalOpen(false);
 					}}
 					title="Add an IoTObject to the project"
@@ -102,8 +116,8 @@ export const IoTProjectAccess = () => {
 					/>
 				</FormModal>
 			)}
-		</>
+		</div>
 	);
 };
 
-export default IoTProjectAccess;
+export default IoTProjectObjects;

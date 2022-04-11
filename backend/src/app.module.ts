@@ -28,7 +28,7 @@ import { adminOptions } from './admin/admin.options';
 import { LoggerModule } from './admin/loger/loger.module';
 import { MyLogger } from './admin/loger/logger';
 import { CarModule } from './socket/carSocket/carSocket.module';
-import { IoTModule } from './socket/iotSocket/iotSocket.module';
+import { IoTSocketModule } from './socket/iotSocket/iotSocket.module';
 import { QuizzesModule } from './models/social/quizzes/quizzes.module';
 import { CategoriesQuizModule } from './models/social/categories-quiz/categories-quiz.module';
 import { QuestionsModule } from './models/social/questions/questions.module';
@@ -78,7 +78,7 @@ adminjs.registerAdapter({ Database, Resource });
     IoTObjectModule,
     IoTProjectModule,
     IoTRouteModule,
-    IoTModule,
+    IoTSocketModule,
     MaintenanceModule,
     AsScriptModule,
     CarModule,

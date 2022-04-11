@@ -221,7 +221,7 @@ export class CourseService {
    * @returns the deletion query result
    */
   async updateCourseElement(courseElement: CourseElementEntity, dto: UpdateCourseElementDTO) {
-    return await this.courseElRepo.save({ id: courseElement.id, ...dto });
+    return await this.courseElRepo.save({ ...dto, id: courseElement.id });
   }
 
   /*****-------End of Course Elements-------*****/
@@ -343,7 +343,7 @@ export class CourseService {
    * @returns The updated activty
    */
   async updateActivity(activity: ActivityEntity, updateActivityDTO: Partial<ActivityEntity>) {
-    return await this.activityRepository.save({ id: activity.id, ...updateActivityDTO });
+    return await this.activityRepository.save({ ...updateActivityDTO, id: activity.id });
   }
 
   /**

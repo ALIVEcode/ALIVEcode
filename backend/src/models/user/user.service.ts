@@ -17,8 +17,8 @@ import { CourseEntity } from '../course/entities/course.entity';
 import { MyRequest } from '../../utils/guards/auth.guard';
 import { CourseHistoryEntity } from '../course/entities/course_history.entity';
 import { NameMigrationDTO } from './dto/name_migration.dto';
-import { ResourceEntity } from '../resource/entities/resource.entity';
 import { QueryResources } from './dto/query_resources.dto';
+import { ResourceEntity } from '../resource/entities/resource.entity';
 
 /**
  * All the methods to communicate to the database regarding users.
@@ -132,17 +132,18 @@ export class UserService {
   }
 
   async findById(id: string) {
+    if (!id) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     const user = await this.userRepository.findOne(id);
     if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     return user;
   }
 
   async nameMigration(userId: string, nameMigrationDto: NameMigrationDTO) {
-    return await this.studentRepository.save({ id: userId, oldStudentName: null, ...nameMigrationDto });
+    return await this.studentRepository.save({ ...nameMigrationDto, id: userId, oldStudentName: null });
   }
 
   async update(userId: string, updateUserDto: UserEntity) {
-    return await this.userRepository.save({ id: userId, ...updateUserDto });
+    return await this.userRepository.save({ ...updateUserDto, id: userId });
   }
 
   remove(user: UserEntity) {

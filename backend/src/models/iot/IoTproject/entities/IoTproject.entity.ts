@@ -1,11 +1,13 @@
 import { IsEmpty, IsNotEmpty, IsOptional } from "class-validator";
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { CreatedByUser } from '../../../../generics/entities/createdByUser.entity';
 import { IoTRouteEntity } from '../../IoTroute/entities/IoTroute.entity';
 import { UserEntity } from '../../../user/entities/user.entity';
-import { IoTObjectEntity } from '../../IoTobject/entities/IoTobject.entity';
 import { IoTLayoutManager } from '../IoTLayoutManager';
-import { Type } from 'class-transformer';
+import { Exclude, Type } from 'class-transformer';
+import { IoTProjectObjectEntity } from './IoTprojectObject.entity';
+import { ChallengeProgressionEntity } from '../../../challenge/entities/challenge_progression.entity';
+import { AsScriptEntity } from '../../../as-script/entities/as-script.entity';
 
 export enum IOTPROJECT_INTERACT_RIGHTS {
   ANYONE = 'AN',
@@ -46,9 +48,24 @@ export type IoTProjectDocument = JsonObj;
 
 @Entity()
 export class IoTProjectEntity extends CreatedByUser {
-  @ManyToOne(() => UserEntity, user => user.IoTProjects, { eager: true, onDelete: 'CASCADE' })
-  @IsEmpty()
+  @ManyToOne(() => UserEntity, user => user.IoTProjects, { nullable: false, eager: true, onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'creatorId' })
+  @Exclude({ toClassOnly: true })
   creator: UserEntity;
+
+  @Column({ name: 'creatorId', type: 'varchar', nullable: false })
+  @Exclude({ toClassOnly: true })
+  creatorId: string;
+
+  @ManyToOne(() => IoTProjectEntity, project => project.copied, { nullable: true })
+  @JoinColumn({ name: 'originalId' })
+  original?: IoTProjectEntity;
+
+  @Column({ name: 'originalId', nullable: true })
+  originalId?: string;
+
+  @OneToMany(() => IoTProjectEntity, project => project.original)
+  copied?: IoTProjectEntity[];
 
   // TODO : body typing
   @Column({ nullable: true, type: 'json', default: { components: [] } })
@@ -60,10 +77,15 @@ export class IoTProjectEntity extends CreatedByUser {
   @IsOptional()
   document: IoTProjectDocument;
 
-  @ManyToMany(() => IoTObjectEntity, obj => obj.iotProjects)
-  @JoinTable()
+  @OneToOne(() => ChallengeProgressionEntity, progress => progress.challenge)
+  progression?: ChallengeProgressionEntity;
+
+  @OneToMany(() => AsScriptEntity, script => script.iotProject)
+  scripts: AsScriptEntity[];
+
+  @OneToMany(() => IoTProjectObjectEntity, obj => obj.iotProject)
   @IsEmpty()
-  iotObjects: IoTObjectEntity[];
+  iotProjectObjects: IoTProjectObjectEntity[];
 
   @Column({ type: 'enum', enum: IOTPROJECT_ACCESS, default: IOTPROJECT_ACCESS.PRIVATE })
   @IsNotEmpty()

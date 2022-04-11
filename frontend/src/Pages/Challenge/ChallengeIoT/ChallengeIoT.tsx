@@ -53,7 +53,6 @@ const IoTChallenge = ({ initialCode }: { initialCode: string }) => {
 	);
 
 	const lineInterfaceContentChanges = (content: any) => {
-		console.log(executor.current);
 		if (executor.current) executor.current.lineInterfaceContent = content;
 		if (!editMode && progression) {
 			progression.data.code = content;
@@ -69,7 +68,7 @@ const IoTChallenge = ({ initialCode }: { initialCode: string }) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [cmd]);
 
-	if (!challenge || !project) return <LoadingScreen></LoadingScreen>;
+	if (!challenge || !project) return <LoadingScreen />;
 
 	return (
 		<FillContainer>
@@ -116,7 +115,7 @@ const IoTChallenge = ({ initialCode }: { initialCode: string }) => {
 						<IoTProjectInterface noTopRow />
 					</div>
 					<div className="h-1/3">
-						<Cmd ref={cmdRef}></Cmd>
+						<Cmd ref={cmdRef} />
 					</div>
 				</div>
 			</div>

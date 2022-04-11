@@ -1,5 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { IoTComponent, IOT_COMPONENT_TYPE } from '../IoTComponent';
+import { TFunction } from 'i18next';
 
 export enum LED_STATE {
 	ON = 'ON',
@@ -27,10 +28,10 @@ export class IoTLed extends IoTComponent {
 	}
 }
 
-export const createDefaultIoTLed = () => {
+export const createDefaultIoTLed = (t: TFunction) => {
 	const led = new IoTLed();
 	led.value = false;
-	led.name = 'Default LED';
+	led.name = t('iot.project.interface.components.led.name');
 
 	return led;
 };

@@ -124,6 +124,7 @@ export const commonColors = {
 	almost_black: '#23272A',
 	dark_gray: '#616161',
 	logo: '#2E75FF',
+	danger: '#dc2626',
 };
 /*
 

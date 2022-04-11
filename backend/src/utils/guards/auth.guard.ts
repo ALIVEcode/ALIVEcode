@@ -9,11 +9,13 @@ import { ClassroomEntity } from '../../models/classroom/entities/classroom.entit
 import { UserEntity } from '../../models/user/entities/user.entity';
 import { CourseEntity } from '../../models/course/entities/course.entity';
 import { ResourceEntity } from '../../models/resource/entities/resource.entity';
+import { IoTProjectEntity } from '../../models/iot/IoTproject/entities/IoTproject.entity';
 
 export interface MyRequest extends Request {
   user: UserEntity;
   classroom?: ClassroomEntity;
   course?: CourseEntity;
+  iotProject?: IoTProjectEntity;
   resource?: ResourceEntity;
   expiredToken?: boolean;
 }

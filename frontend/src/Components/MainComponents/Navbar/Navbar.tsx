@@ -70,7 +70,7 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 								<FontAwesomeIcon
 									className="cursor-pointer"
 									icon={open ? faTimes : faBars}
-								></FontAwesomeIcon>
+								/>
 							</Disclosure.Button>
 						</div>
 						<div className="flex h-full items-center justify-center w-1/3 laptop:w-auto">
@@ -122,7 +122,7 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 															? 'border-gray-300'
 															: 'border-transparent'))
 											}
-										></div>
+										/>
 									</Link>
 								))}
 							</div>

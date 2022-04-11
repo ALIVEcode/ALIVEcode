@@ -26,6 +26,7 @@ import { ResourceVideoEntity } from '../resource/entities/resources/resource_vid
 import { ResourceFileEntity } from '../resource/entities/resources/resource_file.entity';
 import { ResourceImageEntity } from '../resource/entities/resources/resource_image.entity';
 import { ResourceTheoryEntity } from '../resource/entities/resources/resource_theory.entity';
+import { BundleController } from './bundle.controller';
 
 /**
  * Module for the course nestjs resource
@@ -58,7 +59,7 @@ import { ResourceTheoryEntity } from '../resource/entities/resources/resource_th
       ResourceTheoryEntity,
     ]),
   ],
-  controllers: [CourseController],
+  controllers: [CourseController, BundleController],
   providers: [CourseService, UserService, ResourceService],
 })
 export class CourseModule {}

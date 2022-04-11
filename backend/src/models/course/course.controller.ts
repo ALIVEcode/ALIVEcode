@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  Headers,
   Param,
   Patch,
   Post,
@@ -43,6 +42,9 @@ import { CreateActivityAssignmentDTO } from './dtos/CreateActivities.dto';
 import { RESOURCE_TYPE } from '../resource/entities/resource.entity';
 import { ResourceFileEntity } from '../resource/entities/resources/resource_file.entity';
 import { ResourceVideoEntity } from '../resource/entities/resources/resource_video.entity';
+import { MoveElementDTO } from './dtos/MoveElement.dto';
+import { isUUID } from 'class-validator';
+import { SectionEntity } from './entities/section.entity';
 
 /**
  * All the routes to create/update/delete/get a course or it's content (CourseElements)
@@ -131,7 +133,7 @@ export class CourseController {
     @Course() course: CourseEntity,
     @Body() createSectionDTO: CreateSectionDTO,
   ): Promise<{ newOrder: number[]; courseElement: CourseElementEntity }> {
-    course = await this.courseService.findOneWithElements(course.id);
+    course = await this.courseService.findCourseWithElements(course.id);
     if (createSectionDTO.sectionParentId) {
       const section = await this.courseService.findSectionWithElements(course, createSectionDTO.sectionParentId);
       return await this.courseService.addSection(course, createSectionDTO, section);
@@ -151,7 +153,7 @@ export class CourseController {
   @UseGuards(CourseAccess)
   async getElements(@Course() course: CourseEntity, @User() user: UserEntity) {
     await this.userService.accessCourse(user, course);
-    return (await this.courseService.findOneWithElements(course.id)).elements;
+    return (await this.courseService.findCourseWithElements(course.id)).elements;
   }
 
   /**
@@ -192,7 +194,7 @@ export class CourseController {
       | CreateActivityVideoDTO
       | CreateActivityAssignmentDTO,
   ): Promise<{ newOrder: number[]; courseElement: CourseElementEntity }> {
-    course = await this.courseService.findOneWithElements(course.id);
+    course = await this.courseService.findCourseWithElements(course.id);
     if (createActivityDTO.sectionParentId) {
       const section = await this.courseService.findSectionWithElements(course, createActivityDTO.sectionParentId);
       return await this.courseService.addActivity(course, createActivityDTO, section);
@@ -218,6 +220,27 @@ export class CourseController {
   ) {
     const activity = await this.courseService.findActivity(course.id, activityId);
     return await this.courseService.updateActivity(activity, updateActivityDTO);
+  }
+
+  /**
+   * Moves an element from a parent into another parent with a positioning index.
+   * Needs to be inside the same course!
+   * @param course Course found with the id in the url
+   * @param dto DTO to move an element inside a course (MoveElementDTO)
+   */
+  @Patch(':id/moveElement')
+  @UseGuards(CourseAccess)
+  async moveElement(@Course() course: CourseEntity, @Body() dto: MoveElementDTO) {
+    const element = await this.courseService.findCourseElementWithParent(course, dto.elementId);
+    let parent: CourseEntity | SectionEntity;
+    if (isUUID(dto.parentId)) {
+      if (dto.parentId !== course.id)
+        throw new HttpException("Forbidden, can't move this element into another course", HttpStatus.FORBIDDEN);
+      parent = await this.courseService.findOne(dto.parentId);
+    } else {
+      parent = (await this.courseService.findCourseElement(course, dto.parentId)).section;
+    }
+    return await this.courseService.moveElement(course, element, parent, dto.index);
   }
 
   /**

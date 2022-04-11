@@ -116,7 +116,7 @@ export class CourseService {
    * @returns The course loaded with its elements
    * @throws HttpException Course not found
    */
-  async findOneWithElements(courseId: string) {
+  async findCourseWithElements(courseId: string) {
     const course = await this.courseRepository
       .createQueryBuilder('course')
       .leftJoinAndSelect('course.elements', 'elements')
@@ -131,6 +131,17 @@ export class CourseService {
     });*/
     if (!course) throw new HttpException('Course not found', HttpStatus.NOT_FOUND);
     return course;
+  }
+
+  /**
+   * Finds a parent with its direct elements already loaded
+   * @param course Course containing the paretn
+   * @param parent Parent to get the elements of
+   * @returns The parent with the elements directly inside it loaded
+   */
+  async findParentWithElements(course: CourseEntity, parentId: string) {
+    if (parent instanceof CourseEntity) return this.findCourseWithElements(parent.id);
+    if (parent instanceof SectionEntity) return this.findSectionWithElements(course, parentId);
   }
 
   /**
@@ -222,6 +233,38 @@ export class CourseService {
    */
   async updateCourseElement(courseElement: CourseElementEntity, dto: UpdateCourseElementDTO) {
     return await this.courseElRepo.save({ ...dto, id: courseElement.id });
+  }
+
+  /**
+   * Moves an element from a parent into another parent with a positioning index.
+   * Needs to be inside the same course!
+   * @param courseElementWithParent Course element to move with its parent loaded
+   * @param newParent Parent in which the element will be moved
+   * @param index Index of the positioning of the element in the new parent
+   */
+  async moveElement(
+    course: CourseEntity,
+    courseElementWithParent: CourseElementEntity,
+    newParent: CourseEntity | SectionEntity,
+    index: number,
+  ) {
+    // Checks if the element is tried to be moved into another course
+    if (newParent instanceof CourseEntity ? course.id !== newParent.id : course.id !== newParent.courseElement.courseId)
+      throw new HttpException("Forbidden, can't move this element into another course", HttpStatus.FORBIDDEN);
+
+    // Removes the element from the old parent
+    const oldParent = courseElementWithParent.parent;
+    oldParent.elementsOrder = oldParent.elementsOrder.filter(elementId => elementId !== courseElementWithParent.id);
+    if (oldParent instanceof SectionEntity) await this.sectionRepository.save(oldParent);
+    else if (oldParent instanceof CourseEntity) await this.courseRepository.save(oldParent);
+
+    // Inserts the new element inside the newParent
+    if (!newParent.elements) newParent = await this.findParentWithElements(course, newParent.id.toString());
+    newParent.elements.push(courseElementWithParent);
+    newParent.elementsOrder.splice(index, 0, courseElementWithParent.id);
+    await this.saveParent(newParent);
+
+    return { newOrder: newParent.elementsOrder, oldOrder: oldParent.elementsOrder };
   }
 
   /*****-------End of Course Elements-------*****/

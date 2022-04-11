@@ -126,9 +126,9 @@ export class CourseService {
       .andWhere('elements.sectionParentId IS NULL')
       .getOne();
     /*const course = await this.courseRepository.findOne(courseId, {
-      where: { 'elements.section': null },
-      relations: ['elements'],
-    });*/
+			where: { 'elements.section': null },
+			relations: ['elements'],
+		});*/
     if (!course) throw new HttpException('Course not found', HttpStatus.NOT_FOUND);
     return course;
   }
@@ -139,9 +139,9 @@ export class CourseService {
    * @param parent Parent to get the elements of
    * @returns The parent with the elements directly inside it loaded
    */
-  async findParentWithElements(course: CourseEntity, parentId: string) {
+  async findParentWithElements(course: CourseEntity, parent: SectionEntity | CourseEntity) {
     if (parent instanceof CourseEntity) return this.findCourseWithElements(parent.id);
-    if (parent instanceof SectionEntity) return this.findSectionWithElements(course, parentId);
+    if (parent instanceof SectionEntity) return this.findSectionWithElements(course, parent.id.toString());
   }
 
   /**
@@ -152,7 +152,7 @@ export class CourseService {
    * @throws HttpException CourseElement not found
    */
   async findCourseElement(course: CourseEntity, courseElementId: string) {
-    const courseElement = await this.courseElRepo.findOne({ where: { id: courseElementId, course } });
+    const courseElement = await this.courseElRepo.findOne({ where: { id: courseElementId, courseId: course.id } });
     if (!courseElement) throw new HttpException('CourseElement not found', HttpStatus.NOT_FOUND);
     return courseElement;
   }
@@ -166,7 +166,7 @@ export class CourseService {
    */
   async findCourseElementWithParent(course: CourseEntity, courseElementId: string) {
     const courseElement = await this.courseElRepo.findOne({
-      where: { id: courseElementId, course },
+      where: { id: courseElementId, courseId: course.id },
       relations: ['course', 'sectionParent'],
     });
     if (!courseElement) throw new HttpException('CourseElement not found', HttpStatus.NOT_FOUND);
@@ -176,6 +176,7 @@ export class CourseService {
   /**
    * Creates a CourseElement directly in a course or in section with an activity or section inside it
    * @param course Course to create the CourseElement in
+   * @param name Name of the CourseElement to create
    * @param content The activity or section to add inside the CourseElement
    * @param sectionParent (OPTIONAL) The section in which to add the CourseElement.
    *                      If not specified, add the CourseElement directly inside the course
@@ -184,7 +185,7 @@ export class CourseService {
   async createCourseElement(course: CourseEntity, name: string, content: CourseContent, sectionParent?: SectionEntity) {
     const parent = sectionParent || course;
 
-    const createdElement = this.courseElRepo.create({ course, sectionParent, name });
+    const createdElement = this.courseElRepo.create({ course, courseId: course.id, sectionParent, name });
 
     if (content instanceof SectionEntity) createdElement.section = content;
     else createdElement.activity = content;
@@ -238,6 +239,7 @@ export class CourseService {
   /**
    * Moves an element from a parent into another parent with a positioning index.
    * Needs to be inside the same course!
+   * @param course Course in which the move occurs
    * @param courseElementWithParent Course element to move with its parent loaded
    * @param newParent Parent in which the element will be moved
    * @param index Index of the positioning of the element in the new parent
@@ -249,18 +251,26 @@ export class CourseService {
     index: number,
   ) {
     // Checks if the element is tried to be moved into another course
-    if (newParent instanceof CourseEntity ? course.id !== newParent.id : course.id !== newParent.courseElement.courseId)
+    if (newParent instanceof CourseEntity && course.id !== newParent.id)
       throw new HttpException("Forbidden, can't move this element into another course", HttpStatus.FORBIDDEN);
 
     // Removes the element from the old parent
     const oldParent = courseElementWithParent.parent;
-    oldParent.elementsOrder = oldParent.elementsOrder.filter(elementId => elementId !== courseElementWithParent.id);
-    if (oldParent instanceof SectionEntity) await this.sectionRepository.save(oldParent);
-    else if (oldParent instanceof CourseEntity) await this.courseRepository.save(oldParent);
+    if(oldParent.id !== newParent.id) {
+      oldParent.elementsOrder = oldParent.elementsOrder.filter(elementId => elementId !== courseElementWithParent.id);
+      if (oldParent instanceof SectionEntity) await this.sectionRepository.save(oldParent);
+      else if (oldParent instanceof CourseEntity) await this.courseRepository.save(oldParent);
+    } else newParent.elementsOrder = newParent.elementsOrder.filter(elementId => elementId !== courseElementWithParent.id)
 
-    // Inserts the new element inside the newParent
-    if (!newParent.elements) newParent = await this.findParentWithElements(course, newParent.id.toString());
-    newParent.elements.push(courseElementWithParent);
+    console.log(newParent.elementsOrder)
+    if (newParent instanceof CourseEntity) {
+      courseElementWithParent.course = newParent;
+      courseElementWithParent.sectionParent = null;
+      await this.courseElRepo.save({...courseElementWithParent, id: courseElementWithParent.id});
+    } else if(newParent instanceof SectionEntity) {
+      if (!newParent.elements) newParent.elements = (await this.findParentWithElements(course, newParent)).elements;
+      newParent.elements.push(courseElementWithParent);
+    }
     newParent.elementsOrder.splice(index, 0, courseElementWithParent.id);
     await this.saveParent(newParent);
 
@@ -283,8 +293,6 @@ export class CourseService {
       .createQueryBuilder('section')
       .where('section.id = :id', { id: sectionId })
       .leftJoinAndSelect('section.courseElement', 'element')
-      .leftJoinAndSelect('element.section', 'section')
-      .leftJoinAndSelect('element.activity', 'activity')
       .andWhere('element.courseId = :courseId', { courseId: course.id })
       .getOne();
     if (!section) throw new HttpException('Section not found', HttpStatus.NOT_FOUND);

@@ -548,7 +548,7 @@ const Course = () => {
 		newParent: CourseParent,
 	) => {
 		if (!course.current) return;
-
+		console.log(newParent)
 		const { newOrder, oldOrder } = await api.db.courses.moveElement(
 			course.current.id,
 			{

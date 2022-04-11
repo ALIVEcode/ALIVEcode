@@ -238,7 +238,7 @@ export class CourseController {
         throw new HttpException("Forbidden, can't move this element into another course", HttpStatus.FORBIDDEN);
       parent = await this.courseService.findOne(dto.parentId);
     } else {
-      parent = (await this.courseService.findCourseElement(course, dto.parentId)).section;
+      parent = await this.courseService.findSection(course, dto.parentId);
     }
     return await this.courseService.moveElement(course, element, parent, dto.index);
   }

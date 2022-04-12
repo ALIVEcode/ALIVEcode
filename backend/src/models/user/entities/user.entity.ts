@@ -123,6 +123,12 @@ export class UserEntity extends BaseEntity {
 
   @Column({ type: 'varchar', default: '' })
   image: string;
+
+  @Column({ type: 'bigint', default: 4000000000 }) // 4GB
+  storage: number;
+
+  @Column({ type: 'bigint', default: 0 })
+  storageUsed: number;
 }
 
 @ChildEntity(USER_TYPES.STUDENT)

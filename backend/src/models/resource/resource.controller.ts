@@ -31,6 +31,8 @@ import { MyRequest } from 'src/utils/guards/auth.guard';
 import { extname } from 'path';
 import { nanoid } from 'nanoid';
 import { DebugInterceptor } from 'src/utils/interceptors/debug.interceptor';
+import { UserService } from '../user/user.service';
+import { unlink, unlinkSync } from 'fs';
 
 /**
  * All the routes to create/update/delete/get a resource or upload files/videos/images
@@ -40,7 +42,7 @@ import { DebugInterceptor } from 'src/utils/interceptors/debug.interceptor';
 @ApiTags('resources')
 @UseInterceptors(DTOInterceptor)
 export class ResourceController {
-  constructor(private readonly resourceService: ResourceService) {}
+  constructor(private readonly resourceService: ResourceService, private readonly userService: UserService) {}
 
   /**
    * Finds a resource by its id. Needs to be the resource creator
@@ -74,7 +76,7 @@ export class ResourceController {
   @UseInterceptors(
     FileInterceptor('file', {
       limits: {
-        fileSize: 1000000000000,
+        fileSize: 1000000000000, // bytes
       },
       fileFilter: (
         req: MyRequest,
@@ -122,9 +124,18 @@ export class ResourceController {
   )
   async create(
     @User() user: ProfessorEntity,
-    @UploadedFile() file: Express.Multer.File,
     @Body() dto: CreateResourceDTOSimple,
+    @UploadedFile() file: Express.Multer.File,
   ) {
+    if (file) {
+      try {
+        await this.userService.alterStorageUsed(user, file.size);
+      } catch (error) {
+        unlinkSync(file.path);
+        throw error;
+      }
+    }
+
     dto.resource.type = dto.type;
     const errors = await validate(plainToInstance(CreateResourceDTO, dto));
     if (errors.length > 0) throw new HttpException(errors, HttpStatus.BAD_REQUEST);

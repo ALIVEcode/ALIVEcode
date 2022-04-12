@@ -220,9 +220,11 @@ export class UserService {
   async getIoTObjects(user: UserEntity) {
     return await this.iotObjectRepository.find({ where: { creator: user } });
   }
+
   async getResults(user: UserEntity) {
     return await this.userRepository.find({ where: { id: user } });
   }
+
   async getChallenges(user: UserEntity, query: string) {
     return await this.challengeRepo.find({
       where: { creator: user, name: ILike(`%${query ?? ''}%`) },
@@ -231,5 +233,29 @@ export class UserService {
         name: 'ASC',
       },
     });
+  }
+
+  /**
+   * Changes the maximum ammount of storage the user is allowed to
+   * @param user User making the request
+   * @param storage The new value for the ammount of max storage the user is allocated
+   * @returns The updated user
+   */
+  async alterStorageCapacity(user: UserEntity, storage: number) {
+    return await this.userRepository.save({ ...user, storage });
+  }
+
+  /**
+   * Changes the storage usage of the user
+   * @param user User making the request
+   * @param alterValue By how much the storage used should change
+   * @returns The updated user
+   */
+  async alterStorageUsed(user: UserEntity, alterValue: number) {
+    const userStorage = Number(user.storage);
+    const userStorageUsed = Number(user.storageUsed);
+    if (userStorage < userStorageUsed + alterValue)
+      throw new HttpException('Exceeded maximum storage capacity for this user', HttpStatus.FORBIDDEN);
+    return await this.userRepository.save({ ...user, storageUsed: userStorageUsed + alterValue });
   }
 }

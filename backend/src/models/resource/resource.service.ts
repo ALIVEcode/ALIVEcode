@@ -9,6 +9,7 @@ import { ResourceFileEntity } from './entities/resources/resource_file.entity';
 import { ResourceImageEntity } from './entities/resources/resource_image.entity';
 import { ResourceTheoryEntity } from './entities/resources/resource_theory.entity';
 import { ResourceVideoEntity } from './entities/resources/resource_video.entity';
+import { unlinkSync } from 'fs';
 
 /**
  * Service that handles operations with the database
@@ -82,11 +83,13 @@ export class ResourceService {
   }
 
   /**
-   * Deletes a resource based on its id
+   * Deletes a resource and its associated file based on its id
    * @param id Id of the resource to remove
    * @returns The deletion query result
    */
   async remove(id: string) {
+    const res: any = await this.resRepo.findOne(id);
+    if (res.url) unlinkSync(`uploads/resources/${res.url}`);
     return await this.resRepo.delete(id);
   }
 }

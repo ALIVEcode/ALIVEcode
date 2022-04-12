@@ -114,6 +114,7 @@ const Modal = (props: ModalProps) => {
 						<div
 							className={classNames(
 								size === 'sm' && 'w-full phone:2-4/5 tablet:w-1/2 laptop:w-1/3',
+								size === 'md' && 'w-full tablet:w-1/2 laptop:w-1/2',
 								size === 'lg' && 'w-full tablet:w-3/4 desktop:w-3/5',
 								size === 'xl' && 'w-full laptop:2/3 desktop:w-4/5',
 								'overflow-y-auto inline-block align-bottom rounded-lg overflow-hidden shadow-xl transform transition-all bg-[color:var(--background-color)] border-blue-600 focus:border-2',

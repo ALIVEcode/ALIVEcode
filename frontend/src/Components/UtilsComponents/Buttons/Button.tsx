@@ -52,7 +52,7 @@ const Button = forwardRef<
 			<button ref={ref} {...defaultInputOptions} {...props}>
 				<>
 					{children}
-					<FontAwesomeIcon className="ml-2" icon={icon}></FontAwesomeIcon>
+					<FontAwesomeIcon className="ml-2" icon={icon} />
 				</>
 			</button>
 		);

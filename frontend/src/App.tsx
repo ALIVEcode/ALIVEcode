@@ -32,6 +32,7 @@ import Modal from './Components/UtilsComponents/Modal/Modal';
 import NameMigrationForm from './Components/SiteStatusComponents/NameMigrationForm/NameMigrationForm';
 import { useForceUpdate } from './state/hooks/useForceUpdate';
 import { Resource } from './Models/Resource/resource.entity';
+import FeedbackModal from './Components/MainComponents/FeedbackMenu/FeedbackModal';
 
 type GlobalStyleProps = {
 	theme: Theme;
@@ -39,17 +40,17 @@ type GlobalStyleProps = {
 
 const GlobalStyle = createGlobalStyle`
 
-	body {
-		background-color: var(--background-color);
-		color: var(--foreground-color);
-		${({ theme }: GlobalStyleProps) => {
+  body {
+    background-color: var(--background-color);
+    color: var(--foreground-color);
+    ${({ theme }: GlobalStyleProps) => {
 			return theme.name === 'light'
 				? `background-image: url(${background_image_light});`
 				: `background-image: url(${background_image_dark});`;
 		}}
-	}
+  }
 
-	${({ theme }: GlobalStyleProps) => {
+  ${({ theme }: GlobalStyleProps) => {
 		const cssVars = [];
 		for (const [colorName, color] of Object.entries({
 			...commonColors,
@@ -108,6 +109,8 @@ const App = () => {
 	const forceUpdate = useForceUpdate();
 
 	const navigate = useNavigate();
+
+	const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
 
 	const handleSetUser = useCallback(
 		(user: User | null, doesForceUpdate?: boolean) => {
@@ -232,6 +235,17 @@ const App = () => {
 		window.scrollTo(0, 0);
 	}, [pathname]);
 
+	useEffect(() => {
+		const handleFeedbackModalOpen = (e: KeyboardEvent) => {
+			console.log(e.key);
+			if (e.key === 'F2') {
+				e.preventDefault();
+				setIsFeedbackModalOpen(true);
+			}
+		};
+		window.addEventListener('keydown', handleFeedbackModalOpen);
+	}, []);
+
 	return (
 		<div className="App">
 			<ThemeContext.Provider
@@ -268,6 +282,10 @@ const App = () => {
 								<NameMigrationForm setOpen={setOldStudentNameMigrationOpen} />
 							</Modal>
 						)}
+						<FeedbackModal
+							isOpen={isFeedbackModalOpen}
+							setIsOpen={setIsFeedbackModalOpen}
+						/>
 					</UserContext.Provider>
 				)}
 			</ThemeContext.Provider>

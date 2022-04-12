@@ -389,7 +389,7 @@ const api = {
 				resource: T,
 				fields: Omit<T, keyof Resource> | MenuResourceCreationDTO,
 			) => {
-				const dto: MenuResourceCreationDTO =
+				const dto =
 					'uuid' in fields
 						? (fields as MenuResourceCreationDTO)
 						: {
@@ -420,28 +420,43 @@ const api = {
 					ChallengeProgression,
 				),
 			},
-			get: apiGet('challenges/:id', Challenge, false, challenge => {
-				if (challenge.type === CHALLENGE_TYPE.ALIVE)
-					return plainToClass(ChallengeAlive, challenge);
-				if (challenge.type === CHALLENGE_TYPE.CODE)
-					return plainToClass(ChallengeCode, challenge);
-				if (challenge.type === CHALLENGE_TYPE.AI)
-					return plainToClass(ChallengeAI, challenge);
-				if (challenge.type === CHALLENGE_TYPE.IOT)
-					return plainToClass(ChallengeIoT, challenge);
-				return plainToClass(ChallengeCode, challenge);
-			}),
-			update: apiUpdate('challenges/:id', Challenge, challenge => {
-				if (challenge.type === CHALLENGE_TYPE.ALIVE)
-					return plainToClass(ChallengeAlive, challenge);
-				if (challenge.type === CHALLENGE_TYPE.CODE)
-					return plainToClass(ChallengeCode, challenge);
-				if (challenge.type === CHALLENGE_TYPE.AI)
-					return plainToClass(ChallengeAI, challenge);
-				if (challenge.type === CHALLENGE_TYPE.IOT)
-					return plainToClass(ChallengeIoT, challenge);
-				return plainToClass(ChallengeCode, challenge);
-			}),
+			get: apiGet(
+				'challenges/:id',
+				Challenge,
+				false,
+				(challenge: object & { type: CHALLENGE_TYPE }): Challenge => {
+					switch (challenge.type as CHALLENGE_TYPE) {
+						case CHALLENGE_TYPE.CODE:
+							return plainToInstance(ChallengeCode, challenge);
+						case CHALLENGE_TYPE.ALIVE:
+							return plainToInstance(ChallengeAlive, challenge);
+						case CHALLENGE_TYPE.IOT:
+							return plainToInstance(ChallengeIoT, challenge);
+						case CHALLENGE_TYPE.AI:
+							return plainToInstance(ChallengeAI, challenge);
+						default:
+							throw new Error(`Unknown type ${challenge.type}`);
+					}
+				},
+			),
+			update: apiUpdate(
+				'challenges/:id',
+				Challenge,
+				(challenge: object & { type: CHALLENGE_TYPE }): Challenge => {
+					switch (challenge.type as CHALLENGE_TYPE) {
+						case CHALLENGE_TYPE.CODE:
+							return plainToInstance(ChallengeCode, challenge);
+						case CHALLENGE_TYPE.ALIVE:
+							return plainToInstance(ChallengeAlive, challenge);
+						case CHALLENGE_TYPE.IOT:
+							return plainToInstance(ChallengeIoT, challenge);
+						case CHALLENGE_TYPE.AI:
+							return plainToInstance(ChallengeAI, challenge);
+						default:
+							throw new Error(`Unknown type ${challenge.type}`);
+					}
+				},
+			),
 			async query(body: ChallengeQueryDTO) {
 				return (await axios.post('challenges/query', body)).data.map((d: any) =>
 					plainToClass(Challenge, d),

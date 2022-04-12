@@ -24,7 +24,11 @@ const FormModal = ({ children: form, onSubmit, ...props }: FormModalProps) => {
 	};
 
 	return (
-		<Modal hideFooter closeCross {...props}>
+		<Modal
+			hideFooter={'hideFooter' in props ? props['hideFooter'] : true}
+			closeCross
+			{...props}
+		>
 			{makeChildrenWithProps()}
 		</Modal>
 	);

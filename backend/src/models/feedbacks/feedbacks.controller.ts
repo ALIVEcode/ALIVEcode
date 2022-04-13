@@ -1,10 +1,12 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseInterceptors } from '@nestjs/common';
 import { FeedbacksService } from './feedbacks.service';
 import { CreateFeedbackDto } from './dto/create-feedback.dto';
 import { Auth } from '../../utils/decorators/auth.decorator';
 import { Role } from '../../utils/types/roles.types';
+import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
 
 @Controller('feedbacks')
+@UseInterceptors(DTOInterceptor)
 export class FeedbacksController {
   constructor(private readonly feedbacksService: FeedbacksService) {}
 

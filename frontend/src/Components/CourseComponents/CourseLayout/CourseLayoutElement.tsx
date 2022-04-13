@@ -16,15 +16,23 @@ import {
 import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import { Section } from '../../../Models/Course/section.entity';
+import { classNames } from '../../../Types/utils';
+import Draggable from 'react-draggable';
 
 /**
  * Component that wraps a CourseElement to show it properly on the layout view
  *
  * @param element The element wrapped
  *
+ * @param className
+ * @param isFantom
  * @author Mathis Laroche
  */
-const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
+const CourseLayoutElement = ({
+	element,
+	className,
+	isFantom = false,
+}: CourseLayoutElementProps) => {
 	const {
 		renameElement,
 		deleteElement,
@@ -38,7 +46,9 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 	const [isRenaming, setIsRenaming] = useState(false);
 	const inputRef = useRef<HTMLInputElement>();
 	const [isDragged, setIsDragged] = useState(false);
+	const dragRef = useRef<HTMLDivElement>(null);
 	const forceUpdate = useForceUpdate();
+
 	/**
 	 * Handles the renaming of an element
 	 *
@@ -71,7 +81,6 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 	const onDragOver = useCallback(
 		(event: React.DragEvent<HTMLDivElement | SVGElement>) => {
 			event.preventDefault();
-			setIsDragged(false);
 		},
 		[],
 	);
@@ -98,13 +107,21 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 	);
 
 	return (
-		<div className="py-2 pl-2 laptop:pl-3 desktop:pl-4">
+		<div
+			className={classNames('py-2 pl-2 laptop:pl-3 desktop:pl-4', className)}
+		>
 			<div className="group text-base flex items-center" onClick={() => {}}>
 				<div
 					draggable
 					onDragStart={e => onDragStart(e)}
 					onDragOver={e => onDragOver(e)}
+					onDragEnd={() => setIsDragged(false)}
 					onDrop={e => onDrop(e)}
+					onDrag={event => {
+						if (!dragRef.current) return;
+						dragRef.current.style.top = event.pageY + 'px';
+						dragRef.current.style.left = event.pageX + 'px';
+					}}
 				>
 					<FontAwesomeIcon
 						icon={faBars}
@@ -190,6 +207,11 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 					{t('action.irreversible')}
 				</p>
 			</AlertConfirm>
+			{isDragged && !isFantom && (
+				<div ref={dragRef} className="absolute opacity-75">
+					<CourseLayoutElement element={element} isFantom />
+				</div>
+			)}
 		</div>
 	);
 };

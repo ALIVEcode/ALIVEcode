@@ -249,7 +249,6 @@ const App = () => {
 	const {
 		playing: cheerPlaying,
 		play: playCheer,
-		stop: stopCheer,
 	} = useAudio('cheer.mp3');
 
 	return (

@@ -332,14 +332,14 @@ const api = {
 				CourseElement,
 			),
 			addContent: async (
-				course_id: string,
+				courseId: string,
 				courseContent: CourseContent,
 				name: string,
 				sectionParentId?: number,
 			) => {
 				const contentAndOrder = (
 					await axios.post(
-						`courses/${course_id}/${
+						`courses/${courseId}/${
 							courseContent instanceof Activity ? 'activities' : 'sections'
 						}`,
 						{

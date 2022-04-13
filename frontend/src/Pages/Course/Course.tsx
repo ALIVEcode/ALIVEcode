@@ -42,6 +42,8 @@ import {
 	CourseElementActivity,
 	CourseElementSection,
 } from '../../Models/Course/course_element.entity';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSkull } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Course page that shows the content of a course
@@ -73,6 +75,7 @@ const Course = () => {
 	const [courseTitle, setCourseTitle] = useState(course.current?.name);
 	const [editTitle, setEditTitle] = useState(false);
 	const [courseNavigationOpen, setCourseNavigationOpen] = useState(true);
+	const [isCursed, setIsCursed] = useState(false);
 
 	/**
 	 * Check if the current logged in user is the creator of the course
@@ -379,12 +382,13 @@ const Course = () => {
 		sectionParent?: Section,
 	) => {
 		if (!course.current || !courseElements.current) return;
-		const { courseElement, newOrder } = await api.db.courses.addContent(
-			course.current.id,
-			content,
-			name,
-			sectionParent?.id,
-		);
+		console.log(course.current);
+		const { courseElement, newOrder } = await api.db.courses
+			.addContent(course.current.id, content, name, sectionParent?.id)
+			.catch(e => {
+				setIsCursed(true);
+				throw e;
+			});
 
 		courseElement.initialize(course.current, sectionParent);
 		const parent = sectionParent ?? course.current;
@@ -548,7 +552,13 @@ const Course = () => {
 		newParent: CourseParent,
 	) => {
 		if (!course.current) return;
-		console.log(newParent)
+		if (
+			element.isSection &&
+			newParent instanceof Section &&
+			element === newParent.courseElement
+		)
+			return;
+
 		const { newOrder, oldOrder } = await api.db.courses.moveElement(
 			course.current.id,
 			{
@@ -659,6 +669,12 @@ const Course = () => {
 	if (!course.current) return <></>;
 	return (
 		<CourseContext.Provider value={contextValue}>
+			{isCursed && (
+				<div className="flex flex-row bg-red-600 text-white text-center justify-center">
+					<h2 className="text-2xl">Your course is cursed</h2>
+					<FontAwesomeIcon icon={faSkull} className="ml-2 text-white mt-2" />
+				</div>
+			)}
 			<div className="w-full h-full flex flex-col bg-[color:var(--background-color)] text-[color:var(--foreground-color)]">
 				<div className="border-b border-[color:var(--bg-shade-four-color)]">
 					<div className="text-4xl text-left text-[color:var(--foreground-color)] pl-5 pt-3 pb-3">
@@ -668,9 +684,9 @@ const Course = () => {
 									ref={titleRef}
 									type="text"
 									autoFocus
-									onBlur={() => {
+									onBlur={async () => {
 										if (!titleRef.current) return;
-										setTitle(titleRef.current.value);
+										await setTitle(titleRef.current.value);
 										setCourseTitle(titleRef.current.value);
 										setEditTitle(false);
 									}}

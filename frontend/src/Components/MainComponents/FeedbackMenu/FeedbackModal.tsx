@@ -11,7 +11,8 @@ import { useState } from 'react';
 import { FeedBackTypes } from '../../../Models/Feedbacks/entities/feedback.entity';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { classNames } from '../../../Types/utils';
-import { Popup } from 'reactjs-popup';
+import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
+import Form from '../../UtilsComponents/Form/Form';
 
 const FeedbackModal = ({
 	isOpen,
@@ -19,8 +20,9 @@ const FeedbackModal = ({
 	onOpen,
 	onClose,
 }: FeedbackModalProps) => {
-	const handleSubmit = (values: any) => {
-		console.log(values);
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		console.log(e);
 	};
 
 	const [feedbackType, setFeedbackType] = useState<FeedBackTypes>();
@@ -67,12 +69,49 @@ const FeedbackModal = ({
 			open={isOpen}
 			setOpen={setIsOpen}
 			size="md"
-			onSubmit={res => handleSubmit(res)}
+			onSubmit={res => handleSubmit(res as any)}
 			title="What's on your mind?"
 			onShow={() => {
 				setFeedbackType(undefined);
 			}}
 		>
+			{/*<Form
+				name="FeedbackForm"
+				url="feedbacks"
+				action={FORM_ACTION.POST}
+				inputGroups={[
+					{
+						name: 'feedbackType',
+						inputType: 'hidden',
+						required: true,
+						selectOptions: {
+							options: [
+								{
+									value: FeedBackTypes.ILike,
+									label: 'Something I like',
+								},
+								{
+									value: FeedBackTypes.IDontLike,
+									label: "Something I don't like",
+								},
+								{
+									value: FeedBackTypes.NewIdea,
+									label: 'Something I would like to see',
+								},
+								{
+									value: FeedBackTypes.Bug,
+									label: 'A bug I found',
+								},
+							],
+						},
+					},
+					{
+						name: 'message',
+						inputType: 'textarea',
+						required: true,
+					},
+				]}
+			/>*/}
 			<div className="flex justify-center flex-col">
 				<div className="flex flex-row justify-between">
 					<ChoiceButton
@@ -120,8 +159,8 @@ const FeedbackModal = ({
 					rows={2}
 					cols={20}
 				/>
-				{/*	a box asking to send anonymously information about the person's computer when sending the feedback */}
-				<div className="flex flex-row justify-between pt-4 pb-3 border-b border-b-[color:var(--fg-shade-four-color)]">
+				{/* TODO implement that in the backend ↓ */}
+				{/*<div className="flex flex-row justify-between pt-4 pb-3 border-b border-b-[color:var(--fg-shade-four-color)]">
 					<form>
 						<input type="checkbox" className="pl-2" checked />
 						<label className="pl-3">
@@ -156,7 +195,7 @@ const FeedbackModal = ({
 							to be sent anonymously with my feedback.
 						</label>
 					</form>
-				</div>
+				</div>*/}
 				{/* cancel and send buttons */}
 				<div className="flex flex-row justify-end pt-4 pb-3">
 					<Button

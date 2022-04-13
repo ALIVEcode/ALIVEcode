@@ -237,7 +237,6 @@ const App = () => {
 
 	useEffect(() => {
 		const handleFeedbackModalOpen = (e: KeyboardEvent) => {
-			console.log(e.key);
 			if (e.key === 'F2') {
 				e.preventDefault();
 				setIsFeedbackModalOpen(true);

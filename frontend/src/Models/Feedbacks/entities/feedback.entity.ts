@@ -1,10 +1,10 @@
 export enum FeedBackTypes {
-  ILike,
-  IDontLike,
-  Bug,
-  NewIdea,
+	ILike,
+	IDontLike,
+	Bug,
+	NewIdea,
 }
 
-export class Feedback {
-  feedbackType: FeedBackTypes;
+export class FeedbackEntity {
+	feedbackType: FeedBackTypes;
 }

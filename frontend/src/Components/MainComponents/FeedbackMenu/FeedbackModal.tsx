@@ -45,7 +45,7 @@ const FeedbackModal = ({
 			url: {
 				description: 'The url of the page you are on right now',
 				getIt: () => {
-					return window.location;
+					return window.location.href;
 				},
 			},
 			browser: {

@@ -141,7 +141,7 @@ const ResourceMenu = ({
 							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 								setName(e.target.value)
 							}
-						></FormInput>
+						/>
 					</div>
 					<div className="w-full h-full overflow-y-auto">
 						<ResourceSection

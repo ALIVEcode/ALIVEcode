@@ -43,6 +43,7 @@ import { ChatModule } from './socket/chatSocket/chatSocket.module';
 import { TopicsModule } from './models/social/topics/topics.module';
 import { AdminModule } from '@adminjs/nestjs';
 import { ResourceModule } from './models/resource/resource.module';
+import { FeedbacksModule } from './models/feedbacks/feedbacks.module';
 
 adminjs.registerAdapter({ Database, Resource });
 
@@ -95,6 +96,7 @@ adminjs.registerAdapter({ Database, Resource });
     ChatModule,
     TopicsModule,
     ResourceModule,
+    FeedbacksModule,
   ],
   controllers: [AppController],
   providers: [AppService, MaintenanceService, UserService],

@@ -48,6 +48,8 @@ import { GetMimeType } from '../Types/files.type';
 import { IoTProjectObject } from './Iot/IoTprojectObject.entity';
 import { IOT_EVENT } from './Iot/IoTProjectClasses/IoTTypes';
 import { MoveElementDTO } from './Course/dtos/MoveElement.dto';
+import { FeedbackEntity } from './Feedbacks/entities/feedback.entity';
+import { CreateFeedbackDto } from './Feedbacks/dto/create-feedback.dto';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;
@@ -129,14 +131,18 @@ const apiDelete = <S extends string>(url: S) => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const apiCreate = <T>(moduleName: string, target: ClassConstructor<T>) => {
-	return async (fields: any): Promise<T> => {
+const apiCreate = <T, DTO = any>(
+	moduleName: string,
+	target: ClassConstructor<T>,
+	dto?: ClassConstructor<DTO>,
+) => {
+	return async (fields: DTO): Promise<T> => {
 		if (process.env.DEBUG_AXIOS === 'true') {
 			console.log('POST : ' + moduleName);
 			console.log(moduleName);
 		}
 		const data = (await axios.post(moduleName, fields)).data;
-		return plainToClass(target, data);
+		return plainToInstance(target, data);
 	};
 };
 
@@ -163,6 +169,9 @@ const apiUpdate = <T, S extends string>(
 
 const api = {
 	db: {
+		feedback: {
+			create: apiCreate('feedbacks', FeedbackEntity, CreateFeedbackDto),
+		},
 		maintenances: {
 			async getMaintenances() {
 				return (await axios.get('maintenances')).data.map((d: any) =>

@@ -25,45 +25,51 @@ const Button = forwardRef<
 			React.ButtonHTMLAttributes<HTMLButtonElement>,
 			HTMLButtonElement
 		>
->(({ variant, onClick, to, children, className, icon, ...props }, ref) => {
-	const navigate = useNavigate();
-
-	const customOnClick = (
-		e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+>(
+	(
+		{ variant, onClick, to, children, className, icon, noHoverColor, ...props },
+		ref,
 	) => {
-		onClick ? onClick(e) : to && navigate(to);
-	};
+		const navigate = useNavigate();
 
-	const defaultInputOptions = {
-		className: classNames(
-			'py-2 px-3 rounded-md text-white text-base font-medium transition-colors hover:bg-[color:var(--contrast-color)]',
-			variant === 'primary' && 'bg-[color:var(--primary-color)]',
-			variant === 'secondary' && 'bg-[color:var(--secondary-color)]',
-			variant === 'third' && 'bg-[color:var(--third-color)]',
-			variant === 'danger' && 'bg-[color:var(--danger-color)]',
-			className,
-		),
-		variant,
-		onClick: customOnClick,
-	};
+		const customOnClick = (
+			e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+		) => {
+			onClick ? onClick(e) : to && navigate(to);
+		};
 
-	if (icon) {
+		const defaultInputOptions = {
+			className: classNames(
+				'py-2 px-3 rounded-md text-white text-base font-medium transition-colors',
+				!noHoverColor && 'hover:bg-[color:var(--contrast-color)]',
+				variant === 'primary' && 'bg-[color:var(--primary-color)]',
+				variant === 'secondary' && 'bg-[color:var(--secondary-color)]',
+				variant === 'third' && 'bg-[color:var(--third-color)]',
+				variant === 'danger' && 'bg-[color:var(--danger-color)]',
+				className,
+			),
+			variant,
+			onClick: customOnClick,
+		};
+
+		if (icon) {
+			return (
+				<button ref={ref} {...defaultInputOptions} {...props}>
+					<>
+						{children}
+						<FontAwesomeIcon className="ml-2" icon={icon} />
+					</>
+				</button>
+			);
+		}
+
 		return (
 			<button ref={ref} {...defaultInputOptions} {...props}>
-				<>
-					{children}
-					<FontAwesomeIcon className="ml-2" icon={icon} />
-				</>
+				{children}
 			</button>
 		);
-	}
-
-	return (
-		<button ref={ref} {...defaultInputOptions} {...props}>
-			{children}
-		</button>
-	);
-});
+	},
+);
 
 export default Button;
 

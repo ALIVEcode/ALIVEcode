@@ -1,34 +1,27 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { FeedbacksService } from './feedbacks.service';
 import { CreateFeedbackDto } from './dto/create-feedback.dto';
-import { UpdateFeedbackDto } from './dto/update-feedback.dto';
+import { Auth } from '../../utils/decorators/auth.decorator';
+import { Role } from '../../utils/types/roles.types';
 
 @Controller('feedbacks')
 export class FeedbacksController {
   constructor(private readonly feedbacksService: FeedbacksService) {}
 
   @Post()
-  create(@Body() createFeedbackDto: CreateFeedbackDto) {
-    return this.feedbacksService.create(createFeedbackDto);
+  async create(@Body() createFeedbackDto: CreateFeedbackDto) {
+    return await this.feedbacksService.create(createFeedbackDto);
   }
 
   @Get()
-  findAll() {
-    return this.feedbacksService.findAll();
+  @Auth(Role.STAFF)
+  async findAll() {
+    return await this.feedbacksService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.feedbacksService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFeedbackDto: UpdateFeedbackDto) {
-    return this.feedbacksService.update(+id, updateFeedbackDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.feedbacksService.remove(+id);
+  @Auth(Role.STAFF)
+  async findOne(@Param('id') id: string) {
+    return await this.feedbacksService.findOne(+id);
   }
 }

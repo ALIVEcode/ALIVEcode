@@ -2,7 +2,7 @@ import './App.css';
 import { RouterSwitch } from './Router/RouterSwitch/RouterSwitch';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from './state/contexts/UserContext';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import useRoutes from './state/hooks/useRoutes';
 import {
@@ -33,6 +33,8 @@ import NameMigrationForm from './Components/SiteStatusComponents/NameMigrationFo
 import { useForceUpdate } from './state/hooks/useForceUpdate';
 import { Resource } from './Models/Resource/resource.entity';
 import FeedbackModal from './Components/MainComponents/FeedbackMenu/FeedbackModal';
+import Confetti from 'react-confetti';
+import useAudio from './state/hooks/useAudio';
 
 type GlobalStyleProps = {
 	theme: Theme;
@@ -107,7 +109,6 @@ const App = () => {
 	const alert = useAlert();
 	const { pathname } = useLocation();
 	const forceUpdate = useForceUpdate();
-
 	const navigate = useNavigate();
 
 	const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
@@ -245,6 +246,12 @@ const App = () => {
 		window.addEventListener('keydown', handleFeedbackModalOpen);
 	}, []);
 
+	const {
+		playing: cheerPlaying,
+		play: playCheer,
+		stop: stopCheer,
+	} = useAudio('cheer.mp3');
+
 	return (
 		<div className="App">
 			<ThemeContext.Provider
@@ -281,13 +288,24 @@ const App = () => {
 								<NameMigrationForm setOpen={setOldStudentNameMigrationOpen} />
 							</Modal>
 						)}
-						<FeedbackModal
-							isOpen={isFeedbackModalOpen}
-							setIsOpen={setIsFeedbackModalOpen}
-						/>
+						{isFeedbackModalOpen && (
+							<FeedbackModal
+								isOpen={isFeedbackModalOpen}
+								setIsOpen={setIsFeedbackModalOpen}
+								onSuccess={async () => {
+									await playCheer();
+								}}
+								onFailure={() =>
+									alert.error(
+										'An error occurred while sending your feedback, please try again later.',
+									)
+								}
+							/>
+						)}
 					</UserContext.Provider>
 				)}
 			</ThemeContext.Provider>
+			{cheerPlaying && <Confetti className="w-full overflow-hidden" />}
 		</div>
 	);
 };

@@ -2,7 +2,7 @@ import { RESOURCE_TYPE } from '../../../Models/Resource/resource.entity';
 import { useForm } from 'react-hook-form';
 import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
 import api from '../../../Models/api';
-import { useState, useContext, useMemo, useEffect } from 'react';
+import React, { useState, useContext, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserContext } from '../../../state/contexts/UserContext';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
@@ -79,7 +79,7 @@ const MenuResourceCreation = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	if (!resources) return <LoadingScreen></LoadingScreen>;
+	if (!resources) return <LoadingScreen />;
 
 	/**
 	 * Handle the chosing of a new resource type for the resource creation.

@@ -32,7 +32,7 @@ import { ResourceEntity } from '../resource/entities/resource.entity';
       Result,
     ]),
   ],
-  exports: [TypeOrmModule],
+  exports: [TypeOrmModule, UserService],
   controllers: [UserController],
   providers: [UserService],
 })

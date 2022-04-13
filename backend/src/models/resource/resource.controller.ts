@@ -12,7 +12,7 @@ import {
   UploadedFile,
 } from '@nestjs/common';
 import { ResourceService } from './resource.service';
-import { ResourceEntity, RESOURCE_TYPE } from './entities/resource.entity';
+import { ResourceEntity } from './entities/resource.entity';
 import { Auth } from '../../utils/decorators/auth.decorator';
 import { Role } from '../../utils/types/roles.types';
 import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
@@ -26,13 +26,8 @@ import { plainToInstance } from 'class-transformer';
 import { HttpStatus } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { MyRequest } from 'src/utils/guards/auth.guard';
-import { extname } from 'path';
-import { nanoid } from 'nanoid';
-import { DebugInterceptor } from 'src/utils/interceptors/debug.interceptor';
 import { UserService } from '../user/user.service';
-import { unlink, unlinkSync } from 'fs';
+import { unlink } from 'fs/promises';
 
 /**
  * All the routes to create/update/delete/get a resource or upload files/videos/images
@@ -73,55 +68,7 @@ export class ResourceController {
    */
   @Post()
   @Auth(Role.PROFESSOR)
-  @UseInterceptors(
-    FileInterceptor('file', {
-      limits: {
-        fileSize: 1000000000000, // bytes
-      },
-      fileFilter: (
-        req: MyRequest,
-        file: Express.Multer.File,
-        callback: (error: Error, acceptFile: boolean) => void,
-      ) => {
-        req.body = JSON.parse(req.body.data);
-        const { type } = req.body;
-
-        if (!type) callback(new HttpException('Missing type', HttpStatus.BAD_REQUEST), null);
-
-        let acceptedMimetypes = [];
-        switch (type) {
-          case RESOURCE_TYPE.IMAGE:
-            acceptedMimetypes = ['image/jpeg', 'image/jpg', 'image/png'];
-            break;
-          case RESOURCE_TYPE.VIDEO:
-            acceptedMimetypes = ['video/mp4', 'video/mpeg', 'video/ogg', 'video/mp2t'];
-            break;
-        }
-
-        if (type !== RESOURCE_TYPE.FILE && !acceptedMimetypes.includes(file.mimetype)) {
-          return callback(
-            new HttpException(
-              `Invalid filetype, accepted types: ${acceptedMimetypes.join(', ')}`,
-              HttpStatus.BAD_REQUEST,
-            ),
-            false,
-          );
-        }
-
-        callback(null, true);
-      },
-      storage: diskStorage({
-        destination: 'uploads/resources',
-        filename: (req: MyRequest, file: Express.Multer.File, callback: (error: Error, filename: string) => void) => {
-          const extension = extname(file.originalname);
-          const filename = `${nanoid()}${extension}`;
-          req.body.resource.url = filename;
-          req.body.resource.extension = extension;
-          callback(null, filename);
-        },
-      }),
-    }),
-  )
+  @UseInterceptors(FileInterceptor('file'))
   async create(
     @User() user: ProfessorEntity,
     @Body() dto: CreateResourceDTOSimple,
@@ -130,9 +77,9 @@ export class ResourceController {
     if (file) {
       try {
         await this.userService.alterStorageUsed(user, file.size);
-      } catch (error) {
-        unlinkSync(file.path);
-        throw error;
+      } catch (err) {
+        unlink(file.path);
+        throw err;
       }
     }
 

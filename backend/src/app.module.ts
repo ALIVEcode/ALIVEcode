@@ -71,7 +71,6 @@ adminjs.registerAdapter({ Database, Resource });
         },
       }),
     }),
-
     UserModule,
     ClassroomModule,
     ChallengeModule,

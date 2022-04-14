@@ -83,7 +83,7 @@ export type IoTUpdateDocumentRequestFromObject = {
 };
 
 export type IoTGetDocRequestFromObject = {
-  objectId: string;
+  id: string;
 };
 
 export type IoTGetFieldRequestFromObject = {

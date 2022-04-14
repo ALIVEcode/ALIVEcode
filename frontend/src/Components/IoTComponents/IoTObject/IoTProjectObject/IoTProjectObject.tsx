@@ -105,6 +105,13 @@ const IoTProjectObject = ({
 						)
 					) : target ? (
 						<>
+							<Link
+								className="cursor-pointer text-center tablet:text-left"
+								onClick={() => setOpen(true)}
+							>
+								{object.script ? 'Change script' : 'Add script'}
+							</Link>
+							<br />
 							{object.iotObject.currentIoTProjectId !== project?.id ? (
 								<Link
 									className="cursor-pointer text-center tablet:text-left"
@@ -120,13 +127,6 @@ const IoTProjectObject = ({
 									Disconnect object from project
 								</Link>
 							)}
-							<br />
-							<Link
-								className="cursor-pointer text-center tablet:text-left"
-								onClick={() => setOpen(true)}
-							>
-								{object.script ? 'Change script' : 'Add script'}
-							</Link>
 						</>
 					) : (
 						<Link

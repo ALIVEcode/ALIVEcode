@@ -266,8 +266,8 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
 
   @Post(IOT_EVENT.GET_DOC)
   async getAll(@Body() payload: IoTGetDocRequestFromObject) {
-    if (!payload.objectId) throw new HttpException('Bad payload', HttpStatus.BAD_REQUEST);
-    const client = Client.getClientById(payload.objectId);
+    if (!payload.id) throw new HttpException('Bad payload', HttpStatus.BAD_REQUEST);
+    const client = Client.getClientById(payload.id);
     if (!client) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     if (!client.projectId)
       throw new HttpException(

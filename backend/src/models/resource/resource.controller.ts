@@ -28,6 +28,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UserService } from '../user/user.service';
 import { unlink } from 'fs/promises';
+import { FileService } from '../file/file.service';
 
 /**
  * All the routes to create/update/delete/get a resource or upload files/videos/images
@@ -37,7 +38,11 @@ import { unlink } from 'fs/promises';
 @ApiTags('resources')
 @UseInterceptors(DTOInterceptor)
 export class ResourceController {
-  constructor(private readonly resourceService: ResourceService, private readonly userService: UserService) {}
+  constructor(
+    private readonly resourceService: ResourceService,
+    private readonly userService: UserService,
+    private readonly fileService: FileService,
+  ) {}
 
   /**
    * Finds a resource by its id. Needs to be the resource creator
@@ -76,6 +81,9 @@ export class ResourceController {
   ) {
     if (file) {
       try {
+        const createdFile = await this.fileService.create(file);
+        // dto.resource.fileId = createdFile.id;
+        dto.resource.file = createdFile;
         await this.userService.alterStorageUsed(user, file.size);
       } catch (err) {
         unlink(file.path);

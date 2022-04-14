@@ -6,6 +6,8 @@ import {
   TableInheritance,
   ManyToOne,
   PrimaryGeneratedColumn,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 import { IsNotEmpty, IsEmpty } from 'class-validator';
 import { Exclude } from 'class-transformer';
@@ -18,6 +20,7 @@ import { ResourceFileEntity } from './resources/resource_file.entity';
 import { ResourceImageEntity } from './resources/resource_image.entity';
 import { ResourceTheoryEntity } from './resources/resource_theory.entity';
 import { ResourceVideoEntity } from './resources/resource_video.entity';
+import { FileEntity } from 'src/models/file/entities/file.entity';
 
 /** Enum of all the type of resources */
 export enum RESOURCE_TYPE {
@@ -79,6 +82,11 @@ export class ResourceEntity {
   @Exclude({ toClassOnly: true })
   @IsEmpty()
   creator: ProfessorEntity;
+
+  /** File associated with the resource */
+  @OneToOne(() => FileEntity, { eager: true })
+  @JoinColumn()
+  file: FileEntity;
 
   /**
    * Original resource. Populated if the resource was copied

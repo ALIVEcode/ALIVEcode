@@ -5,13 +5,12 @@ import { extname } from 'path';
 import { RESOURCE_TYPE } from 'src/models/resource/entities/resource.entity';
 import { MyRequest } from '../guards/auth.guard';
 import { nanoid } from 'nanoid';
-import { ProfessorEntity } from 'src/models/user/entities/user.entity';
 
-export const createMulterOptions = (req: any): MulterModuleOptions => {
-  const user = req.req.user;
-  console.log(user);
+export const createMulterOptions = (injected: any): MulterModuleOptions => {
+  const req: MyRequest = injected.req;
+  const { user } = req;
   const maxFileSize = Number(user?.storage) - Number(user?.storageUsed);
-  console.log(maxFileSize);
+
   return {
     limits: {
       fileSize: maxFileSize || 0,
@@ -46,12 +45,7 @@ export const createMulterOptions = (req: any): MulterModuleOptions => {
         );
       }
 
-      try {
-        // await userService.alterStorageUsed(req.user, file.size);
-        callback(null, true);
-      } catch (err) {
-        callback(err, false);
-      }
+      callback(null, true);
     },
     storage: diskStorage({
       destination: 'uploads/resources',

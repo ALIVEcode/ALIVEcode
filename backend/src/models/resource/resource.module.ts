@@ -18,8 +18,10 @@ import { ResourceImageEntity } from './entities/resources/resource_image.entity'
 import { ResourceTheoryEntity } from './entities/resources/resource_theory.entity';
 import { ResourceVideoEntity } from './entities/resources/resource_video.entity';
 import { MulterModule } from '@nestjs/platform-express';
-import { createMulterOptions } from 'src/utils/upload/multer-config.service';
-import { CurrentUserModule } from 'src/utils/upload/current-user.module';
+import { createMulterOptions } from 'src/utils/upload/MulterConfig.service';
+import { CurrentRequestModule } from 'src/utils/upload/CurrentRequest.module';
+import { FileService } from '../file/file.service';
+import { FileEntity } from '../file/entities/file.entity';
 
 /**
  * Module for the resource nestjs resource
@@ -43,14 +45,15 @@ import { CurrentUserModule } from 'src/utils/upload/current-user.module';
       IoTProjectEntity,
       IoTObjectEntity,
       ChallengeEntity,
+      FileEntity,
     ]),
     MulterModule.registerAsync({
-      imports: [UserModule, CurrentUserModule],
+      imports: [UserModule, CurrentRequestModule],
       useFactory: createMulterOptions,
-      inject: [UserService, 'CURRENT_USER'],
+      inject: [UserService, 'CURRENT_REQUEST'],
     }),
   ],
   controllers: [ResourceController],
-  providers: [ResourceService, UserService],
+  providers: [ResourceService, UserService, FileService],
 })
 export class ResourceModule {}

@@ -29,6 +29,8 @@ import { ResourceTheoryEntity } from '../resource/entities/resources/resource_th
 import { BundleController } from './bundle.controller';
 import { BundleEntity } from './entities/bundles/bundle.entity';
 import { CourseTemplateEntity } from './entities/bundles/course_template.entity';
+import { FileEntity } from '../file/entities/file.entity';
+import { FileService } from '../file/file.service';
 
 /**
  * Module for the course nestjs resource
@@ -61,9 +63,10 @@ import { CourseTemplateEntity } from './entities/bundles/course_template.entity'
       ResourceTheoryEntity,
       BundleEntity,
       CourseTemplateEntity,
+      FileEntity,
     ]),
   ],
   controllers: [CourseController, BundleController],
-  providers: [CourseService, UserService, ResourceService],
+  providers: [CourseService, UserService, ResourceService, FileService],
 })
 export class CourseModule {}

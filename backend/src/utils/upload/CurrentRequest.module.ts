@@ -5,12 +5,12 @@ import { MyRequest } from '../guards/auth.guard';
 @Module({
   providers: [
     {
-      provide: 'CURRENT_USER',
+      provide: 'CURRENT_REQUEST',
       inject: [REQUEST],
       useFactory: (req: MyRequest) => req.user,
       scope: Scope.REQUEST,
     },
   ],
-  exports: ['CURRENT_USER'],
+  exports: ['CURRENT_REQUEST'],
 })
-export class CurrentUserModule {}
+export class CurrentRequestModule {}

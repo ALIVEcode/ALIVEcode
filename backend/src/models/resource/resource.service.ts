@@ -4,12 +4,13 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ResourceChallengeEntity } from './entities/resources/resource_challenge.entity';
 import { CreateResourceDTO, CreateResourceDTOSimple } from './dto/CreateResource.dto';
-import { ProfessorEntity } from '../user/entities/user.entity';
+import { ProfessorEntity, UserEntity } from '../user/entities/user.entity';
 import { ResourceFileEntity } from './entities/resources/resource_file.entity';
 import { ResourceImageEntity } from './entities/resources/resource_image.entity';
 import { ResourceTheoryEntity } from './entities/resources/resource_theory.entity';
 import { ResourceVideoEntity } from './entities/resources/resource_video.entity';
 import { unlinkSync } from 'fs';
+import { FileEntity } from '../file/entities/file.entity';
 
 /**
  * Service that handles operations with the database
@@ -25,6 +26,8 @@ export class ResourceService {
     @InjectRepository(ResourceImageEntity) private readonly resImageRepo: Repository<ResourceImageEntity>,
     @InjectRepository(ResourceTheoryEntity) private readonly resTheoryRepo: Repository<ResourceTheoryEntity>,
     @InjectRepository(ResourceVideoEntity) private readonly resVideoRepo: Repository<ResourceVideoEntity>,
+    @InjectRepository(UserEntity) private readonly userRepo: Repository<UserEntity>,
+    @InjectRepository(FileEntity) private readonly fileRepo: Repository<FileEntity>,
   ) {}
 
   /**
@@ -46,8 +49,9 @@ export class ResourceService {
         return await this.resTheoryRepo.save({ ...dto.resource, type: RESOURCE_TYPE.THEORY });
       case RESOURCE_TYPE.VIDEO:
         return await this.resVideoRepo.save({ ...dto.resource, type: RESOURCE_TYPE.VIDEO });
+      default:
+        throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     }
-    throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
   }
 
   /**
@@ -88,8 +92,21 @@ export class ResourceService {
    * @returns The deletion query result
    */
   async remove(id: string) {
-    const res: any = await this.resRepo.findOne(id);
-    if (res.url) unlinkSync(`uploads/resources/${res.url}`);
-    return await this.resRepo.delete(id);
+    const res = await this.resRepo.findOne(id);
+    if (!res) throw new HttpException('Resource not found', HttpStatus.NOT_FOUND);
+
+    const deletedRes = await this.resRepo.delete(id);
+
+    const { file } = res;
+    if (file) {
+      unlinkSync(file.path);
+      await this.fileRepo.delete(file.id);
+      await this.userRepo.save({
+        ...res.creator,
+        storageUsed: res.creator.storageUsed - file.size,
+      });
+    }
+
+    return deletedRes;
   }
 }

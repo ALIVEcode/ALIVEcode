@@ -75,7 +75,7 @@ const IoTHome = (props: iotHomeProps) => {
 				<div className="w-full h-full flex justify-center items-center p-4 text-center laptop:justify-start laptop:text-left laptop:p-20 laptop:pl-40 z-10 relative">
 					<div>
 						<div className="text-5xl laptop:text-7xl text-gray-50 font-light mb-5">
-							ALIVEcode IoT
+							ALIVEIoT
 						</div>
 						<div className="text-2xl laptop:text-3xl desktop:text-4xl text-gray-200 font-extralight mb-10">
 							{t('home.iot.desc')}

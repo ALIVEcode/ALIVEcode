@@ -18,6 +18,7 @@ import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import { Section } from '../../../Models/Course/section.entity';
 import { classNames } from '../../../Types/utils';
 import Draggable from 'react-draggable';
+import DraggedCourseLayoutElement from './DraggedCourseLayoutElement';
 
 /**
  * Component that wraps a CourseElement to show it properly on the layout view
@@ -31,7 +32,6 @@ import Draggable from 'react-draggable';
 const CourseLayoutElement = ({
 	element,
 	className,
-	isFantom = false,
 }: CourseLayoutElementProps) => {
 	const {
 		renameElement,
@@ -47,7 +47,7 @@ const CourseLayoutElement = ({
 	const inputRef = useRef<HTMLInputElement>();
 	const [isDragged, setIsDragged] = useState(false);
 	const dragRef = useRef<HTMLDivElement>(null);
-	const forceUpdate = useForceUpdate();
+	const courseLayoutElementRef = useRef<HTMLDivElement>(null);
 
 	/**
 	 * Handles the renaming of an element
@@ -72,6 +72,10 @@ const CourseLayoutElement = ({
 	const onDragStart = useCallback(
 		(event: React.DragEvent<HTMLDivElement | SVGElement>) => {
 			event.dataTransfer.setData('text/plain', element.id.toString());
+			if (!courseLayoutElementRef.current) {
+				return;
+			}
+			event.dataTransfer.setDragImage(courseLayoutElementRef.current, 25, 40);
 			console.log('drag start');
 			setIsDragged(true);
 		},
@@ -109,6 +113,7 @@ const CourseLayoutElement = ({
 	return (
 		<div
 			className={classNames('py-2 pl-2 laptop:pl-3 desktop:pl-4', className)}
+			ref={courseLayoutElementRef}
 		>
 			<div className="group text-base flex items-center" onClick={() => {}}>
 				<div
@@ -117,11 +122,6 @@ const CourseLayoutElement = ({
 					onDragOver={e => onDragOver(e)}
 					onDragEnd={() => setIsDragged(false)}
 					onDrop={e => onDrop(e)}
-					onDrag={event => {
-						if (!dragRef.current) return;
-						dragRef.current.style.top = event.pageY + 'px';
-						dragRef.current.style.left = event.pageX + 'px';
-					}}
 				>
 					<FontAwesomeIcon
 						icon={faBars}
@@ -181,7 +181,8 @@ const CourseLayoutElement = ({
 						<FontAwesomeIcon
 							icon={faTrash}
 							size="lg"
-							className="[color:var(--bg-shade-four-color)] mr-2 hover:[color:red] cursor-pointer invisible group-hover:visible transition-all duration-75 ease-in"
+							className="[color:var(--bg-shade-four-color)] mr-2 hover:[color:red]
+							cursor-pointer invisible group-hover:visible transition-all duration-75 ease-in"
 							onClick={() => setConfirmDelete(true)}
 						/>
 					</div>
@@ -207,11 +208,6 @@ const CourseLayoutElement = ({
 					{t('action.irreversible')}
 				</p>
 			</AlertConfirm>
-			{isDragged && !isFantom && (
-				<div ref={dragRef} className="absolute opacity-75">
-					<CourseLayoutElement element={element} isFantom />
-				</div>
-			)}
 		</div>
 	);
 };

@@ -10,7 +10,6 @@ import { CourseElementSection } from '../../../Models/Course/course_element.enti
 export type CourseLayoutElementProps = {
 	element: CourseElement;
 	className?: string;
-	isFantom?: boolean;
 };
 
 type NavigationOptions = {
@@ -20,6 +19,7 @@ type NavigationOptions = {
 
 export type CourseLayoutSectionProps = {
 	courseElement: CourseElementSection;
+	isDragged?: boolean;
 };
 
 export type CourseLayoutActivityProps = {

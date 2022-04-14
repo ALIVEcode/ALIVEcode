@@ -8,6 +8,7 @@ import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import ButtonAddCourseElement from './ButtonAddCourseElement';
 import CourseLayoutElement from './CourseLayoutElement';
 import { CourseLayoutSectionProps } from './courseLayoutTypes';
+import DraggedCourseLayoutElement from './DraggedCourseLayoutElement';
 
 /**
  * Component that shows the section in the layout view and handles different actions like collapsing or
@@ -15,7 +16,10 @@ import { CourseLayoutSectionProps } from './courseLayoutTypes';
  *
  * @author Mathis Laroche, Enric Soldevila
  */
-const CourseLayoutSection = ({ courseElement }: CourseLayoutSectionProps) => {
+const CourseLayoutSection = ({
+	courseElement,
+	isDragged,
+}: CourseLayoutSectionProps) => {
 	const section = courseElement.section as Section;
 	const { courseElements, isCreator } = useContext(CourseContext);
 
@@ -40,12 +44,18 @@ const CourseLayoutSection = ({ courseElement }: CourseLayoutSectionProps) => {
 							{section.elementsOrder?.map(
 								id =>
 									courseElements &&
-									id in courseElements.current && (
+									id in courseElements.current &&
+									(isDragged ? (
+										<DraggedCourseLayoutElement
+											key={id}
+											element={courseElements.current[id]}
+										/>
+									) : (
 										<CourseLayoutElement
 											key={id}
 											element={courseElements.current[id]}
 										/>
-									),
+									)),
 							)}
 						</div>
 						{isCreator() && <ButtonAddCourseElement section={section} />}

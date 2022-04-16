@@ -44,6 +44,7 @@ import {
 } from '../../Models/Course/course_element.entity';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSkull } from '@fortawesome/free-solid-svg-icons';
+import { plainToInstance } from 'class-transformer';
 
 /**
  * Course page that shows the content of a course
@@ -346,6 +347,29 @@ const Course = () => {
 		course.current.name = updatedCourse.name;
 	};
 
+	const setIsElementVisible = async (
+		element: CourseElement,
+		isVisible: boolean,
+	) => {
+		if (
+			!course.current ||
+			element.isVisible === isVisible ||
+			!courseElements.current
+		)
+			return;
+
+		(
+			await api.db.courses.updateElement(
+				course.current.id,
+				element.id.toString(),
+				{ isVisible },
+			)
+		).forEach(el => {
+			courseElements.current[el.id].isVisible = isVisible;
+		});
+		forceUpdate();
+	};
+
 	/**
 	 * Sets the state of the section creation modal to true
 	 *
@@ -454,7 +478,8 @@ const Course = () => {
 		element.name = newName;
 
 		await api.db.courses.updateElement(
-			{ elementId: element.id.toString(), courseId: course.current.id },
+			course.current.id,
+			element.id.toString(),
 			{ name: newName },
 		);
 		forceUpdate();
@@ -594,6 +619,7 @@ const Course = () => {
 		tab,
 		setTab,
 		renameElement,
+		setIsElementVisible,
 		setTitle,
 		addContent,
 		loadSectionElements,

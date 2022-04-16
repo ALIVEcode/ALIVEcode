@@ -9,7 +9,6 @@ import { CourseElementSection } from '../../../Models/Course/course_element.enti
 
 export type CourseLayoutElementProps = {
 	element: CourseElement;
-	className?: string;
 };
 
 type NavigationOptions = {

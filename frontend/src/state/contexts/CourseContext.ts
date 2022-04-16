@@ -3,7 +3,8 @@ import { Activity } from '../../Models/Course/activity.entity';
 import { Course } from '../../Models/Course/course.entity';
 import {
 	CourseContent,
-	CourseElement, CourseParent,
+	CourseElement,
+	CourseParent,
 } from '../../Models/Course/course_element.entity';
 import { Section } from '../../Models/Course/section.entity';
 import { CourseElementActivity } from '../../Models/Course/course_element.entity';
@@ -23,6 +24,7 @@ export type CourseContextValues = {
 	setTitle: (newTitle: string) => Promise<void>;
 	loadSectionElements: (section: Section) => Promise<any>;
 	renameElement: (element: CourseElement, newName: string) => void;
+	setIsElementVisible: (element: CourseElement, isVisible: boolean) => void;
 	updateActivity: (
 		activity: Activity,
 		fields: {
@@ -66,6 +68,7 @@ export const CourseContext = createContext<CourseContextValues>({
 	setIsNavigationOpen: async () => {},
 	addContent: async () => {},
 	renameElement: () => {},
+	setIsElementVisible: () => {},
 	deleteElement: async () => {},
 	moveElement: async () => {},
 	loadSectionElements: async () => {},

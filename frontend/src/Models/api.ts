@@ -50,6 +50,7 @@ import { IOT_EVENT } from './Iot/IoTProjectClasses/IoTTypes';
 import { MoveElementDTO } from './Course/dtos/MoveElement.dto';
 import { FeedbackEntity } from './Feedbacks/entities/feedback.entity';
 import { CreateFeedbackDto } from './Feedbacks/dto/create-feedback.dto';
+import { UpdateCourseElementDTO } from './Course/dtos/UpdateCourseElement.dto';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;
@@ -163,7 +164,7 @@ const apiUpdate = <T, S extends string>(
 		}
 		const data = (await axios.patch(formattedUrl, fields)).data;
 		if (overrideCast !== undefined) return overrideCast(data);
-		return plainToClass(target, data);
+		return plainToInstance(target, data);
 	};
 };
 
@@ -327,10 +328,18 @@ const api = {
 				CourseElement,
 				false,
 			),
-			updateElement: apiUpdate(
-				'courses/:courseId/elements/:elementId',
-				CourseElement,
-			),
+			updateElement: async (
+				courseId: string,
+				elementId: string,
+				dto: UpdateCourseElementDTO,
+			): Promise<CourseElement[]> => {
+				const updatedElements = (
+					await axios.patch(`courses/${courseId}/elements/${elementId}`, dto)
+				).data;
+				return updatedElements.map((updatedElement: object) =>
+					plainToInstance(CourseElement, updatedElement),
+				);
+			},
 			addContent: async (
 				courseId: string,
 				courseContent: CourseContent,

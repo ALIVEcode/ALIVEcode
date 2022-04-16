@@ -22,7 +22,7 @@ import { ActivityAssignmentEntity } from './entities/activities/activity_assignm
  * All the methods to communicate to the database. To create/update/delete/get
  * a course or it's content (CourseElements)
  *
- * @author Enric Soldevila
+ * @author Enric Soldevila, Mathis Laroche
  */
 @Injectable()
 export class CourseService {
@@ -112,14 +112,15 @@ export class CourseService {
 
   /**
    * Loads a course in the database and joins its elements
-   * @param courseId id of the course to load with it's elements
+   * @param courseId id of the course to load with its elements
+   * @param onlyVisible tell if the invisible elements should be excluded
    * @returns The course loaded with its elements
    * @throws HttpException Course not found
    */
-  async findCourseWithElements(courseId: string) {
+  async findCourseWithElements(courseId: string, onlyVisible = true) {
     const course = await this.courseRepository
       .createQueryBuilder('course')
-      .leftJoinAndSelect('course.elements', 'elements')
+      .leftJoinAndSelect('course.elements', 'elements', undefined, onlyVisible ? { isVisible: true } : undefined)
       .leftJoinAndSelect('elements.activity', 'activity')
       .leftJoinAndSelect('elements.section', 'section')
       .where('course.id = :courseId', { courseId })
@@ -211,7 +212,7 @@ export class CourseService {
   /**
    * Deletes a CourseElement alongside its content (Activity or Section).
    * Also reorder the elementsOrder inside its parent
-   * @param courseElementWithParent CourseElement with its the parent loaded
+   * @param courseElementWithParent CourseElement with its parent loaded
    * @returns the deletion query result
    */
   async deleteCourseElement(courseElementWithParent: CourseElementEntity) {
@@ -227,13 +228,24 @@ export class CourseService {
   }
 
   /**
-   * Deletes a CourseElement alongside its content (Activity or Section).
+   * Updates a CourseElement alongside its content (Activity or Section).
    * Also reorder the elementsOrder inside its parent
+   * @param course
    * @param courseElement CourseElement with its the parent loaded
-   * @returns the deletion query result
+   * @param dto
+   * @returns an array containing all the courseElements that were updated
    */
-  async updateCourseElement(courseElement: CourseElementEntity, dto: UpdateCourseElementDTO) {
-    return await this.courseElRepo.save({ ...dto, id: courseElement.id });
+  async updateCourseElement(course: CourseEntity, courseElement: CourseElementEntity, dto: UpdateCourseElementDTO) {
+    let results = [await this.courseElRepo.save({ ...dto, id: courseElement.id })];
+    if (dto.isVisible !== undefined && courseElement.section) {
+      const elements =
+        courseElement.section.elements ??
+        (await this.findParentWithElements(course, courseElement.section)).elements;
+      for (const element of elements) {
+        results = results.concat(await this.updateCourseElement(course, element, { isVisible: dto.isVisible }));
+      }
+    }
+    return results;
   }
 
   /**
@@ -305,14 +317,15 @@ export class CourseService {
    * Finds a section inside a course by its id and load its elements alongside
    * @param course course of the section
    * @param sectionId Id of the section to get
+   * @param onlyVisible tell if the invisible elements should be excluded
    * @returns The section found
    * @throws HttpException Section not found
    */
-  async findSectionWithElements(course: CourseEntity, sectionId: string) {
+  async findSectionWithElements(course: CourseEntity, sectionId: string, onlyVisible = true) {
     const section = await this.sectionRepository
       .createQueryBuilder('sectionParent')
       .where('sectionParent.id = :id', { id: sectionId })
-      .leftJoinAndSelect('sectionParent.elements', 'elements')
+      .leftJoinAndSelect('sectionParent.elements', 'elements', undefined, onlyVisible ? { isVisible: true } : undefined)
       .leftJoinAndSelect('sectionParent.courseElement', 'element')
       .leftJoinAndSelect('elements.activity', 'activity')
       .leftJoinAndSelect('elements.section', 'section')

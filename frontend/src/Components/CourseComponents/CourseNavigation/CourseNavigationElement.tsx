@@ -5,6 +5,7 @@ import {
 import CourseNavigationSection from './CourseNavigationSection';
 import CourseNavigationActivity from './CourseNavigationActivity';
 import { CourseElementSection } from '../../../Models/Course/course_element.entity';
+import { classNames } from '../../../Types/utils';
 
 /**
  * Activity element appearing in the navigation menu.
@@ -15,7 +16,7 @@ import { CourseElementSection } from '../../../Models/Course/course_element.enti
  */
 const CourseNavigationElement = ({ element }: { element: CourseElement }) => {
 	return (
-		<div className="w-full">
+		<div className={classNames('w-full', !element.isVisible && 'opacity-50')}>
 			{element?.section ? (
 				<CourseNavigationSection element={element as CourseElementSection} />
 			) : element?.activity ? (

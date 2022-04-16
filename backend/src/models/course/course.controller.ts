@@ -153,7 +153,9 @@ export class CourseController {
   @UseGuards(CourseAccess)
   async getElements(@Course() course: CourseEntity, @User() user: UserEntity) {
     await this.userService.accessCourse(user, course);
-    return (await this.courseService.findCourseWithElements(course.id)).elements;
+    if (course.creator.id === user.id)
+      return (await this.courseService.findCourseWithElements(course.id, false)).elements;
+    return (await this.courseService.findCourseWithElements(course.id, true)).elements;
   }
 
   /**
@@ -172,7 +174,9 @@ export class CourseController {
     @User() user: UserEntity,
   ) {
     await this.userService.accessCourse(user, course);
-    return (await this.courseService.findSectionWithElements(course, sectionId)).elements;
+    if (course.creator.id === user.id)
+      return (await this.courseService.findSectionWithElements(course, sectionId, false)).elements;
+    return (await this.courseService.findSectionWithElements(course, sectionId, true)).elements;
   }
 
   /**
@@ -384,6 +388,7 @@ export class CourseController {
    * Route to update a CourseElement by it's id.
    * @param course Course found with the id in the url
    * @param courseElementId Id of the CourseElement to delete
+   * @param dto
    * @returns The updated CourseElement
    */
   @Patch(':id/elements/:courseElementId')
@@ -395,6 +400,6 @@ export class CourseController {
     @Body() dto: UpdateCourseElementDTO,
   ) {
     const courseElement = await this.courseService.findCourseElement(course, courseElementId);
-    return await this.courseService.updateCourseElement(courseElement, dto);
+    return await this.courseService.updateCourseElement(course, courseElement, dto);
   }
 }

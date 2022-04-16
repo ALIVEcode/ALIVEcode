@@ -7,7 +7,7 @@ import { SectionEntity } from './section.entity';
 
 /**
  * CourseElement model in the database
- * @author Enric Soldevila
+ * @author Enric Soldevila, Mathis Laroche
  */
 @Entity()
 export class CourseElementEntity {
@@ -22,6 +22,10 @@ export class CourseElementEntity {
   @Column({ nullable: false })
   @Length(3, 100)
   name: string;
+
+  @IsNotEmpty()
+  @Column({ nullable: false, default: true })
+  isVisible: boolean;
 
   /*****---Parents---*****/
 

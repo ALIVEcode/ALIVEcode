@@ -1,4 +1,10 @@
-import { faBars, faTrash } from '@fortawesome/free-solid-svg-icons';
+import {
+	faBars,
+	faEye,
+	faEyeDropper,
+	faEyeSlash,
+	faTrash,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useCallback, useContext, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -25,14 +31,9 @@ import DraggedCourseLayoutElement from './DraggedCourseLayoutElement';
  *
  * @param element The element wrapped
  *
- * @param className
- * @param isFantom
  * @author Mathis Laroche
  */
-const CourseLayoutElement = ({
-	element,
-	className,
-}: CourseLayoutElementProps) => {
+const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 	const {
 		renameElement,
 		deleteElement,
@@ -40,6 +41,7 @@ const CourseLayoutElement = ({
 		setCourseElementNotNew,
 		courseElements,
 		moveElement,
+		setIsElementVisible,
 	} = useContext(CourseContext);
 	const { t } = useTranslation();
 	const [confirmDelete, setConfirmDelete] = useState(false);
@@ -95,6 +97,7 @@ const CourseLayoutElement = ({
 			const data = event.dataTransfer.getData('text/plain');
 			if (data === '') return;
 			if (!courseElements?.current) return;
+			if (!(data in courseElements.current)) return;
 
 			const id = Number(data);
 			if (id === element.id) return;
@@ -112,8 +115,9 @@ const CourseLayoutElement = ({
 
 	return (
 		<div
-			className={classNames('py-2 pl-2 laptop:pl-3 desktop:pl-4', className)}
+			className={'py-2 pl-2 laptop:pl-3 desktop:pl-4'}
 			ref={courseLayoutElementRef}
+			onDrop={e => onDrop(e)}
 		>
 			<div className="group text-base flex items-center" onClick={() => {}}>
 				<div
@@ -121,7 +125,6 @@ const CourseLayoutElement = ({
 					onDragStart={e => onDragStart(e)}
 					onDragOver={e => onDragOver(e)}
 					onDragEnd={() => setIsDragged(false)}
-					onDrop={e => onDrop(e)}
 				>
 					<FontAwesomeIcon
 						icon={faBars}
@@ -177,7 +180,14 @@ const CourseLayoutElement = ({
 							</div>
 						)}
 					</div>
-					<div>
+					<div className="flex flex-row">
+						<FontAwesomeIcon
+							icon={element.isVisible ? faEye : faEyeSlash}
+							size="lg"
+							className="[color:var(--bg-shade-four-color)] mr-4 hover:[color:var(--fg-shade-one-color)]
+							cursor-pointer invisible group-hover:visible transition-all duration-75 ease-in"
+							onClick={() => setIsElementVisible(element, !element.isVisible)}
+						/>
 						<FontAwesomeIcon
 							icon={faTrash}
 							size="lg"

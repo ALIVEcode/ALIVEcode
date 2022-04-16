@@ -34,6 +34,9 @@ export class CourseElement {
 	@Expose({ toClassOnly: true })
 	name: string;
 
+	@Expose({ toClassOnly: true })
+	isVisible: boolean;
+
 	/** The course that the element belongs to */
 	@Expose({ toClassOnly: true })
 	@Type(() => Course)
@@ -64,7 +67,7 @@ export class CourseElement {
 		if (activity.type === ACTIVITY_TYPE.ASSIGNMENT)
 			return plainToInstance(ActivityAssignment, activity);
 
-		return plainToInstance(Activity, activity);
+		// return plainToInstance(Activity, activity);
 	})
 	activity?:
 		| ActivityChallenge

@@ -6,7 +6,7 @@
 		"custom": "Erreur: {{error}}.",
 		"back": "Retour en arrière",
 		"home": "Retour à la page d'accueil",
-		"signout": "Une erreur est survenue lors de la déconnexion, veuillez réesayer.",
+		"signout": "Une erreur est survenue lors de la déconnexion, veuillez réessayer.",
 		"signin": "Informations erronées, veuillez réessayer.",
 		"signin_first_time": "une erreur est survenue lors de votre connexion automatique à votre nouveau compte.",
 		"500": "Une erreur est survenue, veuillez réessayer.",
@@ -73,7 +73,7 @@
 			"label": "Adresse courriel",
 			"placeholder": "MonAdresse@alivecode.ca",
 			"required": "Une adresse courriel est requise",
-			"taken": "Cette addresse courriel est déjà prise",
+			"taken": "Cette adresse courriel est déjà prise",
 			"info": "Nous ne partagerons pas votre adresse courriel"
 		},
 		"firstName": {
@@ -89,9 +89,9 @@
 			"pattern": "Votre nom de famille doit contenir uniquement des lettres et des tirets"
 		},
 		"scolarity": {
-			"label": "Niveau scholaire",
+			"label": "Niveau scolaire",
 			"placeholder": "4e année",
-			"required": "Votre niveau scholaire est requis"
+			"required": "Votre niveau scolaire est requis"
 		}
 	},
 	"modal": {
@@ -432,7 +432,7 @@
 		"section": {
 			"artificial-intelligence": {
 				"title": "Le potentiel de l'intelligence artificielle",
-				"paragraph1": "L’intelligence artificielle prend une place de plus en plus importante dans notre quotidien. En fait, nous pouvons déjà nous en apercevoir aujourd’hui : des assistants intelligents sont présents dans nos téléphones, nos ordinateurs ainsi que dans des haut-parleurs; de plus en plus d’essais avec des technologies d’IA sont effectués dans le domaine des transports, de l’agriculture, de la médecine et bien plus; les moteurs de recherche sur Internet ainsi que plusieurs sites utilisent l’IA pour des raison commerciales; et il existe bien d’autres exemples!",
+				"paragraph1": "L’intelligence artificielle prend une place de plus en plus importante dans notre quotidien. En fait, nous pouvons déjà nous en apercevoir aujourd'hui : des assistants intelligents sont présents dans nos téléphones, nos ordinateurs ainsi que dans des haut-parleurs; de plus en plus d’essais avec des technologies d’IA sont effectués dans le domaine des transports, de l’agriculture, de la médecine et bien plus; les moteurs de recherche sur Internet ainsi que plusieurs sites utilisent l’IA pour des raison commerciales; et il existe bien d’autres exemples!",
 				"paragraph2": "Au fil des cours sur les différentes facettes de l’intelligence artificielle, tu apprendras comment peut-on s’en servir pour résoudre des problèmes variés :",
 				"point1": "Comment prédire la consommation d’une voiture si on fait varier son moteur, son poids et plusieurs autres caractéristiques?",
 				"point2": "Comment développer une formule qui saura prédire la grandeur maximale d’une personne?",

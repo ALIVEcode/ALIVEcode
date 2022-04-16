@@ -115,7 +115,7 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 
 	return (
 		<div
-			className={'py-2 pl-2 laptop:pl-3 desktop:pl-4'}
+			className={classNames('py-2 pl-2 laptop:pl-3 desktop:pl-4', !element.isVisible && 'opacity-50')}
 			ref={courseLayoutElementRef}
 			onDrop={e => onDrop(e)}
 		>

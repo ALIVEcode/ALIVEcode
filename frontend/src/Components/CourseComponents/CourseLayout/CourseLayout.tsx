@@ -1,6 +1,6 @@
 import { faUserGraduate } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import useRoutes from '../../../state/hooks/useRoutes';
@@ -8,6 +8,7 @@ import ButtonAddCourseElement from './ButtonAddCourseElement';
 import CourseLayoutElement from './CourseLayoutElement';
 import { Section } from '../../../Models/Course/section.entity';
 import { plainToClass } from 'class-transformer';
+import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 
 /**
  * Component that handles the layout view of a course
@@ -25,6 +26,10 @@ const CourseLayout = () => {
 	} = useContext(CourseContext);
 	const { routes, goTo } = useRoutes();
 	const { t } = useTranslation();
+
+	useEffect(() => {
+		console.log(courseElements?.current);
+	}, [courseElements?.current]);
 
 	if (!course) {
 		goTo(routes.auth.dashboard.path);
@@ -44,7 +49,9 @@ const CourseLayout = () => {
 			</div>
 			<div className="flex flex-col justify-center md:px-52 pl-3 pr-12 min-w-fit w-[100%] whitespace-nowrap">
 				<div className="text-center text-2xl mb-4">Course Layout</div>
-				{courseElements && Object.keys(courseElements?.current).length === 0 ? (
+				{!courseElements?.current ? (
+					<LoadingScreen />
+				) : Object.keys(courseElements.current).length === 0 ? (
 					<>
 						<label className="text-center">{t('course.empty')}</label>
 						<div className="mt-4 flex justify-center">

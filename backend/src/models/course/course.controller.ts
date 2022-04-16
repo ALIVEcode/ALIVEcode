@@ -139,7 +139,7 @@ export class CourseController {
       return await this.courseService.addSection(course, createSectionDTO, section);
     }
 
-    return await this.courseService.addSection(course, createSectionDTO);
+    return await this.courseService.addSection(course, createSectionDTO, null);
   }
 
   /**
@@ -182,7 +182,7 @@ export class CourseController {
   /**
    * Route to create an activity directly inside a course or inside a section. And wraps
    * it in a CourseElement. Must be the creator of the course.
-   * @param course Course found with with the id in the url
+   * @param course Course found with the id in the url
    * @param createActivityDTO DTO of the activity to create
    * @returns The newly created CourseElement containing the activity and the updated order inside the section or course
    */
@@ -208,11 +208,11 @@ export class CourseController {
       return await this.courseService.addActivity(course, createActivityDTO, section);
     }
 
-    return await this.courseService.addActivity(course, createActivityDTO);
+    return await this.courseService.addActivity(course, createActivityDTO, null);
   }
 
   /**
-   * Route to update an activity by it's id. Must be creator of the course
+   * Route to update an activity by its id. Must be creator of the course
    * @param course Course found with the id in the url
    * @param activityId Id of the activity to update
    * @param updateActivityDTO DTO to update the activity with
@@ -244,15 +244,15 @@ export class CourseController {
     if (isUUID(dto.parentId)) {
       if (dto.parentId !== course.id)
         throw new HttpException("Forbidden, can't move this element into another course", HttpStatus.FORBIDDEN);
-      parent = await this.courseService.findOne(dto.parentId);
+      parent = await this.courseService.findCourseWithElements(dto.parentId, false);
     } else {
-      parent = await this.courseService.findSection(course, dto.parentId);
+      parent = await this.courseService.findSectionWithElements(course, dto.parentId, false);
     }
     return await this.courseService.moveElement(course, element, parent, dto.index);
   }
 
   /**
-   * Route to get a resource in an activity by it's id. Must be creator of the course
+   * Route to get a resource in an activity by its id. Must be creator of the course
    * @param course Course found with the id in the url
    * @param activityId Id of the activity to get the resource in
    * @returns The removal query result

@@ -30,6 +30,7 @@ export class CourseElementEntity {
   /*****---Parents---*****/
 
   /** The course that the element belongs to */
+  @IsNotEmpty()
   @ManyToOne(() => CourseEntity, course => course.elements, { nullable: false })
   @JoinColumn({ name: 'courseId' })
   course: CourseEntity;

@@ -117,10 +117,15 @@ export class CourseService {
    * @returns The course loaded with its elements
    * @throws HttpException Course not found
    */
-  async findCourseWithElements(courseId: string, onlyVisible = true) {
+  async findCourseWithElements(courseId: string, onlyVisible: boolean) {
     const course = await this.courseRepository
       .createQueryBuilder('course')
-      .leftJoinAndSelect('course.elements', 'elements', undefined, onlyVisible ? { isVisible: true } : undefined)
+      .leftJoinAndSelect(
+        'course.elements',
+        'elements',
+        onlyVisible ? 'elements.isVisible = :isVisible' : undefined,
+        onlyVisible ? { isVisible: true } : undefined,
+      )
       .leftJoinAndSelect('elements.activity', 'activity')
       .leftJoinAndSelect('elements.section', 'section')
       .where('course.id = :courseId', { courseId })
@@ -136,13 +141,14 @@ export class CourseService {
 
   /**
    * Finds a parent with its direct elements already loaded
-   * @param course Course containing the paretn
+   * @param course Course containing the parent
    * @param parent Parent to get the elements of
+   * @param onlyVisible
    * @returns The parent with the elements directly inside it loaded
    */
-  async findParentWithElements(course: CourseEntity, parent: SectionEntity | CourseEntity) {
-    if (parent instanceof CourseEntity) return this.findCourseWithElements(parent.id);
-    if (parent instanceof SectionEntity) return this.findSectionWithElements(course, parent.id.toString());
+  async findParentWithElements(course: CourseEntity, parent: SectionEntity | CourseEntity, onlyVisible: boolean) {
+    if (parent instanceof CourseEntity) return this.findCourseWithElements(parent.id, onlyVisible);
+    if (parent instanceof SectionEntity) return this.findSectionWithElements(course, parent.id.toString(), onlyVisible);
   }
 
   /**
@@ -240,7 +246,7 @@ export class CourseService {
     if (dto.isVisible !== undefined && courseElement.section) {
       const elements =
         courseElement.section.elements ??
-        (await this.findParentWithElements(course, courseElement.section)).elements;
+        (await this.findParentWithElements(course, courseElement.section, false)).elements;
       for (const element of elements) {
         results = results.concat(await this.updateCourseElement(course, element, { isVisible: dto.isVisible }));
       }
@@ -281,7 +287,8 @@ export class CourseService {
       courseElementWithParent.sectionParent = null;
       await this.courseElRepo.save({ ...courseElementWithParent, id: courseElementWithParent.id });
     } else if (newParent instanceof SectionEntity) {
-      if (!newParent.elements) newParent.elements = (await this.findParentWithElements(course, newParent)).elements;
+      if (!newParent.elements)
+        newParent.elements = (await this.findParentWithElements(course, newParent, false)).elements;
       newParent.elements.push(courseElementWithParent);
     }
     newParent.elementsOrder.splice(index, 0, courseElementWithParent.id);
@@ -321,11 +328,16 @@ export class CourseService {
    * @returns The section found
    * @throws HttpException Section not found
    */
-  async findSectionWithElements(course: CourseEntity, sectionId: string, onlyVisible = true) {
+  async findSectionWithElements(course: CourseEntity, sectionId: string, onlyVisible: boolean) {
     const section = await this.sectionRepository
       .createQueryBuilder('sectionParent')
       .where('sectionParent.id = :id', { id: sectionId })
-      .leftJoinAndSelect('sectionParent.elements', 'elements', undefined, onlyVisible ? { isVisible: true } : undefined)
+      .leftJoinAndSelect(
+        'sectionParent.elements',
+        'elements',
+        onlyVisible ? 'elements.isVisible = :isVisible' : undefined,
+        onlyVisible ? { isVisible: true } : undefined,
+      )
       .leftJoinAndSelect('sectionParent.courseElement', 'element')
       .leftJoinAndSelect('elements.activity', 'activity')
       .leftJoinAndSelect('elements.section', 'section')

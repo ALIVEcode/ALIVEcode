@@ -133,9 +133,9 @@ export class CourseController {
     @Course() course: CourseEntity,
     @Body() createSectionDTO: CreateSectionDTO,
   ): Promise<{ newOrder: number[]; courseElement: CourseElementEntity }> {
-    course = await this.courseService.findCourseWithElements(course.id);
+    course = await this.courseService.findCourseWithElements(course.id, false);
     if (createSectionDTO.sectionParentId) {
-      const section = await this.courseService.findSectionWithElements(course, createSectionDTO.sectionParentId);
+      const section = await this.courseService.findSectionWithElements(course, createSectionDTO.sectionParentId, false);
       return await this.courseService.addSection(course, createSectionDTO, section);
     }
 
@@ -198,9 +198,13 @@ export class CourseController {
       | CreateActivityVideoDTO
       | CreateActivityAssignmentDTO,
   ): Promise<{ newOrder: number[]; courseElement: CourseElementEntity }> {
-    course = await this.courseService.findCourseWithElements(course.id);
+    course = await this.courseService.findCourseWithElements(course.id, false);
     if (createActivityDTO.sectionParentId) {
-      const section = await this.courseService.findSectionWithElements(course, createActivityDTO.sectionParentId);
+      const section = await this.courseService.findSectionWithElements(
+        course,
+        createActivityDTO.sectionParentId,
+        false,
+      );
       return await this.courseService.addActivity(course, createActivityDTO, section);
     }
 

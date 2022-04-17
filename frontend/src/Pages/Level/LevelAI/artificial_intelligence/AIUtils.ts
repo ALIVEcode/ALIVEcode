@@ -7,6 +7,10 @@ export interface DataSample {
   y: number;
 }
 
+export interface GeneralDataSample {
+  
+}
+
 /**
  * This class represents a mathematical matrix that can be used to perform 
  * matrix operations such as matrix multiplications.
@@ -476,6 +480,76 @@ export function randomMatrix(rows: number, columns: number): Matrix {
       randomValues[i][j] = Math.random();
     }
   }
-
   return new Matrix(randomValues);
+}
+
+/**
+ * Returns the sum of an array of numbers.
+ * @param data the array of numbers.
+ * @returns the sum.
+ */
+export function sum(data: number[]): number {
+  return data.reduce(
+    (prev: number, current: number): number => {
+      return prev + current;
+  });
+}
+
+/**
+ * Returns the mean of an array of numbers.
+ * @param data the array of numbers.
+ * @returns the mean.
+ */
+export function mean(data: number[]): number {
+  const result: number = sum(data);
+  return result / data.length;
+}
+
+/**
+ * Returns the standard deviation of an array of numbers.
+ * @param data the array of numbers.
+ * @returns the standard deviation.
+ */
+export function stdDev(data: number[]): number {
+  const dataMean: number = mean(data);
+  const summation: number = data.reduce(
+    (prev: number, current: number): number => {
+      return prev + Math.pow(current - dataMean, 2);
+    }
+  )
+  return Math.sqrt(summation / data.length);
+}
+
+/**
+ * Normalizes an array of numbers by subtracting the mean and dividing
+ * by the standard deviation for each data of the given array. The resulting
+ * array will contain values near zero.
+ * @param data the array to normalize.
+ * @returns a new array with normalized data
+ */
+export function normalize(data: number[]): number[] {
+  const dataMean: number = mean(data);
+  const deviation: number = stdDev(data);
+
+  return data.copyWithin(0, 0).map(
+    (value: number): number => {
+      return (value - dataMean) / deviation;
+    }
+  )
+}
+
+/**
+ * Normalizes a Matrix by applying the normalize() function to each row, 
+ * meaning that each row is normalized separately from the rest of the Matrix.
+ * @param inputs the Matrix to normalize.
+ * @returns a new Matrix with normalized values with respect to their row.
+ */
+export function normalizeByRow(inputs: Matrix): Matrix {
+  const baseInputs: number[][] = inputs.getValue();
+  let normalized: number[][] = [normalize(baseInputs[0])];
+
+  for (let row: number = 1; row < inputs.getRows(); row++) {
+    normalized.push(normalize(baseInputs[row]))
+  }
+  return new Matrix(normalized);
 }

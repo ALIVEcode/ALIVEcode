@@ -1,4 +1,4 @@
-import { Matrix, randomMatrix, zeros } from '../../AIUtils';
+import { Matrix, normalize, normalizeByRow, randomMatrix, zeros } from '../../AIUtils';
 import { NeuralLayer } from "./NeuralLayer";
 import { ActivationFunction } from '../../ai_functions/ActivationFunction';
 import { Model } from '../Model';
@@ -66,13 +66,8 @@ export class NeuralNetwork extends Model
    * @returns the prediction of the model.
    */
   public predict(inputs: Matrix): Matrix {
-    let output: Matrix = inputs;
-
-    // Computes the outputs for each layer.
-    for (let i: number = 0; i < this.layers.length; i++) {
-      output = this.layers[i].computeLayer(output);
-    }
-    return output;
+    let output: Matrix[] = this.predictReturnAll(inputs);
+    return output[output.length-1];
   }
 
   /**
@@ -83,7 +78,7 @@ export class NeuralNetwork extends Model
    * @returns the outputs of all layers of the model.
    */
   public predictReturnAll(inputs: Matrix): Matrix[] {
-    let output: Matrix = inputs;
+    let output: Matrix = normalizeByRow(inputs);
     let outputArray: Matrix[] = [];
 
     // Computes the outputs for each layer.
@@ -101,6 +96,19 @@ export class NeuralNetwork extends Model
    */
   public getWeightsByLayer(layer: number): Matrix {
     return this.layers[layer].getWeights();
+  }
+
+  /**
+   * Returns the weights from all layers of the neural network in an array
+   * of Matrices.
+   * @returns an array of Matrices with all weights.
+   */
+  public getAllWeights(): Matrix[] {
+    let allWeights: Matrix[] = [this.layers[0].getWeights()];
+    for (let layer: number = 1; layer < this.layers.length; layer++) {
+      allWeights.push(this.layers[layer].getWeights());
+    }
+    return allWeights;
   }
 
   /**
@@ -123,6 +131,19 @@ export class NeuralNetwork extends Model
   }
 
   /**
+   * Returns the biases from all layers of the neural network in an array
+   * of Matrices.
+   * @returns an array of Matrices with all biases.
+   */
+  public getAllBiases(): Matrix[] {
+    let allBiases: Matrix[] = [this.layers[0].getBiases()];
+    for (let layer: number = 1; layer < this.layers.length; layer++) {
+      allBiases.push(this.layers[layer].getBiases());
+    }
+    return allBiases;
+  }
+
+  /**
    * Sets the current biases of the specified layer to the new
    * biases given in parameters.
    * @param layer the layer to set.
@@ -132,6 +153,11 @@ export class NeuralNetwork extends Model
     this.layers[layer].setBiases(newBiases);
   }
   
+  /**
+   * Returns all activation functions of hidden layers and the output layer. The output
+   * activation is the last element of the returned array.
+   * @returns an array of activation functions from the neural network.
+   */
   public getAllActivations(): ActivationFunction[] {
     return this.activationsByLayer.concat(this.outputActivation);
   }

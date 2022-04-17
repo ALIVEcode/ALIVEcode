@@ -1,4 +1,3 @@
-import { Subtract } from 'tone';
 import { Matrix, matMulConstant, matSubtract, matDivElementWise, matAbs, matMulElementWise } from '../AIUtils';
 
 /**
@@ -22,21 +21,7 @@ export abstract class CostFunction {
   * @returns the computed error depending on the choosen cost function, or -1 if one of the Matrices
   * is not of the correct size.
   */
-  public matCompute(predicted: Matrix, real: Matrix): number {
-    // The number of rows has to be equal for the two Matrices.
-    if (predicted.getRows() !== real.getRows() || predicted.getColumns() !== real.getColumns()) return -1;
-
-    return this.compute(predicted, real);
-  }
-
-  /**
-  * Computes the cost function on the given predicted Matrix and real Matrix.
-  * Both Matrices must have the same size.
-  * @param predicted the predicted Matrix.
-  * @param real the corresponding real Matrix.
-  * @return the value of the cost function.
-  */
-  public abstract compute(predicted: Matrix, real: Matrix): number;
+  public abstract matCompute(predicted: Matrix, real: Matrix): number;
 
   /**
   * Computes the derivative of the cost function on all elements in a Matrix by
@@ -55,7 +40,10 @@ export abstract class CostFunction {
 * values.
 */
 export class MeanSquaredError extends CostFunction {
-  public compute(predicted: Matrix, real: Matrix): number {
+  public matCompute(predicted: Matrix, real: Matrix): number {
+    // The number of rows has to be equal for the two Matrices.
+    if (predicted.getRows() !== real.getRows() || predicted.getColumns() !== real.getColumns()) return -1;
+
     const nbElements: number = predicted.getColumns() * predicted.getRows(); //The total number of generated outputs
     let sum: number;
 
@@ -76,8 +64,10 @@ export class MeanSquaredError extends CostFunction {
 */
 export class MeanAbsoluteError extends CostFunction {
   
-  public compute(predicted: Matrix, real: Matrix): number {
-    
+  public matCompute(predicted: Matrix, real: Matrix): number {
+    // The number of rows has to be equal for the two Matrices.
+    if (predicted.getRows() !== real.getRows() || predicted.getColumns() !== real.getColumns()) return -1;
+
     const nbElements: number = predicted.getColumns() * predicted.getRows(); //The total number of generated outputs
     let sum: number;
 
@@ -99,7 +89,10 @@ export class MeanAbsoluteError extends CostFunction {
 * values. Its outputs are in the range [0, 1]
 */
 export class BinaryCrossEntropy extends CostFunction {
-  public compute(matPredicted: Matrix, matReal: Matrix): number {
+  public matCompute(matPredicted: Matrix, matReal: Matrix): number {
+    // The number of rows has to be equal for the two Matrices.
+    if (matPredicted.getRows() !== matReal.getRows() || matPredicted.getColumns() !== matReal.getColumns()) return -1;
+
     const predicted: number[][] = matPredicted.getValue();
     const real: number[][] = matReal.getValue();
     const nbElements: number = matPredicted.getColumns() * matPredicted.getRows(); //The total number of generated outputs
@@ -114,7 +107,7 @@ export class BinaryCrossEntropy extends CostFunction {
       }
     }
     return sum / nbElements;
-}
+  }
 
   public matDerivative(predicted: Matrix, real: Matrix): Matrix {
     // Formula : a - y

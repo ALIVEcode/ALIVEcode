@@ -92,8 +92,7 @@ export class Sigmoid extends ActivationFunction {
  * This Activation function implements the Tangent Hyperbolic function 
  * for a neural layer.
  */
-export class Tanh extends ActivationFunction
-{
+export class Tanh extends ActivationFunction {
   public compute(input: number): number {
     return (Math.exp(input) - Math.exp(-input)) / (Math.exp(input) + Math.exp(-input));;
   }

@@ -1,4 +1,4 @@
-import { matMul, matMulElementWise, Matrix, matMulConstant, zeros, matSubtract, matAdd, normalize, normalizeByRow } from '../../AIUtils';
+import { matMul, matMulElementWise, Matrix, matMulConstant, zeros, matSubtract, normalizeByRow } from '../../AIUtils';
 import { ActivationFunction } from '../../ai_functions/ActivationFunction';
 import { CostFunction } from '../../ai_functions/CostFunction';
 import { NeuralNetwork } from '../../ai_models/ai_neural_networks/NeuralNetwork';
@@ -60,11 +60,12 @@ export class GradientDescent
       // Calculation of new weights for each layer
       newWeights = matSubtract(this.model.getWeightsByLayer(layer), matMulConstant(dw, this.learningRate));
       this.model.setWeightsByLayer(layer, newWeights);
-
+      
       // Calculation of db for each layer
       db = matMulConstant( dz.sumOfAllRows(), 1 / nbData);
       // Calculation of new biases for each layer
       newBiases = matSubtract(this.model.getBiasesByLayer(layer), matMulConstant(db, this.learningRate));
+
       this.model.setBiasesByLayer(layer, newBiases);
     }
   }

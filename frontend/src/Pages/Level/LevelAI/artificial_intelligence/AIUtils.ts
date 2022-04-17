@@ -7,10 +7,6 @@ export interface DataSample {
   y: number;
 }
 
-export interface GeneralDataSample {
-  
-}
-
 /**
  * This class represents a mathematical matrix that can be used to perform 
  * matrix operations such as matrix multiplications.

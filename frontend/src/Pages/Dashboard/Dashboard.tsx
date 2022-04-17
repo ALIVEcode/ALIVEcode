@@ -4,13 +4,14 @@ import {
 	StyledDashboard,
 	SwitchTabActions,
 } from './dashboardTypes';
-import {
+import React, {
 	useContext,
 	useState,
 	useEffect,
 	useReducer,
 	useMemo,
 	useCallback,
+	useRef,
 } from 'react';
 import { UserContext } from '../../state/contexts/UserContext';
 import api from '../../Models/api';
@@ -46,6 +47,7 @@ import CourseSection from '../../Components/DashboardComponents/CourseSection/Co
 import ResourceMenu from '../ResourceMenu/ResourceMenu';
 import { faFile } from '@fortawesome/free-solid-svg-icons';
 import MenuCourseCreation from '../../Components/Resources/MenuCourseCreation/MenuCourseCreation';
+import AlertConfirm from '../../Components/UtilsComponents/Alert/AlertConfirm/AlertConfirm';
 
 /**
  * State reducer to change the state of the selected tab
@@ -99,6 +101,8 @@ const Dashboard = (props: DashboardProps) => {
 	});
 	const [recentCourses, setRecentCourses] = useState<Course[]>();
 	const [challenges, setChallenges] = useState<Challenge[]>();
+	const [confirmDeleteCourse, setConfirmDeleteCourse] = useState(false);
+	const courseToDeleteRef = useRef<Course>();
 
 	useEffect(() => {
 		if (pathname.endsWith('recents') && tabSelected.tab !== 'recents')
@@ -386,13 +390,19 @@ const Dashboard = (props: DashboardProps) => {
 
 								{courses.length > 0 ? (
 									courses.map((course, idx) => (
-										<div className="flex flex-row border-b justify-between px-[10px] py-[15px] group">
-											<CourseSection key={idx} course={course} className="max-w-[80%]" />
+										<div
+											key={idx}
+											className="flex flex-row border-b justify-between px-[10px] py-[15px] group"
+										>
+											<CourseSection course={course} className="max-w-[80%]" />
 											<FontAwesomeIcon
 												icon={faTrash}
 												className="cursor-pointer hover:[color:var(--danger-color)] mr-2 mt-1 group-hover:visible invisible"
 												title={t('course.delete')}
-												onClick={() => {}}
+												onClick={() => {
+													courseToDeleteRef.current = course;
+													setConfirmDeleteCourse(true);
+												}}
 											/>
 										</div>
 									))
@@ -428,6 +438,28 @@ const Dashboard = (props: DashboardProps) => {
 				setOpen={setOpenFormCreateCourse}
 				classroom={classroomForCourse}
 			/>
+			<AlertConfirm
+				open={confirmDeleteCourse}
+				title={t('course.delete')}
+				setOpen={setConfirmDeleteCourse}
+				onConfirm={async () => {
+					if (!courseToDeleteRef.current) return;
+					await api.db.courses.delete({
+						id: courseToDeleteRef.current.id,
+					});
+				}}
+				secureConfirmation={{
+					type: 'text',
+					title: t('course.deletion_test'),
+					comparisonValue: courseToDeleteRef.current?.name,
+					placeholder: courseToDeleteRef.current?.name,
+				}}
+				hideFooter
+			>
+				<p className="text-red-600 pb-2 font-bold text-lg">
+					{t('action.irreversible')}
+				</p>
+			</AlertConfirm>
 		</StyledDashboard>
 	);
 };

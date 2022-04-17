@@ -304,7 +304,8 @@
     "desc": "Course of {{professor}}",
     "subject": "Subject of the course",
     "empty": "This course is empty.",
-    "delete": "Delete course",
+    "delete": "Delete this course. (It will be removed from all the classrooms it is in)",
+    "deletion_test": "Enter the name of the course to confirm the deletion",
     "section": {
       "empty": "This section has no activities.",
       "new": "Add a Section",

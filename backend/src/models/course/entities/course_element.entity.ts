@@ -35,7 +35,7 @@ export class CourseElementEntity {
   @JoinColumn({ name: 'courseId' })
   course: CourseEntity;
 
-  @Column({ name: 'courseId', type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: false })
   courseId: string;
 
   /** If the section is not at top level (inside another section), it contains that parent section */

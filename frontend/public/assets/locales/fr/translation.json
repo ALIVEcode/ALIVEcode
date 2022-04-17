@@ -304,6 +304,7 @@
 		"desc": "Cours de {{professor}}",
 		"subject": "Matière du cours",
 		"empty": "Ce cours est vide.",
+		"delete": "Supprimer le cours",
 		"section": {
 			"empty": "Cette section ne possède aucune activité",
 			"new": "Ajouter une section",

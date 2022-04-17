@@ -25,6 +25,7 @@ import {
 	faStar,
 	faPlus,
 	faTasks,
+	faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import ClassroomSection from '../../Components/DashboardComponents/ClassroomSection/ClassroomSection';
 import Classroom from '../Classroom/Classroom';
@@ -385,7 +386,15 @@ const Dashboard = (props: DashboardProps) => {
 
 								{courses.length > 0 ? (
 									courses.map((course, idx) => (
-										<CourseSection key={idx} course={course} />
+										<div className="flex flex-row border-b justify-between px-[10px] py-[15px] group">
+											<CourseSection key={idx} course={course} className="max-w-[80%]" />
+											<FontAwesomeIcon
+												icon={faTrash}
+												className="cursor-pointer hover:[color:var(--danger-color)] mr-2 mt-1 group-hover:visible invisible"
+												title={t('course.delete')}
+												onClick={() => {}}
+											/>
+										</div>
 									))
 								) : (
 									<div className="!text-xs !text-[color:var(--fg-shade-four-color)] !cursor-default flex flex-col items-center sidebar-classroom">

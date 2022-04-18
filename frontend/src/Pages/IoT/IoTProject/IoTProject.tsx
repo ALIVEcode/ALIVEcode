@@ -29,7 +29,10 @@ import IoTChallenge from '../../Challenge/ChallengeIoT/ChallengeIoT';
 import { AsScript as AsScriptModel } from '../../../Models/AsScript/as-script.entity';
 import { useNavigate } from 'react-router-dom';
 import { IoTProjectDocument } from '../../../../../backend/src/models/iot/IoTproject/entities/IoTproject.entity';
-import { IoTSocket } from '../../../Models/Iot/IoTProjectClasses/IoTSocket';
+import {
+	IoTSocket,
+	IoTActionDoneRequestToWatcher,
+} from '../../../Models/Iot/IoTProjectClasses/IoTSocket';
 import { instanceToPlain } from 'class-transformer';
 import { IoTObject } from '../../../Models/Iot/IoTobject.entity';
 import Modal from '../../../Components/UtilsComponents/Modal/Modal';
@@ -102,7 +105,15 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 				executor.running && executor.docFieldChanged(fields);
 			}
 		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+	};
+
+	const handleOnReceiveActionDone = (data: IoTActionDoneRequestToWatcher) => {
+		objectsRunning.current.forEach(o => {
+			if (o.hasExecutor()) {
+				const executor = o.executor as AliotASExecutor;
+				executor.running && executor.receiveActionDone(data);
+			}
+		});
 	};
 
 	const socket = useMemo(() => {
@@ -115,6 +126,7 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 			project.name,
 			onRequestRender,
 			handleOnReceiveListen,
+			handleOnReceiveActionDone,
 		);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [project]);

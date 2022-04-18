@@ -9,6 +9,12 @@ import { IoTComponent } from './IoTComponent';
 import { IoTProjectLayout, parseIoTProjectLayout } from '../IoTproject.entity';
 import { IOT_EVENT } from './IoTTypes';
 
+export type IoTActionDoneRequestToWatcher = {
+	actionId: string;
+	targetId: string;
+	value: any;
+};
+
 export type IoTSocketUpdateRequest = {
 	id: string;
 	value: any;
@@ -29,8 +35,6 @@ export class IoTSocket {
 	private project: IoTProject;
 	private name: string;
 	private iotComponentManager: IoTComponentManager;
-	private onRender: (saveLayout: boolean) => void;
-	public onReceiveListen: (fields: { [key: string]: any }) => void;
 	private openedOnce: boolean = false;
 
 	constructor(
@@ -38,8 +42,9 @@ export class IoTSocket {
 		userId: string,
 		project: IoTProject,
 		name: string,
-		onRender: (saveLayout: boolean) => void,
-		onReceiveListen: (fields: { [key: string]: any }) => void,
+		private onRender: (saveLayout: boolean) => void,
+		private onReceiveListen: (fields: { [key: string]: any }) => void,
+		private onReceiveActionDone: (data: IoTActionDoneRequestToWatcher) => void,
 	) {
 		this.id = projectId;
 		this.userId = userId;
@@ -107,6 +112,9 @@ export class IoTSocket {
 					break;
 				case IOT_EVENT.RECEIVE_LISTEN:
 					this.onReceiveListen(req.data.fields);
+					break;
+				case IOT_EVENT.RECEIVE_ACTION_DONE:
+					this.onReceiveActionDone(req.data);
 					break;
 				default:
 					// console.log('Unknown event', req);

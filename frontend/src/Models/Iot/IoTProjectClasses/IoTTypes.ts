@@ -66,6 +66,10 @@ export enum IOT_EVENT {
 	SEND_ACTION = 'send_action',
 	/** Object receives an action request */
 	RECEIVE_ACTION = 'receive_action',
+	/** Object sends back a response meaning it finished doing the action */
+	SEND_ACTION_DONE = 'action_done',
+	/** The action done received from the object is sent back to the watchers to execute alivescript */
+	RECEIVE_ACTION_DONE = 'receive_action_done',
 	/** A route of the project is triggered */
 	SEND_ROUTE = 'send_route',
 	/** Update the interface of an interface */

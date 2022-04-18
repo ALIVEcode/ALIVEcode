@@ -1,6 +1,9 @@
 import { v4 as uuid } from 'uuid';
 import { CompileDTO, SupportedLanguagesAS } from '../../../Models/ASModels';
-import { IoTSocket } from '../../../Models/Iot/IoTProjectClasses/IoTSocket';
+import {
+	IoTActionDoneRequestToWatcher,
+	IoTSocket,
+} from '../../../Models/Iot/IoTProjectClasses/IoTSocket';
 import { IOT_EVENT } from '../../../Models/Iot/IoTProjectClasses/IoTTypes';
 import { AlertManager } from 'react-alert';
 import { ChallengeExecutor } from '../AbstractChallengeExecutor';
@@ -13,6 +16,7 @@ export default class AliotASExecutor extends ChallengeExecutor {
 	ASListeners: Array<{ fields: string[]; funcName: string }> = [];
 	aliotSocket: IoTSocket;
 	running: boolean = false;
+	waitingForObjectAction: string | null = null;
 	error?: string;
 
 	constructor(
@@ -132,15 +136,18 @@ export default class AliotASExecutor extends ChallengeExecutor {
 					label: 'Send Action',
 					type: 'NORMAL',
 					apply: params => {
+						let targetId;
 						// implicit target
 						if (params.length === 2) {
 							if (!this.objectId) return;
-							this.aliotSocket.sendAction(this.objectId, params[0], params[1]);
+							targetId = this.objectId;
 						}
 						// explicit target
 						else {
-							this.aliotSocket.sendAction(params[2], params[0], params[1]);
+							targetId = params[2];
 						}
+						this.waitingForObjectAction = targetId;
+						this.aliotSocket.sendAction(targetId, params[0], params[1]);
 					},
 				},
 			},
@@ -261,6 +268,19 @@ export default class AliotASExecutor extends ChallengeExecutor {
 				);
 			});
 		});
+	}
+
+	receiveActionDone(data: IoTActionDoneRequestToWatcher) {
+		if (this.waitingForObjectAction === data.targetId) {
+			this.waitingForObjectAction = null;
+			this.ws.send(
+				JSON.stringify({
+					type: 'RESUME',
+					responseData: [null],
+				}),
+			);
+			this.perform_next();
+		}
 	}
 
 	override async interrupt() {

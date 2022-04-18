@@ -356,10 +356,10 @@ export class CourseService {
       .leftJoinAndSelect('sectionParent.courseElement', 'element')
       .leftJoinAndSelect('elements.activity', 'activity')
       .leftJoinAndSelect('elements.section', 'section')
-      .where('element.courseId = :courseId', { courseId: course.id })
+      .andWhere('element.courseId = :courseId', { courseId: course.id })
       .getOne();
     if (!section) throw new HttpException('Section not found', HttpStatus.NOT_FOUND);
-    section.courseElement.courseId = course.id;
+    // section.courseElement.courseId = course.id;
     return section;
   }
 

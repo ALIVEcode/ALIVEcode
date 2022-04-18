@@ -705,27 +705,34 @@ const Course = () => {
 				<div className="border-b border-[color:var(--bg-shade-four-color)]">
 					<div className="text-4xl text-left text-[color:var(--foreground-color)] pl-5 pt-3 pb-3">
 						{isCreator() ? (
-							editTitle ? (
-								<FormInput
-									ref={titleRef}
-									type="text"
-									autoFocus
-									onBlur={async () => {
-										if (!titleRef.current) return;
-										await setTitle(titleRef.current.value);
-										setCourseTitle(titleRef.current.value);
-										setEditTitle(false);
-									}}
-									defaultValue={courseTitle}
-								/>
-							) : (
-								<span
-									style={{ cursor: isCreator() ? 'pointer' : 'auto' }}
-									onClick={() => isCreator() && setEditTitle(true)}
-								>
-									{courseTitle}
-								</span>
-							)
+							<div className="flex flex-row justify-between items-center">
+								{editTitle ? (
+									<FormInput
+										ref={titleRef}
+										type="text"
+										autoFocus
+										onBlur={async () => {
+											if (!titleRef.current) return;
+											await setTitle(titleRef.current.value);
+											setCourseTitle(titleRef.current.value);
+											setEditTitle(false);
+										}}
+										defaultValue={courseTitle}
+									/>
+								) : (
+									<span
+										style={{ cursor: isCreator() ? 'pointer' : 'auto' }}
+										onClick={() => isCreator() && setEditTitle(true)}
+									>
+										{courseTitle}
+									</span>
+								)}{' '}
+								<label className="pr-3 text-2xl opacity-60">
+									{tab.tab === 'layout'
+										? t('course.layout_view')
+										: t('course.student_view')}
+								</label>
+							</div>
 						) : (
 							courseTitle
 						)}

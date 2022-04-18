@@ -47,6 +47,7 @@ const CourseNavigation = ({
 								{isCreator() && (
 									<FontAwesomeIcon
 										icon={faChalkboardTeacher}
+										title={t('course.layout_view')}
 										size="2x"
 										className="pr-5 hover:cursor-pointer [color:var(--foreground-color)]"
 										onClick={() =>
@@ -57,6 +58,7 @@ const CourseNavigation = ({
 								<Disclosure.Button>
 									<FontAwesomeIcon
 										icon={faWindowMinimize}
+										title={t('course.navigation.minimize')}
 										className="w-fit pb-2 mb-5 pr-1 hover:cursor-pointer [color:var(--foreground-color)]"
 										onClick={() => {
 											onToggle();
@@ -91,6 +93,7 @@ const CourseNavigation = ({
 							icon={faWindowMaximize}
 							size="2x"
 							className="w-fit mt-1 pt-2 mb-4 hover:cursor-pointer [color:var(--foreground-color)]"
+							title={t('course.navigation.maximize')}
 							onClick={() => {
 								onToggle();
 							}}
@@ -98,6 +101,7 @@ const CourseNavigation = ({
 						{isCreator() && (
 							<FontAwesomeIcon
 								icon={faChalkboardTeacher}
+								title={t('course.layout_view')}
 								size="2x"
 								className="w-fit mt-2 mb-1 px-1.5 hover:cursor-pointer [color:var(--foreground-color)]"
 								onClick={() => setTab({ tab: 'layout', openedActivity: null })}

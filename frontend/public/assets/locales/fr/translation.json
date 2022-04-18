@@ -304,6 +304,8 @@
     "desc": "Cours de {{professor}}",
     "subject": "Matière du cours",
     "empty": "Ce cours est vide.",
+    "student_view": "Vue étudiant",
+    "layout_view": "Vue professeur",
     "delete": "Supprimer le cours. (Il sera retiré de toutes les classes où il est présent)",
     "deletion_test": "Écrivez le nom du cours pour confirmer la suppression",
     "section": {
@@ -331,6 +333,10 @@
       "name": "Nom du cours",
       "description": "Description du cours",
       "subject": "Matière du cours"
+    },
+    "navigation": {
+      "minimize": "Réduire",
+      "maximize": "Agrandir"
     }
   },
   "menu": {

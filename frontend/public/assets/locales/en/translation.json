@@ -304,6 +304,8 @@
     "desc": "Course of {{professor}}",
     "subject": "Subject of the course",
     "empty": "This course is empty.",
+    "student_view": "Student view",
+    "layout_view": "Layout view",
     "delete": "Delete this course. (It will be removed from all the classrooms it is in)",
     "deletion_test": "Enter the name of the course to confirm the deletion",
     "section": {
@@ -331,6 +333,10 @@
       "name": "Name of the course",
       "description": "Description of the course",
       "subject": "Subject of the course"
+    },
+    "navigation": {
+      "minimize": "Minimize",
+      "maximize": "Maximize"
     }
   },
   "menu": {

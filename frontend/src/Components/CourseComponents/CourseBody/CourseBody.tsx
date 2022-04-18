@@ -22,7 +22,7 @@ const CourseBody = () => {
 	return (
 		<div>
 			{!courseElement ? (
-				<div className="w-full h-full flex justify-center items-center">
+				<div className="w-full h-full flex justify-center items-center pt-3 font-bold">
 					<label>Open an activity to get started</label>
 				</div>
 			) : (

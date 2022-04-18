@@ -1,4 +1,4 @@
-import { createContext, MutableRefObject } from 'react';
+import React, { createContext, MutableRefObject } from 'react';
 import { Activity } from '../../Models/Course/activity.entity';
 import { Course } from '../../Models/Course/course.entity';
 import {

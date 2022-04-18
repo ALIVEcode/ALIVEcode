@@ -149,6 +149,7 @@ export default class AliotASExecutor extends ChallengeExecutor {
 						this.waitingForObjectAction = targetId;
 						this.aliotSocket.sendAction(targetId, params[0], params[1]);
 					},
+					handleNext: true,
 				},
 			},
 			{
@@ -276,7 +277,7 @@ export default class AliotASExecutor extends ChallengeExecutor {
 			this.ws.send(
 				JSON.stringify({
 					type: 'RESUME',
-					responseData: [null],
+					responseData: [data.value],
 				}),
 			);
 			this.perform_next();

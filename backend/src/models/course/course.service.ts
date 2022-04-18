@@ -108,6 +108,25 @@ export class CourseService {
     return await this.courseRepository.remove(course);
   }
 
+  /**
+   * Clones the entirety of a course with its nested relations in the database
+   * and return the cloned version
+   * @param course Course to clone
+   */
+  async clone(course: CourseEntity) {
+    if (!course.elements) course = await this.findCourseWithElements(course.id, false);
+
+    course.elements.map(el => {
+      // Is a section
+      if (el.section) {
+      }
+      // Is an activity
+      else if (el.activity) {
+      }
+    });
+    return null;
+  }
+
   /*****-------Course Elements-------*****/
 
   /**

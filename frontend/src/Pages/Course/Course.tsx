@@ -44,7 +44,6 @@ import {
 } from '../../Models/Course/course_element.entity';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSkull } from '@fortawesome/free-solid-svg-icons';
-import { plainToInstance } from 'class-transformer';
 
 /**
  * Course page that shows the content of a course
@@ -406,7 +405,6 @@ const Course = () => {
 		sectionParent?: Section,
 	) => {
 		if (!course.current || !courseElements.current) return;
-		console.log(course.current);
 		const { courseElement, newOrder } = await api.db.courses
 			.addContent(course.current.id, content, name, sectionParent?.id)
 			.catch(e => {
@@ -667,7 +665,6 @@ const Course = () => {
 					const el = courseElements.current[Number(savedOpenedActivityId)];
 					if (el.activity) savedOpenedActivity = el as CourseElementActivity;
 				}
-
 				// If there is a saved opened activity opens it
 				if (savedOpenedActivity)
 					setTab({ openedActivity: savedOpenedActivity });
@@ -738,7 +735,6 @@ const Course = () => {
 						)}
 					</div>
 				</div>
-
 				{loading ? (
 					<LoadingScreen />
 				) : tab.tab === 'layout' ? (

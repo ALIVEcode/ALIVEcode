@@ -57,6 +57,10 @@ export enum IOT_EVENT {
   SEND_ACTION = 'send_action',
   /** Object receives an action request */
   RECEIVE_ACTION = 'receive_action',
+  /** Object sends back a response meaning it finished doing the action */
+  SEND_ACTION_DONE = 'action_done',
+  /** The action done received from the object is sent back to the watchers to execute alivescript */
+  RECEIVE_ACTION_DONE = 'receive_action_done',
   /** A route of the project is triggered */
   SEND_ROUTE = 'send_route',
   /** Update the interface of an interface */
@@ -107,6 +111,17 @@ export type IoTRouteRequestFromObject = {
 
 export type IoTBroadcastRequestFromBoth = {
   data: any;
+};
+
+export type IoTActionDoneRequestFromObject = {
+  actionId: string;
+  value: any;
+};
+
+export type IoTActionDoneRequestToWatcher = {
+  actionId: string;
+  targetId: string;
+  value: any;
 };
 
 // REQUESTS TO OBJECTS
@@ -176,7 +191,7 @@ export class Client {
 
   static getClients() {
     const clients: Array<ObjectClient | WatcherClient> = [];
-    return clients.concat(ObjectClient.objects).concat(WatcherClient.watchers);
+    return clients.concat(ObjectClient.getClients()).concat(WatcherClient.getClients());
   }
 
   register() {
@@ -270,6 +285,10 @@ export class WatcherClient extends Client {
     WatcherClient.watchers.push(this);
   }
 
+  static getClients() {
+    return WatcherClient.watchers;
+  }
+
   static getClientBySocket(socket: WebSocket) {
     return WatcherClient.watchers.find(w => w.getSocket() === socket);
   }
@@ -299,6 +318,10 @@ export class ObjectClient extends Client {
   register() {
     super.register();
     ObjectClient.objects.push(this);
+  }
+
+  static getClients() {
+    return ObjectClient.objects;
   }
 
   static getClientBySocket(socket: WebSocket) {

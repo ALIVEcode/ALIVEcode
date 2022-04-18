@@ -29,6 +29,8 @@ import {
   WatcherClientConnectPayload,
   ObjectClientConnectPayload,
   ObjectClient,
+  IoTActionDoneRequestFromObject,
+  IoTActionDoneRequestToWatcher,
 } from './iotSocket.types';
 import { IoTExceptionFilter } from './iot.exception';
 import {
@@ -94,7 +96,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
 
   @UseFilters(new IoTExceptionFilter())
   @SubscribeMessage(IOT_EVENT.CONNECT_WATCHER)
-  async connect_watcher(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: WatcherClientConnectPayload) {
+  async connectWatcher(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: WatcherClientConnectPayload) {
     if (!payload.iotProjectId || !payload.userId || !payload.iotProjectName) throw new WsException('Bad payload');
     if (WatcherClient.isSocketAlreadyWatcher(socket)) throw new WsException('Already connected as a watcher');
     const alreadyConnectedSocket = WatcherClient.getClientBySocket(socket);
@@ -115,7 +117,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
 
   @UseFilters(new IoTExceptionFilter())
   @SubscribeMessage(IOT_EVENT.CONNECT_OBJECT)
-  async connect_object(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: ObjectClientConnectPayload) {
+  async connectObject(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: ObjectClientConnectPayload) {
     if (!payload.id) throw new WsException('Bad payload');
     if (WatcherClient.isSocketAlreadyWatcher(socket)) throw new WsException('Already connected as a watcher');
     const alreadyConnectedObj = ObjectClient.getClientById(payload.id);
@@ -144,7 +146,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
 
   @UseFilters(new IoTExceptionFilter())
   @SubscribeMessage(IOT_EVENT.UPDATE_COMPONENT)
-  async send_update(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTUpdateRequestFromObject) {
+  async sendUpdate(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTUpdateRequestFromObject) {
     if (!payload.id || payload.value == null) throw new WsException('Bad payload');
     const client = ObjectClient.getClientBySocket(socket);
     if (!client) throw new WsException('Forbidden');
@@ -206,7 +208,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
 
   @UseFilters(new IoTExceptionFilter())
   @SubscribeMessage(IOT_EVENT.SEND_ACTION)
-  async send_object(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTActionRequestFromWatcher) {
+  async sendObject(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTActionRequestFromWatcher) {
     if (!payload.targetId || payload.actionId == null || payload.value == null) throw new WsException('Bad payload');
     const watcher = WatcherClient.getClientBySocket(socket);
     if (!watcher) throw new WsException('Forbidden');
@@ -218,8 +220,33 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   }
 
   @UseFilters(new IoTExceptionFilter())
+  @SubscribeMessage(IOT_EVENT.SEND_ACTION_DONE)
+  async sendActionDone(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTActionDoneRequestFromObject) {
+    if (payload.actionId == null) throw new WsException('Bad payload');
+    const client = WatcherClient.getClientBySocket(socket);
+    if (!client) throw new WsException('Forbidden');
+
+    const object = await this.iotObjectService.findOne(client.id);
+
+    await this.iotObjectService.addIoTObjectLog(
+      object,
+      IOT_EVENT.SEND_ACTION_DONE,
+      `Object finished action with id "${payload.actionId}"${
+        payload.value == null ? '.' : ` with value "${JSON.stringify(payload.value)}".`
+      }`,
+    );
+
+    const data: IoTActionDoneRequestToWatcher = {
+      actionId: payload.actionId,
+      targetId: client.id,
+      value: payload.value,
+    };
+    WatcherClient.getClients().map(c => c.sendEvent(IOT_EVENT.RECEIVE_ACTION_DONE, data));
+  }
+
+  @UseFilters(new IoTExceptionFilter())
   @SubscribeMessage(IOT_EVENT.SEND_ROUTE)
-  async send_route(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTRouteRequestFromObject) {
+  async sendRoute(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTRouteRequestFromObject) {
     if (!payload.routePath || !payload.data) throw new WsException('Bad payload');
     const client = ObjectClient.getClientBySocket(socket);
     if (!client) throw new WsException('Forbidden');

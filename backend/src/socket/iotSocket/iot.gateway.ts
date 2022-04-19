@@ -191,7 +191,6 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   @UseFilters(new IoTExceptionFilter())
   @SubscribeMessage(IOT_EVENT.SUBSCRIBE_LISTENER)
   async listen(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTListenRequestFromObject) {
-    console.log(payload);
     if (!Array.isArray(payload.fields)) throw new WsException('Bad payload');
     const client = Client.getClientBySocket(socket);
     if (!client) throw new WsException('Forbidden');
@@ -223,7 +222,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   @SubscribeMessage(IOT_EVENT.SEND_ACTION_DONE)
   async sendActionDone(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTActionDoneRequestFromObject) {
     if (payload.actionId == null) throw new WsException('Bad payload');
-    const client = WatcherClient.getClientBySocket(socket);
+    const client = ObjectClient.getClientBySocket(socket);
     if (!client) throw new WsException('Forbidden');
 
     const object = await this.iotObjectService.findOne(client.id);

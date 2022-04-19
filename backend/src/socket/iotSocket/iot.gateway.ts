@@ -209,11 +209,11 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
   @SubscribeMessage(IOT_EVENT.SEND_ACTION)
   async sendObject(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTActionRequestFromWatcher) {
     if (!payload.targetId || payload.actionId == null || payload.value == null) throw new WsException('Bad payload');
-    const watcher = WatcherClient.getClientBySocket(socket);
-    if (!watcher) throw new WsException('Forbidden');
+    const client = Client.getClientBySocket(socket);
+    if (!client) throw new WsException('Forbidden');
 
     const object = await this.iotObjectService.findOneWithLoadedProject(payload.targetId);
-    if (object.currentIotProject?.id !== watcher.projectId) throw new WsException('Not in the same project');
+    if (object.currentIotProject?.id !== client.projectId) throw new WsException('Not in the same project');
 
     await this.iotObjectService.sendAction(object, payload.actionId, payload.value);
   }

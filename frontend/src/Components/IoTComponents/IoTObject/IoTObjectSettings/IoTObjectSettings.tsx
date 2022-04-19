@@ -69,7 +69,7 @@ const IoTObjectSettings = ({
 			/>
 			<br />
 			&nbsp;
-			<Link onClick={() => navigator.clipboard.writeText(object.id)} dark bold>
+			<Link onClick={() => navigator.clipboard.writeText(object.id).then()} dark bold>
 				Copy id
 			</Link>
 		</>

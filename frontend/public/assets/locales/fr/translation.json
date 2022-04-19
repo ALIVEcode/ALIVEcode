@@ -116,6 +116,7 @@
     "activity_type": {
       "challenge": "Défi",
       "video": "Visionnement",
+      "pdf": "Pdf",
       "assignment": "Énoncé de travail",
       "theory": "Théorie"
     },
@@ -245,6 +246,12 @@
     },
     "file": {
       "name": "Fichier",
+      "form": {
+        "file": "Glissez ou sélectionnez un fichier"
+      }
+    },
+    "pdf": {
+      "name": "Pdf",
       "form": {
         "file": "Glissez ou sélectionnez un fichier"
       }

@@ -12,7 +12,7 @@ import {
   UploadedFile,
 } from '@nestjs/common';
 import { ResourceService } from './resource.service';
-import { ResourceEntity } from './entities/resource.entity';
+import { ResourceEntity, RESOURCE_TYPE } from './entities/resource.entity';
 import { Auth } from '../../utils/decorators/auth.decorator';
 import { Role } from '../../utils/types/roles.types';
 import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
@@ -91,7 +91,10 @@ export class ResourceController {
       }
     }
 
-    dto.resource.type = dto.type;
+    // dto.resource.type = dto.type;
+
+    dto.resource.type = RESOURCE_TYPE.PDF;
+
     const errors = await validate(plainToInstance(CreateResourceDTO, dto));
     if (errors.length > 0) throw new HttpException(errors, HttpStatus.BAD_REQUEST);
     return await this.resourceService.create(dto, user);

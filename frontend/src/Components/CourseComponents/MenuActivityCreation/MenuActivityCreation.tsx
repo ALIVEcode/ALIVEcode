@@ -11,6 +11,7 @@ import { MenuActivityCreationProps } from './menuActivityCreationTypes';
 import { ActivityTheory } from '../../../Models/Course/activities/activity_theory.entity';
 import { ActivityChallenge } from '../../../Models/Course/activities/activity_challenge.entity';
 import { ActivityVideo } from '../../../Models/Course/activities/activity_video.entity';
+import { ActivityPdf } from '../../../Models/Course/activities/activity_pdf.entity';
 import { ActivityAssignment } from '../../../Models/Course/activities/activity_assignment.entity';
 
 /**
@@ -49,6 +50,9 @@ const MenuActivityCreation = ({
 			case ACTIVITY_TYPE.VIDEO:
 				activity = new ActivityVideo();
 				break;
+			case ACTIVITY_TYPE.PDF:
+				activity = new ActivityPdf();
+				break;
 			case ACTIVITY_TYPE.ASSIGNMENT:
 				activity = new ActivityAssignment();
 				break;
@@ -75,6 +79,11 @@ const MenuActivityCreation = ({
 					title={t('msg.activity_type.video')}
 					icon={getActivityIcon(ACTIVITY_TYPE.VIDEO)}
 					onClick={() => onSelect(ACTIVITY_TYPE.VIDEO)}
+				/>
+				<TypeCard
+					title={t('msg.activity_type.pdf')}
+					icon={getActivityIcon(ACTIVITY_TYPE.PDF)}
+					onClick={() => onSelect(ACTIVITY_TYPE.PDF)}
 				/>
 				<TypeCard
 					title={t('msg.activity_type.theory')}

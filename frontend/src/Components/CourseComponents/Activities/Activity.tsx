@@ -15,6 +15,7 @@ import { Descendant } from 'slate';
 import Button from '../../UtilsComponents/Buttons/Button';
 import { useTranslation } from 'react-i18next';
 import ActivityVideo from './ActivityVideo';
+import ActivityPdf from './ActivityPdf';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ActivityProps } from './activityTypes';
 import FormInput from '../../UtilsComponents/FormInput/FormInput';
@@ -28,6 +29,7 @@ import {
 	faMinusCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import { ActivityVideo as ActivityVideoModel } from '../../../Models/Course/activities/activity_video.entity';
+import { ActivityPdf as ActivityPdfModel } from '../../../Models/Course/activities/activity_pdf.entity';
 import { ActivityAssignment as ActivityAssignmentModel } from '../../../Models/Course/activities/activity_assignment.entity';
 
 /**
@@ -138,6 +140,8 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 				);
 			case ACTIVITY_TYPE.VIDEO:
 				return <ActivityVideo activity={activity as ActivityVideoModel} />;
+			case ACTIVITY_TYPE.PDF:
+				return <ActivityPdf activity={activity as ActivityPdfModel} />;
 			case ACTIVITY_TYPE.ASSIGNMENT:
 				return (
 					<ActivityAssignment activity={activity as ActivityAssignmentModel} />

@@ -28,6 +28,7 @@ import {
   CreateActivityChallengeDTO,
   CreateActivityTheoryDTO,
   CreateActivityVideoDTO,
+  CreateActivityPdfDTO,
 } from './dtos/CreateActivities.dto';
 import { CreateCourseDTO } from './dtos/CreateCourse.dto';
 import { CreateSectionDTO } from './dtos/CreateSection.dto';
@@ -196,6 +197,7 @@ export class CourseController {
       | CreateActivityChallengeDTO
       | CreateActivityTheoryDTO
       | CreateActivityVideoDTO
+      | CreateActivityPdfDTO
       | CreateActivityAssignmentDTO,
   ): Promise<{ newOrder: number[]; courseElement: CourseElementEntity }> {
     course = await this.courseService.findCourseWithElements(course.id, false);
@@ -287,8 +289,31 @@ export class CourseController {
         HttpStatus.BAD_REQUEST,
       );
     const resource = resourceUnknown as ResourceFileEntity;
-    // return res.status(200).sendFile(`${resource.url}`, { root: './uploads/resources'});
     return res.status(200).download(`./uploads/resources/${resource.url}`);
+  }
+
+  /**
+   * Route to get the file associated with an assignment activity.
+   * @param course Course found with the id in the url
+   * @param activityId Id of the activity to get the file from
+   * @returns The file
+   */
+  @Get(':id/activities/:activityId/file')
+  @UseGuards(CourseAccess)
+  async getResourceFileInActivity(
+    @Course() course: CourseEntity,
+    @Param('activityId') activityId: string,
+    @Res() res: Response,
+  ) {
+    const activity = await this.courseService.findActivity(course.id, activityId);
+    const acceptedActivityTypes = [ACTIVITY_TYPE.CHALLENGE, ACTIVITY_TYPE.PDF];
+    if (!acceptedActivityTypes.includes(activity.type))
+      throw new HttpException(
+        `Can only get the file on activities of type ${acceptedActivityTypes.join(', ')}`,
+        HttpStatus.BAD_REQUEST,
+      );
+    const resource = await this.courseService.getResourceOfActivity(activity);
+    return res.status(200).sendFile(resource.file.path, { root: '.' });
   }
 
   /**

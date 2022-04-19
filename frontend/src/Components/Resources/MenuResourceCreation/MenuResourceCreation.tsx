@@ -240,6 +240,20 @@ const MenuResourceCreation = ({
 						)}
 					</>
 				);
+			case RESOURCE_TYPE.PDF:
+				return (
+					<>
+						<InputGroup
+							type="file"
+							label={t('resources.pdf.form.file')}
+							errors={errors.resource?.url}
+							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+								e.target.files && setFile(e.target.files[0])
+							}
+							progress={uploadProgress}
+						/>
+					</>
+				);
 			case RESOURCE_TYPE.FILE:
 				return (
 					<>

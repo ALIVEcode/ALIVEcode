@@ -87,7 +87,9 @@ const FormInput = React.forwardRef<any, any>(
 					<div
 						className={classNames(
 							'absolute rounded h-full z-[-2]',
-							errors ? 'w-[0] border-red-500' : `w-[${progress}%] bg-blue-400`,
+							errors
+								? 'w-[0] border-red-500'
+								: `w-[${progress}%] bg-[color:var(--logo-color)]`,
 						)}
 					></div>
 					<input

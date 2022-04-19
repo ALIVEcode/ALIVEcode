@@ -55,6 +55,12 @@ export class CreateActivityTheoryDTO extends CreateActivityDTO {}
 export class CreateActivityVideoDTO extends CreateActivityDTO {}
 
 /**
+ * DTO to create a course element of a pdf activity (Data Transfer Object)
+ * @author Maxime Gazzé
+ */
+export class CreateActivityPdfDTO extends CreateActivityDTO {}
+
+/**
  * DTO to create a course element of an assignment activity (Data Transfer Object)
  * @author Enric Soldevila
  */

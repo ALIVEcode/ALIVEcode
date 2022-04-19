@@ -4,6 +4,7 @@ import {
 	faCode,
 	faImage,
 	faQuestion,
+	faFilePdf,
 } from '@fortawesome/free-solid-svg-icons';
 import { faCloudsmith } from '@fortawesome/free-brands-svg-icons';
 import { faFile, faVideo, faBook } from '@fortawesome/free-solid-svg-icons';
@@ -47,6 +48,8 @@ export const getResourceIcon = (resourceType: RESOURCE_TYPE) => {
 	switch (resourceType) {
 		case RESOURCE_TYPE.FILE:
 			return faFile;
+		case RESOURCE_TYPE.PDF:
+			return faFilePdf;
 		case RESOURCE_TYPE.IMAGE:
 			return faImage;
 		case RESOURCE_TYPE.CHALLENGE:

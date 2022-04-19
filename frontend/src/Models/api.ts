@@ -267,6 +267,17 @@ const api = {
 				Resource,
 				false,
 			),
+			getResourceFileInActivity: async (
+				courseId: string,
+				activityId: string,
+			) => {
+				const res = (
+					await axios.get(`courses/${courseId}/activities/${activityId}/file`, {
+						responseType: 'blob',
+					})
+				).data;
+				return URL.createObjectURL(res);
+			},
 			async addResourceInActivity(
 				course: Course,
 				activity: Activity,

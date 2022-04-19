@@ -31,6 +31,8 @@ import { BundleEntity } from './entities/bundles/bundle.entity';
 import { CourseTemplateEntity } from './entities/bundles/course_template.entity';
 import { FileEntity } from '../file/entities/file.entity';
 import { FileService } from '../file/file.service';
+import { ActivityPdfEntity } from './entities/activities/activity_pdf.entity';
+import { ResourcePdfEntity } from '../resource/entities/resources/resource_pdf.entity';
 
 /**
  * Module for the course nestjs resource
@@ -45,6 +47,7 @@ import { FileService } from '../file/file.service';
       ActivityEntity,
       ActivityTheoryEntity,
       ActivityVideoEntity,
+      ActivityPdfEntity,
       ActivityAssignmentEntity,
       ActivityChallengeEntity,
       ResourceEntity,
@@ -58,6 +61,7 @@ import { FileService } from '../file/file.service';
       ChallengeEntity,
       ResourceChallengeEntity,
       ResourceVideoEntity,
+      ResourcePdfEntity,
       ResourceFileEntity,
       ResourceImageEntity,
       ResourceTheoryEntity,

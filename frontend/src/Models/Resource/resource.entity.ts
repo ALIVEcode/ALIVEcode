@@ -4,6 +4,7 @@ import { Professor } from '../User/user.entity';
 import { ResourceChallenge } from './resources/resource_challenge.entity';
 import { ResourceTheory } from './resources/resource_theory.entity';
 import { ResourceFile } from './resources/resource_file.entity';
+import { ResourcePdf } from './resources/resource_pdf.entity';
 import { ResourceImage } from './resources/resource_image.entity';
 import { ResourceVideo } from './resources/resource_video.entity';
 
@@ -11,6 +12,7 @@ import { ResourceVideo } from './resources/resource_video.entity';
 export enum RESOURCE_TYPE {
 	VIDEO = 'VI',
 	FILE = 'FI',
+	PDF = 'PF',
 	IMAGE = 'IM',
 	CHALLENGE = 'CH',
 	THEORY = 'TH',
@@ -21,6 +23,7 @@ export type DifferentResources =
 	| ResourceChallenge
 	| ResourceTheory
 	| ResourceFile
+	| ResourcePdf
 	| ResourceImage
 	| ResourceVideo;
 

@@ -10,6 +10,7 @@ export enum ACTIVITY_TYPE {
   THEORY = 'TH',
   CHALLENGE = 'CH',
   VIDEO = 'VI',
+  PDF = 'PF',
   ASSIGNMENT = 'AS',
 }
 

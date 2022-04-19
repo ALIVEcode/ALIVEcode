@@ -116,6 +116,7 @@
     "activity_type": {
       "challenge": "Challenge",
       "video": "Video",
+      "pdf": "Pdf",
       "assignment": "Assignment",
       "theory": "Theory"
     },
@@ -245,6 +246,12 @@
     },
     "file": {
       "name": "File",
+      "form": {
+        "file": "Drag and drop a file or insert one"
+      }
+    },
+    "pdf": {
+      "name": "Pdf",
       "form": {
         "file": "Drag and drop a file or insert one"
       }

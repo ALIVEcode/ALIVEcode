@@ -12,6 +12,7 @@ import { CourseContent, CourseEntity } from './entities/course.entity';
 import { CourseElementEntity } from './entities/course_element.entity';
 import { SectionEntity } from './entities/section.entity';
 import { ActivityVideoEntity } from './entities/activities/activity_video.entity';
+import { ActivityPdfEntity } from './entities/activities/activity_pdf.entity';
 import { CreateActivityDTO } from './dtos/CreateActivities.dto';
 import { UpdateCourseElementDTO } from './dtos/UpdateCourseElement.dto';
 import { CreateSectionDTO } from './dtos/CreateSection.dto';
@@ -31,7 +32,8 @@ export class CourseService {
     @InjectRepository(SectionEntity) private sectionRepository: Repository<SectionEntity>,
     @InjectRepository(ActivityEntity) private activityRepository: Repository<ActivityEntity>,
     @InjectRepository(ActivityTheoryEntity) private actTheoryRepo: Repository<ActivityTheoryEntity>,
-    @InjectRepository(ActivityVideoEntity) private actVideoRepo: Repository<ActivityChallengeEntity>,
+    @InjectRepository(ActivityVideoEntity) private actVideoRepo: Repository<ActivityVideoEntity>,
+    @InjectRepository(ActivityPdfEntity) private actPdfRepo: Repository<ActivityPdfEntity>,
     @InjectRepository(ActivityAssignmentEntity) private actAssignmentRepo: Repository<ActivityAssignmentEntity>,
     @InjectRepository(ActivityChallengeEntity) private actChallengeRepo: Repository<ActivityChallengeEntity>,
     @InjectRepository(ClassroomEntity) private classroomRepo: Repository<ClassroomEntity>,
@@ -438,6 +440,9 @@ export class CourseService {
         break;
       case ACTIVITY_TYPE.VIDEO:
         activity = await this.actVideoRepo.save(activityDTO.courseContent);
+        break;
+      case ACTIVITY_TYPE.PDF:
+        activity = await this.actPdfRepo.save(activityDTO.courseContent);
         break;
       case ACTIVITY_TYPE.ASSIGNMENT:
         activity = await this.actAssignmentRepo.save(activityDTO.courseContent);

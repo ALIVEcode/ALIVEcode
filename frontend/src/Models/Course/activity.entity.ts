@@ -8,6 +8,7 @@ import {
 	faVideo,
 	faTasks,
 	faQuestion,
+	faFilePdf,
 } from '@fortawesome/free-solid-svg-icons';
 
 /** All the types of activities */
@@ -15,6 +16,7 @@ export enum ACTIVITY_TYPE {
 	THEORY = 'TH',
 	CHALLENGE = 'CH',
 	VIDEO = 'VI',
+	PDF = 'PF',
 	ASSIGNMENT = 'AS',
 }
 
@@ -76,6 +78,8 @@ export const getActivityIcon = (activityType: ACTIVITY_TYPE) => {
 			return faBook;
 		case ACTIVITY_TYPE.VIDEO:
 			return faVideo;
+		case ACTIVITY_TYPE.PDF:
+			return faFilePdf;
 		case ACTIVITY_TYPE.ASSIGNMENT:
 			return faTasks;
 	}

@@ -33,6 +33,9 @@ export const createMulterOptions = (injected: any): MulterModuleOptions => {
         case RESOURCE_TYPE.VIDEO:
           acceptedMimetypes = ['video/mp4', 'video/mpeg', 'video/ogg', 'video/mp2t'];
           break;
+        case RESOURCE_TYPE.PDF:
+          acceptedMimetypes = ['application/pdf'];
+          break;
       }
 
       if (type !== RESOURCE_TYPE.FILE && !acceptedMimetypes.includes(file.mimetype)) {

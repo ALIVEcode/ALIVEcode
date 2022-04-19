@@ -91,10 +91,7 @@ export class ResourceController {
       }
     }
 
-    // dto.resource.type = dto.type;
-
-    dto.resource.type = RESOURCE_TYPE.PDF;
-
+    dto.resource.type = dto.type;
     const errors = await validate(plainToInstance(CreateResourceDTO, dto));
     if (errors.length > 0) throw new HttpException(errors, HttpStatus.BAD_REQUEST);
     return await this.resourceService.create(dto, user);

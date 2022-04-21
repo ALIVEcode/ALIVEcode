@@ -207,7 +207,7 @@ const Course = () => {
 		if (action.openSection) {
 			if (openedSections.length <= 0)
 				query.set('sec', action.openSection.id.toString());
-			else if (!openedSections.includes(action.openSection))
+			if (!openedSections.includes(action.openSection))
 				openedSections.push(action.openSection);
 		}
 
@@ -245,7 +245,7 @@ const Course = () => {
 				action.openedActivity !== undefined
 					? action.openedActivity
 					: state.openedActivity,
-			openedSections,
+			openedSections: [...openedSections],
 		};
 	};
 

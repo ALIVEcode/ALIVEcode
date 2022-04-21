@@ -15,7 +15,7 @@ import {
 import { useLocation } from 'react-router';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faTimes, faBullhorn } from '@fortawesome/free-solid-svg-icons';
 import { classNames } from '../../../Types/utils';
 
 /**
@@ -23,9 +23,10 @@ import { classNames } from '../../../Types/utils';
  *
  * @param {() => void} handleLogout callback that logs out the user and change the global state of the app
  *
+ * @param setFeedbackModalOpen
  * @author Enric Soldevila
  */
-const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
+const ALIVENavbar = ({ handleLogout, setFeedbackModalOpen }: NavbarProps) => {
 	const { user } = useContext(UserContext);
 	const { t } = useTranslation();
 	const { routes } = useRoutes();
@@ -326,6 +327,22 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 										</div>
 									</Menu.Items>
 								</Transition>
+							</Menu>
+							<Menu
+								as="div"
+								className="ml-2 relative inline-block text-left h-full w-10"
+							>
+								<div className="h-full">
+									<Menu.Button className="h-full w-10">
+										<FontAwesomeIcon
+											icon={faBullhorn}
+											color={commonColors.logo}
+											size={'2x'}
+											title={t('feedback.button')}
+											onClick={() => setFeedbackModalOpen(true)}
+										/>
+									</Menu.Button>
+								</div>
 							</Menu>
 						</div>
 					</div>

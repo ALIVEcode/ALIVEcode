@@ -29,7 +29,7 @@ const CourseLayout = () => {
 
 	useEffect(() => {
 		console.log(courseElements?.current);
-	}, [courseElements?.current]);
+	}, [courseElements]);
 
 	if (!course) {
 		goTo(routes.auth.dashboard.path);

@@ -41,12 +41,12 @@ const Button = forwardRef<
 		const defaultInputOptions = {
 			className: classNames(
 				'py-2 px-3 rounded-md text-white text-base font-medium transition-colors',
-				!noHoverColor && 'hover:bg-[color:var(--contrast-color)]',
+				noHoverColor || 'hover:bg-[color:var(--contrast-color)]',
 				variant === 'primary' && 'bg-[color:var(--primary-color)]',
 				variant === 'secondary' && 'bg-[color:var(--secondary-color)]',
 				variant === 'third' && 'bg-[color:var(--third-color)]',
 				variant === 'danger' && 'bg-[color:var(--danger-color)]',
-				className,
+				...(className?.split(' ') ?? []),
 			),
 			variant,
 			onClick: customOnClick,

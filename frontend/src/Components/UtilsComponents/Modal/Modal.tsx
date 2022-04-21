@@ -63,13 +63,13 @@ const Modal = (props: ModalProps) => {
 	}, [open]);
 
 	return (
-		<Transition.Root show={open} as={Fragment}>
+		<Transition appear show={open} as={Fragment}>
 			<Dialog
 				as="div"
 				className="fixed z-20 inset-0 overflow-y-auto h-full"
-				initialFocus={
-					cancelButtonRef.current ? cancelButtonRef : crossButtonRef
-				}
+				// initialFocus={
+				// 	cancelButtonRef.current ? cancelButtonRef : crossButtonRef
+				// }
 				onClose={state => !unclosable && setOpen(state)}
 			>
 				<div
@@ -189,7 +189,7 @@ const Modal = (props: ModalProps) => {
 					</Transition.Child>
 				</div>
 			</Dialog>
-		</Transition.Root>
+		</Transition>
 	);
 };
 

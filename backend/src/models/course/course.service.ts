@@ -267,6 +267,7 @@ export class CourseService {
    * @returns an array containing all the courseElements that were updated
    */
   async updateCourseElement(course: CourseEntity, courseElement: CourseElementEntity, dto: UpdateCourseElementDTO) {
+    // FIXME Convert to SQL (maybe?)
     let results = [await this.courseElRepo.save({ ...dto, id: courseElement.id })];
     if (dto.isVisible !== undefined && courseElement.section) {
       const elements =

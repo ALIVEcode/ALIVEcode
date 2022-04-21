@@ -13,6 +13,7 @@ import { ActivityTheory } from './activities/activity_theory.entity';
 import { ActivityVideo } from './activities/activity_video.entity';
 import { ActivityChallenge } from './activities/activity_challenge.entity';
 import { ActivityAssignment } from './activities/activity_assignment.entity';
+import { ActivityPdf } from './activities/activity_pdf.entity';
 
 /** Types of contents of a course (activity or section) */
 export type CourseContent = Activity | Section;
@@ -66,6 +67,8 @@ export class CourseElement {
 			return plainToInstance(ActivityTheory, activity);
 		if (activity.type === ACTIVITY_TYPE.ASSIGNMENT)
 			return plainToInstance(ActivityAssignment, activity);
+		if (activity.type === ACTIVITY_TYPE.PDF)
+			return plainToInstance(ActivityPdf, activity);
 
 		// return plainToInstance(Activity, activity);
 	})
@@ -73,7 +76,8 @@ export class CourseElement {
 		| ActivityChallenge
 		| ActivityTheory
 		| ActivityVideo
-		| ActivityAssignment;
+		| ActivityAssignment
+	  | ActivityPdf;
 
 	/** If the element is a section **/
 	@Expose({ toClassOnly: true })

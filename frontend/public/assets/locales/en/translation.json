@@ -17,6 +17,27 @@
       "short": "The request could not be made, the website is currently under maintenance."
     }
   },
+  "feedback": {
+    "title": "What's on your mind?",
+    "button": "Give feedback!",
+    "send": "Send",
+    "cancel": "Cancel",
+    "choices": {
+      "like": "Something I like",
+      "dislike": "Something I dislike",
+      "idea": "Something I would like to see",
+      "bug": "A bug I found"
+    },
+    "information": "informations",
+    "authorization_infos": "I authorize my {{infos}} to be sent anonymously with my feedback",
+    "info_collected": {
+      "url": "The url of the page you are on right now",
+      "browser": "The browser you are using",
+      "theme": "The theme you are using (dark/light theme)",
+      "language": "Your language setting"
+    },
+    "placeholder": "Write your feedback here..."
+  },
   "form": {
     "submit": {
       "POST": "Create {{name}}",

@@ -243,7 +243,9 @@ const App = () => {
 				setIsFeedbackModalOpen(!isFeedbackModalOpen);
 			}
 		};
-		window.addEventListener('keydown', handleFeedbackModalOpen, { once: true });
+		window.addEventListener('keydown', handleFeedbackModalOpen, {
+			once: true
+		});
 	}, [isFeedbackModalOpen]);
 
 	const { playing: cheerPlaying, play: playCheer } = useAudio('cheer.mp3');
@@ -270,7 +272,10 @@ const App = () => {
 								maintenance={maintenance}
 							/>
 						)}
-						<Navbar handleLogout={async () => await logout()} />
+						<Navbar
+							handleLogout={async () => await logout()}
+							setFeedbackModalOpen={setIsFeedbackModalOpen}
+						/>
 						{user instanceof Student && (!user.lastName || !user.firstName) && (
 							<Modal
 								open={oldStudentNameMigrationOpen}

@@ -43,13 +43,13 @@ const FeedbackModal = ({
 	const infoToCollect: CollectedInformationType = useMemo(() => {
 		return {
 			url: {
-				description: 'The url of the page you are on right now',
+				description: t('feedback.info_collected.url'),
 				getIt: () => {
 					return window.location.href;
 				},
 			},
 			browser: {
-				description: 'The browser you are using',
+				description: t('feedback.info_collected.browser'),
 				getIt: () => {
 					/**
 					 * @link https://codepedia.info/detect-browser-in-javascript
@@ -74,19 +74,19 @@ const FeedbackModal = ({
 				},
 			},
 			theme: {
-				description: 'The theme (dark/light mode)',
+				description: t('feedback.info_collected.theme'),
 				getIt: () => {
 					return theme.name;
 				},
 			},
 			language: {
-				description: 'Your language setting',
+				description: t('feedback.info_collected.language'),
 				getIt: () => {
 					return t('lang');
 				},
 			},
 		};
-	}, []);
+	}, [t]);
 
 	const InformationPopup = () => {
 		return (
@@ -96,7 +96,7 @@ const FeedbackModal = ({
 				mouseLeaveDelay={150}
 				trigger={
 					<span className="text-blue-400 underline cursor-pointer">
-						informations
+						{t('feedback.information')}
 					</span>
 				}
 				arrowStyle={{
@@ -173,13 +173,13 @@ const FeedbackModal = ({
 	}) => {
 		return (
 			<Button
-				variant="primary"
+				variant="none"
 				noHoverColor
 				icon={icon}
 				className={classNames(
-					`hover:${hoverColor}`,
 					feedbackTypeMatches(feedbackType) ? color : unselectedColor,
-					'px-1.5 mx-1.5',
+					'px-1.5 mx-1.5 my-2 w-[30ch]',
+					hoverColor,
 				)}
 				onClick={() => {
 					setFeedbackType(feedbackType);
@@ -193,12 +193,17 @@ const FeedbackModal = ({
 		);
 	};
 
+	const infos = useMemo(
+		() => t('feedback.authorization_infos', { infos: '|' }).split('|'),
+		[t],
+	);
+
 	return (
 		<Modal
 			open={isOpen}
 			setOpen={setIsOpen}
 			size="md"
-			title="What's on your mind?"
+			title={t('feedback.title')}
 			onShow={() => {
 				setFeedbackType(undefined);
 				setError(undefined);
@@ -207,36 +212,36 @@ const FeedbackModal = ({
 			hideCloseButton
 		>
 			<div className="flex justify-center flex-col">
-				<div className="flex flex-row justify-between">
+				<div className="flex flex-row flex-wrap justify-center">
 					<ChoiceButton
 						color="bg-green-400"
-						hoverColor="bg-green-500"
+						hoverColor="hover:bg-green-500"
 						feedbackType={FeedBackTypes.ILike}
-						message="Something I like"
+						message={t('feedback.choices.like')}
 						icon={faSmile}
 					/>
 
 					<ChoiceButton
 						color="bg-red-400"
-						hoverColor="bg-red-500"
+						hoverColor="hover:bg-red-500"
 						feedbackType={FeedBackTypes.IDontLike}
-						message="Something I dislike"
+						message={t('feedback.choices.dislike')}
 						icon={faFrown}
 					/>
 
 					<ChoiceButton
 						color="bg-amber-400"
-						hoverColor="bg-amber-500"
+						hoverColor="hover:bg-amber-500"
 						feedbackType={FeedBackTypes.NewIdea}
-						message="Something I would like to see"
+						message={t('feedback.choices.idea')}
 						icon={faLightbulb}
 					/>
 
 					<ChoiceButton
 						color="bg-red-600"
-						hoverColor="bg-red-700"
+						hoverColor="hover:bg-red-700"
 						feedbackType={FeedBackTypes.Bug}
-						message="A bug I found"
+						message={t('feedback.choices.bug')}
 						icon={faBug}
 					/>
 				</div>
@@ -253,7 +258,7 @@ const FeedbackModal = ({
 
 				<textarea
 					className="border w-full p-2 mt-4 pb-3 bg-[color:var(--background-color)]"
-					placeholder="Write your feedback here..."
+					placeholder={t('feedback.placeholder')}
 					rows={2}
 					cols={20}
 					ref={textareaRef}
@@ -289,8 +294,9 @@ const FeedbackModal = ({
 							}}
 						/>
 						<label className="pl-3">
-							I authorize my {InformationPopup()} to be sent anonymously with my
-							feedback.
+							{infos[0]}
+							{InformationPopup()}
+							{infos[1]}
 						</label>
 					</form>
 				</div>
@@ -303,10 +309,10 @@ const FeedbackModal = ({
 						}}
 						className="mr-4"
 					>
-						Cancel
+						{t('feedback.cancel')}
 					</Button>
 					<Button variant={'primary'} onClick={handleSubmit}>
-						Send
+						{t('feedback.send')}
 					</Button>
 				</div>
 			</div>

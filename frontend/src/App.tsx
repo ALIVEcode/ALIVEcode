@@ -240,16 +240,13 @@ const App = () => {
 		const handleFeedbackModalOpen = (e: KeyboardEvent) => {
 			if (e.key === 'F2') {
 				e.preventDefault();
-				setIsFeedbackModalOpen(true);
+				setIsFeedbackModalOpen(!isFeedbackModalOpen);
 			}
 		};
-		window.addEventListener('keydown', handleFeedbackModalOpen);
-	}, []);
+		window.addEventListener('keydown', handleFeedbackModalOpen, { once: true });
+	}, [isFeedbackModalOpen]);
 
-	const {
-		playing: cheerPlaying,
-		play: playCheer,
-	} = useAudio('cheer.mp3');
+	const { playing: cheerPlaying, play: playCheer } = useAudio('cheer.mp3');
 
 	return (
 		<div className="App">

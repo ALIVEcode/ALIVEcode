@@ -58,8 +58,8 @@ export type ResultElementCreated = {
 };
 
 export type ResultPatchMoveElement = {
-	newOrder: number[];
-	oldOrder: number[];
+	orderNewParent: number[];
+	orderOldParent: number[];
 };
 
 type urlArgType<S extends string> = S extends `${infer _}:${infer A}/${infer B}`

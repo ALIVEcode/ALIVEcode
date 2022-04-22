@@ -149,7 +149,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 			default:
 				return (
 					<div className="w-full h-full flex justify-center items-center">
-						Not implemented
+						Not implemented '{activity.type}'
 					</div>
 				);
 		}

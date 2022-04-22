@@ -100,10 +100,10 @@ export class ChallengeExecutor {
 		this.execution ? this.run() : this.interrupt();
 	}
 
-	public run() {
+	public async run() {
 		!this.execution && this.onToggleExecution && this.onToggleExecution(this);
 		this.cmd?.clear();
-		this.onRun();
+		await this.onRun();
 	}
 
 	public stop() {

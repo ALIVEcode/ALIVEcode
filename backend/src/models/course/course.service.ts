@@ -115,10 +115,12 @@ export class CourseService {
    * and return the cloned version
    * @param course Course to clone
    */
-  async clone(course: CourseEntity) {
+  async clone(course: CourseEntity, newProfessor: ProfessorEntity) {
     if (!course.elements) course = await this.findCourseWithElements(course.id, false);
-
-    course.elements.map(el => {
+    const newCourse = await this.courseRepository.save({ ...course, id: undefined, creator: newProfessor });
+    console.log(newCourse);
+    return newCourse;
+    /*course.elements.map(el => {
       // Is a section
       if (el.section) {
       }
@@ -126,7 +128,7 @@ export class CourseService {
       else if (el.activity) {
       }
     });
-    return null;
+    return null;*/
   }
 
   /*****-------Course Elements-------*****/

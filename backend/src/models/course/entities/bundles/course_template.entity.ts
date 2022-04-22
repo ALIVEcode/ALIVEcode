@@ -1,4 +1,5 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
+import { ProfessorEntity } from '../../../user/entities/user.entity';
 import { CourseEntity } from '../course.entity';
 
 /**
@@ -25,4 +26,7 @@ export class CourseTemplateEntity {
 
   @Column({ name: 'courseId', type: 'varchar', nullable: false })
   courseId: string;
+
+  @ManyToMany(() => ProfessorEntity, prof => prof.courseTemplates)
+  owners: ProfessorEntity[];
 }

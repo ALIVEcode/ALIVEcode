@@ -33,6 +33,7 @@ import { FileEntity } from '../file/entities/file.entity';
 import { FileService } from '../file/file.service';
 import { ActivityPdfEntity } from './entities/activities/activity_pdf.entity';
 import { ResourcePdfEntity } from '../resource/entities/resources/resource_pdf.entity';
+import { BundleService } from './bundle.service';
 
 /**
  * Module for the course nestjs resource
@@ -71,6 +72,6 @@ import { ResourcePdfEntity } from '../resource/entities/resources/resource_pdf.e
     ]),
   ],
   controllers: [CourseController, BundleController],
-  providers: [CourseService, UserService, ResourceService, FileService],
+  providers: [CourseService, UserService, ResourceService, FileService, BundleService],
 })
 export class CourseModule {}

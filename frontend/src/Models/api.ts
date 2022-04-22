@@ -51,6 +51,9 @@ import { MoveElementDTO } from './Course/dtos/MoveElement.dto';
 import { FeedbackEntity } from './Feedbacks/entities/feedback.entity';
 import { CreateFeedbackDto } from './Feedbacks/dto/create-feedback.dto';
 import { UpdateCourseElementDTO } from './Course/dtos/UpdateCourseElement.dto';
+import { GetCourseTemplatesDTO } from './Course/bundles/dtos/GetCourseTemplates.dto';
+import { CourseTemplate } from './Course/bundles/course_template.entity';
+import { template } from '@babel/core';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;
@@ -435,6 +438,25 @@ const api = {
 				return plainToInstance(GenericResourceTransformer, {
 					resource: axiosRes,
 				}).resource;
+			},
+		},
+		bundles: {
+			async getCourseTemplates() {
+				return (
+					plainToInstance(GetCourseTemplatesDTO, {
+						templates: (await axios.get(`bundles/courseTemplates`)).data,
+					}) as any
+				).templates;
+			},
+			async createCourseFromTemplate(templateId: string) {
+				return plainToInstance(
+					CourseTemplate,
+					(
+						await axios.post(
+							`bundles/courseTemplates/${templateId}/createCourse`,
+						)
+					).data,
+				);
 			},
 		},
 		challenges: {

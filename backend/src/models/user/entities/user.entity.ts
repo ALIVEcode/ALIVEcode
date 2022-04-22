@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
   TableInheritance,
   CreateDateColumn,
+  JoinTable,
 } from 'typeorm';
 import { ChallengeEntity } from '../../challenge/entities/challenge.entity';
 import { IoTObjectEntity } from '../../iot/IoTobject/entities/IoTobject.entity';
@@ -24,6 +25,7 @@ import { CourseEntity } from '../../course/entities/course.entity';
 import { ClassroomEntity } from '../../classroom/entities/classroom.entity';
 import { Optional } from '@nestjs/common';
 import { ResourceEntity } from '../../resource/entities/resource.entity';
+import { CourseTemplateEntity } from '../../course/entities/bundles/course_template.entity';
 
 export enum USER_TYPES {
   STUDENT = 'S',
@@ -155,4 +157,9 @@ export class ProfessorEntity extends UserEntity {
   @Exclude({ toClassOnly: true })
   @OneToMany(() => ResourceEntity, resource => resource.creator)
   resources: ResourceEntity[];
+
+  @Exclude({ toClassOnly: true })
+  @ManyToMany(() => CourseTemplateEntity, template => template.owners)
+  @JoinTable()
+  courseTemplates: CourseTemplateEntity[];
 }

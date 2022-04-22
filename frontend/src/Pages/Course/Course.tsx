@@ -582,14 +582,12 @@ const Course = () => {
 		)
 			return;
 
-		const { newOrder, oldOrder } = await api.db.courses.moveElement(
-			course.current.id,
-			{
+		const { orderNewParent: newOrder, orderOldParent: oldOrder } =
+			await api.db.courses.moveElement(course.current.id, {
 				elementId: element.id.toString(),
 				index: newIdx,
 				parentId: newParent.id.toString(),
-			},
-		);
+			});
 
 		element.parent.elementsOrder = oldOrder;
 		newParent.elementsOrder = newOrder;

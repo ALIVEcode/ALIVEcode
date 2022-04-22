@@ -246,9 +246,9 @@ export class CourseController {
     if (isUUID(dto.parentId)) {
       if (dto.parentId !== course.id)
         throw new HttpException("Forbidden, can't move this element into another course", HttpStatus.FORBIDDEN);
-      parent = await this.courseService.findCourseWithElements(dto.parentId, false);
+      parent = await this.courseService.findOne(dto.parentId);
     } else {
-      parent = await this.courseService.findSectionWithElements(course, dto.parentId, false);
+      parent = await this.courseService.findSection(course, dto.parentId);
     }
     return await this.courseService.moveElement(course, element, parent, dto.index);
   }

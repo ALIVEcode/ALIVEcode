@@ -233,10 +233,10 @@ export class CourseService {
    * @param parent Course or Section to save
    */
   async saveParent(parent: CourseEntity | SectionEntity) {
-    parent instanceof CourseEntity
-      ? await this.courseRepository.save(parent).catch(err => {
-          console.log(err);
-        })
+    parent.elements = undefined;
+    if (parent instanceof SectionEntity) parent.courseElement = undefined;
+    return parent instanceof CourseEntity
+      ? await this.courseRepository.save(parent)
       : await this.sectionRepository.save(parent);
   }
 
@@ -301,12 +301,50 @@ export class CourseService {
     )
       throw new HttpException("Forbidden, can't move this element into another course", HttpStatus.FORBIDDEN);
 
-    const oldParent =
-      courseElementWithParent.parent instanceof CourseEntity
+    let oldParent =
+      courseElementWithParent.parentType() === 'course'
         ? course
-        : await this.findSectionWithElements(course, courseElementWithParent.sectionParent.id.toString(), false);
+        : await this.findSection(course, courseElementWithParent.sectionParent.id.toString());
+
     const sameParent = newParent.id === oldParent.id;
 
+    if (sameParent) {
+      // Move element in list order
+      newParent.elementsOrder = newParent.elementsOrder.filter(elId => elId !== courseElementWithParent.id);
+      newParent.elementsOrder.splice(index, 0, courseElementWithParent.id);
+
+      // Save the parent
+      await this.saveParent(newParent);
+    } else {
+      if (!(newParent instanceof SectionEntity)) courseElementWithParent.sectionParent = null;
+
+      // Remove element from old parent
+      oldParent.elementsOrder = oldParent.elementsOrder.filter(elId => elId !== courseElementWithParent.id);
+
+      // Save the old parent
+      oldParent = await this.saveParent(oldParent);
+
+      // Add element into new parent
+      newParent.elementsOrder.splice(index, 0, courseElementWithParent.id);
+
+      // Save the new parent
+      newParent = await this.saveParent(newParent);
+
+      courseElementWithParent.course = course;
+      if (newParent instanceof SectionEntity) {
+        courseElementWithParent.sectionParent = newParent;
+      } else {
+        courseElementWithParent.sectionParent = null;
+      }
+      courseElementWithParent = await this.courseElRepo.save({
+        ...courseElementWithParent,
+        id: courseElementWithParent.id,
+      });
+    }
+
+    return { orderNewParent: newParent.elementsOrder, orderOldParent: oldParent.elementsOrder };
+
+    /*
     // Removes or moves the element in the old parent
     if (!sameParent) {
       oldParent.elementsOrder = oldParent.elementsOrder.filter(elementId => elementId !== courseElementWithParent.id);
@@ -325,13 +363,17 @@ export class CourseService {
       newParent.elements.push(courseElementWithParent);
     }
 
-    !sameParent && newParent.elementsOrder.splice(index, 0, courseElementWithParent.id);
+    newParent.elementsOrder.splice(index, 0, courseElementWithParent.id);
 
     await this.courseElRepo.save({ ...courseElementWithParent, id: courseElementWithParent.id });
+ 
+    if(!sameParent) {
     await this.saveParent(oldParent);
     !sameParent && (await this.saveParent(newParent));
+    }
 
     return { newOrder: newParent.elementsOrder, oldOrder: oldParent.elementsOrder };
+  */
   }
 
   /*****-------End of Course Elements-------*****/

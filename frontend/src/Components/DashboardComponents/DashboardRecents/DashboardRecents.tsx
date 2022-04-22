@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { DashboardContext } from '../../../state/contexts/DashboardContext';
 import CourseContainer from '../../UtilsComponents/CourseContainer/CourseContainer';
 import { useTranslation } from 'react-i18next';
@@ -7,6 +7,7 @@ import Button from '../../UtilsComponents/Buttons/Button';
 import { useNavigate } from 'react-router';
 import useRoutes from '../../../state/hooks/useRoutes';
 import InfoButton from '../../Help/InfoButton';
+import Tutorial from '../../Help/Tutorial';
 
 export const DashboardRecents = () => {
 	const { getCourses, setFormJoinClassOpen, setOpenFormCreateCourse } =
@@ -18,6 +19,8 @@ export const DashboardRecents = () => {
 
 	const courses = getCourses();
 
+	const [timelineOpen, setTimelineOpen] = useState(false);
+
 	return (
 		<div className="h-full p-4">
 			<div className="section-title flex flex-row justify-between w-1/3">
@@ -25,6 +28,7 @@ export const DashboardRecents = () => {
 				<InfoButton
 					icon={{
 						className: 'text-blue-300',
+						onClick: () => setTimelineOpen(true),
 					}}
 					hoverPopup={{
 						position: 'right center',
@@ -33,6 +37,9 @@ export const DashboardRecents = () => {
 							' quam quis recusandae rem vel voluptate. At cum ea odio vero voluptate. Ad consequatur qui similique.',
 					}}
 				/>
+				<Tutorial.Timeline open={timelineOpen} setOpen={setTimelineOpen}>
+					<></>
+				</Tutorial.Timeline>
 			</div>
 			<div className="border-b w-1/3 border-[color:var(--bg-shade-four-color)]" />
 			{courses.length > 0 ? (

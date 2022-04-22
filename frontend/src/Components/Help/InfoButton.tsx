@@ -21,6 +21,7 @@ const InfoButton = ({
 			>
 				<FontAwesomeIcon
 					icon={faInfoCircle}
+					onClick={icon?.onClick}
 					size={icon?.size ?? '2x'}
 					className={classNames(
 						!icon?.hideDefaultStyle && 'p-1 align-middle',

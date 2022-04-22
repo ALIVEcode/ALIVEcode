@@ -15,8 +15,14 @@ import {
 import { useLocation } from 'react-router';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faTimes, faBullhorn } from '@fortawesome/free-solid-svg-icons';
+import {
+	faBars,
+	faTimes,
+	faBullhorn,
+	faInfoCircle,
+} from '@fortawesome/free-solid-svg-icons';
 import { classNames } from '../../../Types/utils';
+import { Popup } from 'reactjs-popup';
 
 /**
  * Navbar of ALIVEcode
@@ -56,6 +62,8 @@ const ALIVENavbar = ({ handleLogout, setFeedbackModalOpen }: NavbarProps) => {
 			active: location.pathname.startsWith('/about'),
 		},
 	];
+
+	const [isNested, setIsNested] = useState(false);
 
 	return (
 		<Disclosure
@@ -180,7 +188,10 @@ const ALIVENavbar = ({ handleLogout, setFeedbackModalOpen }: NavbarProps) => {
 									leaveFrom="transform opacity-100 scale-100"
 									leaveTo="transform opacity-0 scale-95"
 								>
-									<Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-[color:var(--background-color)] ring-1 ring-[color:var(--bg-shade-three-color)] ring-opacity-5 divide-y divide-[color:var(--bg-shade-three-color)] focus:outline-none">
+									<Menu.Items
+										className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-[color:var(--background-color)]
+									ring-1 ring-[color:var(--bg-shade-three-color)] ring-opacity-5 divide-y divide-[color:var(--bg-shade-three-color)] focus:outline-none"
+									>
 										<div className="py-1">
 											{user ? (
 												<Menu.Item>
@@ -249,6 +260,58 @@ const ALIVENavbar = ({ handleLogout, setFeedbackModalOpen }: NavbarProps) => {
 													</div>
 												)}
 											</Menu.Item>
+											<Popup
+												on="hover"
+												arrowStyle={{
+													color: 'var(--bg-shade-three-color)',
+												}}
+												offsetX={-15}
+												trigger={
+													<div
+														className="cursor-pointer block px-4 py-2 text-sm text-[color:var(--foreground-color)] hover:text-[color:var(--foreground-color)]
+														hover:bg-[color:var(--bg-shade-two-color)]"
+													>
+														Language
+													</div>
+												}
+												onOpen={() => setIsNested(false)}
+												onClose={() => setIsNested(true)}
+												closeOnDocumentClick
+												closeOnEscape
+												nested={isNested}
+												position={'left center'}
+											>
+												<div
+													className="rounded-md shadow-lg bg-[color:var(--background-color)] ring-1 ring-[color:var(--bg-shade-three-color)]
+															ring-opacity-5 divide-y divide-[color:var(--bg-shade-three-color)] focus:outline-none"
+												>
+													{languages.map(({ code, name }, idx) => (
+														<Menu.Item key={idx}>
+															{({ active }) => {
+																return (
+																	<div
+																		onClick={() =>
+																			i18next.language !== code &&
+																			i18next.changeLanguage(code)
+																		}
+																		className={classNames(
+																			active &&
+																				i18next.language !== code &&
+																				'bg-[color:var(--bg-shade-two-color)]',
+																			i18next.language === code
+																				? 'text-[color:var(--bg-shade-four-color)]'
+																				: 'text-[color:var(--foreground-color)] hover:text-[color:var(--foreground-color)] cursor-pointer',
+																			'block px-4 py-2 text-sm ',
+																		)}
+																	>
+																		{name}
+																	</div>
+																);
+															}}
+														</Menu.Item>
+													))}
+												</div>
+											</Popup>
 										</div>
 										{user && (
 											<div className="py-1">
@@ -271,7 +334,7 @@ const ALIVENavbar = ({ handleLogout, setFeedbackModalOpen }: NavbarProps) => {
 									</Menu.Items>
 								</Transition>
 							</Menu>
-							<Menu
+							{/*<Menu
 								as="div"
 								className="ml-2 relative inline-block text-left h-full w-10"
 							>
@@ -298,36 +361,8 @@ const ALIVENavbar = ({ handleLogout, setFeedbackModalOpen }: NavbarProps) => {
 									leave="transition ease-in duration-75"
 									leaveFrom="transform opacity-100 scale-100"
 									leaveTo="transform opacity-0 scale-95"
-								>
-									<Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-[color:var(--background-color)] ring-1 ring-[color:var(--bg-shade-three-color)] ring-opacity-5 divide-y divide-[color:var(--bg-shade-three-color)] focus:outline-none">
-										<div className="py-1">
-											{languages.map(({ code, name }, idx) => (
-												<Menu.Item key={idx}>
-													{({ active }) => (
-														<div
-															onClick={() =>
-																i18next.language !== code &&
-																i18next.changeLanguage(code)
-															}
-															className={classNames(
-																active &&
-																	i18next.language !== code &&
-																	'bg-[color:var(--bg-shade-two-color)]',
-																i18next.language === code
-																	? 'text-[color:var(--bg-shade-four-color)]'
-																	: 'text-[color:var(--foreground-color)] hover:text-[color:var(--foreground-color)] cursor-pointer',
-																'block px-4 py-2 text-sm ',
-															)}
-														>
-															{name}
-														</div>
-													)}
-												</Menu.Item>
-											))}
-										</div>
-									</Menu.Items>
-								</Transition>
-							</Menu>
+								></Transition>
+							</Menu>*/}
 							<Menu
 								as="div"
 								className="ml-2 relative inline-block text-left h-full w-10"
@@ -335,14 +370,54 @@ const ALIVENavbar = ({ handleLogout, setFeedbackModalOpen }: NavbarProps) => {
 								<div className="h-full">
 									<Menu.Button className="h-full w-10">
 										<FontAwesomeIcon
-											icon={faBullhorn}
+											icon={faInfoCircle}
 											color={commonColors.logo}
-											size={'2x'}
-											title={t('feedback.button')}
-											onClick={() => setFeedbackModalOpen(true)}
+											className="p-1"
+											size={'3x'}
 										/>
 									</Menu.Button>
 								</div>
+								<Transition
+									as={Fragment}
+									enter="transition ease-out duration-100"
+									enterFrom="transform opacity-0 scale-95"
+									enterTo="transform opacity-100 scale-100"
+									leave="transition ease-in duration-75"
+									leaveFrom="transform opacity-100 scale-100"
+									leaveTo="transform opacity-0 scale-95"
+								>
+									<Menu.Items
+										className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-[color:var(--background-color)]
+									ring-1 ring-[color:var(--bg-shade-three-color)] ring-opacity-5 divide-y divide-[color:var(--bg-shade-three-color)] focus:outline-none"
+									>
+										<div className="py-1 divide-y divide-[color:var(--bg-shade-three-color)] focus:outline-none">
+											<Menu.Item>
+												<div
+													className="cursor-pointer block px-4 py-2 text-sm text-[color:var(--foreground-color)] hover:text-[color:var(--foreground-color)]
+														hover:bg-[color:var(--bg-shade-two-color)]"
+												>
+													Informations
+												</div>
+											</Menu.Item>
+											<Menu.Item>
+												<div
+													className="cursor-pointer block px-4 py-2 text-sm text-[color:var(--foreground-color)] hover:text-[color:var(--foreground-color)]
+														hover:bg-[color:var(--bg-shade-two-color)]"
+													onClick={() => setFeedbackModalOpen(true)}
+												>
+													<span>
+														{t('feedback.button')}
+														<FontAwesomeIcon
+															icon={faBullhorn}
+															focusable={false}
+															className="color:var(--fg-shade-four-color) ml-1 opacity-75"
+														/>
+													</span>
+												</div>
+											</Menu.Item>
+										</div>
+									</Menu.Items>
+								</Transition>
 							</Menu>
 						</div>
 					</div>

@@ -6,6 +6,7 @@ import {
 import { Section } from '../../../Models/Course/section.entity';
 import { themes } from '../../../state/contexts/ThemeContext';
 import { CourseElementSection } from '../../../Models/Course/course_element.entity';
+import React from 'react';
 
 export type CourseLayoutElementProps = {
 	element: CourseElement;

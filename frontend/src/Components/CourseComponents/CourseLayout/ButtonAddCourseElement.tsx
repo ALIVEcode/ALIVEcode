@@ -15,7 +15,8 @@ import { plainToClass } from 'class-transformer';
  * @author Mathis Laroche
  */
 const ButtonAddCourseElement = ({ section }: ButtonAddCourseElementProps) => {
-	const { openActivityForm, addContent } = useContext(CourseContext);
+	const { openActivityForm, addContent, courseElements, moveElement, course } =
+		useContext(CourseContext);
 	const { t } = useTranslation();
 	const [popupOpen, setPopupOpen] = useState(false);
 	return (
@@ -28,6 +29,28 @@ const ButtonAddCourseElement = ({ section }: ButtonAddCourseElementProps) => {
 						justifyContent: 'center',
 						alignItems: 'center',
 					}}
+					// onDrop={async event => {
+					// 	event.preventDefault();
+					// 	const data = event.dataTransfer.getData('text/plain');
+					// 	if (data === '') return;
+					// 	if (!courseElements?.current) return;
+					// 	if (!(data in courseElements.current)) return;
+					//
+					// 	const id = Number(data);
+					//
+					// 	const draggedElement = courseElements.current[id];
+					//
+					// 	const parent = section ?? course;
+					// 	if (!parent) return;
+					//
+					// 	if (parent.elementsOrder.at(-1) === id) return;
+					//
+					// 	await moveElement(
+					// 		draggedElement,
+					// 		parent.elementsOrder.length - 1,
+					// 		parent,
+					// 	);
+					// }}
 				>
 					<FontAwesomeIcon
 						icon={faPlus}

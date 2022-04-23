@@ -493,7 +493,7 @@ export class CourseService {
         activity = await this.actAssignmentRepo.save(activityDTO.courseContent);
         break;
       default:
-        throw new HttpException('Invalid activity type', HttpStatus.BAD_REQUEST);
+        throw new HttpException(`Invalid activity type ${activityDTO.courseContent.type}`, HttpStatus.BAD_REQUEST);
     }
     return await this.createCourseElement(course, activityDTO.name, activity, sectionParent);
   }

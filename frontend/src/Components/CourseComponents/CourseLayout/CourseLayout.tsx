@@ -1,6 +1,6 @@
 import { faUserGraduate } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import useRoutes from '../../../state/hooks/useRoutes';
@@ -92,15 +92,31 @@ const CourseLayout = () => {
 					</>
 				) : (
 					<>
-						<div className="text-left ">
+						<div
+							className="text-left "
+							/*onDragEnter={event => {
+								const target = event.target as HTMLDivElement;
+								if (target?.className === 'course-layout-element') {
+									target.style.borderBottom = '2 solid cyan';
+									console.log(event);
+								}
+							}}
+							onDragExit={event => {
+								const target = event.target as HTMLDivElement;
+								if (target?.className === 'course-layout-element') {
+									target.style.borderBottom = '';
+								}
+							}}*/
+						>
 							{courseElements?.current &&
 								course.elementsOrder.map(
 									id =>
 										id in courseElements.current && (
-											<CourseLayoutElement
-												key={id}
-												element={courseElements.current[id]}
-											/>
+											<div key={id} className="course-layout-element">
+												<CourseLayoutElement
+													element={courseElements.current[id]}
+												/>
+											</div>
 										),
 								)}
 						</div>

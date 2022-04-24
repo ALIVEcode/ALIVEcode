@@ -57,7 +57,7 @@ const InfoSlides = ({
 				</div>
 				<div className="flex flex-row justify-evenly align-middle pt-12">
 					<button
-						className="flex items-center gap-4 cursor-pointer disabled:cursor-auto disabled:opacity-25"
+						className="flex items-center gap-4 cursor-pointer disabled:cursor-auto disabled:opacity-40"
 						disabled={currentPageRef.current === 0}
 						onClick={previousPage}
 					>
@@ -72,8 +72,8 @@ const InfoSlides = ({
 								size="xs"
 								className={`cursor-pointer ${
 									idx === currentPageRef.current
-										? 'text-[color:var(--fg-shade-three-color)]'
-										: 'text-gray-500'
+										? 'text-[color:var(--foreground-color)]'
+										: 'text-[color:var(--fg-shade-three-color)] opacity-50'
 								}`}
 								onClick={() => {
 									currentPageRef.current = idx;
@@ -84,14 +84,14 @@ const InfoSlides = ({
 					</div>
 					{currentPageRef.current === numberOfPages - 1 ? (
 						<button
-							className="flex items-center gap-4 cursor-pointer disabled:cursor-auto disabled:opacity-25"
+							className="flex items-center gap-4 cursor-pointer disabled:cursor-auto"
 							onClick={nextPageOrClose}
 						>
 							<span
 								className="hover:text-[color:var(--background-color)] text-[color:var(--fourth-color)]
 								hover:bg-[color:var(--fourth-color)] bg-[color:var(--background-color)]
 								transition-colors
-							  border-[color:var(--fourth-color)] border rounded-md text-lg px-1 mr-3"
+							  border-[color:var(--fourth-color)] border rounded-md text-md px-1 mr-4 py-0.5"
 							>
 								{t('modal.close')}
 							</span>

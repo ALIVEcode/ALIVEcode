@@ -54,7 +54,7 @@ export class ResourceService {
       case RESOURCE_TYPE.VIDEO:
         return await this.resVideoRepo.save({ ...dto.resource, type: RESOURCE_TYPE.VIDEO });
       default:
-        throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+        throw new HttpException(`Bad request, type not supported ${dto.type}`, HttpStatus.BAD_REQUEST);
     }
   }
 

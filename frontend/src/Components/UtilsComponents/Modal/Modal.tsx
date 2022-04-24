@@ -146,7 +146,7 @@ const Modal = (props: ModalProps) => {
 										{!hideTitle && (
 											<>
 												<Dialog.Title className="text-lg leading-6 font-medium">
-													{title}
+													<label>{title}</label>
 												</Dialog.Title>
 												<div className="mt-2 border-b border-[color:var(--bg-shade-four-color)]" />
 											</>

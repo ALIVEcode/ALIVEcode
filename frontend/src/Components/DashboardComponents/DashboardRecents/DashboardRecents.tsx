@@ -6,8 +6,7 @@ import { UserContext } from '../../../state/contexts/UserContext';
 import Button from '../../UtilsComponents/Buttons/Button';
 import { useNavigate } from 'react-router';
 import useRoutes from '../../../state/hooks/useRoutes';
-import InfoButton from '../../Help/InfoButton';
-import Tutorial from '../../Help/Tutorial';
+import Info from '../../HelpComponents';
 
 export const DashboardRecents = () => {
 	const { getCourses, setFormJoinClassOpen, setOpenFormCreateCourse } =
@@ -25,21 +24,17 @@ export const DashboardRecents = () => {
 		<div className="h-full p-4">
 			<div className="section-title flex flex-row justify-between w-1/3">
 				{t('dashboard.recents.title')}{' '}
-				<InfoButton
-					icon={{
-						className: 'text-blue-300',
-						onClick: () => setTimelineOpen(true),
-					}}
+				<Info.Icon
+					onClick={() => setTimelineOpen(true)}
 					hoverPopup={{
 						position: 'right center',
-						text:
-							'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut deleniti dolorum ea inventore nihil' +
-							' quam quis recusandae rem vel voluptate. At cum ea odio vero voluptate. Ad consequatur qui similique.',
 					}}
-				/>
-				<Tutorial.Timeline open={timelineOpen} setOpen={setTimelineOpen}>
-					<></>
-				</Tutorial.Timeline>
+				>
+					<Info.Box
+						text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut deleniti dolorum ea inventore nihil
+							quam quis recusandae rem vel voluptate. At cum ea odio vero voluptate. Ad consequatur qui similique."
+					/>
+				</Info.Icon>
 			</div>
 			<div className="border-b w-1/3 border-[color:var(--bg-shade-four-color)]" />
 			{courses.length > 0 ? (
@@ -77,6 +72,28 @@ export const DashboardRecents = () => {
 					</div>
 				</div>
 			)}
+			<Info.Slides
+				open={timelineOpen}
+				setOpen={setTimelineOpen}
+				title="Recent Courses Help"
+			>
+				<Info.Slide title="Page 1">
+					<span>
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+						Accusantium distinctio ducimus ipsam modi mollitia nemo odio quos
+						reprehenderit sapiente voluptate. Aperiam architecto debitis iste
+						nesciunt possimus quis rerum ut veritatis.
+					</span>
+				</Info.Slide>
+				<Info.Slide title="Page 2">
+					<span>
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+						Accusantium distinctio ducimus ipsam modi mollitia nemo odio quos
+						reprehenderit sapiente voluptate. Aperiam architecto debitis iste
+						nesciunt possimus quis rerum ut veritatis.
+					</span>
+				</Info.Slide>
+			</Info.Slides>
 		</div>
 	);
 };

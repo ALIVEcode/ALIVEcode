@@ -5,7 +5,13 @@ import {
 	faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useCallback, useContext, useRef, useState } from 'react';
+import React, {
+	RefObject,
+	useCallback,
+	useContext,
+	useRef,
+	useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import AlertConfirm from '../../UtilsComponents/Alert/AlertConfirm/AlertConfirm';
@@ -18,6 +24,7 @@ import {
 	CourseElementSection,
 } from '../../../Models/Course/course_element.entity';
 import { classNames } from '../../../Types/utils';
+import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 
 /**
  * Component that wraps a CourseElement to show it properly on the layout view
@@ -42,6 +49,16 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 	const inputRef = useRef<HTMLInputElement>();
 	const courseLayoutElementRef = useRef<HTMLDivElement>(null);
 
+	const getParent = useCallback((target: HTMLElement) => {
+		let parent: HTMLElement | null | undefined = target.parentElement;
+		do {
+			if (parent?.className === 'course-layout-element') {
+				return parent;
+			}
+		} while ((parent = parent?.parentElement) != null);
+		return null;
+	}, []);
+
 	/**
 	 * Handles the renaming of an element
 	 *
@@ -63,26 +80,32 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 	};
 
 	const onDragStart = useCallback(
-		(event: React.DragEvent<HTMLDivElement | SVGElement>) => {
+		(event: React.DragEvent<HTMLDivElement>) => {
 			event.dataTransfer.setData('text/plain', element.id.toString());
 			if (!courseLayoutElementRef.current) {
 				return;
 			}
+			courseLayoutElementRef.current.style.opacity = '0.5';
 			event.dataTransfer.setDragImage(courseLayoutElementRef.current, 25, 40);
 			console.log('drag start');
 		},
 		[element],
 	);
 
-	const onDragOver = useCallback(
-		(event: React.DragEvent<HTMLDivElement | SVGElement>) => {
-			event.preventDefault();
-		},
-		[],
-	);
+	const onDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
+		e.preventDefault();
+		if (!courseLayoutElementRef.current) {
+			return;
+		}
+		courseLayoutElementRef.current.style.opacity = '1';
+	};
+
+	const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
+		event.preventDefault();
+	}, []);
 
 	const onDrop = useCallback(
-		async (event: React.DragEvent<HTMLDivElement | SVGElement>) => {
+		async (event: React.DragEvent<HTMLDivElement>) => {
 			event.preventDefault();
 			const data = event.dataTransfer.getData('text/plain');
 			if (data === '') return;
@@ -103,6 +126,24 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 		[courseElements, element, moveElement],
 	);
 
+	const onDragEnter = (event: React.DragEvent<HTMLDivElement>) => {
+		// const target = event.target as HTMLElement;
+		// const parent = getParent(target);
+		// if (!parent) return;
+		// event.preventDefault();
+		// event.stopPropagation();
+		// parent.style.borderBottom = '2px solid cyan';
+	};
+
+	const onDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
+		// const target = event.target as HTMLElement;
+		// const parent = getParent(target);
+		// if (!parent) return;
+		// event.preventDefault();
+		// event.stopPropagation();
+		// parent.style.borderBottom = '';
+	};
+
 	return (
 		<div
 			className={classNames(
@@ -110,18 +151,18 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 				!element.isVisible && 'opacity-50',
 			)}
 			ref={courseLayoutElementRef}
-			onDrop={e => {
+			onDrop={async e => {
 				e.preventDefault();
 				e.stopPropagation();
-				onDrop(e);
+				await onDrop(e);
 			}}
+			onDragEnter={e => onDragEnter(e)}
+			onDragLeave={e => onDragLeave(e)}
+			onDragOver={e => onDragOver(e)}
+			onDragEnd={e => onDragEnd(e)}
 		>
 			<div className="group text-base flex items-center" onClick={() => {}}>
-				<div
-					draggable
-					onDragStart={e => onDragStart(e)}
-					onDragOver={e => onDragOver(e)}
-				>
+				<div draggable onDragStart={e => onDragStart(e)}>
 					<FontAwesomeIcon
 						icon={faBars}
 						size="lg"
@@ -197,6 +238,7 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 			{element.section && (
 				<CourseLayoutSection courseElement={element as CourseElementSection} />
 			)}
+
 			<AlertConfirm
 				open={confirmDelete}
 				title={

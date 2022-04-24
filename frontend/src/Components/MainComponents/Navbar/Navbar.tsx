@@ -406,7 +406,10 @@ const ALIVENavbar = ({ handleLogout, setFeedbackModalOpen }: NavbarProps) => {
 													onClick={() => setFeedbackModalOpen(true)}
 												>
 													<span>
-														{t('feedback.button')}
+														{t('feedback.button')}{' '}
+														<span className="tracking-wider text-[color:var(--fourth-color)] font-bold">
+															(F2)
+														</span>{' '}
 														<FontAwesomeIcon
 															icon={faBullhorn}
 															focusable={false}

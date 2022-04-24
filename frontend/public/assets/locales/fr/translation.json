@@ -687,5 +687,29 @@
   },
   "action": {
     "irreversible": "Cette action est irréversible"
+  },
+  "help": {
+    "click_for_more": "Cliquez pour plus d'informations",
+    "slides": {
+      "next": "Suivant",
+      "previous": "Précédent"
+    },
+    "dashboard": {
+      "tabs": {
+        "recent_courses": "",
+        "challenges": "",
+        "my_resources": "",
+        "create_classroom": "",
+        "create_course": ""
+      },
+      "views": {
+        "recent_courses": "",
+        "challenges": "",
+        "my_resources": "",
+        "classroom": {
+          "create_course": ""
+        }
+      }
+    }
   }
 }

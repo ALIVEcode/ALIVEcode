@@ -48,6 +48,7 @@ import ResourceMenu from '../ResourceMenu/ResourceMenu';
 import { faFile } from '@fortawesome/free-solid-svg-icons';
 import MenuCourseCreation from '../../Components/Resources/MenuCourseCreation/MenuCourseCreation';
 import AlertConfirm from '../../Components/UtilsComponents/Alert/AlertConfirm/AlertConfirm';
+import Info from '../../Components/HelpComponents';
 
 /**
  * State reducer to change the state of the selected tab
@@ -103,6 +104,10 @@ const Dashboard = (props: DashboardProps) => {
 	const [challenges, setChallenges] = useState<Challenge[]>();
 	const [confirmDeleteCourse, setConfirmDeleteCourse] = useState(false);
 	const courseToDeleteRef = useRef<Course>();
+	const [openTutorial, setOpenTutorial] = useState(false);
+	const recentCourseTabRef = useRef<HTMLDivElement>(null);
+	const challengesTabRef = useRef<HTMLDivElement>(null);
+	const coursesRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		if (pathname.endsWith('recents') && tabSelected.tab !== 'recents')
@@ -269,7 +274,11 @@ const Dashboard = (props: DashboardProps) => {
 			<DashboardContext.Provider value={ctx}>
 				<div className="flex h-full overflow-auto">
 					<div className="sidebar overflow-y-auto break-words no-float w-1/4 table:1/6 laptop:1/8 desktop:1/12">
+						<button onClick={() => setOpenTutorial(true)}>
+							Open the Tutorial
+						</button>
 						<div
+							ref={recentCourseTabRef}
 							className={
 								'sidebar-btn ' +
 								(tabSelected.tab === 'recents' ? 'sidebar-selected' : '')
@@ -282,6 +291,7 @@ const Dashboard = (props: DashboardProps) => {
 							</label>
 						</div>
 						<div
+							ref={challengesTabRef}
 							className={
 								'sidebar-btn ' +
 								(tabSelected.tab === 'challenges' ? 'sidebar-selected' : '')
@@ -372,6 +382,7 @@ const Dashboard = (props: DashboardProps) => {
 									className="sidebar-header"
 									onMouseEnter={() => setHoveringCourse(true)}
 									onMouseLeave={() => setHoveringCourse(false)}
+									ref={coursesRef}
 								>
 									<FontAwesomeIcon className="sidebar-icon" icon={faTasks} />
 									<label className="sidebar-header-text">
@@ -460,6 +471,33 @@ const Dashboard = (props: DashboardProps) => {
 					{t('action.irreversible')}
 				</p>
 			</AlertConfirm>
+			<Info.Tutorial
+				open={openTutorial}
+				setOpen={setOpenTutorial}
+				targets={[
+					{
+						ref: recentCourseTabRef,
+						infoBox: (
+							<Info.Box text="Voici l'endroit où se retrouve vos cours récemment visité" />
+						),
+						position: 'right center',
+					},
+					{
+						ref: challengesTabRef,
+						infoBox: (
+							<Info.Box text="Voici l'endroit où se retrouve vos défis" />
+						),
+						position: 'right center',
+					},
+					{
+						ref: coursesRef,
+						infoBox: (
+							<Info.Box text="Voici l'endroit où se retrouve les cours que vous avez créés" />
+						),
+						position: 'right center',
+					},
+				]}
+			/>
 		</StyledDashboard>
 	);
 };

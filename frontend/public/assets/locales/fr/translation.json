@@ -24,7 +24,7 @@
     "cancel": "Annuler",
     "choices": {
       "like": "Quelque chose que j'aime",
-      "dislike": "Quelque chose que j'aime pas",
+      "dislike": "Quelque chose que je n'aime pas",
       "idea": "Une idée que j'ai",
       "bug": "Un bug que j'ai rencontré"
     },

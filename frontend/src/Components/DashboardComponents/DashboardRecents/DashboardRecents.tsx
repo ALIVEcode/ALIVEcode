@@ -31,6 +31,7 @@ export const DashboardRecents = () => {
 					}}
 				>
 					<Info.Box
+						useDefaultStyle
 						text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut deleniti dolorum ea inventore nihil
 							quam quis recusandae rem vel voluptate. At cum ea odio vero voluptate. Ad consequatur qui similique."
 					/>

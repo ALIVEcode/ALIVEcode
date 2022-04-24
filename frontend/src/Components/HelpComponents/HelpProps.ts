@@ -1,6 +1,7 @@
 import { PopupProps } from 'reactjs-popup/dist/types';
 import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome';
 import { ModalProps } from '../UtilsComponents/Modal/modalTypes';
+import { RefObject } from 'react';
 
 export type InfoIconProps = {
 	children?: JSX.Element;
@@ -18,7 +19,7 @@ export type InfoIconProps = {
 export type InfoBoxProps = {
 	title?: string;
 	className?: string;
-	ignoreDefaultStyle?: boolean;
+	useDefaultStyle?: boolean;
 } & (
 	| { children: JSX.Element; text?: never }
 	| { children?: never; text: string }
@@ -35,4 +36,14 @@ export type InfoSlideProps = {
 	text?: string;
 	className?: string;
 	children?: JSX.Element;
+};
+
+export type InfoTutorialProps = {
+	open: boolean;
+	setOpen: (open: boolean) => void;
+	targets: Array<{
+		ref: RefObject<HTMLElement>;
+		infoBox: JSX.Element;
+		position?: PopupProps['position'];
+	}>;
 };

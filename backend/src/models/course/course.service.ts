@@ -18,6 +18,7 @@ import { UpdateCourseElementDTO } from './dtos/UpdateCourseElement.dto';
 import { CreateSectionDTO } from './dtos/CreateSection.dto';
 import { ResourceEntity } from '../resource/entities/resource.entity';
 import { ActivityAssignmentEntity } from './entities/activities/activity_assignment.entity';
+import { randomUUID } from 'crypto';
 
 /**
  * All the methods to communicate to the database. To create/update/delete/get
@@ -117,18 +118,37 @@ export class CourseService {
    */
   async clone(course: CourseEntity, newProfessor: ProfessorEntity) {
     if (!course.elements) course = await this.findCourseWithElements(course.id, false);
-    const newCourse = await this.courseRepository.save({ ...course, id: undefined, creator: newProfessor });
-    console.log(newCourse);
-    return newCourse;
-    /*course.elements.map(el => {
-      // Is a section
-      if (el.section) {
-      }
-      // Is an activity
-      else if (el.activity) {
-      }
+    /*const newCourse = await this.courseRepository.save({ ...course, id: undefined, creator: newProfessor });
+    console.log(newCourse);*/
+    course.id = undefined;
+    course.creator = newProfessor;
+
+    course.code = generate({
+      length: 10,
+      charset: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
     });
-    return null;*/
+
+    const clonedCourse = await this.courseRepository.save(course);
+    const cloneElements = (elements: CourseElementEntity[]) => {
+      elements.forEach(async el => {
+        el.id = undefined;
+        el.course = undefined;
+        // Is a section
+        if (el.section) {
+          if (!el.section.elements) {
+            el.section = await this.findSectionWithElements(course, el.section.id.toString(), false);
+          }
+          el.section = this.sectionRepository.create(el.section);
+          cloneElements(el.section.elements);
+        } else if (el.activity) {
+          el.activity.id = undefined;
+          el.activity.resourceId = null;
+        }
+        el = this.courseElRepo.create(el);
+      });
+    };
+
+    cloneElements(course.elements);
   }
 
   /*****-------Course Elements-------*****/

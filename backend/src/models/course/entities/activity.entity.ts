@@ -44,7 +44,7 @@ export abstract class ActivityEntity {
   footer: Descendant[];
 
   /** CourseElement attached to the activity */
-  @OneToOne(() => CourseElementEntity, el => el.activity, { onDelete: 'CASCADE', cascade: true })
+  @OneToOne(() => CourseElementEntity, el => el.activity, { onDelete: 'CASCADE' })
   @JoinColumn()
   courseElement: CourseElementEntity;
 

@@ -20,7 +20,7 @@ export class CourseTemplateEntity {
   @Column({ type: 'bool', default: false, nullable: false })
   isPublic: boolean;
 
-  @ManyToOne(() => CourseEntity, { nullable: false })
+  @ManyToOne(() => CourseEntity, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'courseId' })
   course: CourseEntity;
 

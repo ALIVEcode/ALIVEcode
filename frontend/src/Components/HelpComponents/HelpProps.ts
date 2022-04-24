@@ -3,7 +3,9 @@ import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome';
 import { ModalProps } from '../UtilsComponents/Modal/modalTypes';
 
 export type InfoIconProps = {
-	children: JSX.Element;
+	children?: JSX.Element;
+	tooltip?: string;
+	noTooltip?: boolean;
 	activateOnHover?: boolean;
 	onClick?: () => void;
 	className?: string;
@@ -25,6 +27,7 @@ export type InfoBoxProps = {
 export type InfoSlidesProps = Omit<ModalProps, 'hideTitle'> & {
 	title: string;
 	children: JSX.Element | JSX.Element[];
+	defaultSlideClassName?: string;
 };
 export type InfoSlideProps = {
 	title?: string;

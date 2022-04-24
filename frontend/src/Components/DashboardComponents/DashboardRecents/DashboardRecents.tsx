@@ -6,8 +6,8 @@ import { UserContext } from '../../../state/contexts/UserContext';
 import Button from '../../UtilsComponents/Buttons/Button';
 import { useNavigate } from 'react-router';
 import useRoutes from '../../../state/hooks/useRoutes';
-import InfoButton from '../../Help/InfoButton';
-import Tutorial from '../../Help/Tutorial';
+import InfoButton from '../../HelpComponents/InfoButton';
+import Tutorial from '../../HelpComponents/Tutorial';
 
 export const DashboardRecents = () => {
 	const { getCourses, setFormJoinClassOpen, setOpenFormCreateCourse } =

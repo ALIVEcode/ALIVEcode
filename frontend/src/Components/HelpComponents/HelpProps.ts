@@ -1,36 +1,35 @@
 import { PopupProps } from 'reactjs-popup/dist/types';
 import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome';
 import { ModalProps } from '../UtilsComponents/Modal/modalTypes';
-import React from 'react';
-import Tutorial from './Tutorial';
-import Page = Tutorial.Page;
 
-export type InfoButtonProps = {
-	children?: JSX.Element;
-	hideDefaultStyle?: boolean;
+export type InfoIconProps = {
+	children: JSX.Element;
+	activateOnHover?: boolean;
+	onClick?: () => void;
 	className?: string;
-	icon?: {
-		onClick?: () => void;
-		className?: string;
-		hideDefaultStyle?: boolean;
-		size?: FontAwesomeIconProps['size'];
-	};
-	hoverPopup?: {
-		text?: string;
-		textClassName?: string;
-		hideDefaultStyle?: boolean;
-		position: PopupProps['position'];
-		className?: string;
-		content?: JSX.Element;
-		offset?: { x?: number; y?: number };
-	};
-	modalOnClick?: {};
+	iconClassName?: string;
+	ignoreDefaultIconStyle?: boolean;
+	hoverPopup?: Omit<PopupProps, 'trigger' | 'on' | 'children'>;
+	iconSize?: FontAwesomeIconProps['size'];
 };
 
-export type TutorialTimelineProps = ModalProps & {
-	children:
-		| React.ReactElement<TutorialPageProps, typeof Page>
-		| React.ReactElement<TutorialPageProps, typeof Page>[];
-};
+export type InfoBoxProps = {
+	title?: string;
+	className?: string;
+	ignoreDefaultStyle?: boolean;
+} & (
+	| { children: JSX.Element; text?: never }
+	| { children?: never; text: string }
+);
 
-export type TutorialPageProps = { title: string };
+export type InfoSlidesProps = Omit<ModalProps, 'hideTitle'> & {
+	title: string;
+	children: JSX.Element | JSX.Element[];
+};
+export type InfoSlideProps = {
+	title?: string;
+	image?: string;
+	text?: string;
+	className?: string;
+	children?: JSX.Element;
+};

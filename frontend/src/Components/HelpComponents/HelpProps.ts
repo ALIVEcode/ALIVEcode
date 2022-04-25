@@ -38,12 +38,18 @@ export type InfoSlideProps = {
 	children?: JSX.Element;
 };
 
+export type InfoTutorialTarget = {
+	ref: RefObject<HTMLElement>;
+	infoBox: JSX.Element;
+	position?: PopupProps['position'];
+	afterDo?: () => void;
+};
+export type InfoTutorialAction =
+	| { target: InfoTutorialTarget; do?: never }
+	| { target?: never; do: () => void };
+
 export type InfoTutorialProps = {
 	open: boolean;
 	setOpen: (open: boolean) => void;
-	targets: Array<{
-		ref: RefObject<HTMLElement>;
-		infoBox: JSX.Element;
-		position?: PopupProps['position'];
-	}>;
+	targets: InfoTutorialTarget[];
 };

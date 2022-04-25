@@ -7,7 +7,7 @@ import { UserContext } from '../../../state/contexts/UserContext';
 import TypeCard from '../../UtilsComponents/Cards/TypeCard/TypeCard';
 import { SUBJECTS, getSubjectIcon } from '../../../Types/sharedTypes';
 import useRoutes from '../../../state/hooks/useRoutes';
-import { instanceToPlain, plainToInstance } from 'class-transformer';
+import { instanceToPlain } from 'class-transformer';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import MenuCreation from '../../UtilsComponents/MenuCreation/MenuCreation';
 import { useNavigate } from 'react-router-dom';
@@ -47,6 +47,7 @@ const MenuCourseCreation = ({
 	);
 	const [courseTemplateOpen, setCourseTemplateOpen] = useState(false);
 	const [templates, setTemplates] = useState<CourseTemplate[]>();
+	const [selectedTemplate, setSelectedTemplate] = useState<CourseTemplate>();
 	const { t } = useTranslation();
 	const { user } = useContext(UserContext);
 	const { routes } = useRoutes();
@@ -66,7 +67,6 @@ const MenuCourseCreation = ({
 
 	useEffect(() => {
 		if (courseTemplateOpen) {
-			console.log('HERE');
 			const getTemplates = async () => {
 				const templates = await api.db.bundles.getCourseTemplates();
 				console.log(templates);
@@ -104,10 +104,15 @@ const MenuCourseCreation = ({
 				formValues,
 			);
 		} else {
-			const course = plainToInstance(
-				Course,
-				await api.db.courses.create(formValues),
-			);
+			let course: Course;
+			if (selectedTemplate) {
+				course = await api.db.bundles.createCourseFromTemplate(
+					selectedTemplate.id,
+					formValues,
+				);
+			} else {
+				course = await api.db.courses.create(formValues);
+			}
 			await user?.addCourse(course);
 			navigate(routes.auth.course.path.replace(':id', course.id) + '/layout');
 			return alert.success('Cours créé avec succès');
@@ -156,12 +161,29 @@ const MenuCourseCreation = ({
 	const renderPageCourseTemplate = () => {
 		return (
 			<div className="tablet:px-8 laptop:px-16 desktop:px-36 flex flex-col text-center">
-				<Button variant="primary" onClick={() => setCourseTemplateOpen(true)}>
-					{t('course.template.add')}
-				</Button>
-				<Link onClick={() => handleSubmit(onSubmit)()}>
-					{t('course.template.skip')}
-				</Link>
+				{selectedTemplate ? (
+					<>
+						<CourseTemplateCard template={selectedTemplate} />
+						<Button
+							variant="danger"
+							onClick={() => setSelectedTemplate(undefined)}
+						>
+							{t('course.template.remove')}
+						</Button>
+					</>
+				) : (
+					<>
+						<Button
+							variant="primary"
+							onClick={() => setCourseTemplateOpen(true)}
+						>
+							{t('course.template.add')}
+						</Button>
+						<Link onClick={() => handleSubmit(onSubmit)()}>
+							{t('course.template.skip')}
+						</Link>
+					</>
+				)}
 			</div>
 		);
 	};
@@ -193,12 +215,11 @@ const MenuCourseCreation = ({
 							<CourseTemplateCard
 								key={idx}
 								onSelect={async template => {
-									const newCourse =
-										await api.db.bundles.createCourseFromTemplate(template.id);
-									console.log(newCourse);
+									setSelectedTemplate(template);
+									setCourseTemplateOpen(false);
 								}}
 								template={t}
-							></CourseTemplateCard>
+							/>
 						))
 					)}
 				</div>

@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CourseTemplateEntity } from './entities/bundles/course_template.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProfessorEntity } from '../user/entities/user.entity';
+import { CreateCourseDTO } from './dtos/CreateCourse.dto';
 
 /**
  * All the methods to communicate to the database. To create/update/delete/get
@@ -48,8 +49,25 @@ export class BundleService {
     return courseTemplates;
   }
 
-  async createCourseFromTemplate(template: CourseTemplateEntity, prof: ProfessorEntity) {
+  async createCourseFromTemplate(
+    template: CourseTemplateEntity,
+    prof: ProfessorEntity,
+    createCourseDTO: CreateCourseDTO,
+  ) {
     if (!template.course) template = await this.courseTemplateRepo.findOne(template.id, { relations: ['course'] });
-    return await this.courseService.clone(template.course, prof);
+
+    const course = await this.courseService.clone(template.course, prof, createCourseDTO.course);
+
+    // If a classroom is specified, add the course to the classroom
+    if (createCourseDTO.classId) {
+      throw new HttpException('Course creation inside classroom is not implemented', HttpStatus.NOT_IMPLEMENTED);
+      /*const classroom = await this.classroomRepo.findOne(createCourseDto.classId, { relations: ['courses'] });
+      if (!classroom) throw new HttpException('Classroom not found', HttpStatus.NOT_FOUND);
+      classroom.courses.push(course);
+      await this.classroomRepo.save(classroom);*/
+    }
+    return course;
+
+    return course;
   }
 }

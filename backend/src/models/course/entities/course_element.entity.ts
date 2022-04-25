@@ -31,7 +31,7 @@ export class CourseElementEntity {
 
   /** The course that the element belongs to */
   @IsNotEmpty()
-  @ManyToOne(() => CourseEntity, course => course.elements, { nullable: false })
+  @ManyToOne(() => CourseEntity, course => course.elements, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'courseId' })
   course: CourseEntity;
 

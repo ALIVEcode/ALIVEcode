@@ -2,5 +2,5 @@ import { CourseTemplate } from '../../../Models/Course/bundles/course_template.e
 
 export type CourseTemplateCardProps = {
 	template: CourseTemplate;
-	onSelect: (template: CourseTemplate) => void;
+	onSelect?: (template: CourseTemplate) => void;
 };

@@ -18,7 +18,6 @@ import { UpdateCourseElementDTO } from './dtos/UpdateCourseElement.dto';
 import { CreateSectionDTO } from './dtos/CreateSection.dto';
 import { ResourceEntity } from '../resource/entities/resource.entity';
 import { ActivityAssignmentEntity } from './entities/activities/activity_assignment.entity';
-import { randomUUID } from 'crypto';
 
 /**
  * All the methods to communicate to the database. To create/update/delete/get
@@ -116,39 +115,64 @@ export class CourseService {
    * and return the cloned version
    * @param course Course to clone
    */
-  async clone(course: CourseEntity, newProfessor: ProfessorEntity) {
+  async clone(course: CourseEntity, newProfessor: ProfessorEntity, cloneDTO: CourseEntity) {
     if (!course.elements) course = await this.findCourseWithElements(course.id, false);
     /*const newCourse = await this.courseRepository.save({ ...course, id: undefined, creator: newProfessor });
     console.log(newCourse);*/
-    course.id = undefined;
-    course.creator = newProfessor;
-
-    course.code = generate({
+    const newCode = generate({
       length: 10,
       charset: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
     });
 
-    const clonedCourse = await this.courseRepository.save(course);
-    const cloneElements = (elements: CourseElementEntity[]) => {
-      elements.forEach(async el => {
-        el.id = undefined;
-        el.course = undefined;
+    const clonedCourse = await this.courseRepository.save({
+      ...course,
+      ...cloneDTO,
+      creator: newProfessor,
+      code: newCode,
+      id: undefined,
+    });
+
+    const cloneElements = async (elements: CourseElementEntity[], sectionParentId?: string) => {
+      const elementsOrder: number[] = [];
+      for (let i = 0; i < elements.length; i++) {
+        const el = elements[i];
+        const clonedEl = await this.courseElRepo.save({
+          ...el,
+          id: undefined,
+          course: clonedCourse,
+          courseId: clonedCourse.id,
+          section: undefined,
+          activity: undefined,
+          sectionParentId: sectionParentId,
+          sectionParent: undefined,
+        });
         // Is a section
         if (el.section) {
           if (!el.section.elements) {
             el.section = await this.findSectionWithElements(course, el.section.id.toString(), false);
           }
-          el.section = this.sectionRepository.create(el.section);
-          cloneElements(el.section.elements);
+          clonedEl.section = await this.sectionRepository.save({
+            ...el.section,
+            id: undefined,
+            courseElement: clonedEl,
+          });
+          clonedEl.section.elementsOrder = await cloneElements(el.section.elements, clonedEl.section.id);
+          await this.sectionRepository.save(clonedEl.section);
         } else if (el.activity) {
-          el.activity.id = undefined;
-          el.activity.resourceId = null;
+          clonedEl.activity = await this.saveActivity({
+            ...el.activity,
+            id: undefined,
+            courseElement: clonedEl,
+          });
         }
-        el = this.courseElRepo.create(el);
-      });
+        console.log(clonedEl);
+        elementsOrder.push((await this.courseElRepo.save(clonedEl)).id);
+      }
+      return elementsOrder;
     };
 
-    cloneElements(course.elements);
+    clonedCourse.elementsOrder = await cloneElements(course.elements);
+    return await this.courseRepository.save(clonedCourse);
   }
 
   /*****-------Course Elements-------*****/
@@ -486,6 +510,28 @@ export class CourseService {
   }
 
   /**
+   * Saves an activity based on its type
+   * @param activity Activity to save
+   * @returns The updated saved activity
+   */
+  async saveActivity(activity: Partial<ActivityEntity>) {
+    switch (activity.type) {
+      case ACTIVITY_TYPE.CHALLENGE:
+        return await this.actChallengeRepo.save(activity);
+      case ACTIVITY_TYPE.THEORY:
+        return await this.actTheoryRepo.save(activity);
+      case ACTIVITY_TYPE.VIDEO:
+        return await this.actVideoRepo.save(activity);
+      case ACTIVITY_TYPE.PDF:
+        return await this.actPdfRepo.save(activity);
+      case ACTIVITY_TYPE.ASSIGNMENT:
+        return await this.actAssignmentRepo.save(activity);
+      default:
+        throw new HttpException(`Invalid activity type ${activity.type}`, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  /**
    * Adds a section directly inside a course or inside another section
    * @param course Course to add the section to
    * @param activityDTO
@@ -495,26 +541,7 @@ export class CourseService {
    * @throws HttpException Invalid activity type
    */
   async addActivity(course: CourseEntity, activityDTO: CreateActivityDTO, sectionParent?: SectionEntity) {
-    let activity: ActivityEntity;
-    switch (activityDTO.courseContent.type) {
-      case ACTIVITY_TYPE.CHALLENGE:
-        activity = await this.actChallengeRepo.save(activityDTO.courseContent);
-        break;
-      case ACTIVITY_TYPE.THEORY:
-        activity = await this.actTheoryRepo.save(activityDTO.courseContent);
-        break;
-      case ACTIVITY_TYPE.VIDEO:
-        activity = await this.actVideoRepo.save(activityDTO.courseContent);
-        break;
-      case ACTIVITY_TYPE.PDF:
-        activity = await this.actPdfRepo.save(activityDTO.courseContent);
-        break;
-      case ACTIVITY_TYPE.ASSIGNMENT:
-        activity = await this.actAssignmentRepo.save(activityDTO.courseContent);
-        break;
-      default:
-        throw new HttpException(`Invalid activity type ${activityDTO.courseContent.type}`, HttpStatus.BAD_REQUEST);
-    }
+    const activity = await this.saveActivity(activityDTO.courseContent);
     return await this.createCourseElement(course, activityDTO.name, activity, sectionParent);
   }
 

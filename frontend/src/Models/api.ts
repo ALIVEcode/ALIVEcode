@@ -54,6 +54,7 @@ import { UpdateCourseElementDTO } from './Course/dtos/UpdateCourseElement.dto';
 import { GetCourseTemplatesDTO } from './Course/bundles/dtos/GetCourseTemplates.dto';
 import { CourseTemplate } from './Course/bundles/course_template.entity';
 import { template } from '@babel/core';
+import { MenuCourseCreationDTO } from '../Components/Resources/MenuCourseCreation/menuCourseCreationTypes';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;
@@ -448,15 +449,19 @@ const api = {
 					}) as any
 				).templates;
 			},
-			async createCourseFromTemplate(templateId: string) {
+			async createCourseFromTemplate(
+				templateId: string,
+				course: MenuCourseCreationDTO,
+			) {
 				return plainToInstance(
-					CourseTemplate,
+					Course,
 					(
 						await axios.post(
 							`bundles/courseTemplates/${templateId}/createCourse`,
+							course,
 						)
 					).data,
-				);
+				) as any as Course;
 			},
 		},
 		challenges: {

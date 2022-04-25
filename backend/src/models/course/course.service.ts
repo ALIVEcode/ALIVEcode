@@ -8,7 +8,7 @@ import { CreateCourseDTO } from './dtos/CreateCourse.dto';
 import { ActivityChallengeEntity } from './entities/activities/activity_challenge.entity';
 import { ActivityTheoryEntity } from './entities/activities/activity_theory.entity';
 import { ActivityEntity, ACTIVITY_TYPE } from './entities/activity.entity';
-import { CourseContent, CourseEntity } from './entities/course.entity';
+import { CourseEntity } from './entities/course.entity';
 import { CourseElementEntity } from './entities/course_element.entity';
 import { SectionEntity } from './entities/section.entity';
 import { ActivityVideoEntity } from './entities/activities/activity_video.entity';
@@ -132,46 +132,58 @@ export class CourseService {
       id: undefined,
     });
 
-    const cloneElements = async (elements: CourseElementEntity[], sectionParentId?: string) => {
-      const elementsOrder: number[] = [];
-      for (let i = 0; i < elements.length; i++) {
-        const el = elements[i];
+    const cloneElements = async (
+      elements: CourseElementEntity[],
+      elementsOrder: number[],
+      sectionParentId?: string,
+    ) => {
+      const newElementsOrder: number[] = [];
+      for (let i = 0; i < elementsOrder.length; i++) {
+        const el = elements.find(e => e.id === elementsOrder[i]);
+        if (!el) continue;
         const clonedEl = await this.courseElRepo.save({
           ...el,
           id: undefined,
-          course: clonedCourse,
+          course: undefined,
           courseId: clonedCourse.id,
           section: undefined,
           activity: undefined,
-          sectionParentId: sectionParentId,
           sectionParent: undefined,
+          sectionParentId: sectionParentId,
         });
         // Is a section
         if (el.section) {
-          if (!el.section.elements) {
+          if (!el.section.elements)
             el.section = await this.findSectionWithElements(course, el.section.id.toString(), false);
-          }
+
           clonedEl.section = await this.sectionRepository.save({
             ...el.section,
             id: undefined,
-            courseElement: clonedEl,
+            courseElement: undefined,
+            courseElementId: clonedEl.id,
+            elements: undefined,
           });
-          clonedEl.section.elementsOrder = await cloneElements(el.section.elements, clonedEl.section.id);
+          clonedEl.section.elementsOrder = await cloneElements(
+            el.section.elements,
+            el.section.elementsOrder,
+            clonedEl.section.id,
+          );
           await this.sectionRepository.save(clonedEl.section);
         } else if (el.activity) {
           clonedEl.activity = await this.saveActivity({
             ...el.activity,
             id: undefined,
-            courseElement: clonedEl,
+            courseElementId: clonedEl.id,
+            resource: null,
+            resourceId: null,
           });
         }
-        console.log(clonedEl);
-        elementsOrder.push((await this.courseElRepo.save(clonedEl)).id);
+        newElementsOrder.push((await this.courseElRepo.save(clonedEl)).id);
       }
-      return elementsOrder;
+      return newElementsOrder;
     };
 
-    clonedCourse.elementsOrder = await cloneElements(course.elements);
+    clonedCourse.elementsOrder = await cloneElements(course.elements, course.elementsOrder);
     return await this.courseRepository.save(clonedCourse);
   }
 
@@ -257,13 +269,11 @@ export class CourseService {
    *                      If not specified, add the CourseElement directly inside the course
    * @returns The created CourseElement containing the section or activity
    */
-  async createCourseElement(course: CourseEntity, name: string, content: CourseContent, sectionParent?: SectionEntity) {
+  async createCourseElement(course: CourseEntity, name: string, sectionParent?: SectionEntity) {
     const parent = sectionParent || course;
     const courseId = course.id;
     const createdElement = this.courseElRepo.create({ course, courseId, sectionParent, name });
 
-    if (content instanceof SectionEntity) createdElement.section = content;
-    else createdElement.activity = content;
     const courseElement = await this.courseElRepo.save(createdElement);
 
     parent.elements.push(courseElement);
@@ -482,8 +492,13 @@ export class CourseService {
    * @returns the created CourseElement containing the section and the new order of elements in its parent
    */
   async addSection(course: CourseEntity, sectionDTO: CreateSectionDTO, sectionParent?: SectionEntity) {
-    const section = await this.sectionRepository.save(sectionDTO.courseContent);
-    return await this.createCourseElement(course, sectionDTO.name, section, sectionParent);
+    const res = await this.createCourseElement(course, sectionDTO.name, sectionParent);
+    const section = await this.sectionRepository.save({
+      ...sectionDTO.courseContent,
+      courseElementId: res.courseElement.id.toString(),
+    });
+    res.courseElement.section = section;
+    return res;
   }
 
   /*****-------End of Section methods-------*****/
@@ -541,8 +556,13 @@ export class CourseService {
    * @throws HttpException Invalid activity type
    */
   async addActivity(course: CourseEntity, activityDTO: CreateActivityDTO, sectionParent?: SectionEntity) {
-    const activity = await this.saveActivity(activityDTO.courseContent);
-    return await this.createCourseElement(course, activityDTO.name, activity, sectionParent);
+    const res = await this.createCourseElement(course, activityDTO.name, sectionParent);
+    const activity = await this.saveActivity({
+      ...activityDTO.courseContent,
+      courseElementId: res.courseElement.id.toString(),
+    });
+    res.courseElement.activity = activity;
+    return res;
   }
 
   /**

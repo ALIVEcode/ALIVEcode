@@ -28,8 +28,11 @@ export class SectionEntity {
   elementsOrder: number[];
 
   /** CourseElement attached to the section */
-  @OneToOne(() => CourseElementEntity, el => el.section, { onDelete: 'CASCADE' })
-  @JoinColumn()
+  @OneToOne(() => CourseElementEntity, el => el.section, { onDelete: 'CASCADE', nullable: false })
+  @JoinColumn({ name: 'courseElementId' })
   @IsEmpty()
   courseElement: CourseElementEntity;
+
+  @Column({ type: 'varchar', name: 'courseElementId', nullable: false })
+  courseElementId: string;
 }

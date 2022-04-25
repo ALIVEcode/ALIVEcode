@@ -44,9 +44,12 @@ export abstract class ActivityEntity {
   footer: Descendant[];
 
   /** CourseElement attached to the activity */
-  @OneToOne(() => CourseElementEntity, el => el.activity, { onDelete: 'CASCADE' })
-  @JoinColumn()
+  @OneToOne(() => CourseElementEntity, el => el.activity, { onDelete: 'CASCADE', nullable: false })
+  @JoinColumn({ name: 'courseElementId' })
   courseElement: CourseElementEntity;
+
+  @Column({ type: 'varchar', name: 'courseElementId', nullable: false })
+  courseElementId: string;
 
   /** Id of the referenced resource */
   @Column({ type: 'uuid', nullable: true })

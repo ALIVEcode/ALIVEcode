@@ -475,6 +475,7 @@ const Dashboard = (props: DashboardProps) => {
 				open={openTutorial}
 				setOpen={setOpenTutorial}
 				beforeDo={openRecents}
+				afterDo={openRecents}
 				targets={[
 					{
 						ref: recentCourseTabRef,

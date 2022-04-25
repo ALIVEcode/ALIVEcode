@@ -10,6 +10,7 @@ const InfoTutorial = ({
 	open,
 	setOpen,
 	beforeDo,
+	afterDo,
 }: InfoTutorialProps) => {
 	const { t } = useTranslation();
 	const forceUpdate = useForceUpdate();
@@ -19,11 +20,9 @@ const InfoTutorial = ({
 			target.ref?.current
 				? {
 						border: target.ref.current.style.border,
-						zIndex: target.ref.current.style.zIndex,
 				  }
 				: {
 						border: 'none',
-						zIndex: 'auto',
 				  },
 		);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -56,6 +55,7 @@ const InfoTutorial = ({
 			currentTarget.current++;
 			forceUpdate();
 		} else {
+			afterDo && afterDo();
 			close();
 		}
 	}, [close, forceUpdate, targets.length]);
@@ -73,7 +73,6 @@ const InfoTutorial = ({
 		if (idx !== currentTarget.current) {
 			if (target.ref?.current) {
 				target.ref.current.style.border = infos[idx].border;
-				target.ref.current.style.zIndex = infos[idx].zIndex;
 			}
 			return null;
 		}
@@ -113,10 +112,8 @@ const InfoTutorial = ({
 		if (target.ref?.current) {
 			if (idx === currentTarget.current) {
 				target.ref.current.style.border = '2px solid var(--fourth-color)';
-				target.ref.current.style.zIndex = '100';
 			} else {
 				target.ref.current.style.border = infos[idx].border;
-				target.ref.current.style.zIndex = infos[idx].zIndex;
 			}
 		}
 

@@ -1,7 +1,7 @@
 import { MenuCreationProps, flattenChildren } from './menuCreationProps';
 import Modal from '../Modal/Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { classNames } from '../../../Types/utils';
 import {
 	faChevronLeft,

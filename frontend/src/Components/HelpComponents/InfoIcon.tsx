@@ -4,11 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
  * @author Mathis Laroche
  */
 import { InfoIconProps } from './HelpProps';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { classNames } from '../../Types/utils';
 import { Popup } from 'reactjs-popup';
 import { useTranslation } from 'react-i18next';
-import { useMemo } from 'react';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 const InfoIcon = ({
 	activateOnHover = true,

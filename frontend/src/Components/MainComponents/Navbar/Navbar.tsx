@@ -23,6 +23,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { classNames } from '../../../Types/utils';
 import { Popup } from 'reactjs-popup';
+import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 
 /**
  * Navbar of ALIVEcode
@@ -370,8 +371,9 @@ const ALIVENavbar = ({ handleLogout, setFeedbackModalOpen }: NavbarProps) => {
 								<div className="h-full">
 									<Menu.Button className="h-full w-10">
 										<FontAwesomeIcon
-											icon={faInfoCircle}
+											icon={faQuestionCircle}
 											color={commonColors.logo}
+											title="Support"
 											className="p-1"
 											size={'3x'}
 										/>

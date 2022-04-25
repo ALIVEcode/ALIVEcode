@@ -474,6 +474,7 @@ const Dashboard = (props: DashboardProps) => {
 			<Info.Tutorial
 				open={openTutorial}
 				setOpen={setOpenTutorial}
+				beforeDo={openRecents}
 				targets={[
 					{
 						ref: recentCourseTabRef,
@@ -488,7 +489,7 @@ const Dashboard = (props: DashboardProps) => {
 							<Info.Box text="Voici l'endroit où se retrouve vos défis" />
 						),
 						position: 'right center',
-						afterDo: openRecents,
+						afterDo: openChallenges,
 					},
 					{
 						ref: coursesRef,

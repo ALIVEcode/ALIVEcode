@@ -1,11 +1,16 @@
 import { useTranslation } from 'react-i18next';
 import { useForceUpdate } from '../../state/hooks/useForceUpdate';
-import { useCallback, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { InfoTutorialProps, InfoTutorialTarget } from './HelpProps';
 import { Popup } from 'reactjs-popup';
 import NavigationButtons from './NavigationButtons';
 
-const InfoTutorial = ({ targets, open, setOpen }: InfoTutorialProps) => {
+const InfoTutorial = ({
+	targets,
+	open,
+	setOpen,
+	beforeDo,
+}: InfoTutorialProps) => {
 	const { t } = useTranslation();
 	const forceUpdate = useForceUpdate();
 
@@ -23,6 +28,10 @@ const InfoTutorial = ({ targets, open, setOpen }: InfoTutorialProps) => {
 		);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	useEffect(() => {
+		if (open) beforeDo && beforeDo();
+	}, [open]);
 
 	const currentTarget = useRef(0);
 	const myRef = useRef<HTMLDivElement>(null);
@@ -59,6 +68,14 @@ const InfoTutorial = ({ targets, open, setOpen }: InfoTutorialProps) => {
 	}, [forceUpdate]);
 
 	const renderTarget = (target: InfoTutorialTarget, idx: number) => {
+		if (idx !== currentTarget.current) {
+			if (target.ref.current) {
+				target.ref.current.style.border = infos[idx].border;
+				target.ref.current.style.zIndex = infos[idx].zIndex;
+			}
+			return null;
+		}
+
 		const rect =
 			target.ref.current && target.ref.current.getBoundingClientRect();
 		let offsetX: number;
@@ -95,7 +112,7 @@ const InfoTutorial = ({ targets, open, setOpen }: InfoTutorialProps) => {
 			}
 		}
 
-		return idx === currentTarget.current ? (
+		return (
 			<Popup
 				open={currentTarget.current === idx}
 				closeOnDocumentClick={false}
@@ -127,7 +144,7 @@ const InfoTutorial = ({ targets, open, setOpen }: InfoTutorialProps) => {
 					</section>
 				</div>
 			</Popup>
-		) : null;
+		);
 	};
 
 	return open ? (

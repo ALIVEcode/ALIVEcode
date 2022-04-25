@@ -11,3 +11,7 @@ export const hexToRGB = (hex: string, alpha?: number) => {
 
 	return `${r},${g},${b}`;
 };
+
+export type OneOf<T, V> =
+	| ({ [key in keyof T]?: never } & V)
+	| ({ [key in keyof V]?: never } & T);

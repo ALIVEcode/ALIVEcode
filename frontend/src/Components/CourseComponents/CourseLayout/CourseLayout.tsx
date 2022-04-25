@@ -1,6 +1,6 @@
 import { faUserGraduate } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import useRoutes from '../../../state/hooks/useRoutes';
@@ -9,6 +9,7 @@ import CourseLayoutElement from './CourseLayoutElement';
 import { Section } from '../../../Models/Course/section.entity';
 import { plainToClass } from 'class-transformer';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
+import Info from '../../HelpComponents';
 
 /**
  * Component that handles the layout view of a course
@@ -26,6 +27,7 @@ const CourseLayout = () => {
 	} = useContext(CourseContext);
 	const { routes, goTo } = useRoutes();
 	const { t } = useTranslation();
+	const [openTutorial, setOpenTutorial] = useState(false);
 
 	useEffect(() => {
 		console.log(courseElements?.current);
@@ -126,6 +128,11 @@ const CourseLayout = () => {
 					</>
 				)}
 			</div>
+			<Info.Tutorial
+				open={openTutorial}
+				setOpen={setOpenTutorial}
+				targets={[]}
+			/>
 		</div>
 	);
 };

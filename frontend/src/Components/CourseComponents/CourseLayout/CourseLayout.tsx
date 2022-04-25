@@ -28,6 +28,7 @@ const CourseLayout = () => {
 	const { routes, goTo } = useRoutes();
 	const { t } = useTranslation();
 	const [openTutorial, setOpenTutorial] = useState(false);
+	const titleRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		console.log(courseElements?.current);
@@ -61,7 +62,13 @@ const CourseLayout = () => {
 				/>
 			</div>
 			<div className="flex flex-col justify-center md:px-52 pl-3 pr-12 min-w-fit w-[100%] whitespace-nowrap">
-				<div className="text-center text-2xl mb-4">Course Layout</div>
+				<div
+					className="text-center text-2xl mb-4"
+					ref={titleRef}
+					onClick={() => setOpenTutorial(true)}
+				>
+					Course Layout
+				</div>
 				{!courseElements?.current ? (
 					<LoadingScreen />
 				) : Object.keys(courseElements.current).length === 0 ? (
@@ -131,7 +138,13 @@ const CourseLayout = () => {
 			<Info.Tutorial
 				open={openTutorial}
 				setOpen={setOpenTutorial}
-				targets={[]}
+				targets={[
+					{
+						ref: titleRef,
+						infoBox: <Info.Box text="aa" />,
+						position: 'bottom center',
+					},
+				]}
 			/>
 		</div>
 	);

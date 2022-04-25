@@ -482,6 +482,7 @@ const Dashboard = (props: DashboardProps) => {
 							<Info.Box text="Voici l'endroit où se retrouve vos cours récemment visité" />
 						),
 						position: 'right center',
+						onNextDo: openChallenges,
 					},
 					{
 						ref: challengesTabRef,
@@ -489,7 +490,6 @@ const Dashboard = (props: DashboardProps) => {
 							<Info.Box text="Voici l'endroit où se retrouve vos défis" />
 						),
 						position: 'right center',
-						afterDo: openChallenges,
 					},
 					{
 						ref: coursesRef,

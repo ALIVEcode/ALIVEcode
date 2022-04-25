@@ -37,15 +37,17 @@ export type InfoSlideProps = {
 };
 
 export type InfoTutorialTarget = {
-	ref: RefObject<HTMLElement>;
+	ref?: RefObject<HTMLElement>;
 	infoBox: JSX.Element;
 	position?: PopupProps['position'];
-	afterDo?: () => void;
+	onNextDo?: () => void;
+	onPreviousDo?: () => void;
 };
 
 export type InfoTutorialProps = {
 	open: boolean;
 	setOpen: (open: boolean) => void;
 	beforeDo?: () => void;
+	afterDo?: () => void;
 	targets: InfoTutorialTarget[];
 };

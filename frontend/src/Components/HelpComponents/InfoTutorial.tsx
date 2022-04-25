@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useForceUpdate } from '../../state/hooks/useForceUpdate';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { InfoTutorialProps, InfoTutorialTarget } from './HelpProps';
 import { Popup } from 'reactjs-popup';
 import NavigationButtons from './NavigationButtons';
@@ -16,7 +16,7 @@ const InfoTutorial = ({
 
 	const infos = useMemo(() => {
 		return targets.map(target =>
-			target.ref.current
+			target.ref?.current
 				? {
 						border: target.ref.current.style.border,
 						zIndex: target.ref.current.style.zIndex,
@@ -42,7 +42,7 @@ const InfoTutorial = ({
 		targets.forEach((target, idx) => {
 			Object.entries(infos[idx]).forEach(
 				([style, value]) =>
-					target.ref.current &&
+					target.ref?.current &&
 					(target.ref.current.style[style as unknown as any] = value),
 			);
 		});
@@ -51,7 +51,7 @@ const InfoTutorial = ({
 
 	const nextTargetOrClose = useCallback(() => {
 		const target = targets[currentTarget.current];
-		target.afterDo && target.afterDo();
+		target.onNextDo && target.onNextDo();
 		if (currentTarget.current < targets.length - 1) {
 			currentTarget.current++;
 			forceUpdate();
@@ -61,6 +61,8 @@ const InfoTutorial = ({
 	}, [close, forceUpdate, targets.length]);
 
 	const previousTarget = useCallback(() => {
+		const target = targets[currentTarget.current];
+		target.onPreviousDo && target.onPreviousDo();
 		if (currentTarget.current > 0) {
 			currentTarget.current--;
 			forceUpdate();
@@ -69,7 +71,7 @@ const InfoTutorial = ({
 
 	const renderTarget = (target: InfoTutorialTarget, idx: number) => {
 		if (idx !== currentTarget.current) {
-			if (target.ref.current) {
+			if (target.ref?.current) {
 				target.ref.current.style.border = infos[idx].border;
 				target.ref.current.style.zIndex = infos[idx].zIndex;
 			}
@@ -77,32 +79,38 @@ const InfoTutorial = ({
 		}
 
 		const rect =
-			target.ref.current && target.ref.current.getBoundingClientRect();
+			target.ref?.current && target.ref.current.getBoundingClientRect();
 		let offsetX: number;
 		let offsetY: number;
+		const contentStyle: React.CSSProperties = {};
 
 		switch (target.position) {
 			case 'top center':
 				offsetX = rect ? rect.x + rect.width / 2 : 0;
 				offsetY = rect ? rect.y : 0;
+				// TODO add the right amount of padding
 				break;
 			case 'bottom center':
 				offsetX = rect ? rect.x + rect.width / 2 : 0;
 				offsetY = rect ? rect.y + rect.height : 0;
+				contentStyle.paddingBottom = 15;
+				contentStyle.paddingRight = 15;
 				break;
 			case 'left center':
 				offsetX = rect ? rect.x : 0;
 				offsetY = rect ? rect.y + rect.height / 2 : 0;
+				contentStyle.paddingBottom = 15;
 				break;
 			case 'right center':
 				offsetX = rect ? rect.x + rect.width : 0;
 				offsetY = rect ? rect.y + rect.height / 2 : 0;
+				contentStyle.paddingBottom = 15;
 				break;
 			default:
 				offsetX = 0;
 				offsetY = 0;
 		}
-		if (target.ref.current) {
+		if (target.ref?.current) {
 			if (idx === currentTarget.current) {
 				target.ref.current.style.border = '2px solid var(--fourth-color)';
 				target.ref.current.style.zIndex = '100';
@@ -122,9 +130,7 @@ const InfoTutorial = ({
 				offsetX={offsetX}
 				offsetY={offsetY}
 				trigger={<div className="hidden" />}
-				contentStyle={{
-					paddingBottom: 15,
-				}}
+				contentStyle={contentStyle}
 				arrowStyle={{
 					color: 'var(--fg-shade-four-color)',
 				}}

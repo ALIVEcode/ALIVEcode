@@ -109,6 +109,7 @@ const Dashboard = (props: DashboardProps) => {
 	const challengesTabRef = useRef<HTMLDivElement>(null);
 	const coursesRef = useRef<HTMLDivElement>(null);
 	const resourceTabRef = useRef<HTMLDivElement>(null);
+	const classroomsRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		if (pathname.endsWith('recents') && tabSelected.tab !== 'recents')
@@ -326,6 +327,7 @@ const Dashboard = (props: DashboardProps) => {
 							className="sidebar-header"
 							onMouseEnter={() => setHoveringClassroom(true)}
 							onMouseLeave={() => setHoveringClassroom(false)}
+							ref={classroomsRef}
 						>
 							<FontAwesomeIcon className="sidebar-icon" icon={faBook} />
 							<label className="sidebar-header-text">
@@ -481,7 +483,7 @@ const Dashboard = (props: DashboardProps) => {
 					{
 						ref: recentCourseTabRef,
 						infoBox: (
-							<Info.Box text="Voici l'endroit où se retrouve vos cours récemment visité" />
+							<Info.Box text={t('help.dashboard.tabs.recent_courses')} />
 						),
 						position: 'right center',
 						onEnter: openRecents,
@@ -489,7 +491,7 @@ const Dashboard = (props: DashboardProps) => {
 					{
 						ref: challengesTabRef,
 						infoBox: (
-							<Info.Box text="Voici l'endroit où se retrouve vos défis" />
+							<Info.Box text={t('help.dashboard.tabs.challenges')} />
 						),
 						position: 'right center',
 						onEnter: openChallenges,
@@ -497,18 +499,25 @@ const Dashboard = (props: DashboardProps) => {
 					{
 						ref: resourceTabRef,
 						infoBox: (
-							<Info.Box text="Voici l'endroit où se retrouve vos ressources" />
+							<Info.Box text={t('help.dashboard.tabs.resources')} />
 						),
 						position: 'right center',
 						onEnter: openResources,
 					},
 					{
-						ref: coursesRef,
+						ref: classroomsRef,
 						infoBox: (
-							<Info.Box text="Voici l'endroit où se retrouve les cours que vous avez créés" />
+							<Info.Box text={t('help.dashboard.tabs.create_classroom')} />
 						),
 						position: 'right center',
-						onExit: openRecents
+					},
+					{
+						ref: coursesRef,
+						infoBox: (
+							<Info.Box text={t('help.dashboard.tabs.create_course')} />
+						),
+						position: 'right center',
+						onExit: openRecents,
 					},
 				]}
 			/>

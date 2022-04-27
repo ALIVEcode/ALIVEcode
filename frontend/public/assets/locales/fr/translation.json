@@ -695,11 +695,11 @@
     },
     "dashboard": {
       "tabs": {
-        "recent_courses": "",
-        "challenges": "",
-        "my_resources": "",
-        "create_classroom": "",
-        "create_course": ""
+        "recent_courses": "Voici l'endroit où se retrouve vos cours récemment visité",
+        "challenges": "Voici l'endroit où se retrouve vos défis",
+        "resources": "Voici l'endroit où se retrouve vos ressources",
+        "create_classroom": "Voici l'endroit où se retrouve vos classes",
+        "create_course": "Voici l'endroit où se retrouve les cours que vous avez créés"
       },
       "views": {
         "recent_courses": "Cette vue vous permet de reprendre rapidement là où vous vous êtes arrêté en classant vos cours du plus récemment ouverts au moins récemment ouverts.",

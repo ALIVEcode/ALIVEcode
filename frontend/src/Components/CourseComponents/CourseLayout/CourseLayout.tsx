@@ -136,6 +136,7 @@ const CourseLayout = () => {
 				)}
 			</div>
 			<Info.Tutorial
+				name="CourseLayout"
 				open={openTutorial}
 				setOpen={setOpenTutorial}
 				targets={[

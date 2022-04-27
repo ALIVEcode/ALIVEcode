@@ -472,6 +472,7 @@ const Dashboard = (props: DashboardProps) => {
 				</p>
 			</AlertConfirm>
 			<Info.Tutorial
+				name="DashboardTabs"
 				open={openTutorial}
 				setOpen={setOpenTutorial}
 				beforeDo={openRecents}

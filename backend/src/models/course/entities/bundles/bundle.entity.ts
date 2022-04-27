@@ -1,6 +1,17 @@
-import { Entity, PrimaryGeneratedColumn, ManyToMany, JoinTable, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  ManyToMany,
+  JoinTable,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne,
+} from 'typeorm';
 import { ResourceEntity } from '../../../resource/entities/resource.entity';
 import { CourseTemplateEntity } from './course_template.entity';
+import { Exclude } from 'class-transformer';
+import { ProfessorEntity } from '../../../user/entities/user.entity';
 
 /**
  * Bundle model in the database
@@ -27,4 +38,16 @@ export class BundleEntity {
   @ManyToMany(() => ResourceEntity)
   @JoinTable()
   resources: ResourceEntity[];
+
+  @ManyToOne(() => ProfessorEntity, { nullable: false })
+  @Exclude({ toClassOnly: true })
+  creator: ProfessorEntity;
+
+  @CreateDateColumn()
+  @Exclude({ toClassOnly: true })
+  creationDate: Date;
+
+  @UpdateDateColumn()
+  @Exclude({ toClassOnly: true })
+  updateDate: Date;
 }

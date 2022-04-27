@@ -43,6 +43,7 @@ import { CHALLENGE_TYPE } from '../../Models/Challenge/challenge.entity';
 import Dashboard from '../../Pages/Dashboard/Dashboard';
 import ClassroomBrowse from '../../Components/ClassroomComponents/ClassroomBrowse/ClassroomBrowse';
 import { UnderDevelopment } from '../../Pages/Errors/UnderDevelopment/UnderDevelopment';
+import BundleBrowse from '../../Components/Bundles/BundleBrowse/BundleBrowse';
 
 export interface Route {
 	path: string;
@@ -252,6 +253,11 @@ const useRoutes = () => {
 		course: {
 			path: '/course/:id',
 			component: <Course></Course>,
+		},
+		bundle_browse: {
+			accountType: Professor,
+			path: '/bundle/browse',
+			component: <BundleBrowse></BundleBrowse>,
 		},
 		account: {
 			path: '/account',

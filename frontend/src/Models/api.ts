@@ -20,7 +20,7 @@ import {
 	IoTProjectLayout,
 } from './Iot/IoTproject.entity';
 import { IotRoute } from './Iot/IoTroute.entity';
-import { ClassroomQueryDTO } from './Challenge/dto/ClassroomQuery.dto';
+import { ClassroomQueryDTO } from './Classroom/dto/ClassroomQuery.dto';
 import { ChallengeQueryDTO } from './Challenge/dto/ChallengeQuery.dto';
 import { Challenge, CHALLENGE_TYPE } from './Challenge/challenge.entity';
 import { ChallengeAI } from './Challenge/challenges/challenge_ai.entity';
@@ -51,10 +51,12 @@ import { MoveElementDTO } from './Course/dtos/MoveElement.dto';
 import { FeedbackEntity } from './Feedbacks/entities/feedback.entity';
 import { CreateFeedbackDto } from './Feedbacks/dto/create-feedback.dto';
 import { UpdateCourseElementDTO } from './Course/dtos/UpdateCourseElement.dto';
-import { GetCourseTemplatesDTO } from './Course/bundles/dtos/GetCourseTemplates.dto';
+import { GetCourseTemplatesDTO } from './Course/bundles/dto/GetCourseTemplates.dto';
 import { CourseTemplate } from './Course/bundles/course_template.entity';
 import { template } from '@babel/core';
 import { MenuCourseCreationDTO } from '../Components/Resources/MenuCourseCreation/menuCourseCreationTypes';
+import { BundleQueryDTO } from './Course/bundles/dto/BundleQuery.dto';
+import { Bundle } from './Course/bundles/bundle.entity';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;
@@ -462,6 +464,11 @@ const api = {
 						)
 					).data,
 				) as any as Course;
+			},
+			async query(body: BundleQueryDTO) {
+				return (await axios.post('bundles/query', body)).data.map((d: any) =>
+					plainToInstance(Bundle, d),
+				);
 			},
 		},
 		challenges: {

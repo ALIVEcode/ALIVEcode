@@ -10,6 +10,7 @@ import { Role } from '../../utils/types/roles.types';
 import { User } from '../../utils/decorators/user.decorator';
 import { ProfessorEntity } from '../user/entities/user.entity';
 import { CreateCourseDTO } from './dtos/CreateCourse.dto';
+import { QueryDTO } from '../challenge/dto/query.dto';
 
 /**
  * All the routes for the bundles
@@ -26,6 +27,12 @@ export class BundleController {
     private readonly userService: UserService,
     private readonly resourceService: ResourceService,
   ) {}
+
+  @Post('query')
+  @Auth()
+  async findQuery(@Body() query: QueryDTO) {
+    return await this.bundleService.findQuery(query);
+  }
 
   @Get('courseTemplates')
   async getCourseTemplates(@User() professor: ProfessorEntity) {

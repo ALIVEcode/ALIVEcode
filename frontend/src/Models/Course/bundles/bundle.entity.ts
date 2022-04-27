@@ -6,7 +6,7 @@ import { Resource } from '../../Resource/resource.entity';
  * Bundle model in the database
  * @author Enric Soldevila
  */
-export class BundleEntity {
+export class Bundle {
 	id: string;
 
 	name: string;

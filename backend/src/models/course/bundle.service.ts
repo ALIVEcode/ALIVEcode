@@ -1,10 +1,12 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CourseService } from './course.service';
-import { Repository } from 'typeorm';
+import { Repository, ILike } from 'typeorm';
 import { CourseTemplateEntity } from './entities/bundles/course_template.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProfessorEntity } from '../user/entities/user.entity';
 import { CreateCourseDTO } from './dtos/CreateCourse.dto';
+import { BundleEntity } from './entities/bundles/bundle.entity';
+import { QueryDTO } from '../challenge/dto/query.dto';
 
 /**
  * All the methods to communicate to the database. To create/update/delete/get
@@ -16,6 +18,7 @@ import { CreateCourseDTO } from './dtos/CreateCourse.dto';
 export class BundleService {
   constructor(
     @InjectRepository(CourseTemplateEntity) private courseTemplateRepo: Repository<CourseTemplateEntity>,
+    @InjectRepository(BundleEntity) private bundleRepo: Repository<BundleEntity>,
     private readonly courseService: CourseService,
   ) {}
 
@@ -69,5 +72,15 @@ export class BundleService {
     return course;
 
     return course;
+  }
+
+  async findQuery(query: QueryDTO) {
+    return await this.bundleRepo.find({
+      where: { name: ILike(`%${query?.txt ?? ''}%`) },
+      order: {
+        creationDate: 'DESC',
+        name: 'ASC',
+      },
+    });
   }
 }

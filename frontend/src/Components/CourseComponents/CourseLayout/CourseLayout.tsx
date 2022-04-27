@@ -1,6 +1,12 @@
 import { faUserGraduate } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import {
+	useContext,
+	useEffect,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import useRoutes from '../../../state/hooks/useRoutes';
@@ -29,24 +35,26 @@ const CourseLayout = () => {
 	const { routes, goTo } = useRoutes();
 	const { t } = useTranslation();
 	const titleRef = useRef<HTMLDivElement>(null);
-	const { registerTutorial, setCurrentTutorial } = useContext(TutorialContext);
+	const { registerTutorial, setCurrentTutorial, unregisterTutorial } =
+		useContext(TutorialContext);
 
 	useLayoutEffect(() => {
 		registerTutorial({
 			name: 'CourseLayout',
 			targets: [
 				{
-					ref: titleRef,
+					ref: titleRef.current,
 					infoBox: <Info.Box text="aa" />,
 					position: 'bottom center',
 				},
 			],
 		});
-	}, [registerTutorial]);
+		return () => unregisterTutorial('CourseLayout');
+	}, []);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		setCurrentTutorial('CourseLayout');
-	});
+	}, []);
 
 	useEffect(() => {
 		console.log(courseElements?.current);

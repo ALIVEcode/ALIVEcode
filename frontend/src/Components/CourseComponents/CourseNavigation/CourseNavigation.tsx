@@ -29,7 +29,8 @@ const CourseNavigation = ({
 		useContext(CourseContext);
 	const { routes, goTo } = useRoutes();
 	const { t } = useTranslation();
-	const { setCurrentTutorial, registerTutorial } = useContext(TutorialContext);
+	const { setCurrentTutorial, registerTutorial, unregisterTutorial } =
+		useContext(TutorialContext);
 	const sectionRef = useRef<HTMLDivElement>(null);
 
 	useLayoutEffect(() => {
@@ -37,17 +38,18 @@ const CourseNavigation = ({
 			name: 'CourseNavigation',
 			targets: [
 				{
-					ref: sectionRef,
+					ref: sectionRef.current,
 					infoBox: <Info.Box text="aa" />,
 					position: 'bottom center',
 				},
 			],
 		});
-	}, [registerTutorial]);
+		return () => unregisterTutorial('CourseNavigation');
+	}, []);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		setCurrentTutorial('CourseNavigation');
-	});
+	}, []);
 
 	if (!course) {
 		goTo(routes.auth.dashboard.path);

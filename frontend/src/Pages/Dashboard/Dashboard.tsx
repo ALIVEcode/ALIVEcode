@@ -11,7 +11,8 @@ import React, {
 	useReducer,
 	useMemo,
 	useCallback,
-	useRef, useLayoutEffect,
+	useRef,
+	useLayoutEffect,
 } from 'react';
 import { UserContext } from '../../state/contexts/UserContext';
 import api from '../../Models/api';
@@ -110,50 +111,8 @@ const Dashboard = (props: DashboardProps) => {
 	const coursesRef = useRef<HTMLDivElement>(null);
 	const resourceTabRef = useRef<HTMLDivElement>(null);
 	const classroomsRef = useRef<HTMLDivElement>(null);
-	const { registerTutorial, setCurrentTutorial } = useContext(TutorialContext);
-
-	useLayoutEffect(() => {
-		registerTutorial({
-			name: 'DashboardTabs',
-			targets: [
-				{
-					ref: recentCourseTabRef,
-					infoBox: <Info.Box text={t('help.dashboard.tabs.recent_courses')} />,
-					position: 'right center',
-					onEnter: openRecents,
-				},
-				{
-					ref: challengesTabRef,
-					infoBox: <Info.Box text={t('help.dashboard.tabs.challenges')} />,
-					position: 'right center',
-					onEnter: openChallenges,
-				},
-				{
-					ref: resourceTabRef,
-					infoBox: <Info.Box text={t('help.dashboard.tabs.resources')} />,
-					position: 'right center',
-					onEnter: openResources,
-				},
-				{
-					ref: classroomsRef,
-					infoBox: (
-						<Info.Box text={t('help.dashboard.tabs.create_classroom')} />
-					),
-					position: 'right center',
-				},
-				{
-					ref: coursesRef,
-					infoBox: <Info.Box text={t('help.dashboard.tabs.create_course')} />,
-					position: 'right center',
-					onExit: openRecents,
-				},
-			],
-		});
-	}, []);
-
-	useEffect(() => {
-		setCurrentTutorial('DashboardTabs');
-	});
+	const { registerTutorial, setCurrentTutorial, unregisterTutorial } =
+		useContext(TutorialContext);
 
 	useEffect(() => {
 		if (pathname.endsWith('recents') && tabSelected.tab !== 'recents')
@@ -200,32 +159,32 @@ const Dashboard = (props: DashboardProps) => {
 	/**
 	 * Opens the recents tab
 	 */
-	const openRecents = () => {
+	const openRecents = useCallback(() => {
 		query.delete('id');
 		navigate({
 			pathname: `/dashboard/recents`,
 			search: query.toString(),
 		});
-	};
+	}, [navigate, query]);
 
 	/**
 	 * Opens the challenges tab
 	 */
-	const openChallenges = () => {
+	const openChallenges = useCallback(() => {
 		query.delete('id');
 		navigate({
 			pathname: `/dashboard/challenges`,
 			search: query.toString(),
 		});
-	};
+	}, [navigate, query]);
 
-	const openResources = () => {
+	const openResources = useCallback(() => {
 		query.delete('id');
 		navigate({
 			pathname: `/dashboard/resources`,
 			search: query.toString(),
 		});
-	};
+	}, [navigate, query]);
 
 	/**
 	 * Opens the classrooms tab
@@ -237,6 +196,50 @@ const Dashboard = (props: DashboardProps) => {
 			search: query.toString(),
 		});
 	};
+
+	useLayoutEffect(() => {
+		registerTutorial({
+			name: 'DashboardTabs',
+			targets: [
+				{
+					ref: recentCourseTabRef.current,
+					infoBox: <Info.Box text={t('help.dashboard.tabs.recent_courses')} />,
+					position: 'right center',
+					onEnter: openRecents,
+				},
+				{
+					ref: challengesTabRef.current,
+					infoBox: <Info.Box text={t('help.dashboard.tabs.challenges')} />,
+					position: 'right center',
+					onEnter: openChallenges,
+				},
+				{
+					ref: resourceTabRef.current,
+					infoBox: <Info.Box text={t('help.dashboard.tabs.resources')} />,
+					position: 'right center',
+					onEnter: openResources,
+				},
+				{
+					ref: classroomsRef.current,
+					infoBox: (
+						<Info.Box text={t('help.dashboard.tabs.create_classroom')} />
+					),
+					position: 'right center',
+				},
+				{
+					ref: coursesRef.current,
+					infoBox: <Info.Box text={t('help.dashboard.tabs.create_course')} />,
+					position: 'right center',
+					onExit: openRecents,
+				},
+			],
+		});
+		return () => unregisterTutorial('DashboardTabs');
+	}, []);
+
+	useLayoutEffect(() => {
+		setCurrentTutorial('DashboardTabs');
+	}, []);
 
 	/**
 	 * Renders the tab currently selected

@@ -12,6 +12,7 @@ export interface TutorialContextValues {
 
 	setCurrentTutorial: (name: string) => void;
 	startCurrentTutorial: () => void;
+	stopCurrentTutorial: () => void;
 }
 
 export const TutorialContext = createContext<TutorialContextValues>({} as any);

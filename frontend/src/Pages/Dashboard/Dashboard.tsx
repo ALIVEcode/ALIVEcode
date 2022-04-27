@@ -108,6 +108,7 @@ const Dashboard = (props: DashboardProps) => {
 	const recentCourseTabRef = useRef<HTMLDivElement>(null);
 	const challengesTabRef = useRef<HTMLDivElement>(null);
 	const coursesRef = useRef<HTMLDivElement>(null);
+	const resourceTabRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		if (pathname.endsWith('recents') && tabSelected.tab !== 'recents')
@@ -305,6 +306,7 @@ const Dashboard = (props: DashboardProps) => {
 						</div>
 						{user?.isProfessor() && (
 							<div
+								ref={resourceTabRef}
 								className={
 									'sidebar-btn ' +
 									(tabSelected.tab === 'resources' ? 'sidebar-selected' : '')
@@ -475,8 +477,6 @@ const Dashboard = (props: DashboardProps) => {
 				name="DashboardTabs"
 				open={openTutorial}
 				setOpen={setOpenTutorial}
-				beforeDo={openRecents}
-				afterDo={openRecents}
 				targets={[
 					{
 						ref: recentCourseTabRef,
@@ -484,7 +484,7 @@ const Dashboard = (props: DashboardProps) => {
 							<Info.Box text="Voici l'endroit où se retrouve vos cours récemment visité" />
 						),
 						position: 'right center',
-						onNextDo: openChallenges,
+						onEnter: openRecents,
 					},
 					{
 						ref: challengesTabRef,
@@ -492,6 +492,15 @@ const Dashboard = (props: DashboardProps) => {
 							<Info.Box text="Voici l'endroit où se retrouve vos défis" />
 						),
 						position: 'right center',
+						onEnter: openChallenges,
+					},
+					{
+						ref: resourceTabRef,
+						infoBox: (
+							<Info.Box text="Voici l'endroit où se retrouve vos ressources" />
+						),
+						position: 'right center',
+						onEnter: openResources,
 					},
 					{
 						ref: coursesRef,
@@ -499,6 +508,7 @@ const Dashboard = (props: DashboardProps) => {
 							<Info.Box text="Voici l'endroit où se retrouve les cours que vous avez créés" />
 						),
 						position: 'right center',
+						onExit: openRecents
 					},
 				]}
 			/>

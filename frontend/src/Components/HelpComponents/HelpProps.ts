@@ -40,8 +40,8 @@ export type InfoTutorialTarget = {
 	ref?: RefObject<HTMLElement>;
 	infoBox: JSX.Element;
 	position?: PopupProps['position'];
-	onNextDo?: () => void;
-	onPreviousDo?: () => void;
+	onEnter?: () => void;
+	onExit?: () => void;
 };
 
 export type InfoTutorialProps = {

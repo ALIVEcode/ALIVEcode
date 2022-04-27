@@ -29,7 +29,11 @@ const InfoTutorial = ({
 	}, []);
 
 	useEffect(() => {
-		if (open) beforeDo && beforeDo();
+		if (open) {
+			beforeDo && beforeDo();
+			if (targets.length > 0) targets[0].onEnter && targets[0].onEnter();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [open]);
 
 	const currentTarget = useRef(0);
@@ -50,24 +54,28 @@ const InfoTutorial = ({
 
 	const nextTargetOrClose = useCallback(() => {
 		const target = targets[currentTarget.current];
-		target.onNextDo && target.onNextDo();
+		target.onExit && target.onExit();
 		if (currentTarget.current < targets.length - 1) {
 			currentTarget.current++;
+			const newTarget = targets[currentTarget.current];
+			newTarget.onEnter && newTarget.onEnter();
 			forceUpdate();
 		} else {
 			afterDo && afterDo();
 			close();
 		}
-	}, [close, forceUpdate, targets.length]);
+	}, [afterDo, close, forceUpdate, targets]);
 
 	const previousTarget = useCallback(() => {
 		const target = targets[currentTarget.current];
-		target.onPreviousDo && target.onPreviousDo();
+		target.onExit && target.onExit();
 		if (currentTarget.current > 0) {
 			currentTarget.current--;
+			const newTarget = targets[currentTarget.current];
+			newTarget.onEnter && newTarget.onEnter();
 			forceUpdate();
 		}
-	}, [forceUpdate]);
+	}, [forceUpdate, targets]);
 
 	const renderTarget = (target: InfoTutorialTarget, idx: number) => {
 		if (idx !== currentTarget.current) {
@@ -124,10 +132,10 @@ const InfoTutorial = ({
 				closeOnEscape={true}
 				position={target.position}
 				onClose={close}
-				offsetX={offsetX}
-				offsetY={offsetY}
-				trigger={<div className="hidden" />}
-				contentStyle={contentStyle}
+				offsetX={target.ref && offsetX}
+				offsetY={target.ref && offsetY}
+				trigger={target.ref && <div className="hidden" />}
+				contentStyle={target.ref && contentStyle}
 				arrowStyle={{
 					color: 'var(--fg-shade-four-color)',
 				}}

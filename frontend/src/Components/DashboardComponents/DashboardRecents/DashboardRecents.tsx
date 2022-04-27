@@ -25,15 +25,14 @@ export const DashboardRecents = () => {
 			<div className="section-title flex flex-row justify-between w-1/3">
 				{t('dashboard.recents.title')}{' '}
 				<Info.Icon
-					onClick={() => setTimelineOpen(true)}
+					// onClick={() => setTimelineOpen(true)}
 					hoverPopup={{
 						position: 'right center',
 					}}
 				>
 					<Info.Box
 						useDefaultStyle
-						text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut deleniti dolorum ea inventore nihil
-							quam quis recusandae rem vel voluptate. At cum ea odio vero voluptate. Ad consequatur qui similique."
+						text={t('help.dashboard.views.recent_courses')}
 					/>
 				</Info.Icon>
 			</div>

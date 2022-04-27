@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 const InfoIcon = ({
-	activateOnHover = true,
+	activateOnHover,
 	className,
 	iconClassName,
 	ignoreDefaultIconStyle,

@@ -688,6 +688,7 @@
     "irreversible": "Cette action est irréversible"
   },
   "help": {
+    "start_tutorial": "Tutoriel de la page",
     "click_for_more": "Cliquez pour plus d'informations",
     "slides": {
       "next": "Suivant",

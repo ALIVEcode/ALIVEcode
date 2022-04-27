@@ -51,4 +51,5 @@ export type InfoTutorialProps = {
 	beforeDo?: () => void;
 	afterDo?: () => void;
 	targets: InfoTutorialTarget[];
+	setAsCurrent?: boolean;
 };

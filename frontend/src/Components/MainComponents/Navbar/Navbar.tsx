@@ -24,6 +24,7 @@ import {
 import { classNames } from '../../../Types/utils';
 import { Popup } from 'reactjs-popup';
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
+import { TutorialContext } from '../../../state/contexts/TutorialContext';
 
 /**
  * Navbar of ALIVEcode
@@ -40,6 +41,7 @@ const ALIVENavbar = ({ handleLogout, setFeedbackModalOpen }: NavbarProps) => {
 	const { theme, setTheme } = useContext(ThemeContext);
 	const location = useLocation();
 	const [hovering, setHovering] = useState<number>();
+	const { startCurrentTutorial } = useContext(TutorialContext);
 
 	const links = [
 		{
@@ -399,6 +401,15 @@ const ALIVENavbar = ({ handleLogout, setFeedbackModalOpen }: NavbarProps) => {
 														hover:bg-[color:var(--bg-shade-two-color)]"
 												>
 													Informations
+												</div>
+											</Menu.Item>
+											<Menu.Item>
+												<div
+													className="cursor-pointer block px-4 py-2 text-sm text-[color:var(--foreground-color)] hover:text-[color:var(--foreground-color)]
+														hover:bg-[color:var(--bg-shade-two-color)]"
+													onClick={startCurrentTutorial}
+												>
+													{t('help.start_tutorial')}
 												</div>
 											</Menu.Item>
 											<Menu.Item>

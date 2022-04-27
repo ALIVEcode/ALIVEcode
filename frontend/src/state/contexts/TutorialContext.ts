@@ -11,11 +11,14 @@ interface TutorialContextValues {
 
 	pushTutorial: (name: string) => void;
 	popTutorial: () => string;
+
+	setCurrentTutorial: (trigger: () => void) => void;
+	startCurrentTutorial: () => void;
 }
 
-const getTutorialContextValues = (): TutorialContextValues => {
-
+export const getTutorialContextValues = (): TutorialContextValues => {
 	const tutorials = [];
+	let currentTrigger: () => void;
 
 	function getCurrent(): string | null {
 		return null;
@@ -43,6 +46,14 @@ const getTutorialContextValues = (): TutorialContextValues => {
 		return false;
 	}
 
+	function setCurrentTutorial(trigger: () => void) {
+		currentTrigger = trigger;
+	}
+
+	function startCurrentTutorial() {
+		currentTrigger && currentTrigger();
+	}
+
 	return {
 		getCurrent,
 		registerTutorial,
@@ -51,6 +62,8 @@ const getTutorialContextValues = (): TutorialContextValues => {
 		startTutorial,
 		stopTutorial,
 		unregisterTutorial,
+		setCurrentTutorial,
+		startCurrentTutorial,
 	};
 };
 

@@ -276,9 +276,6 @@ const Dashboard = (props: DashboardProps) => {
 			<DashboardContext.Provider value={ctx}>
 				<div className="flex h-full overflow-auto">
 					<div className="sidebar overflow-y-auto break-words no-float w-1/4 table:1/6 laptop:1/8 desktop:1/12">
-						<button onClick={() => setOpenTutorial(true)}>
-							Open the Tutorial
-						</button>
 						<div
 							ref={recentCourseTabRef}
 							className={
@@ -479,6 +476,7 @@ const Dashboard = (props: DashboardProps) => {
 				name="DashboardTabs"
 				open={openTutorial}
 				setOpen={setOpenTutorial}
+				setAsCurrent
 				targets={[
 					{
 						ref: recentCourseTabRef,

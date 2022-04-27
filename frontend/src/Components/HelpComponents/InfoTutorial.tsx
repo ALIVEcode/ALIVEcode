@@ -1,9 +1,16 @@
 import { useTranslation } from 'react-i18next';
 import { useForceUpdate } from '../../state/hooks/useForceUpdate';
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, {
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useRef,
+} from 'react';
 import { InfoTutorialProps, InfoTutorialTarget } from './HelpProps';
 import { Popup } from 'reactjs-popup';
 import NavigationButtons from './NavigationButtons';
+import { TutorialContext } from '../../state/contexts/TutorialContext';
 
 const InfoTutorial = ({
 	targets,
@@ -11,9 +18,17 @@ const InfoTutorial = ({
 	setOpen,
 	beforeDo,
 	afterDo,
+	setAsCurrent,
 }: InfoTutorialProps) => {
 	const { t } = useTranslation();
 	const forceUpdate = useForceUpdate();
+	const { setCurrentTutorial } = useContext(TutorialContext);
+
+	useEffect(() => {
+		if (setAsCurrent) {
+			setCurrentTutorial(() => setOpen(true));
+		}
+	}, []);
 
 	const infos = useMemo(() => {
 		return targets.map(target =>
@@ -160,7 +175,7 @@ const InfoTutorial = ({
 
 	return open ? (
 		<div
-			className="w-full h-full bg-black bg-opacity-25 absolute left-0 top-0 z-[90]"
+			className="w-full h-full bg-black bg-opacity-25 absolute left-0 top-0 z-[100]"
 			ref={myRef}
 		>
 			{targets.map((target, idx) => {

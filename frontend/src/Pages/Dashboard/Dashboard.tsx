@@ -11,7 +11,7 @@ import React, {
 	useReducer,
 	useMemo,
 	useCallback,
-	useRef,
+	useRef, useLayoutEffect,
 } from 'react';
 import { UserContext } from '../../state/contexts/UserContext';
 import api from '../../Models/api';
@@ -49,6 +49,7 @@ import { faFile } from '@fortawesome/free-solid-svg-icons';
 import MenuCourseCreation from '../../Components/Resources/MenuCourseCreation/MenuCourseCreation';
 import AlertConfirm from '../../Components/UtilsComponents/Alert/AlertConfirm/AlertConfirm';
 import Info from '../../Components/HelpComponents';
+import { TutorialContext } from '../../state/contexts/TutorialContext';
 
 /**
  * State reducer to change the state of the selected tab
@@ -79,7 +80,7 @@ const SwitchTabReducer = (
 /**
  * Dashboard page that contains all the links to the different pages of the plaform
  *
- * @author Enric Soldevila
+ * @author Enric Soldevila, Mathis Laroche
  */
 const Dashboard = (props: DashboardProps) => {
 	const { user } = useContext(UserContext);
@@ -104,12 +105,55 @@ const Dashboard = (props: DashboardProps) => {
 	const [challenges, setChallenges] = useState<Challenge[]>();
 	const [confirmDeleteCourse, setConfirmDeleteCourse] = useState(false);
 	const courseToDeleteRef = useRef<Course>();
-	const [openTutorial, setOpenTutorial] = useState(false);
 	const recentCourseTabRef = useRef<HTMLDivElement>(null);
 	const challengesTabRef = useRef<HTMLDivElement>(null);
 	const coursesRef = useRef<HTMLDivElement>(null);
 	const resourceTabRef = useRef<HTMLDivElement>(null);
 	const classroomsRef = useRef<HTMLDivElement>(null);
+	const { registerTutorial, setCurrentTutorial } = useContext(TutorialContext);
+
+	useLayoutEffect(() => {
+		registerTutorial({
+			name: 'DashboardTabs',
+			targets: [
+				{
+					ref: recentCourseTabRef,
+					infoBox: <Info.Box text={t('help.dashboard.tabs.recent_courses')} />,
+					position: 'right center',
+					onEnter: openRecents,
+				},
+				{
+					ref: challengesTabRef,
+					infoBox: <Info.Box text={t('help.dashboard.tabs.challenges')} />,
+					position: 'right center',
+					onEnter: openChallenges,
+				},
+				{
+					ref: resourceTabRef,
+					infoBox: <Info.Box text={t('help.dashboard.tabs.resources')} />,
+					position: 'right center',
+					onEnter: openResources,
+				},
+				{
+					ref: classroomsRef,
+					infoBox: (
+						<Info.Box text={t('help.dashboard.tabs.create_classroom')} />
+					),
+					position: 'right center',
+				},
+				{
+					ref: coursesRef,
+					infoBox: <Info.Box text={t('help.dashboard.tabs.create_course')} />,
+					position: 'right center',
+					onExit: openRecents,
+				},
+			],
+		});
+	}, []);
+
+	useEffect(() => {
+		setCurrentTutorial('DashboardTabs');
+	});
 
 	useEffect(() => {
 		if (pathname.endsWith('recents') && tabSelected.tab !== 'recents')
@@ -472,53 +516,6 @@ const Dashboard = (props: DashboardProps) => {
 					{t('action.irreversible')}
 				</p>
 			</AlertConfirm>
-			<Info.Tutorial
-				name="DashboardTabs"
-				open={openTutorial}
-				setOpen={setOpenTutorial}
-				setAsCurrent
-				targets={[
-					{
-						ref: recentCourseTabRef,
-						infoBox: (
-							<Info.Box text={t('help.dashboard.tabs.recent_courses')} />
-						),
-						position: 'right center',
-						onEnter: openRecents,
-					},
-					{
-						ref: challengesTabRef,
-						infoBox: (
-							<Info.Box text={t('help.dashboard.tabs.challenges')} />
-						),
-						position: 'right center',
-						onEnter: openChallenges,
-					},
-					{
-						ref: resourceTabRef,
-						infoBox: (
-							<Info.Box text={t('help.dashboard.tabs.resources')} />
-						),
-						position: 'right center',
-						onEnter: openResources,
-					},
-					{
-						ref: classroomsRef,
-						infoBox: (
-							<Info.Box text={t('help.dashboard.tabs.create_classroom')} />
-						),
-						position: 'right center',
-					},
-					{
-						ref: coursesRef,
-						infoBox: (
-							<Info.Box text={t('help.dashboard.tabs.create_course')} />
-						),
-						position: 'right center',
-						onExit: openRecents,
-					},
-				]}
-			/>
 		</StyledDashboard>
 	);
 };

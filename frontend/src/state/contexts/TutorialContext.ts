@@ -1,72 +1,17 @@
 import { createContext } from 'react';
+import { InfoTutorialProps } from '../../Components/HelpComponents/HelpProps';
 
-interface TutorialContextValues {
-	registerTutorial: (name: string) => boolean;
-	unregisterTutorial: (name: string) => boolean;
+export interface TutorialContextValues {
+	registerTutorial: (tutorial: InfoTutorialProps) => void;
+	unregisterTutorial: (name: string) => void;
 
-	startTutorial: (name: string) => boolean;
-	stopTutorial: (name: string, cascade?: boolean) => boolean;
+	startTutorial: (name: string) => void;
+	stopTutorial: (name: string) => void;
 
 	getCurrent: () => string | null;
 
-	pushTutorial: (name: string) => void;
-	popTutorial: () => string;
-
-	setCurrentTutorial: (trigger: () => void) => void;
+	setCurrentTutorial: (name: string) => void;
 	startCurrentTutorial: () => void;
 }
 
-export const getTutorialContextValues = (): TutorialContextValues => {
-	const tutorials = [];
-	let currentTrigger: () => void;
-
-	function getCurrent(): string | null {
-		return null;
-	}
-
-	function popTutorial(): string {
-		return '';
-	}
-
-	function pushTutorial(name: string): void {}
-
-	function registerTutorial(name: string): boolean {
-		return false;
-	}
-
-	function startTutorial(name: string): boolean {
-		return false;
-	}
-
-	function stopTutorial(name: string, cascade: boolean | undefined): boolean {
-		return false;
-	}
-
-	function unregisterTutorial(name: string): boolean {
-		return false;
-	}
-
-	function setCurrentTutorial(trigger: () => void) {
-		currentTrigger = trigger;
-	}
-
-	function startCurrentTutorial() {
-		currentTrigger && currentTrigger();
-	}
-
-	return {
-		getCurrent,
-		registerTutorial,
-		popTutorial,
-		pushTutorial,
-		startTutorial,
-		stopTutorial,
-		unregisterTutorial,
-		setCurrentTutorial,
-		startCurrentTutorial,
-	};
-};
-
-export const TutorialContext = createContext<TutorialContextValues>(
-	getTutorialContextValues(),
-);
+export const TutorialContext = createContext<TutorialContextValues>({} as any);

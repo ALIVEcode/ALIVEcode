@@ -46,8 +46,6 @@ export type InfoTutorialTarget = {
 
 export type InfoTutorialProps = {
 	name: string;
-	open: boolean;
-	setOpen: (open: boolean) => void;
 	beforeDo?: () => void;
 	afterDo?: () => void;
 	targets: InfoTutorialTarget[];

@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useLayoutEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import { Disclosure } from '@headlessui/react';
@@ -10,6 +10,8 @@ import {
 	faWindowMinimize,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Info from '../../HelpComponents';
+import { TutorialContext } from '../../../state/contexts/TutorialContext';
 
 /**
  * Navigation menu of a course containing all the sections and activities
@@ -27,6 +29,25 @@ const CourseNavigation = ({
 		useContext(CourseContext);
 	const { routes, goTo } = useRoutes();
 	const { t } = useTranslation();
+	const { setCurrentTutorial, registerTutorial } = useContext(TutorialContext);
+	const sectionRef = useRef<HTMLDivElement>(null);
+
+	useLayoutEffect(() => {
+		registerTutorial({
+			name: 'CourseNavigation',
+			targets: [
+				{
+					ref: sectionRef,
+					infoBox: <Info.Box text="aa" />,
+					position: 'bottom center',
+				},
+			],
+		});
+	}, [registerTutorial]);
+
+	useEffect(() => {
+		setCurrentTutorial('CourseNavigation');
+	});
 
 	if (!course) {
 		goTo(routes.auth.dashboard.path);
@@ -42,7 +63,9 @@ const CourseNavigation = ({
 				startsOpen ? (
 					<>
 						<div className="w-full py-3 text-2xl text-center flex justify-between">
-							<span className="pl-5 pt-2">Sections</span>
+							<span className="pl-5 pt-2" ref={sectionRef}>
+								Sections
+							</span>
 							<div>
 								{isCreator() && (
 									<FontAwesomeIcon

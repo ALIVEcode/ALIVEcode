@@ -6,11 +6,19 @@ import React, {
 	useEffect,
 	useMemo,
 	useRef,
+	useState,
 } from 'react';
-import { InfoTutorialProps, InfoTutorialTarget } from './HelpProps';
+import {
+	InfoTutorialProps,
+	InfoTutorialTarget,
+} from '../../Components/HelpComponents/HelpProps';
 import { Popup } from 'reactjs-popup';
-import NavigationButtons from './NavigationButtons';
-import { TutorialContext } from '../../state/contexts/TutorialContext';
+import NavigationButtons from '../../Components/HelpComponents/NavigationButtons';
+import {
+	TutorialContext,
+	TutorialContextValues,
+} from '../../state/contexts/TutorialContext';
+import useComplexState from '../../state/hooks/useComplexState';
 
 const InfoTutorial = ({
 	targets,
@@ -18,18 +26,12 @@ const InfoTutorial = ({
 	setOpen,
 	beforeDo,
 	afterDo,
-	setAsCurrent,
-}: InfoTutorialProps) => {
+}: InfoTutorialProps & {
+	open: boolean;
+	setOpen: (value: boolean) => void;
+}) => {
 	const { t } = useTranslation();
 	const forceUpdate = useForceUpdate();
-	const { setCurrentTutorial } = useContext(TutorialContext);
-
-	useEffect(() => {
-		if (setAsCurrent) {
-			setCurrentTutorial(() => setOpen(true));
-		}
-	}, []);
-
 	const infos = useMemo(() => {
 		return targets.map(target =>
 			target.ref?.current
@@ -40,6 +42,7 @@ const InfoTutorial = ({
 						border: 'none',
 				  },
 		);
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -136,7 +139,8 @@ const InfoTutorial = ({
 			if (idx === currentTarget.current) {
 				target.ref.current.style.border = '2px solid var(--fourth-color)';
 			} else {
-				target.ref.current.style.border = infos[idx].border;
+				target.ref.current.style.border =
+					(infos && infos[idx]?.border) ?? 'none';
 			}
 		}
 
@@ -185,4 +189,67 @@ const InfoTutorial = ({
 	) : null;
 };
 
-export default InfoTutorial;
+const Tutorial = ({
+	children,
+}: {
+	children: React.ReactNode | React.ReactNode[];
+}) => {
+	const tutorialsRef = useRef<{ [name: string]: InfoTutorialProps }>({});
+
+	const [currentTutorial, setCurrentTutorial] =
+		useComplexState<InfoTutorialProps>();
+
+	const [tutorialOpen, setTutorialOpen] = useState(false);
+
+	const tutorialContextValues: TutorialContextValues = {
+		getCurrent() {
+			return currentTutorial?.name ?? null;
+		},
+
+		registerTutorial(tutorial: InfoTutorialProps) {
+			tutorialsRef.current[tutorial.name] = tutorial;
+		},
+
+		unregisterTutorial(name: string) {
+			if (!(name in tutorialsRef.current)) return;
+			delete tutorialsRef.current[name];
+		},
+
+		setCurrentTutorial(name: string) {
+			if (!(name in tutorialsRef.current)) return;
+			if (currentTutorial?.name === name) return;
+			setCurrentTutorial(tutorialsRef.current[name]);
+		},
+
+		startCurrentTutorial() {
+			console.log(currentTutorial);
+			setTutorialOpen(true);
+		},
+
+		startTutorial(name: string) {
+			if (!(name in tutorialsRef.current)) return;
+			setCurrentTutorial(tutorialsRef.current[name]);
+			this.startCurrentTutorial();
+		},
+
+		stopTutorial(name: string) {
+			if (!(name in tutorialsRef.current)) return;
+			setTutorialOpen(false);
+		},
+	};
+
+	return (
+		<TutorialContext.Provider value={tutorialContextValues}>
+			{children}
+			{currentTutorial && (
+				<InfoTutorial
+					{...currentTutorial}
+					open={tutorialOpen}
+					setOpen={setTutorialOpen}
+				/>
+			)}
+		</TutorialContext.Provider>
+	);
+};
+
+export default Tutorial;

@@ -35,7 +35,7 @@ import { Resource } from './Models/Resource/resource.entity';
 import FeedbackModal from './Components/MainComponents/FeedbackMenu/FeedbackModal';
 import Confetti from 'react-confetti';
 import useAudio from './state/hooks/useAudio';
-import { getTutorialContextValues, TutorialContext } from './state/contexts/TutorialContext';
+import Tutorial from './Pages/Help/InfoTutorial';
 
 type GlobalStyleProps = {
 	theme: Theme;
@@ -264,7 +264,7 @@ const App = () => {
 					<LoadingScreen />
 				) : (
 					<UserContext.Provider value={providerValue}>
-						<TutorialContext.Provider value={getTutorialContextValues()}>
+						<Tutorial>
 							<section className="pt-[4rem] h-full">
 								<RouterSwitch />
 							</section>
@@ -307,7 +307,7 @@ const App = () => {
 									}
 								/>
 							)}
-						</TutorialContext.Provider>
+						</Tutorial>
 					</UserContext.Provider>
 				)}
 			</ThemeContext.Provider>

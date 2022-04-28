@@ -7,6 +7,7 @@ import { ProfessorEntity } from '../user/entities/user.entity';
 import { CreateCourseDTO } from './dtos/CreateCourse.dto';
 import { BundleEntity } from './entities/bundles/bundle.entity';
 import { QueryDTO } from '../challenge/dto/query.dto';
+import { ResourceEntity } from '../resource/entities/resource.entity';
 
 /**
  * All the methods to communicate to the database. To create/update/delete/get
@@ -19,6 +20,8 @@ export class BundleService {
   constructor(
     @InjectRepository(CourseTemplateEntity) private courseTemplateRepo: Repository<CourseTemplateEntity>,
     @InjectRepository(BundleEntity) private bundleRepo: Repository<BundleEntity>,
+    @InjectRepository(ProfessorEntity) private profRepo: Repository<ProfessorEntity>,
+    @InjectRepository(ResourceEntity) private resourceRepo: Repository<ResourceEntity>,
     private readonly courseService: CourseService,
   ) {}
 
@@ -70,8 +73,6 @@ export class BundleService {
       await this.classroomRepo.save(classroom);*/
     }
     return course;
-
-    return course;
   }
 
   async findQuery(query: QueryDTO) {
@@ -82,5 +83,40 @@ export class BundleService {
         name: 'ASC',
       },
     });
+  }
+
+  /**
+   * Claims a bundle by an id for a specific user.
+   * The user will inherit the courseTemplates form the bundle and a copy of the resources inside the bundle
+   *
+   * @param user User that claims the bundle
+   * @param bundleId Id of the bundle to claim
+   */
+  async claimBundle(user: ProfessorEntity, bundleId: string) {
+    // Finding bundle
+    if (!bundleId) throw new HttpException('Bundle not found', HttpStatus.NOT_FOUND);
+    const bundle = await this.bundleRepo.findOne(bundleId, { relations: ['resources', 'courseTemplates'] });
+    if (!bundle) throw new HttpException('Bundle not found', HttpStatus.NOT_FOUND);
+
+    // Loading courseTemplates of user
+    if (!user.courseTemplates) user = await this.profRepo.findOne(user.id, { relations: ['courseTemplates'] });
+
+    // Adding courseTemplates of bundle to user
+    user.courseTemplates.push(...bundle.courseTemplates);
+    await this.profRepo.save(user);
+
+    // Cloning and adding resources of bundle to user
+    for (let i = 0; i < bundle.resources.length; i++) {
+      const tempRes: ResourceEntity = {
+        ...bundle.resources[i],
+        id: undefined,
+        activities: undefined,
+        originalId: bundle.resources[i].id,
+        creationDate: undefined,
+        updateDate: undefined,
+        creator: user,
+      };
+      await this.resourceRepo.save(tempRes);
+    }
   }
 }

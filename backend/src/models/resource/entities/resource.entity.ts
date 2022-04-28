@@ -95,8 +95,15 @@ export class ResourceEntity {
    * Original resource. Populated if the resource was copied
    * from another resource
    */
-  @ManyToOne(() => ResourceEntity, res => res.borrowed)
+  @ManyToOne(() => ResourceEntity, res => res.borrowed, { nullable: true })
+  @JoinColumn({ name: 'originalId' })
+  @Exclude({ toClassOnly: true })
   original: ResourceEntity;
+
+  /** Original resource id */
+  @Column({ name: 'originalId', type: 'varchar', nullable: true })
+  @Exclude({ toClassOnly: true })
+  originalId: string;
 
   /** All of the resources that were issued from this resource */
   @OneToMany(() => ResourceEntity, res => res.original)

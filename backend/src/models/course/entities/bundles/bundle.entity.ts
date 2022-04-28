@@ -33,7 +33,7 @@ export class BundleEntity {
 
   @ManyToMany(() => CourseTemplateEntity)
   @JoinTable()
-  templates: CourseTemplateEntity[];
+  courseTemplates: CourseTemplateEntity[];
 
   @ManyToMany(() => ResourceEntity)
   @JoinTable()

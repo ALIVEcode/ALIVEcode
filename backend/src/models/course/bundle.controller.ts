@@ -33,7 +33,7 @@ export class BundleController {
     return await this.bundleService.findQuery(query);
   }
 
-  @Post('bundles/:id/claim')
+  @Post(':id/claim')
   async claimBundle(@User() user: ProfessorEntity, @Param('id') bundleId: string) {
     return await this.bundleService.claimBundle(user, bundleId);
   }

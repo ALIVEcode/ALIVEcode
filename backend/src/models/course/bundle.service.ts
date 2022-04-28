@@ -7,7 +7,7 @@ import { ProfessorEntity } from '../user/entities/user.entity';
 import { CreateCourseDTO } from './dtos/CreateCourse.dto';
 import { BundleEntity } from './entities/bundles/bundle.entity';
 import { QueryDTO } from '../challenge/dto/query.dto';
-import { ResourceEntity } from '../resource/entities/resource.entity';
+import { ResourceService } from '../resource/resource.service';
 
 /**
  * All the methods to communicate to the database. To create/update/delete/get
@@ -21,8 +21,8 @@ export class BundleService {
     @InjectRepository(CourseTemplateEntity) private courseTemplateRepo: Repository<CourseTemplateEntity>,
     @InjectRepository(BundleEntity) private bundleRepo: Repository<BundleEntity>,
     @InjectRepository(ProfessorEntity) private profRepo: Repository<ProfessorEntity>,
-    @InjectRepository(ResourceEntity) private resourceRepo: Repository<ResourceEntity>,
     private readonly courseService: CourseService,
+    private readonly resourceService: ResourceService,
   ) {}
 
   async findTemplate(id: string, prof?: ProfessorEntity) {
@@ -105,18 +105,12 @@ export class BundleService {
     user.courseTemplates.push(...bundle.courseTemplates);
     await this.profRepo.save(user);
 
+    const clonedResources = [];
     // Cloning and adding resources of bundle to user
     for (let i = 0; i < bundle.resources.length; i++) {
-      const tempRes: ResourceEntity = {
-        ...bundle.resources[i],
-        id: undefined,
-        activities: undefined,
-        originalId: bundle.resources[i].id,
-        creationDate: undefined,
-        updateDate: undefined,
-        creator: user,
-      };
-      await this.resourceRepo.save(tempRes);
+      clonedResources.push(await this.resourceService.clone(bundle.resources[i], user));
     }
+
+    return { courseTemplates: bundle.courseTemplates, resources: clonedResources };
   }
 }

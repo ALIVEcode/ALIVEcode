@@ -70,6 +70,24 @@ export class ResourceService {
   }
 
   /**
+   * Clones a resource and give it to a professor
+   * @param resource Resource to clone
+   * @param professor Professor to acquire the cloned resource
+   */
+  async clone(resource: ResourceEntity, professor: ProfessorEntity) {
+    const tempRes: ResourceEntity = {
+      ...resource,
+      id: undefined,
+      activities: undefined,
+      originalId: resource.id,
+      creationDate: undefined,
+      updateDate: undefined,
+      creator: professor,
+    };
+    return await this.genericSave({ type: resource.type, resource: tempRes as any });
+  }
+
+  /**
    * Finds a resource in the database based on its id
    * @param id Id of the resource to find
    * @returns The found resource

@@ -34,7 +34,11 @@ const BundleBrowse = () => {
 					) : (
 						<>
 							{bundles.map((b, idx) => (
-								<BundleCard bundle={b} key={idx} />
+								<BundleCard
+									onSelect={async b => await api.db.bundles.claimBundle(b.id)}
+									bundle={b}
+									key={idx}
+								/>
 							))}
 						</>
 					)}

@@ -47,16 +47,17 @@ import React, { SetStateAction } from 'react';
 import { GetMimeType } from '../Types/files.type';
 import { IoTProjectObject } from './Iot/IoTprojectObject.entity';
 import { IOT_EVENT } from './Iot/IoTProjectClasses/IoTTypes';
-import { MoveElementDTO } from './Course/dtos/MoveElement.dto';
+import { MoveElementDTO } from './Course/dto/MoveElement.dto';
 import { FeedbackEntity } from './Feedbacks/entities/feedback.entity';
 import { CreateFeedbackDto } from './Feedbacks/dto/create-feedback.dto';
-import { UpdateCourseElementDTO } from './Course/dtos/UpdateCourseElement.dto';
+import { UpdateCourseElementDTO } from './Course/dto/UpdateCourseElement.dto';
 import { GetCourseTemplatesDTO } from './Course/bundles/dto/GetCourseTemplates.dto';
 import { CourseTemplate } from './Course/bundles/course_template.entity';
 import { template } from '@babel/core';
 import { MenuCourseCreationDTO } from '../Components/Resources/MenuCourseCreation/menuCourseCreationTypes';
 import { BundleQueryDTO } from './Course/bundles/dto/BundleQuery.dto';
 import { Bundle } from './Course/bundles/bundle.entity';
+import { ClaimBundleDTO } from './Course/bundles/dto/ClaimBundle.dto';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;
@@ -469,6 +470,12 @@ const api = {
 				return (await axios.post('bundles/query', body)).data.map((d: any) =>
 					plainToInstance(Bundle, d),
 				);
+			},
+			async claimBundle(bundleId: string) {
+				return plainToInstance(
+					ClaimBundleDTO,
+					await axios.post(`bundles/${bundleId}/claim`),
+				) as any as ClaimBundleDTO;
 			},
 		},
 		challenges: {

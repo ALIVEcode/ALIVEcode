@@ -26,7 +26,7 @@ import {
 	CourseElement,
 	CourseParent,
 } from '../../Models/Course/course_element.entity';
-import { UpdateCourseDTO } from '../../Models/Course/dtos/UpdateCourse.dto';
+import { UpdateCourseDTO } from '../../Models/Course/dto/UpdateCourse.dto';
 import { Section } from '../../Models/Course/section.entity';
 import {
 	CourseContext,

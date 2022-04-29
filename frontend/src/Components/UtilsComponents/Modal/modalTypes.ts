@@ -32,5 +32,19 @@ export type TimelineModalProps = Omit<ModalProps, 'hideTitle'> & {
 	title: string;
 	children: React.ReactNode | React.ReactNode[];
 	defaultSlideClassName?: string;
-	onClose?: (canceled: boolean) => void;
+	onCancel?: () => void;
+	onSubmit?: () => void;
+	submitText?: string;
+	submitButtonVariant?: 'primary' | 'secondary';
+};
+
+export type TimelinePageProps = {
+	goNextWhen?: boolean;
+	autoNext?: boolean;
+	canGoNext?: boolean;
+	title?: string;
+	image?: string;
+	text?: string;
+	className?: string;
+	children?: React.ReactNode;
 };

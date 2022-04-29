@@ -1,6 +1,7 @@
 import React from 'react';
 import { FieldError } from 'react-hook-form';
 import { classNames } from '../../../Types/utils';
+import { FormInputProps } from './formInputTypes';
 
 type SelectProps = {
 	errors: FieldError | undefined;
@@ -38,7 +39,7 @@ type Props = FullSelectProps | FullInputProps;
  *
  * @author Enric Soldevila
  */
-const FormInput = React.forwardRef<any, any>(
+const FormInput = React.forwardRef<any, FormInputProps>(
 	({ className, errors, progress, ...props }, ref) => {
 		if (props.as === 'select')
 			return (
@@ -83,7 +84,7 @@ const FormInput = React.forwardRef<any, any>(
 		if (props.type === 'file') {
 			return (
 				<div className="relative w-full">
-					<div className="absolute rounded bg-[color:var(--background-color)] w-full h-full z-[-2]"></div>
+					<div className="absolute rounded bg-[color:var(--background-color)] w-full h-full z-[-2]" />
 					<div
 						className={classNames(
 							'absolute rounded h-full z-[-2]',
@@ -91,7 +92,7 @@ const FormInput = React.forwardRef<any, any>(
 								? 'w-[0] border-red-500'
 								: `w-[${progress}%] bg-[color:var(--logo-color)]`,
 						)}
-					></div>
+					/>
 					<input
 						className={classNames(
 							'shadow border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-[color:var(--fg-shade-two-color)]',

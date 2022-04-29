@@ -374,17 +374,18 @@ const Dashboard = (props: DashboardProps) => {
 							<label className="sidebar-header-text">
 								{t('dashboard.classrooms.title')}
 							</label>
-							{hoveringClassroom && (
-								<FontAwesomeIcon
-									onClick={() =>
-										user?.isProfessor()
-											? navigate(routes.auth.create_classroom.path)
-											: setFormJoinClassOpen(true)
-									}
-									className="sidebar-icon-right cursor-pointer"
-									icon={faPlus}
-								/>
-							)}
+							{/*{hoveringClassroom && (*/}
+							<FontAwesomeIcon
+								onClick={() =>
+									user?.isProfessor()
+										? navigate(routes.auth.create_classroom.path)
+										: setFormJoinClassOpen(true)
+								}
+								className="sidebar-icon-right cursor-pointer ml-4"
+								title={t('dashboard.classrooms.add.professor')}
+								icon={faPlus}
+							/>
+							{/*)}*/}
 						</div>
 
 						<hr />
@@ -433,13 +434,14 @@ const Dashboard = (props: DashboardProps) => {
 									<label className="sidebar-header-text">
 										{t('dashboard.courses.title')}
 									</label>
-									{hoveringCourse && (
-										<FontAwesomeIcon
-											onClick={() => setOpenFormCreateCourse(true)}
-											className="sidebar-icon-right cursor-pointer"
-											icon={faPlus}
-										/>
-									)}
+									{/*{hoveringCourse && (*/}
+									<FontAwesomeIcon
+										onClick={() => setOpenFormCreateCourse(true)}
+										className="sidebar-icon-right cursor-pointer ml-4"
+										title={t('dashboard.courses.add')}
+										icon={faPlus}
+									/>
+									{/*)}*/}
 								</div>
 
 								<hr />

@@ -3,6 +3,7 @@ import { FieldError } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import FormLabel from '../FormLabel/FormLabel';
 import FormInput from '../FormInput/FormInput';
+import { InputGroupProps } from './inputGroupTypes';
 
 type SelectProps = {
 	errors: FieldError | undefined;
@@ -39,7 +40,7 @@ type Props = FullSelectProps | FullInputProps;
  *
  * @author Enric Soldevila
  */
-const InputGroup = React.forwardRef<any, any>(
+const InputGroup = React.forwardRef<any, InputGroupProps>(
 	(
 		{
 			errors,

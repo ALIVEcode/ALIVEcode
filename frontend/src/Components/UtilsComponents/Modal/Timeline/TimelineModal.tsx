@@ -2,7 +2,13 @@ import { TimelineModalProps } from '../modalTypes';
 import { InfoSlidesProps } from '../../../HelpComponents/HelpProps';
 import { useTranslation } from 'react-i18next';
 import { useForceUpdate } from '../../../../state/hooks/useForceUpdate';
-import { useCallback, useMemo, useRef } from 'react';
+import React, {
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
 	faChevronLeft,
@@ -10,6 +16,7 @@ import {
 	faCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modal';
+import { Dialog, Transition } from '@headlessui/react';
 
 const TimelineModal = ({
 	children,
@@ -18,48 +25,98 @@ const TimelineModal = ({
 	title,
 	defaultSlideClassName,
 	size = 'md',
-	onClose,
+	onCancel,
+	submitText,
+	onSubmit,
+	submitButtonVariant = 'secondary',
 	...modalProps
 }: TimelineModalProps) => {
 	const { t } = useTranslation();
 	const forceUpdate = useForceUpdate();
+	const [currentPage, setCurrentPage] = useState(0);
 
 	const numberOfPages = useMemo(
 		() => (Array.isArray(children) ? children.length : 0),
 		[children],
 	);
 
-	const currentPageRef = useRef(0);
+	useEffect(() => {
+		if (!open) {
+			onCancel && onCancel();
+		}
+	}, [onCancel, open]);
+
+	const _getPropertyOfChild = useCallback(
+		(property: string) => {
+			const _child = Array.isArray(children) ? children[currentPage] : children;
+			if (
+				!_child ||
+				Object.keys(_child).length === 0 ||
+				typeof _child !== 'object'
+			)
+				return true;
+			const child = _child as JSX.Element;
+			if (!(property in child.props)) return true;
+			return child.props[property];
+		},
+		[children, currentPage],
+	);
+
+	const canGoNext = useCallback(() => {
+		return !!_getPropertyOfChild('canGoNext');
+	}, [_getPropertyOfChild]);
+
+	const autoNext = useCallback(() => {
+		return !!_getPropertyOfChild('autoNext');
+	}, [_getPropertyOfChild]);
 
 	const nextPageOrClose = useCallback(() => {
-		if (currentPageRef.current < numberOfPages - 1) {
-			currentPageRef.current++;
-			forceUpdate();
+		if (!canGoNext()) return;
+		if (currentPage < numberOfPages - 1) {
+			setCurrentPage(currentPage + 1);
 		} else {
 			setOpen(false);
 		}
-	}, [numberOfPages, forceUpdate, setOpen]);
+	}, [canGoNext, currentPage, numberOfPages, setOpen]);
 
 	const previousPage = useCallback(() => {
-		if (currentPageRef.current > 0) {
-			currentPageRef.current--;
-			forceUpdate();
+		if (currentPage > 0) {
+			setCurrentPage(currentPage - 1);
 		}
-	}, [forceUpdate]);
+	}, [currentPage]);
+
+	// useEffect(() => {
+	// 	if (canGoNext() && autoNext() && currentPage < numberOfPages - 1) {
+	// 		nextPageOrClose();
+	// 	}
+	// }, [autoNext, canGoNext, currentPage, nextPageOrClose, numberOfPages]);
 
 	const MultipleSlides = () => {
 		if (!Array.isArray(children)) {
 			return null;
 		}
 		return (
-			<div className="flex flex-col">
-				<div className={defaultSlideClassName}>
-					{children[currentPageRef.current]}
-				</div>
+			<div className="flex flex-col transition-all">
+				{children.map((child, index) => {
+					return (
+						<Transition
+							// enter="transition ease-in-out duration-200 transform"
+							// enterFrom="translate-x-full"
+							// enterTo="translate-x-0"
+							// leave="transition ease-in-out duration-200 transform"
+							// leaveFrom="translate-x-0"
+							// leaveTo="-translate-x-full"
+							show={currentPage === index}
+							// appear
+						>
+							<div className={defaultSlideClassName}>{child}</div>
+						</Transition>
+					);
+				})}
 				<div className="flex flex-row justify-evenly align-middle pt-12">
 					<button
 						className="flex items-center gap-4 cursor-pointer disabled:cursor-auto disabled:opacity-40"
-						disabled={currentPageRef.current === 0}
+						disabled={currentPage === 0}
 						onClick={previousPage}
 					>
 						<FontAwesomeIcon size="1x" icon={faChevronLeft} />
@@ -72,35 +129,46 @@ const TimelineModal = ({
 								icon={faCircle}
 								size="xs"
 								className={`cursor-pointer ${
-									idx === currentPageRef.current
+									idx === currentPage
 										? 'text-[color:var(--foreground-color)]'
 										: 'text-[color:var(--fg-shade-three-color)] opacity-50'
 								}`}
 								onClick={() => {
-									currentPageRef.current = idx;
+									setCurrentPage(idx);
 									forceUpdate();
 								}}
 							/>
 						))}
 					</div>
-					{currentPageRef.current === numberOfPages - 1 ? (
+					{currentPage === numberOfPages - 1 ? (
 						<button
 							className="flex items-center gap-4 cursor-pointer disabled:cursor-auto"
-							onClick={nextPageOrClose}
+							onClick={() => {
+								nextPageOrClose();
+								onSubmit && onSubmit();
+							}}
 						>
 							<span
-								className="hover:text-[color:var(--background-color)] text-[color:var(--fourth-color)]
-								hover:bg-[color:var(--fourth-color)] bg-[color:var(--background-color)]
-								transition-colors
-							  border-[color:var(--fourth-color)] border rounded-md text-md px-1 mr-4 py-0.5"
+								className={
+									submitButtonVariant === 'secondary'
+										? 'hover:text-[color:var(--background-color)] text-[color:var(--fourth-color)]' +
+										  ' hover:bg-[color:var(--fourth-color)] bg-[color:var(--background-color)]' +
+										  ' transition-colors' +
+										  ' border-[color:var(--fourth-color)] border rounded-md text-md px-1 mr-4 py-0.5'
+										: 'text-[color:var(--background-color)]' +
+										  ' hover:bg-[color:rgb(var(--fourth-color-rgb),0.7)] bg-[color:var(--fourth-color)]' +
+										  ' transition-colors' +
+										  ' border-[color:var(--fourth-color)] border rounded-md text-md px-1 mr-4 py-0.5'
+								}
 							>
-								{t('modal.close')}
+								{submitText ?? t('modal.close')}
 							</span>
 						</button>
 					) : (
 						<button
 							className="flex items-center gap-4 cursor-pointer disabled:cursor-auto disabled:opacity-25"
 							onClick={nextPageOrClose}
+							disabled={!canGoNext()}
 						>
 							<span>{t('help.slides.next')}</span>
 							<FontAwesomeIcon size="1x" icon={faChevronRight} />
@@ -119,14 +187,13 @@ const TimelineModal = ({
 			hideSubmitButton
 			title={title}
 			onShow={() => {
-				currentPageRef.current = 0;
+				setCurrentPage(0);
 				modalProps.onShow && modalProps.onShow();
-				forceUpdate();
 			}}
 			topBar={
 				Array.isArray(children) ? (
 					<label className={'w-full flex justify-end pr-4 pt-4 absolute'}>
-						{currentPageRef.current + 1} / {numberOfPages}
+						{currentPage + 1} / {numberOfPages}
 					</label>
 				) : undefined
 			}

@@ -23,6 +23,7 @@ import Modal from '../../UtilsComponents/Modal/Modal';
 import { CourseTemplate } from '../../../Models/Course/bundles/course_template.entity';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import CourseTemplateCard from '../../Bundles/CourseTemplateCard/CourseTemplateCard';
+import Timeline from '../../UtilsComponents/Modal/Timeline';
 
 /**
  * Menu that allows for the creation and updating of a course
@@ -77,9 +78,9 @@ const MenuCourseCreation = ({
 	}, [courseTemplateOpen]);
 
 	/**
-	 * Handle the chosing of a new subject for the course creation.
-	 * @param newType New resource type to create
+	 * Handle the choosing of a new subject for the course creation.
 	 * @author Enric Soldevila
+	 * @param newSubject
 	 */
 	const onSelectSubject = async (newSubject: SUBJECTS) => {
 		if (subject === newSubject) return setSubject(undefined);
@@ -188,43 +189,59 @@ const MenuCourseCreation = ({
 		);
 	};
 
+	// return (
+	// 	<>
+	// 		<MenuCreation
+	// 			title={updateMode ? t('course.form.update') : t('course.form.create')}
+	// 			submitIcon={updateMode ? faCheckCircle : undefined}
+	// 			setOpen={setOpen}
+	// 			open={open}
+	// 			onSubmit={() => handleSubmit(onSubmit)()}
+	// 			disabledPageIndex={!updateMode ? (!subject ? 1 : undefined) : undefined}
+	// 		>
+	// 			{!updateMode && renderPageCourseSubject()}
+	// 			{renderPageCourseInfos()}
+	// 			{renderPageCourseTemplate()}
+	// 		</MenuCreation>
+	// 		<Modal
+	// 			open={courseTemplateOpen}
+	// 			setOpen={setCourseTemplateOpen}
+	// 			title={t('course.template.add')}
+	// 		>
+	// 			<div>
+	// 				{!templates ? (
+	// 					<LoadingScreen />
+	// 				) : (
+	// 					templates.map((t, idx) => (
+	// 						<CourseTemplateCard
+	// 							key={idx}
+	// 							onSelect={async template => {
+	// 								setSelectedTemplate(template);
+	// 								setCourseTemplateOpen(false);
+	// 							}}
+	// 							template={t}
+	// 						/>
+	// 					))
+	// 				)}
+	// 			</div>
+	// 		</Modal>
+	// 	</>
+	// );
 	return (
-		<>
-			<MenuCreation
-				title={updateMode ? t('course.form.update') : t('course.form.create')}
-				submitIcon={updateMode ? faCheckCircle : undefined}
-				setOpen={setOpen}
-				open={open}
-				onSubmit={() => handleSubmit(onSubmit)()}
-				disabledPageIndex={!updateMode ? (!subject ? 1 : undefined) : undefined}
-			>
-				{!updateMode && renderPageCourseSubject()}
-				{renderPageCourseInfos()}
-				{renderPageCourseTemplate()}
-			</MenuCreation>
-			<Modal
-				open={courseTemplateOpen}
-				setOpen={setCourseTemplateOpen}
-				title={t('course.template.add')}
-			>
-				<div>
-					{!templates ? (
-						<LoadingScreen />
-					) : (
-						templates.map((t, idx) => (
-							<CourseTemplateCard
-								key={idx}
-								onSelect={async template => {
-									setSelectedTemplate(template);
-									setCourseTemplateOpen(false);
-								}}
-								template={t}
-							/>
-						))
-					)}
-				</div>
-			</Modal>
-		</>
+		<Timeline.Modal
+			title={updateMode ? t('course.form.update') : t('course.form.create')}
+			setOpen={setOpen}
+			open={open}
+			onSubmit={handleSubmit(onSubmit)}
+			submitText={t('course.form.create')}
+			submitButtonVariant="primary"
+		>
+			<Timeline.Page canGoNext={subject !== undefined}>
+				{renderPageCourseSubject()}
+			</Timeline.Page>
+			<Timeline.Page>{renderPageCourseInfos()}</Timeline.Page>
+			<Timeline.Page>{renderPageCourseTemplate()}</Timeline.Page>
+		</Timeline.Modal>
 	);
 };
 

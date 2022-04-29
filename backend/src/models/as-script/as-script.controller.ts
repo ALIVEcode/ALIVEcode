@@ -9,6 +9,7 @@ import {
   UseInterceptors,
   HttpException,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { AsScriptService } from './as-script.service';
 import { CompileDTO } from './dto/compile.dto';
@@ -42,6 +43,7 @@ export interface LinterFormatType {
   modules: string[];
   commands: string[];
 }
+
 @Controller('as')
 @UseInterceptors(DTOInterceptor)
 export class AsScriptController {
@@ -49,16 +51,22 @@ export class AsScriptController {
 
   @Post('compile')
   @Auth()
-  async compile(@Body() compileDto: CompileDTO) {
-    return await this.asScriptService.compile(compileDto);
+  async compile(@Body() compileDto: CompileDTO, @Query() query?: { [name: string]: string }) {
+    return await this.asScriptService.compile(compileDto, query);
   }
 
   @Get('lintinfo')
-  async getLintInfo() {
+  async getLintInfo(@Query() query?: { [name: string]: string }) {
+    const queryString =
+      query &&
+      '?' +
+        Object.entries(query)
+          .map(([name, value]) => `${name}=${value}`)
+          .join('&');
     const lintInfo: LinterFormatType = await (
       await axios({
         method: 'GET',
-        url: '/lintinfo/',
+        url: `/lintinfo${queryString ?? '/'}`,
         baseURL: process.env.AS_URL,
       })
     ).data;

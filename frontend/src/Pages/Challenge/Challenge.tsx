@@ -15,6 +15,7 @@ import {
 	Challenge as ChallengeModel,
 	CHALLENGE_ACCESS,
 	CHALLENGE_DIFFICULTY,
+	SUPPORTED_LANG,
 } from '../../Models/Challenge/challenge.entity';
 import { useAlert } from 'react-alert';
 import { ChallengeAlive as ChallengeAliveModel } from '../../Models/Challenge/challenges/challenge_alive.entity';
@@ -390,13 +391,11 @@ const Challenge = ({
 					title={t('form.challenge.PATCH.title')}
 					onSubmit={res => {
 						if (!challenge) return;
-						const { name, description, access, difficulty }: ChallengeModel =
-							res.data;
-						challenge.name = name;
-						challenge.description = description;
-						challenge.access = access;
-						challenge.difficulty = difficulty;
-						setChallenge(challenge);
+						const updatedChallenge: ChallengeModel = res.data;
+						setChallenge({
+							...challenge,
+							...updatedChallenge,
+						} as ChallengeModel);
 						forceUpdate();
 						setSettingsModalOpen(false);
 					}}
@@ -435,6 +434,13 @@ const Challenge = ({
 								inputType: 'select',
 								selectOptions: CHALLENGE_DIFFICULTY,
 								default: challenge?.difficulty,
+							},
+							{
+								name: 'lang',
+								required: true,
+								inputType: 'select',
+								selectOptions: SUPPORTED_LANG,
+								default: challenge?.lang,
 							},
 						]}
 					/>

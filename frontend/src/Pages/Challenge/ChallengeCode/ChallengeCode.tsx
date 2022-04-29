@@ -1,16 +1,15 @@
-import React, { useEffect, useContext, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 import LineInterface from '../../../Components/ChallengeComponents/LineInterface/LineInterface';
 import { UserContext } from '../../../state/contexts/UserContext';
 import Cmd from '../../../Components/ChallengeComponents/Cmd/Cmd';
 import useCmd from '../../../state/hooks/useCmd';
 import { ChallengeCode as ChallengeCodeModel } from '../../../Models/Challenge/challenges/challenge_code.entity';
-import { ChallengeCodeProps, StyledCodeChallenge } from './challengeCodeTypes';
+import { ChallengeCodeProps } from './challengeCodeTypes';
 import LoadingScreen from '../../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
 import { ChallengeContext } from '../../../state/contexts/ChallengeContext';
 import ChallengeToolsBar from '../../../Components/ChallengeComponents/ChallengeToolsBar/ChallengeToolsBar';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import ChallengeCodeExecutor from './ChallengeCodeExecutor';
-import FillContainer from '../../../Components/UtilsComponents/FillContainer/FillContainer';
 import { useAlert } from 'react-alert';
 
 /**
@@ -48,6 +47,7 @@ const ChallengeCode = ({ initialCode }: ChallengeCodeProps) => {
 				challenge.name,
 				askForUserInput,
 				alert,
+				challenge.lang,
 			)),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[challenge?.id, user],
@@ -57,8 +57,7 @@ const ChallengeCode = ({ initialCode }: ChallengeCodeProps) => {
 		if (executor.current) executor.current.lineInterfaceContent = content;
 		if (!editMode && progression) {
 			progression.data.code = content;
-			const updatedProgression = progression;
-			setProgression(updatedProgression);
+			setProgression(progression);
 			saveProgressionTimed();
 		}
 	};

@@ -234,11 +234,8 @@ const Dashboard = (props: DashboardProps) => {
 				},
 			],
 		});
-		return () => unregisterTutorial('DashboardTabs');
-	}, []);
-
-	useLayoutEffect(() => {
 		setCurrentTutorial('DashboardTabs');
+		return () => unregisterTutorial('DashboardTabs');
 	}, []);
 
 	/**

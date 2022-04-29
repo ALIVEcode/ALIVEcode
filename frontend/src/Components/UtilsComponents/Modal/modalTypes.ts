@@ -27,3 +27,10 @@ export interface ModalProps {
 	onShow?: () => void;
 	topBar?: JSX.Element;
 }
+
+export type TimelineModalProps = Omit<ModalProps, 'hideTitle'> & {
+	title: string;
+	children: React.ReactNode | React.ReactNode[];
+	defaultSlideClassName?: string;
+	onClose?: (canceled: boolean) => void;
+};

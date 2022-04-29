@@ -6,6 +6,7 @@ import { CreatedByUser } from '../Generics/createdByUser.entity';
 import { User, Professor, Student } from '../User/user.entity';
 
 export enum CHALLENGE_TAG {}
+
 export enum CHALLENGE_ACCESS {
 	PUBLIC = 'PU', // can be found via a search
 	UNLISTED = 'UN', // must be shared via a url
@@ -27,6 +28,11 @@ export enum CHALLENGE_TYPE {
 	ALIVE = 'AL',
 	AI = 'AI',
 	IOT = 'IOT',
+}
+
+export enum SUPPORTED_LANG {
+	EN = 'EN',
+	FR = 'FR',
 }
 
 export class Challenge extends CreatedByUser {
@@ -51,6 +57,8 @@ export class Challenge extends CreatedByUser {
 	hints: string[];
 
 	tags: CHALLENGE_TAG[];
+
+	lang: SUPPORTED_LANG;
 
 	getTypeDisplay() {
 		if (this.type === CHALLENGE_TYPE.ALIVE) return 'Car coding';

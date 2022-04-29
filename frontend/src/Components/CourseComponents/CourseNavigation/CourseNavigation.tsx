@@ -44,11 +44,8 @@ const CourseNavigation = ({
 				},
 			],
 		});
-		return () => unregisterTutorial('CourseNavigation');
-	}, []);
-
-	useLayoutEffect(() => {
 		setCurrentTutorial('CourseNavigation');
+		return () => unregisterTutorial('CourseNavigation');
 	}, []);
 
 	if (!course) {

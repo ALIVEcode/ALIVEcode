@@ -4,7 +4,6 @@ import Button from '../../Components/UtilsComponents/Buttons/Button';
 import { UserContext } from '../../state/contexts/UserContext';
 import { useTranslation } from 'react-i18next';
 import { SUBJECTS, getSubjectIcon } from '../../Types/sharedTypes';
-import api from '../../Models/api';
 import LoadingScreen from '../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
 import { ResourceSection } from '../../Components/Resources/ResourceSection/ResourceSection';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
@@ -16,7 +15,6 @@ import {
 import FormInput from '../../Components/UtilsComponents/FormInput/FormInput';
 import { RESOURCE_TYPE } from '../../Models/Resource/resource.entity';
 import { ResourceFilter } from '../../Components/Resources/ResourceFilter/ResourceFilter';
-import MenuResourceCreation from '../../Components/Resources/MenuResourceCreation/MenuResourceCreation';
 import useWaitBeforeUpdate from '../../state/hooks/useWaitBeforeUpdate';
 
 /**
@@ -34,7 +32,6 @@ const ResourceMenu = ({
 	filters,
 	onSelectResource,
 }: ResourceMenuProps) => {
-	const [creationModalOpen, setCreationModalOpen] = useState(false);
 	const [selectedFilters, setSelectedFilters] = useState<RESOURCE_TYPE[]>(
 		filters ?? [],
 	);
@@ -42,30 +39,24 @@ const ResourceMenu = ({
 		useState<ResourceMenuSubjects>('all');
 
 	const { t } = useTranslation();
-	const { user, resources, setResources } = useContext(UserContext);
+	const { resources, getResources, setResourceCreationMenuOpen } =
+		useContext(UserContext);
 
 	/**
 	 * Function that get the resources of the user based on the query
 	 */
-	const getResources = async () => {
-		if (!user) return;
-		setResources(
-			await api.db.users.getResources(user.id, {
-				subject: selectedSubject !== 'all' ? selectedSubject : undefined,
-				types: selectedFilters.length > 0 ? selectedFilters : undefined,
-				name,
-			}),
-		);
+	const getResourcesFromMenuInputs = async () => {
+		return getResources(selectedSubject, name, selectedFilters);
 	};
 
 	const [name, setName] = useWaitBeforeUpdate(
-		{ wait: 500, onUpdate: getResources },
+		{ wait: 500, onUpdate: getResourcesFromMenuInputs },
 		'',
 	);
 
 	/** Gets the user resources when the selectedSubject */
 	useEffect(() => {
-		getResources();
+		getResourcesFromMenuInputs();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedSubject, selectedFilters]);
 
@@ -135,7 +126,7 @@ const ResourceMenu = ({
 							onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
 								if (e.keyCode === 13) {
 									setName(e.currentTarget.value);
-									getResources();
+									getResourcesFromMenuInputs();
 								}
 							}}
 							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -180,12 +171,14 @@ const ResourceMenu = ({
 					</div>
 					<div className="w-full h-full p-4">
 						<div className="flex flex-col items-center mb-4">
-							<Button
-								variant="primary"
-								onClick={() => setCreationModalOpen(true)}
-							>
-								{t('resources.form.create')}
-							</Button>
+							{mode !== 'import' && (
+								<Button
+									variant="primary"
+									onClick={() => setResourceCreationMenuOpen(true)}
+								>
+									{t('resources.form.create')}
+								</Button>
+							)}
 						</div>
 						<div className="grid grid-cols-1 phone:grid-cols-2 tablet:grid-cols-4 laptop:grid-cols-6 desktop:grid-cols-7 gap-4">
 							{!resources ? (
@@ -203,10 +196,6 @@ const ResourceMenu = ({
 						</div>
 					</div>
 				</div>
-				<MenuResourceCreation
-					setOpen={setCreationModalOpen}
-					open={creationModalOpen}
-				/>
 			</div>
 		</ResourceMenuContext.Provider>
 	);

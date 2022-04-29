@@ -46,8 +46,7 @@ const MenuResourceCreation = ({
 	const [resourceIsFile, setResourceIsFile] = useState<boolean>(true);
 
 	const { t } = useTranslation();
-	const { setResources, resources } = useContext(UserContext);
-	const { user } = useContext(UserContext);
+	const { user, createResource, updateResource } = useContext(UserContext);
 	const { routes } = useRoutes();
 	const defaultValues = useMemo(() => {
 		return {
@@ -79,8 +78,6 @@ const MenuResourceCreation = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	if (!resources) return <LoadingScreen />;
-
 	/**
 	 * Handle the chosing of a new resource type for the resource creation.
 	 * Loads the user challenges if it is a Challenge resource
@@ -106,19 +103,9 @@ const MenuResourceCreation = ({
 		if (resourceIsFile) formValues.file = file;
 
 		if (updateMode && defaultResource) {
-			const updatedRes = await api.db.resources.update(
-				defaultResource,
-				formValues.resource,
-			);
-			setResources(
-				resources.map(r => (r.id === updatedRes.id ? updatedRes : r)),
-			);
+			await updateResource(defaultResource, formValues.resource);
 		} else {
-			const resource = await api.db.resources.create(
-				formValues,
-				setUploadProgress,
-			);
-			setResources([...resources, resource]);
+			await createResource(formValues, setUploadProgress);
 		}
 		setOpen(false);
 		// reset

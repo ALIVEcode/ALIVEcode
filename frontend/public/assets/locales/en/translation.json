@@ -359,10 +359,13 @@
 			},
 			"create_resource": {
 				"generic": "Create ",
-				"PF": "Upload a pdf",
+				"PF": "Upload a pdf from this device",
 				"TH": "Create a new text document",
-				"VI": "Upload a video or a URL",
-				"AS": "Upload a file"
+				"VI": {
+					"upload": "Upload a video from this device",
+					"url": "Add a video from a youtube URL"
+				},
+				"AS": "Upload a file from this device"
 			},
 			"remove_resource": "Remove the ressource",
 			"next": "Next activity",

@@ -216,7 +216,7 @@ const api = {
 							query.types ? `&types=${query.types}` : ''
 						}`,
 					)
-				).data.map((r: any) => plainToInstance(Resource, r));
+				).data.map((r: any) => plainToInstance(Resource, r)) as Resource[];
 			},
 			getChallenges: apiGet(
 				'users/:id/challenges',
@@ -401,7 +401,7 @@ const api = {
 			delete: apiDelete('resources/:id'),
 			create: async (
 				dto: MenuResourceCreationDTO,
-				progressSetter: React.Dispatch<React.SetStateAction<number>>,
+				progressSetter?: React.Dispatch<React.SetStateAction<number>>,
 			) => {
 				let formdata = null;
 				if (dto.file) {
@@ -413,11 +413,12 @@ const api = {
 					resource: (
 						await axios.post(`resources`, formdata || dto, {
 							onUploadProgress: progressEvent => {
-								progressSetter(
-									Math.round(
-										(progressEvent.loaded * 100) / progressEvent.total,
-									),
-								);
+								progressSetter &&
+									progressSetter(
+										Math.round(
+											(progressEvent.loaded * 100) / progressEvent.total,
+										),
+									);
 							},
 						})
 					).data,

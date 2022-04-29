@@ -55,6 +55,7 @@ export type CourseContextValues = {
 		activity: CourseElementActivity,
 	) => CourseElementActivity | null;
 	isCreator: () => boolean;
+	forceUpdateCourse: () => void;
 };
 
 export const CourseContext = createContext<CourseContextValues>({
@@ -80,4 +81,5 @@ export const CourseContext = createContext<CourseContextValues>({
 	getNextActivity: () => null,
 	getPreviousActivity: () => null,
 	isCreator: () => false,
+	forceUpdateCourse: () => {},
 });

@@ -1,7 +1,7 @@
 import './App.css';
 import { RouterSwitch } from './Router/RouterSwitch/RouterSwitch';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from './state/contexts/UserContext';
+import { UserContext, UserContextValues } from './state/contexts/UserContext';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import useRoutes from './state/hooks/useRoutes';
@@ -16,7 +16,7 @@ import { loadThemeFromCookies, setCookie } from './Types/cookies';
 import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
 import { setAccessToken } from './Types/accessToken';
-import { User, Student } from './Models/User/user.entity';
+import { User, Student, Professor } from './Models/User/user.entity';
 import LoadingScreen from './Components/UtilsComponents/LoadingScreen/LoadingScreen';
 import background_image_light from './assets/images/backgroundImage4.png';
 import background_image_dark from './assets/images/backgroundImageDark4.png';
@@ -36,6 +36,10 @@ import FeedbackModal from './Components/MainComponents/FeedbackMenu/FeedbackModa
 import Confetti from 'react-confetti';
 import useAudio from './state/hooks/useAudio';
 import Tutorial from './Pages/Help/InfoTutorial';
+import MenuResourceCreation from './Components/Resources/MenuResourceCreation/MenuResourceCreation';
+import { ResourceMenuSubjects } from './Pages/ResourceMenu/resourceMenuTypes';
+import { RESOURCE_TYPE } from '../../backend/src/models/resource/entities/resource.entity';
+import { MenuResourceCreationDTO } from './Components/Resources/MenuResourceCreation/menuResourceCreationTypes';
 
 type GlobalStyleProps = {
 	theme: Theme;
@@ -104,6 +108,8 @@ const App = () => {
 	const [resources, setResources] = useState<Resource[] | null>(null);
 	const [oldStudentNameMigrationOpen, setOldStudentNameMigrationOpen] =
 		useState(true);
+	const [resourceCreationMenuOpen, setResourceCreationMenuOpen] =
+		useState(false);
 
 	const { routes } = useRoutes();
 	const { t } = useTranslation();
@@ -122,16 +128,86 @@ const App = () => {
 		[forceUpdate],
 	);
 
-	const providerValue = useMemo(
+	/**
+	 * Function that get the resources of the user based on the query
+	 */
+	const getResources = useCallback(
+		async (
+			subject: ResourceMenuSubjects,
+			name?: string | undefined,
+			filters?: RESOURCE_TYPE[],
+		) => {
+			if (!user)
+				throw new Error('User is not loaded when trying to get the resources');
+			const loadedRes = await api.db.users.getResources(user.id, {
+				subject: subject !== 'all' ? subject : undefined,
+				types: filters && filters.length > 0 ? filters : undefined,
+				name,
+			});
+			setResources(loadedRes);
+			return loadedRes;
+		},
+		[user],
+	);
+
+	const createResource = useCallback(
+		async (
+			dto: MenuResourceCreationDTO,
+			progressSetter?: React.Dispatch<React.SetStateAction<number>>,
+		) => {
+			const res = resources ?? (await getResources('all'));
+			const resource = await api.db.resources.create(dto, progressSetter);
+			setResources([...res, resource]);
+			return resource;
+		},
+		[getResources, resources],
+	);
+
+	const updateResource = useCallback(
+		async function <T>(
+			defaultResource: Resource,
+			newResource: Omit<T, keyof Resource> | MenuResourceCreationDTO,
+		) {
+			const res = resources ?? (await getResources('all'));
+			const updatedRes = await api.db.resources.update(
+				defaultResource,
+				newResource,
+			);
+
+			const matchingRes = res.find(r => r.id === updatedRes.id);
+			if (!matchingRes) return updatedRes;
+			Object.assign(matchingRes, updatedRes);
+
+			setResources([...res]);
+
+			return matchingRes;
+		},
+		[getResources, resources],
+	);
+
+	const userProviderValue: UserContextValues = useMemo(
 		() => ({
 			user,
 			setUser: handleSetUser,
 			maintenance,
 			playSocket,
-			resources,
-			setResources: (res: Resource[]) => setResources(res),
+			resources: resources ?? [],
+			createResource,
+			updateResource,
+			setResourceCreationMenuOpen,
+			getResources,
 		}),
-		[user, handleSetUser, maintenance, playSocket, resources],
+		[
+			user,
+			handleSetUser,
+			maintenance,
+			playSocket,
+			resources,
+			createResource,
+			updateResource,
+			setResourceCreationMenuOpen,
+			getResources,
+		],
 	);
 
 	const handleSetTheme = (theme: Theme) => {
@@ -263,7 +339,7 @@ const App = () => {
 				{loading ? (
 					<LoadingScreen />
 				) : (
-					<UserContext.Provider value={providerValue}>
+					<UserContext.Provider value={userProviderValue}>
 						<Tutorial>
 							<section className="pt-[4rem] h-full">
 								<RouterSwitch />
@@ -292,6 +368,12 @@ const App = () => {
 								>
 									<NameMigrationForm setOpen={setOldStudentNameMigrationOpen} />
 								</Modal>
+							)}
+							{user instanceof Professor && (
+								<MenuResourceCreation
+									setOpen={setResourceCreationMenuOpen}
+									open={resourceCreationMenuOpen}
+								/>
 							)}
 							{isFeedbackModalOpen && (
 								<FeedbackModal

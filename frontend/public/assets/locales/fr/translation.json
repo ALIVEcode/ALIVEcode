@@ -359,10 +359,13 @@
 			},
 			"create_resource": {
 				"generic": "Créer une nouvelle ressource",
-				"PF": "Téléverser un pdf",
+				"PF": "Téléverser un pdf depuis cet appareil",
 				"TH": "Créer un nouveau document de théorie",
-				"VI": "Téléverser une vidéo ou URL",
-				"AS": "Téléverser un fichier"
+				"VI": {
+					"upload": "Téléverser une vidéo depuis cet appareil",
+					"url": "Ajouter une vidéo depuis un URL"
+				},
+				"AS": "Téléverser un fichier depuis cet appareil"
 			},
 			"remove_resource": "Retirer la ressource",
 			"next": "Activité suivante",

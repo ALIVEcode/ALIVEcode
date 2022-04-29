@@ -77,7 +77,7 @@ export class CourseElement {
 		| ActivityTheory
 		| ActivityVideo
 		| ActivityAssignment
-	  | ActivityPdf;
+		| ActivityPdf;
 
 	/** If the element is a section **/
 	@Expose({ toClassOnly: true })
@@ -175,7 +175,12 @@ export class CourseElement {
 }
 
 export class CourseElementActivity extends CourseElement {
-	activity: ActivityChallenge | ActivityVideo | ActivityTheory;
+	activity:
+		| ActivityChallenge
+		| ActivityVideo
+		| ActivityTheory
+		| ActivityAssignment
+		| ActivityPdf;
 	section: undefined;
 }
 

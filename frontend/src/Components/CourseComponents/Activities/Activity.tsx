@@ -31,6 +31,9 @@ import {
 import { ActivityVideo as ActivityVideoModel } from '../../../Models/Course/activities/activity_video.entity';
 import { ActivityPdf as ActivityPdfModel } from '../../../Models/Course/activities/activity_pdf.entity';
 import { ActivityAssignment as ActivityAssignmentModel } from '../../../Models/Course/activities/activity_assignment.entity';
+import { RESOURCE_TYPE } from '../../../Models/Resource/resource.entity';
+import { UserContext } from '../../../state/contexts/UserContext';
+import api from '../../../Models/api';
 
 /**
  * Shows the opened activity. Renders different component depending on the type of the activity opened.
@@ -52,14 +55,18 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 		loadActivityResource,
 		getPreviousActivity,
 		getNextActivity,
+		forceUpdateCourse,
 	} = useContext(CourseContext);
 
 	const activity = courseElement.activity;
 
 	const { t } = useTranslation();
+	const { createResource } = useContext(UserContext);
 	const [isRenaming, setIsRenaming] = useState(false);
 	const [loading, setLoading] = useState(!activity.resource);
-	const inputRef = useRef<HTMLInputElement>();
+	const [selectedFile, setSelectedFile] = useState<File>();
+	const inputRef = useRef<HTMLInputElement>(null);
+	const inputFileRef = useRef<HTMLInputElement>(null);
 
 	const previousActivity = useMemo(
 		() => getPreviousActivity(courseElement),
@@ -116,6 +123,35 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 		}
 	};
 
+	useEffect(() => {
+		if (selectedFile && course) {
+			const createResourceWithFile = async () => {
+				const resourceType = activity.allowedResources[0];
+				let createdRes;
+				switch (activity.type) {
+					case ACTIVITY_TYPE.PDF:
+					case ACTIVITY_TYPE.VIDEO:
+					case ACTIVITY_TYPE.ASSIGNMENT:
+						createdRes = await createResource({
+							file: selectedFile,
+							type: resourceType,
+							resource: { name: selectedFile.name, subject: course?.subject },
+						});
+				}
+				if (!createdRes) return;
+				activity.resource = createdRes;
+				await api.db.courses.addResourceInActivity(
+					course,
+					activity,
+					activity.resource,
+				);
+				forceUpdateCourse();
+			};
+			createResourceWithFile();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [selectedFile]);
+
 	if (!courseElement) {
 		return <></>;
 	}
@@ -152,6 +188,36 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 						Not implemented '{activity.type}'
 					</div>
 				);
+		}
+	};
+
+	const createSpecificResource = async (fromVideoUrl?: boolean) => {
+		if (!course) return;
+		const resourceType = activity.allowedResources[0];
+		switch (resourceType) {
+			case RESOURCE_TYPE.FILE:
+			case RESOURCE_TYPE.PDF:
+			case RESOURCE_TYPE.IMAGE:
+				inputFileRef.current?.click();
+				break;
+			case RESOURCE_TYPE.VIDEO:
+				if (fromVideoUrl) {
+				} else inputFileRef.current?.click();
+				break;
+			case RESOURCE_TYPE.THEORY:
+				const createdRes = await createResource({
+					file: null,
+					type: resourceType,
+					resource: { name: 'New theory', subject: course?.subject },
+				});
+				activity.resource = createdRes;
+				await api.db.courses.addResourceInActivity(
+					course,
+					activity,
+					activity.resource,
+				);
+				forceUpdateCourse();
+				break;
 		}
 	};
 
@@ -248,13 +314,34 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 									>
 										{t(`course.activity.import_resource.${activity.type}`)}
 									</Button>
-									{activity.type !== ACTIVITY_TYPE.CHALLENGE && (
-										<Button
-											variant="secondary"
-											onClick={() => setOpenModalImportResource(true)}
-										>
-											{t(`course.activity.create_resource.${activity.type}`)}
-										</Button>
+									{activity.type !== ACTIVITY_TYPE.CHALLENGE &&
+										activity.type !== ACTIVITY_TYPE.VIDEO && (
+											<Button
+												variant="secondary"
+												onClick={() => createSpecificResource()}
+											>
+												{t(`course.activity.create_resource.${activity.type}`)}
+											</Button>
+										)}
+									{activity.type === ACTIVITY_TYPE.VIDEO && (
+										<>
+											<Button
+												variant="secondary"
+												onClick={() => createSpecificResource()}
+											>
+												{t(
+													`course.activity.create_resource.${activity.type}.upload`,
+												)}
+											</Button>
+											<Button
+												variant="secondary"
+												onClick={() => createSpecificResource(true)}
+											>
+												{t(
+													`course.activity.create_resource.${activity.type}.url`,
+												)}
+											</Button>
+										</>
 									)}
 								</>
 							) : (
@@ -319,6 +406,16 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 						<FontAwesomeIcon size="1x" icon={faChevronRight} />
 					</button>
 				</div>
+				<input
+					id="file-upload"
+					name="file-upload"
+					type="file"
+					className="hidden"
+					ref={inputFileRef}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+						e.target.files && setSelectedFile(e.target.files[0])
+					}
+				></input>
 			</div>
 		)
 	);

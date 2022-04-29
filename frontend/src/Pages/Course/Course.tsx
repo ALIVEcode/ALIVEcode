@@ -631,6 +631,7 @@ const Course = () => {
 		getNextActivity,
 		getPreviousActivity,
 		isCreator,
+		forceUpdateCourse: forceUpdate,
 	};
 
 	/**

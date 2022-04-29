@@ -241,12 +241,22 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					) : (
 						<div className="flex flex-col items-center gap-4">
 							{editMode ? (
-								<Button
-									variant="primary"
-									onClick={() => setOpenModalImportResource(true)}
-								>
-									{t('course.activity.import_resource')}
-								</Button>
+								<>
+									<Button
+										variant="primary"
+										onClick={() => setOpenModalImportResource(true)}
+									>
+										{t(`course.activity.import_resource.${activity.type}`)}
+									</Button>
+									{activity.type !== ACTIVITY_TYPE.CHALLENGE && (
+										<Button
+											variant="secondary"
+											onClick={() => setOpenModalImportResource(true)}
+										>
+											{t(`course.activity.create_resource.${activity.type}`)}
+										</Button>
+									)}
+								</>
 							) : (
 								<div>{t('course.activity.empty')}</div>
 							)}

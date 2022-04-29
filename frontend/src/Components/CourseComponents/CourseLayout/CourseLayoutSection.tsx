@@ -34,7 +34,7 @@ const CourseLayoutSection = ({
 							className="pb-1 ml-6 [color:grey]"
 						/>
 					</Disclosure.Button>
-					<Disclosure.Panel className="border-opacity-20 border-[color:grey] border-l ml-7 text-sm border-b">
+					<Disclosure.Panel className="border-opacity-20 border-[color:grey] border-l ml-7 text-sm border-b pb-2">
 						<div id={`section-${section.name}`}>
 							{section.elementsOrder === undefined ? (
 								<LoadingScreen size="3x" relative />

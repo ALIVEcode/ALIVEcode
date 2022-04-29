@@ -1,714 +1,728 @@
 {
-  "lang": "fr",
-  "error": {
-    "sorry": "Désolé.",
-    "unknown": "Une erreur inconnue est survenue, veuillez réessayer.",
-    "custom": "Erreur: {{error}}.",
-    "back": "Retour en arrière",
-    "home": "Retour à la page d'accueil",
-    "signout": "Une erreur est survenue lors de la déconnexion, veuillez réessayer.",
-    "signin": "Informations erronées, veuillez réessayer.",
-    "signin_first_time": "une erreur est survenue lors de votre connexion automatique à votre nouveau compte.",
-    "500": "Une erreur est survenue, veuillez réessayer.",
-    "page404": "Cette page n'existe pas.",
-    "page501": "Cette page est en construction.",
-    "maintenance": {
-      "ongoing": "Une maintenance est en cours du {{startDate}} et prend fin le {{finishDate}}, cette page n'a pas pu être affichée.",
-      "short": "La requête n'a pas pu être faite, le site est présentement en maintenance."
-    }
-  },
-  "feedback": {
-    "title": "À quoi pensez-vous?",
-    "button": "Donner votre avis!",
-    "send": "Envoyer",
-    "cancel": "Annuler",
-    "choices": {
-      "like": "Quelque chose que j'aime",
-      "dislike": "Quelque chose que je n'aime pas",
-      "idea": "Une idée que j'ai",
-      "bug": "Un bug que j'ai rencontré"
-    },
-    "information": "informations",
-    "authorization_infos": "J'autorise de joindre (de manière anonyme) mes {{infos}} à cet avis.",
-    "info_collected": {
-      "url": "L'URL de la page que vous êtes en train de visiter",
-      "browser": "Le navigateur que vous utilisez",
-      "theme": "Le thème que vous utilisez (thème sombre/clair)",
-      "language": "La langue que vous utilisez"
-    },
-    "placeholder": "Veuillez entrer votre avis ici..."
-  },
-  "form": {
-    "submit": {
-      "POST": "Créer {{name}}",
-      "PATCH": "Modifier {{name}}",
-      "DELETE": "Supprimer {{name}}"
-    },
-    "error": {
-      "generic": "Ce champs est erroné",
-      "required": "Ce champs est requis",
-      "maxLength": "Ce champs dépasse {{max}} caractères",
-      "minLength": "Ce champs devrait être d'au moins {{min}} caractères",
-      "too_long": "Ce champs est trop long",
-      "too_short": "Ce champs est trop court",
-      "match": {
-        "alphabetic": "Ce champs doit contenir uniquement des lettres",
-        "alphabetic_lower": "Ce champs doit contenir uniquement des lettres minuscules",
-        "alphabetic_upper": "Ce champs doit contenir uniquement des lettres majuscules",
-        "alphanumeric": "Ce champs doit contenir uniquement des lettres et des chiffres",
-        "alphanumeric_underscore": "Ce champs doit contenir uniquement des lettres, des chiffres et des tirets vers le bas _",
-        "numbers": "Ce champs doit contenir uniquement des chiffes",
-        "name": "Ce champs doit contenir uniquement des lettres et des chiffres"
-      }
-    },
-    "challenge": {
-      "PATCH": {
-        "title": "Paramètres du défi",
-        "fontSize": "Taille de la police",
-        "interface_settings": "L'interface"
-      }
-    },
-    "title": {
-      "signin": "Connexion",
-      "signup": "Inscription",
-      "create_classroom": "Création d'une classe",
-      "create_course": "Création d'un cours",
-      "create_challenge": "Création d'un défi",
-      "create_iot_project": "Création d'un projet IoT",
-      "create_iot_object": "Création d'un objet IoT",
-      "update_classroom": "Modification des paramètres de la classe"
-    },
-    "join_classroom": {
-      "title": "Rejoindre une classe",
-      "submit": "Rejoindre",
-      "code": "Code de la classe",
-      "invalid_code": "Code non-valide"
-    },
-    "pwd": {
-      "label": "Mot de passe",
-      "placeholder": "*****",
-      "required": "Un mot de passe est requis",
-      "pattern": "Le mot de passe doit uniquement contenir des lettres, des chiffres et: !@#\\$&*~"
-    },
-    "email": {
-      "label": "Adresse courriel",
-      "placeholder": "MonAdresse@alivecode.ca",
-      "required": "Une adresse courriel est requise",
-      "taken": "Cette adresse courriel est déjà prise",
-      "info": "Nous ne partagerons pas votre adresse courriel"
-    },
-    "firstName": {
-      "label": "Prénom",
-      "placeholder": "Enric",
-      "required": "Votre prénom est requis",
-      "pattern": "Votre prénom doit contenir uniquement des lettres et des tirets"
-    },
-    "lastName": {
-      "label": "Nom",
-      "placeholder": "Soldevila",
-      "required": "Votre nom de famille est requis",
-      "pattern": "Votre nom de famille doit contenir uniquement des lettres et des tirets"
-    },
-    "scolarity": {
-      "label": "Niveau scolaire",
-      "placeholder": "4e année",
-      "required": "Votre niveau scolaire est requis"
-    }
-  },
-  "modal": {
-    "close": "Fermer",
-    "save": "Enregistrer",
-    "confirm": "Confirmer",
-    "cancel": "Annuler"
-  },
-  "msg": {
-    "professor": "professeur",
-    "student": "étudiant",
-    "creator": "Créateur",
-    "understood": "C'est compris!",
-    "description": "description",
-    "deleted_user": "Ancien utilisateur",
-    "search": "Rechercher",
-    "community_challenges": "Défis de la communauté",
-    "public_classrooms": "Classes publiques",
-    "creation_date": "Date de création",
-    "update_date": "Date de modification",
-    "see_links": "Voir les liens",
-    "activity_type": {
-      "challenge": "Défi",
-      "video": "Visionnement",
-      "pdf": "Pdf",
-      "assignment": "Énoncé de travail",
-      "theory": "Théorie"
-    },
-    "subjects": {
-      "iot": "Internet des Objets",
-      "ai": "Intelligence Artificielle",
-      "code": "Programmation",
-      "other": "Autre",
-      "all": "Tout"
-    },
-    "time": {
-      "format": "{{dayName}}, {{day}} {{monthName}} {{year}} - {{hour}}:{{minute}}",
-      "day": {
-        "0": "Dimanche",
-        "1": "Lundi",
-        "2": "Mardi",
-        "3": "Mercredi",
-        "4": "Jeudi",
-        "5": "Vendredi",
-        "6": "Samedi"
-      },
-      "month": {
-        "0": "Janvier",
-        "1": "Février",
-        "2": "Mars",
-        "3": "Avril",
-        "4": "Mai",
-        "5": "Juin",
-        "6": "Juillet",
-        "7": "Août",
-        "8": "Septembre",
-        "9": "Octobre",
-        "10": "Novembre",
-        "11": "Décembre"
-      }
-    },
-    "desc": {
-      "empty": "Aucune description disponible"
-    },
-    "auth": {
-      "signin": "Se connecter",
-      "signin_success": "Connexion réussie",
-      "signup": "S'inscrire",
-      "signup_success": "Vous êtes connecté avec votre nouveau compte",
-      "signup_professor": "Compte professeur",
-      "signup_student": "Compte étudiant",
-      "signout": "Se déconnecter",
-      "already_registered": "Tu as déjà un compte ?",
-      "account_required": "Il te faut un compte pour faire ça",
-      "name_migration": {
-        "title": "Changement de la façon dont les étudiants sont identifiés",
-        "desc": "Chaque étudiant doit maintenant posséder un prénom ainsi qu'un nom de famille afin d'être plus facilement identifié. De plus, votre nom n'est plus unique.",
-        "please": "Veuillez s'il vous plait prendre le temps de choisir un nouveau nom.",
-        "submit": "Confirmer votre nouveau nom"
-      }
-    },
-    "section": {
-      "alive": "ALIVE Play",
-      "dashboard": "Tableau de bord",
-      "ai": "Intelligence artificielle",
-      "iot": "Internet des Objets",
-      "amc": "Contrôle par la pensée",
-      "about": "À propos",
-      "avp": "Perception de véhicule augmentée",
-      "lrima": "Laboratoire de recherche LRIMA",
-      "account": "Mon compte"
-    },
-    "maintenance": {
-      "more_info": "Plus d'informations",
-      "no_desc": "Pas de description disponible.",
-      "ongoing": "Une maintenance est présentement en cours du {{startDate}} au {{finishDate}}. Vous ne pouvez pas utiliser votre compte ou voir les défis des utilisateurs durant cette période. Désolé pour cet inconvénient.",
-      "upcoming": "Une maintenance est prévue du {{startDate}} au {{finishDate}}. Vous ne pourrez pas utiliser votre compte ou voir les défis des utilisateurs durant cette période. Désolé pour cet inconvénient.",
-      "status": {
-        "ongoing": "En cours",
-        "finished": "Terminée",
-        "upcoming": "Prochainement"
-      }
-    }
-  },
-  "dashboard": {
-    "recents": {
-      "title": "Cours Récents",
-      "empty": {
-        "student": "Tu n'as pas d'activité récente. Rejoins une classe publique ou privée pour commencer à apprendre",
-        "professor": "Tu n'as pas d'activité récente. Crée une classe pour commencer"
-      }
-    },
-    "challenges": {
-      "title": "Défis",
-      "browse_challenges": "Explorer les défis de la communauté",
-      "create_challenge": "Créer un défi",
-      "empty": "Tu ne possèdes aucun défi"
-    },
-    "resources": {
-      "title": "Mes Ressources"
-    },
-    "classrooms": {
-      "title": "Classes",
-      "no_courses": "Aucun cours",
-      "browse_public": "Explorer les classes publiques",
-      "empty": {
-        "student": "Tu ne fais parti d'aucune classe",
-        "professor": "Tu ne possèdes aucune classe"
-      },
-      "add": {
-        "student": "Rejoindre une classe",
-        "professor": "Créer une classe"
-      }
-    },
-    "courses": {
-      "title": "Vos cours",
-      "add": "Créer un cours",
-      "empty": "Tu ne possèdes aucun cours"
-    }
-  },
-  "resources": {
-    "menu": {
-      "title": "Ressources",
-      "search": "Rechercher"
-    },
-    "video": {
-      "name": "Vidéo",
-      "form": {
-        "url": "URL vers la vidéo",
-        "file": "Glissez ou sélectionnez un fichier"
-      }
-    },
-    "file": {
-      "name": "Fichier",
-      "form": {
-        "file": "Glissez ou sélectionnez un fichier"
-      }
-    },
-    "pdf": {
-      "name": "Pdf",
-      "form": {
-        "file": "Glissez ou sélectionnez un fichier"
-      }
-    },
-    "image": {
-      "name": "Image",
-      "form": {
-        "url": "URL vers l'image",
-        "file": "Glissez ou sélectionnez un fichier"
-      }
-    },
-    "challenge": {
-      "name": "Défi",
-      "form": {
-        "select": "Sélectionnez un défi pour la liaison"
-      }
-    },
-    "theory": {
-      "name": "Théorie"
-    },
-    "form": {
-      "create": "Créer une ressource",
-      "update": "Modifier la ressource",
-      "delete": "Supprimer la ressource",
-      "delete_confirm": "Êtes-vous sûr de vouloir supprimer cette ressource? Si vous l'avez utilisée dans un cours, celle-ci sera perdue à jamais.",
-      "subject": "Matière de la ressource",
-      "type": "Type de ressource",
-      "name": "Nom de la ressource"
-    }
-  },
-  "classroom": {
-    "add_students": "Ajoutez des étudiants",
-    "delete": "Supprimer la classe",
-    "leave": "Quitter la classe",
-    "already_in": "Déjà dans la classe",
-    "container": {
-      "courses": {
-        "title": "Cours",
-        "empty": "Cette classe ne possède aucun cours"
-      },
-      "details": {
-        "title": "Détails"
-      },
-      "students": {
-        "title": "Étudiants dans la classe",
-        "empty": "Il n'y a aucun étudiant dans la classe"
-      }
-    },
-    "desc": "Classe de {{professor}}",
-    "subject": "Matière",
-    "code": {
-      "title": "Code de la classe",
-      "desc": "Donnez ce code aux étudiants afin qu'ils puissent rejoindre la classe depuis le tableau de bord!"
-    }
-  },
-  "course": {
-    "desc": "Cours de {{professor}}",
-    "subject": "Matière du cours",
-    "empty": "Ce cours est vide.",
-    "student_view": "Vue étudiant",
-    "layout_view": "Vue professeur",
-    "delete": "Supprimer le cours. (Il sera retiré de toutes les classes où il est présent)",
-    "deletion_test": "Écrivez le nom du cours pour confirmer la suppression",
-    "section": {
-      "empty": "Cette section ne possède aucune activité",
-      "new": "Ajouter une section",
-      "delete": "Êtes-vous sûr de vouloir supprimer cette section? Tout le contenu à l'intérieur de celle-ci sera supprimé."
-    },
-    "activity": {
-      "open": "Ouvrir",
-      "open_in_student_view": "Ouvrir dans la vue étudiant",
-      "edit_in_layout_view": "Modifier dans la vue professeur",
-      "empty": "Cette activité est vide.",
-      "no_activity": "Ouvre une activité pour commencer à apprendre.",
-      "new": "Ajouter une activité",
-      "new_name": "Activité #{{num}}",
-      "import_resource": "Importer une ressource",
-      "remove_resource": "Retirer la ressource",
-      "next": "Activité suivante",
-      "previous": "Activité précédente",
-      "delete": "Êtes-vous sûr de vouloir supprimer cette activité? Les ressources comprises à l'intérieur de celle-ci ne seront pas supprimées."
-    },
-    "form": {
-      "create": "Créer un cours",
-      "update": "Modifier le cours",
-      "name": "Nom du cours",
-      "description": "Description du cours",
-      "subject": "Matière du cours"
-    },
-    "navigation": {
-      "minimize": "Réduire",
-      "maximize": "Agrandir"
-    }
-  },
-  "menu": {
-    "signup": {
-      "professor": "Compte professeur",
-      "student": "Compte étudiant"
-    },
-    "challenge": {
-      "alive": "Défi avec voiture ALIVE",
-      "code": "Défi avec console",
-      "ai": "Défi avec intelligence artificielle",
-      "iot": "Défi avec Internet des Objets"
-    }
-  },
-  "home": {
-    "msg1": "code",
-    "msg2": "ai",
-    "msg3": "iot",
-    "desc": "Apprend la programmation",
-    "get_started": "Commencer!",
-    "see_trainings": "Voir les formations",
-    "about": "À propos",
-    "trainings": "Formations",
-    "news": "Nouvelles",
-    "iot": {
-      "desc": "L'IoT n'a jamais été aussi facile",
-      "to_dashboard": "Accéder au Tableau de Bord",
-      "to_trainings": "Accéder aux Formations",
-      "section": {
-        "develop": {
-          "title": "Commence à Développer",
-          "desc": "Pratique tes notions d'internet des objets en développant des projets IoT. Enregistre plusieurs objets connectés, crée un réseau d'objets connectés, établis des communications entre eux, collecte et partage des données entre les objets et affiche en temps réel les données dans une interface graphique."
-        },
-        "learn": {
-          "title": "Commence à Apprendre",
-          "desc": "$t(home.section.training_iot.desc)"
-        }
-      }
-    },
-    "section": {
-      "mission": {
-        "title": "Notre mission",
-        "desc": "Faciliter l'accès, le partage et les discussions autour des nouvelles technologies. Donner la chance à n'importe qui d'accomplir n'importe quoi."
-      },
-      "us": {
-        "title": "Qui sommes-nous ?",
-        "desc": "Nous sommes des chercheurs du Laboratoire de Recherche Informatique du collège Maisonneuve LRIMa. Chaque année nous avons comme but d'innover dans l'industrie informatique en menant des recherches et en publiant/partageant les résultats de nos recherches durant des conférences à travers le monde. Visitez le site du LRIMa pour plus de détails et la section à propos."
-      },
-      "story": {
-        "title": "Notre histoire",
-        "desc": "Les origines d'ALIVEcode remontent à loin dans le temps. Il y a trois ans, nous avons eu l'idée de créer des véhicules miniatures autonomes dans le but de recherches scientifiques. Un an plus tard, nous avons eu l'idée d'utiliser ces robots afin d'apprendre la programmation à de jeunes étudiants. L'année suivante, nous avons décidé de créer ALIVEcode afin de rendre l'apprentissage de la programmation accessible à tous. Cela fait maintenant plus d'un an qu'ALIVEcode existe et continue de grandir."
-      },
-      "training_ai": {
-        "title": "Formation en Intelligence Artificielle",
-        "desc": "Apprends la théorie et la pratique de l'IoT. Suis une ou plusieurs formations complètes offertes par ALIVEcode qui t'apprendront tout ce qu'il y a à savoir sur l'IA. Tels que: les régressions linéaires, la classification, les arbres décisionnels, les réseaux de neurones, etc."
-      },
-      "training_iot": {
-        "title": "Formation en Internet des Objets",
-        "desc": "Apprends la théorie et la pratique de l'IoT. Suis une ou plusieurs formations complètes offertes par ALIVEcode qui t'apprendront tout ce qui t'est requis afin de commencer à développer tes propres projets IoT. L'électronique, les protocoles de communication, les bases de données, l'IA, l'interfaçage, etc."
-      },
-      "training_code": {
-        "title": "Initiation à la Programmation",
-        "desc": "Apprends les bases de la programmation. Suis une ou plusieurs formations complètes offertes par ALIVEcode qui te transformeront en programmeur aguerri. Apprends la programmation en contrôlant un véhicule motorisé, en résolvant des défis et en publiant tes propres défis/projets à la communauté."
-      }
-    },
-    "navbar": {
-      "section": {
-        "dashboard": "$t(msg.section.dashboard)",
-        "iot": "$t(msg.section.iot)",
-        "ai": "$t(msg.section.ai)",
-        "amc": "$t(msg.section.amc)",
-        "about": "$t(msg.section.about)"
-      },
-      "msg": {
-        "auth": "Bonjour, {{name}}",
-        "non_auth": {
-          "label": "Vous n'êtes pas connecté, ",
-          "link": "$t(msg.auth.signin) ?"
-        }
-      }
-    },
-    "footer": {
-      "about": {
-        "title": "$t(msg.section.about)",
-        "description": "Le projet ALIVE vise à fournir une méthode et une pratique d'enseignement de la programmation pour simplifier le concept théorique de la programmation."
-      },
-      "categories": "Catégories",
-      "links": "Liens pratiques",
-      "copyright_1": "Copyright",
-      "copyright_2": " 2022 Tous droits réservés par"
-    }
-  },
-  "input": {
-    "defaultValue": "Écrivez ici..."
-  },
-  "ai": {
-    "header": {
-      "title": "LE MONDE DE L'INTELLIGENCE ARTIFICIELLE AVEC ALIVESCRIPT",
-      "description": "L’intelligence artificielle est un domaine en constante évolution qui permet d’accomplir des tâches énormes en un temps record. L’efficacité des techniques qui en font partie est telle qu’on cherche maintenant à s’en servir dans toutes les sphères de la société, de l’agriculture à la robotique, en passant par le transport, les sciences, l’économie et bien plus! À l’aide de notre langage de programmation AliveScript, on te propose de découvrir les possibilités de l’intelligence artificielle d’un façon simple et captivante. Choisis un des cours disponibles et pars à la rencontre de cet univers fascinant!"
-    },
-    "section": {
-      "artificial-intelligence": {
-        "title": "Le potentiel de l'intelligence artificielle",
-        "paragraph1": "L’intelligence artificielle prend une place de plus en plus importante dans notre quotidien. En fait, nous pouvons déjà nous en apercevoir aujourd'hui : des assistants intelligents sont présents dans nos téléphones, nos ordinateurs ainsi que dans des haut-parleurs; de plus en plus d’essais avec des technologies d’IA sont effectués dans le domaine des transports, de l’agriculture, de la médecine et bien plus; les moteurs de recherche sur Internet ainsi que plusieurs sites utilisent l’IA pour des raison commerciales; et il existe bien d’autres exemples!",
-        "paragraph2": "Au fil des cours sur les différentes facettes de l’intelligence artificielle, tu apprendras comment peut-on s’en servir pour résoudre des problèmes variés :",
-        "point1": "Comment prédire la consommation d’une voiture si on fait varier son moteur, son poids et plusieurs autres caractéristiques?",
-        "point2": "Comment développer une formule qui saura prédire la grandeur maximale d’une personne?",
-        "point3": "Comment trouver la configuration optimale à un robot pour qu’il accomplisse une tâche précise?",
-        "point4": "Et plus encore!",
-        "paragraph3": "De plus, même si nous aurons couvert seulement quelques applications de l’intelligence artificielle, les possibilités sont infinies, si bien qu’il en reste encore énormément à découvrir!"
-      },
-      "machine-learning": {
-        "title": "L'apprentissage machine et sa place en IA",
-        "paragraph1": "Si tu n’es pas familier avec le domaine de l’intelligence artificielle, la première chose à savoir est qu’il existe plusieurs grandes branches qui se concentrent sur un sujet plus particulier de l’IA. Par exemple, la branche de la vision par ordinateur se spécialise dans la reconnaissance d’images, tandis que la branche de la reconnaissance vocale cherche plutôt à reconnaitre ou à générer des paroles humaines. L’apprentissage machine est justement une de ces catégories, mais elle contient plusieurs sous-branches, dont les fameux réseaux de neurones.",
-        "paragraph2": "L’apprentissage machine se spécialise surtout dans la prédiction de valeurs en se basant sur des données qui concernent la situation qu’on analyse. Elle permet de prédire des résultats à dans des situations qui demanderaient des calculs extrêmement complexes pour arriver au même résultat. Pour arriver à cela, l’algorithme s’entraîne sur des valeurs venant d’expériences précédentes et essaie de prédire leurs résultats avec un modèle aléatoire. Ensuite, on compare la prédiction avec la valeur réelle et on adapte le modèle en fonction de l’erreur dans le but de l’améliorer. Finalement, ce processus est répété jusqu’à atteindre un résultat satisfaisant. C’est ce processus qui est utilisé dans tous les algorithmes d’apprentissage machine, qu’il s’agisse de régressions ou même de réseaux de neurones."
-      },
-      "deep-learning": {
-        "title": "Les réseaux de neurones en IA",
-        "paragraph1": "On pourrait penser qu’il est très étrange d’associer des concepts liés au cerveau à l’informatique. Pourtant, l’idée d’associer les deux a complètement révolutionné le monde de l’intelligence artificielle! Les algorithmes les plus puissants au monde utilisent ce genre de processus pour accomplir des tâches qui auraient pris de nombreuses années à être accomplies par les humaines.",
-        "paragraph2": "Les réseaux de neurones dans ce domaine sont en fait une nouvelle façon de concevoir une formule pour modéliser les situations les plus complexes. Basés sur les réseaux de neurones existants dans notre cerveau, ces algorithmes sont constitués de plusieurs neurones réparties sur un certain nombre de couches. Chaque neurone de chaque couche est reliée à chaque neurone de la couche suivante et ces liaisons ont une valeur attribuée qu’on appelle un « poids ». Chaque neurone se voit également attribuer une valeur que nous appelons « biais ». Ces poids et ces biais constituent les paramètres du réseau, ceux qui vont déterminer le résultat sortant selon une certaine entrée.",
-        "paragraph3": "Cependant, la partie « intelligente » du réseau de neurones se situe dans l’ajustement de ces paramètres :",
-        "point1": "Le réseau commence par essayer de prédire la sortie d’un grand nombre d’entrée et compare son résultat avec le résultat qu’il aurait dû avoir.",
-        "point2": "Ensuite, il adapte l’ensemble de ses paramètres selon la grandeur de l’erreur, c’est-à-dire l’écart entre les deux valeurs grâce à des algorithmes complexes dont le plus populaire est la descente de gradient.",
-        "point3": "Finalement, il recommence tout le processus jusqu’à obtenir des résultats qui minimisent le plus possible l’erreur afin de pouvoir produire les meilleures prédictions possibles!",
-        "paragraph4": "Évidemment, les réseaux de neurones sont bien plus complexes que cela, et c’est pourquoi un cours à ce sujet sera bientôt disponible. Reste à l’affût!"
-      }
-    }
-  },
-  "iot": {
-    "dashboard": {
-      "title": "Tableau de bord IoT",
-      "no_object": "Aucun objet IoT",
-      "no_project": "Aucun projet IoT"
-    },
-    "project": {
-      "name": "Projet IoT",
-      "settings": "Paramètres",
-      "routes": "Routage",
-      "documents": {
-        "name": "Documents"
-      },
-      "interface": {
-        "name": "Interface",
-        "add_component": "Ajouter un composant",
-        "delete_component": "Supprimer le composant",
-        "delete_component_confirm": "Êtes-vous sûr de vouloir supprimer le composant",
-        "edit_component": "Modifier le composant",
-        "copy_project_id": "Copier l'ID du projet",
-        "errors": {
-          "ref": "ERREUR",
-          "no_id": "Le composant n'a pas d'ID"
-        },
-        "components": {
-          "progress": {
-            "name": "Jauge de progression"
-          },
-          "button": {
-            "name": "Bouton"
-          },
-          "logs": {
-            "name": "Journaux",
-            "clear": "Supprimer toutes les entrées",
-            "add": "Ajouter une entrée",
-            "empty": "Aucune entrée"
-          },
-          "led": {
-            "name": "LED"
-          },
-          "label": {
-            "name": "Étiquette"
-          },
-          "buzzer": {
-            "name": "Avertisseur sonore",
-            "sine": "Sinus",
-            "sawtooth": "Dents de scie",
-            "square": "Carré",
-            "triangle": "Triangle",
-            "start": "Activer l'avertisseur",
-            "stop": "Arrêter l'avertisseur"
-          },
-          "traffic_light": {
-            "name": "Feu de circulation",
-            "red": "rouge",
-            "yellow": "jaune",
-            "green": "vert",
-            "off": "éteint"
-          }
-        },
-        "components_form": {
-          "name": {
-            "label": "Nom du composant",
-            "placeholder": "Nom"
-          },
-          "id": {
-            "label": "Identifiant du composant",
-            "placeholder": "ID"
-          },
-          "ref": {
-            "label": "Référence à une entrée du document",
-            "static": "Valeur statique",
-            "invalid": "VALEUR INVALIDE"
-          },
-          "progress": {
-            "value": {
-              "label": "Progression de la jauge"
-            },
-            "min": {
-              "label": "Minimum de la jauge",
-              "placeholder": "0"
-            },
-            "max": {
-              "label": "Maximum de la jauge",
-              "placeholder": "100"
-            },
-            "is_percentage": {
-              "label": "Est sous forme de pourcentage?"
-            }
-          },
-          "button": {
-            "on_click": "Lors du clic du bouton",
-            "value": {
-              "label": "Affichage du bouton",
-              "placeholder": "Clic-moi"
-            },
-            "target": {
-              "label": "Objet qui subira une action lors du clic du bouton",
-              "placeholder": "Objet visé"
-            },
-            "action_id": {
-              "label": "Identifiant de l'action à faire subir",
-              "placeholder": "avancer"
-            },
-            "action_data": {
-              "label": "Données concernant l'action",
-              "placeholder": "{}"
-            }
-          },
-          "logs": {
-            "value": {
-              "label": "Journaux"
-            }
-          },
-          "led": {
-            "value": {
-              "label": "État éteint/allumé du LED"
-            }
-          },
-          "label": {
-            "value": {
-              "label": "Texte d'affichage",
-              "placeholder": "Bonjour Monde!"
-            },
-            "font_size": {
-              "label": "Taille de la police"
-            }
-          },
-          "buzzer": {
-            "value": {
-              "label": "Fréquence à jouer",
-              "placeholder": "500"
-            },
-            "duration": {
-              "label": "Durée du son à jouer (secondes)"
-            },
-            "frequency_type": {
-              "label": "Type de fréquence",
-              "placeholder": "Sinus"
-            }
-          },
-          "traffic_light": {
-            "value": {
-              "label": "État du feu de circulation",
-              "placeholder": "Éteint"
-            }
-          }
-        }
-      },
-      "objects": {
-        "name": "Objets"
-      },
-      "scripts": {
-        "name": "Scripts"
-      }
-    },
-    "object": {
-      "name": "Objet IoT",
-      "copy_id": "Copier l'ID de l'objet",
-      "deleted": "Objet IoT supprimé"
-    }
-  },
-  "user": {
-    "quiz": "Quiz : ",
-    "status": "Status : ",
-    "posts": "Posts : ",
-    "reward": "Récompenses : ",
-    "rank": "Rank : ",
-    "rewardTitle": "Récompenses"
-  },
-  "simulation": {
-    "modal": {
-      "retry": "Réessayer?",
-      "continue": "Continuer",
-      "lose": "Meilleure chance la prochaine fois!",
-      "win": "La victoire t'appartient! 🎉",
-      "water": "La voiture est tombée dans l'eau",
-      "lava": "La voiture est tombée dans la lave",
-      "hole": "La voiture est tombée dans un trou",
-      "wall": "La voiture a foncée dans un mur",
-      "connect_car": {
-        "title": "Connecter un vrai ALIVEcar",
-        "label": "Identifiant du ALIVEcar",
-        "id": "123",
-        "button": "Se connecter avec le vrai ALIVEcar"
-      }
-    }
-  },
-  "cmd": {
-    "clear": "Effacer les lignes"
-  },
-  "action": {
-    "irreversible": "Cette action est irréversible"
-  },
-  "help": {
-    "click_for_more": "Cliquez pour plus d'informations",
-    "slides": {
-      "next": "Suivant",
-      "previous": "Précédent"
-    },
-    "dashboard": {
-      "tabs": {
-        "recent_courses": "Voici l'endroit où se retrouve vos cours récemment visité",
-        "challenges": "Voici l'endroit où se retrouve vos défis",
-        "resources": "Voici l'endroit où se retrouve vos ressources",
-        "create_classroom": "Voici l'endroit où se retrouve vos classes",
-        "create_course": "Voici l'endroit où se retrouve les cours que vous avez créés"
-      },
-      "views": {
-        "recent_courses": "Cette vue vous permet de reprendre rapidement là où vous vous êtes arrêté en classant vos cours du plus récemment ouverts au moins récemment ouverts.",
-        "challenges": "Cette vue représente votre bibliothèque de défis. En plus d'y retrouvez tous les défis que vous avez, c'est ici que vous pourrez en créer de nouveaux, éditer ceux qui existent déjà et supprimer ceux que vous ne voulez plus.",
-        "my_resources": "",
-        "classroom": {
-          "create_course": ""
-        }
-      }
-    }
-  }
+	"lang": "fr",
+	"error": {
+		"sorry": "Désolé.",
+		"unknown": "Une erreur inconnue est survenue, veuillez réessayer.",
+		"custom": "Erreur: {{error}}.",
+		"back": "Retour en arrière",
+		"home": "Retour à la page d'accueil",
+		"signout": "Une erreur est survenue lors de la déconnexion, veuillez réessayer.",
+		"signin": "Informations erronées, veuillez réessayer.",
+		"signin_first_time": "une erreur est survenue lors de votre connexion automatique à votre nouveau compte.",
+		"500": "Une erreur est survenue, veuillez réessayer.",
+		"page404": "Cette page n'existe pas.",
+		"page501": "Cette page est en construction.",
+		"maintenance": {
+			"ongoing": "Une maintenance est en cours du {{startDate}} et prend fin le {{finishDate}}, cette page n'a pas pu être affichée.",
+			"short": "La requête n'a pas pu être faite, le site est présentement en maintenance."
+		}
+	},
+	"feedback": {
+		"title": "À quoi pensez-vous?",
+		"button": "Donner votre avis!",
+		"send": "Envoyer",
+		"cancel": "Annuler",
+		"choices": {
+			"like": "Quelque chose que j'aime",
+			"dislike": "Quelque chose que je n'aime pas",
+			"idea": "Une idée que j'ai",
+			"bug": "Un bug que j'ai rencontré"
+		},
+		"information": "informations",
+		"authorization_infos": "J'autorise de joindre (de manière anonyme) mes {{infos}} à cet avis.",
+		"info_collected": {
+			"url": "L'URL de la page que vous êtes en train de visiter",
+			"browser": "Le navigateur que vous utilisez",
+			"theme": "Le thème que vous utilisez (thème sombre/clair)",
+			"language": "La langue que vous utilisez"
+		},
+		"placeholder": "Veuillez entrer votre avis ici..."
+	},
+	"form": {
+		"submit": {
+			"POST": "Créer {{name}}",
+			"PATCH": "Modifier {{name}}",
+			"DELETE": "Supprimer {{name}}"
+		},
+		"error": {
+			"generic": "Ce champs est erroné",
+			"required": "Ce champs est requis",
+			"maxLength": "Ce champs dépasse {{max}} caractères",
+			"minLength": "Ce champs devrait être d'au moins {{min}} caractères",
+			"too_long": "Ce champs est trop long",
+			"too_short": "Ce champs est trop court",
+			"match": {
+				"alphabetic": "Ce champs doit contenir uniquement des lettres",
+				"alphabetic_lower": "Ce champs doit contenir uniquement des lettres minuscules",
+				"alphabetic_upper": "Ce champs doit contenir uniquement des lettres majuscules",
+				"alphanumeric": "Ce champs doit contenir uniquement des lettres et des chiffres",
+				"alphanumeric_underscore": "Ce champs doit contenir uniquement des lettres, des chiffres et des tirets vers le bas _",
+				"numbers": "Ce champs doit contenir uniquement des chiffes",
+				"name": "Ce champs doit contenir uniquement des lettres et des chiffres"
+			}
+		},
+		"challenge": {
+			"PATCH": {
+				"title": "Paramètres du défi",
+				"fontSize": "Taille de la police",
+				"interface_settings": "L'interface"
+			}
+		},
+		"title": {
+			"signin": "Connexion",
+			"signup": "Inscription",
+			"create_classroom": "Création d'une classe",
+			"create_course": "Création d'un cours",
+			"create_challenge": "Création d'un défi",
+			"create_iot_project": "Création d'un projet IoT",
+			"create_iot_object": "Création d'un objet IoT",
+			"update_classroom": "Modification des paramètres de la classe"
+		},
+		"join_classroom": {
+			"title": "Rejoindre une classe",
+			"submit": "Rejoindre",
+			"code": "Code de la classe",
+			"invalid_code": "Code non-valide"
+		},
+		"pwd": {
+			"label": "Mot de passe",
+			"placeholder": "*****",
+			"required": "Un mot de passe est requis",
+			"pattern": "Le mot de passe doit uniquement contenir des lettres, des chiffres et: !@#\\$&*~"
+		},
+		"email": {
+			"label": "Adresse courriel",
+			"placeholder": "MonAdresse@alivecode.ca",
+			"required": "Une adresse courriel est requise",
+			"taken": "Cette adresse courriel est déjà prise",
+			"info": "Nous ne partagerons pas votre adresse courriel"
+		},
+		"firstName": {
+			"label": "Prénom",
+			"placeholder": "Enric",
+			"required": "Votre prénom est requis",
+			"pattern": "Votre prénom doit contenir uniquement des lettres et des tirets"
+		},
+		"lastName": {
+			"label": "Nom",
+			"placeholder": "Soldevila",
+			"required": "Votre nom de famille est requis",
+			"pattern": "Votre nom de famille doit contenir uniquement des lettres et des tirets"
+		},
+		"scolarity": {
+			"label": "Niveau scolaire",
+			"placeholder": "4e année",
+			"required": "Votre niveau scolaire est requis"
+		}
+	},
+	"modal": {
+		"close": "Fermer",
+		"save": "Enregistrer",
+		"confirm": "Confirmer",
+		"cancel": "Annuler"
+	},
+	"msg": {
+		"professor": "professeur",
+		"student": "étudiant",
+		"creator": "Créateur",
+		"understood": "C'est compris!",
+		"description": "description",
+		"deleted_user": "Ancien utilisateur",
+		"search": "Rechercher",
+		"community_challenges": "Défis de la communauté",
+		"public_classrooms": "Classes publiques",
+		"creation_date": "Date de création",
+		"update_date": "Date de modification",
+		"see_links": "Voir les liens",
+		"activity_type": {
+			"challenge": "Défi",
+			"video": "Visionnement",
+			"pdf": "Pdf",
+			"assignment": "Énoncé de travail",
+			"theory": "Théorie"
+		},
+		"subjects": {
+			"iot": "Internet des Objets",
+			"ai": "Intelligence Artificielle",
+			"code": "Programmation",
+			"other": "Autre",
+			"all": "Tout"
+		},
+		"time": {
+			"format": "{{dayName}}, {{day}} {{monthName}} {{year}} - {{hour}}:{{minute}}",
+			"day": {
+				"0": "Dimanche",
+				"1": "Lundi",
+				"2": "Mardi",
+				"3": "Mercredi",
+				"4": "Jeudi",
+				"5": "Vendredi",
+				"6": "Samedi"
+			},
+			"month": {
+				"0": "Janvier",
+				"1": "Février",
+				"2": "Mars",
+				"3": "Avril",
+				"4": "Mai",
+				"5": "Juin",
+				"6": "Juillet",
+				"7": "Août",
+				"8": "Septembre",
+				"9": "Octobre",
+				"10": "Novembre",
+				"11": "Décembre"
+			}
+		},
+		"desc": {
+			"empty": "Aucune description disponible"
+		},
+		"auth": {
+			"signin": "Se connecter",
+			"signin_success": "Connexion réussie",
+			"signup": "S'inscrire",
+			"signup_success": "Vous êtes connecté avec votre nouveau compte",
+			"signup_professor": "Compte professeur",
+			"signup_student": "Compte étudiant",
+			"signout": "Se déconnecter",
+			"already_registered": "Tu as déjà un compte ?",
+			"account_required": "Il te faut un compte pour faire ça",
+			"name_migration": {
+				"title": "Changement de la façon dont les étudiants sont identifiés",
+				"desc": "Chaque étudiant doit maintenant posséder un prénom ainsi qu'un nom de famille afin d'être plus facilement identifié. De plus, votre nom n'est plus unique.",
+				"please": "Veuillez s'il vous plait prendre le temps de choisir un nouveau nom.",
+				"submit": "Confirmer votre nouveau nom"
+			}
+		},
+		"section": {
+			"alive": "ALIVE Play",
+			"dashboard": "Tableau de bord",
+			"ai": "Intelligence artificielle",
+			"iot": "Internet des Objets",
+			"amc": "Contrôle par la pensée",
+			"about": "À propos",
+			"avp": "Perception de véhicule augmentée",
+			"lrima": "Laboratoire de recherche LRIMA",
+			"account": "Mon compte"
+		},
+		"maintenance": {
+			"more_info": "Plus d'informations",
+			"no_desc": "Pas de description disponible.",
+			"ongoing": "Une maintenance est présentement en cours du {{startDate}} au {{finishDate}}. Vous ne pouvez pas utiliser votre compte ou voir les défis des utilisateurs durant cette période. Désolé pour cet inconvénient.",
+			"upcoming": "Une maintenance est prévue du {{startDate}} au {{finishDate}}. Vous ne pourrez pas utiliser votre compte ou voir les défis des utilisateurs durant cette période. Désolé pour cet inconvénient.",
+			"status": {
+				"ongoing": "En cours",
+				"finished": "Terminée",
+				"upcoming": "Prochainement"
+			}
+		}
+	},
+	"dashboard": {
+		"recents": {
+			"title": "Cours Récents",
+			"empty": {
+				"student": "Tu n'as pas d'activité récente. Rejoins une classe publique ou privée pour commencer à apprendre",
+				"professor": "Tu n'as pas d'activité récente. Crée une classe pour commencer"
+			}
+		},
+		"challenges": {
+			"title": "Défis",
+			"browse_challenges": "Explorer les défis de la communauté",
+			"create_challenge": "Créer un défi",
+			"empty": "Tu ne possèdes aucun défi"
+		},
+		"resources": {
+			"title": "Mes Ressources"
+		},
+		"classrooms": {
+			"title": "Classes",
+			"no_courses": "Aucun cours",
+			"browse_public": "Explorer les classes publiques",
+			"empty": {
+				"student": "Tu ne fais parti d'aucune classe",
+				"professor": "Tu ne possèdes aucune classe"
+			},
+			"add": {
+				"student": "Rejoindre une classe",
+				"professor": "Créer une classe"
+			}
+		},
+		"courses": {
+			"title": "Vos cours",
+			"add": "Créer un cours",
+			"empty": "Tu ne possèdes aucun cours"
+		}
+	},
+	"resources": {
+		"menu": {
+			"title": "Ressources",
+			"search": "Rechercher"
+		},
+		"video": {
+			"name": "Vidéo",
+			"form": {
+				"url": "URL vers la vidéo",
+				"file": "Glissez ou sélectionnez un fichier"
+			}
+		},
+		"file": {
+			"name": "Fichier",
+			"form": {
+				"file": "Glissez ou sélectionnez un fichier"
+			}
+		},
+		"pdf": {
+			"name": "Pdf",
+			"form": {
+				"file": "Glissez ou sélectionnez un fichier"
+			}
+		},
+		"image": {
+			"name": "Image",
+			"form": {
+				"url": "URL vers l'image",
+				"file": "Glissez ou sélectionnez un fichier"
+			}
+		},
+		"challenge": {
+			"name": "Défi",
+			"form": {
+				"select": "Sélectionnez un défi pour la liaison"
+			}
+		},
+		"theory": {
+			"name": "Théorie"
+		},
+		"form": {
+			"create": "Créer une ressource",
+			"update": "Modifier la ressource",
+			"delete": "Supprimer la ressource",
+			"delete_confirm": "Êtes-vous sûr de vouloir supprimer cette ressource? Si vous l'avez utilisée dans un cours, celle-ci sera perdue à jamais.",
+			"subject": "Matière de la ressource",
+			"type": "Type de ressource",
+			"name": "Nom de la ressource"
+		}
+	},
+	"classroom": {
+		"add_students": "Ajoutez des étudiants",
+		"delete": "Supprimer la classe",
+		"leave": "Quitter la classe",
+		"already_in": "Déjà dans la classe",
+		"container": {
+			"courses": {
+				"title": "Cours",
+				"empty": "Cette classe ne possède aucun cours"
+			},
+			"details": {
+				"title": "Détails"
+			},
+			"students": {
+				"title": "Étudiants dans la classe",
+				"empty": "Il n'y a aucun étudiant dans la classe"
+			}
+		},
+		"desc": "Classe de {{professor}}",
+		"subject": "Matière",
+		"code": {
+			"title": "Code de la classe",
+			"desc": "Donnez ce code aux étudiants afin qu'ils puissent rejoindre la classe depuis le tableau de bord!"
+		}
+	},
+	"course": {
+		"desc": "Cours de {{professor}}",
+		"subject": "Matière du cours",
+		"empty": "Ce cours est vide.",
+		"student_view": "Vue étudiant",
+		"layout_view": "Vue professeur",
+		"delete": "Supprimer le cours. (Il sera retiré de toutes les classes où il est présent)",
+		"deletion_test": "Écrivez le nom du cours pour confirmer la suppression",
+		"section": {
+			"empty": "Cette section ne possède aucune activité",
+			"new": "Ajouter une section",
+			"delete": "Êtes-vous sûr de vouloir supprimer cette section? Tout le contenu à l'intérieur de celle-ci sera supprimé."
+		},
+		"activity": {
+			"open": "Ouvrir",
+			"open_in_student_view": "Ouvrir dans la vue étudiant",
+			"edit_in_layout_view": "Modifier dans la vue professeur",
+			"empty": "Cette activité est vide.",
+			"no_activity": "Ouvre une activité pour commencer à apprendre.",
+			"new": "Ajouter une activité",
+			"new_name": "Activité #{{num}}",
+			"import_resource": {
+				"generic": "Ajouter une ressource existante",
+				"PF": "Ajouter un pdf existant",
+				"TH": "Ajouter un document de théorie existant",
+				"VI": "Ajouter une vidéo existante",
+				"AS": "Ajouter un fichier existant",
+				"CH": "Ajouter un défi"
+			},
+			"create_resource": {
+				"generic": "Créer une nouvelle ressource",
+				"PF": "Téléverser un pdf",
+				"TH": "Créer un nouveau document de théorie",
+				"VI": "Téléverser une vidéo ou URL",
+				"AS": "Téléverser un fichier"
+			},
+			"generic": "Retirer la ressource",
+			"next": "Activité suivante",
+			"previous": "Activité précédente",
+			"delete": "Êtes-vous sûr de vouloir supprimer cette activité? Les ressources comprises à l'intérieur de celle-ci ne seront pas supprimées."
+		},
+		"form": {
+			"create": "Créer un cours",
+			"update": "Modifier le cours",
+			"name": "Nom du cours",
+			"description": "Description du cours",
+			"subject": "Matière du cours"
+		},
+		"navigation": {
+			"minimize": "Réduire",
+			"maximize": "Agrandir"
+		}
+	},
+	"menu": {
+		"signup": {
+			"professor": "Compte professeur",
+			"student": "Compte étudiant"
+		},
+		"challenge": {
+			"alive": "Défi avec voiture ALIVE",
+			"code": "Défi avec console",
+			"ai": "Défi avec intelligence artificielle",
+			"iot": "Défi avec Internet des Objets"
+		}
+	},
+	"home": {
+		"msg1": "code",
+		"msg2": "ai",
+		"msg3": "iot",
+		"desc": "Apprend la programmation",
+		"get_started": "Commencer!",
+		"see_trainings": "Voir les formations",
+		"about": "À propos",
+		"trainings": "Formations",
+		"news": "Nouvelles",
+		"iot": {
+			"desc": "L'IoT n'a jamais été aussi facile",
+			"to_dashboard": "Accéder au Tableau de Bord",
+			"to_trainings": "Accéder aux Formations",
+			"section": {
+				"develop": {
+					"title": "Commence à Développer",
+					"desc": "Pratique tes notions d'internet des objets en développant des projets IoT. Enregistre plusieurs objets connectés, crée un réseau d'objets connectés, établis des communications entre eux, collecte et partage des données entre les objets et affiche en temps réel les données dans une interface graphique."
+				},
+				"learn": {
+					"title": "Commence à Apprendre",
+					"desc": "$t(home.section.training_iot.desc)"
+				}
+			}
+		},
+		"section": {
+			"mission": {
+				"title": "Notre mission",
+				"desc": "Faciliter l'accès, le partage et les discussions autour des nouvelles technologies. Donner la chance à n'importe qui d'accomplir n'importe quoi."
+			},
+			"us": {
+				"title": "Qui sommes-nous ?",
+				"desc": "Nous sommes des chercheurs du Laboratoire de Recherche Informatique du collège Maisonneuve LRIMa. Chaque année nous avons comme but d'innover dans l'industrie informatique en menant des recherches et en publiant/partageant les résultats de nos recherches durant des conférences à travers le monde. Visitez le site du LRIMa pour plus de détails et la section à propos."
+			},
+			"story": {
+				"title": "Notre histoire",
+				"desc": "Les origines d'ALIVEcode remontent à loin dans le temps. Il y a trois ans, nous avons eu l'idée de créer des véhicules miniatures autonomes dans le but de recherches scientifiques. Un an plus tard, nous avons eu l'idée d'utiliser ces robots afin d'apprendre la programmation à de jeunes étudiants. L'année suivante, nous avons décidé de créer ALIVEcode afin de rendre l'apprentissage de la programmation accessible à tous. Cela fait maintenant plus d'un an qu'ALIVEcode existe et continue de grandir."
+			},
+			"training_ai": {
+				"title": "Formation en Intelligence Artificielle",
+				"desc": "Apprends la théorie et la pratique de l'IoT. Suis une ou plusieurs formations complètes offertes par ALIVEcode qui t'apprendront tout ce qu'il y a à savoir sur l'IA. Tels que: les régressions linéaires, la classification, les arbres décisionnels, les réseaux de neurones, etc."
+			},
+			"training_iot": {
+				"title": "Formation en Internet des Objets",
+				"desc": "Apprends la théorie et la pratique de l'IoT. Suis une ou plusieurs formations complètes offertes par ALIVEcode qui t'apprendront tout ce qui t'est requis afin de commencer à développer tes propres projets IoT. L'électronique, les protocoles de communication, les bases de données, l'IA, l'interfaçage, etc."
+			},
+			"training_code": {
+				"title": "Initiation à la Programmation",
+				"desc": "Apprends les bases de la programmation. Suis une ou plusieurs formations complètes offertes par ALIVEcode qui te transformeront en programmeur aguerri. Apprends la programmation en contrôlant un véhicule motorisé, en résolvant des défis et en publiant tes propres défis/projets à la communauté."
+			}
+		},
+		"navbar": {
+			"section": {
+				"dashboard": "$t(msg.section.dashboard)",
+				"iot": "$t(msg.section.iot)",
+				"ai": "$t(msg.section.ai)",
+				"amc": "$t(msg.section.amc)",
+				"about": "$t(msg.section.about)"
+			},
+			"msg": {
+				"auth": "Bonjour, {{name}}",
+				"non_auth": {
+					"label": "Vous n'êtes pas connecté, ",
+					"link": "$t(msg.auth.signin) ?"
+				}
+			}
+		},
+		"footer": {
+			"about": {
+				"title": "$t(msg.section.about)",
+				"description": "Le projet ALIVE vise à fournir une méthode et une pratique d'enseignement de la programmation pour simplifier le concept théorique de la programmation."
+			},
+			"categories": "Catégories",
+			"links": "Liens pratiques",
+			"copyright_1": "Copyright",
+			"copyright_2": " 2022 Tous droits réservés par"
+		}
+	},
+	"input": {
+		"defaultValue": "Écrivez ici..."
+	},
+	"ai": {
+		"header": {
+			"title": "LE MONDE DE L'INTELLIGENCE ARTIFICIELLE AVEC ALIVESCRIPT",
+			"description": "L’intelligence artificielle est un domaine en constante évolution qui permet d’accomplir des tâches énormes en un temps record. L’efficacité des techniques qui en font partie est telle qu’on cherche maintenant à s’en servir dans toutes les sphères de la société, de l’agriculture à la robotique, en passant par le transport, les sciences, l’économie et bien plus! À l’aide de notre langage de programmation AliveScript, on te propose de découvrir les possibilités de l’intelligence artificielle d’un façon simple et captivante. Choisis un des cours disponibles et pars à la rencontre de cet univers fascinant!"
+		},
+		"section": {
+			"artificial-intelligence": {
+				"title": "Le potentiel de l'intelligence artificielle",
+				"paragraph1": "L’intelligence artificielle prend une place de plus en plus importante dans notre quotidien. En fait, nous pouvons déjà nous en apercevoir aujourd'hui : des assistants intelligents sont présents dans nos téléphones, nos ordinateurs ainsi que dans des haut-parleurs; de plus en plus d’essais avec des technologies d’IA sont effectués dans le domaine des transports, de l’agriculture, de la médecine et bien plus; les moteurs de recherche sur Internet ainsi que plusieurs sites utilisent l’IA pour des raison commerciales; et il existe bien d’autres exemples!",
+				"paragraph2": "Au fil des cours sur les différentes facettes de l’intelligence artificielle, tu apprendras comment peut-on s’en servir pour résoudre des problèmes variés :",
+				"point1": "Comment prédire la consommation d’une voiture si on fait varier son moteur, son poids et plusieurs autres caractéristiques?",
+				"point2": "Comment développer une formule qui saura prédire la grandeur maximale d’une personne?",
+				"point3": "Comment trouver la configuration optimale à un robot pour qu’il accomplisse une tâche précise?",
+				"point4": "Et plus encore!",
+				"paragraph3": "De plus, même si nous aurons couvert seulement quelques applications de l’intelligence artificielle, les possibilités sont infinies, si bien qu’il en reste encore énormément à découvrir!"
+			},
+			"machine-learning": {
+				"title": "L'apprentissage machine et sa place en IA",
+				"paragraph1": "Si tu n’es pas familier avec le domaine de l’intelligence artificielle, la première chose à savoir est qu’il existe plusieurs grandes branches qui se concentrent sur un sujet plus particulier de l’IA. Par exemple, la branche de la vision par ordinateur se spécialise dans la reconnaissance d’images, tandis que la branche de la reconnaissance vocale cherche plutôt à reconnaitre ou à générer des paroles humaines. L’apprentissage machine est justement une de ces catégories, mais elle contient plusieurs sous-branches, dont les fameux réseaux de neurones.",
+				"paragraph2": "L’apprentissage machine se spécialise surtout dans la prédiction de valeurs en se basant sur des données qui concernent la situation qu’on analyse. Elle permet de prédire des résultats à dans des situations qui demanderaient des calculs extrêmement complexes pour arriver au même résultat. Pour arriver à cela, l’algorithme s’entraîne sur des valeurs venant d’expériences précédentes et essaie de prédire leurs résultats avec un modèle aléatoire. Ensuite, on compare la prédiction avec la valeur réelle et on adapte le modèle en fonction de l’erreur dans le but de l’améliorer. Finalement, ce processus est répété jusqu’à atteindre un résultat satisfaisant. C’est ce processus qui est utilisé dans tous les algorithmes d’apprentissage machine, qu’il s’agisse de régressions ou même de réseaux de neurones."
+			},
+			"deep-learning": {
+				"title": "Les réseaux de neurones en IA",
+				"paragraph1": "On pourrait penser qu’il est très étrange d’associer des concepts liés au cerveau à l’informatique. Pourtant, l’idée d’associer les deux a complètement révolutionné le monde de l’intelligence artificielle! Les algorithmes les plus puissants au monde utilisent ce genre de processus pour accomplir des tâches qui auraient pris de nombreuses années à être accomplies par les humaines.",
+				"paragraph2": "Les réseaux de neurones dans ce domaine sont en fait une nouvelle façon de concevoir une formule pour modéliser les situations les plus complexes. Basés sur les réseaux de neurones existants dans notre cerveau, ces algorithmes sont constitués de plusieurs neurones réparties sur un certain nombre de couches. Chaque neurone de chaque couche est reliée à chaque neurone de la couche suivante et ces liaisons ont une valeur attribuée qu’on appelle un « poids ». Chaque neurone se voit également attribuer une valeur que nous appelons « biais ». Ces poids et ces biais constituent les paramètres du réseau, ceux qui vont déterminer le résultat sortant selon une certaine entrée.",
+				"paragraph3": "Cependant, la partie « intelligente » du réseau de neurones se situe dans l’ajustement de ces paramètres :",
+				"point1": "Le réseau commence par essayer de prédire la sortie d’un grand nombre d’entrée et compare son résultat avec le résultat qu’il aurait dû avoir.",
+				"point2": "Ensuite, il adapte l’ensemble de ses paramètres selon la grandeur de l’erreur, c’est-à-dire l’écart entre les deux valeurs grâce à des algorithmes complexes dont le plus populaire est la descente de gradient.",
+				"point3": "Finalement, il recommence tout le processus jusqu’à obtenir des résultats qui minimisent le plus possible l’erreur afin de pouvoir produire les meilleures prédictions possibles!",
+				"paragraph4": "Évidemment, les réseaux de neurones sont bien plus complexes que cela, et c’est pourquoi un cours à ce sujet sera bientôt disponible. Reste à l’affût!"
+			}
+		}
+	},
+	"iot": {
+		"dashboard": {
+			"title": "Tableau de bord IoT",
+			"no_object": "Aucun objet IoT",
+			"no_project": "Aucun projet IoT"
+		},
+		"project": {
+			"name": "Projet IoT",
+			"settings": "Paramètres",
+			"routes": "Routage",
+			"documents": {
+				"name": "Documents"
+			},
+			"interface": {
+				"name": "Interface",
+				"add_component": "Ajouter un composant",
+				"delete_component": "Supprimer le composant",
+				"delete_component_confirm": "Êtes-vous sûr de vouloir supprimer le composant",
+				"edit_component": "Modifier le composant",
+				"copy_project_id": "Copier l'ID du projet",
+				"errors": {
+					"ref": "ERREUR",
+					"no_id": "Le composant n'a pas d'ID"
+				},
+				"components": {
+					"progress": {
+						"name": "Jauge de progression"
+					},
+					"button": {
+						"name": "Bouton"
+					},
+					"logs": {
+						"name": "Journaux",
+						"clear": "Supprimer toutes les entrées",
+						"add": "Ajouter une entrée",
+						"empty": "Aucune entrée"
+					},
+					"led": {
+						"name": "LED"
+					},
+					"label": {
+						"name": "Étiquette"
+					},
+					"buzzer": {
+						"name": "Avertisseur sonore",
+						"sine": "Sinus",
+						"sawtooth": "Dents de scie",
+						"square": "Carré",
+						"triangle": "Triangle",
+						"start": "Activer l'avertisseur",
+						"stop": "Arrêter l'avertisseur"
+					},
+					"traffic_light": {
+						"name": "Feu de circulation",
+						"red": "rouge",
+						"yellow": "jaune",
+						"green": "vert",
+						"off": "éteint"
+					}
+				},
+				"components_form": {
+					"name": {
+						"label": "Nom du composant",
+						"placeholder": "Nom"
+					},
+					"id": {
+						"label": "Identifiant du composant",
+						"placeholder": "ID"
+					},
+					"ref": {
+						"label": "Référence à une entrée du document",
+						"static": "Valeur statique",
+						"invalid": "VALEUR INVALIDE"
+					},
+					"progress": {
+						"value": {
+							"label": "Progression de la jauge"
+						},
+						"min": {
+							"label": "Minimum de la jauge",
+							"placeholder": "0"
+						},
+						"max": {
+							"label": "Maximum de la jauge",
+							"placeholder": "100"
+						},
+						"is_percentage": {
+							"label": "Est sous forme de pourcentage?"
+						}
+					},
+					"button": {
+						"on_click": "Lors du clic du bouton",
+						"value": {
+							"label": "Affichage du bouton",
+							"placeholder": "Clic-moi"
+						},
+						"target": {
+							"label": "Objet qui subira une action lors du clic du bouton",
+							"placeholder": "Objet visé"
+						},
+						"action_id": {
+							"label": "Identifiant de l'action à faire subir",
+							"placeholder": "avancer"
+						},
+						"action_data": {
+							"label": "Données concernant l'action",
+							"placeholder": "{}"
+						}
+					},
+					"logs": {
+						"value": {
+							"label": "Journaux"
+						}
+					},
+					"led": {
+						"value": {
+							"label": "État éteint/allumé du LED"
+						}
+					},
+					"label": {
+						"value": {
+							"label": "Texte d'affichage",
+							"placeholder": "Bonjour Monde!"
+						},
+						"font_size": {
+							"label": "Taille de la police"
+						}
+					},
+					"buzzer": {
+						"value": {
+							"label": "Fréquence à jouer",
+							"placeholder": "500"
+						},
+						"duration": {
+							"label": "Durée du son à jouer (secondes)"
+						},
+						"frequency_type": {
+							"label": "Type de fréquence",
+							"placeholder": "Sinus"
+						}
+					},
+					"traffic_light": {
+						"value": {
+							"label": "État du feu de circulation",
+							"placeholder": "Éteint"
+						}
+					}
+				}
+			},
+			"objects": {
+				"name": "Objets"
+			},
+			"scripts": {
+				"name": "Scripts"
+			}
+		},
+		"object": {
+			"name": "Objet IoT",
+			"copy_id": "Copier l'ID de l'objet",
+			"deleted": "Objet IoT supprimé"
+		}
+	},
+	"user": {
+		"quiz": "Quiz : ",
+		"status": "Status : ",
+		"posts": "Posts : ",
+		"reward": "Récompenses : ",
+		"rank": "Rank : ",
+		"rewardTitle": "Récompenses"
+	},
+	"simulation": {
+		"modal": {
+			"retry": "Réessayer?",
+			"continue": "Continuer",
+			"lose": "Meilleure chance la prochaine fois!",
+			"win": "La victoire t'appartient! 🎉",
+			"water": "La voiture est tombée dans l'eau",
+			"lava": "La voiture est tombée dans la lave",
+			"hole": "La voiture est tombée dans un trou",
+			"wall": "La voiture a foncée dans un mur",
+			"connect_car": {
+				"title": "Connecter un vrai ALIVEcar",
+				"label": "Identifiant du ALIVEcar",
+				"id": "123",
+				"button": "Se connecter avec le vrai ALIVEcar"
+			}
+		}
+	},
+	"cmd": {
+		"clear": "Effacer les lignes"
+	},
+	"action": {
+		"irreversible": "Cette action est irréversible"
+	},
+	"help": {
+		"click_for_more": "Cliquez pour plus d'informations",
+		"slides": {
+			"next": "Suivant",
+			"previous": "Précédent"
+		},
+		"dashboard": {
+			"tabs": {
+				"recent_courses": "Voici l'endroit où se retrouve vos cours récemment visité",
+				"challenges": "Voici l'endroit où se retrouve vos défis",
+				"resources": "Voici l'endroit où se retrouve vos ressources",
+				"create_classroom": "Voici l'endroit où se retrouve vos classes",
+				"create_course": "Voici l'endroit où se retrouve les cours que vous avez créés"
+			},
+			"views": {
+				"recent_courses": "Cette vue vous permet de reprendre rapidement là où vous vous êtes arrêté en classant vos cours du plus récemment ouverts au moins récemment ouverts.",
+				"challenges": "Cette vue représente votre bibliothèque de défis. En plus d'y retrouvez tous les défis que vous avez, c'est ici que vous pourrez en créer de nouveaux, éditer ceux qui existent déjà et supprimer ceux que vous ne voulez plus.",
+				"my_resources": "",
+				"classroom": {
+					"create_course": ""
+				}
+			}
+		}
+	}
 }

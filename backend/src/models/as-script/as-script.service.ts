@@ -17,13 +17,19 @@ export class AsScriptService {
     private iotProjectService: IoTProjectService,
   ) {}
 
-  async sendDataToAsServer(data: any, context?: any) {
+  async sendDataToAsServer(data: any, query?: { [name: string]: string }, context?: any) {
     if (context) data.context = context;
+    const queryString =
+      query &&
+      '?' +
+        Object.entries(query)
+          .map(([name, value]) => `${name}=${value}`)
+          .join('&');
     let res: AxiosResponse;
     try {
       res = await axios({
         method: 'POST',
-        url: '/compile/',
+        url: `/compile${queryString ?? '/'}`,
         baseURL: process.env.AS_URL,
         data,
       });
@@ -34,16 +40,16 @@ export class AsScriptService {
     return res.data;
   }
 
-  async compile(compileDto: CompileDTO) {
+  async compile(compileDto: CompileDTO, query?: { [name: string]: string }) {
     const { backendCompiling, ...data } = compileDto;
 
-    if (backendCompiling) return await this.compileBackend(data);
+    if (backendCompiling) return await this.compileBackend(data, query);
 
-    return await this.sendDataToAsServer(data);
+    return await this.sendDataToAsServer(data, query);
   }
 
-  async compileBackend(data: any, context: any = undefined) {
-    const res = await this.sendDataToAsServer(data, context);
+  async compileBackend(data: any, query?: { [name: string]: string }, context: any = undefined) {
+    const res = await this.sendDataToAsServer(data, query, context);
     const executor = new ChallengeIoTBackendExecutor(this, this.iotProjectService, res.result);
     await executor.toggleExecution();
 

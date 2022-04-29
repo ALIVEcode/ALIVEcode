@@ -8,6 +8,7 @@ import {
 	CHALLENGE_ACCESS,
 	CHALLENGE_DIFFICULTY,
 	CHALLENGE_TYPE,
+	SUPPORTED_LANG,
 } from '../../../Models/Challenge/challenge.entity';
 import FormContainer from '../../UtilsComponents/FormContainer/FormContainer';
 import { ChallengeCode } from '../../../Models/Challenge/challenges/challenge_code.entity';
@@ -16,7 +17,7 @@ import {
 	IOT_CHALLENGE_TYPE,
 	ChallengeIoT,
 } from '../../../Models/Challenge/challenges/challenge_IoT.entity';
-import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
+import { FORM_ACTION, InputGroup } from '../../UtilsComponents/Form/formTypes';
 import { useState, useEffect, useContext } from 'react';
 import { IoTProject } from '../../../Models/Iot/IoTproject.entity';
 import api from '../../../Models/api';
@@ -46,14 +47,18 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 	 */
 	const createResourceChallenge = async (challenge: Challenge) => {
 		if (user?.isProfessor()) {
-			await api.db.resources.create({
-				type: RESOURCE_TYPE.CHALLENGE,
-				resource: {
-					name: challenge.name,
-					subject: challenge.getSubject(),
-					challengeId: challenge.id,
+			await api.db.resources.create(
+				{
+					type: RESOURCE_TYPE.CHALLENGE,
+					resource: {
+						name: challenge.name,
+						subject: challenge.getSubject(),
+						challengeId: challenge.id,
+					},
+					file: null,
 				},
-			});
+				value => {},
+			);
 		}
 	};
 
@@ -81,6 +86,15 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 			name: 'challenge',
 			action: FORM_ACTION.POST,
 		};
+		const sharedInputGroup: InputGroup[] = [
+			{
+				name: 'lang',
+				required: true,
+				inputType: 'select',
+				selectOptions: SUPPORTED_LANG,
+				default: SUPPORTED_LANG.FR,
+			},
+		];
 
 		switch (type) {
 			case CHALLENGE_TYPE.ALIVE:
@@ -89,7 +103,7 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 						onSubmit={async res => {
 							const challenge: Challenge = plainToInstance(
 								ChallengeAlive,
-								res.data,
+								res.data as object,
 							);
 
 							await createResourceChallenge(challenge);
@@ -130,6 +144,7 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 								selectOptions: CHALLENGE_DIFFICULTY,
 								default: CHALLENGE_DIFFICULTY.MEDIUM,
 							},
+							...sharedInputGroup,
 						]}
 						{...sharedProps}
 					/>
@@ -140,7 +155,7 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 						onSubmit={async res => {
 							const challenge: ChallengeAI = plainToInstance(
 								ChallengeAI,
-								res.data,
+								res.data as object,
 							);
 
 							await createResourceChallenge(challenge);
@@ -181,6 +196,7 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 								selectOptions: CHALLENGE_DIFFICULTY,
 								default: CHALLENGE_DIFFICULTY.MEDIUM,
 							},
+							...sharedInputGroup,
 						]}
 						{...sharedProps}
 					/>
@@ -191,7 +207,7 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 						onSubmit={async res => {
 							const challenge: ChallengeCode = plainToInstance(
 								ChallengeCode,
-								res.data,
+								res.data as object,
 							);
 
 							await createResourceChallenge(challenge);
@@ -232,6 +248,7 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 								selectOptions: CHALLENGE_DIFFICULTY,
 								default: CHALLENGE_DIFFICULTY.MEDIUM,
 							},
+							...sharedInputGroup,
 						]}
 						{...sharedProps}
 					/>
@@ -242,7 +259,7 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 						onSubmit={async res => {
 							const challenge: ChallengeIoT = plainToInstance(
 								ChallengeIoT,
-								res.data,
+								res.data as object,
 							);
 
 							await createResourceChallenge(challenge);
@@ -302,6 +319,7 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 								default: IOT_CHALLENGE_TYPE.UPDATING,
 								selectOptions: IOT_CHALLENGE_TYPE,
 							},
+							...sharedInputGroup,
 						]}
 						{...sharedProps}
 					/>

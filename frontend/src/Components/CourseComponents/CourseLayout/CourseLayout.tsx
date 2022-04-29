@@ -1,6 +1,12 @@
 import { faUserGraduate } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useContext, useEffect, useRef, useState } from 'react';
+import {
+	useContext,
+	useEffect,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import useRoutes from '../../../state/hooks/useRoutes';
@@ -10,6 +16,7 @@ import { Section } from '../../../Models/Course/section.entity';
 import { plainToClass } from 'class-transformer';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import Info from '../../HelpComponents';
+import { TutorialContext } from '../../../state/contexts/TutorialContext';
 
 /**
  * Component that handles the layout view of a course
@@ -27,8 +34,27 @@ const CourseLayout = () => {
 	} = useContext(CourseContext);
 	const { routes, goTo } = useRoutes();
 	const { t } = useTranslation();
-	const [openTutorial, setOpenTutorial] = useState(false);
 	const titleRef = useRef<HTMLDivElement>(null);
+	const { registerTutorial, setCurrentTutorial, unregisterTutorial } =
+		useContext(TutorialContext);
+
+	useLayoutEffect(() => {
+		registerTutorial({
+			name: 'CourseLayout',
+			targets: [
+				{
+					ref: titleRef.current,
+					infoBox: <Info.Box text="aa" />,
+					position: 'bottom center',
+				},
+			],
+		});
+		return () => unregisterTutorial('CourseLayout');
+	}, []);
+
+	useLayoutEffect(() => {
+		setCurrentTutorial('CourseLayout');
+	}, []);
 
 	useEffect(() => {
 		console.log(courseElements?.current);
@@ -62,11 +88,7 @@ const CourseLayout = () => {
 				/>
 			</div>
 			<div className="flex flex-col justify-center md:px-52 pl-3 pr-12 min-w-fit w-[100%] whitespace-nowrap">
-				<div
-					className="text-center text-2xl mb-4"
-					ref={titleRef}
-					onClick={() => setOpenTutorial(true)}
-				>
+				<div className="text-center text-2xl mb-4" ref={titleRef}>
 					Course Layout
 				</div>
 				{!courseElements?.current ? (
@@ -135,18 +157,6 @@ const CourseLayout = () => {
 					</>
 				)}
 			</div>
-			<Info.Tutorial
-				name="CourseLayout"
-				open={openTutorial}
-				setOpen={setOpenTutorial}
-				targets={[
-					{
-						ref: titleRef,
-						infoBox: <Info.Box text="aa" />,
-						position: 'bottom center',
-					},
-				]}
-			/>
 		</div>
 	);
 };

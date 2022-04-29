@@ -22,7 +22,11 @@ import {
 import { IotRoute } from './Iot/IoTroute.entity';
 import { ClassroomQueryDTO } from './Classroom/dto/ClassroomQuery.dto';
 import { ChallengeQueryDTO } from './Challenge/dto/ChallengeQuery.dto';
-import { Challenge, CHALLENGE_TYPE } from './Challenge/challenge.entity';
+import {
+	Challenge,
+	CHALLENGE_TYPE,
+	SUPPORTED_LANG,
+} from './Challenge/challenge.entity';
 import { ChallengeAI } from './Challenge/challenges/challenge_ai.entity';
 import { ChallengeAlive } from './Challenge/challenges/challenge_alive.entity';
 import { ChallengeCode } from './Challenge/challenges/challenge_code.entity';
@@ -34,7 +38,7 @@ import { Category } from './Quiz/categories-quiz.entity';
 import { QuestionForm } from './Quiz/questionForm.entity';
 import { Quiz } from './Quiz/quiz.entity';
 import { QuizForm } from './Quiz/quizForm.entity';
-import { Resource, RESOURCE_TYPE } from './Resource/resource.entity';
+import { Resource } from './Resource/resource.entity';
 import { Result } from './Social/result.entity';
 import { Topics } from './Social/topics.entity';
 import { Professor, Student } from './User/user.entity';
@@ -43,7 +47,7 @@ import { GenericResourceTransformer } from './Resource/transformer/GenericResour
 import { MenuResourceCreationDTO } from '../Components/Resources/MenuResourceCreation/menuResourceCreationTypes';
 import { Activity } from './Course/activity.entity';
 import { QueryResources } from './Resource/dto/query_resources.dto';
-import React, { SetStateAction } from 'react';
+import React from 'react';
 import { GetMimeType } from '../Types/files.type';
 import { IoTProjectObject } from './Iot/IoTprojectObject.entity';
 import { IOT_EVENT } from './Iot/IoTProjectClasses/IoTTypes';
@@ -52,8 +56,6 @@ import { FeedbackEntity } from './Feedbacks/entities/feedback.entity';
 import { CreateFeedbackDto } from './Feedbacks/dto/create-feedback.dto';
 import { UpdateCourseElementDTO } from './Course/dto/UpdateCourseElement.dto';
 import { GetCourseTemplatesDTO } from './Course/bundles/dto/GetCourseTemplates.dto';
-import { CourseTemplate } from './Course/bundles/course_template.entity';
-import { template } from '@babel/core';
 import { MenuCourseCreationDTO } from '../Components/Resources/MenuCourseCreation/menuCourseCreationTypes';
 import { BundleQueryDTO } from './Course/bundles/dto/BundleQuery.dto';
 import { Bundle } from './Course/bundles/bundle.entity';
@@ -706,12 +708,16 @@ const api = {
 	},
 	as: {
 		async compile(data: CompileDTO, lang?: SupportedLanguagesAS) {
-			return (await axios.post(`as/compile?lang=${lang ?? 'fr'}`, data)).data;
+			return (
+				await axios.post(`as/compile?lang=${lang ?? SUPPORTED_LANG.FR}`, data)
+			).data;
 		},
 		async getLintInfo(lang?: SupportedLanguagesAS) {
 			return (
 				await axios.get(
-					`${process.env.BACKEND_URL}/as/lintinfo?lang=${lang ?? 'fr'}`,
+					`${process.env.BACKEND_URL}/as/lintinfo?lang=${
+						lang ?? SUPPORTED_LANG.FR
+					}`,
 				)
 			).data;
 		},

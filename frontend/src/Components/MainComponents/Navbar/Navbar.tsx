@@ -24,6 +24,7 @@ import {
 import { classNames } from '../../../Types/utils';
 import { Popup } from 'reactjs-popup';
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
+import { TutorialContext } from '../../../state/contexts/TutorialContext';
 
 /**
  * Navbar of ALIVEcode
@@ -31,7 +32,7 @@ import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
  * @param {() => void} handleLogout callback that logs out the user and change the global state of the app
  *
  * @param setFeedbackModalOpen
- * @author Enric Soldevila
+ * @author Enric Soldevila, Mathis Laroche
  */
 const ALIVENavbar = ({ handleLogout, setFeedbackModalOpen }: NavbarProps) => {
 	const { user } = useContext(UserContext);
@@ -40,6 +41,7 @@ const ALIVENavbar = ({ handleLogout, setFeedbackModalOpen }: NavbarProps) => {
 	const { theme, setTheme } = useContext(ThemeContext);
 	const location = useLocation();
 	const [hovering, setHovering] = useState<number>();
+	const { startCurrentTutorial, getCurrent } = useContext(TutorialContext);
 
 	const links = [
 		{
@@ -400,6 +402,17 @@ const ALIVENavbar = ({ handleLogout, setFeedbackModalOpen }: NavbarProps) => {
 												>
 													Informations
 												</div>
+											</Menu.Item>
+											<Menu.Item>
+												<button
+													className="cursor-pointer block px-4 py-2 text-sm text-[color:var(--foreground-color)] hover:text-[color:var(--foreground-color)]
+														hover:bg-[color:var(--bg-shade-two-color)] w-full text-left disabled:hover:bg-[color:var(--background-color)] 
+														disabled:cursor-default disabled:text-[color:rgb(var(--fg-shade-four-color-rgb),0.6)]"
+													onClick={startCurrentTutorial}
+													disabled={getCurrent() === null}
+												>
+													{t('help.start_tutorial')}
+												</button>
 											</Menu.Item>
 											<Menu.Item>
 												<div

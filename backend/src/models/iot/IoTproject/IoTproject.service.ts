@@ -214,21 +214,22 @@ export class IoTProjectService {
     return await this.findOne(id);
 
     /*
-    if (id.includes('/')) {
-      const split = id.split('/');
-      if (split.length < 2) throw new HttpException('Bad Id', HttpStatus.BAD_REQUEST);
-      try {
-        return await this.challengeService.getIoTProgressionById(split[0], split[1]);
-      } catch {
-        throw new HttpException('Project id not found', HttpStatus.NOT_FOUND);
-      }
-    } else {
-      return await this.findOne(id);
-    }*/
+		if (id.includes('/')) {
+			const split = id.split('/');
+			if (split.length < 2) throw new HttpException('Bad Id', HttpStatus.BAD_REQUEST);
+			try {
+				return await this.challengeService.getIoTProgressionById(split[0], split[1]);
+			} catch {
+				throw new HttpException('Project id not found', HttpStatus.NOT_FOUND);
+			}
+		} else {
+			return await this.findOne(id);
+		}*/
   }
 
   async sendRoute(route: IoTRouteEntity, data: any) {
-    await this.asScriptService.compileBackend({ lines: route.asScript.content }, data);
+    // TODO ADD query support
+    await this.asScriptService.compileBackend({ lines: route.asScript.content }, {}, data);
   }
 
   async updateDocument(id: string, fields: JsonObj) {

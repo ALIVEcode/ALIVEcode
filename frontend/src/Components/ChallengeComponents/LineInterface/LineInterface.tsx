@@ -11,6 +11,7 @@ import ace from 'ace-builds';
 import AceEditor from 'react-ace';
 import 'ace-builds/webpack-resolver';
 import './mode-alivescript';
+import { setup, setLintInfo } from './mode-alivescript';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
 import IconButton from '../../DashboardComponents/IconButton/IconButton';
 import Modal from '../../UtilsComponents/Modal/Modal';
@@ -27,6 +28,8 @@ import 'brace/theme/twilight';
 import 'brace/theme/solarized_dark';
 import 'brace/theme/xcode';
 import 'brace/ext/language_tools';
+import api from '../../../Models/api';
+import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 
 enum FontSize {
 	SMALL = 'small',
@@ -60,6 +63,7 @@ const LineInterface = memo(
 		initialContent,
 		handleChange,
 		className,
+		lang,
 	}: LineInterfaceProps) => {
 		/* Content for a multiple tabs interface */
 		const [tabs, setTabs] = useState<EditorTabModel[]>(() => {
@@ -81,6 +85,8 @@ const LineInterface = memo(
 		);
 		const [codeTheme, setCodeTheme] = useState<Theme>(Theme.COBALT);
 		const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
+		const [reloadRequired, setReloadRequired] = useState(false);
+		const [loaded, setLoaded] = useState(false);
 
 		useEffect(() => {
 			setCodeTheme(theme.name === 'light' ? Theme.XCODE : Theme.COBALT);
@@ -105,6 +111,25 @@ const LineInterface = memo(
 			handleChange(content);
 		};
 
+		useEffect(() => {
+			(async () => {
+				// setLoaded(false);
+				try {
+					const lintInfo = await api.as.getLintInfo(lang);
+					setLintInfo(lintInfo);
+					setup();
+					if (loaded) {
+						setReloadRequired(true);
+					}
+				} catch {
+					setLintInfo(null);
+				} finally {
+					setLoaded(true);
+				}
+				console.log('linted! ' + lang);
+			})();
+		}, [lang]);
+
 		return (
 			<StyledLineInterface
 				theme={theme}
@@ -122,6 +147,7 @@ const LineInterface = memo(
 									/>
 								</div>
 							))}
+						{reloadRequired && <span className="text-red-600 w-full">*Reload Required*</span>}
 						{/* GitHub copilot suggestion XD */}
 						{/*<FontAwesomeIcon
 							icon={faPlus}
@@ -148,57 +174,64 @@ const LineInterface = memo(
 					<>
 						{tabs.map((t, idx) => {
 							return (
-								<AceEditor
-									onInput={(event: KeyboardEvent) => {
-										if (event.key === 'Escape') {
-											event.preventDefault();
-										}
-									}}
-									key={idx}
-									ref={el => {
-										if (el) refList.current[idx] = el;
-									}}
-									className={
-										'ace-editor relative ' +
-										(!t.open && t.loaded ? 'hidden-editor ' : '') +
-										(t.open ? 'opened-editor ' : '')
-									}
-									defaultValue={t.defaultContent}
-									value={t.content}
-									mode="alivescript"
-									theme={codeTheme}
-									showGutter
-									showPrintMargin
-									onLoad={() => {
-										// To only hide the tab editor once it loaded
-										setTimeout(() => {
-											// Set default content in parent prop
-											if (t.open) handleChange(t.defaultContent);
-											tabs[idx].content = t.defaultContent;
-											tabs[idx].loaded = true;
-											setTabs([...tabs]);
-											refList.current.forEach(el => el.editor.resize());
-										}, 100);
-										const editor = ace.edit('1nt3rf4c3');
-										setAutocomplete(editor);
-										editor.keyBinding.addKeyboardHandler(new Autocomplete(), 0);
-									}}
-									onChange={content => {
-										onEditorChange(content, t);
-										tabs[idx].content = content;
-										setTabs([...tabs]);
-									}}
-									fontSize={fontSize}
-									name="1nt3rf4c3" //"UNIQUE_ID_OF_DIV"
-									editorProps={{ $blockScrolling: Infinity }}
-									setOptions={{
-										enableBasicAutocompletion: true,
-										enableSnippets: true,
-										enableLiveAutocompletion: true,
-										scrollPastEnd: true,
-										vScrollBarAlwaysVisible: true,
-									}}
-								/>
+								<>
+									{loaded && (
+										<AceEditor
+											onInput={(event: KeyboardEvent) => {
+												if (event.key === 'Escape') {
+													event.preventDefault();
+												}
+											}}
+											key={idx}
+											ref={el => {
+												if (el) refList.current[idx] = el;
+											}}
+											className={
+												'ace-editor relative ' +
+												(!t.open && t.loaded ? 'hidden-editor ' : '') +
+												(t.open ? 'opened-editor ' : '')
+											}
+											defaultValue={t.defaultContent}
+											value={t.content}
+											mode="alivescript"
+											theme={codeTheme}
+											showGutter
+											showPrintMargin
+											onLoad={async () => {
+												// To only hide the tab editor once it loaded
+												setTimeout(() => {
+													// Set default content in parent prop
+													if (t.open) handleChange(t.defaultContent);
+													tabs[idx].content = t.defaultContent;
+													tabs[idx].loaded = true;
+													setTabs([...tabs]);
+													refList.current.forEach(el => el.editor.resize());
+												}, 100);
+												const editor = ace.edit('1nt3rf4c3');
+												setAutocomplete(editor, lang);
+												editor.keyBinding.addKeyboardHandler(
+													new Autocomplete(),
+													0,
+												);
+											}}
+											onChange={content => {
+												onEditorChange(content, t);
+												tabs[idx].content = content;
+												setTabs([...tabs]);
+											}}
+											fontSize={fontSize}
+											name="1nt3rf4c3" //"UNIQUE_ID_OF_DIV"
+											editorProps={{ $blockScrolling: Infinity }}
+											setOptions={{
+												enableBasicAutocompletion: true,
+												enableSnippets: true,
+												enableLiveAutocompletion: true,
+												scrollPastEnd: true,
+												vScrollBarAlwaysVisible: true,
+											}}
+										/>
+									)}
+								</>
 							);
 						})}
 					</>
@@ -227,7 +260,7 @@ const LineInterface = memo(
 								if (ref.current) {
 									ref.current.editor.resize();
 									const editor = ace.edit('1nt3rf4c3');
-									setAutocomplete(editor);
+									setAutocomplete(editor, lang);
 									editor.keyBinding.addKeyboardHandler(new Autocomplete(), 0);
 								}
 							}, 10);

@@ -7,6 +7,7 @@ import { IsEmpty, IsNotEmpty, IsOptional } from 'class-validator';
 import { ResourceChallengeEntity } from '../../resource/entities/resources/resource_challenge.entity';
 
 export enum CHALLENGE_TAG {}
+
 export enum CHALLENGE_ACCESS {
   PUBLIC = 'PU', // can be found via a search
   UNLISTED = 'UN', // must be shared via a url
@@ -28,6 +29,11 @@ export enum CHALLENGE_TYPE {
   ALIVE = 'AL',
   AI = 'AI',
   IOT = 'IOT',
+}
+
+export enum SUPPORTED_LANG {
+  EN = 'EN',
+  FR = 'FR',
 }
 
 @Entity()
@@ -56,6 +62,10 @@ export class ChallengeEntity extends CreatedByUser {
   @Column({ type: 'jsonb', default: [] })
   @IsOptional()
   tags: CHALLENGE_TAG[] = [];
+
+  @Column({ type: 'enum', enum: SUPPORTED_LANG, default: SUPPORTED_LANG.FR, nullable: false })
+  @IsNotEmpty()
+  lang: SUPPORTED_LANG;
 
   @OneToMany(() => ResourceChallengeEntity, res => res.challenge)
   resources: ActivityChallengeEntity;

@@ -364,7 +364,7 @@
 				"VI": "Téléverser une vidéo ou URL",
 				"AS": "Téléverser un fichier"
 			},
-			"generic": "Retirer la ressource",
+			"remove_resource": "Retirer la ressource",
 			"next": "Activité suivante",
 			"previous": "Activité précédente",
 			"delete": "Êtes-vous sûr de vouloir supprimer cette activité? Les ressources comprises à l'intérieur de celle-ci ne seront pas supprimées."
@@ -702,6 +702,7 @@
 		"irreversible": "Cette action est irréversible"
 	},
 	"help": {
+		"start_tutorial": "Tutoriel de la page",
 		"click_for_more": "Cliquez pour plus d'informations",
 		"slides": {
 			"next": "Suivant",

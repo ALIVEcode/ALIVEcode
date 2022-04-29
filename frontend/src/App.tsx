@@ -35,6 +35,7 @@ import { Resource } from './Models/Resource/resource.entity';
 import FeedbackModal from './Components/MainComponents/FeedbackMenu/FeedbackModal';
 import Confetti from 'react-confetti';
 import useAudio from './state/hooks/useAudio';
+import Tutorial from './Pages/Help/InfoTutorial';
 
 type GlobalStyleProps = {
 	theme: Theme;
@@ -244,7 +245,7 @@ const App = () => {
 			}
 		};
 		window.addEventListener('keydown', handleFeedbackModalOpen, {
-			once: true
+			once: true,
 		});
 	}, [isFeedbackModalOpen]);
 
@@ -263,46 +264,50 @@ const App = () => {
 					<LoadingScreen />
 				) : (
 					<UserContext.Provider value={providerValue}>
-						<section className="pt-[4rem] h-full">
-							<RouterSwitch />
-						</section>
-						{maintenance && !maintenance.hidden && (
-							<MaintenanceBar
-								onClose={() => setMaintenance({ ...maintenance, hidden: true })}
-								maintenance={maintenance}
+						<Tutorial>
+							<section className="pt-[4rem] h-full">
+								<RouterSwitch />
+							</section>
+							{maintenance && !maintenance.hidden && (
+								<MaintenanceBar
+									onClose={() =>
+										setMaintenance({ ...maintenance, hidden: true })
+									}
+									maintenance={maintenance}
+								/>
+							)}
+							<Navbar
+								handleLogout={async () => await logout()}
+								setFeedbackModalOpen={setIsFeedbackModalOpen}
 							/>
-						)}
-						<Navbar
-							handleLogout={async () => await logout()}
-							setFeedbackModalOpen={setIsFeedbackModalOpen}
-						/>
-						{user instanceof Student && (!user.lastName || !user.firstName) && (
-							<Modal
-								open={oldStudentNameMigrationOpen}
-								title={t('msg.auth.name_migration.title')}
-								setOpen={setOldStudentNameMigrationOpen}
-								size="sm"
-								hideCloseButton
-								hideFooter
-								unclosable
-							>
-								<NameMigrationForm setOpen={setOldStudentNameMigrationOpen} />
-							</Modal>
-						)}
-						{isFeedbackModalOpen && (
-							<FeedbackModal
-								isOpen={isFeedbackModalOpen}
-								setIsOpen={setIsFeedbackModalOpen}
-								onSuccess={async () => {
-									await playCheer();
-								}}
-								onFailure={() =>
-									alert.error(
-										'An error occurred while sending your feedback, please try again later.',
-									)
-								}
-							/>
-						)}
+							{user instanceof Student && (!user.lastName || !user.firstName) && (
+								<Modal
+									open={oldStudentNameMigrationOpen}
+									title={t('msg.auth.name_migration.title')}
+									setOpen={setOldStudentNameMigrationOpen}
+									size="sm"
+									hideCloseButton
+									hideFooter
+									unclosable
+								>
+									<NameMigrationForm setOpen={setOldStudentNameMigrationOpen} />
+								</Modal>
+							)}
+							{isFeedbackModalOpen && (
+								<FeedbackModal
+									isOpen={isFeedbackModalOpen}
+									setIsOpen={setIsFeedbackModalOpen}
+									onSuccess={async () => {
+										await playCheer();
+									}}
+									onFailure={() =>
+										alert.error(
+											'An error occurred while sending your feedback, please try again later.',
+										)
+									}
+								/>
+							)}
+						</Tutorial>
 					</UserContext.Provider>
 				)}
 			</ThemeContext.Provider>

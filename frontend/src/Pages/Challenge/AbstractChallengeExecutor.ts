@@ -6,6 +6,7 @@ import {
 	SupportedLanguagesAS,
 } from '../../Models/ASModels';
 import api from '../../Models/api';
+import { SUPPORTED_LANG } from '../../Models/Challenge/challenge.entity';
 
 /**
  * Abstract class were the execution of alivescript is handled
@@ -66,7 +67,7 @@ export class ChallengeExecutor {
 
 	constructor(
 		public challengeName: string,
-		private _lang: SupportedLanguagesAS = 'fr',
+		private _lang: SupportedLanguagesAS = SUPPORTED_LANG.FR,
 	) {}
 
 	protected async sendDataToAsServer(data: CompileDTO) {

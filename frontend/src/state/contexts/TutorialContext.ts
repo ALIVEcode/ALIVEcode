@@ -1,59 +1,18 @@
 import { createContext } from 'react';
+import { InfoTutorialProps } from '../../Components/HelpComponents/HelpProps';
 
-interface TutorialContextValues {
-	registerTutorial: (name: string) => boolean;
-	unregisterTutorial: (name: string) => boolean;
+export interface TutorialContextValues {
+	registerTutorial: (tutorial: InfoTutorialProps) => void;
+	unregisterTutorial: (name: string) => void;
 
-	startTutorial: (name: string) => boolean;
-	stopTutorial: (name: string, cascade?: boolean) => boolean;
+	startTutorial: (name: string) => void;
+	stopTutorial: (name: string) => void;
 
 	getCurrent: () => string | null;
 
-	pushTutorial: (name: string) => void;
-	popTutorial: () => string;
+	setCurrentTutorial: (name: string) => void;
+	startCurrentTutorial: () => void;
+	stopCurrentTutorial: () => void;
 }
 
-const getTutorialContextValues = (): TutorialContextValues => {
-
-	const tutorials = [];
-
-	function getCurrent(): string | null {
-		return null;
-	}
-
-	function popTutorial(): string {
-		return '';
-	}
-
-	function pushTutorial(name: string): void {}
-
-	function registerTutorial(name: string): boolean {
-		return false;
-	}
-
-	function startTutorial(name: string): boolean {
-		return false;
-	}
-
-	function stopTutorial(name: string, cascade: boolean | undefined): boolean {
-		return false;
-	}
-
-	function unregisterTutorial(name: string): boolean {
-		return false;
-	}
-
-	return {
-		getCurrent,
-		registerTutorial,
-		popTutorial,
-		pushTutorial,
-		startTutorial,
-		stopTutorial,
-		unregisterTutorial,
-	};
-};
-
-export const TutorialContext = createContext<TutorialContextValues>(
-	getTutorialContextValues(),
-);
+export const TutorialContext = createContext<TutorialContextValues>({} as any);

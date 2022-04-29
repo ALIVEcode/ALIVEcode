@@ -1,27 +1,25 @@
 //#region Types
 
-import { command, SymbolPair } from "./autocompleteTypes";
+import { command, SymbolPair } from './autocompleteTypes';
 import {
 	createSnippets,
+	editor,
+	execCommands,
+	getLine,
+	getLines,
+	getPos,
+	lineStartWith,
 	registerSnippets,
 	setEditor,
 } from './autocompleteUtils';
 
-import {
-	getPos,
-	getLine,
-	execCommands,
-	lineStartWith,
-	getLines,
-	editor,
-} from './autocompleteUtils';
-
 import snippets from './as_snippets.json';
 import ace from 'ace-builds';
+import { SUPPORTED_LANG } from '../../../../Models/Challenge/challenge.entity';
 
 //#endregion types
 
-const patterns: {
+const patternsFR: {
 	symbolPairs: SymbolPair[];
 	blocks: SymbolPair[];
 } = {
@@ -61,6 +59,49 @@ const patterns: {
 		{ open: 'repeter', close: 'fin repeter' },
 	],
 };
+
+const patternsEN: {
+	symbolPairs: SymbolPair[];
+	blocks: SymbolPair[];
+} = {
+	/**
+	 *? blocks: {
+	 **   name: [start, end]
+	 *? }
+	 */
+	symbolPairs: [
+		{ open: '"', close: '"' },
+		{ open: "'", close: "'" },
+		{ open: '(', close: ')' },
+		{ open: '{', close: '}' },
+		{ open: '[', close: ']' },
+	],
+
+	blocks: [
+		// si
+		{ open: 'if', close: 'end if' },
+
+		// fonctions
+		{ open: 'function', close: 'end function' },
+
+		//getter
+		{ open: 'get', close: 'end get' },
+
+		//setter
+		{ open: 'set', close: 'end set' },
+
+		// structures
+		{ open: 'structure', close: 'end structure' },
+
+		// boucles
+		{ open: 'do', close: 'while' },
+		{ open: 'while', close: 'end while' },
+		{ open: 'for', close: 'end for' },
+		{ open: 'repeat', close: 'end repeat' },
+	],
+};
+
+let patterns = patternsFR;
 
 function closeSymbolPair(
 	symbol: SymbolPair,
@@ -171,13 +212,28 @@ export class Autocomplete {
 	}
 }
 
-function addSnippets(editor: ace.Ace.Editor) {
+function addSnippets(
+	editor: ace.Ace.Editor,
+	lang: SUPPORTED_LANG = SUPPORTED_LANG.FR,
+) {
+	// TODO Switch snippets according to the lang parameter
 	registerSnippets(editor, 'alivescript', createSnippets(snippets));
 }
 
-const setAutocomplete = (e: ace.Ace.Editor) => {
+const setAutocomplete = (
+	e: ace.Ace.Editor,
+	lang: SUPPORTED_LANG = SUPPORTED_LANG.FR,
+) => {
 	setEditor(e);
 	addSnippets(e);
+	switch (lang) {
+		case SUPPORTED_LANG.EN:
+			patterns = patternsEN;
+			break;
+		case SUPPORTED_LANG.FR:
+			patterns = patternsFR;
+			break;
+	}
 };
 
 export { setAutocomplete, addSnippets };

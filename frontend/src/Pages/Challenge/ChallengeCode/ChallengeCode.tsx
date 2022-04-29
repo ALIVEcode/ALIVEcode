@@ -85,6 +85,7 @@ const ChallengeCode = ({ initialCode }: ChallengeCodeProps) => {
 							className="h-full"
 							key="edit-mode"
 							hasTabs
+							lang={challenge.lang}
 							tabs={[
 								{
 									title: 'Initial Code',

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Theme } from '../../../state/contexts/ThemeContext';
+import { SUPPORTED_LANG } from '../../../Models/Challenge/challenge.entity';
 
 export type LineInterfaceProps = {
 	handleChange: (content: any) => void;
@@ -7,6 +8,7 @@ export type LineInterfaceProps = {
 	tabs?: EditorTabModel[];
 	initialContent?: string;
 	className?: string;
+	lang?: SUPPORTED_LANG
 };
 
 export type EditorTabModel = {

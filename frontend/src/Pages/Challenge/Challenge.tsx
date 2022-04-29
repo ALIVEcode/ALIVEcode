@@ -392,10 +392,8 @@ const Challenge = ({
 					onSubmit={res => {
 						if (!challenge) return;
 						const updatedChallenge: ChallengeModel = res.data;
-						setChallenge({
-							...challenge,
-							...updatedChallenge,
-						} as ChallengeModel);
+						Object.assign(challenge, updatedChallenge);
+						setChallenge(challenge);
 						forceUpdate();
 						setSettingsModalOpen(false);
 					}}

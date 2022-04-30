@@ -707,7 +707,7 @@
 	},
 	"help": {
 		"start_tutorial": "Page's tutorial",
-		"click_for_more": "Click for see more",
+		"click_for_more": "Click to see more",
 		"slides": {
 			"next": "Next",
 			"previous": "Previous"

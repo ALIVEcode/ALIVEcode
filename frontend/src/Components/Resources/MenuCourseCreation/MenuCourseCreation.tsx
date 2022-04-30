@@ -43,7 +43,7 @@ const MenuCourseCreation = ({
 	const [subject, setSubject] = useState<SUBJECTS | undefined>(
 		defaultCourse?.subject ?? undefined,
 	);
-	const [courseTemplateOpen, setCourseTemplateOpen] = useState(false);
+	const [courseTemplateOpen, setCourseTemplateOpen] = useState(true);
 	const [templates, setTemplates] = useState<CourseTemplate[]>();
 	const [selectedTemplate, setSelectedTemplate] = useState<CourseTemplate>();
 	const { t } = useTranslation();
@@ -201,23 +201,27 @@ const MenuCourseCreation = ({
 				open={courseTemplateOpen}
 				setOpen={setCourseTemplateOpen}
 				title={t('course.template.add')}
+				size="md"
 			>
-				<div>
+				<>
 					{!templates ? (
 						<LoadingScreen />
 					) : (
-						templates.map((t, idx) => (
-							<CourseTemplateCard
-								key={idx}
-								onSelect={async template => {
-									setSelectedTemplate(template);
-									setCourseTemplateOpen(false);
-								}}
-								template={t}
-							/>
-						))
+						<div className="grid grid-cols-1 desktop:grid-cols-2 gap-y-4">
+							{templates.map(t => (
+								<div key={t.id} className="m-auto">
+									<CourseTemplateCard
+										onSelect={async template => {
+											setSelectedTemplate(template);
+											setCourseTemplateOpen(false);
+										}}
+										template={t}
+									/>
+								</div>
+							))}
+						</div>
 					)}
-				</div>
+				</>
 			</Modal>
 		</>
 	);

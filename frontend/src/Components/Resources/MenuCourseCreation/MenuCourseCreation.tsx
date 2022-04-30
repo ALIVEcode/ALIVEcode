@@ -189,44 +189,6 @@ const MenuCourseCreation = ({
 		);
 	};
 
-	// return (
-	// 	<>
-	// 		<MenuCreation
-	// 			title={updateMode ? t('course.form.update') : t('course.form.create')}
-	// 			submitIcon={updateMode ? faCheckCircle : undefined}
-	// 			setOpen={setOpen}
-	// 			open={open}
-	// 			onSubmit={() => handleSubmit(onSubmit)()}
-	// 			disabledPageIndex={!updateMode ? (!subject ? 1 : undefined) : undefined}
-	// 		>
-	// 			{!updateMode && renderPageCourseSubject()}
-	// 			{renderPageCourseInfos()}
-	// 			{renderPageCourseTemplate()}
-	// 		</MenuCreation>
-	// 		<Modal
-	// 			open={courseTemplateOpen}
-	// 			setOpen={setCourseTemplateOpen}
-	// 			title={t('course.template.add')}
-	// 		>
-	// 			<div>
-	// 				{!templates ? (
-	// 					<LoadingScreen />
-	// 				) : (
-	// 					templates.map((t, idx) => (
-	// 						<CourseTemplateCard
-	// 							key={idx}
-	// 							onSelect={async template => {
-	// 								setSelectedTemplate(template);
-	// 								setCourseTemplateOpen(false);
-	// 							}}
-	// 							template={t}
-	// 						/>
-	// 					))
-	// 				)}
-	// 			</div>
-	// 		</Modal>
-	// 	</>
-	// );
 	return (
 		<Timeline.Modal
 			title={updateMode ? t('course.form.update') : t('course.form.create')}
@@ -236,7 +198,7 @@ const MenuCourseCreation = ({
 			submitText={t('course.form.create')}
 			submitButtonVariant="primary"
 		>
-			<Timeline.Page canGoNext={subject !== undefined}>
+			<Timeline.Page goNextWhen={subject != null} canGoNext={subject != null}>
 				{renderPageCourseSubject()}
 			</Timeline.Page>
 			<Timeline.Page>{renderPageCourseInfos()}</Timeline.Page>

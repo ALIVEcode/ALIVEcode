@@ -17,6 +17,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modal';
 import { Dialog, Transition } from '@headlessui/react';
+import { classNames } from '../../../../Types/utils';
 
 const TimelineModal = ({
 	children,
@@ -128,12 +129,15 @@ const TimelineModal = ({
 								key={idx}
 								icon={faCircle}
 								size="xs"
-								className={`cursor-pointer ${
-									idx === currentPage
-										? 'text-[color:var(--foreground-color)]'
-										: 'text-[color:var(--fg-shade-three-color)] opacity-50'
-								}`}
+								className={classNames(
+									idx === currentPage && 'text-[color:var(--foreground-color)]',
+									idx !== currentPage &&
+										(canGoNext()
+											? 'text-[color:var(--fg-shade-three-color)] opacity-50 cursor-pointer'
+											: 'text-[color:var(--fg-shade-three-color)] opacity-10 cursor-not-allowed'),
+								)}
 								onClick={() => {
+									if (!canGoNext() && idx > currentPage) return;
 									setCurrentPage(idx);
 									forceUpdate();
 								}}

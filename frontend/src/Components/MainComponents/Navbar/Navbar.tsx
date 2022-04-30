@@ -2,7 +2,7 @@ import { useContext, useState, Fragment } from 'react';
 import { NavbarProps } from './NavbarTypes';
 import { UserContext } from '../../../state/contexts/UserContext';
 import { Link } from 'react-router-dom';
-import TestLogo from '../../../assets/images/TestLogo.png';
+import logoALIVEcode from '../../../assets/images/logoALIVEcode.png';
 import i18next from 'i18next';
 import { languages } from '../../../appConfigs';
 import { useTranslation } from 'react-i18next';
@@ -15,12 +15,7 @@ import {
 import { useLocation } from 'react-router';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-	faBars,
-	faTimes,
-	faBullhorn,
-	faInfoCircle,
-} from '@fortawesome/free-solid-svg-icons';
+import { faBars, faTimes, faBullhorn } from '@fortawesome/free-solid-svg-icons';
 import { classNames } from '../../../Types/utils';
 import { Popup } from 'reactjs-popup';
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
@@ -91,7 +86,7 @@ const ALIVENavbar = ({ handleLogout, setFeedbackModalOpen }: NavbarProps) => {
 								className="py-3 h-full no-underline whitespace-nowrap flex items-center"
 							>
 								<img
-									src={TestLogo}
+									src={logoALIVEcode}
 									alt=""
 									className="inline-block align-top h-full"
 								/>

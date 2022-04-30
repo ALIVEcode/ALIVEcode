@@ -184,12 +184,12 @@ const ResourceMenu = ({
 							{!resources ? (
 								<LoadingScreen relative></LoadingScreen>
 							) : (
-								resources.map((r, idx) => (
+								resources.map(r => (
 									<ResourceCard
 										onSelectResource={onSelectResource}
 										mode={mode}
 										resource={r}
-										key={idx}
+										key={r.id}
 									/>
 								))
 							)}

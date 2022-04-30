@@ -21,6 +21,7 @@ export type UserContextValues = {
 		dto: MenuResourceCreationDTO,
 		progressSetter?: React.Dispatch<React.SetStateAction<number>>,
 	) => Promise<Resource>;
+	deleteResource: (resource: Resource) => void;
 	getResources: (
 		subject: ResourceMenuSubjects,
 		name?: string | undefined,
@@ -43,5 +44,6 @@ export const UserContext = createContext<UserContextValues>({
 	createResource: async function () {
 		return new Resource();
 	},
+	deleteResource: () => {},
 	getResources: async () => [],
 });

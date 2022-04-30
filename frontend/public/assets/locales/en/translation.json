@@ -261,7 +261,8 @@
 		"video": {
 			"name": "Video",
 			"form": {
-				"url": "URL of the video",
+				"url": "URL of the youtube video",
+				"invalid_url": "Invalid YouTube video URL",
 				"file": "Drag and drop a file or insert one"
 			}
 		},

@@ -163,6 +163,15 @@ const App = () => {
 		[getResources, resources],
 	);
 
+	const deleteResource = useCallback(
+		async (resource: Resource) => {
+			const res = resources ?? (await getResources('all'));
+			await api.db.resources.delete({ id: resource.id });
+			setResources(res?.filter(r => r.id !== resource.id));
+		},
+		[getResources, resources],
+	);
+
 	const updateResource = useCallback(
 		async function <T>(
 			defaultResource: Resource,
@@ -193,6 +202,7 @@ const App = () => {
 			playSocket,
 			resources: resources ?? [],
 			createResource,
+			deleteResource,
 			updateResource,
 			setResourceCreationMenuOpen,
 			getResources,
@@ -204,6 +214,7 @@ const App = () => {
 			playSocket,
 			resources,
 			createResource,
+			deleteResource,
 			updateResource,
 			setResourceCreationMenuOpen,
 			getResources,

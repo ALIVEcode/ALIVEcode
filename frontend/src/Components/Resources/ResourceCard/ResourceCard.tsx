@@ -4,7 +4,6 @@ import { faTrash, faWrench } from '@fortawesome/free-solid-svg-icons';
 import AlertConfirm from '../../UtilsComponents/Alert/AlertConfirm/AlertConfirm';
 import { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import api from '../../../Models/api';
 import { UserContext } from '../../../state/contexts/UserContext';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import MenuResourceCreation from '../MenuResourceCreation/MenuResourceCreation';
@@ -18,7 +17,7 @@ const ResourceCard = ({
 	const [deleteOpen, setDeleteOpen] = useState(false);
 	const [updateOpen, setUpdateOpen] = useState(false);
 	const { t } = useTranslation();
-	const { resources, setResources } = useContext(UserContext);
+	const { resources, deleteResource } = useContext(UserContext);
 
 	if (!resources) return <LoadingScreen />;
 	return (
@@ -61,10 +60,7 @@ const ResourceCard = ({
 
 			<AlertConfirm
 				title={t('resources.form.delete_confirm')}
-				onConfirm={async () => {
-					await api.db.resources.delete({ id: resource.id });
-					setResources(resources?.filter(r => r.id !== resource.id));
-				}}
+				onConfirm={async () => await deleteResource(resource)}
 				setOpen={setDeleteOpen}
 				open={deleteOpen}
 			/>

@@ -34,6 +34,8 @@ import { ActivityAssignment as ActivityAssignmentModel } from '../../../Models/C
 import { RESOURCE_TYPE } from '../../../Models/Resource/resource.entity';
 import { UserContext } from '../../../state/contexts/UserContext';
 import api from '../../../Models/api';
+import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
+import { parseVideoURL } from './ActivityVideo';
 
 /**
  * Shows the opened activity. Renders different component depending on the type of the activity opened.
@@ -65,6 +67,10 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 	const [isRenaming, setIsRenaming] = useState(false);
 	const [loading, setLoading] = useState(!activity.resource);
 	const [selectedFile, setSelectedFile] = useState<File>();
+	const [videoUrl, setVideoUrl] = useState<string | undefined | null>(
+		undefined,
+	);
+	const [isInvalidURL, setIsInvalidURL] = useState(false);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const inputFileRef = useRef<HTMLInputElement>(null);
 
@@ -152,6 +158,41 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedFile]);
 
+	/**
+	 * When the URL input from a resource video creation changes, validate
+	 * the url and create the resource
+	 */
+	useEffect(() => {
+		if (!course) return;
+		const resourceType = activity.allowedResources[0];
+		if (videoUrl && resourceType === RESOURCE_TYPE.VIDEO) {
+			const matches = parseVideoURL(videoUrl);
+			if (!matches) return setIsInvalidURL(true);
+
+			const createResourceWithURL = async () => {
+				const createdRes = await createResource({
+					file: null,
+					type: resourceType,
+					resource: {
+						name: activity.name + ' video',
+						subject: course?.subject,
+						url: videoUrl,
+					},
+				});
+				activity.resource = createdRes;
+				await api.db.courses.addResourceInActivity(
+					course,
+					activity,
+					activity.resource,
+				);
+				setVideoUrl(undefined);
+				forceUpdateCourse();
+			};
+			createResourceWithURL();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [videoUrl]);
+
 	if (!courseElement) {
 		return <></>;
 	}
@@ -202,6 +243,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 				break;
 			case RESOURCE_TYPE.VIDEO:
 				if (fromVideoUrl) {
+					setVideoUrl(null);
 				} else inputFileRef.current?.click();
 				break;
 			case RESOURCE_TYPE.THEORY:
@@ -310,7 +352,10 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 								<>
 									<Button
 										variant="primary"
-										onClick={() => setOpenModalImportResource(true)}
+										onClick={() => {
+											setVideoUrl(undefined);
+											setOpenModalImportResource(true);
+										}}
 									>
 										{t(`course.activity.import_resource.${activity.type}`)}
 									</Button>
@@ -323,26 +368,42 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 												{t(`course.activity.create_resource.${activity.type}`)}
 											</Button>
 										)}
-									{activity.type === ACTIVITY_TYPE.VIDEO && (
-										<>
-											<Button
-												variant="secondary"
-												onClick={() => createSpecificResource()}
-											>
-												{t(
-													`course.activity.create_resource.${activity.type}.upload`,
-												)}
-											</Button>
-											<Button
-												variant="secondary"
-												onClick={() => createSpecificResource(true)}
-											>
-												{t(
-													`course.activity.create_resource.${activity.type}.url`,
-												)}
-											</Button>
-										</>
-									)}
+									{activity.type === ACTIVITY_TYPE.VIDEO &&
+										(videoUrl === undefined ? (
+											<>
+												<Button
+													variant="secondary"
+													onClick={() => createSpecificResource()}
+												>
+													{t(
+														`course.activity.create_resource.${activity.type}.upload`,
+													)}
+												</Button>
+												<Button
+													variant="secondary"
+													onClick={() => createSpecificResource(true)}
+												>
+													{t(
+														`course.activity.create_resource.${activity.type}.url`,
+													)}
+												</Button>
+											</>
+										) : (
+											<InputGroup
+												label="Video URL"
+												onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
+													setVideoUrl(e.target.value);
+												}}
+												onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
+													e.key.toLowerCase() === 'enter' &&
+													setVideoUrl(e.currentTarget.value)
+												}
+												errors={isInvalidURL ? { type: 'pattern' } : undefined}
+												messages={{
+													pattern: t('resources.video.form.invalid_url'),
+												}}
+											></InputGroup>
+										))}
 								</>
 							) : (
 								<div>{t('course.activity.empty')}</div>
@@ -415,7 +476,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						e.target.files && setSelectedFile(e.target.files[0])
 					}
-				></input>
+				/>
 			</div>
 		)
 	);

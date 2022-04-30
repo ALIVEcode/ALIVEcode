@@ -262,6 +262,7 @@
 			"name": "Vidéo",
 			"form": {
 				"url": "URL vers la vidéo",
+				"invalid_url": "URL de la vidéo youtube invalide",
 				"file": "Glissez ou sélectionnez un fichier"
 			}
 		},

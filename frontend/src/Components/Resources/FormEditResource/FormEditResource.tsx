@@ -5,7 +5,6 @@ import {
 	FormEditResourceDTO,
 	FormEditResourceProps,
 } from './formEditResourceTypes';
-import api from '../../../Models/api';
 import Button from '../../UtilsComponents/Buttons/Button';
 import { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,7 +14,7 @@ import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 const FormEditResource = ({ resource }: FormEditResourceProps) => {
 	const [type, setType] = useState<RESOURCE_TYPE>(resource.type);
 	const { t } = useTranslation();
-	const { setResources, resources } = useContext(UserContext);
+	const { resources, updateResource } = useContext(UserContext);
 
 	const anyRes = resource as any;
 
@@ -37,8 +36,7 @@ const FormEditResource = ({ resource }: FormEditResourceProps) => {
 	if (!resources) return <LoadingScreen />;
 
 	const onSubmit = async (formValues: FormEditResourceDTO) => {
-		const updatedRes = await api.db.resources.update(resource, formValues);
-		setResources(resources.map(r => (r.id === updatedRes.id ? updatedRes : r)));
+		await updateResource(resource, formValues);
 	};
 
 	const renderSpecificFields = () => {

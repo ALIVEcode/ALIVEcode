@@ -93,8 +93,6 @@ const Dashboard = (props: DashboardProps) => {
 	const [classroomForCourse, setClassroomForCourse] =
 		useState<ClassroomModel>();
 	const [formJoinClassOpen, setFormJoinClassOpen] = useState(false);
-	const [hoveringClassroom, setHoveringClassroom] = useState(false);
-	const [hoveringCourse, setHoveringCourse] = useState(false);
 	useState<ClassroomModel | null>(null);
 	const navigate = useNavigate();
 	const query = useQuery();
@@ -236,6 +234,7 @@ const Dashboard = (props: DashboardProps) => {
 		});
 		setCurrentTutorial('DashboardTabs');
 		return () => unregisterTutorial('DashboardTabs');
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	/**
@@ -364,12 +363,7 @@ const Dashboard = (props: DashboardProps) => {
 
 						<hr />
 
-						<div
-							className="sidebar-header"
-							onMouseEnter={() => setHoveringClassroom(true)}
-							onMouseLeave={() => setHoveringClassroom(false)}
-							ref={classroomsRef}
-						>
+						<div className="sidebar-header" ref={classroomsRef}>
 							<FontAwesomeIcon className="sidebar-icon" icon={faBook} />
 							<label className="sidebar-header-text">
 								{t('dashboard.classrooms.title')}
@@ -424,12 +418,7 @@ const Dashboard = (props: DashboardProps) => {
 
 						{user?.isProfessor() && (
 							<>
-								<div
-									className="sidebar-header"
-									onMouseEnter={() => setHoveringCourse(true)}
-									onMouseLeave={() => setHoveringCourse(false)}
-									ref={coursesRef}
-								>
+								<div className="sidebar-header" ref={coursesRef}>
 									<FontAwesomeIcon className="sidebar-icon" icon={faTasks} />
 									<label className="sidebar-header-text">
 										{t('dashboard.courses.title')}

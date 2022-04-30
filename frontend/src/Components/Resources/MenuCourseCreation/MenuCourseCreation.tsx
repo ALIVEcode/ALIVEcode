@@ -8,13 +8,10 @@ import TypeCard from '../../UtilsComponents/Cards/TypeCard/TypeCard';
 import { SUBJECTS, getSubjectIcon } from '../../../Types/sharedTypes';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { instanceToPlain } from 'class-transformer';
-import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
-import MenuCreation from '../../UtilsComponents/MenuCreation/MenuCreation';
 import { useNavigate } from 'react-router-dom';
 import { useAlert } from 'react-alert';
 import { Course } from '../../../Models/Course/course.entity';
 import Button from '../../UtilsComponents/Buttons/Button';
-import Link from '../../UtilsComponents/Link/Link';
 import {
 	MenuCourseCreationProps,
 	MenuCourseCreationDTO,
@@ -70,7 +67,6 @@ const MenuCourseCreation = ({
 		if (courseTemplateOpen) {
 			const getTemplates = async () => {
 				const templates = await api.db.bundles.getCourseTemplates();
-				console.log(templates);
 				setTemplates(templates);
 			};
 			getTemplates();
@@ -173,37 +169,57 @@ const MenuCourseCreation = ({
 						</Button>
 					</>
 				) : (
-					<>
-						<Button
-							variant="primary"
-							onClick={() => setCourseTemplateOpen(true)}
-						>
-							{t('course.template.add')}
-						</Button>
-						<Link onClick={() => handleSubmit(onSubmit)()}>
-							{t('course.template.skip')}
-						</Link>
-					</>
+					<Button variant="primary" onClick={() => setCourseTemplateOpen(true)}>
+						{t('course.template.add')}
+					</Button>
 				)}
 			</div>
 		);
 	};
 
 	return (
-		<Timeline.Modal
-			title={updateMode ? t('course.form.update') : t('course.form.create')}
-			setOpen={setOpen}
-			open={open}
-			onSubmit={handleSubmit(onSubmit)}
-			submitText={t('course.form.create')}
-			submitButtonVariant="primary"
-		>
-			<Timeline.Page goNextWhen={subject != null} canGoNext={subject != null}>
-				{renderPageCourseSubject()}
-			</Timeline.Page>
-			<Timeline.Page>{renderPageCourseInfos()}</Timeline.Page>
-			<Timeline.Page>{renderPageCourseTemplate()}</Timeline.Page>
-		</Timeline.Modal>
+		<>
+			<Timeline.Modal
+				title={updateMode ? t('course.form.update') : t('course.form.create')}
+				setOpen={setOpen}
+				open={open}
+				onSubmit={handleSubmit(onSubmit)}
+				submitText={t('course.form.create')}
+				submitButtonVariant="primary"
+			>
+				<Timeline.Page
+					goNextWhen={subject != null}
+					autoNext
+					canGoNext={subject != null}
+				>
+					{renderPageCourseSubject()}
+				</Timeline.Page>
+				<Timeline.Page>{renderPageCourseInfos()}</Timeline.Page>
+				<Timeline.Page>{renderPageCourseTemplate()}</Timeline.Page>
+			</Timeline.Modal>
+			<Modal
+				open={courseTemplateOpen}
+				setOpen={setCourseTemplateOpen}
+				title={t('course.template.add')}
+			>
+				<div>
+					{!templates ? (
+						<LoadingScreen />
+					) : (
+						templates.map((t, idx) => (
+							<CourseTemplateCard
+								key={idx}
+								onSelect={async template => {
+									setSelectedTemplate(template);
+									setCourseTemplateOpen(false);
+								}}
+								template={t}
+							/>
+						))
+					)}
+				</div>
+			</Modal>
+		</>
 	);
 };
 

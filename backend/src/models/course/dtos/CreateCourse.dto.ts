@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsOptional, IsNotEmpty } from 'class-validator';
+import { IsOptional, IsNotEmpty, ValidateNested } from 'class-validator';
 import { CourseEntity } from '../entities/course.entity';
 
 /**
@@ -14,5 +14,6 @@ export class CreateCourseDTO {
   /** Course object to create */
   @IsNotEmpty()
   @Type(() => CourseEntity)
+  @ValidateNested()
   course: CourseEntity;
 }

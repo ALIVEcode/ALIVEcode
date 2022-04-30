@@ -1,14 +1,7 @@
 import { TimelineModalProps } from '../modalTypes';
-import { InfoSlidesProps } from '../../../HelpComponents/HelpProps';
 import { useTranslation } from 'react-i18next';
 import { useForceUpdate } from '../../../../state/hooks/useForceUpdate';
-import React, {
-	useCallback,
-	useEffect,
-	useMemo,
-	useRef,
-	useState,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
 	faChevronLeft,
@@ -16,7 +9,7 @@ import {
 	faCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modal';
-import { Dialog, Transition } from '@headlessui/react';
+import { Transition } from '@headlessui/react';
 import { classNames } from '../../../../Types/utils';
 
 const TimelineModal = ({
@@ -67,6 +60,7 @@ const TimelineModal = ({
 		return !!_getPropertyOfChild('canGoNext');
 	}, [_getPropertyOfChild]);
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const autoNext = useCallback(() => {
 		return !!_getPropertyOfChild('autoNext');
 	}, [_getPropertyOfChild]);
@@ -158,11 +152,11 @@ const TimelineModal = ({
 										? 'hover:text-[color:var(--background-color)] text-[color:var(--fourth-color)]' +
 										  ' hover:bg-[color:var(--fourth-color)] bg-[color:var(--background-color)]' +
 										  ' transition-colors' +
-										  ' border-[color:var(--fourth-color)] border rounded-md text-md px-1 mr-4 py-0.5'
+										  ' border-[color:var(--fourth-color)] border rounded-md text-md px-2 mr-4 py-1'
 										: 'text-[color:var(--background-color)]' +
 										  ' hover:bg-[color:rgb(var(--fourth-color-rgb),0.7)] bg-[color:var(--fourth-color)]' +
 										  ' transition-colors' +
-										  ' border-[color:var(--fourth-color)] border rounded-md text-md px-1 mr-4 py-0.5'
+										  ' border-[color:var(--fourth-color)] border rounded-md text-md px-2 mr-4 py-1'
 								}
 							>
 								{submitText ?? t('modal.close')}

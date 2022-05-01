@@ -16,8 +16,8 @@ export class Bundle {
 	price: number;
 
 	@Type(() => CourseTemplate)
-	templates: CourseTemplate[];
+	courseTemplates?: CourseTemplate[];
 
 	@Type(() => Resource)
-	resources: Resource[];
+	resources?: Resource[];
 }

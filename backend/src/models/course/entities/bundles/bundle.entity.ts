@@ -31,11 +31,11 @@ export class BundleEntity {
   @Column({ nullable: false })
   price: number;
 
-  @ManyToMany(() => CourseTemplateEntity)
+  @ManyToMany(() => CourseTemplateEntity, { eager: true })
   @JoinTable()
   courseTemplates: CourseTemplateEntity[];
 
-  @ManyToMany(() => ResourceEntity)
+  @ManyToMany(() => ResourceEntity, { eager: true })
   @JoinTable()
   resources: ResourceEntity[];
 

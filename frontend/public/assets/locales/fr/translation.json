@@ -122,6 +122,9 @@
 		"cancel": "Annuler"
 	},
 	"msg": {
+		"courseTemplate": "modèle de cours",
+		"bundle": "trousse pédagogique",
+		"resource": "ressource",
 		"professor": "professeur",
 		"student": "étudiant",
 		"creator": "Créateur",

@@ -122,6 +122,9 @@
 		"cancel": "Cancel"
 	},
 	"msg": {
+		"courseTemplate": "course template",
+		"bundle": "bundle",
+		"resource": "resource",
 		"professor": "professor",
 		"student": "student",
 		"creator": "Creator",
@@ -383,6 +386,11 @@
 		"navigation": {
 			"minimize": "Minimize",
 			"maximize": "Maximize"
+		}
+	},
+	"bundle": {
+		"courseTemplate": {
+			"name": "Course Template"
 		}
 	},
 	"menu": {

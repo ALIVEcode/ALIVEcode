@@ -29,7 +29,7 @@ const MenuActivityCreation = ({
 	sectionParent,
 }: MenuActivityCreationProps) => {
 	const { t } = useTranslation();
-	const { addContent } = useContext(CourseContext);
+	const { addContent, courseElements } = useContext(CourseContext);
 
 	/**
 	 * Function called when clicking a type of activity to create.
@@ -58,7 +58,18 @@ const MenuActivityCreation = ({
 				break;
 		}
 		activity.type = type;
-		await addContent(activity, 'New Activity', sectionParent);
+
+		if (courseElements) {
+			let activityNb = 0;
+			Object.values(courseElements.current).forEach(el => {
+				if (el.isActivity) activityNb++;
+			});
+			await addContent(
+				activity,
+				t('course.activity.new_name', { num: activityNb + 1 }),
+				sectionParent,
+			);
+		}
 	};
 
 	return (

@@ -250,7 +250,11 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 				const createdRes = await createResource({
 					file: null,
 					type: resourceType,
-					resource: { name: 'New theory', subject: course?.subject },
+					resource: {
+						name:
+							activity.name + ' ' + t('resources.theory.name').toLowerCase(),
+						subject: course?.subject,
+					},
 				});
 				activity.resource = createdRes;
 				await api.db.courses.addResourceInActivity(

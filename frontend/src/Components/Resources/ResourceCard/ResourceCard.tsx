@@ -24,7 +24,7 @@ const ResourceCard = ({
 		<div className="h-auto">
 			<div
 				className={classNames(
-					'relative flex flex-col justify-center items-center aspect-[4/3] rounded-2xl border border-[color:var(--bg-shade-four-color)] bg-[color:var(--background-color)]',
+					'm-auto relative w-32 h-24 flex flex-col justify-center items-center rounded-2xl border border-[color:var(--bg-shade-four-color)] bg-[color:var(--background-color)]',
 					mode === 'import' &&
 						'cursor-pointer hover:bg-[color:var(--bg-shade-one-color)]',
 				)}

@@ -1,4 +1,12 @@
-import { useState, useEffect, useContext, useMemo, useCallback } from 'react';
+import {
+	useState,
+	useEffect,
+	useContext,
+	useMemo,
+	useCallback,
+	useLayoutEffect,
+	useRef,
+} from 'react';
 import ResourceCard from '../../Components/Resources/ResourceCard/ResourceCard';
 import Button from '../../Components/UtilsComponents/Buttons/Button';
 import { UserContext } from '../../state/contexts/UserContext';
@@ -18,6 +26,8 @@ import { ResourceFilter } from '../../Components/Resources/ResourceFilter/Resour
 import useWaitBeforeUpdate from '../../state/hooks/useWaitBeforeUpdate';
 import { useNavigate } from 'react-router';
 import useRoutes from '../../state/hooks/useRoutes';
+import { TutorialContext } from '../../state/contexts/TutorialContext';
+import Info from '../../Components/HelpComponents';
 
 /**
  * ResourceMenu is a page that allows a user to get/create/update/delete its resources.
@@ -57,6 +67,48 @@ const ResourceMenu = ({
 		{ wait: 500, onUpdate: getResourcesFromMenuInputs },
 		'',
 	);
+
+	const resourcesDivRef = useRef<HTMLDivElement>(null);
+	const createResourceRef = useRef<HTMLButtonElement>(null);
+	const acquireResourceRef = useRef<HTMLButtonElement>(null);
+	const filtersRef = useRef<HTMLDivElement>(null);
+	const sectionsRef = useRef<HTMLDivElement>(null);
+	const searchRef = useRef<HTMLDivElement>(null);
+	const { registerTutorial, setCurrentTutorial, unregisterTutorial } =
+		useContext(TutorialContext);
+
+	useLayoutEffect(() => {
+		registerTutorial({
+			name: 'DashboardTabs',
+			targets: [
+				{
+					ref: resourcesDivRef.current,
+					infoBox: <Info.Box text={t('help.dashboard.tabs.challenges')} />,
+					position: 'right center',
+				},
+				{
+					ref: createResourceRef.current,
+					infoBox: <Info.Box text={t('help.dashboard.tabs.create_course')} />,
+					position: 'right center',
+				},
+				{
+					ref: acquireResourceRef.current,
+					infoBox: <Info.Box text={t('help.dashboard.tabs.resources')} />,
+					position: 'right center',
+				},
+				{
+					ref: filtersRef.current,
+					infoBox: (
+						<Info.Box text={t('help.dashboard.tabs.create_classroom')} />
+					),
+					position: 'right center',
+				},
+			],
+		});
+		setCurrentTutorial('DashboardTabs');
+		return () => unregisterTutorial('DashboardTabs');
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	/** Gets the user resources when the selectedSubject */
 	useEffect(() => {
@@ -126,6 +178,7 @@ const ResourceMenu = ({
 				<div className="w-1/6 flex flex-col border-r border-[color:var(--bg-shade-four-color)]">
 					<div className="h-20 text-xs p-2 flex justify-center items-center border-b border-[color:var(--bg-shade-four-color)]">
 						<FormInput
+							ref={searchRef}
 							placeholder={t('resources.menu.search')}
 							onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
 								if (e.keyCode === 13) {
@@ -138,7 +191,7 @@ const ResourceMenu = ({
 							}
 						/>
 					</div>
-					<div className="w-full h-full overflow-y-auto">
+					<div ref={sectionsRef} className="w-full h-full overflow-y-auto">
 						<ResourceSection
 							icon={faBars}
 							name={t(`msg.subjects.all`)}
@@ -154,8 +207,8 @@ const ResourceMenu = ({
 						))}
 					</div>
 				</div>
-				<div className="flex flex-col w-full h-full">
-					<div className="h-20 px-4 flex items-center border-b border-[color:var(--bg-shade-four-color)]">
+				<div className="flex flex-col w-5/6 h-full">
+					<div className="flex items-center w-full h-20 px-4 border-b border-[color:var(--bg-shade-four-color)]">
 						<div className="mr-4">
 							<label className="text-xl">{t('resources.menu.title')}</label>
 							<label className="ml-2 text-xl text-[color:var(--fg-shade-four-color)]">
@@ -163,7 +216,8 @@ const ResourceMenu = ({
 								<span className="ml-2">{getSelectedSubjectName()}</span>
 							</label>
 						</div>
-						<div className="overflow-x-auto flex">
+
+						<div ref={filtersRef}>
 							{Object.entries(RESOURCE_TYPE).map(entry => (
 								<ResourceFilter
 									key={entry[0]}
@@ -173,17 +227,19 @@ const ResourceMenu = ({
 							))}
 						</div>
 					</div>
-					<div className="w-full h-full p-4">
+					<div className="w-full h-full overflow-y-auto p-4">
 						<div className="flex flex-col items-center mb-4">
 							{mode !== 'import' && (
 								<div className="flex gap-4">
 									<Button
+										ref={createResourceRef}
 										variant="primary"
 										onClick={() => setResourceCreationMenuOpen(true)}
 									>
 										{t('resources.form.create')}
 									</Button>
 									<Button
+										ref={acquireResourceRef}
 										variant="secondary"
 										onClick={() => navigate(routes.auth.bundle_browse.path)}
 									>
@@ -192,7 +248,10 @@ const ResourceMenu = ({
 								</div>
 							)}
 						</div>
-						<div className="grid grid-cols-1 phone:grid-cols-2 tablet:grid-cols-4 laptop:grid-cols-6 desktop:grid-cols-7 gap-4">
+						<div
+							ref={resourcesDivRef}
+							className="w-full grid grid-cols-1 tablet:grid-cols-3 laptop:grid-cols-5 desktop:grid-cols-6 gap-4"
+						>
 							{!resources ? (
 								<LoadingScreen relative></LoadingScreen>
 							) : (
@@ -201,7 +260,6 @@ const ResourceMenu = ({
 										onSelectResource={onSelectResource}
 										mode={mode}
 										resource={r}
-										key={r.id}
 									/>
 								))
 							)}

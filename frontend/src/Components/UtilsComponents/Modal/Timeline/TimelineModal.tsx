@@ -11,7 +11,24 @@ import {
 import Modal from '../Modal';
 import { Transition } from '@headlessui/react';
 import { classNames } from '../../../../Types/utils';
+import { useAlert } from 'react-alert';
 
+/**
+ *
+ * @param children
+ * @param setOpen
+ * @param open
+ * @param title
+ * @param defaultSlideClassName
+ * @param size
+ * @param onCancel
+ * @param submitText
+ * @param onSubmit
+ * @param submitButtonVariant
+ * @param modalProps
+ * @constructor
+ * @author Mathis Laroche
+ */
 const TimelineModal = ({
 	children,
 	setOpen,
@@ -28,6 +45,7 @@ const TimelineModal = ({
 	const { t } = useTranslation();
 	const forceUpdate = useForceUpdate();
 	const [currentPage, setCurrentPage] = useState(0);
+	const alert = useAlert();
 
 	const numberOfPages = useMemo(
 		() => (Array.isArray(children) ? children.length : 0),
@@ -142,8 +160,13 @@ const TimelineModal = ({
 						<button
 							className="flex items-center gap-4 cursor-pointer disabled:cursor-auto"
 							onClick={() => {
-								nextPageOrClose();
-								onSubmit && onSubmit();
+								(onSubmit && onSubmit())?.then(r => {
+									if (r !== false) {
+										nextPageOrClose();
+									} else {
+										alert.error(t('form.error.cant_submit'));
+									}
+								});
 							}}
 						>
 							<span

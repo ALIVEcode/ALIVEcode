@@ -45,6 +45,7 @@
 			"DELETE": "Supprimer {{name}}"
 		},
 		"error": {
+			"cant_submit": "Votre requête n'a pas pu être envoyée, assurez-vous que tous les champs requis sont remplis et réessayez.",
 			"generic": "Ce champs est erroné",
 			"required": "Ce champs est requis",
 			"maxLength": "Ce champs dépasse {{max}} caractères",

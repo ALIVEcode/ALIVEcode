@@ -20,6 +20,9 @@ import {
 } from '../../state/contexts/TutorialContext';
 import useComplexState from '../../state/hooks/useComplexState';
 
+/**
+ * @author Mathis Laroche
+ */
 const InfoTutorial = forwardRef(
 	({
 		targets,
@@ -192,13 +195,19 @@ const InfoTutorial = forwardRef(
 	},
 );
 
+/**
+ *
+ * @param children
+ * @constructor
+ *
+ * @author Mathis Laroche
+ */
 const Tutorial = ({
 	children,
 }: {
 	children: React.ReactNode | React.ReactNode[];
 }) => {
 	const tutorialsRef = useRef<{ [name: string]: InfoTutorialProps }>({});
-	const forceUpdate = useForceUpdate();
 
 	const [currentTutorial, setCurrentTutorial] =
 		useComplexState<InfoTutorialProps | null>(null);
@@ -210,28 +219,29 @@ const Tutorial = ({
 			return currentTutorial?.name ?? null;
 		},
 
-		registerTutorial(tutorial: InfoTutorialProps) {
-			console.log(tutorial);
-			tutorialsRef.current[tutorial.name] = tutorial;
+		unregisterTutorial(name: string) {
+			if (currentTutorial?.name === name) setCurrentTutorial(null);
+			// if (name in tutorialsRef.current) delete tutorialsRef.current[name];
+			// forceUpdate();
 		},
 
-		unregisterTutorial(name: string) {
-			if (!(name in tutorialsRef.current)) return;
-			if (currentTutorial?.name === name) setCurrentTutorial(null);
-			delete tutorialsRef.current[name];
-			forceUpdate();
+		registerTutorial(tutorial: InfoTutorialProps) {
+			// tutorialsRef.current[tutorial.name] = tutorial;
+			setCurrentTutorial(tutorial);
+			return () => setCurrentTutorial(null);
 		},
 
 		setCurrentTutorial(name: string) {
-			if (!(name in tutorialsRef.current)) return;
+			// if (!(name in tutorialsRef.current)) return;
 			// if (currentTutorial?.name === name) return;
-			setCurrentTutorial(tutorialsRef.current[name]);
+			// setCurrentTutorial(tutorialsRef.current[name]);
 		},
 
 		startCurrentTutorial() {
-			if (currentTutorial === null) return;
-			if (!(currentTutorial.name in tutorialsRef.current)) return;
+			if (currentTutorial === null) return () => {};
+			// if (!(currentTutorial.name in tutorialsRef.current)) return;
 			setTutorialOpen(true);
+			return () => setTutorialOpen(false);
 		},
 
 		stopCurrentTutorial() {
@@ -239,9 +249,10 @@ const Tutorial = ({
 		},
 
 		startTutorial(name: string) {
-			if (!(name in tutorialsRef.current)) return;
+			if (!(name in tutorialsRef.current)) return () => {};
 			setCurrentTutorial(tutorialsRef.current[name]);
 			this.startCurrentTutorial();
+			return () => setTutorialOpen(false);
 		},
 
 		stopTutorial(name: string) {

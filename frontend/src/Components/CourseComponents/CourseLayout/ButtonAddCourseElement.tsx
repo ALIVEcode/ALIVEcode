@@ -15,7 +15,7 @@ import { plainToClass } from 'class-transformer';
  * @author Mathis Laroche
  */
 const ButtonAddCourseElement = ({ section }: ButtonAddCourseElementProps) => {
-	const { openActivityForm, addContent, courseElements, moveElement, course } =
+	const { openActivityForm, addContent, courseElements } =
 		useContext(CourseContext);
 	const { t } = useTranslation();
 	const [popupOpen, setPopupOpen] = useState(false);
@@ -82,7 +82,17 @@ const ButtonAddCourseElement = ({ section }: ButtonAddCourseElementProps) => {
 					className="p-2 border-b border-[color:var(--bg-shade-four-color)] cursor-pointer rounded-t-lg transition-all hover:bg-[color:var(--bg-shade-one-color)]"
 					onClick={async () => {
 						const newSection: Section = plainToClass(Section, {});
-						await addContent(newSection, 'New Section', section);
+						if (courseElements) {
+							let sectionNb = 0;
+							Object.values(courseElements.current).forEach(el => {
+								if (el.isSection) sectionNb++;
+							});
+							await addContent(
+								newSection,
+								t('course.section.new_name', { num: sectionNb + 1 }),
+								section,
+							);
+						}
 						setPopupOpen(false);
 					}}
 				>

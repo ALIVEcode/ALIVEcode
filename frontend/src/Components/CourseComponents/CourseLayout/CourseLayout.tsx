@@ -1,15 +1,6 @@
 import { faUserGraduate } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-	ForwardedRef,
-	forwardRef,
-	MutableRefObject,
-	RefObject,
-	useContext,
-	useEffect,
-	useLayoutEffect,
-	useRef,
-} from 'react';
+import { useContext, useEffect, useLayoutEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import useRoutes from '../../../state/hooks/useRoutes';
@@ -51,12 +42,12 @@ const CourseLayout = () => {
 					infoBox: <Info.Box text={'Welcome message'} />,
 				},
 				{
-					ref: document.getElementById("course-title"),
+					ref: document.getElementById('course-title'),
 					infoBox: <Info.Box text={'Edit cours en double cliquant dessus'} />,
 					position: 'bottom center',
 				},
 				{
-					ref: document.getElementById("course-view"),
+					ref: document.getElementById('course-view'),
 					infoBox: (
 						<Info.Box
 							text={
@@ -123,7 +114,10 @@ const CourseLayout = () => {
 										className="p-2 cursor-pointer rounded-lg transition-all hover:bg-[color:var(--bg-shade-one-color)]"
 										onClick={async () => {
 											const newSection: Section = plainToClass(Section, {});
-											await addContent(newSection, 'New Section');
+											await addContent(
+												newSection,
+												t('course.section.new_name', { num: 1 }),
+											);
 										}}
 									>
 										{t('course.section.new')}

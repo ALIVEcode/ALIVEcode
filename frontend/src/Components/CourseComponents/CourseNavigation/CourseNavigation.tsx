@@ -1,4 +1,4 @@
-import { useContext, useEffect, useLayoutEffect, useRef } from 'react';
+import { useContext, useLayoutEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import { Disclosure } from '@headlessui/react';
@@ -29,22 +29,46 @@ const CourseNavigation = ({
 		useContext(CourseContext);
 	const { routes, goTo } = useRoutes();
 	const { t } = useTranslation();
-	const { setCurrentTutorial, registerTutorial, unregisterTutorial } =
-		useContext(TutorialContext);
-	const sectionRef = useRef<HTMLDivElement>(null);
+	const { registerTutorial } = useContext(TutorialContext);
+	const sectionsRef = useRef<HTMLDivElement>(null);
+	const minimizeRef = useRef<HTMLDivElement>(null);
+	const maximizeRef = useRef<HTMLDivElement>(null);
+	const professorViewRef = useRef<HTMLDivElement>(null);
 
 	useLayoutEffect(() => {
 		return registerTutorial({
 			name: 'CourseNavigation',
 			targets: [
 				{
-					ref: sectionRef.current,
-					infoBox: <Info.Box text="aa" />,
+					infoBox: <Info.Box text={t('help.navigation.explanation')} />,
 					position: 'bottom center',
+				},
+				{
+					ref: sectionsRef.current,
+					infoBox: <Info.Box text={t('help.navigation.sections')} />,
+					position: 'bottom center',
+				},
+				{
+					ref: minimizeRef.current,
+					infoBox: <Info.Box text={t('help.navigation.minimize')} />,
+					position: 'bottom center',
+				},
+				{
+					ref: maximizeRef.current,
+					infoBox: <Info.Box text={t('help.navigation.maximize')} />,
+					position: 'bottom center',
+					onEnter: onToggle,
+				},
+				{
+					ref: professorViewRef.current,
+					infoBox: <Info.Box text={t('help.navigation.professor_view')} />,
+					position: 'bottom center',
+					onEnter: onToggle,
 				},
 			],
 		});
-	}, []);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [t, onToggle]);
 
 	if (!course) {
 		goTo(routes.auth.dashboard.path);
@@ -60,16 +84,15 @@ const CourseNavigation = ({
 				startsOpen ? (
 					<>
 						<div className="w-full py-3 text-2xl text-center flex justify-between">
-							<span className="pl-5 pt-2" ref={sectionRef}>
-								Sections
-							</span>
+							<span className="pl-5 pt-2">Sections</span>
 							<div>
 								{isCreator() && (
 									<FontAwesomeIcon
+										forwardedRef={professorViewRef}
 										icon={faChalkboardTeacher}
 										title={t('course.layout_view')}
 										size="2x"
-										className="pr-5 hover:cursor-pointer [color:var(--foreground-color)]"
+										className="mr-5 hover:cursor-pointer [color:var(--foreground-color)]"
 										onClick={() =>
 											setTab({ tab: 'layout', openedActivity: null })
 										}
@@ -77,6 +100,7 @@ const CourseNavigation = ({
 								)}
 								<Disclosure.Button>
 									<FontAwesomeIcon
+										forwardedRef={minimizeRef}
 										icon={faWindowMinimize}
 										title={t('course.navigation.minimize')}
 										className="w-fit pb-2 mb-5 pr-1 hover:cursor-pointer [color:var(--foreground-color)]"
@@ -87,7 +111,7 @@ const CourseNavigation = ({
 								</Disclosure.Button>
 							</div>
 						</div>
-						<div className="course-nav-body">
+						<div className="course-nav-body" ref={sectionsRef}>
 							{course.elementsOrder.length === 0 && (
 								<label>{t('course.empty')}</label>
 							)}
@@ -110,6 +134,7 @@ const CourseNavigation = ({
 						className="flex flex-col items-center w-fit h-full"
 					>
 						<FontAwesomeIcon
+							forwardedRef={maximizeRef}
 							icon={faWindowMaximize}
 							size="2x"
 							className="w-fit mt-1 pt-2 mb-4 hover:cursor-pointer [color:var(--foreground-color)]"

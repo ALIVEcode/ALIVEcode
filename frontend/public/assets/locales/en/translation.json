@@ -350,7 +350,8 @@
 		"section": {
 			"empty": "This section has no activities.",
 			"new": "Add a Section",
-			"delete": "Are you sure you want to delete this section? All the elements contained inside it will also be deleted."
+			"delete": "Are you sure you want to delete this section? All the elements contained inside it will also be deleted.",
+			"new_name": "Section #{{num}}"
 		},
 		"activity": {
 			"open": "Open",
@@ -746,6 +747,13 @@
 					"create_course": "------"
 				}
 			}
+		},
+		"navigation": {
+			"explanation": "That is the student view of the course.",
+			"sections": "The sections and content of the course can be seen here.",
+			"minimize": "This button hides the sidebar to reveal a full-width view of the opened activity.",
+			"maximize": "This button re-opens the sidebar.",
+			"professor_view": "You can go back to the professor view by clicking on this button."
 		},
 		"resource_menu": {
 			"resources": "All your created or acquired resources will be shown here. You can also modify them inside this menu",

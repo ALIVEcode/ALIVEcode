@@ -345,7 +345,8 @@
 		"section": {
 			"empty": "Cette section ne possède aucune activité",
 			"new": "Ajouter une section",
-			"delete": "Êtes-vous sûr de vouloir supprimer cette section? Tout le contenu à l'intérieur de celle-ci sera supprimé."
+			"delete": "Êtes-vous sûr de vouloir supprimer cette section? Tout le contenu à l'intérieur de celle-ci sera supprimé.",
+			"new_name": "Section #{{num}}"
 		},
 		"activity": {
 			"open": "Ouvrir",
@@ -738,6 +739,13 @@
 					"create_course": ""
 				}
 			}
+		},
+		"navigation": {
+			"explanation": "Ceci est la vue étudiante du cours.",
+			"sections": "Les sections et le contenu du cours peuvent être vu ici.",
+			"minimize": "Ce bouton réduit la barre de navigation afin de voir l'activité ouverte en pleine largeur.",
+			"maximize": "Ce bouton remet la barre de navigation comme elle était",
+			"professor_view": "Vous pouvez retourner en mode vue professeur en cliquant sur ce bouton."
 		},
 		"resource_menu": {
 			"resources": "Toutes vos ressources créées ou acquéries en tant que professeur seront affichées et modifiables ici",

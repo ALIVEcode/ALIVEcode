@@ -14,7 +14,6 @@ import { useNavigate } from 'react-router-dom';
 import CourseBody from '../../Components/CourseComponents/CourseBody/CourseBody';
 import CourseLayout from '../../Components/CourseComponents/CourseLayout/CourseLayout';
 import CourseNavigation from '../../Components/CourseComponents/CourseNavigation/CourseNavigation';
-import CreateSectionMenu from '../../Components/CourseComponents/CourseSection/CreateSectionMenu';
 import MenuActivityCreation from '../../Components/CourseComponents/MenuActivityCreation/MenuActivityCreation';
 import FormInput from '../../Components/UtilsComponents/FormInput/FormInput';
 import LoadingScreen from '../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
@@ -68,7 +67,6 @@ const Course = () => {
 	const alert = useAlert();
 	const navigate = useNavigate();
 	const forceUpdate = useForceUpdate();
-	const [openModalSection, setOpenModalSection] = useState(false);
 	const [openModalActivity, setOpenModalActivity] = useState(false);
 	const [openModalImportResource, setOpenModalImportResource] = useState(false);
 	const [sectionParent, setSectionParent] = useState<Section>();
@@ -373,17 +371,6 @@ const Course = () => {
 	};
 
 	/**
-	 * Sets the state of the section creation modal to true
-	 *
-	 * @param sectionParent the section in which we create this new section
-	 * @author Mathis Laroche
-	 */
-	const openSectionForm = (sectionParent?: Section) => {
-		setSectionParent(sectionParent);
-		setOpenModalSection(true);
-	};
-
-	/**
 	 * Sets the state of the activity creation modal to true
 	 *
 	 * @param sectionParent the section in which we create this new activity
@@ -627,7 +614,6 @@ const Course = () => {
 		moveElement,
 		updateActivity,
 		openActivityForm,
-		openSectionForm,
 		setOpenModalImportResource,
 		removeResourceFromActivity,
 		loadActivityResource,
@@ -769,18 +755,17 @@ const Course = () => {
 					</div>
 				)}
 			</div>
-			<CreateSectionMenu
-				openModalSection={openModalSection}
-				setOpenModalSection={setOpenModalSection}
-				sectionParent={sectionParent}
-			/>
 			<MenuActivityCreation
 				open={openModalActivity}
 				setOpen={setOpenModalActivity}
 				sectionParent={sectionParent}
 			/>
 			<Modal
-				title={t('course.activity.import_resource')}
+				title={t(
+					`course.activity.import_resource.${
+						tab.openedActivity?.activity.allowedResources[0] ?? 'generic'
+					}`,
+				)}
 				size="xl"
 				setOpen={setOpenModalImportResource}
 				open={openModalImportResource}

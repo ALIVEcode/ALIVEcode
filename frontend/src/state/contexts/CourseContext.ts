@@ -43,7 +43,6 @@ export type CourseContextValues = {
 		newIdx: number,
 		newParent: CourseParent,
 	) => Promise<void>;
-	openSectionForm: (sectionParent?: Section) => void;
 	openActivityForm: (sectionParent?: Section) => void;
 	setOpenModalImportResource: (state: boolean) => void;
 	removeResourceFromActivity: (activity: Activity) => void;
@@ -73,7 +72,6 @@ export const CourseContext = createContext<CourseContextValues>({
 	deleteElement: async () => {},
 	moveElement: async () => {},
 	loadSectionElements: async () => {},
-	openSectionForm: () => {},
 	openActivityForm: () => {},
 	setOpenModalImportResource: () => {},
 	removeResourceFromActivity: () => {},

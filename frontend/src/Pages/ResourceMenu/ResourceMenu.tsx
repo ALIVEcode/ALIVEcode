@@ -16,6 +16,8 @@ import FormInput from '../../Components/UtilsComponents/FormInput/FormInput';
 import { RESOURCE_TYPE } from '../../Models/Resource/resource.entity';
 import { ResourceFilter } from '../../Components/Resources/ResourceFilter/ResourceFilter';
 import useWaitBeforeUpdate from '../../state/hooks/useWaitBeforeUpdate';
+import { useNavigate } from 'react-router';
+import useRoutes from '../../state/hooks/useRoutes';
 
 /**
  * ResourceMenu is a page that allows a user to get/create/update/delete its resources.
@@ -41,6 +43,8 @@ const ResourceMenu = ({
 	const { t } = useTranslation();
 	const { resources, getResources, setResourceCreationMenuOpen } =
 		useContext(UserContext);
+	const { routes } = useRoutes();
+	const navigate = useNavigate();
 
 	/**
 	 * Function that get the resources of the user based on the query
@@ -172,12 +176,20 @@ const ResourceMenu = ({
 					<div className="w-full h-full p-4">
 						<div className="flex flex-col items-center mb-4">
 							{mode !== 'import' && (
-								<Button
-									variant="primary"
-									onClick={() => setResourceCreationMenuOpen(true)}
-								>
-									{t('resources.form.create')}
-								</Button>
+								<div className="flex gap-4">
+									<Button
+										variant="primary"
+										onClick={() => setResourceCreationMenuOpen(true)}
+									>
+										{t('resources.form.create')}
+									</Button>
+									<Button
+										variant="secondary"
+										onClick={() => navigate(routes.auth.bundle_browse.path)}
+									>
+										{t('resources.menu.bundles')}
+									</Button>
+								</div>
 							)}
 						</div>
 						<div className="grid grid-cols-1 phone:grid-cols-2 tablet:grid-cols-4 laptop:grid-cols-6 desktop:grid-cols-7 gap-4">

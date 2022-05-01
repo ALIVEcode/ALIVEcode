@@ -259,7 +259,8 @@
 	"resources": {
 		"menu": {
 			"title": "Ressources",
-			"search": "Rechercher"
+			"search": "Rechercher",
+			"bundles": "Obtenir des ressources"
 		},
 		"video": {
 			"name": "Vidéo",
@@ -386,6 +387,11 @@
 		"navigation": {
 			"minimize": "Réduire",
 			"maximize": "Agrandir"
+		}
+	},
+	"bundle": {
+		"browse": {
+			"title": "Trousse pédagogique fournies par ALIVEcode"
 		}
 	},
 	"menu": {

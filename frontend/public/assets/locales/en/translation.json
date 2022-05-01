@@ -259,7 +259,8 @@
 	"resources": {
 		"menu": {
 			"title": "Resources",
-			"search": "Search"
+			"search": "Search",
+			"bundles": "Acquire resources"
 		},
 		"video": {
 			"name": "Video",
@@ -389,8 +390,8 @@
 		}
 	},
 	"bundle": {
-		"courseTemplate": {
-			"name": "Course Template"
+		"browse": {
+			"title": "Bundles provided by ALIVEcode"
 		}
 	},
 	"menu": {

@@ -113,7 +113,7 @@ const ResourceMenu = ({
 			],
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [t]);
+	}, []);
 
 	/** Gets the user resources when the selectedSubject */
 	useEffect(() => {

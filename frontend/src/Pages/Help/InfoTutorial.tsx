@@ -22,6 +22,11 @@ import {
 import useComplexState from '../../state/hooks/useComplexState';
 
 /**
+ * This component is used to display the tutorial information.
+ * It is used in the Help page.
+ *
+ * @param targets The elements that should be highlighted by the tutorial.
+ *
  * @author Mathis Laroche
  */
 const InfoTutorial = forwardRef(
@@ -37,20 +42,6 @@ const InfoTutorial = forwardRef(
 	}) => {
 		const { t } = useTranslation();
 		const forceUpdate = useForceUpdate();
-		const [infos, setInfos, updateInfos] = useComplexState(
-			targets.map(target => ({
-				border: target.ref?.style.border!,
-			})),
-		);
-
-		useEffect(() => {
-			targets.forEach(
-				(target, idx) =>
-					currentTarget.current !== idx &&
-					(infos[idx] = { border: target.ref?.style.border! }),
-			);
-			updateInfos();
-		});
 
 		useEffect(() => {
 			if (open) {
@@ -63,21 +54,22 @@ const InfoTutorial = forwardRef(
 		const currentTarget = useRef(0);
 		const myRef = useRef<HTMLDivElement>(null);
 
+		const highlighter = (
+			<div
+				className="absolute border-2 border-[color:var(--fourth-color)]"
+				ref={myRef}
+			/>
+		);
+
 		const close = useCallback(() => {
 			setOpen(false);
 			currentTarget.current = 0;
-			targets.forEach((target, idx) => {
-				if (target.ref) target.ref.style.border = infos[idx].border;
-			});
 			forceUpdate();
-		}, [forceUpdate, infos, setOpen, targets]);
+		}, [forceUpdate, setOpen, targets]);
 
 		const nextTargetOrClose = useCallback(() => {
 			const target = targets[currentTarget.current];
 			target.onExit && target.onExit();
-			if (target.ref) {
-				target.ref.style.border = infos[currentTarget.current].border;
-			}
 			if (currentTarget.current < targets.length - 1) {
 				currentTarget.current++;
 				const newTarget = targets[currentTarget.current];
@@ -87,26 +79,20 @@ const InfoTutorial = forwardRef(
 				afterDo && afterDo();
 				close();
 			}
-		}, [afterDo, close, forceUpdate, infos, targets]);
+		}, [afterDo, close, forceUpdate, targets]);
 
 		const previousTarget = useCallback(() => {
 			const target = targets[currentTarget.current];
 			target.onExit && target.onExit();
-			if (target.ref) {
-				target.ref.style.border = infos[currentTarget.current].border;
-			}
 			if (currentTarget.current > 0) {
 				currentTarget.current--;
 				const newTarget = targets[currentTarget.current];
 				newTarget.onEnter && newTarget.onEnter();
 				forceUpdate();
 			}
-		}, [forceUpdate, infos, targets]);
+		}, [forceUpdate, targets]);
 
 		const renderTarget = (target: InfoTutorialTarget, idx: number) => {
-			if (target.ref && infos) {
-				target.ref.style.border = infos[idx].border;
-			}
 			if (idx !== currentTarget.current) {
 				return null;
 			}
@@ -147,8 +133,12 @@ const InfoTutorial = forwardRef(
 					offsetX = 0;
 					offsetY = 0;
 			}
-			if (target.ref) {
-				target.ref.style.border = '2px solid var(--fourth-color)';
+			if (rect && myRef.current) {
+				// target.ref.style.border = '2px solid var(--fourth-color)';
+				myRef.current.style.top = rect.top.toString() + 'px';
+				myRef.current.style.left = rect.left.toString() + 'px';
+				myRef.current.style.width = rect.width.toString() + 'px';
+				myRef.current.style.height = rect.height.toString() + 'px';
 			}
 
 			return (
@@ -163,7 +153,7 @@ const InfoTutorial = forwardRef(
 					trigger={
 						target.ref === null
 							? undefined
-							: target.ref && <div className="hidden" />
+							: target.ref && <div id="tutorial-target" className="hidden" />
 					}
 					arrow={target.ref !== null}
 					contentStyle={contentStyle}
@@ -192,13 +182,11 @@ const InfoTutorial = forwardRef(
 			);
 		};
 		return open ? (
-			<div
-				className="w-full h-full bg-black bg-opacity-25 absolute left-0 top-0 z-[100]"
-				ref={myRef}
-			>
+			<div className="w-full h-full bg-black bg-opacity-25 absolute left-0 top-0 z-[100]">
 				{targets.map((target, idx) => {
 					return renderTarget(target, idx);
 				})}
+				{highlighter}
 			</div>
 		) : null;
 	},
@@ -273,7 +261,7 @@ const Tutorial = ({
 	return (
 		<TutorialContext.Provider value={tutorialContextValues}>
 			{children}
-			{currentTutorial && (
+			{currentTutorial && currentTutorial.targets && (
 				<InfoTutorial
 					{...currentTutorial}
 					open={tutorialOpen}

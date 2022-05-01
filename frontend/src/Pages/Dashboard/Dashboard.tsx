@@ -197,6 +197,7 @@ const Dashboard = (props: DashboardProps) => {
 	useLayoutEffect(() => {
 		return registerTutorial({
 			name: 'DashboardTabs',
+			afterDo: openRecents,
 			targets: [
 				{
 					ref: recentCourseTabRef.current,
@@ -226,12 +227,11 @@ const Dashboard = (props: DashboardProps) => {
 					ref: coursesRef.current,
 					infoBox: <Info.Box text={t('help.dashboard.tabs.create_course')} />,
 					position: 'right center',
-					onExit: openRecents,
 				},
 			],
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [t]);
+	}, []);
 
 	/**
 	 * Renders the tab currently selected

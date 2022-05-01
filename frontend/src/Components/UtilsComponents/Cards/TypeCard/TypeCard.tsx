@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext } from 'react';
 import { ThemeContext } from '../../../../state/contexts/ThemeContext';
 import { classNames } from '../../../../Types/utils';
+import useView from '../../../../state/hooks/useView';
 
 /**
  * Card component used to choose between different subjects or types
@@ -16,6 +17,7 @@ import { classNames } from '../../../../Types/utils';
  */
 const TypeCard = (props: TypeCardProps) => {
 	const { theme } = useContext(ThemeContext);
+	const view = useView();
 
 	return (
 		<div
@@ -30,12 +32,12 @@ const TypeCard = (props: TypeCardProps) => {
 				<div>
 					<FontAwesomeIcon
 						color={theme.color.fg_shade_one}
-						size="7x"
+						size={view.screenType === 'laptop' ? '4x' : '7x'}
 						icon={props.icon}
 					/>
 				</div>
 			)}
-			<div className="text-lg">{props.title}</div>
+			<div className="text-lg text-center">{props.title}</div>
 		</div>
 	);
 };

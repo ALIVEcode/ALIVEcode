@@ -10,7 +10,7 @@ import useRoutes from '../../../state/hooks/useRoutes';
 import { instanceToPlain } from 'class-transformer';
 import { useNavigate } from 'react-router-dom';
 import { useAlert } from 'react-alert';
-import { Course } from '../../../Models/Course/course.entity';
+import { Course, COURSE_ACCESS } from '../../../Models/Course/course.entity';
 import Button from '../../UtilsComponents/Buttons/Button';
 import {
 	MenuCourseCreationProps,
@@ -43,7 +43,7 @@ const MenuCourseCreation = ({
 	const [subject, setSubject] = useState<SUBJECTS | undefined>(
 		defaultCourse?.subject ?? undefined,
 	);
-	const [courseTemplateOpen, setCourseTemplateOpen] = useState(true);
+	const [courseTemplateOpen, setCourseTemplateOpen] = useState(false);
 	const [templates, setTemplates] = useState<CourseTemplate[]>();
 	const [selectedTemplate, setSelectedTemplate] = useState<CourseTemplate>();
 	const { t } = useTranslation();
@@ -92,6 +92,7 @@ const MenuCourseCreation = ({
 	const onSubmit = async (formValues: MenuCourseCreationDTO) => {
 		if (!subject) return;
 		formValues.course.subject = subject;
+		formValues.course.access = COURSE_ACCESS.RESTRICTED;
 		formValues.classId = classroom?.id;
 		if (updateMode && defaultCourse) {
 			await api.db.courses.update(

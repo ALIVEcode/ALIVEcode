@@ -45,11 +45,6 @@ export class CourseEntity extends CreatedByUser {
   // The code consists of letters from a-z and numbers from 0-9 | case non-senstive
   code: string;
 
-  /** Difficulty of the course */
-  @IsNotEmpty()
-  @Column({ type: 'enum', enum: COURSE_DIFFICULTY, default: COURSE_DIFFICULTY.EASY, nullable: false })
-  difficulty: COURSE_DIFFICULTY;
-
   /** Access to the course */
   @IsNotEmpty()
   @Column({ type: 'enum', enum: COURSE_ACCESS, default: COURSE_ACCESS.PRIVATE, nullable: false })

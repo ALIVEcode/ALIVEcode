@@ -4,6 +4,7 @@ import React, {
 	forwardRef,
 	useCallback,
 	useEffect,
+	useLayoutEffect,
 	useMemo,
 	useRef,
 	useState,
@@ -36,19 +37,25 @@ const InfoTutorial = forwardRef(
 	}) => {
 		const { t } = useTranslation();
 		const forceUpdate = useForceUpdate();
-		const infos = useRef(
+		const [infos, setInfos, updateInfos] = useComplexState(
 			targets.map(target => ({
-				border: target.ref?.style.border ?? 'none',
+				border: target.ref?.style.border!,
 			})),
 		);
+
+		useEffect(() => {
+			targets.forEach(
+				(target, idx) =>
+					currentTarget.current !== idx &&
+					(infos[idx] = { border: target.ref?.style.border! }),
+			);
+			updateInfos();
+		});
 
 		useEffect(() => {
 			if (open) {
 				beforeDo && beforeDo();
 				if (targets.length > 0) targets[0].onEnter && targets[0].onEnter();
-				infos.current = targets.map(target => ({
-					border: target.ref?.style.border ?? 'none',
-				}));
 			}
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, [open]);
@@ -59,10 +66,9 @@ const InfoTutorial = forwardRef(
 		const close = useCallback(() => {
 			setOpen(false);
 			currentTarget.current = 0;
-			// targets.forEach((target, idx) => {
-			// 	if (target.ref)
-			// 		target.ref.style.border = infos.current[idx].border;
-			// });
+			targets.forEach((target, idx) => {
+				if (target.ref) target.ref.style.border = infos[idx].border;
+			});
 			forceUpdate();
 		}, [forceUpdate, infos, setOpen, targets]);
 
@@ -70,7 +76,7 @@ const InfoTutorial = forwardRef(
 			const target = targets[currentTarget.current];
 			target.onExit && target.onExit();
 			if (target.ref) {
-				target.ref.style.border = infos.current[currentTarget.current].border;
+				target.ref.style.border = infos[currentTarget.current].border;
 			}
 			if (currentTarget.current < targets.length - 1) {
 				currentTarget.current++;
@@ -87,7 +93,7 @@ const InfoTutorial = forwardRef(
 			const target = targets[currentTarget.current];
 			target.onExit && target.onExit();
 			if (target.ref) {
-				target.ref.style.border = infos.current[currentTarget.current].border;
+				target.ref.style.border = infos[currentTarget.current].border;
 			}
 			if (currentTarget.current > 0) {
 				currentTarget.current--;
@@ -98,8 +104,8 @@ const InfoTutorial = forwardRef(
 		}, [forceUpdate, infos, targets]);
 
 		const renderTarget = (target: InfoTutorialTarget, idx: number) => {
-			if (target.ref) {
-				target.ref.style.border = infos.current[currentTarget.current].border;
+			if (target.ref && infos) {
+				target.ref.style.border = infos[idx].border;
 			}
 			if (idx !== currentTarget.current) {
 				return null;
@@ -185,7 +191,6 @@ const InfoTutorial = forwardRef(
 				</Popup>
 			);
 		};
-
 		return open ? (
 			<div
 				className="w-full h-full bg-black bg-opacity-25 absolute left-0 top-0 z-[100]"

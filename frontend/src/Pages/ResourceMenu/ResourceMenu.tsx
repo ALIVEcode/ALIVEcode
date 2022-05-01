@@ -79,36 +79,44 @@ const ResourceMenu = ({
 
 	useLayoutEffect(() => {
 		registerTutorial({
-			name: 'DashboardTabs',
+			name: 'ResourceMenu',
 			targets: [
 				{
 					ref: resourcesDivRef.current,
-					infoBox: <Info.Box text={t('help.dashboard.tabs.challenges')} />,
+					infoBox: <Info.Box text={t('help.resource_menu.resources')} />,
 					position: 'right center',
 				},
 				{
 					ref: createResourceRef.current,
-					infoBox: <Info.Box text={t('help.dashboard.tabs.create_course')} />,
+					infoBox: <Info.Box text={t('help.resource_menu.create_resource')} />,
 					position: 'right center',
 				},
 				{
 					ref: acquireResourceRef.current,
-					infoBox: <Info.Box text={t('help.dashboard.tabs.resources')} />,
+					infoBox: <Info.Box text={t('help.resource_menu.acquire_resource')} />,
 					position: 'right center',
 				},
 				{
 					ref: filtersRef.current,
-					infoBox: (
-						<Info.Box text={t('help.dashboard.tabs.create_classroom')} />
-					),
+					infoBox: <Info.Box text={t('help.resource_menu.filters')} />,
+					position: 'right center',
+				},
+				{
+					ref: sectionsRef.current,
+					infoBox: <Info.Box text={t('help.resource_menu.sections')} />,
+					position: 'right center',
+				},
+				{
+					ref: searchRef.current,
+					infoBox: <Info.Box text={t('help.resource_menu.search')} />,
 					position: 'right center',
 				},
 			],
 		});
-		setCurrentTutorial('DashboardTabs');
-		return () => unregisterTutorial('DashboardTabs');
+		setCurrentTutorial('ResourceMenu');
+		return () => unregisterTutorial('ResourceMenu');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [t]);
 
 	/** Gets the user resources when the selectedSubject */
 	useEffect(() => {

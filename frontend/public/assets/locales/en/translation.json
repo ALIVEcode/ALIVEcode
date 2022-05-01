@@ -746,6 +746,14 @@
 					"create_course": "------"
 				}
 			}
+		},
+		"resource_menu": {
+			"resources": "All your created or acquired resources will be shown here. You can also modify them inside this menu",
+			"create_resource": "If you wish to create a new resource, you can do it from this menu by clicking on the button \"$t(resources.form.create)\"",
+			"acquire_resource": "You can also acquire pre-made resources by clicking on the button \"$t(resources.form.create)\"",
+			"filters": "You can filter your resources by their type...",
+			"sections": "...their categories...",
+			"search": "...and their name"
 		}
 	}
 }

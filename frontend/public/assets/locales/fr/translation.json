@@ -738,6 +738,14 @@
 					"create_course": ""
 				}
 			}
+		},
+		"resource_menu": {
+			"resources": "Toutes vos ressources créées ou acquéries en tant que professeur seront affichées et modifiables ici",
+			"create_resource": "Si vous souhaitez créer une ressource, vous pouvez le faire depuis ce menu en cliquant sur le bouton \"$t(resources.form.create)\"",
+			"acquire_resource": "Vous pouvez aussi vous procurer des ressources préfaites en cliquant sur le bouton \"$t(resources.menu.bundles)\"",
+			"filters": "Vous pouvez trier vos ressources selon le type de celles-ci...",
+			"sections": "...ainsi que selon leur catégorie...",
+			"search": "...et leur nom"
 		}
 	}
 }

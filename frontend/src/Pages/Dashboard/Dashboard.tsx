@@ -215,7 +215,6 @@ const Dashboard = (props: DashboardProps) => {
 					ref: resourceTabRef.current,
 					infoBox: <Info.Box text={t('help.dashboard.tabs.resources')} />,
 					position: 'right center',
-					onEnter: openResources,
 				},
 				{
 					ref: classroomsRef.current,
@@ -233,7 +232,7 @@ const Dashboard = (props: DashboardProps) => {
 			],
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [t]);
 
 	/**
 	 * Renders the tab currently selected

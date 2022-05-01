@@ -764,6 +764,9 @@
 			"sections": "...their categories...",
 			"search": "...and their name",
 			"help": "Resources are the content used inside an activity. They are shared content that can be reused throughout the website in different courses. If the resource changes, it will affect every courses using this resource."
+		},
+		"course_template": {
+			"help": "By using a $t(msg.courseTemplate) you will have course fondations on which to rely to create your own course. It is not mandatory to select one when creating a course."
 		}
 	}
 }

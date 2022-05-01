@@ -39,6 +39,8 @@
 		"placeholder": "Veuillez entrer votre avis ici..."
 	},
 	"form": {
+		"optional": "Optionnel",
+		"required": "Requis",
 		"submit": {
 			"POST": "Créer {{name}}",
 			"PATCH": "Modifier {{name}}",
@@ -348,6 +350,10 @@
 			"new": "Ajouter une section",
 			"delete": "Êtes-vous sûr de vouloir supprimer cette section? Tout le contenu à l'intérieur de celle-ci sera supprimé.",
 			"new_name": "Section #{{num}}"
+		},
+		"template": {
+			"add": "Utiliser un modèle",
+			"remove": "Enlever le modèle"
 		},
 		"activity": {
 			"open": "Ouvrir",
@@ -756,6 +762,9 @@
 			"sections": "...ainsi que selon leur catégorie...",
 			"search": "...et leur nom",
 			"help": "Les ressources sont le contenu utilisé dans une activité. Elles sont du contenu partagé qui peuvent être réutilisées partout sur tout le site dans plusieurs cours. Si la ressource change, le changement affectera tous les cours l'utilisant."
+		},
+		"course_template": {
+			"help": "En utilisant un $t(msg.courseTemplate) vous pourrez avoir une fondation sur laquelle vous fier afin de construire votre propre cours. Il n'est pas obligatoire d'en utiliser pour créer un cours."
 		}
 	}
 }

@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
 import api from '../../../Models/api';
-import { useState, useContext, useMemo, useEffect, useRef } from 'react';
+import { useState, useContext, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserContext } from '../../../state/contexts/UserContext';
 import TypeCard from '../../UtilsComponents/Cards/TypeCard/TypeCard';
@@ -21,6 +21,7 @@ import { CourseTemplate } from '../../../Models/Course/bundles/course_template.e
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import CourseTemplateCard from '../../Bundles/CourseTemplateCard/CourseTemplateCard';
 import Timeline from '../../UtilsComponents/Modal/Timeline';
+import Info from '../../HelpComponents/index';
 
 /**
  * Menu that allows for the creation and updating of a course
@@ -159,9 +160,19 @@ const MenuCourseCreation = ({
 	const renderPageCourseTemplate = () => {
 		return (
 			<div className="tablet:px-8 laptop:px-16 desktop:px-36 flex flex-col text-center">
+				<Info.Icon
+					className="!inline"
+					hoverPopup={{
+						position: 'right center',
+					}}
+				>
+					<Info.Box useDefaultStyle text={t('help.course_template.help')} />
+				</Info.Icon>
 				{selectedTemplate ? (
 					<>
-						<CourseTemplateCard template={selectedTemplate} />
+						<div className="m-auto mb-4">
+							<CourseTemplateCard template={selectedTemplate} />
+						</div>
 						<Button
 							variant="danger"
 							onClick={() => setSelectedTemplate(undefined)}

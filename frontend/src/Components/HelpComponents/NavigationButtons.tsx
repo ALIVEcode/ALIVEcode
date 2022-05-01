@@ -15,7 +15,7 @@ const NavigationButtons = ({
 }: {
 	max: number;
 	min?: number;
-	current: MutableRefObject<number>;
+	current: number;
 	next: () => void;
 	previous: () => void;
 }) => {
@@ -25,14 +25,14 @@ const NavigationButtons = ({
 		<div className="flex flex-row justify-evenly align-middle pt-12">
 			<button
 				className="flex items-center gap-2 cursor-pointer disabled:cursor-auto disabled:opacity-40"
-				disabled={current.current === min}
+				disabled={current === min}
 				onClick={previous}
 			>
 				<FontAwesomeIcon size="1x" icon={faChevronLeft} />
 				<span className="pr-3">{t('help.slides.previous')}</span>
 			</button>
 
-			{current.current === max ? (
+			{current === max ? (
 				<button
 					className="flex items-center gap-4 cursor-pointer disabled:cursor-auto"
 					onClick={next}

@@ -37,7 +37,7 @@ export type InfoSlideProps = {
 };
 
 export type InfoTutorialTarget = {
-	ref?: HTMLElement | null;
+	ref?: HTMLElement | null | (() => HTMLElement | null);
 	infoBox: JSX.Element;
 	position?: PopupProps['position'];
 	onEnter?: () => void;

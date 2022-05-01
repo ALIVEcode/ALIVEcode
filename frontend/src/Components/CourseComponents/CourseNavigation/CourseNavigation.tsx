@@ -54,9 +54,9 @@ const CourseNavigation = ({
 					position: 'bottom center',
 				},
 				{
-					ref: maximizeRef.current,
+					ref: () => maximizeRef.current,
 					infoBox: <Info.Box text={t('help.navigation.maximize')} />,
-					position: 'bottom center',
+					position: 'right center',
 					onEnter: onToggle,
 				},
 				{

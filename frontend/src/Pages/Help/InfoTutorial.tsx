@@ -51,53 +51,51 @@ const InfoTutorial = forwardRef(
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, [open]);
 
-		const currentTarget = useRef(0);
+		const [currentTarget, setCurrentState] = useState(0);
 		const myRef = useRef<HTMLDivElement>(null);
-
-		const highlighter = (
-			<div
-				className="absolute border-2 border-[color:var(--fourth-color)]"
-				ref={myRef}
-			/>
-		);
 
 		const close = useCallback(() => {
 			setOpen(false);
-			currentTarget.current = 0;
-			forceUpdate();
-		}, [forceUpdate, setOpen, targets]);
+			setCurrentState(0);
+		}, [setOpen]);
+
+		useEffect(() => {
+			if (open) {
+				if (targets.length > 0) {
+					targets[currentTarget].onEnter && targets[currentTarget].onEnter!();
+				}
+			}
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+		}, [currentTarget]);
 
 		const nextTargetOrClose = useCallback(() => {
-			const target = targets[currentTarget.current];
+			const target = targets[currentTarget];
 			target.onExit && target.onExit();
-			if (currentTarget.current < targets.length - 1) {
-				currentTarget.current++;
-				const newTarget = targets[currentTarget.current];
-				newTarget.onEnter && newTarget.onEnter();
-				forceUpdate();
+			if (currentTarget < targets.length - 1) {
+				setCurrentState(currentTarget + 1);
 			} else {
 				afterDo && afterDo();
 				close();
 			}
-		}, [afterDo, close, forceUpdate, targets]);
+		}, [afterDo, close, currentTarget, targets]);
 
 		const previousTarget = useCallback(() => {
-			const target = targets[currentTarget.current];
+			const target = targets[currentTarget];
 			target.onExit && target.onExit();
-			if (currentTarget.current > 0) {
-				currentTarget.current--;
-				const newTarget = targets[currentTarget.current];
-				newTarget.onEnter && newTarget.onEnter();
-				forceUpdate();
+			if (currentTarget > 0) {
+				setCurrentState(currentTarget - 1);
 			}
-		}, [forceUpdate, targets]);
+		}, [currentTarget, targets]);
 
 		const renderTarget = (target: InfoTutorialTarget, idx: number) => {
-			if (idx !== currentTarget.current) {
+			if (idx !== currentTarget) {
 				return null;
 			}
 
-			const rect = target.ref && target.ref.getBoundingClientRect();
+			const rect =
+				typeof target.ref === 'function'
+					? target.ref()?.getBoundingClientRect()
+					: target.ref?.getBoundingClientRect();
 			let offsetX: number;
 			let offsetY: number;
 			const contentStyle: React.CSSProperties = {};
@@ -134,7 +132,6 @@ const InfoTutorial = forwardRef(
 					offsetY = 0;
 			}
 			if (rect && myRef.current) {
-				// target.ref.style.border = '2px solid var(--fourth-color)';
 				myRef.current.style.top = rect.top.toString() + 'px';
 				myRef.current.style.left = rect.left.toString() + 'px';
 				myRef.current.style.width = rect.width.toString() + 'px';
@@ -143,23 +140,26 @@ const InfoTutorial = forwardRef(
 
 			return (
 				<Popup
-					open={currentTarget.current === idx}
+					defaultOpen
 					closeOnDocumentClick={false}
 					closeOnEscape={true}
 					position={target.position}
 					onClose={close}
-					offsetX={offsetX}
-					offsetY={offsetY}
+					offsetX={target.position && offsetX}
+					offsetY={target.position && offsetY}
 					trigger={
 						target.ref === null
 							? undefined
-							: target.ref && <div id="tutorial-target" className="hidden" />
+							: target.ref && <div className="hidden" />
 					}
+					modal={target.ref === null}
 					arrow={target.ref !== null}
-					contentStyle={contentStyle}
-					arrowStyle={{
-						color: 'var(--fg-shade-four-color)',
-					}}
+					contentStyle={target.ref === null ? undefined : contentStyle}
+					arrowStyle={
+						target.position && {
+							color: 'var(--fg-shade-four-color)',
+						}
+					}
 				>
 					<div
 						className={
@@ -182,11 +182,14 @@ const InfoTutorial = forwardRef(
 			);
 		};
 		return open ? (
-			<div className="w-full h-full bg-black bg-opacity-25 absolute left-0 top-0 z-[100]">
+			<div className="w-full h-full bg-black bg-opacity-25 absolute left-0 top-0 z-[100] flex">
+				<div
+					className="absolute border-2 border-[color:var(--fourth-color)] w-1 h-1"
+					ref={myRef}
+				/>
 				{targets.map((target, idx) => {
 					return renderTarget(target, idx);
 				})}
-				{highlighter}
 			</div>
 		) : null;
 	},

@@ -47,6 +47,7 @@
       "DELETE": "Delete {{name}}"
     },
     "error": {
+      "cant_submit": "Something went wrong when submitting your form, please make sure you filled all the required fields and try again.",
       "generic": "This field is wrong",
       "required": "This field is required",
       "maxLength": "This field exceeds {{max}} characters",

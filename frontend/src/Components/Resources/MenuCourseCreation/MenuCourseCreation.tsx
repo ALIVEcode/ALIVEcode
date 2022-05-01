@@ -148,9 +148,7 @@ const MenuCourseCreation = ({
 					{...register('course.name', { required: true })}
 				/>
 				<InputGroup
-					label={
-						t('course.form.description') + ' (' + t('form.optional') + ')'
-					}
+					label={t('course.form.description') + ' (' + t('form.optional') + ')'}
 					errors={errors.course?.description}
 					{...register('course.description', { maxLength: 500 })}
 				/>
@@ -186,7 +184,18 @@ const MenuCourseCreation = ({
 				title={updateMode ? t('course.form.update') : t('course.form.create')}
 				setOpen={setOpen}
 				open={open}
-				onSubmit={handleSubmit(onSubmit)}
+				onSubmit={async () => {
+					try {
+						let r = true;
+						const func = handleSubmit(onSubmit, () => {
+							r = false;
+						});
+						await func();
+						return r;
+					} catch {
+						return false;
+					}
+				}}
 				submitText={t('course.form.create')}
 				submitButtonVariant="primary"
 			>

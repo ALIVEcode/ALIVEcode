@@ -33,7 +33,7 @@ export type TimelineModalProps = Omit<ModalProps, 'hideTitle'> & {
 	children: React.ReactNode | React.ReactNode[];
 	defaultSlideClassName?: string;
 	onCancel?: () => void;
-	onSubmit?: () => void;
+	onSubmit?: () => Promise<void | boolean>;
 	submitText?: string;
 	submitButtonVariant?: 'primary' | 'secondary';
 };

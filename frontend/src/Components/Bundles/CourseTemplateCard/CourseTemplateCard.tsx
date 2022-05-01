@@ -2,11 +2,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CourseTemplateCardProps } from './courseTemplateCardTypes';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { classNames } from '../../../Types/utils';
+import { useTranslation } from 'react-i18next';
 
+/**
+ * CourseTemplate card used to render a visual representation of a CourseTemplate and its content
+ * @param template CourseTemplate to render
+ * @param onSelect Callback when the CourseTemplate is clicked
+ * @returns The CourseTemplate card
+ *
+ * @author Enric Soldevila
+ */
 const CourseTemplateCard = ({
 	template,
 	onSelect,
 }: CourseTemplateCardProps) => {
+	const { t } = useTranslation();
+
 	return (
 		<div
 			className={classNames(
@@ -26,7 +37,9 @@ const CourseTemplateCard = ({
 				/>
 			</div>
 			<div className="overflow-y-auto h-full text-xs">
-				<div className="font-semibold mb-2">Contient:</div>
+				<div className="font-semibold mb-2">
+					{t('bundle.courseTemplate.content')}:
+				</div>
 				{template.description.split('\n').map((t, idx) => (
 					<div key={idx} className="whitespace-normal mb-1">
 						- {t}

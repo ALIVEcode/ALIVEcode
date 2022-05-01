@@ -4,6 +4,14 @@ import { faBriefcase } from '@fortawesome/free-solid-svg-icons';
 import { classNames } from '../../../Types/utils';
 import { useTranslation } from 'react-i18next';
 
+/**
+ * Bundle card used to render a visual representation of a bundle and its content
+ * @param bundle Bundle to render
+ * @param onSelect Callback when the bundle is clicked
+ * @returns The bundle card
+ *
+ * @author Enric Soldevila
+ */
 const BundleCard = ({ bundle, onSelect }: BundleCardProps) => {
 	const { t } = useTranslation();
 

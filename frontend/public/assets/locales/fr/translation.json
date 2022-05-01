@@ -399,6 +399,9 @@
 		}
 	},
 	"bundle": {
+		"courseTemplate": {
+			"content": "Contient"
+		},
 		"browse": {
 			"title": "Trousses pédagogiques fournies par ALIVEcode"
 		}

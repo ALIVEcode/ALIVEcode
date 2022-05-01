@@ -399,7 +399,8 @@
 	},
 	"bundle": {
 		"courseTemplate": {
-			"name": "Course Template"
+			"name": "Course Template",
+			"content": "Contains"
 		},
 		"browse": {
 			"title": "Bundles provided by ALIVEcode"

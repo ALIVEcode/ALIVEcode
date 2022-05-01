@@ -22,8 +22,12 @@ const BundleBrowse = () => {
 	const { t } = useTranslation();
 	const { routes } = useRoutes();
 
-	const claimBundle = async (b: Bundle) => {
-		await api.db.bundles.claimBundle(b.id);
+	/**
+	 * Claims a bundle
+	 * @param bundle Bundle to claim
+	 */
+	const claimBundle = async (bundle: Bundle) => {
+		await api.db.bundles.claimBundle(bundle.id);
 		navigate(routes.auth.dashboard.path);
 	};
 

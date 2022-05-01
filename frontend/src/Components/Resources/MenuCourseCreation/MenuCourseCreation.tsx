@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
 import api from '../../../Models/api';
-import { useState, useContext, useMemo, useEffect } from 'react';
+import { useState, useContext, useMemo, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserContext } from '../../../state/contexts/UserContext';
 import TypeCard from '../../UtilsComponents/Cards/TypeCard/TypeCard';
@@ -143,12 +143,14 @@ const MenuCourseCreation = ({
 		return (
 			<div className="tablet:px-8 laptop:px-16 desktop:px-36">
 				<InputGroup
-					label={t('course.form.name')}
+					label={t('course.form.name') + ' (' + t('form.required') + ')'}
 					errors={errors.course?.name}
 					{...register('course.name', { required: true })}
 				/>
 				<InputGroup
-					label={t('course.form.description')}
+					label={
+						t('course.form.description') + ' (' + t('form.optional') + ')'
+					}
 					errors={errors.course?.description}
 					{...register('course.description', { maxLength: 500 })}
 				/>

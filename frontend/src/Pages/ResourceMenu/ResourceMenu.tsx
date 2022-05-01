@@ -219,6 +219,14 @@ const ResourceMenu = ({
 					<div className="flex items-center w-full h-20 px-4 border-b border-[color:var(--bg-shade-four-color)]">
 						<div className="mr-4">
 							<label className="text-xl">{t('resources.menu.title')}</label>
+							<Info.Icon
+								className="!inline"
+								hoverPopup={{
+									position: 'right center',
+								}}
+							>
+								<Info.Box useDefaultStyle text={t('help.resource_menu.help')} />
+							</Info.Icon>
 							<label className="ml-2 text-xl text-[color:var(--fg-shade-four-color)]">
 								<span>/</span>
 								<span className="ml-2">{getSelectedSubjectName()}</span>

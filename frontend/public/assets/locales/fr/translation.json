@@ -745,7 +745,8 @@
 			"acquire_resource": "Vous pouvez aussi vous procurer des ressources préfaites en cliquant sur le bouton \"$t(resources.menu.bundles)\"",
 			"filters": "Vous pouvez trier vos ressources selon le type de celles-ci...",
 			"sections": "...ainsi que selon leur catégorie...",
-			"search": "...et leur nom"
+			"search": "...et leur nom",
+			"help": "Les ressources sont le contenu utilisé dans une activité. Elles sont du contenu partagé qui peuvent être réutilisées partout sur tout le site dans plusieurs cours. Si la ressource change, le changement affectera tous les cours l'utilisant."
 		}
 	}
 }

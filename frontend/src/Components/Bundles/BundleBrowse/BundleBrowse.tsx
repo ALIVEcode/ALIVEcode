@@ -6,6 +6,8 @@ import api from '../../../Models/api';
 import { useTranslation } from 'react-i18next';
 import { Bundle } from '../../../Models/Course/bundles/bundle.entity';
 import BundleCard from '../BundleCard/BundleCard';
+import useRoutes from '../../../state/hooks/useRoutes';
+import { useNavigate } from 'react-router';
 
 /**
  * Browsing menu that shows all the bundles sorted with a query
@@ -16,8 +18,14 @@ const BundleBrowse = () => {
 	const [browsingResult, setBrowsingResult] =
 		useState<BrowsingResults<Bundle>>();
 	const bundles = browsingResult?.results;
-
+	const navigate = useNavigate();
 	const { t } = useTranslation();
+	const { routes } = useRoutes();
+
+	const claimBundle = async (b: Bundle) => {
+		await api.db.bundles.claimBundle(b.id);
+		navigate(routes.auth.dashboard.path);
+	};
 
 	return (
 		<div className="p-4 relative">
@@ -34,11 +42,7 @@ const BundleBrowse = () => {
 					) : (
 						<>
 							{bundles.map((b, idx) => (
-								<BundleCard
-									onSelect={async b => await api.db.bundles.claimBundle(b.id)}
-									bundle={b}
-									key={idx}
-								/>
+								<BundleCard onSelect={claimBundle} bundle={b} key={idx} />
 							))}
 						</>
 					)}

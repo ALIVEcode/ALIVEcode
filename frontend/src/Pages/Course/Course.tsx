@@ -5,7 +5,6 @@ import {
 	useRef,
 	useState,
 	useCallback,
-	forwardRef,
 } from 'react';
 import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';

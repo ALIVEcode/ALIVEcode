@@ -74,8 +74,7 @@ const ResourceMenu = ({
 	const filtersRef = useRef<HTMLDivElement>(null);
 	const sectionsRef = useRef<HTMLDivElement>(null);
 	const searchRef = useRef<HTMLDivElement>(null);
-	const { registerTutorial, setCurrentTutorial, unregisterTutorial } =
-		useContext(TutorialContext);
+	const { registerTutorial } = useContext(TutorialContext);
 
 	useLayoutEffect(() => {
 		return registerTutorial({

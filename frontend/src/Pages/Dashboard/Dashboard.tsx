@@ -109,8 +109,7 @@ const Dashboard = (props: DashboardProps) => {
 	const coursesRef = useRef<HTMLDivElement>(null);
 	const resourceTabRef = useRef<HTMLDivElement>(null);
 	const classroomsRef = useRef<HTMLDivElement>(null);
-	const { registerTutorial, setCurrentTutorial, unregisterTutorial } =
-		useContext(TutorialContext);
+	const { registerTutorial } = useContext(TutorialContext);
 
 	useEffect(() => {
 		if (pathname.endsWith('recents') && tabSelected.tab !== 'recents')

@@ -1,6 +1,15 @@
 import { faUserGraduate } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useContext, useEffect, useLayoutEffect, useRef } from 'react';
+import {
+	ForwardedRef,
+	forwardRef,
+	MutableRefObject,
+	RefObject,
+	useContext,
+	useEffect,
+	useLayoutEffect,
+	useRef,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import useRoutes from '../../../state/hooks/useRoutes';
@@ -29,6 +38,8 @@ const CourseLayout = () => {
 	const { routes, goTo } = useRoutes();
 	const { t } = useTranslation();
 	const titleRef = useRef<HTMLDivElement>(null);
+	const addElementButtonRef = useRef<HTMLDivElement>(null);
+	const goToStudentViewRef = useRef<HTMLDivElement>(null);
 	const { registerTutorial, setCurrentTutorial, unregisterTutorial } =
 		useContext(TutorialContext);
 
@@ -36,6 +47,25 @@ const CourseLayout = () => {
 		return registerTutorial({
 			name: 'CourseLayout',
 			targets: [
+				{
+					infoBox: <Info.Box text={'Welcome message'} />,
+				},
+				{
+					ref: document.getElementById("course-title"),
+					infoBox: <Info.Box text={'Edit cours en double cliquant dessus'} />,
+					position: 'bottom center',
+				},
+				{
+					ref: document.getElementById("course-view"),
+					infoBox: (
+						<Info.Box
+							text={
+								'Ici voir la vue actuelle, elle changera pour "élève" plus tard '
+							}
+						/>
+					),
+					position: 'left center',
+				},
 				{
 					ref: titleRef.current,
 					infoBox: <Info.Box text="aa" />,

@@ -5,6 +5,7 @@ import {
 	useRef,
 	useState,
 	useCallback,
+	forwardRef,
 } from 'react';
 import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
@@ -72,6 +73,8 @@ const Course = () => {
 	const [openModalImportResource, setOpenModalImportResource] = useState(false);
 	const [sectionParent, setSectionParent] = useState<Section>();
 	const titleRef = useRef<HTMLInputElement>(null);
+	const courseTitleRef = useRef<HTMLDivElement>(null);
+	const currentViewRef = useRef<HTMLDivElement>(null);
 	const [courseTitle, setCourseTitle] = useState(course.current?.name);
 	const [editTitle, setEditTitle] = useState(false);
 	const [courseNavigationOpen, setCourseNavigationOpen] = useState(true);
@@ -702,32 +705,36 @@ const Course = () => {
 					<div className="text-4xl text-left text-[color:var(--foreground-color)] pl-5 pt-3 pb-3">
 						{isCreator() ? (
 							<div className="flex flex-row justify-between items-center">
-								{editTitle ? (
-									<FormInput
-										ref={titleRef}
-										type="text"
-										autoFocus
-										onBlur={async () => {
-											if (!titleRef.current) return;
-											await setTitle(titleRef.current.value);
-											setCourseTitle(titleRef.current.value);
-											setEditTitle(false);
-										}}
-										defaultValue={courseTitle}
-									/>
-								) : (
-									<span
-										style={{ cursor: isCreator() ? 'pointer' : 'auto' }}
-										onClick={() => isCreator() && setEditTitle(true)}
-									>
-										{courseTitle}
-									</span>
-								)}{' '}
-								<label className="pr-3 text-2xl opacity-60">
-									{tab.tab === 'layout'
-										? t('course.layout_view')
-										: t('course.student_view')}
-								</label>
+								<div id="course-title">
+									{editTitle ? (
+										<FormInput
+											ref={titleRef}
+											type="text"
+											autoFocus
+											onBlur={async () => {
+												if (!titleRef.current) return;
+												await setTitle(titleRef.current.value);
+												setCourseTitle(titleRef.current.value);
+												setEditTitle(false);
+											}}
+											defaultValue={courseTitle}
+										/>
+									) : (
+										<span
+											style={{ cursor: isCreator() ? 'pointer' : 'auto' }}
+											onClick={() => isCreator() && setEditTitle(true)}
+										>
+											{courseTitle}
+										</span>
+									)}
+								</div>{' '}
+								<div id="course-view">
+									<label className="px-3 text-2xl opacity-60">
+										{tab.tab === 'layout'
+											? t('course.layout_view')
+											: t('course.student_view')}
+									</label>
+								</div>
 							</div>
 						) : (
 							courseTitle

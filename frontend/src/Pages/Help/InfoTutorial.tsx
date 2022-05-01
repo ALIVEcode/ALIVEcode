@@ -48,7 +48,7 @@ const InfoTutorial = forwardRef(
 			);
 
 			// eslint-disable-next-line react-hooks/exhaustive-deps
-		}, []);
+		}, [open]);
 
 		useEffect(() => {
 			if (open) {
@@ -110,6 +110,7 @@ const InfoTutorial = forwardRef(
 			let offsetX: number;
 			let offsetY: number;
 			const contentStyle: React.CSSProperties = {};
+			let notRounded = '';
 
 			switch (target.position) {
 				case 'top center':
@@ -122,16 +123,20 @@ const InfoTutorial = forwardRef(
 					offsetY = rect ? rect.y + rect.height : 0;
 					contentStyle.paddingBottom = 15;
 					contentStyle.paddingRight = 15;
+					notRounded = 'rounded-tl-none';
 					break;
 				case 'left center':
-					offsetX = rect ? rect.x : 0;
+					offsetX = rect ? -rect.x : 0;
 					offsetY = rect ? rect.y + rect.height / 2 : 0;
 					contentStyle.paddingBottom = 15;
+					contentStyle.paddingRight = 200;
+					notRounded = 'rounded-tr-none';
 					break;
 				case 'right center':
 					offsetX = rect ? rect.x + rect.width : 0;
 					offsetY = rect ? rect.y + rect.height / 2 : 0;
 					contentStyle.paddingBottom = 15;
+					notRounded = 'rounded-tl-none';
 					break;
 				default:
 					offsetX = 0;
@@ -159,14 +164,18 @@ const InfoTutorial = forwardRef(
 							? undefined
 							: target.ref && <div className="hidden" />
 					}
+					arrow={target.ref !== null}
 					contentStyle={contentStyle}
 					arrowStyle={{
 						color: 'var(--fg-shade-four-color)',
 					}}
 				>
 					<div
-						className="flex flex-col rounded-md rounded-tl-none bg-[color:var(--fg-shade-four-color)] p-2
-							text-[color:var(--background-color)] min-w-fit max-w-[50ch] text-wrap absolute text-center"
+						className={
+							'flex flex-col rounded-md bg-[color:var(--fg-shade-four-color)] p-2 ' +
+							notRounded +
+							' text-[color:var(--background-color)] min-w-fit max-w-[50ch] text-wrap absolute text-center'
+						}
 					>
 						<section className="pt-1.5">{target.infoBox}</section>
 						<section>

@@ -78,13 +78,13 @@ const ResourceMenu = ({
 		useContext(TutorialContext);
 
 	useLayoutEffect(() => {
-		registerTutorial({
+		return registerTutorial({
 			name: 'ResourceMenu',
 			targets: [
 				{
 					ref: resourcesDivRef.current,
 					infoBox: <Info.Box text={t('help.resource_menu.resources')} />,
-					position: 'right center',
+					position: 'bottom center',
 				},
 				{
 					ref: createResourceRef.current,
@@ -99,7 +99,7 @@ const ResourceMenu = ({
 				{
 					ref: filtersRef.current,
 					infoBox: <Info.Box text={t('help.resource_menu.filters')} />,
-					position: 'right center',
+					position: 'bottom center',
 				},
 				{
 					ref: sectionsRef.current,
@@ -113,14 +113,12 @@ const ResourceMenu = ({
 				},
 			],
 		});
-		setCurrentTutorial('ResourceMenu');
-		return () => unregisterTutorial('ResourceMenu');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [t]);
 
 	/** Gets the user resources when the selectedSubject */
 	useEffect(() => {
-		getResourcesFromMenuInputs();
+		(async () => await getResourcesFromMenuInputs())();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedSubject, selectedFilters]);
 

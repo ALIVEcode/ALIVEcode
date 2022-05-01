@@ -36,24 +36,19 @@ const InfoTutorial = forwardRef(
 	}) => {
 		const { t } = useTranslation();
 		const forceUpdate = useForceUpdate();
-		const infos = useMemo(() => {
-			return targets.map(target =>
-				target.ref
-					? {
-							border: target.ref.style.border,
-					  }
-					: {
-							border: 'none',
-					  },
-			);
-
-			// eslint-disable-next-line react-hooks/exhaustive-deps
-		}, [open]);
+		const infos = useRef(
+			targets.map(target => ({
+				border: target.ref?.style.border ?? 'none',
+			})),
+		);
 
 		useEffect(() => {
 			if (open) {
 				beforeDo && beforeDo();
 				if (targets.length > 0) targets[0].onEnter && targets[0].onEnter();
+				infos.current = targets.map(target => ({
+					border: target.ref?.style.border ?? 'none',
+				}));
 			}
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, [open]);
@@ -64,18 +59,19 @@ const InfoTutorial = forwardRef(
 		const close = useCallback(() => {
 			setOpen(false);
 			currentTarget.current = 0;
-			targets.forEach((target, idx) => {
-				Object.entries(infos[idx]).forEach(
-					([style, value]) =>
-						target.ref && (target.ref.style[style as unknown as any] = value),
-				);
-			});
+			// targets.forEach((target, idx) => {
+			// 	if (target.ref)
+			// 		target.ref.style.border = infos.current[idx].border;
+			// });
 			forceUpdate();
 		}, [forceUpdate, infos, setOpen, targets]);
 
 		const nextTargetOrClose = useCallback(() => {
 			const target = targets[currentTarget.current];
 			target.onExit && target.onExit();
+			if (target.ref) {
+				target.ref.style.border = infos.current[currentTarget.current].border;
+			}
 			if (currentTarget.current < targets.length - 1) {
 				currentTarget.current++;
 				const newTarget = targets[currentTarget.current];
@@ -85,24 +81,27 @@ const InfoTutorial = forwardRef(
 				afterDo && afterDo();
 				close();
 			}
-		}, [afterDo, close, forceUpdate, targets]);
+		}, [afterDo, close, forceUpdate, infos, targets]);
 
 		const previousTarget = useCallback(() => {
 			const target = targets[currentTarget.current];
 			target.onExit && target.onExit();
+			if (target.ref) {
+				target.ref.style.border = infos.current[currentTarget.current].border;
+			}
 			if (currentTarget.current > 0) {
 				currentTarget.current--;
 				const newTarget = targets[currentTarget.current];
 				newTarget.onEnter && newTarget.onEnter();
 				forceUpdate();
 			}
-		}, [forceUpdate, targets]);
+		}, [forceUpdate, infos, targets]);
 
 		const renderTarget = (target: InfoTutorialTarget, idx: number) => {
+			if (target.ref) {
+				target.ref.style.border = infos.current[currentTarget.current].border;
+			}
 			if (idx !== currentTarget.current) {
-				if (target.ref) {
-					target.ref.style.border = infos[idx]?.border ?? 'none';
-				}
 				return null;
 			}
 
@@ -143,11 +142,7 @@ const InfoTutorial = forwardRef(
 					offsetY = 0;
 			}
 			if (target.ref) {
-				if (idx === currentTarget.current) {
-					target.ref.style.border = '2px solid var(--fourth-color)';
-				} else {
-					target.ref.style.border = (infos && infos[idx]?.border) ?? 'none';
-				}
+				target.ref.style.border = '2px solid var(--fourth-color)';
 			}
 
 			return (

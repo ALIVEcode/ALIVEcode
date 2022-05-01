@@ -31,8 +31,7 @@ const CourseLayout = () => {
 	const titleRef = useRef<HTMLDivElement>(null);
 	const addElementButtonRef = useRef<HTMLDivElement>(null);
 	const goToStudentViewRef = useRef<HTMLDivElement>(null);
-	const { registerTutorial, setCurrentTutorial, unregisterTutorial } =
-		useContext(TutorialContext);
+	const { registerTutorial } = useContext(TutorialContext);
 
 	useLayoutEffect(() => {
 		return registerTutorial({
@@ -79,20 +78,10 @@ const CourseLayout = () => {
 	return (
 		<div className="w-full h-full overflow-y-auto relative p-6">
 			<div className="sticky z-10 right-6 top-0">
-				{/*<div className="w-full">
-					<div
-						className="absolute top-2 px-2 hover:cursor-pointer [color:var(--foreground-color)]
-						w-fit rounded-sm font-bold cursor-pointer hover:bg-[color:var(--bg-shade-one-color)]"
-						onClick={() => setTab({ tab: 'view' })}
-					>
-						<FontAwesomeIcon icon={faUserGraduate} className="mx-2" />
-						{t('course.student_view')}
-					</div>
-				</div>*/}
 				<FontAwesomeIcon
 					icon={faUserGraduate}
 					name={t('course.activity.open_in_student_view')}
-					size="2x"
+					size="3x"
 					title={t('course.student_view')}
 					className="absolute ml-5 hover:cursor-pointer [color:var(--foreground-color)]"
 					onClick={() => setTab({ tab: 'view' })}
@@ -100,7 +89,7 @@ const CourseLayout = () => {
 			</div>
 			<div className="flex flex-col justify-center md:px-52 pl-3 pr-12 min-w-fit w-[100%] whitespace-nowrap">
 				<div className="text-center text-2xl mb-4" ref={titleRef}>
-					Course Layout
+					{t('course.layout')}
 				</div>
 				{!courseElements?.current ? (
 					<LoadingScreen />

@@ -340,6 +340,7 @@
 		"subject": "Subject of the course",
 		"empty": "This course is empty.",
 		"student_view": "Student view",
+		"layout": "Course Layout",
 		"layout_view": "Layout view",
 		"delete": "Delete this course. (It will be removed from all the classrooms it is in)",
 		"deletion_test": "Enter the name of the course to confirm the deletion",
@@ -358,7 +359,7 @@
 			"open_in_student_view": "Open in student view",
 			"edit_in_layout_view": "Edit in layout view",
 			"empty": "This activity is empty.",
-			"no_activity": "Open an activity to get started.",
+			"no_activity": "Open an activity to get started",
 			"new": "Add an Activity",
 			"new_name": "Activity #{{num}}",
 			"import_resource": {

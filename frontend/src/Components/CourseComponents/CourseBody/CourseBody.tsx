@@ -23,7 +23,7 @@ const CourseBody = () => {
 		<div>
 			{!courseElement ? (
 				<div className="w-full h-full flex justify-center items-center pt-3 font-bold">
-					<label>Open an activity to get started</label>
+					<label>{t('course.activity.no_activity')}</label>
 				</div>
 			) : (
 				<>

@@ -13,8 +13,8 @@ export const hexToRGB = (hex: string, alpha?: number) => {
 };
 
 export type OneOf<T, V> =
-	| ({ [key in keyof T]?: never } & V)
-	| ({ [key in keyof V]?: never } & T);
+	| ({ [key in keyof Omit<T, keyof V>]?: never } & V)
+	| ({ [key in keyof Omit<V, keyof T>]?: never } & T);
 
 export type MakeCompatible<T extends any[]> = T extends [
 	first: infer F,

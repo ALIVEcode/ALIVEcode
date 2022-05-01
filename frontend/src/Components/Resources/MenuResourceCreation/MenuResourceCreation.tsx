@@ -1,39 +1,39 @@
+import React, {
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useState,
+} from 'react';
 import { RESOURCE_TYPE } from '../../../Models/Resource/resource.entity';
-import { useForm } from 'react-hook-form';
-import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
-import api from '../../../Models/api';
-import React, { useState, useContext, useMemo, useEffect } from 'react';
+import { Challenge } from '../../../Models/Challenge/challenge.entity';
 import { useTranslation } from 'react-i18next';
 import { UserContext } from '../../../state/contexts/UserContext';
-import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
-import TypeCard from '../../UtilsComponents/Cards/TypeCard/TypeCard';
-import { getResourceIcon, SUBJECTS } from '../../../Types/sharedTypes';
-import { Challenge } from '../../../Models/Challenge/challenge.entity';
-import FormLabel from '../../UtilsComponents/FormLabel/FormLabel';
-import FormInput from '../../UtilsComponents/FormInput/FormInput';
-import Link from '../../UtilsComponents/Link/Link';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { instanceToPlain } from 'class-transformer';
+import { useForm } from 'react-hook-form';
 import {
 	MenuResourceCreationDTO,
 	MenuResourceCreationProps,
 } from './menuResourceCreationTypes';
+import api from '../../../Models/api';
+import FormLabel from '../../UtilsComponents/FormLabel/FormLabel';
+import Link from '../../UtilsComponents/Link/Link';
+import FormInput from '../../UtilsComponents/FormInput/FormInput';
+import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
+import TypeCard from '../../UtilsComponents/Cards/TypeCard/TypeCard';
+import { getResourceIcon, SUBJECTS } from '../../../Types/sharedTypes';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import MenuCreation from '../../UtilsComponents/MenuCreation/MenuCreation';
+import Button from '../../UtilsComponents/Buttons/Button';
+import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
+import useComplexState from '../../../state/hooks/useComplexState';
 
-/**
- * Menu that allows for the creation and updating of a resource
- *
- * @param open state of the menu
- * @param setOpen the state handler of the menu
- * @param updateMode (Optional) If the menu is in edit mode or not (create mode)
- * @param defaultResource (Optional) The default resource to update in updateMode
- * @returns The rendered menu
- * @author Enric Soldevila, Maxime Gazze
- */
 const MenuResourceCreation = ({
+	mode = 'modal',
 	open,
 	setOpen,
+	afterSubmit,
 	updateMode,
 	defaultResource,
 }: MenuResourceCreationProps) => {
@@ -44,16 +44,15 @@ const MenuResourceCreation = ({
 	const [file, setFile] = useState<File | null>(null);
 	const [uploadProgress, setUploadProgress] = useState<number>(0);
 	const [resourceIsFile, setResourceIsFile] = useState<boolean>(true);
+	const forceUpdate = useForceUpdate();
 
 	const { t } = useTranslation();
 	const { user, createResource, updateResource } = useContext(UserContext);
 	const { routes } = useRoutes();
-	const defaultValues = useMemo(() => {
-		return {
-			type,
-			resource: instanceToPlain(defaultResource),
-		};
-	}, [defaultResource, type]);
+	const [defaultValues, setDefaultValues] = useComplexState({
+		type,
+		resource: instanceToPlain(defaultResource),
+	});
 
 	const {
 		register,
@@ -67,14 +66,15 @@ const MenuResourceCreation = ({
 	 * Loads the user challenges and rerenders the menu
 	 * @author Enric Soldevila
 	 */
-	const loadUserChallenges = async () => {
+	const loadUserChallenges = useCallback(async () => {
 		if (!user) return;
 		setChallenges(await api.db.users.getChallenges({ id: user?.id }));
-	};
+	}, [user]);
 
 	/** Loads user challenges on first render */
 	useEffect(() => {
-		if (type === RESOURCE_TYPE.CHALLENGE) loadUserChallenges();
+		if (type === RESOURCE_TYPE.CHALLENGE)
+			(async () => await loadUserChallenges)();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -84,11 +84,14 @@ const MenuResourceCreation = ({
 	 * @param newType New resource type to create
 	 * @author Enric Soldevila
 	 */
-	const onSelectResourceType = async (newType: RESOURCE_TYPE) => {
-		if (type === newType) return setType(undefined);
-		if (newType === RESOURCE_TYPE.CHALLENGE) loadUserChallenges();
-		setType(newType);
-	};
+	const onSelectResourceType = useCallback(
+		async (newType: RESOURCE_TYPE) => {
+			if (type === newType) return setType(undefined);
+			if (newType === RESOURCE_TYPE.CHALLENGE) await loadUserChallenges();
+			setType(newType);
+		},
+		[loadUserChallenges, type],
+	);
 
 	/**
 	 * Handles the form submission. Sends data to the server to update
@@ -96,22 +99,44 @@ const MenuResourceCreation = ({
 	 * @param formValues Form values returned by the form submission
 	 * @author Enric Soldevila, Maxime Gazze
 	 */
-	const onSubmit = async (formValues: MenuResourceCreationDTO) => {
-		if (!type) return;
-		formValues.type = type;
+	const onSubmit = useCallback(
+		async (formValues: MenuResourceCreationDTO) => {
+			if (!type) return;
+			formValues.type = type;
 
-		if (resourceIsFile) formValues.file = file;
+			if (resourceIsFile) formValues.file = file;
 
-		if (updateMode && defaultResource) {
-			await updateResource(defaultResource, formValues.resource);
-		} else {
-			await createResource(formValues, setUploadProgress);
-		}
-		setOpen(false);
-		// reset
-		setFile(null);
-		setUploadProgress(0);
-	};
+			if (updateMode && defaultResource) {
+				setDefaultValues({
+					type: defaultResource.type,
+					resource: await updateResource(defaultResource, formValues.resource),
+				});
+			} else {
+				const val = await createResource(formValues, setUploadProgress);
+				setDefaultValues({ type: val.type, resource: val });
+			}
+
+			// reset
+			setFile(null);
+			setUploadProgress(0);
+			setOpen && setOpen(false);
+			afterSubmit && afterSubmit();
+			forceUpdate();
+		},
+		[
+			afterSubmit,
+			createResource,
+			defaultResource,
+			file,
+			forceUpdate,
+			resourceIsFile,
+			setDefaultValues,
+			setOpen,
+			type,
+			updateMode,
+			updateResource,
+		],
+	);
 
 	const onChangeRadio = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const value = event.target.value === 'file';
@@ -128,6 +153,8 @@ const MenuResourceCreation = ({
 	const renderSpecificFields = () => {
 		switch (type) {
 			case RESOURCE_TYPE.CHALLENGE:
+				// @ts-ignore
+				// @ts-ignore
 				return (
 					<>
 						<FormLabel>{t('resources.challenge.form.select')}</FormLabel>
@@ -142,6 +169,7 @@ const MenuResourceCreation = ({
 							<FormInput
 								as="select"
 								errors={errors.resource?.challengeId}
+								// @ts-ignore
 								{...register('resource.challengeId', { required: true })}
 							>
 								{challenges.map((c, idx) => (
@@ -267,13 +295,13 @@ const MenuResourceCreation = ({
 	const renderPageResourceType = () => {
 		return (
 			<div className="bg-[color:var(--background-color)] gap-8 grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3">
-				{Object.entries(RESOURCE_TYPE).map((entry, idx) => (
+				{Object.entries(RESOURCE_TYPE).map(([name, _type], idx) => (
 					<TypeCard
 						key={idx}
-						title={t(`resources.${entry[0].toLowerCase()}.name`)}
-						icon={getResourceIcon(entry[1])}
-						onClick={() => onSelectResourceType(entry[1])}
-						selected={type === entry[1]}
+						title={t(`resources.${name.toLowerCase()}.name`)}
+						icon={getResourceIcon(_type)}
+						onClick={() => onSelectResourceType(_type)}
+						selected={type === _type}
 					/>
 				))}
 			</div>
@@ -312,19 +340,35 @@ const MenuResourceCreation = ({
 	};
 
 	return (
-		<MenuCreation
-			title={
-				updateMode ? t('resources.form.update') : t('resources.form.create')
-			}
-			submitIcon={updateMode ? faCheckCircle : undefined}
-			setOpen={setOpen}
-			open={open}
-			onSubmit={() => handleSubmit(onSubmit)()}
-			disabledPageIndex={!updateMode ? (!type ? 1 : undefined) : undefined}
-		>
-			{!updateMode && renderPageResourceType()}
-			{renderPageResourceInfos()}
-		</MenuCreation>
+		<>
+			{mode === 'modal' ? (
+				<MenuCreation
+					title={
+						updateMode ? t('resources.form.update') : t('resources.form.create')
+					}
+					submitIcon={updateMode ? faCheckCircle : undefined}
+					setOpen={setOpen!}
+					open={open!}
+					onSubmit={handleSubmit(onSubmit)}
+					disabledPageIndex={!updateMode ? (!type ? 1 : undefined) : undefined}
+				>
+					{!updateMode && renderPageResourceType()}
+					{renderPageResourceInfos()}
+				</MenuCreation>
+			) : (
+				<div className="flex flex-col justify-items-center">
+					{!updateMode && renderPageResourceType()}
+					{renderPageResourceInfos()}
+					<Button
+						variant="primary"
+						className="mt-3 w-fit mr-4"
+						onClick={handleSubmit(onSubmit)}
+					>
+						{t('resources.form.update')}
+					</Button>
+				</div>
+			)}
+		</>
 	);
 };
 

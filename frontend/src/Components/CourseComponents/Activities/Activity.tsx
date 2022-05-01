@@ -1,11 +1,4 @@
-import {
-	useCallback,
-	useContext,
-	useRef,
-	useState,
-	useEffect,
-	useMemo,
-} from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import { ACTIVITY_TYPE } from '../../../Models/Course/activity.entity';
 import ActivityChallenge from './ActivityChallenge';
@@ -14,7 +7,7 @@ import ButtonAdd from './ButtonAdd';
 import { Descendant } from 'slate';
 import Button from '../../UtilsComponents/Buttons/Button';
 import { useTranslation } from 'react-i18next';
-import ActivityVideo from './ActivityVideo';
+import ActivityVideo, { parseVideoURL } from './ActivityVideo';
 import ActivityPdf from './ActivityPdf';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ActivityProps } from './activityTypes';
@@ -23,19 +16,19 @@ import ActivityAssignment from './ActivityAssignment';
 import ActivityTheory from './ActivityTheory';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import { classNames } from '../../../Types/utils';
-import {
-	faChevronLeft,
-	faChevronRight,
-	faMinusCircle,
-} from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faChevronRight, faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import { ActivityVideo as ActivityVideoModel } from '../../../Models/Course/activities/activity_video.entity';
 import { ActivityPdf as ActivityPdfModel } from '../../../Models/Course/activities/activity_pdf.entity';
-import { ActivityAssignment as ActivityAssignmentModel } from '../../../Models/Course/activities/activity_assignment.entity';
-import { RESOURCE_TYPE } from '../../../Models/Resource/resource.entity';
+import {
+	ActivityAssignment as ActivityAssignmentModel,
+} from '../../../Models/Course/activities/activity_assignment.entity';
+import { Resource, RESOURCE_TYPE } from '../../../Models/Resource/resource.entity';
 import { UserContext } from '../../../state/contexts/UserContext';
 import api from '../../../Models/api';
 import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
-import { parseVideoURL } from './ActivityVideo';
+import Popup from 'reactjs-popup';
+import MenuResourceCreation from '../../Resources/MenuResourceCreation/MenuResourceCreation';
+import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 
 /**
  * Shows the opened activity. Renders different component depending on the type of the activity opened.
@@ -60,8 +53,10 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 		forceUpdateCourse,
 	} = useContext(CourseContext);
 
-	const activity = courseElement.activity;
+	const activityRef = useRef(courseElement.activity);
+	const activity = activityRef.current;
 
+	const forceUpdate = useForceUpdate();
 	const { t } = useTranslation();
 	const { createResource } = useContext(UserContext);
 	const [isRenaming, setIsRenaming] = useState(false);
@@ -95,7 +90,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 		};
 		if (!activity.resource) load();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [activity]);
 
 	/**
 	 * Updates the header or footer of the activity
@@ -170,7 +165,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 			if (!matches) return setIsInvalidURL(true);
 
 			const createResourceWithURL = async () => {
-				const createdRes = await createResource({
+				activity.resource = await createResource({
 					file: null,
 					type: resourceType,
 					resource: {
@@ -179,7 +174,6 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 						url: videoUrl,
 					},
 				});
-				activity.resource = createdRes;
 				await api.db.courses.addResourceInActivity(
 					course,
 					activity,
@@ -267,6 +261,34 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 		}
 	};
 
+	const EditResource = ({ resource }: { resource: Resource }) => {
+		return (
+			<Popup
+				on="click"
+				position="top center"
+				trigger={
+					<div
+						className="border text-sm p-1 cursor-pointer text-[color:var(--fg-shade-four-color)] border-[color:var(--fg-shade-four-color)]
+										 opacity-75 transition-colors hover:opacity-100 hover:bg-[color:var(--fg-shade-four-color)] hover:text-[color:var(--background-color)]"
+					>
+						{t('course.activity.edit_resource')}
+					</div>
+				}
+				closeOnDocumentClick
+				closeOnEscape
+			>
+				<div className="bg-[color:var(--bg-shade-two-color)] p-3 border-2 border-[color:var(--fg-shade-four-color)] rounded-sm">
+					<MenuResourceCreation
+						mode="form"
+						updateMode
+						defaultResource={resource}
+						afterSubmit={() => forceUpdateCourse()}
+					/>
+				</div>
+			</Popup>
+		);
+	};
+
 	return (
 		courseElement && (
 			<div
@@ -285,7 +307,6 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 							<FormInput
 								ref={inputRef as any}
 								type="text"
-								autoFocus
 								onKeyPress={(event: KeyboardEvent) =>
 									event.key.toLowerCase() === 'enter' && rename()
 								}
@@ -337,16 +358,19 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 						<ButtonAdd className="mb-5" what="header" activity={activity} />
 					)
 				)}
-				<div className="">
+				<div>
 					{activity.resource ? (
 						<div className="flex flex-col items-end gap-2">
 							{loading ? <LoadingScreen relative /> : renderSpecificActivity()}
 							{editMode && (
-								<div
-									onClick={() => removeResourceFromActivity(activity)}
-									className="border text-sm p-1 cursor-pointer text-red-600 border-red-600 opacity-75 transition-colors hover:opacity-100 hover:bg-red-600 hover:text-white"
-								>
-									{t('course.activity.remove_resource')}
+								<div className="flex flex-row items-end gap-2">
+									<EditResource resource={activity.resource} />
+									<div
+										onClick={() => removeResourceFromActivity(activity)}
+										className="border text-sm p-1 cursor-pointer text-red-600 border-red-600 opacity-75 transition-colors hover:opacity-100 hover:bg-red-600 hover:text-white"
+									>
+										{t('course.activity.remove_resource')}
+									</div>
 								</div>
 							)}
 						</div>
@@ -406,7 +430,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 												messages={{
 													pattern: t('resources.video.form.invalid_url'),
 												}}
-											></InputGroup>
+											/>
 										))}
 								</>
 							) : (

@@ -33,7 +33,7 @@ const CourseLayout = () => {
 		useContext(TutorialContext);
 
 	useLayoutEffect(() => {
-		registerTutorial({
+		return registerTutorial({
 			name: 'CourseLayout',
 			targets: [
 				{
@@ -43,12 +43,6 @@ const CourseLayout = () => {
 				},
 			],
 		});
-		return () => unregisterTutorial('CourseLayout');
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
-	useLayoutEffect(() => {
-		setCurrentTutorial('CourseLayout');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

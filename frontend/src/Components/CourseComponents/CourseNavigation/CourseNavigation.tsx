@@ -34,7 +34,7 @@ const CourseNavigation = ({
 	const sectionRef = useRef<HTMLDivElement>(null);
 
 	useLayoutEffect(() => {
-		registerTutorial({
+		return registerTutorial({
 			name: 'CourseNavigation',
 			targets: [
 				{
@@ -44,8 +44,6 @@ const CourseNavigation = ({
 				},
 			],
 		});
-		setCurrentTutorial('CourseNavigation');
-		return () => unregisterTutorial('CourseNavigation');
 	}, []);
 
 	if (!course) {

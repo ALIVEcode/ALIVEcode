@@ -196,7 +196,7 @@ const Dashboard = (props: DashboardProps) => {
 	};
 
 	useLayoutEffect(() => {
-		registerTutorial({
+		return registerTutorial({
 			name: 'DashboardTabs',
 			targets: [
 				{
@@ -232,8 +232,6 @@ const Dashboard = (props: DashboardProps) => {
 				},
 			],
 		});
-		setCurrentTutorial('DashboardTabs');
-		return () => unregisterTutorial('DashboardTabs');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

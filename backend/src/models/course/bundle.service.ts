@@ -25,6 +25,12 @@ export class BundleService {
     private readonly resourceService: ResourceService,
   ) {}
 
+  /**
+   * Finds a template with an id and the professor that fetches it
+   * @param id Id of the template to fetch
+   * @param prof Professor possessing the template
+   * @returns The found template
+   */
   async findTemplate(id: string, prof?: ProfessorEntity) {
     if (!id) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
 
@@ -45,6 +51,11 @@ export class BundleService {
     return template;
   }
 
+  /**
+   * Gets all the templates that can be used by a professor
+   * @param prof Professor that wants to get the templates
+   * @returns The templates that can be used
+   */
   async getOwnedAndPublicTemplates(prof: ProfessorEntity) {
     const courseTemplates = await this.courseTemplateRepo
       .createQueryBuilder('courseTemplate')
@@ -55,6 +66,13 @@ export class BundleService {
     return courseTemplates;
   }
 
+  /**
+   * Creates a course from a course template
+   * @param template Template to create the course from
+   * @param prof Professor that is creating the course
+   * @param createCourseDTO DTO to create the course
+   * @returns The new created course
+   */
   async createCourseFromTemplate(
     template: CourseTemplateEntity,
     prof: ProfessorEntity,
@@ -75,6 +93,11 @@ export class BundleService {
     return course;
   }
 
+  /**
+   * Finds bundles based on a query
+   * @param query Query to find the bundles with
+   * @returns The found bundles with the query
+   */
   async findQuery(query: QueryDTO) {
     return await this.bundleRepo.find({
       where: { name: ILike(`%${query?.txt ?? ''}%`) },

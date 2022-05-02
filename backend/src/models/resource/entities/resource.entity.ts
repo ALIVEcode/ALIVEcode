@@ -88,8 +88,12 @@ export class ResourceEntity {
 
   /** File associated with the resource */
   @OneToOne(() => FileEntity, { eager: true })
-  @JoinColumn()
+  @JoinColumn({ name: 'fileId' })
   file: FileEntity;
+
+  /** Id of the file associated with the resource */
+  @Column({ name: 'fileId', type: 'varchar', nullable: true })
+  fileId: string;
 
   /**
    * Original resource. Populated if the resource was copied

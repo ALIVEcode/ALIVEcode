@@ -407,6 +407,8 @@ const Course = () => {
 		courseElements.current[courseElement.id] = courseElement;
 		newCourseElementId.current = courseElement.id;
 		forceUpdate();
+
+		return courseElement;
 	};
 
 	/**
@@ -756,6 +758,7 @@ const Course = () => {
 				open={openModalActivity}
 				setOpen={setOpenModalActivity}
 				sectionParent={sectionParent}
+				onCreate={act => setTab({ openedActivity: act })}
 			/>
 			<Modal
 				title={t(

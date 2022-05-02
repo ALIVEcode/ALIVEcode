@@ -17,7 +17,6 @@ export const parseVideoURL = (url: string) => {
  */
 const ActivityVideo = ({ activity }: { activity: ActivityVideoModel }) => {
 	const { t } = useTranslation();
-	const loc = useLocation();
 
 	/** Parse the youtube url using regex to get the import parts of the url  */
 	const matches = useMemo(
@@ -25,16 +24,21 @@ const ActivityVideo = ({ activity }: { activity: ActivityVideoModel }) => {
 		[activity.resource?.url],
 	);
 
-	if (activity.resource?.url && !matches)
+	if (!activity.resource?.isFile() && !matches)
 		return <i>{t('resources.video.form.invalid_url')}</i>;
 
 	const videoId = matches && matches[6];
 
-	console.log(loc);
-
 	return (
 		<div className="w-full desktop:px-16">
-			{activity.resource?.url ? (
+			{activity.resource?.isFile() ? (
+				<video
+					className="m-auto w-full aspect-video"
+					src={`${process.env.BACKEND_URL}/courses/${activity.courseElement.course.id}/activities/${activity.courseElement.activity.id}/video`}
+					preload="none"
+					controls
+				/>
+			) : (
 				<iframe
 					className="m-auto w-full aspect-video"
 					src={`https://youtube.com/embed/${videoId}`}
@@ -42,13 +46,6 @@ const ActivityVideo = ({ activity }: { activity: ActivityVideoModel }) => {
 					frameBorder="0"
 					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 					allowFullScreen
-				/>
-			) : (
-				<video
-					className="m-auto w-full aspect-video"
-					src={`http://localhost:8000/api/courses/${activity.courseElement.course.id}/activities/${activity.courseElement.activity.id}/video`}
-					preload="none"
-					controls
 				/>
 			)}
 		</div>

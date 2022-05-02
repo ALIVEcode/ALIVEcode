@@ -1,10 +1,4 @@
-import React, {
-	useCallback,
-	useContext,
-	useEffect,
-	useMemo,
-	useState,
-} from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { RESOURCE_TYPE } from '../../../Models/Resource/resource.entity';
 import { Challenge } from '../../../Models/Challenge/challenge.entity';
 import { useTranslation } from 'react-i18next';
@@ -55,7 +49,9 @@ const MenuResourceCreation = ({
 	const [challenges, setChallenges] = useState<Challenge[]>([]);
 	const [file, setFile] = useState<File | null>(null);
 	const [uploadProgress, setUploadProgress] = useState<number>(0);
-	const [resourceIsFile, setResourceIsFile] = useState<boolean>(true);
+	const [resourceIsFile, setResourceIsFile] = useState<boolean>(
+		defaultResource?.isFile() ?? false,
+	);
 	const forceUpdate = useForceUpdate();
 
 	const { t } = useTranslation();
@@ -152,7 +148,6 @@ const MenuResourceCreation = ({
 
 	const onChangeRadio = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const value = event.target.value === 'file';
-		console.log(value);
 		setResourceIsFile(value);
 	};
 
@@ -165,8 +160,6 @@ const MenuResourceCreation = ({
 	const renderSpecificFields = () => {
 		switch (type) {
 			case RESOURCE_TYPE.CHALLENGE:
-				// @ts-ignore
-				// @ts-ignore
 				return (
 					<>
 						<FormLabel>{t('resources.challenge.form.select')}</FormLabel>
@@ -204,10 +197,16 @@ const MenuResourceCreation = ({
 								name="resource"
 								value="file"
 								id="file"
-								defaultChecked
+								defaultChecked={resourceIsFile}
 							/>
 							<label htmlFor="file">file</label>
-							<input type="radio" name="resource" value="url" id="url" />
+							<input
+								type="radio"
+								name="resource"
+								value="url"
+								id="url"
+								defaultChecked={!resourceIsFile}
+							/>
 							<label htmlFor="url">url</label>
 						</div>
 						{resourceIsFile ? (
@@ -239,11 +238,18 @@ const MenuResourceCreation = ({
 								type="radio"
 								name="resource"
 								value="file"
+								checked={resourceIsFile}
 								id="file"
-								defaultChecked
 							/>
 							<label htmlFor="file">file</label>
-							<input type="radio" name="resource" value="url" id="url" />
+							<input
+								type="radio"
+								name="resource"
+								value="url"
+								defaultChecked
+								checked={!resourceIsFile}
+								id="url"
+							/>
 							<label htmlFor="url">url</label>
 						</div>
 						{resourceIsFile ? (

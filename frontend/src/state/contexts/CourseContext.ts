@@ -36,7 +36,7 @@ export type CourseContextValues = {
 		content: CourseContent,
 		name: string,
 		sectionParent?: Section,
-	) => Promise<void>;
+	) => Promise<CourseElement | undefined>;
 	deleteElement: (element: CourseElement) => Promise<void>;
 	moveElement: (
 		element: CourseElement,
@@ -66,7 +66,7 @@ export const CourseContext = createContext<CourseContextValues>({
 	setTitle: async () => {},
 	updateActivity: async () => {},
 	setIsNavigationOpen: async () => {},
-	addContent: async () => {},
+	addContent: async () => undefined,
 	renameElement: () => {},
 	setIsElementVisible: () => {},
 	deleteElement: async () => {},

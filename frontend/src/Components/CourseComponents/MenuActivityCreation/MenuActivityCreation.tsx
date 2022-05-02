@@ -13,12 +13,14 @@ import { ActivityChallenge } from '../../../Models/Course/activities/activity_ch
 import { ActivityVideo } from '../../../Models/Course/activities/activity_video.entity';
 import { ActivityPdf } from '../../../Models/Course/activities/activity_pdf.entity';
 import { ActivityAssignment } from '../../../Models/Course/activities/activity_assignment.entity';
+import { CourseElementActivity } from '../../../Models/Course/course_element.entity';
 
 /**
  * Creation Menu for an activity
  * @param open The state of the menu (false -> close, true -> opened)
  * @param setOpen The function to change the state of the menu
  * @param sectionParent (Optional) Section parent of the element. If undefined, the element is in the course
+ * @param onCreate (Optional) callback called when an activity is created with the new activity as a paremeter
  * @returns The Creation menu
  *
  * @author Enric Soldevila
@@ -27,6 +29,7 @@ const MenuActivityCreation = ({
 	open,
 	setOpen,
 	sectionParent,
+	onCreate,
 }: MenuActivityCreationProps) => {
 	const { t } = useTranslation();
 	const { addContent, courseElements } = useContext(CourseContext);
@@ -64,11 +67,13 @@ const MenuActivityCreation = ({
 			Object.values(courseElements.current).forEach(el => {
 				if (el.isActivity) activityNb++;
 			});
-			await addContent(
+			const el = await addContent(
 				activity,
 				t('course.activity.new_name', { num: activityNb + 1 }),
 				sectionParent,
 			);
+			if (!el) return;
+			onCreate && onCreate(el as CourseElementActivity);
 		}
 	};
 

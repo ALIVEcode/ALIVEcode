@@ -10,4 +10,7 @@ export class ResourceFile extends Resource {
 
 	/** File extension */
 	extension: string;
+
+	/** Id of the file linked to the resource */
+	fileId: string;
 }

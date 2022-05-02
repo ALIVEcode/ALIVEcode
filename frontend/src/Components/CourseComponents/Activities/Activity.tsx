@@ -1,4 +1,11 @@
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from 'react';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import { ACTIVITY_TYPE } from '../../../Models/Course/activity.entity';
 import ActivityChallenge from './ActivityChallenge';
@@ -16,13 +23,18 @@ import ActivityAssignment from './ActivityAssignment';
 import ActivityTheory from './ActivityTheory';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import { classNames } from '../../../Types/utils';
-import { faChevronLeft, faChevronRight, faMinusCircle } from '@fortawesome/free-solid-svg-icons';
+import {
+	faChevronLeft,
+	faChevronRight,
+	faMinusCircle,
+} from '@fortawesome/free-solid-svg-icons';
 import { ActivityVideo as ActivityVideoModel } from '../../../Models/Course/activities/activity_video.entity';
 import { ActivityPdf as ActivityPdfModel } from '../../../Models/Course/activities/activity_pdf.entity';
+import { ActivityAssignment as ActivityAssignmentModel } from '../../../Models/Course/activities/activity_assignment.entity';
 import {
-	ActivityAssignment as ActivityAssignmentModel,
-} from '../../../Models/Course/activities/activity_assignment.entity';
-import { Resource, RESOURCE_TYPE } from '../../../Models/Resource/resource.entity';
+	Resource,
+	RESOURCE_TYPE,
+} from '../../../Models/Resource/resource.entity';
 import { UserContext } from '../../../state/contexts/UserContext';
 import api from '../../../Models/api';
 import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
@@ -56,7 +68,6 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 	const activityRef = useRef(courseElement.activity);
 	const activity = activityRef.current;
 
-	const forceUpdate = useForceUpdate();
 	const { t } = useTranslation();
 	const { createResource } = useContext(UserContext);
 	const [isRenaming, setIsRenaming] = useState(false);

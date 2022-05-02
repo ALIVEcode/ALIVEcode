@@ -65,4 +65,8 @@ export class Resource {
 	getIcon() {
 		return getResourceIcon(this.type);
 	}
+
+	isFile() {
+		return (this as any).fileId ? true : false;
+	}
 }

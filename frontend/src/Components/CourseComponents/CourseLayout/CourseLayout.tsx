@@ -38,28 +38,27 @@ const CourseLayout = () => {
 			name: 'CourseLayout',
 			targets: [
 				{
-					infoBox: <Info.Box text={'Welcome message'} />,
+					infoBox: <Info.Box text={t('help.course_layout.welcome')} />,
 				},
 				{
 					ref: document.getElementById('course-title'),
-					infoBox: <Info.Box text={'Edit cours en double cliquant dessus'} />,
+					infoBox: <Info.Box text={t('help.course.edit_title')} />,
 					position: 'bottom center',
 				},
 				{
 					ref: document.getElementById('course-view'),
-					infoBox: (
-						<Info.Box
-							text={
-								'Ici voir la vue actuelle, elle changera pour "élève" plus tard '
-							}
-						/>
-					),
+					infoBox: <Info.Box text={t('help.course.see_view')} />,
 					position: 'left center',
 				},
 				{
-					ref: titleRef.current,
+					ref: addElementButtonRef.current,
 					infoBox: <Info.Box text="aa" />,
 					position: 'bottom center',
+				},
+				{
+					ref: goToStudentViewRef.current,
+					infoBox: <Info.Box text={t('help.course.see_student_view')} />,
+					position: 'right center',
 				},
 			],
 		});

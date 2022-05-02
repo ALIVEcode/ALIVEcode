@@ -4,8 +4,6 @@ import React, {
 	forwardRef,
 	useCallback,
 	useEffect,
-	useLayoutEffect,
-	useMemo,
 	useRef,
 	useState,
 } from 'react';
@@ -40,9 +38,6 @@ const InfoTutorial = forwardRef(
 		open: boolean;
 		setOpen: (value: boolean) => void;
 	}) => {
-		const { t } = useTranslation();
-		const forceUpdate = useForceUpdate();
-
 		useEffect(() => {
 			if (open) {
 				beforeDo && beforeDo();

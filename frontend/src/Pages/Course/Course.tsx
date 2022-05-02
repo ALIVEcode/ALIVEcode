@@ -70,8 +70,6 @@ const Course = () => {
 	const [openModalImportResource, setOpenModalImportResource] = useState(false);
 	const [sectionParent, setSectionParent] = useState<Section>();
 	const titleRef = useRef<HTMLInputElement>(null);
-	const courseTitleRef = useRef<HTMLDivElement>(null);
-	const currentViewRef = useRef<HTMLDivElement>(null);
 	const [courseTitle, setCourseTitle] = useState(course.current?.name);
 	const [editTitle, setEditTitle] = useState(false);
 	const [courseNavigationOpen, setCourseNavigationOpen] = useState(true);

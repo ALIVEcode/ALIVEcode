@@ -1,773 +1,780 @@
 {
-	"lang": "en",
-	"error": {
-		"sorry": "Sorry.",
-		"unknown": "An unknown error occurred, please try again.",
-		"custom": "Error: {{error}}.",
-		"back": "Go back",
-		"home": "Back to the main page",
-		"logout": "Something went wrong when logging out, please try again.",
-		"signin": "Invalid credentials, please verify them again.",
-		"signin_first_time": "Something went wrong when automatically logging into your new account",
-		"500": "Something went wrong, please try again.",
-		"page404": "This page does not exist.",
-		"page501": "This page is under construction.",
-		"maintenance": {
-			"ongoing": "The website is under maintenance since {{startDate}} and will finish at {{finishDate}}, this page could not be loaded.",
-			"short": "The request could not be made, the website is currently under maintenance."
-		}
-	},
-	"feedback": {
-		"title": "What's on your mind?",
-		"button": "Give feedback!",
-		"send": "Send",
-		"cancel": "Cancel",
-		"choices": {
-			"like": "Something I like",
-			"dislike": "Something I dislike",
-			"idea": "Something I would like to see",
-			"bug": "A bug I found"
-		},
-		"information": "informations",
-		"authorization_infos": "I authorize my {{infos}} to be sent anonymously with my feedback",
-		"info_collected": {
-			"url": "The url of the page you are on right now",
-			"browser": "The browser you are using",
-			"theme": "The theme you are using (dark/light theme)",
-			"language": "Your language setting"
-		},
-		"placeholder": "Write your feedback here..."
-	},
-	"form": {
-		"optional": "Optional",
-		"required": "Required",
-		"submit": {
-			"POST": "Create {{name}}",
-			"PATCH": "Modify {{name}}",
-			"DELETE": "Delete {{name}}"
-		},
-		"error": {
-			"cant_submit": "Something went wrong when submitting your form, please make sure you filled all the required fields and try again.",
-			"generic": "This field is wrong",
-			"required": "This field is required",
-			"maxLength": "This field exceeds {{max}} characters",
-			"minLength": "This field should be at least {{min}} characters",
-			"too_long": "This field is too long",
-			"too_short": "This field is too short",
-			"match": {
-				"alphabetic": "This field should only contains alphabetic characters",
-				"alphabetic_lower": "This field should only contains lowercase alphabetic characters",
-				"alphabetic_upper": "This field should only contains uppercase alphabetic characters",
-				"alphanumeric": "This field should only contains alphanumeric characters",
-				"alphanumeric_underscore": "This field should only contains alphanumeric characters and underscores _",
-				"numbers": "This field should only contains numbers",
-				"name": "This field should only contains alphanumeric characters"
-			}
-		},
-		"challenge": {
-			"PATCH": {
-				"title": "Challenge settings",
-				"fontSize": "Font size",
-				"interface_settings": "Interface"
-			}
-		},
-		"title": {
-			"signin": "Sign in",
-			"signup": "Sign up",
-			"create_classroom": "Creation of a classroom",
-			"create_course": "Creation of a course",
-			"create_challenge": "Creation of a Challenge",
-			"create_iot_project": "Creation of an IoT project",
-			"create_iot_object": "Creation of an IoT object",
-			"update_classroom": "Updating the classroom settings"
-		},
-		"join_classroom": {
-			"title": "Join a classroom",
-			"submit": "Join",
-			"code": "Code of the classroom",
-			"invalid_code": "Invalid code"
-		},
-		"pwd": {
-			"label": "Password",
-			"placeholder": "*****",
-			"required": "The password is required",
-			"pattern": "Password should only contain alphanumeric characters and special characters: !@#\\$&*~"
-		},
-		"email": {
-			"label": "Email address",
-			"placeholder": "MyEmailAdress@alivecode.ca",
-			"required": "An email address is required",
-			"taken": "This email address is already taken",
-			"info": "We will not share your email address with anyone"
-		},
-		"firstName": {
-			"label": "First name",
-			"placeholder": "Enric",
-			"required": "Your first name is required",
-			"pattern": "Your first name should only contains letters and hyphens"
-		},
-		"lastName": {
-			"label": "Last name",
-			"placeholder": "Soldevila",
-			"required": "Your last name is required",
-			"pattern": "Your last name should only contains letters and hyphens"
-		},
-		"scholarity": {
-			"label": "Scholarity",
-			"placeholder": "4th grade",
-			"required": "Your school grade is required"
-		}
-	},
-	"modal": {
-		"close": "Close",
-		"save": "Save",
-		"confirm": "Confirm",
-		"cancel": "Cancel"
-	},
-	"msg": {
-		"courseTemplate": "course template",
-		"bundle": "bundle",
-		"resource": "resource",
-		"professor": "professor",
-		"student": "student",
-		"creator": "Creator",
-		"understood": "Understood!",
-		"description": "description",
-		"deleted_user": "Deleted user",
-		"search": "Search",
-		"community_challenges": "Community challenges",
-		"public_classrooms": "Public classrooms",
-		"creation_date": "Creation date",
-		"update_date": "Update date",
-		"see_links": "See links",
-		"activity_type": {
-			"challenge": "Challenge",
-			"video": "Video",
-			"pdf": "Pdf",
-			"assignment": "Assignment",
-			"theory": "Theory"
-		},
-		"subjects": {
-			"iot": "Internet of Things",
-			"ai": "Artificial Intelligence",
-			"code": "Programming",
-			"other": "Other",
-			"all": "All"
-		},
-		"time": {
-			"format": "{{dayName}}, {{day}} {{monthName}} {{year}} {{hour}}:{{minute}}",
-			"day": {
-				"0": "Sunday",
-				"1": "Monday",
-				"2": "Tuesday",
-				"3": "Wednesday",
-				"4": "Thursday",
-				"5": "Friday",
-				"6": "Saturday"
-			},
-			"month": {
-				"0": "January",
-				"1": "February",
-				"2": "March",
-				"3": "April",
-				"4": "May",
-				"5": "June",
-				"6": "July",
-				"7": "August",
-				"8": "September",
-				"9": "October",
-				"10": "November",
-				"11": "December"
-			}
-		},
-		"desc": {
-			"empty": "No description available"
-		},
-		"auth": {
-			"signin": "Connect",
-			"signin_success": "You are successfully logged in",
-			"signup": "Sign up",
-			"signup_success": "You are successfully logged into your new account",
-			"signup_professor": "Professor account",
-			"signup_student": "Student account",
-			"signout": "Sign out",
-			"already_registered": "Already have an account ?",
-			"account_required": "You need an account to do that",
-			"name_migration": {
-				"title": "Changing the way students are identified",
-				"desc": "Every student must now have a first name and last name to help better identify the student. Also, your name is not unique anymore.",
-				"please": "Please take the time to choose a new name.",
-				"submit": "Confirm your new account name"
-			}
-		},
-		"section": {
-			"alive": "ALIVE Play",
-			"dashboard": "Dashboard",
-			"iot": "Internet of Things",
-			"amc": "Mind Control",
-			"ai": "Artificial Intelligence",
-			"about": "About",
-			"avp": "Augmented Vehicle Perception",
-			"lrima": "LRIMA's research laboratory",
-			"account": "My account"
-		},
-		"maintenance": {
-			"more_info": "More info",
-			"no_desc": "No description available.",
-			"ongoing": "The website is currently undergoing a maintenance from {{startDate}} to {{finishDate}}. You cannot use your account or see other users' challenges during this period of time. Sorry for the inconvenience.",
-			"upcoming": "The website will be undergoing a maintenance from {{startDate}} to {{finishDate}}. You will not be able to use your account or see other users' challgenes during this period of time. Sorry for the inconvenience.",
-			"status": {
-				"ongoing": "Ongoing",
-				"finished": "Finished",
-				"upcoming": "Upcoming"
-			}
-		}
-	},
-	"dashboard": {
-		"recents": {
-			"title": "Recent Courses",
-			"empty": {
-				"student": "You have no recent activity. Join a public or private classroom to get started",
-				"professor": "You have no recent activity. Create a classroom or a course to get started"
-			}
-		},
-		"challenges": {
-			"title": "Challenges",
-			"browse_challenges": "Explore the community challenges",
-			"create_challenge": "Create a challenge",
-			"empty": "You do not have any challenge"
-		},
-		"resources": {
-			"title": "My Resources"
-		},
-		"classrooms": {
-			"title": "Classrooms",
-			"no_courses": "No courses",
-			"browse_public": "Browse public classrooms",
-			"empty": {
-				"student": "You are not part of any classroom",
-				"professor": "You do not have any classroom"
-			},
-			"add": {
-				"student": "Join a classroom",
-				"professor": "Create a classroom"
-			}
-		},
-		"courses": {
-			"title": "Your courses",
-			"add": "Create a course",
-			"empty": "You have do not have any course"
-		}
-	},
-	"resources": {
-		"menu": {
-			"title": "Resources",
-			"search": "Search"
-		},
-		"video": {
-			"name": "Video",
-			"form": {
-				"url": "URL of the youtube video",
-				"invalid_url": "Invalid YouTube video URL",
-				"file": "Drag and drop a file or insert one"
-			}
-		},
-		"file": {
-			"name": "File",
-			"form": {
-				"file": "Drag and drop a file or insert one"
-			}
-		},
-		"pdf": {
-			"name": "Pdf",
-			"form": {
-				"file": "Drag and drop a file or insert one"
-			}
-		},
-		"image": {
-			"name": "Image",
-			"form": {
-				"url": "URL of the image",
-				"file": "Drag and drop a file or insert one"
-			}
-		},
-		"challenge": {
-			"name": "Challenge",
-			"form": {
-				"select": "Select a challenge for the linkage"
-			}
-		},
-		"theory": {
-			"name": "Theory"
-		},
-		"form": {
-			"create": "Create a resource",
-			"update": "Update the resource",
-			"delete": "Delete the resource",
-			"delete_confirm": "Are you sure you want to delete this resource? If you have used it in a course, it will be forever lost.",
-			"subject": "Subject of the resource",
-			"type": "Type of resource",
-			"name": "Name of the resource"
-		}
-	},
-	"classroom": {
-		"add_students": "Add students",
-		"delete": "Delete classroom",
-		"leave": "Leave classroom",
-		"already_in": "Already in classroom",
-		"container": {
-			"courses": {
-				"title": "Courses",
-				"empty": "This classroom has no courses"
-			},
-			"details": {
-				"title": "Details"
-			},
-			"students": {
-				"title": "Students in this classroom",
-				"empty": "There are no students in this classroom"
-			}
-		},
-		"desc": "Classroom of {{professor}}",
-		"subject": "Subject",
-		"code": {
-			"title": "Code of the classroom",
-			"desc": "Give this code to your students so that they can join the classroom from their dashboard!"
-		}
-	},
-	"course": {
-		"desc": "Course of {{professor}}",
-		"subject": "Subject of the course",
-		"empty": "This course is empty.",
-		"student_view": "Student view",
-		"layout": "Course Layout",
-		"layout_view": "Layout view",
-		"delete": "Delete this course. (It will be removed from all the classrooms it is in)",
-		"deletion_test": "Enter the name of the course to confirm the deletion",
-		"template": {
-			"add": "Add a template",
-			"remove": "Remove the template"
-		},
-		"section": {
-			"empty": "This section has no activities.",
-			"new": "Add a Section",
-			"delete": "Are you sure you want to delete this section? All the elements contained inside it will also be deleted.",
-			"new_name": "Section #{{num}}"
-		},
-		"activity": {
-			"open": "Open",
-			"open_in_student_view": "Open in student view",
-			"edit_in_layout_view": "Edit in layout view",
-			"empty": "This activity is empty.",
-			"no_activity": "Open an activity to get started",
-			"new": "Add an Activity",
-			"new_name": "Activity #{{num}}",
-			"import_resource": {
-				"generic": "Add an exisiting resource",
-				"PF": "Add an existing pdf",
-				"TH": "Add a text document",
-				"VI": "Add an existing video",
-				"AS": "Add an existing file",
-				"CH": "Add a challenge"
-			},
-			"create_resource": {
-				"generic": "Create ",
-				"PF": "Upload a pdf from this device",
-				"TH": "Create a new text document",
-				"VI": {
-					"upload": "Upload a video from this device",
-					"url": "Add a video from a youtube URL"
-				},
-				"AS": "Upload a file from this device"
-			},
-			"remove_resource": "Remove the ressource",
-			"next": "Next activity",
-			"previous": "Previous activity",
-			"delete": "Are you sure you want to delete this activity? The resources contained inside it will not be deleted."
-		},
-		"form": {
-			"create": "Create a course",
-			"update": "Update the course",
-			"name": "Name of the course",
-			"description": "Description of the course",
-			"subject": "Subject of the course"
-		},
-		"navigation": {
-			"minimize": "Minimize",
-			"maximize": "Maximize"
-		}
-	},
-	"bundle": {
-		"courseTemplate": {
-			"name": "Course Template",
-			"content": "Contains"
-		},
-		"browse": {
-			"title": "Bundles provided by ALIVEcode"
-		}
-	},
-	"menu": {
-		"signup": {
-			"professor": "Professor account",
-			"student": "Student account"
-		},
-		"challenge": {
-			"alive": "Challenge with ALIVE car",
-			"code": "Challenge with console",
-			"ai": "Challenge with artificial intelligence",
-			"iot": "Challenge with Internet of Things"
-		}
-	},
-	"home": {
-		"msg1": "code",
-		"msg2": "ai",
-		"msg3": "iot",
-		"desc": "Learn Programming",
-		"get_started": "Get Started!",
-		"see_trainings": "See Trainings",
-		"about": "About",
-		"trainings": "Trainings",
-		"news": "News",
-		"iot": {
-			"desc": "IoT has never been easier",
-			"to_dashboard": "To Dashboard",
-			"to_trainings": "To Trainings",
-			"section": {
-				"develop": {
-					"title": "Start Developing",
-					"desc": "Practice your notions of the Internet of Things by developing IoT Projects. Register your IoT Objects. Create a network of connected devices and establish communications between them. Collect and share data between those objects. Show in real-time your data in a graphical user interface."
-				},
-				"learn": {
-					"title": "Start Learning",
-					"desc": "$t(home.section.training_iot.desc)"
-				}
-			}
-		},
-		"section": {
-			"mission": {
-				"title": "Our mission",
-				"desc": "Facilitate access, sharing, and discussions about new technologies. Give anyone the chance to accomplish anything."
-			},
-			"us": {
-				"title": "Who are we ?",
-				"desc": "We are researchers of the informatics research lab LRIMa, a laboratory part of the Maisonneuve College. Each year we aim to innovate in the informatic industry by conducting research that we share and publish at conferences across the globe. Visit the LRIMa's website for more details and the about section to learn about all the researchers."
-			},
-			"story": {
-				"title": "Our story",
-				"desc": "ALIVEcode comes from way back in time. Three years from now we thought of making miniature autonomous vehicles for researches' purposes. A year later, we had the idea to use those robots to teach programming to young students. Fast-forward one year and we decided to create ALIVEcode to make our teaching more accessible to the mass. It's now been over a year that the website exists and keeps expanding."
-			},
-			"training_ai": {
-				"title": "Artificial Intelligence Training",
-				"desc": "Learn the theory and current usage of AI in society. Follow one or multiple complete pieces of training offered by ALIVEcode that will teach you all there is to know about AI. Such as linear regressions, classification, decision trees, neural networks, etc."
-			},
-			"training_iot": {
-				"title": "Internet of Things Training",
-				"desc": "Learn the theory and usage of IoT. Follow one or multiple complete pieces of training offered by ALIVEcode that will teach you everything required to start developing your own IoT projects. The electronics, the communication protocols, the databases, artificial intelligence, setting up a GUI, etc."
-			},
-			"training_code": {
-				"title": "Basic of Code Training",
-				"desc": "Learn the basics of coding. Follow one or multiple complete pieces of training offered by ALIVEcode that will transform you into a fine programmer. Learn programming by controlling a motorized vehicle, solving challenges, and publishing your challenges/projects to the community."
-			}
-		},
-		"navbar": {
-			"section": {
-				"dashboard": "$t(msg.section.dashboard)",
-				"amc": "$t(msg.section.amc)",
-				"ai": "$t(msg.section.ai)",
-				"iot": "$t(msg.section.iot)",
-				"about": "$t(msg.section.about)"
-			},
-			"msg": {
-				"auth": "Hello, {{name}}",
-				"non_auth": {
-					"label": "You are not logged in, ",
-					"link": "$t(msg.auth.signin) ?"
-				}
-			}
-		},
-		"footer": {
-			"about": {
-				"title": "$t(msg.section.about)",
-				"description": "The ALIVE project aims to provide a convenient way to teach programming by simplifying the theoric concepts of programming."
-			},
-			"categories": "Categories",
-			"links": "Useful links",
-			"copyright_1": "Copyright",
-			"copyright_2": " 2022 All Rights Reserved by"
-		}
-	},
-	"input": {
-		"defaultValue": "Write your value here..."
-	},
-	"ai": {
-		"header": {
-			"title": "THE WORLD OF ARTIFICIAL INTELLIGENCE WITH ALIVESCRIPT",
-			"description": "Artificial intelligence is a constantly evolving field that allow us to accomplish huge tasks in record times. The effectiveness of the techniques that are part of it is such that we are now seeking to use them in all spheres of society, from agriculture to robotics, including transport, science, the economy and much more! Using our programming language AliveScript, we invite you to discover the possibilities of artificial intelligence in a simple and entertaining way. Chosse one of the available courses and go meet this fascinating universe!"
-		},
-		"section": {
-			"artificial-intelligence": {
-				"title": "The Potential of Artificial Intelligence",
-				"paragraph1": "Artificial intelligence is taking an increasingly important place in our daily lives. In fact, we can already see it today: there are smart assistants in our phones, computers and speakers; more and more experiments with AI technologies are carried out in the fiels of transport, agriculture, medicine and more; Internet search engines and many sites use AI for business purposes; and there are many more examples!",
-				"paragraph2": "While following the courses on the different facets of artificial intelligence, you will learn how it can be used to solve a variety of problems:",
-				"point1": "How to predict the fuel consumption of a car if we vary its engine, weight, and several other characteristics?",
-				"point2": "How to develop a formula that will predict the maximum height of a person",
-				"point3": "How to find the optimal configuration for a robot to accomplish a task?",
-				"point4": "And much more!",
-				"paragraph3": "Additionally, even if we have covered only a few applications of artificial intelligence, the possibilities are endless, so there is still so much to discover!"
-			},
-			"machine-learning": {
-				"title": "Machine Learning and Its Place in AI",
-				"paragraph1": "If you are not familiar with the field of artificial intelligence, the first thing to know is that there are multiple major branches that focus on a more specific topic of AI. For example, the computer vision branch specializes in image recognition, while the speech recognition branch seeks more to recognize or generate human speech. Machine learning is just one of these categories, but it contains several sub-branches, including the famous neural networks.",
-				"paragraph2": "Machine learning mainly specializes in predicting values based on data relevant to the situation being analyzed. It makes predicting results possible in situations which would require extremely complex calculations to arrive at the same results. To do this, the algorithm trains on values from previous experiments and tries to predict their results with a random model. Then, we compare the prediction with the real value and we adapt the model according to the error in order to improve it. Finally, this process is repeated until a satisfactory resolt is achieved. It is this process that is used in all machine learning algorithms, whether they are regressions or even neural networks."
-			},
-			"deep-learning": {
-				"title": "Deep Neural Networks in AI",
-				"paragraph1": "We might think that it is very strange to associate concepts related to the human brain with computer science. Yet the idea of combining the two has completely revolutionized the world of artificial intelligence! The most powerful algorithms in the world use this kind of process to accomplish tasks that would have taken many years to be performed by humans.",
-				"paragraph2": "Neural networks in this field are actually a new way of making a formula for modeling the most complex situations. Based on existing neural networks in our brain, these algorithms are made up of several neurons distributed over a number of layers. Each neuron in every layer is connected to each neuron in the next layer and these connections have an assigned value called a \"weight\". Each neuron is also assigned a value that we call “bias”. These weights and these biases constitute the parameters of the network, those which will determine the output result according to a certain input.",
-				"paragraph3": "However, the \"smart\" part of the neural network lies in adjusting these parameters:",
-				"point1": "The network begins by trying to predict the output of a large number of inputs and compares its results with the results it should have had.",
-				"point2": "Then, it adapts all of its parameters according to the size of the error, that is to say the difference between the two values thanks to complex algorithms, the most popular of which is gradient descent.",
-				"point3": "Finally, it starts the whole process again until it obtains results that minimize the error as much as possible in order to be able to produce the best possible predictions!",
-				"paragraph4": "Obviously, neural networks are much more complex than that, and that's why a course on this will be available soon. Stay tuned!"
-			}
-		}
-	},
-	"iot": {
-		"dashboard": {
-			"title": "IoT Dashboard",
-			"no_object": "No IoT Object",
-			"no_project": "No IoT Project"
-		},
-		"project": {
-			"name": "IoT Project",
-			"settings": "Settings",
-			"routes": "Routing",
-			"documents": {
-				"name": "Documents"
-			},
-			"interface": {
-				"name": "Interface",
-				"add_component": "Add a component",
-				"delete_component": "Delete the component",
-				"delete_component_confirm": "Are you sure you want to delete the component",
-				"edit_component": "Edit the component",
-				"copy_project_id": "Copy project ID",
-				"errors": {
-					"ref": "ERROR",
-					"no_id": "The component has no ID"
-				},
-				"components": {
-					"progress": {
-						"name": "Progress"
-					},
-					"button": {
-						"name": "Button"
-					},
-					"logs": {
-						"name": "Logs",
-						"clear": "Clear logs",
-						"add": "Add a log",
-						"empty": "No logs"
-					},
-					"led": {
-						"name": "LED"
-					},
-					"label": {
-						"name": "Label"
-					},
-					"buzzer": {
-						"name": "Buzzer",
-						"sine": "Sine",
-						"sawtooth": "Sawtooth",
-						"square": "Square",
-						"triangle": "Triangle",
-						"start": "Activate the buzzer",
-						"stop": "Stop the buzzer"
-					},
-					"traffic_light": {
-						"name": "Traffic Light",
-						"red": "red",
-						"yellow": "yellow",
-						"green": "green",
-						"off": "off"
-					}
-				},
-				"components_form": {
-					"name": {
-						"label": "Name of the component",
-						"placeholder": "Name"
-					},
-					"id": {
-						"label": "ID of the component",
-						"placeholder": "ID"
-					},
-					"ref": {
-						"label": "Reference to a document field",
-						"static": "Valeur statique",
-						"invalid": "INVALID VALUE"
-					},
-					"progress": {
-						"value": {
-							"label": "Value of the progress"
-						},
-						"min": {
-							"label": "Minimum value of the progress",
-							"placeholder": "0"
-						},
-						"max": {
-							"label": "Maximum value of the progress",
-							"placeholder": "100"
-						},
-						"is_percentage": {
-							"label": "Is percentage?"
-						}
-					},
-					"button": {
-						"on_click": "When the button gets pressed",
-						"value": {
-							"label": "Displayed text of the button",
-							"placeholder": "Click me"
-						},
-						"target": {
-							"label": "Object that will be affected by the button click",
-							"placeholder": "Targetted object"
-						},
-						"action_id": {
-							"label": "ID of the action to perform on the object",
-							"placeholder": "forward"
-						},
-						"action_data": {
-							"label": "Data for the event",
-							"placeholder": "{}"
-						}
-					},
-					"logs": {
-						"value": {
-							"label": "Logs"
-						}
-					},
-					"led": {
-						"value": {
-							"label": "State ON/OFF of the LED"
-						}
-					},
-					"label": {
-						"value": {
-							"label": "Displayed text",
-							"placeholder": "Hello World!"
-						},
-						"font_size": {
-							"label": "Font size"
-						}
-					},
-					"buzzer": {
-						"value": {
-							"label": "Frequency to play",
-							"placeholder": "500"
-						},
-						"duration": {
-							"label": "Duration of the sound (seconds)"
-						},
-						"frequency_type": {
-							"label": "Type of the frequency",
-							"placeholder": "Sine"
-						}
-					},
-					"traffic_light": {
-						"value": {
-							"label": "State of the traffic light",
-							"placeholder": "OFF"
-						}
-					}
-				}
-			},
-			"objects": {
-				"name": "Objects"
-			},
-			"scripts": {
-				"name": "Scripts"
-			}
-		},
-		"object": {
-			"name": "IoT Object",
-			"copy_id": "Copy ID of object",
-			"deleted": "IoT Object Deleted"
-		}
-	},
-	"user": {
-		"quiz": "Quiz :",
-		"status": "Status :",
-		"posts": "Posts :",
-		"reward": "Reward :",
-		"rank": "Rank :",
-		"rewardTitle": "Reward"
-	},
-	"simulation": {
-		"modal": {
-			"retry": "Retry?",
-			"continue": "Continue",
-			"lose": "Better luck next time!",
-			"win": "Nicely done! 🎉",
-			"water": "The car fell in water",
-			"lava": "The car fell in lava",
-			"hole": "The car fell in a hole",
-			"wall": "The car smashed in a wall",
-			"connect_car": {
-				"title": "Connect a real ALIVEcar",
-				"label": "Identifier of the ALIVEcar",
-				"id": "123",
-				"button": "Connect with the real ALIVEcar"
-			}
-		}
-	},
-	"cmd": {
-		"clear": "Clear lines"
-	},
-	"action": {
-		"irreversible": "This action is irreversible"
-	},
-	"help": {
-		"start_tutorial": "Page's tutorial",
-		"click_for_more": "Click to see more",
-		"slides": {
-			"next": "Next",
-			"previous": "Previous"
-		},
-		"dashboard": {
-			"tabs": {
-				"recent_courses": "------",
-				"challenges": "------",
-				"my_resources": "------",
-				"create_classroom": "------",
-				"create_course": "------"
-			},
-			"views": {
-				"recent_courses": "------",
-				"challenges": "------",
-				"my_resources": "------",
-				"classroom": {
-					"create_course": "------"
-				}
-			}
-		},
-		"navigation": {
-			"explanation": "That is the student view of the course.",
-			"sections": "The sections and content of the course can be seen here.",
-			"minimize": "This button hides the sidebar to reveal a full-width view of the opened activity.",
-			"maximize": "This button re-opens the sidebar.",
-			"professor_view": "You can go back to the professor view by clicking on this button."
-		},
-		"resource_menu": {
-			"resources": "All your created or acquired resources will be shown here. You can also modify them inside this menu",
-			"create_resource": "If you wish to create a new resource, you can do it from this menu by clicking on the button \"$t(resources.form.create)\"",
-			"acquire_resource": "You can also acquire pre-made resources by clicking on the button \"$t(resources.form.create)\"",
-			"filters": "You can filter your resources by their type...",
-			"sections": "...their categories...",
-			"search": "...and their name",
-			"help": "Resources are the content used inside an activity. They are shared content that can be reused throughout the website in different courses. If the resource changes, it will affect every courses using this resource."
-		},
-		"course_template": {
-			"help": "By using a $t(msg.courseTemplate) you will have course fondations on which to rely to create your own course. It is not mandatory to select one when creating a course."
-		}
-	}
+  "lang": "en",
+  "error": {
+    "sorry": "Sorry.",
+    "unknown": "An unknown error occurred, please try again.",
+    "custom": "Error: {{error}}.",
+    "back": "Go back",
+    "home": "Back to the main page",
+    "logout": "Something went wrong when logging out, please try again.",
+    "signin": "Invalid credentials, please verify them again.",
+    "signin_first_time": "Something went wrong when automatically logging into your new account",
+    "500": "Something went wrong, please try again.",
+    "page404": "This page does not exist.",
+    "page501": "This page is under construction.",
+    "maintenance": {
+      "ongoing": "The website is under maintenance since {{startDate}} and will finish at {{finishDate}}, this page could not be loaded.",
+      "short": "The request could not be made, the website is currently under maintenance."
+    }
+  },
+  "feedback": {
+    "title": "What's on your mind?",
+    "button": "Give feedback!",
+    "send": "Send",
+    "cancel": "Cancel",
+    "choices": {
+      "like": "Something I like",
+      "dislike": "Something I dislike",
+      "idea": "Something I would like to see",
+      "bug": "A bug I found"
+    },
+    "information": "informations",
+    "authorization_infos": "I authorize my {{infos}} to be sent anonymously with my feedback",
+    "info_collected": {
+      "url": "The url of the page you are on right now",
+      "browser": "The browser you are using",
+      "theme": "The theme you are using (dark/light theme)",
+      "language": "Your language setting"
+    },
+    "placeholder": "Write your feedback here..."
+  },
+  "form": {
+    "optional": "Optional",
+    "required": "Required",
+    "submit": {
+      "POST": "Create {{name}}",
+      "PATCH": "Modify {{name}}",
+      "DELETE": "Delete {{name}}"
+    },
+    "error": {
+      "cant_submit": "Something went wrong when submitting your form, please make sure you filled all the required fields and try again.",
+      "generic": "This field is wrong",
+      "required": "This field is required",
+      "maxLength": "This field exceeds {{max}} characters",
+      "minLength": "This field should be at least {{min}} characters",
+      "too_long": "This field is too long",
+      "too_short": "This field is too short",
+      "match": {
+        "alphabetic": "This field should only contains alphabetic characters",
+        "alphabetic_lower": "This field should only contains lowercase alphabetic characters",
+        "alphabetic_upper": "This field should only contains uppercase alphabetic characters",
+        "alphanumeric": "This field should only contains alphanumeric characters",
+        "alphanumeric_underscore": "This field should only contains alphanumeric characters and underscores _",
+        "numbers": "This field should only contains numbers",
+        "name": "This field should only contains alphanumeric characters"
+      }
+    },
+    "challenge": {
+      "PATCH": {
+        "title": "Challenge settings",
+        "fontSize": "Font size",
+        "interface_settings": "Interface"
+      }
+    },
+    "title": {
+      "signin": "Sign in",
+      "signup": "Sign up",
+      "create_classroom": "Creation of a classroom",
+      "create_course": "Creation of a course",
+      "create_challenge": "Creation of a Challenge",
+      "create_iot_project": "Creation of an IoT project",
+      "create_iot_object": "Creation of an IoT object",
+      "update_classroom": "Updating the classroom settings"
+    },
+    "join_classroom": {
+      "title": "Join a classroom",
+      "submit": "Join",
+      "code": "Code of the classroom",
+      "invalid_code": "Invalid code"
+    },
+    "pwd": {
+      "label": "Password",
+      "placeholder": "*****",
+      "required": "The password is required",
+      "pattern": "Password should only contain alphanumeric characters and special characters: !@#\\$&*~"
+    },
+    "email": {
+      "label": "Email address",
+      "placeholder": "MyEmailAdress@alivecode.ca",
+      "required": "An email address is required",
+      "taken": "This email address is already taken",
+      "info": "We will not share your email address with anyone"
+    },
+    "firstName": {
+      "label": "First name",
+      "placeholder": "Enric",
+      "required": "Your first name is required",
+      "pattern": "Your first name should only contains letters and hyphens"
+    },
+    "lastName": {
+      "label": "Last name",
+      "placeholder": "Soldevila",
+      "required": "Your last name is required",
+      "pattern": "Your last name should only contains letters and hyphens"
+    },
+    "scholarity": {
+      "label": "Scholarity",
+      "placeholder": "4th grade",
+      "required": "Your school grade is required"
+    }
+  },
+  "modal": {
+    "close": "Close",
+    "save": "Save",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
+  "msg": {
+    "courseTemplate": "course template",
+    "bundle": "bundle",
+    "resource": "resource",
+    "professor": "professor",
+    "student": "student",
+    "creator": "Creator",
+    "understood": "Understood!",
+    "description": "description",
+    "deleted_user": "Deleted user",
+    "search": "Search",
+    "community_challenges": "Community challenges",
+    "public_classrooms": "Public classrooms",
+    "creation_date": "Creation date",
+    "update_date": "Update date",
+    "see_links": "See links",
+    "activity_type": {
+      "challenge": "Challenge",
+      "video": "Video",
+      "pdf": "Pdf",
+      "assignment": "Assignment",
+      "theory": "Theory"
+    },
+    "subjects": {
+      "iot": "Internet of Things",
+      "ai": "Artificial Intelligence",
+      "code": "Programming",
+      "other": "Other",
+      "all": "All"
+    },
+    "time": {
+      "format": "{{dayName}}, {{day}} {{monthName}} {{year}} {{hour}}:{{minute}}",
+      "day": {
+        "0": "Sunday",
+        "1": "Monday",
+        "2": "Tuesday",
+        "3": "Wednesday",
+        "4": "Thursday",
+        "5": "Friday",
+        "6": "Saturday"
+      },
+      "month": {
+        "0": "January",
+        "1": "February",
+        "2": "March",
+        "3": "April",
+        "4": "May",
+        "5": "June",
+        "6": "July",
+        "7": "August",
+        "8": "September",
+        "9": "October",
+        "10": "November",
+        "11": "December"
+      }
+    },
+    "desc": {
+      "empty": "No description available"
+    },
+    "auth": {
+      "signin": "Connect",
+      "signin_success": "You are successfully logged in",
+      "signup": "Sign up",
+      "signup_success": "You are successfully logged into your new account",
+      "signup_professor": "Professor account",
+      "signup_student": "Student account",
+      "signout": "Sign out",
+      "already_registered": "Already have an account ?",
+      "account_required": "You need an account to do that",
+      "name_migration": {
+        "title": "Changing the way students are identified",
+        "desc": "Every student must now have a first name and last name to help better identify the student. Also, your name is not unique anymore.",
+        "please": "Please take the time to choose a new name.",
+        "submit": "Confirm your new account name"
+      }
+    },
+    "section": {
+      "alive": "ALIVE Play",
+      "dashboard": "Dashboard",
+      "iot": "Internet of Things",
+      "amc": "Mind Control",
+      "ai": "Artificial Intelligence",
+      "about": "About",
+      "avp": "Augmented Vehicle Perception",
+      "lrima": "LRIMA's research laboratory",
+      "account": "My account"
+    },
+    "maintenance": {
+      "more_info": "More info",
+      "no_desc": "No description available.",
+      "ongoing": "The website is currently undergoing a maintenance from {{startDate}} to {{finishDate}}. You cannot use your account or see other users' challenges during this period of time. Sorry for the inconvenience.",
+      "upcoming": "The website will be undergoing a maintenance from {{startDate}} to {{finishDate}}. You will not be able to use your account or see other users' challgenes during this period of time. Sorry for the inconvenience.",
+      "status": {
+        "ongoing": "Ongoing",
+        "finished": "Finished",
+        "upcoming": "Upcoming"
+      }
+    }
+  },
+  "dashboard": {
+    "recents": {
+      "title": "Recent Courses",
+      "empty": {
+        "student": "You have no recent activity. Join a public or private classroom to get started",
+        "professor": "You have no recent activity. Create a classroom or a course to get started"
+      }
+    },
+    "challenges": {
+      "title": "Challenges",
+      "browse_challenges": "Explore the community challenges",
+      "create_challenge": "Create a challenge",
+      "empty": "You do not have any challenge"
+    },
+    "resources": {
+      "title": "My Resources"
+    },
+    "classrooms": {
+      "title": "Classrooms",
+      "no_courses": "No courses",
+      "browse_public": "Browse public classrooms",
+      "empty": {
+        "student": "You are not part of any classroom",
+        "professor": "You do not have any classroom"
+      },
+      "add": {
+        "student": "Join a classroom",
+        "professor": "Create a classroom"
+      }
+    },
+    "courses": {
+      "title": "Your courses",
+      "add": "Create a course",
+      "empty": "You have do not have any course"
+    }
+  },
+  "resources": {
+    "menu": {
+      "title": "Resources",
+      "search": "Search"
+    },
+    "video": {
+      "name": "Video",
+      "form": {
+        "url": "URL of the youtube video",
+        "invalid_url": "Invalid YouTube video URL",
+        "file": "Drag and drop a file or insert one"
+      }
+    },
+    "file": {
+      "name": "File",
+      "form": {
+        "file": "Drag and drop a file or insert one"
+      }
+    },
+    "pdf": {
+      "name": "Pdf",
+      "form": {
+        "file": "Drag and drop a file or insert one"
+      }
+    },
+    "image": {
+      "name": "Image",
+      "form": {
+        "url": "URL of the image",
+        "file": "Drag and drop a file or insert one"
+      }
+    },
+    "challenge": {
+      "name": "Challenge",
+      "form": {
+        "select": "Select a challenge for the linkage"
+      }
+    },
+    "theory": {
+      "name": "Theory"
+    },
+    "form": {
+      "create": "Create a resource",
+      "update": "Update the resource",
+      "delete": "Delete the resource",
+      "delete_confirm": "Are you sure you want to delete this resource? If you have used it in a course, it will be forever lost.",
+      "subject": "Subject of the resource",
+      "type": "Type of resource",
+      "name": "Name of the resource"
+    }
+  },
+  "classroom": {
+    "add_students": "Add students",
+    "delete": "Delete classroom",
+    "leave": "Leave classroom",
+    "already_in": "Already in classroom",
+    "container": {
+      "courses": {
+        "title": "Courses",
+        "empty": "This classroom has no courses"
+      },
+      "details": {
+        "title": "Details"
+      },
+      "students": {
+        "title": "Students in this classroom",
+        "empty": "There are no students in this classroom"
+      }
+    },
+    "desc": "Classroom of {{professor}}",
+    "subject": "Subject",
+    "code": {
+      "title": "Code of the classroom",
+      "desc": "Give this code to your students so that they can join the classroom from their dashboard!"
+    }
+  },
+  "course": {
+    "desc": "Course of {{professor}}",
+    "subject": "Subject of the course",
+    "empty": "This course is empty.",
+    "student_view": "Student view",
+    "layout": "Course Layout",
+    "layout_view": "Layout view",
+    "delete": "Delete this course. (It will be removed from all the classrooms it is in)",
+    "deletion_test": "Enter the name of the course to confirm the deletion",
+    "template": {
+      "add": "Add a template",
+      "remove": "Remove the template"
+    },
+    "section": {
+      "empty": "This section has no activities.",
+      "new": "Add a Section",
+      "delete": "Are you sure you want to delete this section? All the elements contained inside it will also be deleted.",
+      "new_name": "Section #{{num}}"
+    },
+    "activity": {
+      "open": "Open",
+      "open_in_student_view": "Open in student view",
+      "edit_in_layout_view": "Edit in layout view",
+      "empty": "This activity is empty.",
+      "no_activity": "Open an activity to get started",
+      "new": "Add an Activity",
+      "new_name": "Activity #{{num}}",
+      "import_resource": {
+        "generic": "Add an exisiting resource",
+        "PF": "Add an existing pdf",
+        "TH": "Add a text document",
+        "VI": "Add an existing video",
+        "AS": "Add an existing file",
+        "CH": "Add a challenge"
+      },
+      "create_resource": {
+        "generic": "Create ",
+        "PF": "Upload a pdf from this device",
+        "TH": "Create a new text document",
+        "VI": {
+          "upload": "Upload a video from this device",
+          "url": "Add a video from a youtube URL"
+        },
+        "AS": "Upload a file from this device"
+      },
+      "remove_resource": "Remove the ressource",
+      "next": "Next activity",
+      "previous": "Previous activity",
+      "delete": "Are you sure you want to delete this activity? The resources contained inside it will not be deleted."
+    },
+    "form": {
+      "create": "Create a course",
+      "update": "Update the course",
+      "name": "Name of the course",
+      "description": "Description of the course",
+      "subject": "Subject of the course"
+    },
+    "navigation": {
+      "minimize": "Minimize",
+      "maximize": "Maximize"
+    }
+  },
+  "bundle": {
+    "courseTemplate": {
+      "name": "Course Template",
+      "content": "Contains"
+    },
+    "browse": {
+      "title": "Bundles provided by ALIVEcode"
+    }
+  },
+  "menu": {
+    "signup": {
+      "professor": "Professor account",
+      "student": "Student account"
+    },
+    "challenge": {
+      "alive": "Challenge with ALIVE car",
+      "code": "Challenge with console",
+      "ai": "Challenge with artificial intelligence",
+      "iot": "Challenge with Internet of Things"
+    }
+  },
+  "home": {
+    "msg1": "code",
+    "msg2": "ai",
+    "msg3": "iot",
+    "desc": "Learn Programming",
+    "get_started": "Get Started!",
+    "see_trainings": "See Trainings",
+    "about": "About",
+    "trainings": "Trainings",
+    "news": "News",
+    "iot": {
+      "desc": "IoT has never been easier",
+      "to_dashboard": "To Dashboard",
+      "to_trainings": "To Trainings",
+      "section": {
+        "develop": {
+          "title": "Start Developing",
+          "desc": "Practice your notions of the Internet of Things by developing IoT Projects. Register your IoT Objects. Create a network of connected devices and establish communications between them. Collect and share data between those objects. Show in real-time your data in a graphical user interface."
+        },
+        "learn": {
+          "title": "Start Learning",
+          "desc": "$t(home.section.training_iot.desc)"
+        }
+      }
+    },
+    "section": {
+      "mission": {
+        "title": "Our mission",
+        "desc": "Facilitate access, sharing, and discussions about new technologies. Give anyone the chance to accomplish anything."
+      },
+      "us": {
+        "title": "Who are we ?",
+        "desc": "We are researchers of the informatics research lab LRIMa, a laboratory part of the Maisonneuve College. Each year we aim to innovate in the informatic industry by conducting research that we share and publish at conferences across the globe. Visit the LRIMa's website for more details and the about section to learn about all the researchers."
+      },
+      "story": {
+        "title": "Our story",
+        "desc": "ALIVEcode comes from way back in time. Three years from now we thought of making miniature autonomous vehicles for researches' purposes. A year later, we had the idea to use those robots to teach programming to young students. Fast-forward one year and we decided to create ALIVEcode to make our teaching more accessible to the mass. It's now been over a year that the website exists and keeps expanding."
+      },
+      "training_ai": {
+        "title": "Artificial Intelligence Training",
+        "desc": "Learn the theory and current usage of AI in society. Follow one or multiple complete pieces of training offered by ALIVEcode that will teach you all there is to know about AI. Such as linear regressions, classification, decision trees, neural networks, etc."
+      },
+      "training_iot": {
+        "title": "Internet of Things Training",
+        "desc": "Learn the theory and usage of IoT. Follow one or multiple complete pieces of training offered by ALIVEcode that will teach you everything required to start developing your own IoT projects. The electronics, the communication protocols, the databases, artificial intelligence, setting up a GUI, etc."
+      },
+      "training_code": {
+        "title": "Basic of Code Training",
+        "desc": "Learn the basics of coding. Follow one or multiple complete pieces of training offered by ALIVEcode that will transform you into a fine programmer. Learn programming by controlling a motorized vehicle, solving challenges, and publishing your challenges/projects to the community."
+      }
+    },
+    "navbar": {
+      "section": {
+        "dashboard": "$t(msg.section.dashboard)",
+        "amc": "$t(msg.section.amc)",
+        "ai": "$t(msg.section.ai)",
+        "iot": "$t(msg.section.iot)",
+        "about": "$t(msg.section.about)"
+      },
+      "msg": {
+        "auth": "Hello, {{name}}",
+        "non_auth": {
+          "label": "You are not logged in, ",
+          "link": "$t(msg.auth.signin) ?"
+        }
+      }
+    },
+    "footer": {
+      "about": {
+        "title": "$t(msg.section.about)",
+        "description": "The ALIVE project aims to provide a convenient way to teach programming by simplifying the theoric concepts of programming."
+      },
+      "categories": "Categories",
+      "links": "Useful links",
+      "copyright_1": "Copyright",
+      "copyright_2": " 2022 All Rights Reserved by"
+    }
+  },
+  "input": {
+    "defaultValue": "Write your value here..."
+  },
+  "ai": {
+    "header": {
+      "title": "THE WORLD OF ARTIFICIAL INTELLIGENCE WITH ALIVESCRIPT",
+      "description": "Artificial intelligence is a constantly evolving field that allow us to accomplish huge tasks in record times. The effectiveness of the techniques that are part of it is such that we are now seeking to use them in all spheres of society, from agriculture to robotics, including transport, science, the economy and much more! Using our programming language AliveScript, we invite you to discover the possibilities of artificial intelligence in a simple and entertaining way. Chosse one of the available courses and go meet this fascinating universe!"
+    },
+    "section": {
+      "artificial-intelligence": {
+        "title": "The Potential of Artificial Intelligence",
+        "paragraph1": "Artificial intelligence is taking an increasingly important place in our daily lives. In fact, we can already see it today: there are smart assistants in our phones, computers and speakers; more and more experiments with AI technologies are carried out in the fiels of transport, agriculture, medicine and more; Internet search engines and many sites use AI for business purposes; and there are many more examples!",
+        "paragraph2": "While following the courses on the different facets of artificial intelligence, you will learn how it can be used to solve a variety of problems:",
+        "point1": "How to predict the fuel consumption of a car if we vary its engine, weight, and several other characteristics?",
+        "point2": "How to develop a formula that will predict the maximum height of a person",
+        "point3": "How to find the optimal configuration for a robot to accomplish a task?",
+        "point4": "And much more!",
+        "paragraph3": "Additionally, even if we have covered only a few applications of artificial intelligence, the possibilities are endless, so there is still so much to discover!"
+      },
+      "machine-learning": {
+        "title": "Machine Learning and Its Place in AI",
+        "paragraph1": "If you are not familiar with the field of artificial intelligence, the first thing to know is that there are multiple major branches that focus on a more specific topic of AI. For example, the computer vision branch specializes in image recognition, while the speech recognition branch seeks more to recognize or generate human speech. Machine learning is just one of these categories, but it contains several sub-branches, including the famous neural networks.",
+        "paragraph2": "Machine learning mainly specializes in predicting values based on data relevant to the situation being analyzed. It makes predicting results possible in situations which would require extremely complex calculations to arrive at the same results. To do this, the algorithm trains on values from previous experiments and tries to predict their results with a random model. Then, we compare the prediction with the real value and we adapt the model according to the error in order to improve it. Finally, this process is repeated until a satisfactory resolt is achieved. It is this process that is used in all machine learning algorithms, whether they are regressions or even neural networks."
+      },
+      "deep-learning": {
+        "title": "Deep Neural Networks in AI",
+        "paragraph1": "We might think that it is very strange to associate concepts related to the human brain with computer science. Yet the idea of combining the two has completely revolutionized the world of artificial intelligence! The most powerful algorithms in the world use this kind of process to accomplish tasks that would have taken many years to be performed by humans.",
+        "paragraph2": "Neural networks in this field are actually a new way of making a formula for modeling the most complex situations. Based on existing neural networks in our brain, these algorithms are made up of several neurons distributed over a number of layers. Each neuron in every layer is connected to each neuron in the next layer and these connections have an assigned value called a \"weight\". Each neuron is also assigned a value that we call “bias”. These weights and these biases constitute the parameters of the network, those which will determine the output result according to a certain input.",
+        "paragraph3": "However, the \"smart\" part of the neural network lies in adjusting these parameters:",
+        "point1": "The network begins by trying to predict the output of a large number of inputs and compares its results with the results it should have had.",
+        "point2": "Then, it adapts all of its parameters according to the size of the error, that is to say the difference between the two values thanks to complex algorithms, the most popular of which is gradient descent.",
+        "point3": "Finally, it starts the whole process again until it obtains results that minimize the error as much as possible in order to be able to produce the best possible predictions!",
+        "paragraph4": "Obviously, neural networks are much more complex than that, and that's why a course on this will be available soon. Stay tuned!"
+      }
+    }
+  },
+  "iot": {
+    "dashboard": {
+      "title": "IoT Dashboard",
+      "no_object": "No IoT Object",
+      "no_project": "No IoT Project"
+    },
+    "project": {
+      "name": "IoT Project",
+      "settings": "Settings",
+      "routes": "Routing",
+      "documents": {
+        "name": "Documents"
+      },
+      "interface": {
+        "name": "Interface",
+        "add_component": "Add a component",
+        "delete_component": "Delete the component",
+        "delete_component_confirm": "Are you sure you want to delete the component",
+        "edit_component": "Edit the component",
+        "copy_project_id": "Copy project ID",
+        "errors": {
+          "ref": "ERROR",
+          "no_id": "The component has no ID"
+        },
+        "components": {
+          "progress": {
+            "name": "Progress"
+          },
+          "button": {
+            "name": "Button"
+          },
+          "logs": {
+            "name": "Logs",
+            "clear": "Clear logs",
+            "add": "Add a log",
+            "empty": "No logs"
+          },
+          "led": {
+            "name": "LED"
+          },
+          "label": {
+            "name": "Label"
+          },
+          "buzzer": {
+            "name": "Buzzer",
+            "sine": "Sine",
+            "sawtooth": "Sawtooth",
+            "square": "Square",
+            "triangle": "Triangle",
+            "start": "Activate the buzzer",
+            "stop": "Stop the buzzer"
+          },
+          "traffic_light": {
+            "name": "Traffic Light",
+            "red": "red",
+            "yellow": "yellow",
+            "green": "green",
+            "off": "off"
+          }
+        },
+        "components_form": {
+          "name": {
+            "label": "Name of the component",
+            "placeholder": "Name"
+          },
+          "id": {
+            "label": "ID of the component",
+            "placeholder": "ID"
+          },
+          "ref": {
+            "label": "Reference to a document field",
+            "static": "Valeur statique",
+            "invalid": "INVALID VALUE"
+          },
+          "progress": {
+            "value": {
+              "label": "Value of the progress"
+            },
+            "min": {
+              "label": "Minimum value of the progress",
+              "placeholder": "0"
+            },
+            "max": {
+              "label": "Maximum value of the progress",
+              "placeholder": "100"
+            },
+            "is_percentage": {
+              "label": "Is percentage?"
+            }
+          },
+          "button": {
+            "on_click": "When the button gets pressed",
+            "value": {
+              "label": "Displayed text of the button",
+              "placeholder": "Click me"
+            },
+            "target": {
+              "label": "Object that will be affected by the button click",
+              "placeholder": "Targetted object"
+            },
+            "action_id": {
+              "label": "ID of the action to perform on the object",
+              "placeholder": "forward"
+            },
+            "action_data": {
+              "label": "Data for the event",
+              "placeholder": "{}"
+            }
+          },
+          "logs": {
+            "value": {
+              "label": "Logs"
+            }
+          },
+          "led": {
+            "value": {
+              "label": "State ON/OFF of the LED"
+            }
+          },
+          "label": {
+            "value": {
+              "label": "Displayed text",
+              "placeholder": "Hello World!"
+            },
+            "font_size": {
+              "label": "Font size"
+            }
+          },
+          "buzzer": {
+            "value": {
+              "label": "Frequency to play",
+              "placeholder": "500"
+            },
+            "duration": {
+              "label": "Duration of the sound (seconds)"
+            },
+            "frequency_type": {
+              "label": "Type of the frequency",
+              "placeholder": "Sine"
+            }
+          },
+          "traffic_light": {
+            "value": {
+              "label": "State of the traffic light",
+              "placeholder": "OFF"
+            }
+          }
+        }
+      },
+      "objects": {
+        "name": "Objects"
+      },
+      "scripts": {
+        "name": "Scripts"
+      }
+    },
+    "object": {
+      "name": "IoT Object",
+      "copy_id": "Copy ID of object",
+      "deleted": "IoT Object Deleted"
+    }
+  },
+  "user": {
+    "quiz": "Quiz :",
+    "status": "Status :",
+    "posts": "Posts :",
+    "reward": "Reward :",
+    "rank": "Rank :",
+    "rewardTitle": "Reward"
+  },
+  "simulation": {
+    "modal": {
+      "retry": "Retry?",
+      "continue": "Continue",
+      "lose": "Better luck next time!",
+      "win": "Nicely done! 🎉",
+      "water": "The car fell in water",
+      "lava": "The car fell in lava",
+      "hole": "The car fell in a hole",
+      "wall": "The car smashed in a wall",
+      "connect_car": {
+        "title": "Connect a real ALIVEcar",
+        "label": "Identifier of the ALIVEcar",
+        "id": "123",
+        "button": "Connect with the real ALIVEcar"
+      }
+    }
+  },
+  "cmd": {
+    "clear": "Clear lines"
+  },
+  "action": {
+    "irreversible": "This action is irreversible"
+  },
+  "help": {
+    "start_tutorial": "Page's tutorial",
+    "click_for_more": "Click to see more",
+    "slides": {
+      "next": "Next",
+      "previous": "Previous"
+    },
+    "dashboard": {
+      "tabs": {
+        "recent_courses": "------",
+        "challenges": "------",
+        "my_resources": "------",
+        "create_classroom": "------",
+        "create_course": "------"
+      },
+      "views": {
+        "recent_courses": "------",
+        "challenges": "------",
+        "my_resources": "------",
+        "classroom": {
+          "create_course": "------"
+        }
+      }
+    },
+    "course": {
+      "edit_title": "Click here to edit the title",
+      "see_view": "You can see in which view you are by looking here"
+    },
+    "course_layout": {
+      "welcome": "Welcome to the course layout editor"
+    },
+    "navigation": {
+      "explanation": "That is the student view of the course.",
+      "sections": "The sections and content of the course can be seen here.",
+      "minimize": "This button hides the sidebar to reveal a full-width view of the opened activity.",
+      "maximize": "This button re-opens the sidebar.",
+      "professor_view": "You can go back to the professor view by clicking on this button."
+    },
+    "resource_menu": {
+      "resources": "All your created or acquired resources will be shown here. You can also modify them inside this menu",
+      "create_resource": "If you wish to create a new resource, you can do it from this menu by clicking on the button \"$t(resources.form.create)\"",
+      "acquire_resource": "You can also acquire pre-made resources by clicking on the button \"$t(resources.form.create)\"",
+      "filters": "You can filter your resources by their type...",
+      "sections": "...their categories...",
+      "search": "...and their name",
+      "help": "Resources are the content used inside an activity. They are shared content that can be reused throughout the website in different courses. If the resource changes, it will affect every courses using this resource."
+    },
+    "course_template": {
+      "help": "By using a $t(msg.courseTemplate) you will have course fondations on which to rely to create your own course. It is not mandatory to select one when creating a course."
+    }
+  }
 }

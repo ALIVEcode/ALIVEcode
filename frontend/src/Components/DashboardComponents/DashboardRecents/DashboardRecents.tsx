@@ -38,7 +38,18 @@ export const DashboardRecents = () => {
 			</div>
 			<div className="border-b w-1/3 border-[color:var(--bg-shade-four-color)]" />
 			{courses.length > 0 ? (
-				<CourseContainer courses={getCourses()} />
+				<>
+					{user?.isProfessor() && (
+						<Button
+							className="!text-sm mt-4"
+							variant="primary"
+							onClick={() => setOpenFormCreateCourse(true)}
+						>
+							{t('dashboard.courses.add')}
+						</Button>
+					)}
+					<CourseContainer courses={getCourses()} />
+				</>
 			) : (
 				<div className="w-full h-[calc(100%-2rem)] text-[color:var(--fg-shade-four-color)] text-center flex flex-col items-center justify-center">
 					<i>

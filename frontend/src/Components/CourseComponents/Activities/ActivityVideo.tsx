@@ -1,7 +1,6 @@
 import { ActivityVideo as ActivityVideoModel } from '../../../Models/Course/activities/activity_video.entity';
 import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
-import { useLocation } from 'react-router';
 
 export const parseVideoURL = (url: string) => {
 	return url.match(

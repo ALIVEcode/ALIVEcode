@@ -29,6 +29,18 @@ import Button from '../../UtilsComponents/Buttons/Button';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import useComplexState from '../../../state/hooks/useComplexState';
 
+/**
+ * @description renders the menu for creating a resource of the given type
+ * @param mode the mode of the menu (modal to open in standalone mode and form to integrate in another component)
+ * @param open boolean to open or close the menu
+ * @param setOpen the function to close the menu
+ * @param afterSubmit the function to call after the creation of the resource
+ * @param updateMode if the menu is to update an existing resource or to create a new one
+ * @param defaultResource the default resource to fill the form with
+ * @constructor
+ *
+ * @author Mathis Laroche
+ */
 const MenuResourceCreation = ({
 	mode = 'modal',
 	open,

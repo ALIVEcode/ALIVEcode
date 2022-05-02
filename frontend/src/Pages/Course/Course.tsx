@@ -81,7 +81,7 @@ const Course = () => {
 	 * Check if the current logged in user is the creator of the course
 	 *
 	 * @returns true if the user is the creator, false otherwise
-	 * @author Enric Soldevila
+	 * @author Enric Soldevila, Mathis Laroche
 	 */
 	const isCreator = () => {
 		return user?.id === course.current?.creator.id;

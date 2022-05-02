@@ -6,6 +6,17 @@ import {
 import { MutableRefObject } from 'react';
 import { useTranslation } from 'react-i18next';
 
+/**
+ * NavigationButtons component with a left and right arrow for timeline navigation
+ * @param max - maximum value of the timeline
+ * @param min - minimum value of the timeline
+ * @param current - current value of the timeline
+ * @param next - function to be called when the right arrow is clicked
+ * @param previous - function to be called when the left arrow is clicked
+ * @constructor
+ *
+ * @author Mathis Laroche
+ */
 const NavigationButtons = ({
 	max,
 	min = 0,

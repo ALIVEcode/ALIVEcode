@@ -79,7 +79,7 @@ const SwitchTabReducer = (
 };
 
 /**
- * Dashboard page that contains all the links to the different pages of the plaform
+ * Dashboard page that contains all the links to the different pages of the platform
  *
  * @author Enric Soldevila, Mathis Laroche
  */

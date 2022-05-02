@@ -14,18 +14,18 @@ import { classNames } from '../../../../Types/utils';
 import { useAlert } from 'react-alert';
 
 /**
- *
- * @param children
- * @param setOpen
- * @param open
- * @param title
- * @param defaultSlideClassName
- * @param size
- * @param onCancel
- * @param submitText
- * @param onSubmit
- * @param submitButtonVariant
- * @param modalProps
+ * TimelineModal component for displaying a modal with a timeline
+ * @param children - children of the modal
+ * @param setOpen - function to set the open state of the modal
+ * @param open - boolean to determine if the modal is open
+ * @param title - title of the modal
+ * @param defaultSlideClassName - default class name for the slide
+ * @param size - size of the modal
+ * @param onCancel - function to call when the cancel button is clicked
+ * @param submitText - text to display on the submit button
+ * @param onSubmit - function to call when the submit button is clicked
+ * @param submitButtonVariant - variant of the submit button
+ * @param modalProps - props to pass to the modal
  * @constructor
  * @author Mathis Laroche
  */

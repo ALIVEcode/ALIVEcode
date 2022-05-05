@@ -125,7 +125,6 @@ const LineInterface = memo(
 				} finally {
 					setLoaded(true);
 				}
-				console.log('linted! ' + lang);
 			})();
 		}, [lang]);
 
@@ -146,7 +145,9 @@ const LineInterface = memo(
 									/>
 								</div>
 							))}
-						{reloadRequired && <span className="text-red-600 w-full">*Reload Required*</span>}
+						{reloadRequired && (
+							<span className="text-red-600 w-full">*Reload Required*</span>
+						)}
 						{/* GitHub copilot suggestion XD */}
 						{/*<FontAwesomeIcon
 							icon={faPlus}

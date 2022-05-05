@@ -20,7 +20,6 @@ import { NeuralNetwork } from './artificial_intelligence/ai_models/ai_neural_net
 import { Relu } from './artificial_intelligence/ai_functions/ActivationFunction';
 import { Matrix } from './artificial_intelligence/AIUtils';
 import { MeanSquaredError } from './artificial_intelligence/ai_functions/CostFunction';
-import { Dataset } from './artificial_intelligence/ai_data/Dataset';
 import dataTest from './dataTest.json';
 import {
 	NNHyperparameters,
@@ -29,6 +28,8 @@ import {
 import { useAlert } from 'react-alert';
 import { GradientDescent } from './artificial_intelligence/ai_optimizers/ai_nn_optimizers/GradientDescent';
 import { NN_OPTIMIZER_TYPES } from '../../../Models/Ai/ai_model.entity';
+import api from '../../../Models/api';
+import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
 
 /**
  * Ai challenge page. Contains all the components to display and make the ai challenge functionnal.
@@ -61,6 +62,15 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	const forceUpdate = useForceUpdate();
 	const [cmdRef, cmd] = useCmd();
 	const alert = useAlert();
+
+	// Loading the dataset when first renders
+	useEffect(() => {
+		const getDataset = async () => {
+			challenge.dataset = await api.db.ai.getDataset(challenge.datasetId);
+		};
+		getDataset();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	// Initializing the LevelAIExecutor
 	executor.current = useMemo(
@@ -239,7 +249,15 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		mainAIUtilsTest();
 		mainAINeuralNetworkTest();
 		*/
-		let dataset: Dataset = new Dataset(1, 'test', dataTest);
+		let dataset = challenge.dataset;
+		if (!dataset) {
+			return cmd.error(
+				'Challenge is still loading. Please try again after the challenge is properly loaded',
+				0,
+			);
+		}
+
+		console.log(dataset);
 
 		let hyperparams: NNHyperparameters = {
 			model: {

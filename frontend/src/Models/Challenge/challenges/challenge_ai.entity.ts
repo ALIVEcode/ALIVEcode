@@ -11,7 +11,7 @@ export class ChallengeAI extends Challenge {
 	modelType: MODEL_TYPES;
 
 	@Type(() => AIDataset)
-	dataset: AIDataset;
+	dataset?: AIDataset;
 
 	datasetId: string;
 }

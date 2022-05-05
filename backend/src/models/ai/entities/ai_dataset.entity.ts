@@ -17,7 +17,7 @@ export class AIDatasetEntity {
   name: string;
 
   /** Data stored inside the dataset */
-  @Column({ type: 'json', nullable: false })
+  @Column({ type: 'json', nullable: false, default: {} })
   data: object;
 
   /** Creation date of the dataset */

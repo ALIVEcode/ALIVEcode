@@ -60,6 +60,7 @@ import { MenuCourseCreationDTO } from '../Components/Resources/MenuCourseCreatio
 import { BundleQueryDTO } from './Course/bundles/dto/BundleQuery.dto';
 import { Bundle } from './Course/bundles/bundle.entity';
 import { ClaimBundleDTO } from './Course/bundles/dto/ClaimBundle.dto';
+import { AIDataset } from './Ai/ai_dataset.entity';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;
@@ -534,6 +535,14 @@ const api = {
 				return (await axios.post('challenges/query', body)).data.map((d: any) =>
 					plainToClass(Challenge, d),
 				);
+			},
+		},
+		ai: {
+			getDataset: async (id: string) => {
+				return plainToInstance(
+					AIDataset,
+					(await axios.get(`ai/datasets/${id}`)).data,
+				) as any as AIDataset;
 			},
 		},
 		iot: {

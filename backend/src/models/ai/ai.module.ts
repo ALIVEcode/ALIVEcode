@@ -9,5 +9,6 @@ import { AIDatasetEntity } from './entities/ai_dataset.entity';
   imports: [TypeOrmModule.forFeature([AIModelEntity, AIDatasetEntity])],
   controllers: [AiController],
   providers: [AiService],
+  exports: [TypeOrmModule],
 })
 export class AiModule {}

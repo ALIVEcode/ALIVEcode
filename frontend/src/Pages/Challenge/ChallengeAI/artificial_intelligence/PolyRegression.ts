@@ -244,6 +244,38 @@ export class PolyRegression2 extends Regression {
 		return new PolyRegression2(this.id, this.hyperparams, params);
 	}
 
+	/**
+	 * Returns the a parameter of the Regression.
+	 * @returns the a parameter.
+	 */
+	public getA(): number {
+		return this.a;
+	}
+
+	/**
+	 * Returns the b parameter of the Regression.
+	 * @returns the b parameter.
+	 */
+	public getB(): number {
+		return this.b;
+	}
+
+	/**
+	 * Returns the c parameter of the Regression.
+	 * @returns the c parameter.
+	 */
+	public getC(): number {
+		return this.c;
+	}
+
+	/**
+	 * Returns the d parameter of the Regression.
+	 * @returns the d parameter.
+	 */
+	public getD(): number {
+		return this.d;
+	}
+
 	public setParams(newParams: number[]): void {
 		if (newParams.length !== Regression.NB_PARAMS_POLY) {
 			throw new Error(
@@ -279,12 +311,16 @@ export class PolyRegression2 extends Regression {
 		);
 	}
 
-	public predict(inputs: number): number {
+	public predictOne(input: number): number {
 		return (
-			this.a * Math.pow(inputs, 3) +
-			this.b * inputs * inputs +
-			this.c * inputs +
+			this.a * Math.pow(input, 3) +
+			this.b * input * input +
+			this.c * input +
 			this.d
 		);
+	}
+
+	public predict(inputs: Matrix): Matrix {
+		return new Matrix(0, 0);
 	}
 }

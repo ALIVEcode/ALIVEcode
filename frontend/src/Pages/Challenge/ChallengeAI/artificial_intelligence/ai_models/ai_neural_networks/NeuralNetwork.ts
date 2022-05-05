@@ -7,9 +7,9 @@ import {
 } from '../../AIUtils';
 import { NeuralLayer } from './NeuralLayer';
 import { ActivationFunction } from '../../ai_functions/ActivationFunction';
-import { Model } from '../Model';
 import { NNHyperparameters, NNModelParams } from '../../AIEnumsInterfaces';
 import { MODEL_TYPES } from '../../../../../../Models/Ai/ai_model.entity';
+import Model from '../Model';
 
 /**
  * This class represents a whole Neural Network. It contains every layers that

@@ -1,5 +1,9 @@
 import PolyRegression from '../../../../Components/ChallengeComponents/ChallengeGraph/PolyRegression';
-import DataSample from './DataSample';
+import { DataSample, Matrix } from './AIUtils';
+import Optimizer from './ai_optimizers/Optimizer';
+import { RegHyperparameters } from './AIEnumsInterfaces';
+import { Regression } from './ai_models/Regression';
+import { NeuralNetwork } from './ai_models/ai_neural_networks/NeuralNetwork';
 
 /**
  * Superclass for every Optimizer class. It contains all usefull static and abstract methods
@@ -193,4 +197,20 @@ export default abstract class RegressionOptimizer {
 	 * @return a new Regression that fits best the dataset.
 	 */
 	public abstract optimize(dataset: DataSample[]): PolyRegression;
+}
+
+export abstract class RegressionOptimizer2 extends Optimizer {
+	protected static EPSILON: number = 1e-8;
+
+	protected error: number;
+	protected regression: Regression;
+	protected hyperparams: RegHyperparameters;
+
+	constructor(regression: Regression, hyperparams: RegHyperparameters) {
+		super(
+			hyperparams.optimizer.learningRate,
+			hyperparams.optimizer.epochs,
+			hyperparams.optimizer.costFunction,
+		);
+	}
 }

@@ -7,7 +7,7 @@ import {
 } from '../AIEnumsInterfaces';
 import { Matrix } from '../AIUtils';
 
-export abstract class Model {
+export default abstract class Model {
 	protected id: number;
 	protected type: MODEL_TYPES;
 

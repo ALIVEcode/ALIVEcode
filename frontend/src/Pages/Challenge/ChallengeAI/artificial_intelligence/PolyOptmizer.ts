@@ -1,6 +1,6 @@
 import RegressionOptimizer from './RegressionOptimizer';
 import PolyRegression from '../../../../Components/ChallengeComponents/ChallengeGraph/PolyRegression';
-import DataSample from './DataSample';
+import { DataSample } from './AIUtils';
 
 /**
  * This class contains all necessary methods to optimize a polynomial regression

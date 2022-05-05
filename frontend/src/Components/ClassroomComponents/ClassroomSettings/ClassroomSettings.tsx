@@ -1,10 +1,8 @@
 import Form from '../../UtilsComponents/Form/Form';
 import { ClassroomSettingsProps } from './classroomSettingsTypes';
 import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
-import {
-	CLASSROOM_ACCESS,
-	CLASSROOM_SUBJECT,
-} from '../../../Models/Classroom/classroom.entity';
+import { CLASSROOM_ACCESS } from '../../../Models/Classroom/classroom.entity';
+import { SUBJECTS } from '../../../Types/sharedTypes';
 
 const ClassroomSettings = ({ classroom, onSubmit }: ClassroomSettingsProps) => {
 	return (
@@ -32,7 +30,7 @@ const ClassroomSettings = ({ classroom, onSubmit }: ClassroomSettingsProps) => {
 					name: 'subject',
 					inputType: 'select',
 					required: true,
-					selectOptions: CLASSROOM_SUBJECT,
+					selectOptions: SUBJECTS,
 					default: classroom.subject,
 				},
 				{

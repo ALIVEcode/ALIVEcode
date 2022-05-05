@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
  * @param {boolean} fetchOnSubmit if it auto fetches when exiting the search bar or pressing enter
  * @param {(arg: BrowsingQuery) => Promise<T[]>} apiRequest callback function that gets called with the query and must return the resulting objects
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const BrowsingMenu = <T extends any>({
 	onChange,

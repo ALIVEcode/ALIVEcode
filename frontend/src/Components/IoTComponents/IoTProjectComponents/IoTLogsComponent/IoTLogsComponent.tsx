@@ -17,7 +17,7 @@ const IoTLogsComponent = ({ component }: { component: IoTLogs }) => {
 					<div className="log-entries">
 						{component.displayedValue &&
 						component.displayedValue.length <= 0 ? (
-							<label>No logs available</label>
+							<label>{t('iot.project.interface.components.logs.empty')}</label>
 						) : component.displayedValue ? (
 							component.displayedValue.map((l: IoTLogModel, idx: number) => (
 								<label key={idx}>
@@ -26,7 +26,9 @@ const IoTLogsComponent = ({ component }: { component: IoTLogs }) => {
 								</label>
 							))
 						) : (
-							<i className="font-bold text-red-600">ERROR</i>
+							<i className="font-bold text-red-600">
+								{t('iot.project.interface.errors.ref')}
+							</i>
 						)}
 					</div>
 				</div>
@@ -34,7 +36,7 @@ const IoTLogsComponent = ({ component }: { component: IoTLogs }) => {
 			<div>
 				{!component.isRef() && (
 					<Button onClick={() => component.clearLogs()} variant="danger">
-						Clear logs
+						{t('iot.project.interface.components.logs.clear')}
 					</Button>
 				)}
 			</div>

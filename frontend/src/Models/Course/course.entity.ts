@@ -1,14 +1,14 @@
+import { faCloudsmith } from '@fortawesome/free-brands-svg-icons';
+import {
+	faBrain,
+	faClipboardList,
+	faCode,
+} from '@fortawesome/free-solid-svg-icons';
 import { Exclude, Type } from 'class-transformer';
+import { getSubjectIcon, SUBJECTS } from '../../Types/sharedTypes';
 import { CreatedByUser } from '../Generics/createdByUser.entity';
 import { Professor } from '../User/user.entity';
-import api from '../api';
-import { Section } from './section.entity';
-import {
-	faCalculator,
-	faCode,
-	faFlask,
-	faProjectDiagram,
-} from '@fortawesome/free-solid-svg-icons';
+import { CourseElement } from './course_element.entity';
 
 export enum COURSE_DIFFICULTY {
 	BEGINNER = 1,
@@ -26,51 +26,53 @@ export enum COURSE_ACCESS {
 	PRIVATE = 'PR', // only accessible to the creator
 }
 
-export enum COURSE_SUBJECT {
-	INFORMATIC = 'IN',
-	AI = 'AI',
-	MATH = 'MA',
-	SCIENCE = 'SC',
-}
-
+/**
+ * Course model in the database
+ * @author Enric Soldevila
+ */
 export class Course extends CreatedByUser {
+	/** Creator of the course (Professor) */
 	@Exclude({ toPlainOnly: true })
 	@Type(() => Professor)
 	creator: Professor;
 
-	// The code consists of letters from a-z and numbers from 0-9 | case non-senstive
+	/** Code to join the course (NOT USED YET) */
 	code: string;
 
+	/** Difficulty of the course */
 	difficulty: COURSE_DIFFICULTY;
 
+	/** Access to the course */
 	access: COURSE_ACCESS;
 
-	subject: COURSE_SUBJECT;
+	/** The subject of the course */
+	subject: SUBJECTS;
 
-	@Type(() => Section)
-	sections: Section[];
+	/** CourseElements inside the course */
+	@Exclude({ toPlainOnly: true })
+	@Type(() => CourseElement)
+	elements: CourseElement[];
 
-	async getSections() {
-		if (this.sections) return this.sections;
-		this.sections = await api.db.courses.getSections({ id: this.id });
-		return this.sections;
-	}
+	/** Display order of the CourseElements */
+	@Type(() => Number)
+	@Exclude({ toPlainOnly: true })
+	elementsOrder: number[];
 
+	/**
+	 * Gets the display in a short version, for example: (INFORMATIC => IN)
+	 * @returns the subject display
+	 */
+	@Exclude()
 	getSubjectDisplay() {
-		return this.subject[0].toUpperCase() + this.subject.slice(1);
+		return this.subject[0].toUpperCase();
 	}
 
+	/**
+	 * Gets an icon depending on the subject of the course
+	 * @returns The icon
+	 */
+	@Exclude()
 	getSubjectIcon() {
-		switch (this.subject) {
-			case COURSE_SUBJECT.INFORMATIC:
-				return faCode;
-			case COURSE_SUBJECT.SCIENCE:
-				return faFlask;
-			case COURSE_SUBJECT.MATH:
-				return faCalculator;
-			case COURSE_SUBJECT.AI:
-				return faProjectDiagram;
-		}
-		return faCode;
+		return getSubjectIcon(this.subject);
 	}
 }

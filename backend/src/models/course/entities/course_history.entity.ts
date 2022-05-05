@@ -13,7 +13,7 @@ export class CourseHistoryEntity {
   @IsDate()
   lastInteraction: Date;
 
-  @ManyToOne(() => CourseEntity)
+  @ManyToOne(() => CourseEntity, { onDelete: 'CASCADE' })
   @Exclude({ toClassOnly: true })
   course: CourseEntity;
 

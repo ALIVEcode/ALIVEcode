@@ -23,6 +23,7 @@ import { IoTBuzzer } from '../../../../Models/Iot/IoTProjectClasses/Components/I
 import InputGroup from '../../../UtilsComponents/InputGroup/InputGroup';
 import FormLabel from '../../../UtilsComponents/FormLabel/FormLabel';
 import { IoTComponent } from '../../../../Models/Iot/IoTProjectClasses/IoTComponent';
+import { prettyField } from '../../../../Types/formatting';
 import {
 	IoTTrafficLight,
 	TRAFFIC_LIGHT_STATE,
@@ -88,7 +89,7 @@ const IoTComponentEditor = ({
 		return (
 			<>
 				<option key="static" value="static">
-					Static Value
+					{t('iot.project.interface.components_form.ref.static')}
 				</option>
 				{getDocumentEntries(component).map((e, idx) => (
 					<option key={idx} value={e.ref}>
@@ -98,7 +99,8 @@ const IoTComponentEditor = ({
 				))}
 				{!component.isRefValueValid() && (
 					<option value={component.value}>
-						{component.value} (INVALID VALUE)
+						{component.value} (
+						{t('iot.project.interface.components_form.ref.invalid')})
 					</option>
 				)}
 			</>
@@ -109,7 +111,9 @@ const IoTComponentEditor = ({
 		if (component instanceof IoTProgressBar)
 			return (
 				<InputGroup
-					label="Value"
+					label={t(
+						'iot.project.interface.components_form.progress.value.label',
+					)}
 					type="range"
 					min={component.getMin()}
 					max={component.getMax()}
@@ -122,7 +126,10 @@ const IoTComponentEditor = ({
 		if (component instanceof IoTButton)
 			return (
 				<InputGroup
-					label="Value (label)"
+					label={t('iot.project.interface.components_form.button.value.label')}
+					placeholder={t(
+						'iot.project.interface.components_form.button.value.placeholder',
+					)}
 					value={component.value}
 					className="mb-2"
 					onChange={(e: any) => component.setValue(e.target.value)}
@@ -132,17 +139,19 @@ const IoTComponentEditor = ({
 		if (component instanceof IoTLogs)
 			return (
 				<>
-					<FormLabel>Logs</FormLabel>
+					<FormLabel>
+						{t('iot.project.interface.components_form.logs.value.label')}
+					</FormLabel>
 					{component.value.length === 0 && (
 						<>
 							<br />
 							<div className="mb-5">
-								No Logs
+								{t('iot.project.interface.components.logs.empty')}
 								{canEdit && (
 									<>
 										,{' '}
 										<Link onClick={() => component.addLog('New log')} dark>
-											add one?
+											{t('iot.project.interface.components.logs.add')}
 										</Link>
 									</>
 								)}
@@ -181,7 +190,7 @@ const IoTComponentEditor = ({
 					{component.value.length > 0 && (
 						<>
 							<Link onClick={() => component.addLog('New log')} dark>
-								Add log
+								{t('iot.project.interface.components.logs.add')}
 							</Link>
 							<br />
 							<Button
@@ -190,7 +199,7 @@ const IoTComponentEditor = ({
 								variant="danger"
 								disabled={!canEdit}
 							>
-								Clear logs
+								{t('iot.project.interface.components.logs.clear')}
 							</Button>
 						</>
 					)}
@@ -199,7 +208,7 @@ const IoTComponentEditor = ({
 		if (component instanceof IoTLed)
 			return (
 				<InputGroup
-					label="LED on/off"
+					label={t('iot.project.interface.components_form.led.value.label')}
 					type="checkbox"
 					defaultChecked={component.value}
 					className="mb-2"
@@ -210,7 +219,10 @@ const IoTComponentEditor = ({
 		if (component instanceof IoTLabel)
 			return (
 				<InputGroup
-					label="Displayed Text"
+					label={t('iot.project.interface.components_form.label.value.label')}
+					placeholder={t(
+						'iot.project.interface.components_form.label.value.placeholder',
+					)}
 					value={component.value}
 					className="mb-2"
 					onChange={(e: any) => component.setValue(e.target.value)}
@@ -220,7 +232,10 @@ const IoTComponentEditor = ({
 		if (component instanceof IoTBuzzer)
 			return (
 				<InputGroup
-					label="Frequency"
+					label={t('iot.project.interface.components_form.buzzer.value.label')}
+					placeholder={t(
+						'iot.project.interface.components_form.buzzer.value.placeholder',
+					)}
 					type="number"
 					min={0}
 					max={10000}
@@ -233,25 +248,28 @@ const IoTComponentEditor = ({
 		if (component instanceof IoTTrafficLight)
 			return (
 				<InputGroup
-					label="LED on/off"
+					label={t(
+						'iot.project.interface.components_form.traffic_light.value.label',
+					)}
+					placeholder={t(
+						'iot.project.interface.components_form.traffic_light.value.placeholder',
+					)}
+					value={component.value}
 					as="select"
 					defaultChecked={component.value}
 					className="mb-2"
 					onChange={(e: any) => component.setValue(e.target.value)}
 					disabled={!canEdit}
 				>
-					<option id={TRAFFIC_LIGHT_STATE.OFF}>
-						{TRAFFIC_LIGHT_STATE.OFF}
-					</option>
-					<option id={TRAFFIC_LIGHT_STATE.GREEN}>
-						{TRAFFIC_LIGHT_STATE.GREEN}
-					</option>
-					<option id={TRAFFIC_LIGHT_STATE.YELLOW}>
-						{TRAFFIC_LIGHT_STATE.YELLOW}
-					</option>
-					<option id={TRAFFIC_LIGHT_STATE.RED}>
-						{TRAFFIC_LIGHT_STATE.RED}
-					</option>
+					{Object.entries(TRAFFIC_LIGHT_STATE).map((entry, idx) => (
+						<option key={idx} value={entry[1]}>
+							{prettyField(
+								t(
+									`iot.project.interface.components.traffic_light.${entry[0].toLowerCase()}`,
+								),
+							)}
+						</option>
+					))}
 				</InputGroup>
 			);
 	};
@@ -261,7 +279,12 @@ const IoTComponentEditor = ({
 			return (
 				<>
 					<InputGroup
-						label="Minimum"
+						label={t(
+							'iot.project.interface.components_form.progress.min.label',
+						)}
+						placeholder={t(
+							'iot.project.interface.components_form.progress.min.placeholder',
+						)}
 						value={component.getMin()}
 						type="number"
 						className="mb-2"
@@ -271,7 +294,12 @@ const IoTComponentEditor = ({
 						disabled={!canEdit}
 					/>
 					<InputGroup
-						label="Maximum"
+						label={t(
+							'iot.project.interface.components_form.progress.max.label',
+						)}
+						placeholder={t(
+							'iot.project.interface.components_form.progress.max.placeholder',
+						)}
 						value={component.getMax()}
 						type="number"
 						className="mb-2"
@@ -281,7 +309,9 @@ const IoTComponentEditor = ({
 						disabled={!canEdit}
 					/>
 					<InputGroup
-						label="Is Percentage"
+						label={t(
+							'iot.project.interface.components_form.progress.is_percentage.label',
+						)}
 						defaultChecked={component.isPercentage}
 						type="checkbox"
 						className="mb-2"
@@ -296,9 +326,16 @@ const IoTComponentEditor = ({
 			return (
 				<>
 					<hr />
-					<h3 className="text-2xl mt-2">On Click</h3>
+					<h3 className="text-2xl mt-6 mb-2">
+						{t('iot.project.interface.components_form.button.on_click')}
+					</h3>
 					<InputGroup
-						label="Targetted IoTObject"
+						label={t(
+							'iot.project.interface.components_form.button.target.label',
+						)}
+						placeholder={t(
+							'iot.project.interface.components_form.button.target.placeholder',
+						)}
 						as="select"
 						className="mb-2"
 						onChange={(e: any) => component.setTargetId(e.target.value || null)}
@@ -313,7 +350,12 @@ const IoTComponentEditor = ({
 						))}
 					</InputGroup>
 					<InputGroup
-						label="Action id"
+						label={t(
+							'iot.project.interface.components_form.button.action_id.label',
+						)}
+						placeholder={t(
+							'iot.project.interface.components_form.button.action_id.placeholder',
+						)}
 						className="mb-2"
 						type="number"
 						value={component.getActionId()}
@@ -321,7 +363,12 @@ const IoTComponentEditor = ({
 						disabled={!canEdit}
 					/>
 					<InputGroup
-						label="Action Data"
+						label={t(
+							'iot.project.interface.components_form.button.action_data.label',
+						)}
+						placeholder={t(
+							'iot.project.interface.components_form.button.action_data.placeholder',
+						)}
 						as="textarea"
 						className="mb-2"
 						value={component.getActionData() || '{}'}
@@ -333,7 +380,9 @@ const IoTComponentEditor = ({
 		if (component instanceof IoTLabel)
 			return (
 				<InputGroup
-					label="Font size"
+					label={t(
+						'iot.project.interface.components_form.label.font_size.label',
+					)}
 					type="range"
 					min={10}
 					max={60}
@@ -347,7 +396,9 @@ const IoTComponentEditor = ({
 			return (
 				<>
 					<InputGroup
-						label="Sound Duration (seconds)"
+						label={t(
+							'iot.project.interface.components_form.buzzer.duration.label',
+						)}
 						type="range"
 						min={0.2}
 						max={30}
@@ -364,7 +415,12 @@ const IoTComponentEditor = ({
 					</label>
 					<br />
 					<InputGroup
-						label="Frequency type"
+						label={t(
+							'iot.project.interface.components_form.buzzer.frequency_type.label',
+						)}
+						placeholder={t(
+							'iot.project.interface.components_form.buzzer.frequency_type.placeholder',
+						)}
 						type="select"
 						as="select"
 						value={component.getFrequencyType()}
@@ -374,10 +430,18 @@ const IoTComponentEditor = ({
 						}}
 						disabled={!canEdit}
 					>
-						<option value="sine">Sine</option>
-						<option value="sawtooth">Sawtooth</option>
-						<option value="square">Square</option>
-						<option value="triangle">Triangle</option>
+						<option value="sine">
+							{t('iot.project.interface.components.buzzer.sine')}
+						</option>
+						<option value="sawtooth">
+							{t('iot.project.interface.components.buzzer.sawtooth')}
+						</option>
+						<option value="square">
+							{t('iot.project.interface.components.buzzer.square')}
+						</option>
+						<option value="triangle">
+							{t('iot.project.interface.components.buzzer.triangle')}
+						</option>
 					</InputGroup>
 					<Button
 						onClick={() => {
@@ -386,7 +450,9 @@ const IoTComponentEditor = ({
 						variant="third"
 						className="mt-2"
 					>
-						{component.isBuzzing() ? 'Stop the sound' : 'Start the sound'}
+						{component.isBuzzing()
+							? t('iot.project.interface.components.buzzer.stop')
+							: t('iot.project.interface.components.buzzer.start')}
 					</Button>
 				</>
 			);
@@ -395,21 +461,25 @@ const IoTComponentEditor = ({
 	return (
 		<div>
 			<InputGroup
-				label="name"
+				label={t('iot.project.interface.components_form.name.label')}
+				placeholder={t(
+					'iot.project.interface.components_form.name.placeholder',
+				)}
 				value={component.name}
 				className="mb-2"
 				onChange={(e: any) => component.setName(e.target.value)}
 				disabled={!canEdit}
 			/>
 			<InputGroup
-				label="id"
+				label={t('iot.project.interface.components_form.id.label')}
+				placeholder={t('iot.project.interface.components_form.id.placeholder')}
 				value={component.id}
 				className="mb-2"
 				onChange={(e: any) => component.setId(e.target.value)}
 				disabled={!canEdit}
 			/>
 			<InputGroup
-				label="Ref"
+				label={t('iot.project.interface.components_form.ref.label')}
 				as="select"
 				errors={
 					!component.isRefValueValid() ? [{ type: 'Invalid ref' }] : undefined
@@ -430,7 +500,7 @@ const IoTComponentEditor = ({
 				variant="danger"
 				onClick={() => setOpenDeleteMenu(true)}
 			>
-				Delete component
+				{t('iot.project.interface.delete_component')}
 			</Button>
 			<AlertConfirm
 				title={`Deletion of component ${component.name}`}
@@ -439,7 +509,13 @@ const IoTComponentEditor = ({
 				onConfirm={removeComponent}
 				onCancel={() => setOpenDeleteMenu(false)}
 			>
-				Are you sure you want to delete the component {component.name} ?
+				<div className="mb-2">
+					{t('iot.project.interface.delete_component_confirm')} "
+					<i>{component.name}</i>"?
+					<div className="font-semibold text-[color:var(--danger-color)]">
+						{t('action.irreversible')}
+					</div>
+				</div>
 			</AlertConfirm>
 		</div>
 	);

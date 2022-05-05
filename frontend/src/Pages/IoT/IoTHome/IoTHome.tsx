@@ -7,13 +7,8 @@ import DemoProject from '../../../assets/images/iot/demo_project.png';
 import Footer from '../../../Components/MainComponents/Footer/Footer';
 import { HomeButton } from '../../../Components/UtilsComponents/Buttons/HomeButton';
 import { useTranslation } from 'react-i18next';
-import {
-	MutableRefObject,
-	useRef,
-	useLayoutEffect,
-	useState,
-	useCallback,
-} from 'react';
+import useView from '../../../state/hooks/useView';
+import { MutableRefObject, useRef } from 'react';
 
 const StyledHome = styled.div`
 	.tech-slideshow {
@@ -51,12 +46,12 @@ const StyledHome = styled.div`
 /**
  * Home of the IoT branch
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const IoTHome = (props: iotHomeProps) => {
 	const { routes } = useRoutes();
 	const getStartedRef = useRef<HTMLDivElement | null>(null);
-	const [viewHeight, setViewHeight] = useState<number>(0);
+	const view = useView();
 	const { t } = useTranslation();
 
 	const goToElement = (ref: MutableRefObject<any>) => {
@@ -67,28 +62,12 @@ const IoTHome = (props: iotHomeProps) => {
 			});
 	};
 
-	const updateViewHeight = useCallback(() => {
-		const height =
-			Math.max(document.documentElement.clientHeight, window.innerHeight || 0) -
-			64;
-		setViewHeight(height);
-	}, []);
-
-	useLayoutEffect(() => {
-		updateViewHeight();
-		window.addEventListener('resize', updateViewHeight);
-
-		return () => {
-			window.removeEventListener('resize', updateViewHeight);
-		};
-	}, [updateViewHeight]);
-
 	return (
 		<StyledHome className="min-h-full bg-[color:#0a0a0a]">
 			{/* Header */}
 			<div
 				className="w-full h-full bg-black relative"
-				style={{ height: viewHeight + 'px' }}
+				style={{ height: view.height + 'px' }}
 			>
 				<div className="tech-slideshow w-full laptop:w-2/3 z-0 opacity-20">
 					<div className="mover-1"></div>
@@ -96,7 +75,7 @@ const IoTHome = (props: iotHomeProps) => {
 				<div className="w-full h-full flex justify-center items-center p-4 text-center laptop:justify-start laptop:text-left laptop:p-20 laptop:pl-40 z-10 relative">
 					<div>
 						<div className="text-5xl laptop:text-7xl text-gray-50 font-light mb-5">
-							ALIVEcode IoT
+							ALIVEIoT
 						</div>
 						<div className="text-2xl laptop:text-3xl desktop:text-4xl text-gray-200 font-extralight mb-10">
 							{t('home.iot.desc')}
@@ -107,7 +86,7 @@ const IoTHome = (props: iotHomeProps) => {
 					</div>
 				</div>
 			</div>
-			<div className="text-gray-50 relative w-full h-full">
+			<div className="text-gray-50 relative w-full h-full px-5 tablet:px-10 laptop:px-20">
 				<HomeSection
 					ref={getStartedRef}
 					title={t('home.iot.section.develop.title')}

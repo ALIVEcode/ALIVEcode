@@ -11,3 +11,22 @@ export const hexToRGB = (hex: string, alpha?: number) => {
 
 	return `${r},${g},${b}`;
 };
+
+export type OneOf<T, V> =
+	| ({ [key in keyof Omit<T, keyof V>]?: never } & V)
+	| ({ [key in keyof Omit<V, keyof T>]?: never } & T);
+
+export type MakeCompatible<T extends any[]> = T extends [
+	first: infer F,
+	...rest: infer R
+]
+	? R extends []
+		? F
+		: OneOf<F, MakeCompatible<R>>
+	: OneOf<T, {}>;
+
+
+
+const a: MakeCompatible<[{ a: true }, { b: false }, { c: 12 }]> = {
+	c: 12,
+};

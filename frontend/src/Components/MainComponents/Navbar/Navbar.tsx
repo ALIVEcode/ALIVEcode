@@ -2,7 +2,7 @@ import { useContext, useState, Fragment } from 'react';
 import { NavbarProps } from './NavbarTypes';
 import { UserContext } from '../../../state/contexts/UserContext';
 import { Link } from 'react-router-dom';
-import TestLogo from '../../../assets/images/TestLogo.png';
+import logoALIVEcode from '../../../assets/images/logoALIVEcode.png';
 import i18next from 'i18next';
 import { languages } from '../../../appConfigs';
 import { useTranslation } from 'react-i18next';
@@ -15,23 +15,28 @@ import {
 import { useLocation } from 'react-router';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faTimes, faBullhorn } from '@fortawesome/free-solid-svg-icons';
 import { classNames } from '../../../Types/utils';
+import { Popup } from 'reactjs-popup';
+import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
+import { TutorialContext } from '../../../state/contexts/TutorialContext';
 
 /**
  * Navbar of ALIVEcode
  *
  * @param {() => void} handleLogout callback that logs out the user and change the global state of the app
  *
- * @author MoSk3
+ * @param setFeedbackModalOpen
+ * @author Enric Soldevila, Mathis Laroche
  */
-const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
+const ALIVENavbar = ({ handleLogout, setFeedbackModalOpen }: NavbarProps) => {
 	const { user } = useContext(UserContext);
 	const { t } = useTranslation();
 	const { routes } = useRoutes();
 	const { theme, setTheme } = useContext(ThemeContext);
 	const location = useLocation();
 	const [hovering, setHovering] = useState<number>();
+	const { startCurrentTutorial, getCurrent } = useContext(TutorialContext);
 
 	const links = [
 		{
@@ -45,7 +50,7 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 			active: location.pathname.startsWith('/ai'),
 		},
 		{
-			path: routes.public.iot.path,
+			path: user ? routes.auth.iot_dashboard.path : routes.public.iot.path,
 			name: t('home.navbar.section.iot'),
 			active: location.pathname.startsWith('/iot'),
 		},
@@ -55,6 +60,8 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 			active: location.pathname.startsWith('/about'),
 		},
 	];
+
+	const [isNested, setIsNested] = useState(false);
 
 	return (
 		<Disclosure
@@ -70,7 +77,7 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 								<FontAwesomeIcon
 									className="cursor-pointer"
 									icon={open ? faTimes : faBars}
-								></FontAwesomeIcon>
+								/>
 							</Disclosure.Button>
 						</div>
 						<div className="flex h-full items-center justify-center w-1/3 laptop:w-auto">
@@ -79,7 +86,7 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 								className="py-3 h-full no-underline whitespace-nowrap flex items-center"
 							>
 								<img
-									src={TestLogo}
+									src={logoALIVEcode}
 									alt=""
 									className="inline-block align-top h-full"
 								/>
@@ -122,7 +129,7 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 															? 'border-gray-300'
 															: 'border-transparent'))
 											}
-										></div>
+										/>
 									</Link>
 								))}
 							</div>
@@ -179,7 +186,10 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 									leaveFrom="transform opacity-100 scale-100"
 									leaveTo="transform opacity-0 scale-95"
 								>
-									<Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-[color:var(--background-color)] ring-1 ring-[color:var(--bg-shade-three-color)] ring-opacity-5 divide-y divide-[color:var(--bg-shade-three-color)] focus:outline-none">
+									<Menu.Items
+										className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-[color:var(--background-color)]
+									ring-1 ring-[color:var(--bg-shade-three-color)] ring-opacity-5 divide-y divide-[color:var(--bg-shade-three-color)] focus:outline-none"
+									>
 										<div className="py-1">
 											{user ? (
 												<Menu.Item>
@@ -248,6 +258,58 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 													</div>
 												)}
 											</Menu.Item>
+											<Popup
+												on="hover"
+												arrowStyle={{
+													color: 'var(--bg-shade-three-color)',
+												}}
+												offsetX={-15}
+												trigger={
+													<div
+														className="cursor-pointer block px-4 py-2 text-sm text-[color:var(--foreground-color)] hover:text-[color:var(--foreground-color)]
+														hover:bg-[color:var(--bg-shade-two-color)]"
+													>
+														Language
+													</div>
+												}
+												onOpen={() => setIsNested(false)}
+												onClose={() => setIsNested(true)}
+												closeOnDocumentClick
+												closeOnEscape
+												nested={isNested}
+												position={'left center'}
+											>
+												<div
+													className="rounded-md shadow-lg bg-[color:var(--background-color)] ring-1 ring-[color:var(--bg-shade-three-color)]
+															ring-opacity-5 divide-y divide-[color:var(--bg-shade-three-color)] focus:outline-none"
+												>
+													{languages.map(({ code, name }, idx) => (
+														<Menu.Item key={idx}>
+															{({ active }) => {
+																return (
+																	<div
+																		onClick={() =>
+																			i18next.language !== code &&
+																			i18next.changeLanguage(code)
+																		}
+																		className={classNames(
+																			active &&
+																				i18next.language !== code &&
+																				'bg-[color:var(--bg-shade-two-color)]',
+																			i18next.language === code
+																				? 'text-[color:var(--bg-shade-four-color)]'
+																				: 'text-[color:var(--foreground-color)] hover:text-[color:var(--foreground-color)] cursor-pointer',
+																			'block px-4 py-2 text-sm ',
+																		)}
+																	>
+																		{name}
+																	</div>
+																);
+															}}
+														</Menu.Item>
+													))}
+												</div>
+											</Popup>
 										</div>
 										{user && (
 											<div className="py-1">
@@ -270,7 +332,7 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 									</Menu.Items>
 								</Transition>
 							</Menu>
-							<Menu
+							{/*<Menu
 								as="div"
 								className="ml-2 relative inline-block text-left h-full w-10"
 							>
@@ -297,32 +359,75 @@ const ALIVENavbar = ({ handleLogout }: NavbarProps) => {
 									leave="transition ease-in duration-75"
 									leaveFrom="transform opacity-100 scale-100"
 									leaveTo="transform opacity-0 scale-95"
+								></Transition>
+							</Menu>*/}
+							<Menu
+								as="div"
+								className="ml-2 relative inline-block text-left h-full w-10"
+							>
+								<div className="h-full">
+									<Menu.Button className="h-full w-10">
+										<FontAwesomeIcon
+											icon={faQuestionCircle}
+											color={commonColors.logo}
+											title="Support"
+											className="p-1"
+											size={'3x'}
+										/>
+									</Menu.Button>
+								</div>
+								<Transition
+									as={Fragment}
+									enter="transition ease-out duration-100"
+									enterFrom="transform opacity-0 scale-95"
+									enterTo="transform opacity-100 scale-100"
+									leave="transition ease-in duration-75"
+									leaveFrom="transform opacity-100 scale-100"
+									leaveTo="transform opacity-0 scale-95"
 								>
-									<Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-[color:var(--background-color)] ring-1 ring-[color:var(--bg-shade-three-color)] ring-opacity-5 divide-y divide-[color:var(--bg-shade-three-color)] focus:outline-none">
-										<div className="py-1">
-											{languages.map(({ code, name }, idx) => (
-												<Menu.Item key={idx}>
-													{({ active }) => (
-														<div
-															onClick={() =>
-																i18next.language !== code &&
-																i18next.changeLanguage(code)
-															}
-															className={classNames(
-																active &&
-																	i18next.language !== code &&
-																	'bg-[color:var(--bg-shade-two-color)]',
-																i18next.language === code
-																	? 'text-[color:var(--bg-shade-four-color)]'
-																	: 'text-[color:var(--foreground-color)] hover:text-[color:var(--foreground-color)] cursor-pointer',
-																'block px-4 py-2 text-sm ',
-															)}
-														>
-															{name}
-														</div>
-													)}
-												</Menu.Item>
-											))}
+									<Menu.Items
+										className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-[color:var(--background-color)]
+									ring-1 ring-[color:var(--bg-shade-three-color)] ring-opacity-5 divide-y divide-[color:var(--bg-shade-three-color)] focus:outline-none"
+									>
+										<div className="py-1 divide-y divide-[color:var(--bg-shade-three-color)] focus:outline-none">
+											<Menu.Item>
+												<div
+													className="cursor-pointer block px-4 py-2 text-sm text-[color:var(--foreground-color)] hover:text-[color:var(--foreground-color)]
+														hover:bg-[color:var(--bg-shade-two-color)]"
+												>
+													Informations
+												</div>
+											</Menu.Item>
+											<Menu.Item>
+												<button
+													className="cursor-pointer block px-4 py-2 text-sm text-[color:var(--foreground-color)] hover:text-[color:var(--foreground-color)]
+														hover:bg-[color:var(--bg-shade-two-color)] w-full text-left disabled:hover:bg-[color:var(--background-color)] 
+														disabled:cursor-default disabled:text-[color:rgb(var(--fg-shade-four-color-rgb),0.6)]"
+													onClick={startCurrentTutorial}
+													disabled={getCurrent() === null}
+												>
+													{t('help.start_tutorial')}
+												</button>
+											</Menu.Item>
+											<Menu.Item>
+												<div
+													className="cursor-pointer block px-4 py-2 text-sm text-[color:var(--foreground-color)] hover:text-[color:var(--foreground-color)]
+														hover:bg-[color:var(--bg-shade-two-color)]"
+													onClick={() => setFeedbackModalOpen(true)}
+												>
+													<span>
+														{t('feedback.button')}{' '}
+														<span className="tracking-wider text-[color:var(--fourth-color)] font-bold">
+															(F2)
+														</span>{' '}
+														<FontAwesomeIcon
+															icon={faBullhorn}
+															focusable={false}
+															className="color:var(--fg-shade-four-color) ml-1 opacity-75"
+														/>
+													</span>
+												</div>
+											</Menu.Item>
 										</div>
 									</Menu.Items>
 								</Transition>

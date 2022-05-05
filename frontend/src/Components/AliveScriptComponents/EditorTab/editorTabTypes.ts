@@ -1,4 +1,4 @@
-import { EditorTabModel } from "../../LevelComponents/LineInterface/lineInterfaceTypes";
+import { EditorTabModel } from '../../ChallengeComponents/LineInterface/lineInterfaceTypes';
 
 export type StyledEditorTabProps = {
 	open: boolean;

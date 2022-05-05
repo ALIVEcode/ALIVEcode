@@ -3,7 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ClassroomEntity, CLASSROOM_ACCESS } from './entities/classroom.entity';
 import { ILike, Repository } from 'typeorm';
 import { generate } from 'randomstring';
-import { UserEntity, StudentEntity, ProfessorEntity } from '../user/entities/user.entity';
+import { ProfessorEntity } from '../user/entities/user.entity';
+import { UserEntity } from '../user/entities/user.entity';
+import { StudentEntity } from '../user/entities/user.entity';
 import { CourseEntity } from '../course/entities/course.entity';
 import { ClassroomQueryDTO } from './dto/ClassroomQuery.dto';
 
@@ -54,8 +56,8 @@ export class ClassroomService {
     return classroom;
   }
 
-  update(id: string, updateClassroomDto: ClassroomEntity) {
-    return this.classroomRepository.save({ id, ...updateClassroomDto });
+  async update(id: string, updateClassroomDto: ClassroomEntity) {
+    return await this.classroomRepository.save({ ...updateClassroomDto, id });
   }
 
   async remove(classroom: ClassroomEntity) {

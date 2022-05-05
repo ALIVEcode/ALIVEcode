@@ -40,6 +40,7 @@ const Modal = (props: ModalProps) => {
 		closeButtonVariant,
 		submitText,
 		closeText,
+		hideTitle,
 		hideSubmitButton,
 		hideCloseButton,
 		centered,
@@ -49,23 +50,26 @@ const Modal = (props: ModalProps) => {
 		dialogClassName,
 		icon,
 		onShow,
+		topBar,
 	} = props;
 
 	const cancelButtonRef = useRef<HTMLButtonElement | null>(null);
+	const crossButtonRef = useRef<HTMLDivElement | null>(null);
 	const { t } = useTranslation();
 
 	useEffect(() => {
 		if (open) onShow && onShow();
-		if (!open) document.documentElement.style = 'overflow:auto !important';
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [open]);
 
 	return (
-		<Transition.Root show={open} as={Fragment}>
+		<Transition appear show={open} as={Fragment}>
 			<Dialog
 				as="div"
 				className="fixed z-20 inset-0 overflow-y-auto h-full"
-				initialFocus={cancelButtonRef}
+				// initialFocus={
+				// 	cancelButtonRef.current ? cancelButtonRef : crossButtonRef
+				// }
 				onClose={state => !unclosable && setOpen(state)}
 			>
 				<div
@@ -109,9 +113,14 @@ const Modal = (props: ModalProps) => {
 					>
 						<div
 							className={classNames(
-								size === 'sm' && 'w-full phone:2-4/5 tablet:w-1/2 laptop:w-1/3',
-								size === 'lg' && 'w-full tablet:w-3/4 desktop:w-3/5',
-								size === 'xl' && 'w-full laptop:2/3 desktop:w-4/5',
+								size === 'sm' &&
+									'w-[16rem] tablet:w-[25rem] laptop:w-[29rem] desktop:w-[42rem]',
+								size === 'md' &&
+									'w-[20rem] tablet:w-[30rem] laptop:w-[35rem] desktop:w-[50rem]',
+								size === 'lg' &&
+									'w-[24rem] tablet:w-[36rem] laptop:w-[42rem] desktop:w-[60rem]',
+								size === 'xl' &&
+									'w-[29rem] tablet:w-[43rem] laptop:w-[50rem] desktop:w-[72rem]',
 								'overflow-y-auto inline-block align-bottom rounded-lg overflow-hidden shadow-xl transform transition-all bg-[color:var(--background-color)] border-blue-600 focus:border-2',
 								dialogClassName,
 							)}
@@ -120,10 +129,12 @@ const Modal = (props: ModalProps) => {
 								<div
 									className="absolute top-2 right-2 w-6 h-6 text-[color:var(--fg-shade-four-color)] cursor-pointer text-center"
 									onClick={() => setOpen(false)}
+									ref={crossButtonRef}
 								>
-									<FontAwesomeIcon icon={faTimes}></FontAwesomeIcon>
+									<FontAwesomeIcon icon={faTimes} focusable />
 								</div>
 							)}
+							{topBar}
 							<div className="p-4 py-0 tablet:p-5 tablet:py-2 desktop:p-7 desktop:py-4">
 								<div className="sm:flex sm:items-start w-full">
 									{icon && (
@@ -136,10 +147,14 @@ const Modal = (props: ModalProps) => {
 										</div>
 									)}
 									<div className={classNames('mt-3 w-full', contentClassName)}>
-										<Dialog.Title className="text-lg leading-6 font-medium">
-											{title}
-										</Dialog.Title>
-										<div className="mt-2 border-b border-[color:var(--bg-shade-four-color)]"></div>
+										{!hideTitle && (
+											<>
+												<Dialog.Title className="text-lg leading-6 font-medium">
+													<label>{title}</label>
+												</Dialog.Title>
+												<div className="mt-2 border-b border-[color:var(--bg-shade-four-color)]" />
+											</>
+										)}
 										<div
 											className={classNames(
 												size === 'sm' ? 'my-2' : 'my-4',
@@ -178,7 +193,7 @@ const Modal = (props: ModalProps) => {
 					</Transition.Child>
 				</div>
 			</Dialog>
-		</Transition.Root>
+		</Transition>
 	);
 };
 

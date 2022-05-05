@@ -51,7 +51,7 @@ const StyledSpinner = styled.div`
  * @param {boolean} relative if it should have a relative positioning
  * @param {SizeProp} size size of the loading logo
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const LoadingScreen = ({
 	relative,

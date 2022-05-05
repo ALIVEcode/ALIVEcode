@@ -1,5 +1,4 @@
 import Form from '../../../UtilsComponents/Form/Form';
-import { IOTOBJECT_LABEL } from '../../../../Models/Iot/IoTobject.entity';
 import Link from '../../../UtilsComponents/Link/Link';
 import { FORM_ACTION } from '../../../UtilsComponents/Form/formTypes';
 import { IoTObjectSettingsProps } from './iotObjectSettingsTypes';
@@ -12,7 +11,11 @@ import Button from '../../../UtilsComponents/Buttons/Button';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import api from '../../../../Models/api';
 
-const IoTObjectSettings = ({ object, onUpdate }: IoTObjectSettingsProps) => {
+const IoTObjectSettings = ({
+	object,
+	onUpdate,
+	onDelete,
+}: IoTObjectSettingsProps) => {
 	const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 	const { routes, goTo } = useRoutes();
 	const alert = useAlert();
@@ -22,10 +25,9 @@ const IoTObjectSettings = ({ object, onUpdate }: IoTObjectSettingsProps) => {
 		<>
 			<Form
 				onSubmit={res => {
-					const { name, description, label } = res.data;
+					const { name, description } = res.data;
 					object.name = name;
 					object.description = description;
-					object.label = label;
 					onUpdate(object);
 				}}
 				action={FORM_ACTION.PATCH}
@@ -44,13 +46,6 @@ const IoTObjectSettings = ({ object, onUpdate }: IoTObjectSettingsProps) => {
 						default: object.description,
 						inputType: 'textarea',
 					},
-					{
-						name: 'label',
-						required: true,
-						default: object.label,
-						inputType: 'select',
-						selectOptions: IOTOBJECT_LABEL,
-					},
 				]}
 			/>
 			<Button
@@ -68,12 +63,13 @@ const IoTObjectSettings = ({ object, onUpdate }: IoTObjectSettingsProps) => {
 				onConfirm={async () => {
 					await api.db.iot.objects.delete({ id: object.id });
 					goTo(routes.auth.iot_dashboard.path);
-					alert.success('Iot Project Deleted');
+					alert.success(t('iot.object.deleted'));
+					onDelete && onDelete(object);
 				}}
 			/>
 			<br />
 			&nbsp;
-			<Link onClick={() => navigator.clipboard.writeText(object.id)} dark bold>
+			<Link onClick={() => navigator.clipboard.writeText(object.id).then()} dark bold>
 				Copy id
 			</Link>
 		</>

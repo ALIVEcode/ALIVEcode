@@ -24,7 +24,7 @@ const StyledDiv = styled(FillContainer)`
 /**
  * IoT dashboard page that contains all the projects, objects and stuff of the user
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const IoTDashboard = (props: iotDashboardProps) => {
 	const { user } = useContext(UserContext);
@@ -50,7 +50,7 @@ const IoTDashboard = (props: iotDashboardProps) => {
 	return (
 		<StyledDiv>
 			<div>
-				<div className="text-5xl">IoT Dashboard</div>
+				<div className="text-5xl">{t('iot.dashboard.title')}</div>
 			</div>
 			<div>
 				<CardContainer
@@ -71,7 +71,7 @@ const IoTDashboard = (props: iotDashboardProps) => {
 							/>
 						))
 					) : (
-						<div>Aucun projet</div>
+						<div>{t('iot.dashboard.no_project')}</div>
 					)}
 				</CardContainer>
 				<CardContainer
@@ -91,12 +91,16 @@ const IoTDashboard = (props: iotDashboardProps) => {
 									);
 									//forceUpdate();
 								}}
+								onDelete={(iotObject: IoTObject) => {
+									setObjects(objects.filter(o => o.id !== iotObject.id));
+									//forceUpdate();
+								}}
 								key={idx}
 								object={obj}
 							/>
 						))
 					) : (
-						<div>Aucun objet connecté</div>
+						<div>{t('iot.dashboard.no_object')}</div>
 					)}
 				</CardContainer>
 			</div>

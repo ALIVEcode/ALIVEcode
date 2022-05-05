@@ -3,19 +3,21 @@ import { IoTProjectService } from './IoTproject.service';
 import { IoTProjectController } from './IoTproject.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { IoTProjectEntity } from './entities/IoTproject.entity';
-import { UserEntity } from '../../user/entities/user.entity';
 import { IoTRouteEntity } from '../IoTroute/entities/IoTroute.entity';
 import { IoTObjectService } from '../IoTobject/IoTobject.service';
 import { IoTObjectEntity } from '../IoTobject/entities/IoTobject.entity';
 import { AsScriptEntity } from '../../as-script/entities/as-script.entity';
 import { AsScriptService } from '../../as-script/as-script.service';
-import { LevelService } from '../../level/level.service';
-import { LevelEntity } from '../../level/entities/level.entity';
-import { LevelAliveEntity } from '../../level/entities/levelAlive.entity';
-import { LevelAIEntity } from '../../level/entities/levelAI.entity';
-import { LevelCodeEntity } from '../../level/entities/levelCode.entity';
-import { LevelIoTEntity } from '../../level/entities/levelIoT.entity';
-import { LevelProgressionEntity } from '../../level/entities/levelProgression.entity';
+import { ChallengeService } from '../../challenge/challenge.service';
+import { ChallengeEntity } from '../../challenge/entities/challenge.entity';
+import { ChallengeAliveEntity } from '../../challenge/entities/challenges/challenge_alive.entity';
+import { ChallengeAIEntity } from '../../challenge/entities/challenges/challenge_ai.entity';
+import { ChallengeCodeEntity } from '../../challenge/entities/challenges/challenge_code.entity';
+import { ChallengeIoTEntity } from '../../challenge/entities/challenges/challenge_iot.entity';
+import { ChallengeProgressionEntity } from '../../challenge/entities/challenge_progression.entity';
+import { IoTProjectObjectEntity } from './entities/IoTprojectObject.entity';
+import { UserService } from '../../user/user.service';
+import { UserModule } from '../../user/user.module';
 
 @Module({
   imports: [
@@ -23,17 +25,18 @@ import { LevelProgressionEntity } from '../../level/entities/levelProgression.en
       IoTProjectEntity,
       IoTRouteEntity,
       IoTObjectEntity,
-      UserEntity,
+      IoTProjectObjectEntity,
       AsScriptEntity,
-      LevelEntity,
-      LevelAliveEntity,
-      LevelAIEntity,
-      LevelCodeEntity,
-      LevelIoTEntity,
-      LevelProgressionEntity,
+      ChallengeEntity,
+      ChallengeAliveEntity,
+      ChallengeAIEntity,
+      ChallengeCodeEntity,
+      ChallengeIoTEntity,
+      ChallengeProgressionEntity,
     ]),
+    UserModule,
   ],
   controllers: [IoTProjectController],
-  providers: [IoTProjectService, IoTObjectService, AsScriptService, LevelService],
+  providers: [IoTProjectService, IoTObjectService, AsScriptService, ChallengeService, UserService],
 })
 export class IoTProjectModule {}

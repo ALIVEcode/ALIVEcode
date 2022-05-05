@@ -3,7 +3,6 @@ import Form from '../../UtilsComponents/Form/Form';
 import FormContainer from '../../UtilsComponents/FormContainer/FormContainer';
 import { useTranslation } from 'react-i18next';
 import {
-	CLASSROOM_SUBJECT,
 	Classroom,
 	CLASSROOM_ACCESS,
 } from '../../../Models/Classroom/classroom.entity';
@@ -14,11 +13,12 @@ import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
 import { useContext } from 'react';
 import { UserContext } from '../../../state/contexts/UserContext';
 import { plainToInstance } from 'class-transformer';
+import { SUBJECTS } from '../../../Types/sharedTypes';
 
 /**
  * Form that creates a new classroom in the db and navigates to it
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const ClassroomForm = (props: ClassroomFormProps) => {
 	const { t } = useTranslation();
@@ -58,8 +58,8 @@ const ClassroomForm = (props: ClassroomFormProps) => {
 						name: 'subject',
 						inputType: 'select',
 						required: true,
-						selectOptions: CLASSROOM_SUBJECT,
-						default: CLASSROOM_SUBJECT.INFORMATIC,
+						selectOptions: SUBJECTS,
+						default: SUBJECTS.CODE,
 					},
 					{
 						name: 'access',

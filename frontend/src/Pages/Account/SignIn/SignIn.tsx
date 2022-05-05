@@ -1,25 +1,25 @@
-import { useForm } from 'react-hook-form';
 import axios, { AxiosError } from 'axios';
 import { useContext } from 'react';
 import { useAlert } from 'react-alert';
-import { FormSignInValues, SignInProps } from './signInTypes';
-import { UserContext } from '../../../state/contexts/UserContext';
-import FormContainer from '../../../Components/UtilsComponents/FormContainer/FormContainer';
-import Button from '../../../Components/UtilsComponents/Buttons/Button';
-import Link from '../../../Components/UtilsComponents/Link/Link';
+import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { User } from '../../../Models/User/user.entity';
-import { setAccessToken } from '../../../Types/accessToken';
-import useRoutes from '../../../state/hooks/useRoutes';
-import HttpStatusCode from '../../../Types/http-errors';
-import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router';
+import { useNavigate } from 'react-router-dom';
+import Button from '../../../Components/UtilsComponents/Buttons/Button';
+import FormContainer from '../../../Components/UtilsComponents/FormContainer/FormContainer';
 import InputGroup from '../../../Components/UtilsComponents/InputGroup/InputGroup';
+import Link from '../../../Components/UtilsComponents/Link/Link';
+import { User } from '../../../Models/User/user.entity';
+import { UserContext } from '../../../state/contexts/UserContext';
+import useRoutes from '../../../state/hooks/useRoutes';
+import { setAccessToken } from '../../../Types/accessToken';
+import HttpStatusCode from '../../../Types/http-errors';
+import { FormSignInValues, SignInProps } from './signInTypes';
 
 /**
  * Signin page that allows the user to connect to its account
  *
- * @author MoSk3
+ * @author Enric Soldevila
  *
  */
 const SignIn = (props: SignInProps) => {
@@ -41,6 +41,7 @@ const SignIn = (props: SignInProps) => {
 		try {
 			const { accessToken } = (await axios.post('users/login/', formValues))
 				.data;
+
 			if (!accessToken) return alert.error(t('error.unknown'));
 
 			setAccessToken(accessToken);

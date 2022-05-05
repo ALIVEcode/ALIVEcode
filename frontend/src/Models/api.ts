@@ -1,39 +1,75 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import axios from 'axios';
-import { loadObj } from './utils';
-import { ClassConstructor, plainToClass } from 'class-transformer';
-import { Course } from './Course/course.entity';
-import { Section } from './Course/section.entity';
+import {
+	ClassConstructor,
+	plainToClass,
+	plainToInstance,
+} from 'class-transformer';
+import { CompileDTO, SupportedLanguagesAS } from './ASModels';
+import { AsScript } from './AsScript/as-script.entity';
 import { Classroom } from './Classroom/classroom.entity';
-import { Professor, Student, User } from './User/user.entity';
+import { Course } from './Course/course.entity';
+import { CourseContent, CourseElement } from './Course/course_element.entity';
+import { Section } from './Course/section.entity';
+import { CategorySubject } from './Forum/categorySubject.entity';
+import { Post } from './Forum/post.entity';
+import { IoTObject } from './Iot/IoTobject.entity';
 import {
 	IoTProject,
 	IoTProjectDocument,
 	IoTProjectLayout,
 } from './Iot/IoTproject.entity';
 import { IotRoute } from './Iot/IoTroute.entity';
-import { Level, LEVEL_TYPE } from './Level/level.entity';
-import { LevelAlive } from './Level/levelAlive.entity';
-import { LevelCode } from './Level/levelCode.entity';
-import { LevelProgression } from './Level/levelProgression';
-import { LevelAI } from './Level/levelAI.entity';
-import { IoTObject } from './Iot/IoTobject.entity';
-import { Category } from './Quiz/categories-quiz.entity';
-import { QuizForm } from './Quiz/quizForm.entity';
-import { QuestionForm } from './Quiz/questionForm.entity';
-import { Answer } from './Quiz/answer.entity';
-import { CategorySubject } from './Forum/categorySubject.entity';
-import { Activity } from './Course/activity.entity';
+import { ClassroomQueryDTO } from './Classroom/dto/ClassroomQuery.dto';
+import { ChallengeQueryDTO } from './Challenge/dto/ChallengeQuery.dto';
+import {
+	Challenge,
+	CHALLENGE_TYPE,
+	SUPPORTED_LANG,
+} from './Challenge/challenge.entity';
+import { ChallengeAI } from './Challenge/challenges/challenge_ai.entity';
+import { ChallengeAlive } from './Challenge/challenges/challenge_alive.entity';
+import { ChallengeCode } from './Challenge/challenges/challenge_code.entity';
+import { ChallengeIoT } from './Challenge/challenges/challenge_IoT.entity';
+import { ChallengeProgression } from './Challenge/challengeProgression';
 import { Maintenance } from './Maintenance/maintenance.entity';
-import { Result } from './Social/result.entity';
-import { CompileDTO } from './ASModels';
-import { AsScript } from './AsScript/as-script.entity';
-import { LevelIoT } from './Level/levelIoT.entity';
+import { Answer } from './Quiz/answer.entity';
+import { Category } from './Quiz/categories-quiz.entity';
+import { QuestionForm } from './Quiz/questionForm.entity';
 import { Quiz } from './Quiz/quiz.entity';
+import { QuizForm } from './Quiz/quizForm.entity';
+import { Resource } from './Resource/resource.entity';
+import { Result } from './Social/result.entity';
 import { Topics } from './Social/topics.entity';
-import { Post } from './Forum/post.entity';
-import { LevelQueryDTO } from './Level/dto/LevelQuery.dto';
-import { ClassroomQueryDTO } from './Level/dto/ClassroomQueryDTO';
+import { Professor, Student } from './User/user.entity';
+import { loadObj } from './utils';
+import { GenericResourceTransformer } from './Resource/transformer/GenericResourceTransformer';
+import { MenuResourceCreationDTO } from '../Components/Resources/MenuResourceCreation/menuResourceCreationTypes';
+import { Activity } from './Course/activity.entity';
+import { QueryResources } from './Resource/dto/query_resources.dto';
+import React from 'react';
+import { GetMimeType } from '../Types/files.type';
+import { IoTProjectObject } from './Iot/IoTprojectObject.entity';
+import { IOT_EVENT } from './Iot/IoTProjectClasses/IoTTypes';
+import { MoveElementDTO } from './Course/dto/MoveElement.dto';
+import { FeedbackEntity } from './Feedbacks/entities/feedback.entity';
+import { CreateFeedbackDto } from './Feedbacks/dto/create-feedback.dto';
+import { UpdateCourseElementDTO } from './Course/dto/UpdateCourseElement.dto';
+import { GetCourseTemplatesDTO } from './Course/bundles/dto/GetCourseTemplates.dto';
+import { MenuCourseCreationDTO } from '../Components/Resources/MenuCourseCreation/menuCourseCreationTypes';
+import { BundleQueryDTO } from './Course/bundles/dto/BundleQuery.dto';
+import { Bundle } from './Course/bundles/bundle.entity';
+import { ClaimBundleDTO } from './Course/bundles/dto/ClaimBundle.dto';
+
+export type ResultElementCreated = {
+	courseElement: CourseElement;
+	newOrder: number[];
+};
+
+export type ResultPatchMoveElement = {
+	orderNewParent: number[];
+	orderOldParent: number[];
+};
 
 type urlArgType<S extends string> = S extends `${infer _}:${infer A}/${infer B}`
 	? A | urlArgType<B>
@@ -105,14 +141,18 @@ const apiDelete = <S extends string>(url: S) => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const apiCreate = <T>(moduleName: string, target: ClassConstructor<T>) => {
-	return async (fields: any): Promise<T> => {
+const apiCreate = <T, DTO = any>(
+	moduleName: string,
+	target: ClassConstructor<T>,
+	dto?: ClassConstructor<DTO>,
+) => {
+	return async (fields: DTO): Promise<T> => {
 		if (process.env.DEBUG_AXIOS === 'true') {
 			console.log('POST : ' + moduleName);
 			console.log(moduleName);
 		}
 		const data = (await axios.post(moduleName, fields)).data;
-		return plainToClass(target, data);
+		return plainToInstance(target, data);
 	};
 };
 
@@ -133,12 +173,15 @@ const apiUpdate = <T, S extends string>(
 		}
 		const data = (await axios.patch(formattedUrl, fields)).data;
 		if (overrideCast !== undefined) return overrideCast(data);
-		return plainToClass(target, data);
+		return plainToInstance(target, data);
 	};
 };
 
 const api = {
 	db: {
+		feedback: {
+			create: apiCreate('feedbacks', FeedbackEntity, CreateFeedbackDto),
+		},
 		maintenances: {
 			async getMaintenances() {
 				return (await axios.get('maintenances')).data.map((d: any) =>
@@ -164,15 +207,33 @@ const api = {
 			getClassrooms: apiGet('users/:id/classrooms', Classroom, true),
 			getCourses: apiGet('users/:id/courses', Course, true),
 			getRecentCourses: apiGet('users/:id/courses/recents', Course, true),
-			getLevels: apiGet('users/:id/levels', Level, true, level => {
-				if (level.type === LEVEL_TYPE.ALIVE)
-					return plainToClass(LevelAlive, level);
-				if (level.type === LEVEL_TYPE.CODE)
-					return plainToClass(LevelCode, level);
-				if (level.type === LEVEL_TYPE.AI) return plainToClass(LevelAI, level);
-				if (level.type === LEVEL_TYPE.IOT) return plainToClass(LevelIoT, level);
-				return plainToClass(LevelCode, level);
-			}),
+			async getResources(userId: string, query: QueryResources) {
+				return (
+					await axios.get(
+						`users/${userId}/resources?${
+							query.name ? `name=${query.name}` : ''
+						}${query.subject ? `&subject=${query.subject}` : ''}${
+							query.types ? `&types=${query.types}` : ''
+						}`,
+					)
+				).data.map((r: any) => plainToInstance(Resource, r)) as Resource[];
+			},
+			getChallenges: apiGet(
+				'users/:id/challenges',
+				Challenge,
+				true,
+				challenge => {
+					if (challenge.type === CHALLENGE_TYPE.ALIVE)
+						return plainToClass(ChallengeAlive, challenge);
+					if (challenge.type === CHALLENGE_TYPE.CODE)
+						return plainToClass(ChallengeCode, challenge);
+					if (challenge.type === CHALLENGE_TYPE.AI)
+						return plainToClass(ChallengeAI, challenge);
+					if (challenge.type === CHALLENGE_TYPE.IOT)
+						return plainToClass(ChallengeIoT, challenge);
+					return plainToClass(ChallengeCode, challenge);
+				},
+			),
 			createProfessor: apiCreate('users/professors', Professor),
 			createStudent: apiCreate('users/students', Student),
 			delete: apiDelete('users/:id'),
@@ -199,6 +260,7 @@ const api = {
 			},
 		},
 		courses: {
+			create: apiCreate('/courses', Course),
 			get: apiGet('courses/:id', Course, false),
 			update: apiUpdate('courses/:id', Course),
 			getSections: apiGet('courses/:id/sections', Section, true),
@@ -206,13 +268,59 @@ const api = {
 			deleteActivity: apiDelete(
 				'courses/:courseId/sections/:sectionId/activities/:activityId',
 			),
+			removeResourceFromActivity: apiDelete(
+				'courses/:id/activities/:activityId/removeResource',
+			),
+			getActivityResource: apiGet(
+				'courses/:courseId/activities/:activityId/resources',
+				Resource,
+				false,
+			),
+			getResourceFileInActivity: async (
+				courseId: string,
+				activityId: string,
+			) => {
+				const res = (
+					await axios.get(`courses/${courseId}/activities/${activityId}/file`, {
+						responseType: 'blob',
+					})
+				).data;
+				return URL.createObjectURL(res);
+			},
+			async addResourceInActivity(
+				course: Course,
+				activity: Activity,
+				resource: Resource,
+			) {
+				return (
+					await axios.post(
+						`courses/${course.id}/activities/${activity.id}/addResource`,
+						{ resourceId: resource.id },
+					)
+				).data;
+			},
+			async downloadResourceFileInActivity(
+				course: Course,
+				activity: Activity,
+				extension: string,
+			) {
+				const mimeType = GetMimeType(extension);
+				if (!mimeType) return null;
+				return await axios.get(
+					`courses/${course.id}/activities/${activity.id}/download`,
+					{
+						responseType: 'arraybuffer',
+						headers: { accept: mimeType },
+					},
+				);
+			},
 			delete: apiDelete('courses/:id'),
 			async getActivities(courseId: string, sectionId: number) {
 				return (
 					await axios.get(
 						`courses/${courseId}/sections/${sectionId}/activities`,
 					)
-				).data.map((c: any) => plainToClass(Activity, c));
+				).data.map((c: any) => plainToInstance(Activity as any, c));
 			},
 			async getActivityContent(
 				courseId: string,
@@ -220,6 +328,7 @@ const api = {
 				activityId: number,
 			) {
 				return plainToClass(
+					// @ts-ignore
 					Activity,
 					(
 						await axios.get(
@@ -228,69 +337,236 @@ const api = {
 					).data,
 				);
 			},
-			addActivity: async (
+			getElements: apiGet('courses/:courseId/elements', CourseElement, true),
+			getElementsInSection: apiGet(
+				'courses/:courseId/sections/:sectionId/elements',
+				CourseElement,
+				true,
+			),
+			getElement: apiGet(
+				'courses/:courseId/elements/:elementId',
+				CourseElement,
+				false,
+			),
+			updateElement: async (
 				courseId: string,
-				sectionId: number,
-				activity: Activity,
-			) => {
-				return plainToClass(
-					Activity,
-					(
-						await axios.post(
-							`courses/${courseId}/sections/${sectionId}/activities`,
-							activity,
-						)
-					).data,
+				elementId: string,
+				dto: UpdateCourseElementDTO,
+			): Promise<CourseElement[]> => {
+				const updatedElements = (
+					await axios.patch(`courses/${courseId}/elements/${elementId}`, dto)
+				).data;
+				return updatedElements.map((updatedElement: object) =>
+					plainToInstance(CourseElement, updatedElement),
 				);
 			},
-			updateActivity: apiUpdate(
-				'courses/:courseId/sections/:sectionId/activities/:activityId/content',
-				Activity,
-			),
-		},
-		levels: {
-			progressions: {
-				get: apiGet('levels/:id/progressions/:userId', LevelProgression, false),
-				save: apiUpdate('levels/:id/progressions/:userId', LevelProgression),
+			addContent: async (
+				courseId: string,
+				courseContent: CourseContent,
+				name: string,
+				sectionParentId?: number,
+			) => {
+				const contentAndOrder = (
+					await axios.post(
+						`courses/${courseId}/${
+							courseContent instanceof Activity ? 'activities' : 'sections'
+						}`,
+						{
+							courseContent,
+							name,
+							sectionParentId,
+						},
+					)
+				).data;
+				return {
+					courseElement: plainToClass(
+						CourseElement,
+						contentAndOrder.courseElement,
+					),
+					newOrder: contentAndOrder.newOrder,
+				} as ResultElementCreated;
 			},
-			get: apiGet('levels/:id', Level, false, level => {
-				if (level.type === LEVEL_TYPE.ALIVE)
-					return plainToClass(LevelAlive, level);
-				if (level.type === LEVEL_TYPE.CODE)
-					return plainToClass(LevelCode, level);
-				if (level.type === LEVEL_TYPE.AI) return plainToClass(LevelAI, level);
-				if (level.type === LEVEL_TYPE.IOT) return plainToClass(LevelIoT, level);
-				return plainToClass(LevelCode, level);
-			}),
-			update: apiUpdate('levels/:id', Level, level => {
-				if (level.type === LEVEL_TYPE.ALIVE)
-					return plainToClass(LevelAlive, level);
-				if (level.type === LEVEL_TYPE.CODE)
-					return plainToClass(LevelCode, level);
-				if (level.type === LEVEL_TYPE.AI) return plainToClass(LevelAI, level);
-				if (level.type === LEVEL_TYPE.IOT) return plainToClass(LevelIoT, level);
-				return plainToClass(LevelCode, level);
-			}),
-			async query(body: LevelQueryDTO) {
-				return (await axios.post('levels/query', body)).data.map((d: any) =>
-					plainToClass(Level, d),
+			deleteElement: apiDelete('courses/:courseId/elements/:elementId'),
+			updateActivity: apiUpdate(
+				'courses/:courseId/activities/:activityId',
+				Activity as any,
+			),
+			moveElement: async (courseId: string, dto: MoveElementDTO) => {
+				const res = (await axios.patch(`courses/${courseId}/moveElement`, dto))
+					.data;
+				return res as ResultPatchMoveElement;
+			},
+		},
+		resources: {
+			delete: apiDelete('resources/:id'),
+			create: async (
+				dto: MenuResourceCreationDTO,
+				progressSetter?: React.Dispatch<React.SetStateAction<number>>,
+			) => {
+				let formdata = null;
+				if (dto.file) {
+					formdata = new FormData();
+					formdata.append('data', JSON.stringify(dto));
+					formdata.append('file', dto.file);
+				}
+				return plainToInstance(GenericResourceTransformer, {
+					resource: (
+						await axios.post(`resources`, formdata || dto, {
+							onUploadProgress: progressEvent => {
+								progressSetter &&
+									progressSetter(
+										Math.round(
+											(progressEvent.loaded * 100) / progressEvent.total,
+										),
+									);
+							},
+						})
+					).data,
+				}).resource;
+			},
+			update: async <T extends Resource>(
+				resource: T,
+				fields: Omit<T, keyof Resource> | MenuResourceCreationDTO,
+			) => {
+				const dto =
+					'uuid' in fields
+						? (fields as MenuResourceCreationDTO)
+						: {
+								uuid: resource.id,
+								type: resource.type,
+								resource: {
+									name: resource.name,
+									subject: resource.subject,
+									...fields,
+								},
+						  };
+				const axiosRes = (await axios.patch(`resources/${resource.id}`, dto))
+					.data;
+				return plainToInstance(GenericResourceTransformer, {
+					resource: axiosRes,
+				}).resource;
+			},
+		},
+		bundles: {
+			async getCourseTemplates() {
+				return (
+					plainToInstance(GetCourseTemplatesDTO, {
+						templates: (await axios.get(`bundles/courseTemplates`)).data,
+					}) as any
+				).templates;
+			},
+			async createCourseFromTemplate(
+				templateId: string,
+				course: MenuCourseCreationDTO,
+			) {
+				return plainToInstance(
+					Course,
+					(
+						await axios.post(
+							`bundles/courseTemplates/${templateId}/createCourse`,
+							course,
+						)
+					).data,
+				) as any as Course;
+			},
+			async query(body: BundleQueryDTO) {
+				return (await axios.post('bundles/query', body)).data.map((d: any) =>
+					plainToInstance(Bundle, d),
+				);
+			},
+			async claimBundle(bundleId: string) {
+				return plainToInstance(
+					ClaimBundleDTO,
+					await axios.post(`bundles/${bundleId}/claim`),
+				) as any as ClaimBundleDTO;
+			},
+		},
+		challenges: {
+			progressions: {
+				get: apiGet(
+					'challenges/:id/progressions/:userId',
+					ChallengeProgression,
+					false,
+				),
+				save: apiUpdate(
+					'challenges/:id/progressions/:userId',
+					ChallengeProgression,
+				),
+			},
+			get: apiGet(
+				'challenges/:id',
+				Challenge,
+				false,
+				(challenge: object & { type: CHALLENGE_TYPE }): Challenge => {
+					switch (challenge.type as CHALLENGE_TYPE) {
+						case CHALLENGE_TYPE.CODE:
+							return plainToInstance(ChallengeCode, challenge);
+						case CHALLENGE_TYPE.ALIVE:
+							return plainToInstance(ChallengeAlive, challenge);
+						case CHALLENGE_TYPE.IOT:
+							return plainToInstance(ChallengeIoT, challenge);
+						case CHALLENGE_TYPE.AI:
+							return plainToInstance(ChallengeAI, challenge);
+						default:
+							throw new Error(`Unknown type ${challenge.type}`);
+					}
+				},
+			),
+			update: apiUpdate(
+				'challenges/:id',
+				Challenge,
+				(challenge: object & { type: CHALLENGE_TYPE }): Challenge => {
+					switch (challenge.type as CHALLENGE_TYPE) {
+						case CHALLENGE_TYPE.CODE:
+							return plainToInstance(ChallengeCode, challenge);
+						case CHALLENGE_TYPE.ALIVE:
+							return plainToInstance(ChallengeAlive, challenge);
+						case CHALLENGE_TYPE.IOT:
+							return plainToInstance(ChallengeIoT, challenge);
+						case CHALLENGE_TYPE.AI:
+							return plainToInstance(ChallengeAI, challenge);
+						default:
+							throw new Error(`Unknown type ${challenge.type}`);
+					}
+				},
+			),
+			async query(body: ChallengeQueryDTO) {
+				return (await axios.post('challenges/query', body)).data.map((d: any) =>
+					plainToClass(Challenge, d),
 				);
 			},
 		},
 		iot: {
 			projects: {
+				aliot: {
+					getDoc: async (userId: string) => {
+						return (
+							await axios.post(`iot/aliot/${IOT_EVENT.GET_DOC}`, { id: userId })
+						).data;
+					},
+					getField: async (userId: string, field: string) => {
+						return (
+							await axios.post(`iot/aliot/${IOT_EVENT.GET_FIELD}`, {
+								id: userId,
+								field,
+							})
+						).data;
+					},
+				},
 				delete: apiDelete('iot/projects/:id'),
 				get: apiGet('iot/projects/:id', IoTProject, false),
 				deleteRoute: apiDelete('iot/routes/projects/:projectId/:id'),
 				getRoutes: apiGet('iot/projects/:id/routes', IotRoute, true),
-				getObjects: apiGet('iot/projects/:id/objects', IoTObject, true),
+				getObjects: apiGet('iot/projects/:id/objects', IoTProjectObject, true),
+				getScripts: apiGet('iot/projects/:id/scripts', AsScript, true),
 				async updateLayout(id: string, layout: IoTProjectLayout) {
 					await axios.patch(`iot/projects/${id}/layout`, layout);
 				},
 				async updateDocument(id: string, document: IoTProjectDocument) {
-					return plainToClass(
+					return plainToInstance(
 						IoTProject,
-						(await axios.patch(`iot/projects/${id}/document`, document)).data,
+						(await axios.patch(`iot/projects/${id}/document`, document))
+							.data as object,
 					);
 				},
 				async createScriptRoute(
@@ -305,9 +581,59 @@ const api = {
 						})
 					).data;
 				},
+				async createScript(project: IoTProject, script: AsScript) {
+					return plainToInstance(
+						AsScript,
+						(
+							await axios.post(`iot/projects/${project.id}/createScript`, {
+								script,
+							})
+						).data as object,
+					);
+				},
+				async setScriptOfObject(
+					project: IoTProject,
+					projectObject: IoTProjectObject,
+					script: AsScript,
+				) {
+					return plainToInstance(
+						AsScript,
+						(
+							await axios.patch(
+								`iot/projects/${project.id}/objects/${projectObject.id}/setScript`,
+								{
+									scriptId: script.id,
+								},
+							)
+						).data,
+					);
+				},
 			},
 			objects: {
 				delete: apiDelete('iot/objects/:id'),
+				async connectObjectToProject(object: IoTObject, project: IoTProject) {
+					return plainToInstance(
+						IoTObject,
+						(
+							await axios.patch(`iot/objects/${object.id}/connectProject`, {
+								projectId: project.id,
+							})
+						).data as object,
+					);
+				},
+				async disconnectObjectFromProject(
+					object: IoTObject,
+					project: IoTProject,
+				) {
+					return plainToInstance(
+						IoTObject,
+						(
+							await axios.patch(`iot/objects/${object.id}/disconnectProject`, {
+								projectId: project.id,
+							})
+						).data as object,
+					);
+				},
 			},
 		},
 		asScript: {
@@ -382,11 +708,19 @@ const api = {
 		},
 	},
 	as: {
-		async compile(data: CompileDTO) {
-			return (await axios.post('as/compile', data)).data;
+		async compile(data: CompileDTO, lang?: SupportedLanguagesAS) {
+			return (
+				await axios.post(`as/compile?lang=${lang ?? SUPPORTED_LANG.FR}`, data)
+			).data;
 		},
-		async getLintInfo() {
-			return (await axios.get(`${process.env.BACKEND_URL}/as/lintinfo`)).data;
+		async getLintInfo(lang?: SupportedLanguagesAS) {
+			return (
+				await axios.get(
+					`${process.env.BACKEND_URL}/as/lintinfo?lang=${
+						lang ?? SUPPORTED_LANG.FR
+					}`,
+				)
+			).data;
 		},
 	},
 };

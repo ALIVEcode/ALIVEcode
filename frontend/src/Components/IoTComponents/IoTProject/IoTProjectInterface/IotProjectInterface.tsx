@@ -33,7 +33,7 @@ const IoTProjectInterface = ({ noTopRow }: { noTopRow?: boolean }) => {
 							variant="secondary"
 							onClick={() => setOpenComponentCreator(!openComponentCreator)}
 						>
-							Add a component
+							{t('iot.project.interface.add_component')}
 						</Button>
 					)}
 					<Button
@@ -44,7 +44,7 @@ const IoTProjectInterface = ({ noTopRow }: { noTopRow?: boolean }) => {
 						}}
 						icon={faClipboard}
 					>
-						Copy Project Id
+						{t('iot.project.interface.copy_project_id')}
 					</Button>
 				</div>
 				<div className="p-2 pt-0 w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
@@ -62,7 +62,7 @@ const IoTProjectInterface = ({ noTopRow }: { noTopRow?: boolean }) => {
 				</div>
 				<Modal
 					size="lg"
-					title="Edit component"
+					title={t('iot.project.interface.edit_component')}
 					open={editingComponent != null ? true : false}
 					setOpen={bool => !bool && setEditingComponent(undefined)}
 					closeCross
@@ -77,7 +77,7 @@ const IoTProjectInterface = ({ noTopRow }: { noTopRow?: boolean }) => {
 				</Modal>
 				<Modal
 					size="xl"
-					title="Add a component"
+					title={t('iot.project.interface.add_component')}
 					open={openComponentCreator}
 					setOpen={setOpenComponentCreator}
 					closeCross

@@ -18,28 +18,30 @@ import { DTOInterceptor } from '../../../utils/interceptors/dto.interceptor';
 import { hasRole } from '../../user/auth';
 import { User } from '../../../utils/decorators/user.decorator';
 import { Role } from '../../../utils/types/roles.types';
+import { ConnectionObjectToProjectDTO } from './dto/AssignObjectToProject.dto';
+import { IoTProjectService } from '../IoTproject/IoTproject.service';
 
 @Controller('iot/objects')
 @UseInterceptors(DTOInterceptor)
 export class IoTObjectController {
-  constructor(private readonly IoTObjectService: IoTObjectService) {}
+  constructor(private readonly objectService: IoTObjectService, private projectService: IoTProjectService) {}
 
   @Post()
   @Auth()
   async create(@User() user: UserEntity, @Body() createIoTobjectDto: IoTObjectEntity) {
-    return await this.IoTObjectService.create(user, createIoTobjectDto);
+    return await this.objectService.create(user, createIoTobjectDto);
   }
 
   @Get()
   @Auth(Role.STAFF)
   async findAll() {
-    return await this.IoTObjectService.findAll();
+    return await this.objectService.findAll();
   }
 
   @Get(':id')
   @Auth()
   async findOne(@User() user: UserEntity, @Param('id') id: string) {
-    const project = await this.IoTObjectService.findOne(id);
+    const project = await this.objectService.findOne(id);
 
     if (project.creator.id !== user.id && !hasRole(user, Role.STAFF))
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
@@ -49,22 +51,46 @@ export class IoTObjectController {
   @Patch(':id')
   @Auth()
   async update(@User() user: UserEntity, @Param('id') id: string, @Body() updateIoTobjectDto: IoTObjectEntity) {
-    if (!id) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
-    const IoTObject = await this.IoTObjectService.findOne(id);
+    const IoTObject = await this.objectService.findOne(id);
     if (IoTObject.creator.id !== user.id && !hasRole(user, Role.STAFF))
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
 
-    return await this.IoTObjectService.update(IoTObject.id, updateIoTobjectDto);
+    return await this.objectService.update(IoTObject.id, updateIoTobjectDto);
   }
 
   @Delete(':id')
   @Auth()
   async remove(@User() user: UserEntity, @Param('id') id: string) {
-    if (!id) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
-    const IoTObject = await this.IoTObjectService.findOne(id);
+    const IoTObject = await this.objectService.findOne(id);
     if (IoTObject.creator.id !== user.id && !hasRole(user, Role.STAFF))
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
 
-    return await this.IoTObjectService.remove(id);
+    return await this.objectService.remove(id);
+  }
+
+  @Patch(':id/connectProject')
+  async assignProject(@Param('id') id: string, @User() user: UserEntity, @Body() dto: ConnectionObjectToProjectDTO) {
+    const object = await this.objectService.findOne(id);
+    const project = await this.projectService.findOne(dto.projectId);
+
+    if (!hasRole(user, Role.STAFF) && (object.creator.id !== user.id || project.creator.id !== user.id))
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+
+    return await this.objectService.connectToProject(object, project);
+  }
+
+  @Patch(':id/disconnectProject')
+  async disconnectProject(
+    @Param('id') id: string,
+    @User() user: UserEntity,
+    @Body() dto: ConnectionObjectToProjectDTO,
+  ) {
+    const object = await this.objectService.findOne(id);
+    const project = await this.projectService.findOne(dto.projectId);
+
+    if (!hasRole(user, Role.STAFF) && project.creator.id !== user.id)
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+
+    return await this.objectService.disconnectFromProject(object, project);
   }
 }

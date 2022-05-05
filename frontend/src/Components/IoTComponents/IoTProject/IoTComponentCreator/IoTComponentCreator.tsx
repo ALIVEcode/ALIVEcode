@@ -10,20 +10,22 @@ import {
 } from './iotComponentCreatorTypes';
 import { createDefaultIoTLabel } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTLabel';
 import { createDefaultIoTBuzzer } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTBuzzer';
-import { createDefaultStreetLight } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTTrafficLight';
+import { createDefaultTrafficLight } from '../../../../Models/Iot/IoTProjectClasses/Components/IoTTrafficLight';
+import { useTranslation } from 'react-i18next';
 
 export const IoTComponentCreator = ({ onSelect }: IoTComponentCreatorProps) => {
+	const { t } = useTranslation();
 	const components = useMemo(
 		() => [
-			createDefaultIoTProgressBar(),
-			createDefaultIoTButton(),
-			createDefaultIoTLogs(),
-			createDefaultIoTLed(),
-			createDefaultIoTLabel(),
-			createDefaultIoTBuzzer(),
-			createDefaultStreetLight(),
+			createDefaultIoTProgressBar(t),
+			createDefaultIoTButton(t),
+			createDefaultIoTLogs(t),
+			createDefaultIoTLed(t),
+			createDefaultIoTLabel(t),
+			createDefaultIoTBuzzer(t),
+			createDefaultTrafficLight(t),
 		],
-		[],
+		[t],
 	);
 
 	return (

@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
  * @param {string} color css color
  * @param {boolean} maintenancePopUp if the maintenance popup is shown (moves the arrow up)
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const BackArrow = ({ color, maintenancePopUp }: BackArrowProps) => {
 	const navigate = useNavigate();

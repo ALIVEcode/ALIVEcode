@@ -1,5 +1,5 @@
 import { NextFunction } from "express";
-import { Injectable, NestMiddleware, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, NestMiddleware } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MaintenanceEntity } from '../../models/maintenance/entities/maintenance.entity';
 import { Repository } from 'typeorm';

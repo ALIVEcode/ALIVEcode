@@ -2,6 +2,7 @@ import { Exclude } from 'class-transformer';
 import { isDate } from 'moment';
 import { isArray } from 'tone';
 import { IoTComponent, IOT_COMPONENT_TYPE } from '../IoTComponent';
+import { TFunction } from 'i18next';
 
 export type IoTLogModel = {
 	date: Date;
@@ -48,9 +49,9 @@ export class IoTLogs extends IoTComponent {
 	}
 }
 
-export const createDefaultIoTLogs = () => {
-	const progress = new IoTLogs();
-	progress.value = [
+export const createDefaultIoTLogs = (t: TFunction) => {
+	const logs = new IoTLogs();
+	logs.value = [
 		{
 			date: new Date(Date.now() - 1000 * 60 * 60 * 5),
 			text: 'This a log submitted 5 hours ago',
@@ -60,8 +61,8 @@ export const createDefaultIoTLogs = () => {
 			text: 'This a log example',
 		},
 	];
-	progress.name = 'Default Logs';
-	progress.id = '';
+	logs.name = t('iot.project.interface.components.logs.name');
+	logs.id = '';
 
-	return progress;
+	return logs;
 };

@@ -1,6 +1,6 @@
 import { RefObject, useRef } from 'react';
 import $ from 'jquery';
-import { CMD } from '../../Components/LevelComponents/Cmd/cmdTypes';
+import { CMD } from '../../Components/ChallengeComponents/Cmd/cmdTypes';
 
 const useCmd = (): [ref: RefObject<HTMLDivElement>, cmd: CMD | null] => {
 	const cmd = useRef<HTMLDivElement>(null);

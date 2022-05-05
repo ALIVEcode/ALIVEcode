@@ -8,7 +8,7 @@ import MaintenanceCard from '../../../Components/SiteStatusComponents/Maintenanc
 /**
  * Page displaying all the historic of the maintenances
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const MaintenanceMenu = () => {
 	const [maintenances, setMaintenances] = useState<Maintenance[]>();

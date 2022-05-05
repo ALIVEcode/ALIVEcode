@@ -72,7 +72,7 @@ export const themes: { light: Theme; dark: Theme } = {
 				bg_shade_two: '#ebebeb',
 				bg_shade_three: '#d9d9d9',
 				bg_shade_four: '#bfbfbf',
-				foreground: '#111827',
+				foreground: '#283143',
 				fg_shade_one: '#3D3D3D',
 				fg_shade_two: '#474747',
 				fg_shade_three: '#525252',
@@ -124,6 +124,7 @@ export const commonColors = {
 	almost_black: '#23272A',
 	dark_gray: '#616161',
 	logo: '#2E75FF',
+	danger: '#dc2626',
 };
 /*
 

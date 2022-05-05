@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 /**
  * Page that is displayed when the requested url cannot be reach due to maintenance
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 export const MaintenanceError = () => {
 	const navigate = useNavigate();

@@ -1,38 +1,42 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, UseInterceptors } from '@nestjs/common';
 import { AiService } from './ai.service';
-import { CreateAiDto } from './dto/create-ai.dto';
-import { UpdateAiDto } from './dto/update-ai.dto';
+import { UpdateDatasetDTO } from './dto/UpdateDataset.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
+import { UpdateModelDTO } from './dto/UpdateModel.dto';
 
+/**
+ * Controller for the AI requests
+ *
+ * Concerning AIModels and AIDatasets
+ */
 @Controller('ai')
 @ApiTags('ai')
 @UseInterceptors(DTOInterceptor)
 export class AiController {
   constructor(private readonly aiService: AiService) {}
 
-  @Post()
-  create(@Body() createAiDto: CreateAiDto) {
-    return this.aiService.create(createAiDto);
+  /***** Datasets routes *****/
+
+  @Get('datasets/:id')
+  async findOneDataset(@Param('id') id: string) {
+    return await this.aiService.findDataset(id);
   }
 
-  @Get()
-  findAll() {
-    return this.aiService.findAll();
+  @Patch('datasets/:id')
+  async updateDataset(@Param('id') id: string, @Body() updateDatasetDto: UpdateDatasetDTO) {
+    return await this.aiService.updateDataset(id, updateDatasetDto);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.aiService.findOne(+id);
+  /***** Datasets routes *****/
+
+  @Get('modlels/:id')
+  async findOneModel(@Param('id') id: string) {
+    return await this.aiService.findModel(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAiDto: UpdateAiDto) {
-    return this.aiService.update(+id, updateAiDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.aiService.remove(+id);
+  @Patch('models/:id')
+  async updateModel(@Param('id') id: string, @Body() updateModelDto: UpdateModelDTO) {
+    return await this.aiService.updateModel(id, updateModelDto);
   }
 }

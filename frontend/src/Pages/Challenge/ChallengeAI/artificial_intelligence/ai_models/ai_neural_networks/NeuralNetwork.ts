@@ -13,6 +13,7 @@ import {
 	NNModelParams,
 	ModelTypes,
 } from '../../AIEnumsInterfaces';
+import { Type } from 'class-transformer';
 
 /**
  * This class represents a whole Neural Network. It contains every layers that
@@ -138,6 +139,13 @@ export class NeuralNetwork extends Model {
 		return output[output.length - 1];
 	}
 
+	/**
+	 * Predicts outputs based on the corresponding inputs by using the
+	 * current weights and biases. Returns an array of Matrices containing the outputs
+	 * of all layers in order (each element is the output of one layer).
+	 * @param inputs the inputs from which we want to find the outputs.
+	 * @returns the outputs of all layers of the model.
+	 */
 	public predictReturnAll(inputs: Matrix): Matrix[] {
 		let output: Matrix = normalizeByRow(inputs);
 		let outputArray: Matrix[] = [];

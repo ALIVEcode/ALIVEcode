@@ -7,6 +7,7 @@ import {
 import DataTypes from '../../../../../Components/ChallengeComponents/ChallengeGraph/DataTypes';
 
 export abstract class Regression extends Model {
+	protected static NB_PARAMS_POLY = 4;
 	protected static ROUNDING = 1000;
 	protected static DATA_FORMATTING: DataTypes = {
 		type: 'line',
@@ -23,9 +24,11 @@ export abstract class Regression extends Model {
 	protected static MAX_RANGE = 100;
 
 	protected nbParams: number;
+	protected hyperparams: RegHyperparameters;
 
 	constructor(id: number, hyperparams: RegHyperparameters) {
 		super(id, ModelTypes.Regression);
+		this.hyperparams = hyperparams;
 
 		switch (hyperparams.model.RegressionType) {
 			case RegressionTypes.Polynomial:

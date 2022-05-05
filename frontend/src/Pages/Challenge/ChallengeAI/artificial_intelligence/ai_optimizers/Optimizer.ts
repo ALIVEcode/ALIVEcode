@@ -1,7 +1,7 @@
 import { Matrix } from '../AIUtils';
 import { CostFunction } from '../ai_functions/CostFunction';
 import { NeuralNetwork } from '../ai_models/ai_neural_networks/NeuralNetwork';
-import Model from '../ai_models/Model';
+import AIModel from '../../../../../Models/Ai/ai_model.entity';
 
 /**
  * This abstract class defines every type of algorithm that can optimize a Machine Learning
@@ -52,7 +52,10 @@ export default abstract class Optimizer {
 	 * @param real the expected values for each data.
 	 * @returns the model with optimized parameters.
 	 */
-	public abstract optimize(inputs: Matrix, real: Matrix): Model | NeuralNetwork;
+	public abstract optimize(
+		inputs: Matrix,
+		real: Matrix,
+	): AIModel | NeuralNetwork;
 
 	/**
 	 * Returns the Cost Function object of this optimizer.

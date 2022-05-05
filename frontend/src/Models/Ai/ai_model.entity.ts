@@ -1,3 +1,11 @@
+import {
+	NNModelParams,
+	RegModelParams,
+	NNHyperparameters,
+	RegHyperparameters,
+} from '../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIEnumsInterfaces';
+import { Matrix } from '../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtils';
+
 /**
  * This enum describes all possible types of Model available in AI levels.
  * The current types of Model available are:
@@ -5,8 +13,8 @@
  * - Regression
  */
 export enum MODEL_TYPES {
-	NeuralNetwork,
-	Regression,
+	NEURAL_NETWORK = 'NN',
+	POLY_REGRESSION = 'RP',
 }
 
 /**
@@ -28,12 +36,38 @@ export enum NN_OPTIMIZER_TYPES {
 	GradientDescent,
 }
 
-export class AIModel {
-	id: string;
+export default abstract class AIModel {
+	public id: string;
+	public type: MODEL_TYPES;
+	abstract hyperparameters: object;
+	abstract modelParams: object;
 
-	hyperparameters: object;
+	/**
+	 * Creates a new Model with the same parameters as the columns in the database.
+	 * The modelParams argument can be an empty object if the model has just been created.
+	 * @param id
+	 * @param hyperparameters
+	 * @param mdoelParams
+	 * @param type
+	 */
+	public constructor(id: string, type: MODEL_TYPES) {
+		this.id = id;
+		this.type = type;
+	}
 
-	modelParams: object;
+	protected abstract loadModel(
+		modelParams: NNModelParams | RegModelParams,
+		hyperparams: NNHyperparameters | RegHyperparameters,
+	): void;
 
-	type: MODEL_TYPES;
+	protected abstract createModel(
+		hyperparams: NNHyperparameters | RegHyperparameters,
+	): void;
+
+	/**
+	 * Computes the outputs of the model based on the given inputs.
+	 * @param inputs the inputs from which to compute the outputs (1 x nbInputs).
+	 * @returns the outputs of the model.
+	 */
+	public abstract predict(inputs: Matrix | number): Matrix | number;
 }

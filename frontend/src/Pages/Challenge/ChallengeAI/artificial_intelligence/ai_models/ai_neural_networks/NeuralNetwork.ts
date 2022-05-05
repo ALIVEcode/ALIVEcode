@@ -1,15 +1,10 @@
-import {
-	Matrix,
-	normalize,
-	normalizeByRow,
-	randomMatrix,
-	zeros,
-} from '../../AIUtils';
+import { Matrix, normalizeByRow, randomMatrix, zeros } from '../../AIUtils';
 import { NeuralLayer } from './NeuralLayer';
 import { ActivationFunction } from '../../ai_functions/ActivationFunction';
 import { NNHyperparameters, NNModelParams } from '../../AIEnumsInterfaces';
-import { MODEL_TYPES } from '../../../../../../Models/Ai/ai_model.entity';
-import Model from '../Model';
+import AIModel, {
+	MODEL_TYPES,
+} from '../../../../../../Models/Ai/ai_model.entity';
 
 /**
  * This class represents a whole Neural Network. It contains every layers that
@@ -19,12 +14,15 @@ import Model from '../Model';
  * have a randomized initial value and can be trained with a NNOptimizer to make
  * better predictions on a specific situation.
  */
-export class NeuralNetwork extends Model {
+export class NeuralNetwork extends AIModel {
 	// The layers attribute represents the hidden layers plus the output layer.
 	// The input layer doesn't need its own object since it doesn't have weights or biases.
 	private layers: NeuralLayer[];
 	private nbInputs: number;
 	private nbOutputs: number;
+
+	public hyperparameters: NNHyperparameters;
+	public modelParams: NNModelParams;
 
 	/**
 	 * Creates or loads a Neural Network Model, based on the NNModelParams object given
@@ -38,11 +36,14 @@ export class NeuralNetwork extends Model {
 	 * property can be empty if we want to create a Neural Network from scratch.
 	 */
 	constructor(
-		id: number,
+		id: string,
 		hyperparameters: NNHyperparameters,
 		modelParams: NNModelParams,
 	) {
-		super(id, MODEL_TYPES.NeuralNetwork);
+		super(id, MODEL_TYPES.NEURAL_NETWORK);
+
+		this.hyperparameters = hyperparameters;
+		this.modelParams = modelParams;
 
 		// Assinging values to properties
 		this.nbInputs = hyperparameters.model.nb_inputs;

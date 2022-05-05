@@ -126,9 +126,7 @@ export class AIDataset {
 		}
 
 		// Create and return the Matrix by calling get
-		const mat = new Matrix(this.getDataAsArray());
-		console.log(mat);
-		return mat;
+		return new Matrix(this.getDataAsArray());
 	}
 
 	/**

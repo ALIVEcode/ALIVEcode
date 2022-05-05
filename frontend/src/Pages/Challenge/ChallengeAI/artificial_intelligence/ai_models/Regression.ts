@@ -5,9 +5,9 @@ import {
 } from '../../../../../Models/Ai/ai_model.entity';
 import { RegHyperparameters } from '../AIEnumsInterfaces';
 import { Matrix } from '../AIUtils';
-import Model from './Model';
+import AIModel from '../../../../../Models/Ai/ai_model.entity';
 
-export abstract class Regression extends Model {
+export abstract class Regression extends AIModel {
 	protected static NB_PARAMS_POLY = 4;
 	protected static ROUNDING = 1000;
 	protected static DATA_FORMATTING: DataTypes = {
@@ -28,7 +28,7 @@ export abstract class Regression extends Model {
 	protected hyperparams: RegHyperparameters;
 
 	constructor(id: number, hyperparams: RegHyperparameters) {
-		super(id, MODEL_TYPES.Regression);
+		super(id, MODEL_TYPES.POLY_REGRESSION);
 		this.hyperparams = hyperparams;
 
 		switch (hyperparams.model.RegressionType) {

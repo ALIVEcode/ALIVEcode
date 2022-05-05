@@ -56,7 +56,7 @@ export class ChallengeProgressionEntity {
   @IsOptional()
   data: ChallengeProgressionData;
 
-  @OneToOne(() => AIModelEntity, { nullable: true })
+  @OneToOne(() => AIModelEntity, { nullable: true, eager: true })
   @JoinColumn({ name: 'aiModelId' })
   aiModel: AIModelEntity;
 

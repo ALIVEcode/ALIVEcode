@@ -1,7 +1,6 @@
 import { Exclude, Type } from 'class-transformer';
 import { SUBJECTS } from '../../Types/sharedTypes';
 import { USER_TYPES } from '../../Types/userTypes';
-import { Activity } from '../Course/activity.entity';
 import { CreatedByUser } from '../Generics/createdByUser.entity';
 import { User, Professor, Student } from '../User/user.entity';
 

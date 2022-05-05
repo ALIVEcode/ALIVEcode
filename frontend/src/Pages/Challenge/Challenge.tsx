@@ -25,7 +25,7 @@ import ChallengeCode from './ChallengeCode/ChallengeCode';
 import api from '../../Models/api';
 import { useParams } from 'react-router';
 import { UserContext } from '../../state/contexts/UserContext';
-import { ChallengeProgression } from '../../Models/Challenge/challengeProgression';
+import { ChallengeProgression } from '../../Models/Challenge/challenge_progression.entity';
 import { plainToClass } from 'class-transformer';
 import ChallengeAlive from './ChallengeAlive/ChallengeAlive';
 import { ChallengeAI as ChallengeAIModel } from '../../Models/Challenge/challenges/challenge_ai.entity';
@@ -141,6 +141,7 @@ const Challenge = ({
 						userId: user.id,
 					});
 				} catch (err) {
+					console.log(err);
 					progression = await api.db.challenges.progressions.save(
 						{
 							id: currentChallenge.id,
@@ -149,6 +150,7 @@ const Challenge = ({
 						{},
 					);
 				}
+				console.log(progression);
 				progression.data.code &&
 					setInitialProgressionCode(progression.data.code);
 				setProgression(progression);

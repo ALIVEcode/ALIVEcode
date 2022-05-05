@@ -257,8 +257,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			);
 		}
 
-		console.log(dataset);
-
 		let hyperparams: NNHyperparameters = {
 			model: {
 				nb_inputs: 3,

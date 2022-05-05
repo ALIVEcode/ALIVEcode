@@ -20,9 +20,14 @@ import { NeuralNetwork } from './artificial_intelligence/ai_models/ai_neural_net
 import { ActivationFunction, Relu, Sigmoid } from './artificial_intelligence/ai_functions/ActivationFunction';
 import { Matrix } from './artificial_intelligence/AIUtils';
 import { mainAIUtilsTest } from './artificial_intelligence/ai_tests/AIUtilsTest';
-import { GradientDescent } from './artificial_intelligence/ai_optimizers/ai_ann_optimizers/GradientDescent';
+import { GradientDescent } from './artificial_intelligence/ai_optimizers/ai_nn_optimizers/GradientDescent';
 import { CostFunction, MeanSquaredError } from './artificial_intelligence/ai_functions/CostFunction';
 import { mainAINeuralNetworkTest } from './artificial_intelligence/ai_tests/AINeuralNetworkTest';
+import { Optimizer } from './artificial_intelligence/ai_optimizers/Optimizer';
+import { Dataset } from './artificial_intelligence/ai_data/Dataset';
+import dataTest from './dataTest.json';
+import { NNHyperparameters, NNOptimizerTypes, NNModelParams } from './artificial_intelligence/AIEnumsInterfaces';
+import { Model } from './artificial_intelligence/ai_models/Model';
 
 /**
  * Ai level page. Contains all the components to display and make the ai level functionnal.
@@ -57,6 +62,7 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 	const forceUpdate = useForceUpdate();
 	const [cmdRef, cmd] = useCmd();
 
+	// Initializing the LevelAIExecutor
 	executor.current = useMemo(
 		() =>
 			(executor.current = new LevelAIExecutor(
@@ -233,33 +239,46 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 		/*
 		mainAIUtilsTest();
 		mainAINeuralNetworkTest();
-		
 		*/
-		const neuronsByLayer: number[] = [2, 2]
-		const nbInputs: number = 3;
-		const nbOutputs: number = 1;
-		const activations: ActivationFunction[] = [
-			new Relu(),
-			new Relu()
-		];
-		const outputAct: ActivationFunction = new Relu();
-		const costFunc: CostFunction = new MeanSquaredError();
+		let dataset: Dataset = new Dataset(1, "test", dataTest);
 
-		const data: Matrix = new Matrix([
-			[3, 5, 4, 1, 2],
-			[3, 5, 4, 1, 2],
-			[3, 5, 4, 1, 2]
-		]);
+		let hyperparams: NNHyperparameters = {
+			"model": {
+				"nb_inputs": 3,
+				"nb_outputs": 1,
+				"neurons_by_layer": [10, 10, 10],
+				"activations_by_layer": [new Relu(), new Relu(), new Relu()]
+			},
+			"optimizer": {
+				"cost_function": new MeanSquaredError(),
+				"learning_rate": 0.0001,
+				"epochs": 1000,
+				"type": NNOptimizerTypes.GradientDescent
+			}
+		}
 
-		const real: Matrix = new Matrix([
-			[10, 20, 15, 2, 3]
-		])
+		let modelParams: NNModelParams = {
+			"layerParams": []
+		}
 
-		cmd?.print("Les données entrées :");
-		data.displayInCmd(cmd);
-		cmd?.print("Colonne 1 : nombre de pièces");
-		cmd?.print("Colonne 2 : nombre de chambres");
-		cmd?.print("Colonne 3 : nombre de salles de bain");
+		const inputsOutputs: Matrix[] = dataset.getInputsOutputs([1, 1, 1, 0]);
+		const inputs: Matrix = inputsOutputs[0];
+		const outputs: Matrix = inputsOutputs[1];
+		const paramNames: string[] = dataset.getParamNames();
+
+		const nbInputs: number = hyperparams.model.nb_inputs;
+		const nbOutputs: number = hyperparams.model.nb_outputs;
+		const neuronsByLayer: number[] = hyperparams.model.neurons_by_layer;
+
+		for (let i: number = 0; i < paramNames.length; i++) {
+			cmd?.print("Colonne " + i + " : " + paramNames[i]);
+		}
+
+		cmd?.print("Les entrées : ");
+		inputs.displayInCmd(cmd);
+
+		cmd?.print("Les sorties : ");
+		outputs.displayInCmd(cmd);
 
 		cmd?.print("Nombre de paramètres d'entrée : " + nbInputs);
 		cmd?.print("Nombre de sorties : " + nbOutputs);
@@ -270,26 +289,25 @@ const LevelAI = ({ initialCode }: LevelAIProps) => {
 		}
 		cmd?.print(str + "]");
 
-		let myNetwork: NeuralNetwork = new NeuralNetwork(nbInputs, nbOutputs, neuronsByLayer, activations, outputAct)
-		let myOpt: GradientDescent = new GradientDescent(myNetwork, costFunc, 0.1, 50);
+		let myNetwork: NeuralNetwork = new NeuralNetwork(1, hyperparams, modelParams);
+		let myOpt: GradientDescent = new GradientDescent(myNetwork, hyperparams);
 
-		let predictions: Matrix = myNetwork.predict(data);
+		let predictions: Matrix = myNetwork.predict(inputs);
 		predictions.displayInCmd(cmd);
-		console.log("Erreur : " + costFunc.matCompute(predictions, real))
+		console.log("Erreur avant l'entraînement : " + myOpt.getCostFunction().matCompute(predictions, outputs));
 		cmd?.print("");
-		
-		//myNetwork.getWeightsByLayer(0).displayInCmd(cmd);
 
-		myNetwork = myOpt.optimize(data, real, cmd);
 		
-		//myNetwork.getWeightsByLayer(0).displayInCmd(cmd);
 
-		predictions = myNetwork.predict(data);
+		myNetwork = myOpt.optimize(inputs, outputs);
+		
+		predictions = myNetwork.predict(inputs);
 		predictions.displayInCmd(cmd);
 		
-		console.log("Erreur : " + costFunc.matCompute(predictions, real))
+		console.log("Erreur après l'entraînement: " + myOpt.getCostFunction().matCompute(predictions, outputs))
 		console.log(predictions.getRows() + " par " + predictions.getColumns())
-		console.log(real.getRows() + " par " + real.getColumns())
+		console.log(outputs.getRows() + " par " + outputs.getColumns())
+
 		
 	}
 

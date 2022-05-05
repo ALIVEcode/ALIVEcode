@@ -86,4 +86,12 @@ export class NeuralLayer {
     if (this.biases.sameSize(newBiases)) this.biases = newBiases;
     else console.log("Erreur Matrice : les tailles ne sont pas compatibles pour assignation.");
   }
+
+  /**
+   * Returns the activation function of this layer.
+   * @returns the activation function.
+   */
+  public getActivation(): ActivationFunction {
+    return this.activation;
+  }
 }

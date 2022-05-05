@@ -410,6 +410,9 @@ public class ModuleAI {
                         double b = ((Number) this.getValeurParam("b").getValue()).doubleValue();
                         double c = ((Number) this.getValeurParam("c").getValue()).doubleValue();
                         double d = ((Number) this.getValeurParam("d").getValue()).doubleValue();
+
+                        System.out.println("test");
+
                         executeurInstance.addData(new Data(Data.Id.CREER_REGRESSION)
                                 .addParam(a).addParam(b).addParam(c).addParam(d));
                         return new Nul();
@@ -441,8 +444,18 @@ public class ModuleAI {
                 }, ASObjet.TypeBuiltin.nulType.asType()) {
                     @Override
                     public ASObjet<?> executer() {
+                        //Converting the parameter into an AS object
                         double x = ((Number) this.getValeurParam("x").getValue()).doubleValue();
-                        executeurInstance.addData(new Data(Data.Id.EVALUER).addParam(x));
+                        //Tell the linter to shut up
+                        assert executeurInstance != null;
+
+                        System.out.println("test");
+                        //Ask for a response if it is empty
+                        if (executeurInstance.getDataResponse().isEmpty())
+                            throw new ASErreur.StopGetInfo(new Data(Data.Id.GET_EVALUER).addParam(x));
+
+                        //Get the response
+                        ASObjet.Decimal data = new ASObjet.Decimal(executeurInstance.getDataResponse().pop());
                         return new Nul();
                     }
                 },

@@ -1,35 +1,26 @@
 import { matMul, matMulElementWise, Matrix, matMulConstant, zeros, matSubtract, normalizeByRow } from '../../AIUtils';
 import { ActivationFunction } from '../../ai_functions/ActivationFunction';
-import { CostFunction } from '../../ai_functions/CostFunction';
 import { NeuralNetwork } from '../../ai_models/ai_neural_networks/NeuralNetwork';
+import { NNHyperparameters } from '../../AIEnumsInterfaces';
+import { NNOptimizer } from './NNOptimizer';
 
-export class GradientDescent
-{
-  private learningRate: number;
-  private epochs: number;
-  private model: NeuralNetwork;
-  private costFunc: CostFunction;
+/**
+ * This ANN Optimizer implements the Standard Gradient Descent algogithm to optimize the Model
+ * parameters of a NeuralNetwork Model.
+ */
+export class GradientDescent extends NNOptimizer{
   
   /**
-   * Creates a new GradientDescent optimiser by setting its properties to the given values.
-   * @param model the model assigned to this optimizer.
-   * @param costFunc the Cost Function that will be used in the optimization.
-   * @param learningRate the learning rate of this optimizer.
-   * @param epochs the number of epochs of this optimizer.
+   * Creates a Gradient Descent Optimizer based on the given hyperparameters object to
+   * optimize the given model.
+   * @param model the Neural Network to optimize with the new object.
+   * @param hyperparams the hyperparameters object that defines the Gradient 
+   * Descent Optimizer.
    */
-  public constructor(model: NeuralNetwork, costFunc: CostFunction, learningRate: number, epochs: number) {
-    this.learningRate = learningRate;
-    this.epochs = epochs;
-    this.model = model;
-    this.costFunc = costFunc;
+  public constructor(model: NeuralNetwork, hyperparams: NNHyperparameters) {
+    super(model, hyperparams);
   }
 
-  /**
-   * Optimizez the optimizer's modedl by applying one iteration of the gradient descent algorithm.
-   * @param inputs the training dataset as a Matrix.
-   * @param outputArray a Matrix array of outputs from each model's layers.
-   * @param real the expected outputs for each input data.
-   */
   public optimizeOneEpoch(inputs: Matrix, outputArray: Matrix[], real: Matrix) {
     const activations: ActivationFunction[] = this.model.getAllActivations();
     const nbLayers: number = this.model.getAllActivations().length;
@@ -68,27 +59,6 @@ export class GradientDescent
 
       this.model.setBiasesByLayer(layer, newBiases);
     }
-  }
-
-  /**
-   * Runs the gradient descent algorithm on the model by plugging the input Matrix and the 
-   * expected values. The method goes through this algorithm for x iteration, where x is the
-   * number of epochs.
-   * The returned model is a Neual Network with parameters that are set in a way that minimizes the
-   * cost function of the optimizer. This can be achieved by making the model return values that are 
-   * as close as possible to the given expected values for their corresponding input data.
-   * @param inputs the training set of the model.
-   * @param real the expected values for each data.
-   * @returns the model with optimized parameters.
-   */
-  public optimize(inputs: Matrix, real: Matrix): NeuralNetwork {
-    let predictions: Matrix[];
-    
-    for (let i: number = 0; i < this.epochs; i++) {
-      predictions = this.model.predictReturnAll(inputs);
-      this.optimizeOneEpoch(inputs, predictions, real);
-    }
-    return this.model;
   }
 
   public getModel() {

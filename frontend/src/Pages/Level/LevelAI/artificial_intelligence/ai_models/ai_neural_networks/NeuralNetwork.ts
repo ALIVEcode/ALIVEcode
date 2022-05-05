@@ -2,81 +2,106 @@ import { Matrix, normalize, normalizeByRow, randomMatrix, zeros } from '../../AI
 import { NeuralLayer } from "./NeuralLayer";
 import { ActivationFunction } from '../../ai_functions/ActivationFunction';
 import { Model } from '../Model';
+import { NNHyperparameters, NNModelParams, ModelTypes } from '../../AIEnumsInterfaces';
 
-export class NeuralNetwork extends Model
-{
-  // The hidden layers plus the output layer. The input layer doesn't need its 
-  // own object since it doesn't have weights or biases.
+/**
+ * This class represents a whole Neural Network. It contains every layers that 
+ * composes it, its number of inputs and numebr of outputs.
+ * 
+ * A Neural Network can be used to make predictions based on its parameters, which 
+ * have a randomized initial value and can be trained with a NNOptimizer to make 
+ * better predictions on a specific situation.
+ */
+export class NeuralNetwork extends Model{
+  
+  // The layers attribute represents the hidden layers plus the output layer. 
+  // The input layer doesn't need its own object since it doesn't have weights or biases.
   private layers: NeuralLayer[]; 
-  private activationsByLayer: ActivationFunction[];
-  private outputActivation: ActivationFunction;
+  private nbInputs: number;
+  private nbOutputs: number;
 
   /**
-   * Creates a NeuralNetwork model based on the given hyperparameters related to each layer, the number
-   * of inputs and the number of outputs.
-   * @param neuronsByLayer the number of neurons for each hidden layer. Its length determines the number of hidden layers.
-   * @param activationsByLayer the activation function that will be used for each hidden layer.
-   * @param outputActivation the activation function that will be used for the output layer.
-   * @param nbInputs the number of inputs in the model.
-   * @param nbOutputs the number of outputs in the model.
+   * Creates or loads a Neural Network Model, based on the NNModelParams object given
+   * in arguments. If this object contains only an empty array, the constructor 
+   * creates a new Model with random parameters. If the layerParams property in 
+   * modelParams has values in it, then the constructor creates a Model with the same
+   * parameters as specified in the object.
+   * @param id the identifier of the Model.
+   * @param hyperparameters an object describing all hyperparameters of the Neural Network.
+   * @param modelParams the parameters values of the Neural Network. Its layerParams 
+   * property can be empty if we want to create a Neural Network from scratch.
    */
-  public constructor(nbInputs: number, nbOutputs: number, neuronsByLayer: number[], 
-    activationsByLayer: ActivationFunction[], outputActivation: ActivationFunction) {
-    super(nbInputs, nbOutputs);
-    
+  constructor(id: number, hyperparameters: NNHyperparameters, modelParams: NNModelParams) {
+    super(id, ModelTypes.NeuralNetwork);
+
     // Assinging values to properties
-    this.activationsByLayer = activationsByLayer;
-    this.outputActivation = outputActivation;
+    this.nbInputs = hyperparameters.model.nb_inputs;
+    this.nbOutputs = hyperparameters.model.nb_outputs;
+
+    // Choosing the right method depending if the model already exists
+    if (modelParams.layerParams.length === 0) this.createModel(hyperparameters);
+    else this.loadModel(modelParams, hyperparameters);
+  }
+
+  protected loadModel(modelParams: NNModelParams, hyperparams: NNHyperparameters) {
+    let nbLayers: number = this.layers.length;
+    
+    // Hidden layers
+    for (let layer: number = 0; layer < nbLayers; layer++) {
+      // Initiates the layers if its the first layer
+      this.layers.push(new NeuralLayer(
+        modelParams.layerParams[layer].biases.length, 
+        hyperparams.model.activations_by_layer[layer],
+        new Matrix(modelParams.layerParams[layer].weights),
+        new Matrix([modelParams.layerParams[layer].biases]).transpose()
+      ))
+    }
+  }
+
+  protected createModel(hyperparams: NNHyperparameters) {
     let weights: Matrix;
     let biases: Matrix;
-    let previousNbNeurons = 0;
-    let nbLayers: number = neuronsByLayer.length;
-
+    let previousNbNeurons: number = 0;
+    let currentNbNeurons: number = 0;
+    let neuronsByLayer = hyperparams.model.neurons_by_layer; 
+    
+    let activationFunctions: ActivationFunction[] = hyperparams.model.activations_by_layer;
+    let nbActivations: number = activationFunctions.length;
+    
     // If the number of activation functions is smaller than the number of layers,
     // fills the activation function array until its of the same length as the number of layers.
-    if (activationsByLayer.length < neuronsByLayer.length) {
-      for (let i: number = activationsByLayer.length; i < neuronsByLayer.length; i++) {
-        activationsByLayer.push(activationsByLayer[i - 1]);
+    if (nbActivations < neuronsByLayer.length + 1) {
+      for (let i: number = nbActivations; i < neuronsByLayer.length + 1; i++) {
+        activationFunctions.push(activationFunctions[i - 1]);
       }
     }
 
-    for (let layer: number = 0; layer < nbLayers; layer++) {
-      //Number of neurons from the previous layer (can be the input layer)
-      previousNbNeurons = (layer === 0) ? nbInputs : neuronsByLayer[layer - 1];
-      weights = randomMatrix(neuronsByLayer[layer], previousNbNeurons);
-      biases = new Matrix(zeros(neuronsByLayer[layer], 1));
+    // Hidden layers and output layer
+    for (let layer: number = 0; layer < nbActivations; layer++) {
+      // Number of neurons from the previous layer (can be the input layer)
+      previousNbNeurons = (layer === 0) ? this.nbInputs : neuronsByLayer[layer - 1];
+      // NUmber of neurons of the current layer (can be the output layer)
+      currentNbNeurons = (layer === nbActivations - 1) ? this.nbOutputs : neuronsByLayer[layer];
+      // Initialization of weights and biases
+      weights = randomMatrix(currentNbNeurons, previousNbNeurons);
+      biases = new Matrix(zeros(currentNbNeurons, 1));
       
       // Initiates the layers if its the first layer
-      if (layer === 0) this.layers = [new NeuralLayer(neuronsByLayer[layer], activationsByLayer[layer], weights, biases)];
+      if (layer === 0) this.layers = [new NeuralLayer(currentNbNeurons, activationFunctions[layer], weights, biases)];
+      
       // Creates a hidden layer if its another layer
-      else this.layers.push(new NeuralLayer(neuronsByLayer[layer], activationsByLayer[layer], weights, biases));
+      else this.layers.push(new NeuralLayer(currentNbNeurons, activationFunctions[layer], weights, biases));
     }
-
-    // Output layer
-    previousNbNeurons = neuronsByLayer[nbLayers - 1];
-    weights = randomMatrix(nbOutputs, previousNbNeurons);
-    biases = new Matrix(zeros(nbOutputs, 1));
-    this.layers.push(new NeuralLayer(nbOutputs, outputActivation, weights, biases));
   }
 
-  /**
-   * Predicts outputs based on the corresponding inputs by using the
-   * current weights and biases.
-   * @param inputs the inputs from which we want to find the outputs.
-   * @returns the prediction of the model.
-   */
+  //---- PREDICTION METHODS ----//
+
   public predict(inputs: Matrix): Matrix {
     let output: Matrix[] = this.predictReturnAll(inputs);
+    throw new Error("Test des erreurs");
     return output[output.length-1];
   }
 
-  /**
-   * Predicts outputs based on the corresponding inputs by using the
-   * current weights and biases. Returns an array of Matrices containing the outputs
-   * of all layers in order (each element is the output of one layer).
-   * @param inputs the inputs from which we want to find the outputs.
-   * @returns the outputs of all layers of the model.
-   */
   public predictReturnAll(inputs: Matrix): Matrix[] {
     let output: Matrix = normalizeByRow(inputs);
     let outputArray: Matrix[] = [];
@@ -89,6 +114,7 @@ export class NeuralNetwork extends Model
     return outputArray;
   }
 
+  //---- WEIGHTS METHODS ----//
   /**
    * Returns the weights Matrix of a specified layer.
    * @param layer the layer's index (starting at 0).
@@ -121,6 +147,8 @@ export class NeuralNetwork extends Model
     this.layers[layer].setWeights(newWeights);
   }
 
+
+  //---- BIASES BY LAYER ----//
   /**
    * Returns the biases Matrix of a specified layer.
    * @param layer the layer's index (starting at 0).
@@ -152,13 +180,18 @@ export class NeuralNetwork extends Model
   public setBiasesByLayer(layer: number, newBiases: Matrix) {
     this.layers[layer].setBiases(newBiases);
   }
-  
+
   /**
    * Returns all activation functions of hidden layers and the output layer. The output
    * activation is the last element of the returned array.
    * @returns an array of activation functions from the neural network.
    */
   public getAllActivations(): ActivationFunction[] {
-    return this.activationsByLayer.concat(this.outputActivation);
+    let allActivations: ActivationFunction[] = [];
+
+    for (let layer: number = 0; layer < this.layers.length; layer++) {
+      allActivations.push(this.layers[layer].getActivation())
+    }
+    return allActivations;
   }
 }

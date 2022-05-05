@@ -440,12 +440,41 @@ export function appendRow(m1: Matrix, m2: Matrix): Matrix {
   let outputValue: number[][] = m1.getValue();
   const m2Value: number[][] = m2.getValue();
   
-  if (m1.getColumns() !== m2.getColumns()) return new Matrix(outputValue);
+  if (m1.getColumns() !== m2.getColumns()) {
+    console.log("Error in appendRow(): Matrices do not have the same number of columns.");
+    return new Matrix(outputValue);
+  }
 
   for (let row: number = 0; row < m2.getRows(); row++) {
     outputValue.push(m2Value[row]);
   }
   
+  return new Matrix(outputValue);
+}
+
+/**
+ * Apprends the second Matrix's columns at the end of the first Matrix's columns.
+ * The two Matrices have to contain the same number of rows, otherwise it's 
+ * impossible to append those Matrices.
+ * 
+ * @param m1 the Matrix to which we will append the other Matrix.
+ * @param m2 the Matrix which will be appended to the first Matrix.
+ * @returns the resulting Matrix. If the 2 Matrices do not have the same number 
+ * of columns, returns a copy of the first Matrix.
+ */
+export function appendColumn(m1: Matrix, m2: Matrix): Matrix {
+  let outputValue: number[][] = m1.getValue();
+  const m2Value: number[][] = m2.getValue();
+  
+  if (m1.getRows() !== m2.getRows()) {
+    console.log("Error in appendColumn(): Matrices do not have the same number of rows.");
+    return new Matrix(outputValue);
+  }
+
+  for (let i: number = 0; i < outputValue.length; i++) {
+    outputValue[i].push(...m2Value[i]);
+  }
+
   return new Matrix(outputValue);
 }
 

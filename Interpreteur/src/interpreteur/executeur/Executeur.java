@@ -201,7 +201,7 @@ public class Executeur {
 
     public Object getDataResponseOrAsk(String dataName, Object... additionnalParams) {
         if (this.dataResponse.isEmpty()) {
-            Data dataToGet = new Data(Data.Id.GET).addParam(dataName);
+            Data dataToGet = new Data(Data.Id.GET_LIRE).addParam(dataName);
             for (var param : additionnalParams)
                 dataToGet.addParam(param);
             throw new ASErreur.StopGetInfo(dataToGet);

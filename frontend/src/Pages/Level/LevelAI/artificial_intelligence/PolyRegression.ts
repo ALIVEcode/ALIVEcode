@@ -1,6 +1,8 @@
-import { DataSample } from './AIUtils';
+import { DataSample, Matrix } from './AIUtils';
 import DataTypes from '../../../../Components/LevelComponents/LevelGraph/DataTypes';
 import RegressionOptimizer from './RegressionOptimizer';
+import { NNHyperparameters, NNModelParams, RegHyperparameters, RegModelParams } from './AIEnumsInterfaces';
+import { Regression } from './ai_models/Regression';
 
 /**
  * This class defines a third degree polynomial function that can be shown in a scatter plot of a line graph.
@@ -36,9 +38,12 @@ export default class PolyRegression {
    * @param c the parameter for x^1.
    * @param d the parameter for x^0.
    */
-  constructor(private a: number, private b: number, private c: number, private d: number) {
-    
-  }
+  constructor(
+    private a: number, 
+    private b: number, 
+    private c: number, 
+    private d: number
+  ) {}
 
   /**
    * Computes the polynomial regression with the specified input.
@@ -95,8 +100,8 @@ export default class PolyRegression {
   }
 
   /**
-   * Returns a copy of the existing Regression
-   * @returns a copy of the 
+   * Returns a copy of the existing Regression.
+   * @returns a copy of the Regression object.
    */
   public copy(): PolyRegression {
     return new PolyRegression(this.a, this.b, this.c, this.d);
@@ -165,5 +170,48 @@ export default class PolyRegression {
     return "a = " + roundA + ", b = " + roundB + ", c = " + roundC + ", d = " + roundD;
   }
 }
+
+export class PolyRegression2 extends Regression {
+  
+  private a: number;
+  private b: number;
+  private c: number;
+  private d: number;
+
+  constructor(id: number, hyperparams: RegHyperparameters, modelParams: RegModelParams) {
+    super(id, hyperparams);
+  }
+
+  protected loadModel(modelParams: NNModelParams | RegModelParams, hyperparams: NNHyperparameters | RegHyperparameters): void {
+    
+  }
+  protected createModel(hyperparams: NNHyperparameters | RegHyperparameters): void {
+    throw new Error('Method not implemented.');
+  }
+  
+  public generatePoints(): DataTypes {
+    throw new Error('Method not implemented.');
+  }
+  public copy(): Regression {
+    throw new Error('Method not implemented.');
+  }
+  public setParams(newParams: number[]): void {
+    throw new Error('Method not implemented.');
+  }
+  public paramsToString(): string {
+    throw new Error('Method not implemented.');
+  }
+
+  public predict(inputs: Matrix): Matrix {
+    throw new Error('Method not implemented.');
+  }
+  public predictReturnAll(inputs: Matrix): Matrix[] {
+    throw new Error('Method not implemented.');
+  }
+
+
+}
+
+
 
 

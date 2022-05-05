@@ -60,7 +60,7 @@ public class Data extends JSONObject {
 
         ERREUR(Categorie.ERREUR),
 
-        GET(Categorie.GET),
+        GET_LIRE(Categorie.GET),
 
         SET(Categorie.SET),
         SET_CAR_SPEED(Categorie.SET),
@@ -71,7 +71,7 @@ public class Data extends JSONObject {
         CREER_REGRESSION(Categorie.AI),     // 0
         OPTIMISER_REGRESSION(Categorie.AI), // 1
         AFFICHER_NUAGE(Categorie.AI),       // 2
-        EVALUER(Categorie.AI),              // 3
+        GET_EVALUER(Categorie.AI),          // 3
         FONCTION_COUT(Categorie.AI),        // 4
         TEST_RESEAU_NEURONES(Categorie.AI), // 5
 

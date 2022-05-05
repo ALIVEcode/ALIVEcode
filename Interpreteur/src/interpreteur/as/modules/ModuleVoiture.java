@@ -8,15 +8,13 @@ import interpreteur.data_manager.DataVoiture;
 import interpreteur.executeur.Executeur;
 import org.json.JSONObject;
 
-import java.util.function.Function;
-
 public class ModuleVoiture {
 
     private static Object getDataVoiture(String parametre) {
         JSONObject dataVoiture = DataVoiture.getDataVoiture();
         if (dataVoiture == null) {
             DataVoiture.requestDataVoiture();
-            throw new ASErreur.StopGetInfo(new Data(Data.Id.GET).addParam("car"));
+            throw new ASErreur.StopGetInfo(new Data(Data.Id.GET_LIRE).addParam("car"));
         } else {
             return dataVoiture.get(parametre);
         }

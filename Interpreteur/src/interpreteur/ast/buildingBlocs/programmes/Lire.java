@@ -1,17 +1,14 @@
 package interpreteur.ast.buildingBlocs.programmes;
 
 import interpreteur.as.Objets.ASFonction;
-import interpreteur.as.Objets.Scope;
 import interpreteur.as.erreurs.ASErreur;
 import interpreteur.as.Objets.ASObjet;
 import interpreteur.ast.buildingBlocs.Expression;
 import interpreteur.ast.buildingBlocs.Programme;
-import interpreteur.ast.buildingBlocs.expressions.Type;
 import interpreteur.ast.buildingBlocs.expressions.ValeurConstante;
 import interpreteur.ast.buildingBlocs.expressions.Var;
 import interpreteur.data_manager.Data;
 import interpreteur.executeur.Executeur;
-import org.jetbrains.annotations.NotNull;
 
 import javax.lang.model.type.NullType;
 import java.util.ArrayList;
@@ -35,7 +32,7 @@ public class Lire extends Programme {
     public NullType execute() {
         assert executeurInstance != null;
         if (executeurInstance.getDataResponse().isEmpty())
-            throw new ASErreur.StopGetInfo(new Data(Data.Id.GET).addParam("read").addParam(message.eval().getValue().toString()));
+            throw new ASErreur.StopGetInfo(new Data(Data.Id.GET_LIRE).addParam("read").addParam(message.eval().getValue().toString()));
 
         ASObjet.Texte data = new ASObjet.Texte(executeurInstance.getDataResponse().pop());
         if (this.fonction == null) {

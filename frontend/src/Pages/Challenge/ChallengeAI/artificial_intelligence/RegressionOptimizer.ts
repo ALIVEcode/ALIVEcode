@@ -208,19 +208,9 @@ export abstract class RegressionOptimizer2 extends Optimizer {
 
 	constructor(regression: Regression, hyperparams: RegHyperparameters) {
 		super(
-			hyperparams.optimizer.learningRate, 
+			hyperparams.optimizer.learningRate,
 			hyperparams.optimizer.epochs,
-			hyperparams.optimizer.costFunction
+			hyperparams.optimizer.costFunction,
 		);
-	}
-
-	public optimize(inputs: Matrix, real: Matrix): NeuralNetwork {
-		let predictions: ;
-
-		for (let i: number = 0; i < this.epochs; i++) {
-			predictions = this.regression.predict(inputs);
-			this.optimizeOneEpoch(inputs, predictions, real);
-		}
-		return this.model;
 	}
 }

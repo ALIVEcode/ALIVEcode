@@ -1,8 +1,8 @@
 import { Model } from './Model';
 import {
-	ModelTypes,
+	MODEL_TYPES,
 	RegHyperparameters,
-	RegressionTypes,
+	REGRESSION_TYPES,
 } from '../AIEnumsInterfaces';
 import DataTypes from '../../../../../Components/ChallengeComponents/ChallengeGraph/DataTypes';
 
@@ -25,10 +25,10 @@ export abstract class Regression extends Model {
 	protected nbParams: number;
 
 	constructor(id: number, hyperparams: RegHyperparameters) {
-		super(id, ModelTypes.Regression);
+		super(id, MODEL_TYPES.Regression);
 
 		switch (hyperparams.model.RegressionType) {
-			case RegressionTypes.Polynomial:
+			case REGRESSION_TYPES.Polynomial:
 				this.nbParams = 4;
 				break;
 

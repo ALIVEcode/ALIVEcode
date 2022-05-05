@@ -24,11 +24,11 @@ import { Dataset } from './artificial_intelligence/ai_data/Dataset';
 import dataTest from './dataTest.json';
 import {
 	NNHyperparameters,
-	NNOptimizerTypes,
 	NNModelParams,
 } from './artificial_intelligence/AIEnumsInterfaces';
 import { useAlert } from 'react-alert';
 import { GradientDescent } from './artificial_intelligence/ai_optimizers/ai_nn_optimizers/GradientDescent';
+import { NN_OPTIMIZER_TYPES } from '../../../Models/Ai/ai_model.entity';
 
 /**
  * Ai challenge page. Contains all the components to display and make the ai challenge functionnal.
@@ -252,7 +252,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				cost_function: new MeanSquaredError(),
 				learning_rate: 0.0001,
 				epochs: 1000,
-				type: NNOptimizerTypes.GradientDescent,
+				type: NN_OPTIMIZER_TYPES.GradientDescent,
 			},
 		};
 

@@ -8,12 +8,8 @@ import {
 import { NeuralLayer } from './NeuralLayer';
 import { ActivationFunction } from '../../ai_functions/ActivationFunction';
 import { Model } from '../Model';
-import {
-	NNHyperparameters,
-	NNModelParams,
-	ModelTypes,
-} from '../../AIEnumsInterfaces';
-import { Type } from 'class-transformer';
+import { NNHyperparameters, NNModelParams } from '../../AIEnumsInterfaces';
+import { MODEL_TYPES } from '../../../../../../Models/Ai/ai_model.entity';
 
 /**
  * This class represents a whole Neural Network. It contains every layers that
@@ -46,7 +42,7 @@ export class NeuralNetwork extends Model {
 		hyperparameters: NNHyperparameters,
 		modelParams: NNModelParams,
 	) {
-		super(id, ModelTypes.NeuralNetwork);
+		super(id, MODEL_TYPES.NeuralNetwork);
 
 		// Assinging values to properties
 		this.nbInputs = hyperparameters.model.nb_inputs;

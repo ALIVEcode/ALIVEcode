@@ -1,5 +1,4 @@
 import { DataSample, Matrix } from './AIUtils';
-import DataTypes from '../../../../Components/ChallengeComponents/ChallengeGraph/DataTypes';
 import RegressionOptimizer from './RegressionOptimizer';
 import {
 	NNHyperparameters,
@@ -8,6 +7,7 @@ import {
 	RegModelParams,
 } from './AIEnumsInterfaces';
 import { Regression } from './ai_models/Regression';
+import DataTypes from '../../../../Components/ChallengeComponents/ChallengeGraph/DataTypes';
 
 /**
  * This class defines a third degree polynomial function that can be shown in a scatter plot of a line graph.

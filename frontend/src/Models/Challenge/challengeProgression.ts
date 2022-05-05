@@ -1,4 +1,5 @@
 import { Type } from 'class-transformer';
+import { AIModel } from '../Ai/ai_model.entity';
 import { IoTProject, IoTProjectLayout } from '../Iot/IoTproject.entity';
 
 export type ChallengeAliveProgressionData = {
@@ -25,6 +26,10 @@ export class ChallengeProgression {
 	challengeId: string;
 
 	data: ChallengeProgressionData;
+
+	@Type(() => AIModel)
+	aiModel: AIModel;
+	aiModelId: string;
 
 	@Type(() => IoTProject)
 	iotProject: IoTProject;

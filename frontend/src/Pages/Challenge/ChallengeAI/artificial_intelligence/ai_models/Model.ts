@@ -1,15 +1,15 @@
+import { MODEL_TYPES } from '../../../../../Models/Ai/ai_model.entity';
 import {
-	ModelTypes,
-	NNHyperparameters,
 	NNModelParams,
 	RegModelParams,
-	RegHyperparameters as RegHyperparameters,
+	NNHyperparameters,
+	RegHyperparameters,
 } from '../AIEnumsInterfaces';
 import { Matrix } from '../AIUtils';
 
 export abstract class Model {
 	protected id: number;
-	protected type: ModelTypes;
+	protected type: MODEL_TYPES;
 
 	/**
 	 * Creates a new Model with the same parameters as the columns in the database.
@@ -19,7 +19,7 @@ export abstract class Model {
 	 * @param mdoelParams
 	 * @param type
 	 */
-	public constructor(id: number, type: ModelTypes) {
+	public constructor(id: number, type: MODEL_TYPES) {
 		this.id = id;
 		this.type = type;
 	}

@@ -1,24 +1,33 @@
 import { Matrix } from '../AIUtils';
 import { CostFunction } from '../ai_functions/CostFunction';
 import { NeuralNetwork } from '../ai_models/ai_neural_networks/NeuralNetwork';
-import { Model } from '../ai_models/Model';
+import Model from '../ai_models/Model';
 
 /**
  * This abstract class defines every type of algorithm that can optimize a Machine Learning
  * Model. All types of optimizer must extend from this class.
  */
-export abstract class Optimizer {
+export default abstract class Optimizer {
+	protected learningRate: number;
+	protected epochs: number;
+	protected costFunc: CostFunction;
+
 	/**
-	 * Constructor of an Optimizer. Every optimizer has to set a learning rate and a number
-	 * of epochs.
+	 * Constructor of an Optimizer. Every optimizer has to set a learning rate, a number
+	 * of epochs and a Cost Function.
 	 * @param learningRate the learning rate of the optimizer.
 	 * @param epochs the number of epochs assigned to this optimizer.
+	 * @param costFunc the Cost Function that will minimize the optimizer.
 	 */
 	public constructor(
-		protected learningRate: number,
-		protected epochs: number,
-		protected costFunc: CostFunction,
-	) {}
+		learningRate: number,
+		epochs: number,
+		costFunc: CostFunction,
+	) {
+		this.learningRate = learningRate;
+		this.epochs = epochs;
+		this.costFunc = costFunc;
+	}
 
 	/**
 	 * Optimizez the optimizer's modedl by applying one iteration of the optimizer's algorithm.

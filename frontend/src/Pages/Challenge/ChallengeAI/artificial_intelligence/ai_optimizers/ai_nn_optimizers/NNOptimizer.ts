@@ -1,7 +1,7 @@
 import { NNHyperparameters } from '../../AIEnumsInterfaces';
 import { Matrix } from '../../AIUtils';
 import { NeuralNetwork } from '../../ai_models/ai_neural_networks/NeuralNetwork';
-import { Optimizer } from '../Optimizer';
+import Optimizer from '../Optimizer';
 
 /**
  * This abstract class represents every type of optimizer algorithm for Neural Network
@@ -27,14 +27,7 @@ export abstract class NNOptimizer extends Optimizer {
 			hyperparams.optimizer.epochs,
 			hyperparams.optimizer.cost_function,
 		);
-		this.costFunc = hyperparams.optimizer.cost_function;
 	}
-
-	public abstract optimizeOneEpoch(
-		inputs: Matrix,
-		outputArray: Matrix[],
-		real: Matrix,
-	): void;
 
 	public optimize(inputs: Matrix, real: Matrix): NeuralNetwork {
 		let predictions: Matrix[];

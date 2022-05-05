@@ -1,10 +1,11 @@
-import { Model } from './Model';
 import DataTypes from '../../../../../Components/ChallengeComponents/ChallengeGraph/DataTypes';
 import {
 	MODEL_TYPES,
 	REGRESSION_TYPES,
 } from '../../../../../Models/Ai/ai_model.entity';
 import { RegHyperparameters } from '../AIEnumsInterfaces';
+import { Matrix } from '../AIUtils';
+import Model from './Model';
 
 export abstract class Regression extends Model {
 	protected static NB_PARAMS_POLY = 4;
@@ -76,4 +77,8 @@ export abstract class Regression extends Model {
 	public static getRounding() {
 		return Regression.ROUNDING;
 	}
+
+	public abstract predict(inputs: Matrix): Matrix;
+
+	public abstract predictOne(input: number): number;
 }

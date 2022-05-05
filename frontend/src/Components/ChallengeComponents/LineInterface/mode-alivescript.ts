@@ -60,7 +60,7 @@ define().then(resolve => {
 
 export const setLintInfo = (newLintInfo: LinterFormatType | null) => {
 	if (newLintInfo != null) lintInfo = newLintInfo;
-	// init();
+	setup();
 };
 
 const init = () => {

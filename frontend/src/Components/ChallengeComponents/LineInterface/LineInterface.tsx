@@ -117,7 +117,6 @@ const LineInterface = memo(
 				try {
 					const lintInfo = await api.as.getLintInfo(lang);
 					setLintInfo(lintInfo);
-					setup();
 					if (loaded) {
 						setReloadRequired(true);
 					}

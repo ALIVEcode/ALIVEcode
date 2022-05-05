@@ -6,6 +6,18 @@ import {
 } from '../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIEnumsInterfaces';
 import { Matrix } from '../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtils';
 
+export enum COST_FUNCTIONS {
+	MEAN_SQUARED_ERROR = 'MSE',
+	MEAN_ABSOLUTE_ERROR = 'MAE',
+	BINARY_CROSS_ENTROPY = 'BCE',
+}
+
+export enum ACTIVATION_FUNCTIONS {
+	RELU = 'RE',
+	SIGMOID = 'SI',
+	TANH = 'TA',
+}
+
 /**
  * This enum describes all possible types of Model available in AI levels.
  * The current types of Model available are:
@@ -23,7 +35,7 @@ export enum MODEL_TYPES {
  * - Polynomial
  */
 export enum REGRESSION_TYPES {
-	Polynomial,
+	Polynomial = 'PO',
 }
 
 /**
@@ -33,7 +45,7 @@ export enum REGRESSION_TYPES {
  * - GradientDescent
  */
 export enum NN_OPTIMIZER_TYPES {
-	GradientDescent,
+	GradientDescent = 'GD',
 }
 
 export default abstract class AIModel {

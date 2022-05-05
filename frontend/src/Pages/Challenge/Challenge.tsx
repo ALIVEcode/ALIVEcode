@@ -150,7 +150,6 @@ const Challenge = ({
 						{},
 					);
 				}
-				console.log(progression);
 				progression.data.code &&
 					setInitialProgressionCode(progression.data.code);
 				setProgression(progression);

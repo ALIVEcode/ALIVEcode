@@ -262,7 +262,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				nb_inputs: 3,
 				nb_outputs: 1,
 				neurons_by_layer: [10, 10, 10],
-				activations_by_layer: [new Relu(), new Relu(), new Relu()],
+				activations_by_layer: [],
 			},
 			optimizer: {
 				cost_function: new MeanSquaredError(),
@@ -306,7 +306,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		cmd?.print(str + ']');
 
 		let myNetwork: NeuralNetwork = new NeuralNetwork(
-			1,
+			'1',
 			hyperparams,
 			modelParams,
 		);

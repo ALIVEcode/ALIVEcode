@@ -1,10 +1,11 @@
 import {
+	ACTIVATION_FUNCTIONS,
+	COST_FUNCTIONS,
 	NN_OPTIMIZER_TYPES,
 	REGRESSION_TYPES,
 } from '../../../../Models/Ai/ai_model.entity';
-import { ActivationFunction } from './ai_functions/ActivationFunction';
 import { CostFunction } from './ai_functions/CostFunction';
-import { Optimizer } from './ai_optimizers/Optimizer';
+import Optimizer from './ai_optimizers/Optimizer';
 
 /*
 This file gathers all enum classes and interfaces used in AI algorithms.
@@ -21,10 +22,10 @@ export interface NNHyperparameters {
 		nb_outputs: number; // number of outputs
 		neurons_by_layer: number[]; // number of neurons in each hidden layer
 		// activation function in hidden layers and in the output layer
-		activations_by_layer: ActivationFunction[];
+		activations_by_layer: ACTIVATION_FUNCTIONS[];
 	};
 	optimizer: {
-		cost_function: CostFunction;
+		cost_function: COST_FUNCTIONS;
 		learning_rate: number;
 		epochs: number;
 		type: NN_OPTIMIZER_TYPES;

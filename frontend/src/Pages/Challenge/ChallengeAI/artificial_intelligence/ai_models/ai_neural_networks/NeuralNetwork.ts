@@ -1,8 +1,14 @@
 import { Matrix, normalizeByRow, randomMatrix, zeros } from '../../AIUtils';
 import { NeuralLayer } from './NeuralLayer';
-import { ActivationFunction } from '../../ai_functions/ActivationFunction';
+import {
+	ActivationFunction,
+	Relu,
+	Sigmoid,
+	Tanh,
+} from '../../ai_functions/ActivationFunction';
 import { NNHyperparameters, NNModelParams } from '../../AIEnumsInterfaces';
 import AIModel, {
+	ACTIVATION_FUNCTIONS,
 	MODEL_TYPES,
 } from '../../../../../../Models/Ai/ai_model.entity';
 
@@ -17,7 +23,7 @@ import AIModel, {
 export class NeuralNetwork extends AIModel {
 	// The layers attribute represents the hidden layers plus the output layer.
 	// The input layer doesn't need its own object since it doesn't have weights or biases.
-	private layers: NeuralLayer[];
+	private layers: NeuralLayer[] = [];
 	private nbInputs: number;
 	private nbOutputs: number;
 
@@ -63,10 +69,13 @@ export class NeuralNetwork extends AIModel {
 		// Hidden layers
 		for (let layer: number = 0; layer < nbLayers; layer++) {
 			// Initiates the layers if its the first layer
+			const activationFunction = this.getActivationFunction(
+				hyperparams.model.activations_by_layer[layer],
+			);
 			this.layers.push(
 				new NeuralLayer(
 					modelParams.layerParams[layer].biases.length,
-					hyperparams.model.activations_by_layer[layer],
+					activationFunction,
 					new Matrix(modelParams.layerParams[layer].weights),
 					new Matrix([modelParams.layerParams[layer].biases]).transpose(),
 				),
@@ -81,8 +90,10 @@ export class NeuralNetwork extends AIModel {
 		let currentNbNeurons: number = 0;
 		let neuronsByLayer = hyperparams.model.neurons_by_layer;
 
-		let activationFunctions: ActivationFunction[] =
-			hyperparams.model.activations_by_layer;
+		const activationFunctions = hyperparams.model.activations_by_layer.map(a =>
+			this.getActivationFunction(a),
+		);
+
 		let nbActivations: number = activationFunctions.length;
 
 		// If the number of activation functions is smaller than the number of layers,
@@ -125,6 +136,17 @@ export class NeuralNetwork extends AIModel {
 						biases,
 					),
 				);
+		}
+	}
+
+	private getActivationFunction(activationFunctionType: ACTIVATION_FUNCTIONS) {
+		switch (activationFunctionType) {
+			case ACTIVATION_FUNCTIONS.RELU:
+				return new Relu();
+			case ACTIVATION_FUNCTIONS.SIGMOID:
+				return new Sigmoid();
+			case ACTIVATION_FUNCTIONS.TANH:
+				return new Tanh();
 		}
 	}
 

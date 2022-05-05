@@ -36,10 +36,11 @@ export class ChallengeProgression {
 		switch (dtoModel.type) {
 			case MODEL_TYPES.NEURAL_NETWORK:
 				// TODO : Check for valid Model parameters and hyperparameters
+				console.log(dtoModel);
 				return new NeuralNetwork(
 					dtoModel.id,
 					dtoModel.hyperparameters,
-					dtoModel.parameters,
+					dtoModel.modelParams,
 				);
 			case MODEL_TYPES.POLY_REGRESSION:
 				// TODO : Add poly regression model

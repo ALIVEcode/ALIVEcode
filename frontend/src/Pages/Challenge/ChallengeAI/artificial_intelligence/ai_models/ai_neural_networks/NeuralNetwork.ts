@@ -44,55 +44,58 @@ export class NeuralNetwork extends AIModel {
 	constructor(
 		id: string,
 		hyperparameters: NNHyperparameters,
-		modelParams: NNModelParams,
+		modelParams?: NNModelParams,
 	) {
 		super(id, MODEL_TYPES.NEURAL_NETWORK);
 
 		this.hyperparameters = hyperparameters;
-		this.modelParams = modelParams;
+		this.modelParams =
+			typeof modelParams !== 'undefined'
+				? modelParams
+				: {
+						layerParams: [],
+				  };
 
 		// Assinging values to properties
 		this.nbInputs = hyperparameters.model.nb_inputs;
 		this.nbOutputs = hyperparameters.model.nb_outputs;
 
 		// Choosing the right method depending if the model already exists
-		if (modelParams.layerParams.length === 0) this.createModel(hyperparameters);
-		else this.loadModel(modelParams, hyperparameters);
+		if (this.modelParams.layerParams.length === 0) this.createModel();
+		else this.loadModel();
 	}
 
-	protected loadModel(
-		modelParams: NNModelParams,
-		hyperparams: NNHyperparameters,
-	) {
+	protected loadModel() {
 		let nbLayers: number = this.layers.length;
 
 		// Hidden layers
 		for (let layer: number = 0; layer < nbLayers; layer++) {
 			// Initiates the layers if its the first layer
 			const activationFunction = this.getActivationFunction(
-				hyperparams.model.activations_by_layer[layer],
+				this.hyperparameters.model.activations_by_layer[layer],
 			);
 			this.layers.push(
 				new NeuralLayer(
-					modelParams.layerParams[layer].biases.length,
+					this.modelParams.layerParams[layer].biases.length,
 					activationFunction,
-					new Matrix(modelParams.layerParams[layer].weights),
-					new Matrix([modelParams.layerParams[layer].biases]).transpose(),
+					new Matrix(this.modelParams.layerParams[layer].weights),
+					new Matrix([this.modelParams.layerParams[layer].biases]).transpose(),
 				),
 			);
 		}
 	}
 
-	protected createModel(hyperparams: NNHyperparameters) {
+	protected createModel() {
 		let weights: Matrix;
 		let biases: Matrix;
 		let previousNbNeurons: number = 0;
 		let currentNbNeurons: number = 0;
-		let neuronsByLayer = hyperparams.model.neurons_by_layer;
+		let neuronsByLayer = this.hyperparameters.model.neurons_by_layer;
 
-		const activationFunctions = hyperparams.model.activations_by_layer.map(a =>
-			this.getActivationFunction(a),
-		);
+		const activationFunctions =
+			this.hyperparameters.model.activations_by_layer.map(a =>
+				this.getActivationFunction(a),
+			);
 
 		let nbActivations: number = activationFunctions.length;
 

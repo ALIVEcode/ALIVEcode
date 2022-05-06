@@ -3,7 +3,7 @@ import {
 	MODEL_TYPES,
 	REGRESSION_TYPES,
 } from '../../../../../Models/Ai/ai_model.entity';
-import { RegHyperparameters } from '../AIEnumsInterfaces';
+import { RegHyperparameters, RegModelParams } from '../AIEnumsInterfaces';
 import { Matrix } from '../AIUtils';
 import AIModel from '../../../../../Models/Ai/ai_model.entity';
 
@@ -25,11 +25,22 @@ export abstract class Regression extends AIModel {
 	protected static MAX_RANGE = 100;
 
 	protected nbParams: number;
-	protected hyperparams: RegHyperparameters;
+	hyperparameters: RegHyperparameters;
+	modelParams: RegModelParams;
 
-	constructor(id: number, hyperparams: RegHyperparameters) {
+	constructor(
+		id: string,
+		hyperparams: RegHyperparameters,
+		modelParams: RegModelParams,
+	) {
 		super(id, MODEL_TYPES.POLY_REGRESSION);
-		this.hyperparams = hyperparams;
+		this.hyperparameters = hyperparams;
+		this.modelParams =
+			typeof modelParams !== 'undefined'
+				? modelParams
+				: {
+						params: [],
+				  };
 
 		switch (hyperparams.model.RegressionType) {
 			case REGRESSION_TYPES.Polynomial:
@@ -42,6 +53,9 @@ export abstract class Regression extends AIModel {
 				);
 				this.nbParams = 0;
 		}
+
+		if (this.modelParams.params.length === 0) this.createModel();
+		else this.loadModel();
 	}
 
 	/**

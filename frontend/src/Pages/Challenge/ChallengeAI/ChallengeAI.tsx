@@ -27,7 +27,10 @@ import {
 } from './artificial_intelligence/AIEnumsInterfaces';
 import { useAlert } from 'react-alert';
 import { GradientDescent } from './artificial_intelligence/ai_optimizers/ai_nn_optimizers/GradientDescent';
-import { NN_OPTIMIZER_TYPES } from '../../../Models/Ai/ai_model.entity';
+import {
+	NN_OPTIMIZER_TYPES,
+	COST_FUNCTIONS,
+} from '../../../Models/Ai/ai_model.entity';
 import api from '../../../Models/api';
 import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
 
@@ -257,6 +260,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			);
 		}
 
+		let model = progression?.aiModel;
+
 		let hyperparams: NNHyperparameters = {
 			model: {
 				nb_inputs: 3,
@@ -265,7 +270,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				activations_by_layer: [],
 			},
 			optimizer: {
-				cost_function: new MeanSquaredError(),
+				cost_function: COST_FUNCTIONS.MEAN_SQUARED_ERROR,
 				learning_rate: 0.0001,
 				epochs: 1000,
 				type: NN_OPTIMIZER_TYPES.GradientDescent,

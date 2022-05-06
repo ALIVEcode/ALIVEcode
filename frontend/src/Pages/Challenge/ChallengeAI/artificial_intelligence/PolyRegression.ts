@@ -196,23 +196,18 @@ export class PolyRegression2 extends Regression {
 	private d: number;
 
 	constructor(
-		id: number,
+		id: string,
 		hyperparams: RegHyperparameters,
 		modelParams: RegModelParams,
 	) {
-		super(id, hyperparams);
+		super(id, hyperparams, modelParams);
 	}
 
-	protected loadModel(
-		modelParams: RegModelParams,
-		hyperparams: RegHyperparameters,
-	): void {
-		this.setParams(modelParams.params);
+	protected loadModel(): void {
+		this.setParams(this.modelParams.params);
 	}
 
-	protected createModel(
-		hyperparams: NNHyperparameters | RegHyperparameters,
-	): void {
+	protected createModel(): void {
 		throw new Error('Method not implemented.');
 	}
 
@@ -241,7 +236,7 @@ export class PolyRegression2 extends Regression {
 		let params: RegModelParams = {
 			params: [this.a, this.b, this.c, this.d],
 		};
-		return new PolyRegression2(this.id, this.hyperparams, params);
+		return new PolyRegression2(this.id, this.hyperparameters, params);
 	}
 
 	/**

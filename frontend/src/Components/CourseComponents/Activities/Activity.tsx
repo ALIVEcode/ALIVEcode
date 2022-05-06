@@ -40,7 +40,6 @@ import api from '../../../Models/api';
 import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
 import Popup from 'reactjs-popup';
 import MenuResourceCreation from '../../Resources/MenuResourceCreation/MenuResourceCreation';
-import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 
 /**
  * Shows the opened activity. Renders different component depending on the type of the activity opened.
@@ -312,7 +311,8 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					<div className="flex items-center">
 						<FontAwesomeIcon
 							icon={activity.icon}
-							className="m-0 mr-4 text-[color:var(--bg-shade-four-color)]"
+							style={{ color: activity.color }}
+							className="m-0 mr-4"
 						/>
 						{isRenaming && editMode ? (
 							<FormInput

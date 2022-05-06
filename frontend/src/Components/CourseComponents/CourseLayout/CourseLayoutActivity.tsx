@@ -21,8 +21,7 @@ const CourseLayoutActivity = ({ courseElement }: CourseLayoutActivityProps) => {
 	return (
 		<>
 			<div
-				className="bg-[color:var(--bg-shade-one-color)] rounded-sm ml-4 pr-2 [color:var(--bg-shade-four-color)] font-bold
-				cursor-pointer hover:bg-[color:var(--bg-shade-three-color)] hover:[color:var(--fg-shade-four-color)]"
+				className="bg-[color:var(--bg-shade-one-color)] rounded-sm ml-4 pr-2 text-[color:var(--bg-shade-four-color)] font-bold cursor-pointer hover:bg-[color:var(--bg-shade-three-color)] hover:[color:var(--fg-shade-four-color)]"
 				onClick={() =>
 					courseElement.activity !== undefined &&
 					setTab({ openedActivity: courseElement })

@@ -13,6 +13,8 @@ import useView from '../../../../state/hooks/useView';
  * @param alt (Optional) Alt text of the image
  * @param img (Optional) image of the card
  * @param icon (Optional) icon of the card if no image
+ * @param color (Optional) color of the icon
+ * @param tooltip (Optional) tool tip to display in top right of the card
  * @returns
  */
 const TypeCard = (props: TypeCardProps) => {
@@ -31,7 +33,7 @@ const TypeCard = (props: TypeCardProps) => {
 			{props.icon && (
 				<div>
 					<FontAwesomeIcon
-						color={theme.color.fg_shade_one}
+						color={props.color ?? theme.color.fg_shade_one}
 						size={view.screenType === 'laptop' ? '4x' : '7x'}
 						icon={props.icon}
 					/>

@@ -10,6 +10,7 @@ import {
 	faQuestion,
 	faFilePdf,
 } from '@fortawesome/free-solid-svg-icons';
+import { commonColors } from '../../state/contexts/ThemeContext';
 
 /** All the types of activities */
 export enum ACTIVITY_TYPE {
@@ -57,6 +58,10 @@ export abstract class Activity {
 		return getActivityIcon(this.type);
 	}
 
+	get color() {
+		return getActivityColor(this.type);
+	}
+
 	/** Resource inside the activity */
 	abstract resource?: Resource;
 
@@ -84,4 +89,20 @@ export const getActivityIcon = (activityType: ACTIVITY_TYPE) => {
 			return faTasks;
 	}
 	return faQuestion;
+};
+
+export const getActivityColor = (activityType: ACTIVITY_TYPE): string => {
+	switch (activityType) {
+		case ACTIVITY_TYPE.CHALLENGE:
+			return commonColors.challenge;
+		case ACTIVITY_TYPE.THEORY:
+			return commonColors.theory;
+		case ACTIVITY_TYPE.VIDEO:
+			return commonColors.video;
+		case ACTIVITY_TYPE.PDF:
+			return commonColors.pdf;
+		case ACTIVITY_TYPE.ASSIGNMENT:
+			return commonColors.assignment;
+	}
+	return 'var(--fg-shade-four-color)';
 };

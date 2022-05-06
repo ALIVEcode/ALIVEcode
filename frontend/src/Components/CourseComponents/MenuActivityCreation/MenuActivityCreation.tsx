@@ -14,6 +14,7 @@ import { ActivityVideo } from '../../../Models/Course/activities/activity_video.
 import { ActivityPdf } from '../../../Models/Course/activities/activity_pdf.entity';
 import { ActivityAssignment } from '../../../Models/Course/activities/activity_assignment.entity';
 import { CourseElementActivity } from '../../../Models/Course/course_element.entity';
+import { getActivityColor } from '../../../Models/Course/activity.entity';
 
 /**
  * Creation Menu for an activity
@@ -77,6 +78,22 @@ const MenuActivityCreation = ({
 		}
 	};
 
+	const activityTypes = [
+		ACTIVITY_TYPE.THEORY,
+		ACTIVITY_TYPE.PDF,
+		ACTIVITY_TYPE.VIDEO,
+		ACTIVITY_TYPE.CHALLENGE,
+		ACTIVITY_TYPE.ASSIGNMENT,
+	];
+
+	const getEnumKey = (enumValue: ACTIVITY_TYPE) => {
+		const foundKey = Object.entries(ACTIVITY_TYPE).find(
+			entry => entry[1] === enumValue,
+		);
+		if (!foundKey) return 'theory';
+		return foundKey[0].toLowerCase();
+	};
+
 	return (
 		<Modal
 			size="lg"
@@ -86,31 +103,16 @@ const MenuActivityCreation = ({
 			closeCross
 		>
 			<div className="bg-[color:var(--background-color)] gap-8 grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3">
-				<TypeCard
-					title={t('msg.activity_type.challenge')}
-					icon={getActivityIcon(ACTIVITY_TYPE.CHALLENGE)}
-					onClick={() => onSelect(ACTIVITY_TYPE.CHALLENGE)}
-				/>
-				<TypeCard
-					title={t('msg.activity_type.video')}
-					icon={getActivityIcon(ACTIVITY_TYPE.VIDEO)}
-					onClick={() => onSelect(ACTIVITY_TYPE.VIDEO)}
-				/>
-				<TypeCard
-					title={t('msg.activity_type.pdf')}
-					icon={getActivityIcon(ACTIVITY_TYPE.PDF)}
-					onClick={() => onSelect(ACTIVITY_TYPE.PDF)}
-				/>
-				<TypeCard
-					title={t('msg.activity_type.theory')}
-					icon={getActivityIcon(ACTIVITY_TYPE.THEORY)}
-					onClick={() => onSelect(ACTIVITY_TYPE.THEORY)}
-				/>
-				<TypeCard
-					title={t('msg.activity_type.assignment')}
-					icon={getActivityIcon(ACTIVITY_TYPE.ASSIGNMENT)}
-					onClick={() => onSelect(ACTIVITY_TYPE.ASSIGNMENT)}
-				/>
+				{activityTypes.map(actType => (
+					<TypeCard
+						key={actType.toLowerCase()}
+						title={t(`msg.activity_type.${getEnumKey(actType)}`)}
+						tooltip={t(`msg.activity_type.${getEnumKey(actType)}`)}
+						color={getActivityColor(actType)}
+						icon={getActivityIcon(actType)}
+						onClick={() => onSelect(actType)}
+					/>
+				))}
 			</div>
 		</Modal>
 	);

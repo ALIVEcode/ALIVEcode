@@ -5,13 +5,7 @@ import {
 	faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, {
-	RefObject,
-	useCallback,
-	useContext,
-	useRef,
-	useState,
-} from 'react';
+import React, { useCallback, useContext, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import AlertConfirm from '../../UtilsComponents/Alert/AlertConfirm/AlertConfirm';
@@ -24,7 +18,6 @@ import {
 	CourseElementSection,
 } from '../../../Models/Course/course_element.entity';
 import { classNames } from '../../../Types/utils';
-import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 
 /**
  * Component that wraps a CourseElement to show it properly on the layout view
@@ -48,16 +41,6 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 	const [isRenaming, setIsRenaming] = useState(false);
 	const inputRef = useRef<HTMLInputElement>();
 	const courseLayoutElementRef = useRef<HTMLDivElement>(null);
-
-	const getParent = useCallback((target: HTMLElement) => {
-		let parent: HTMLElement | null | undefined = target.parentElement;
-		do {
-			if (parent?.className === 'course-layout-element') {
-				return parent;
-			}
-		} while ((parent = parent?.parentElement) != null);
-		return null;
-	}, []);
 
 	/**
 	 * Handles the renaming of an element
@@ -179,7 +162,10 @@ const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
 						{element?.activity && element?.icon ? (
 							<FontAwesomeIcon
 								icon={element.icon}
-								className="[color:var(--bg-shade-four-color)] mr-3 ml-2 mt-1"
+								style={{
+									color: element.activity.color,
+								}}
+								className="mr-3 ml-2 mt-1"
 							/>
 						) : (
 							<span className="invisible pl-3" />

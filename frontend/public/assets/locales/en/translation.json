@@ -346,7 +346,7 @@
 		"deletion_test": "Enter the name of the course to confirm the deletion",
 		"add_header": "Add a text header to this activity",
 		"add_footer": "Add a text footer to this activity",
-		"validate": "Confirm changes",
+		"validate_activity": "Confirm changes",
 		"start_writing": "Begin writing here...",
 		"template": {
 			"add": "Add a template",

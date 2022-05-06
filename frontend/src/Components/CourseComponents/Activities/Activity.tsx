@@ -528,6 +528,17 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 						</Link>
 					)
 				)}
+				{editMode && (
+					<div className="mt-5 flex">
+						<Button
+							variant="primary"
+							className="m-auto !bg-[color:var(--logo-color)] hover:!bg-[color:var(--secondary-color)]"
+							onClick={() => setTab({ openedActivity: null })}
+						>
+							{t('course.validate_activity')}
+						</Button>
+					</div>
+				)}
 				<div className="flex flex-row items-center justify-evenly py-12">
 					<button
 						className="flex items-center gap-4 cursor-pointer disabled:cursor-auto disabled:opacity-25"

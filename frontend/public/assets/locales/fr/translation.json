@@ -334,7 +334,7 @@
 		"subject": "Matière du cours",
 		"empty": "Ce cours est vide.",
 		"student_view": "Vue étudiant",
-		"layout": "Agencement du cours",
+		"layout": "Structure du cours",
 		"layout_view": "Vue professeur",
 		"delete": "Supprimer le cours. (Il sera retiré de toutes les classes où il est présent)",
 		"deletion_test": "Écrivez le nom du cours pour confirmer la suppression",
@@ -364,6 +364,8 @@
 			"remove_footer_confirm": "Êtes-vous certain de vouloir retirer le texte en bas de page de cette activité?",
 			"add_header": "Ajouter du texte en entête à cette activité",
 			"add_footer": "Ajouter du texte en bas de page à cette activité",
+			"download_file": "Télécharger le fichier",
+			"no_download": "Il n'y a aucun fichier à télécharger ici.",
 			"import_resource": {
 				"generic": "Ajouter une ressource existante",
 				"PF": "Ajouter un pdf existant",

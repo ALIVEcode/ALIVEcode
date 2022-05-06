@@ -364,6 +364,8 @@
 			"remove_footer_confirm": "Are you sure you want to remove the text footer of this activity?",
 			"add_header": "Add a text header to this activity",
 			"add_footer": "Add a text footer to this activity",
+			"download_file": "Download the file",
+			"no_download": "There is no file to download here.",
 			"import_resource": {
 				"generic": "Add an exisiting resource",
 				"PF": "Add an existing pdf",

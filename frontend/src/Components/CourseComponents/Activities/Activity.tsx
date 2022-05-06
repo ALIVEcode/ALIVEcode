@@ -40,6 +40,7 @@ import api from '../../../Models/api';
 import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
 import Popup from 'reactjs-popup';
 import MenuResourceCreation from '../../Resources/MenuResourceCreation/MenuResourceCreation';
+import Info from '../../HelpComponents/index';
 
 /**
  * Shows the opened activity. Renders different component depending on the type of the activity opened.
@@ -307,6 +308,17 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					tab.tab === 'view' ? 'py-8' : 'py-0',
 				)}
 			>
+				<Info.Icon
+					hoverPopup={{
+						position: 'left center',
+					}}
+					className="text-base absolute top-2 right-2"
+				>
+					<Info.Box
+						useDefaultStyle
+						text={t(`help.activity.${activity.enumKey}`)}
+					/>
+				</Info.Icon>
 				<div className="text-4xl bg-[color:var(--background-color)] mb-6 w-full border-[color:var(--bg-shade-four-color)]">
 					<div className="flex items-center">
 						<FontAwesomeIcon

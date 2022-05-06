@@ -62,6 +62,10 @@ export abstract class Activity {
 		return getActivityColor(this.type);
 	}
 
+	get enumKey() {
+		return getActivityEnumKey(this.type);
+	}
+
 	/** Resource inside the activity */
 	abstract resource?: Resource;
 
@@ -105,4 +109,12 @@ export const getActivityColor = (activityType: ACTIVITY_TYPE): string => {
 			return commonColors.assignment;
 	}
 	return 'var(--fg-shade-four-color)';
+};
+
+export const getActivityEnumKey = (type: ACTIVITY_TYPE) => {
+	const foundKey = Object.entries(ACTIVITY_TYPE).find(
+		entry => entry[1] === type,
+	);
+	if (!foundKey) return 'theory';
+	return foundKey[0].toLowerCase();
 };

@@ -733,6 +733,13 @@
 			"next": "Suivant",
 			"previous": "Précédent"
 		},
+		"activity": {
+			"theory": "Activité permettant l'affichage de matière théorique sous format d'un fichier texte stylisé.",
+			"pdf": "Activité de visionnement d'un document pdf.",
+			"video": "Activité de visionnement d'une vidéo YouTube ou en format mp4.",
+			"challenge": "Activité défi permettant de mettre en pratique la matière apprise dans le cours.",
+			"assignment": "Activité permettant à un étudiant de télécharger un certain fichier nécessaire à son apprentissage."
+		},
 		"dashboard": {
 			"tabs": {
 				"recent_courses": "Voici l'endroit où se retrouve vos cours récemment visité",

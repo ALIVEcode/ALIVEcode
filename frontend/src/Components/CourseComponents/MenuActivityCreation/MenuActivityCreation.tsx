@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
 	ACTIVITY_TYPE,
+	getActivityEnumKey,
 	getActivityIcon,
 } from '../../../Models/Course/activity.entity';
 import { CourseContext } from '../../../state/contexts/CourseContext';
@@ -86,14 +87,6 @@ const MenuActivityCreation = ({
 		ACTIVITY_TYPE.ASSIGNMENT,
 	];
 
-	const getEnumKey = (enumValue: ACTIVITY_TYPE) => {
-		const foundKey = Object.entries(ACTIVITY_TYPE).find(
-			entry => entry[1] === enumValue,
-		);
-		if (!foundKey) return 'theory';
-		return foundKey[0].toLowerCase();
-	};
-
 	return (
 		<Modal
 			size="lg"
@@ -106,8 +99,8 @@ const MenuActivityCreation = ({
 				{activityTypes.map(actType => (
 					<TypeCard
 						key={actType.toLowerCase()}
-						title={t(`msg.activity_type.${getEnumKey(actType)}`)}
-						tooltip={t(`msg.activity_type.${getEnumKey(actType)}`)}
+						title={t(`msg.activity_type.${getActivityEnumKey(actType)}}`)}
+						tooltip={t(`help.activity.${getActivityEnumKey(actType)}`)}
 						color={getActivityColor(actType)}
 						icon={getActivityIcon(actType)}
 						onClick={() => onSelect(actType)}

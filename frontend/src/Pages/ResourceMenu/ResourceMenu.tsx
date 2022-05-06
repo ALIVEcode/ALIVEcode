@@ -253,7 +253,7 @@ const ResourceMenu = ({
 									</Button>
 									<Button
 										ref={acquireResourceRef}
-										variant="secondary"
+										variant="primary"
 										onClick={() => navigate(routes.auth.bundle_browse.path)}
 									>
 										{t('resources.menu.bundles')}

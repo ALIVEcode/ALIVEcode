@@ -106,7 +106,7 @@ export const getActivityColor = (activityType: ACTIVITY_TYPE): string => {
 		case ACTIVITY_TYPE.PDF:
 			return commonColors.pdf;
 		case ACTIVITY_TYPE.ASSIGNMENT:
-			return commonColors.assignment;
+			return 'var(--fg-shade-four-color)';
 	}
 	return 'var(--fg-shade-four-color)';
 };

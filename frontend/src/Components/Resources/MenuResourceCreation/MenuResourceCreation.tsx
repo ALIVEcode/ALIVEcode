@@ -1,5 +1,8 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { RESOURCE_TYPE } from '../../../Models/Resource/resource.entity';
+import {
+	getResourceIcon,
+	RESOURCE_TYPE,
+} from '../../../Models/Resource/resource.entity';
 import { Challenge } from '../../../Models/Challenge/challenge.entity';
 import { useTranslation } from 'react-i18next';
 import { UserContext } from '../../../state/contexts/UserContext';
@@ -16,12 +19,13 @@ import Link from '../../UtilsComponents/Link/Link';
 import FormInput from '../../UtilsComponents/FormInput/FormInput';
 import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
 import TypeCard from '../../UtilsComponents/Cards/TypeCard/TypeCard';
-import { getResourceIcon, SUBJECTS } from '../../../Types/sharedTypes';
+import { SUBJECTS } from '../../../Types/sharedTypes';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import MenuCreation from '../../UtilsComponents/MenuCreation/MenuCreation';
 import Button from '../../UtilsComponents/Buttons/Button';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import useComplexState from '../../../state/hooks/useComplexState';
+import { getResourceColor } from '../../../Models/Resource/resource.entity';
 
 /**
  * @description renders the menu for creating a resource of the given type
@@ -276,6 +280,7 @@ const MenuResourceCreation = ({
 						title={t(`resources.${name.toLowerCase()}.name`)}
 						tooltip={t(`help.resource.${name.toLowerCase()}`)}
 						icon={getResourceIcon(_type)}
+						color={getResourceColor(_type)}
 						onClick={() => onSelectResourceType(_type)}
 						selected={type === _type}
 					/>

@@ -2,12 +2,8 @@ import {
 	faBrain,
 	faClipboardList,
 	faCode,
-	faQuestion,
-	faFilePdf,
 } from '@fortawesome/free-solid-svg-icons';
 import { faCloudsmith } from '@fortawesome/free-brands-svg-icons';
-import { faFile, faVideo, faBook } from '@fortawesome/free-solid-svg-icons';
-import { RESOURCE_TYPE } from '../Models/Resource/resource.entity';
 
 /** Enum of all the subjects in ALIVEcode */
 export enum SUBJECTS {
@@ -35,26 +31,4 @@ export const getSubjectIcon = (subject: SUBJECTS) => {
 			return faClipboardList;
 	}
 	return faCode;
-};
-
-/**
- * Gets the icon of a resource
- * @param subject Type of the resource to get the icon of
- * @returns The good display icon
- * @author Enric Soldevila
- */
-export const getResourceIcon = (resourceType: RESOURCE_TYPE) => {
-	switch (resourceType) {
-		case RESOURCE_TYPE.FILE:
-			return faFile;
-		case RESOURCE_TYPE.PDF:
-			return faFilePdf;
-		case RESOURCE_TYPE.CHALLENGE:
-			return faCode;
-		case RESOURCE_TYPE.VIDEO:
-			return faVideo;
-		case RESOURCE_TYPE.THEORY:
-			return faBook;
-	}
-	return faQuestion;
 };

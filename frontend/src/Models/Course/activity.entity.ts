@@ -15,9 +15,9 @@ import { commonColors } from '../../state/contexts/ThemeContext';
 /** All the types of activities */
 export enum ACTIVITY_TYPE {
 	THEORY = 'TH',
-	CHALLENGE = 'CH',
-	VIDEO = 'VI',
 	PDF = 'PF',
+	VIDEO = 'VI',
+	CHALLENGE = 'CH',
 	ASSIGNMENT = 'AS',
 }
 

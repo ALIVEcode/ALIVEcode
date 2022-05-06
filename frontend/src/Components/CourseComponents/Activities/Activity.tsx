@@ -243,7 +243,6 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 		switch (resourceType) {
 			case RESOURCE_TYPE.FILE:
 			case RESOURCE_TYPE.PDF:
-			case RESOURCE_TYPE.IMAGE:
 				inputFileRef.current?.click();
 				break;
 			case RESOURCE_TYPE.VIDEO:

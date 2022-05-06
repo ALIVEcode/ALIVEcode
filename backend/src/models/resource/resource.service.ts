@@ -7,7 +7,6 @@ import { CreateResourceDTO, CreateResourceDTOSimple } from './dto/CreateResource
 import { ProfessorEntity, UserEntity } from '../user/entities/user.entity';
 import { ResourceFileEntity } from './entities/resources/resource_file.entity';
 import { ResourcePdfEntity } from './entities/resources/resource_pdf.entity';
-import { ResourceImageEntity } from './entities/resources/resource_image.entity';
 import { ResourceTheoryEntity } from './entities/resources/resource_theory.entity';
 import { ResourceVideoEntity } from './entities/resources/resource_video.entity';
 import { unlinkSync } from 'fs';
@@ -25,7 +24,6 @@ export class ResourceService {
     @InjectRepository(ResourceChallengeEntity) private readonly resChallengeRepo: Repository<ResourceChallengeEntity>,
     @InjectRepository(ResourceFileEntity) private readonly resFileRepo: Repository<ResourceFileEntity>,
     @InjectRepository(ResourcePdfEntity) private readonly resPdfRepo: Repository<ResourcePdfEntity>,
-    @InjectRepository(ResourceImageEntity) private readonly resImageRepo: Repository<ResourceImageEntity>,
     @InjectRepository(ResourceTheoryEntity) private readonly resTheoryRepo: Repository<ResourceTheoryEntity>,
     @InjectRepository(ResourceVideoEntity) private readonly resVideoRepo: Repository<ResourceVideoEntity>,
     @InjectRepository(UserEntity) private readonly userRepo: Repository<UserEntity>,
@@ -47,8 +45,6 @@ export class ResourceService {
         return await this.resPdfRepo.save({ ...dto.resource, type: RESOURCE_TYPE.PDF });
       case RESOURCE_TYPE.FILE:
         return await this.resFileRepo.save({ ...dto.resource, type: RESOURCE_TYPE.FILE });
-      case RESOURCE_TYPE.IMAGE:
-        return await this.resImageRepo.save({ ...dto.resource, type: RESOURCE_TYPE.IMAGE });
       case RESOURCE_TYPE.THEORY:
         return await this.resTheoryRepo.save({ ...dto.resource, type: RESOURCE_TYPE.THEORY });
       case RESOURCE_TYPE.VIDEO:

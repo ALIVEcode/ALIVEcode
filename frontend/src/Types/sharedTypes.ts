@@ -2,7 +2,6 @@ import {
 	faBrain,
 	faClipboardList,
 	faCode,
-	faImage,
 	faQuestion,
 	faFilePdf,
 } from '@fortawesome/free-solid-svg-icons';
@@ -50,8 +49,6 @@ export const getResourceIcon = (resourceType: RESOURCE_TYPE) => {
 			return faFile;
 		case RESOURCE_TYPE.PDF:
 			return faFilePdf;
-		case RESOURCE_TYPE.IMAGE:
-			return faImage;
 		case RESOURCE_TYPE.CHALLENGE:
 			return faCode;
 		case RESOURCE_TYPE.VIDEO:

@@ -285,13 +285,6 @@
 				"file": "Glissez ou sélectionnez un fichier"
 			}
 		},
-		"image": {
-			"name": "Image",
-			"form": {
-				"url": "URL vers l'image",
-				"file": "Glissez ou sélectionnez un fichier"
-			}
-		},
 		"challenge": {
 			"name": "Défi",
 			"form": {
@@ -743,6 +736,13 @@
 			"video": "Activité de visionnement d'une vidéo YouTube ou en format mp4.",
 			"challenge": "Activité défi permettant de mettre en pratique la matière apprise dans le cours.",
 			"assignment": "Activité permettant à un étudiant de télécharger un certain fichier nécessaire à son apprentissage."
+		},
+		"resource": {
+			"theory": "Un document text stylisé qui peut être réutilisé.",
+			"pdf": "Un fichier de présentation powerpoint qui peut être réutilisé",
+			"video": "Une vidéo YouTube ou une vidéo en format mp4 qui peut être réutilisée.",
+			"challenge": "Un défi qui peut être réutilisé dans un cours.",
+			"file": "Tout type de fichier qui peut être réutilisé."
 		},
 		"dashboard": {
 			"tabs": {

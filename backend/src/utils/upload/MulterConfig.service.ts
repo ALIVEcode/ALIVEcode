@@ -27,9 +27,6 @@ export const createMulterOptions = (injected: any): MulterModuleOptions => {
 
       let acceptedMimetypes = [];
       switch (type) {
-        case RESOURCE_TYPE.IMAGE:
-          acceptedMimetypes = ['image/jpeg', 'image/jpg', 'image/png'];
-          break;
         case RESOURCE_TYPE.VIDEO:
           acceptedMimetypes = ['video/mp4', 'video/mpeg', 'video/ogg', 'video/mp2t'];
           break;

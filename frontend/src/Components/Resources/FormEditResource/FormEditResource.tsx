@@ -53,14 +53,6 @@ const FormEditResource = ({ resource }: FormEditResourceProps) => {
 						{...register('resource.url', { required: true })}
 					/>
 				);
-			case RESOURCE_TYPE.IMAGE:
-				return (
-					<InputGroup
-						label="Url"
-						errors={errors.resource?.url}
-						{...register('resource.url', { required: true })}
-					/>
-				);
 			case RESOURCE_TYPE.FILE:
 				return <></>;
 		}
@@ -79,7 +71,6 @@ const FormEditResource = ({ resource }: FormEditResourceProps) => {
 			>
 				<option value={RESOURCE_TYPE.FILE}>{t('resources.file.name')}</option>
 				<option value={RESOURCE_TYPE.VIDEO}>{t('resources.video.name')}</option>
-				<option value={RESOURCE_TYPE.IMAGE}>{t('resources.image.name')}</option>
 				<option value={RESOURCE_TYPE.THEORY}>
 					{t('resources.theory.name')}
 				</option>

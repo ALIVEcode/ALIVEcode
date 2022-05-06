@@ -8,9 +8,9 @@ import { ResourceEntity, RESOURCE_TYPE } from '../../resource/entities/resource.
 /** Enum for all the types of activities */
 export enum ACTIVITY_TYPE {
   THEORY = 'TH',
-  CHALLENGE = 'CH',
-  VIDEO = 'VI',
   PDF = 'PF',
+  VIDEO = 'VI',
+  CHALLENGE = 'CH',
   ASSIGNMENT = 'AS',
 }
 

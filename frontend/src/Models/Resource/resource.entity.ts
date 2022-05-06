@@ -5,17 +5,15 @@ import { ResourceChallenge } from './resources/resource_challenge.entity';
 import { ResourceTheory } from './resources/resource_theory.entity';
 import { ResourceFile } from './resources/resource_file.entity';
 import { ResourcePdf } from './resources/resource_pdf.entity';
-import { ResourceImage } from './resources/resource_image.entity';
 import { ResourceVideo } from './resources/resource_video.entity';
 
 /** Enum of all the type of resources */
 export enum RESOURCE_TYPE {
-	VIDEO = 'VI',
-	FILE = 'FI',
-	PDF = 'PF',
-	IMAGE = 'IM',
-	CHALLENGE = 'CH',
 	THEORY = 'TH',
+	PDF = 'PF',
+	VIDEO = 'VI',
+	CHALLENGE = 'CH',
+	FILE = 'FI',
 }
 
 /** Typing for all different type of resources */
@@ -24,7 +22,6 @@ export type DifferentResources =
 	| ResourceTheory
 	| ResourceFile
 	| ResourcePdf
-	| ResourceImage
 	| ResourceVideo;
 
 /**

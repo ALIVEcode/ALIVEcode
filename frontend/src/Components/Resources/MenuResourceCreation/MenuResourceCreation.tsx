@@ -230,49 +230,6 @@ const MenuResourceCreation = ({
 						)}
 					</>
 				);
-			case RESOURCE_TYPE.IMAGE:
-				return (
-					<>
-						<div onChange={onChangeRadio}>
-							<input
-								type="radio"
-								name="resource"
-								value="file"
-								checked={resourceIsFile}
-								id="file"
-							/>
-							<label htmlFor="file">file</label>
-							<input
-								type="radio"
-								name="resource"
-								value="url"
-								defaultChecked
-								checked={!resourceIsFile}
-								id="url"
-							/>
-							<label htmlFor="url">url</label>
-						</div>
-						{resourceIsFile ? (
-							<>
-								<InputGroup
-									type="file"
-									label={t('resources.image.form.file')}
-									errors={errors.resource?.url}
-									onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-										e.target.files && setFile(e.target.files[0])
-									}
-									progress={uploadProgress}
-								/>
-							</>
-						) : (
-							<InputGroup
-								label={t('resources.image.form.url')}
-								errors={errors.resource?.url}
-								{...register('resource.url', { required: false })}
-							/>
-						)}
-					</>
-				);
 			case RESOURCE_TYPE.PDF:
 				return (
 					<>
@@ -317,6 +274,7 @@ const MenuResourceCreation = ({
 					<TypeCard
 						key={idx}
 						title={t(`resources.${name.toLowerCase()}.name`)}
+						tooltip={t(`help.resource.${name.toLowerCase()}`)}
 						icon={getResourceIcon(_type)}
 						onClick={() => onSelectResourceType(_type)}
 						selected={type === _type}

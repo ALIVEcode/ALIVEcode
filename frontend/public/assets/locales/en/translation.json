@@ -284,13 +284,6 @@
 				"file": "Drag and drop a file or insert one"
 			}
 		},
-		"image": {
-			"name": "Image",
-			"form": {
-				"url": "URL of the image",
-				"file": "Drag and drop a file or insert one"
-			}
-		},
 		"challenge": {
 			"name": "Challenge",
 			"form": {
@@ -743,6 +736,13 @@
 			"video": "Activity for viewing a YouTube video or an mp4 video.",
 			"challenge": "Activity challenge to test what the student learned in the course.",
 			"assignment": "Activity allowing a student to download a file that is required for its learning."
+		},
+		"resource": {
+			"theory": "A styled text document that can be reused.",
+			"pdf": "A powerpoint presentation file that can be reused.",
+			"video": "A YouTube video or a mp4 video that can be reused.",
+			"challenge": "A challenge that can be reused inside a course.",
+			"file": "Any type of file that can be reused."
 		},
 		"dashboard": {
 			"tabs": {

@@ -2,7 +2,6 @@ import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
 	ACTIVITY_TYPE,
-	getActivityEnumKey,
 	getActivityIcon,
 } from '../../../Models/Course/activity.entity';
 import { CourseContext } from '../../../state/contexts/CourseContext';
@@ -96,14 +95,14 @@ const MenuActivityCreation = ({
 			closeCross
 		>
 			<div className="bg-[color:var(--background-color)] gap-8 grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3">
-				{activityTypes.map(actType => (
+				{Object.entries(ACTIVITY_TYPE).map(entry => (
 					<TypeCard
-						key={actType.toLowerCase()}
-						title={t(`msg.activity_type.${getActivityEnumKey(actType)}}`)}
-						tooltip={t(`help.activity.${getActivityEnumKey(actType)}`)}
-						color={getActivityColor(actType)}
-						icon={getActivityIcon(actType)}
-						onClick={() => onSelect(actType)}
+						key={entry[1].toLowerCase()}
+						title={t(`msg.activity_type.${entry[0].toLowerCase()}`)}
+						tooltip={t(`help.activity.${entry[0].toLowerCase()}`)}
+						color={getActivityColor(entry[1])}
+						icon={getActivityIcon(entry[1])}
+						onClick={() => onSelect(entry[1])}
 					/>
 				))}
 			</div>

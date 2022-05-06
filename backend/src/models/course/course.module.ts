@@ -24,7 +24,6 @@ import { ResourceChallengeEntity } from '../resource/entities/resources/resource
 import { ActivityAssignmentEntity } from './entities/activities/activity_assignment.entity';
 import { ResourceVideoEntity } from '../resource/entities/resources/resource_video.entity';
 import { ResourceFileEntity } from '../resource/entities/resources/resource_file.entity';
-import { ResourceImageEntity } from '../resource/entities/resources/resource_image.entity';
 import { ResourceTheoryEntity } from '../resource/entities/resources/resource_theory.entity';
 import { BundleController } from './bundle.controller';
 import { BundleEntity } from './entities/bundles/bundle.entity';
@@ -64,7 +63,6 @@ import { BundleService } from './bundle.service';
       ResourceVideoEntity,
       ResourcePdfEntity,
       ResourceFileEntity,
-      ResourceImageEntity,
       ResourceTheoryEntity,
       BundleEntity,
       CourseTemplateEntity,

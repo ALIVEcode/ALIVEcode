@@ -18,7 +18,6 @@ import { ResourceChallengeEntity } from './resources/resource_challenge.entity';
 import { ActivityEntity } from '../../course/entities/activity.entity';
 import { ResourceFileEntity } from './resources/resource_file.entity';
 import { ResourcePdfEntity } from './resources/resource_pdf.entity';
-import { ResourceImageEntity } from './resources/resource_image.entity';
 import { ResourceTheoryEntity } from './resources/resource_theory.entity';
 import { ResourceVideoEntity } from './resources/resource_video.entity';
 import { FileEntity } from 'src/models/file/entities/file.entity';
@@ -28,7 +27,6 @@ export enum RESOURCE_TYPE {
   VIDEO = 'VI',
   FILE = 'FI',
   PDF = 'PF',
-  IMAGE = 'IM',
   CHALLENGE = 'CH',
   THEORY = 'TH',
 }
@@ -38,7 +36,6 @@ export type DifferentResources =
   | ResourceChallengeEntity
   | ResourceFileEntity
   | ResourcePdfEntity
-  | ResourceImageEntity
   | ResourceTheoryEntity
   | ResourceVideoEntity;
 

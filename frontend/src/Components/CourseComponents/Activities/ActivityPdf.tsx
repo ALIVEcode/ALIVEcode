@@ -47,7 +47,7 @@ const ActivityPdf = ({ activity }: { activity: ActivityPdfModel }) => {
 	return (
 		<div className="w-full desktop:px-16">
 			<Document
-				className="w-full"
+				className="w-full  flex justify-center"
 				file={pdfSrc}
 				onLoadSuccess={onDocumentLoadSuccess}
 			>
@@ -62,7 +62,7 @@ const ActivityPdf = ({ activity }: { activity: ActivityPdfModel }) => {
 					></div>
 				</Page>
 			</Document>
-			<p>
+			<p className="mt-2 w-full text-center">
 				Page {pageNumber} of {numPages}
 			</p>
 		</div>

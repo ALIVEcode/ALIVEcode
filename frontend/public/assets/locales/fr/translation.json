@@ -191,7 +191,7 @@
 			"signup_professor": "Compte professeur",
 			"signup_student": "Compte étudiant",
 			"signout": "Se déconnecter",
-			"already_registered": "Tu as déjà un compte ?",
+			"already_registered": "Vous avez déjà un compte ?",
 			"account_required": "Il te faut un compte pour faire ça",
 			"name_migration": {
 				"title": "Changement de la façon dont les étudiants sont identifiés",
@@ -227,15 +227,15 @@
 		"recents": {
 			"title": "Cours Récents",
 			"empty": {
-				"student": "Tu n'as pas d'activité récente. Rejoins une classe publique ou privée pour commencer à apprendre",
-				"professor": "Tu n'as pas d'activité récente. Crée une classe pour commencer"
+				"student": "Vous n'avez pas d'activité récente. Rejoinez une classe publique ou privée pour commencer à apprendre",
+				"professor": "Vous n'avez pas d'activité récente. Créez une classe pour commencer"
 			}
 		},
 		"challenges": {
 			"title": "Défis",
 			"browse_challenges": "Explorer les défis de la communauté",
 			"create_challenge": "Créer un défi",
-			"empty": "Tu ne possèdes aucun défi"
+			"empty": "Vous ne possèdez aucun défi"
 		},
 		"resources": {
 			"title": "Mes Ressources"
@@ -246,7 +246,7 @@
 			"browse_public": "Explorer les classes publiques",
 			"empty": {
 				"student": "Tu ne fais parti d'aucune classe",
-				"professor": "Tu ne possèdes aucune classe"
+				"professor": "Vous ne possédez aucune classe"
 			},
 			"add": {
 				"student": "Rejoindre une classe",
@@ -256,7 +256,7 @@
 		"courses": {
 			"title": "Vos cours",
 			"add": "Créer un cours",
-			"empty": "Tu ne possèdes aucun cours"
+			"empty": "Vous ne possédez aucun cours"
 		}
 	},
 	"resources": {
@@ -338,8 +338,6 @@
 		"layout_view": "Vue professeur",
 		"delete": "Supprimer le cours. (Il sera retiré de toutes les classes où il est présent)",
 		"deletion_test": "Écrivez le nom du cours pour confirmer la suppression",
-		"add_header": "Ajouter du texte en entête à cette activité",
-		"add_footer": "Ajouter du texte en bas de page à cette activité",
 		"validate_activity": "Confirmer les changements",
 		"start_writing": "Commencez à écrire ici...",
 		"section": {
@@ -354,12 +352,18 @@
 		},
 		"activity": {
 			"open": "Ouvrir",
-			"open_in_student_view": "Ouvrir dans la vue étudiant",
+			"open_in_student_view": "Ouvrir dans la vue étudiante",
 			"edit_in_layout_view": "Modifier dans la vue professeur",
 			"empty": "Cette activité est vide.",
 			"no_activity": "Ouvre une activité pour commencer",
 			"new": "Ajouter une activité",
 			"new_name": "Activité #{{num}}",
+			"remove_header": "Retirer le texte en entête.",
+			"remove_footer": "Retirer le texte en bas de page.",
+			"remove_header_confirm": "Êtes-vous certain de vouloir retirer le texte en entête de cette activité?",
+			"remove_footer_confirm": "Êtes-vous certain de vouloir retirer le texte en bas de page de cette activité?",
+			"add_header": "Ajouter du texte en entête à cette activité",
+			"add_footer": "Ajouter du texte en bas de page à cette activité",
 			"import_resource": {
 				"generic": "Ajouter une ressource existante",
 				"PF": "Ajouter un pdf existant",

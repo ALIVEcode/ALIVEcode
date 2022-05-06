@@ -338,8 +338,6 @@
 		"layout_view": "Layout view",
 		"delete": "Delete this course. (It will be removed from all the classrooms it is in)",
 		"deletion_test": "Enter the name of the course to confirm the deletion",
-		"add_header": "Add a text header to this activity",
-		"add_footer": "Add a text footer to this activity",
 		"validate_activity": "Confirm changes",
 		"start_writing": "Begin writing here...",
 		"template": {
@@ -360,6 +358,12 @@
 			"no_activity": "Open an activity to get started",
 			"new": "Add an Activity",
 			"new_name": "Activity #{{num}}",
+			"remove_header": "Remove the text header.",
+			"remove_footer": "Remove the text footer.",
+			"remove_header_confirm": "Are you sure you want to remove the text header of this activity?",
+			"remove_footer_confirm": "Are you sure you want to remove the text footer of this activity?",
+			"add_header": "Add a text header to this activity",
+			"add_footer": "Add a text footer to this activity",
 			"import_resource": {
 				"generic": "Add an exisiting resource",
 				"PF": "Add an existing pdf",

@@ -41,6 +41,7 @@ import Popup from 'reactjs-popup';
 import MenuResourceCreation from '../../Resources/MenuResourceCreation/MenuResourceCreation';
 import Info from '../../HelpComponents/index';
 import Link from '../../UtilsComponents/Link/Link';
+import AlertConfirm from '../../UtilsComponents/Alert/AlertConfirm/AlertConfirm';
 
 /**
  * Shows the opened activity. Renders different component depending on the type of the activity opened.
@@ -67,6 +68,9 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 
 	const activityRef = useRef(courseElement.activity);
 	const activity = activityRef.current;
+	const [confirmDelete, setConfirmDelete] = useState<
+		'header' | 'footer' | undefined
+	>();
 
 	const { t } = useTranslation();
 	const { createResource } = useContext(UserContext);
@@ -359,12 +363,9 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 							</div>
 							{editMode && (
 								<FontAwesomeIcon
+									title={t('course.activity.remove_header')}
 									icon={faMinusCircle}
-									onClick={async () => {
-										// eslint-disable-next-line no-restricted-globals
-										if (confirm(t('course.activity.remove_header_confirm')))
-											await updateActivity(activity, { header: null });
-									}}
+									onClick={() => setConfirmDelete('header')}
 									size="2x"
 									className="p-1 mb-2 border cursor-pointer text-red-600
 									border-red-600 opacity-75 transition-colors hover:opacity-100 hover:bg-red-600 hover:text-white"
@@ -391,7 +392,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 								await updateActivity(activity, { header: value });
 							}}
 						>
-							{t('course.add_header')}
+							{t('course.activity.add_header')}
 						</Link>
 					)
 				)}
@@ -488,12 +489,9 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 							</div>
 							{editMode && (
 								<FontAwesomeIcon
+									title={t('course.activity.remove_footer')}
 									icon={faMinusCircle}
-									onClick={async () => {
-										// eslint-disable-next-line no-restricted-globals
-										if (confirm(t('course.activity.remove_footer_confirm')))
-											await updateActivity(activity, { footer: null });
-									}}
+									onClick={() => setConfirmDelete('footer')}
 									size="2x"
 									className="p-1 mb-2 border cursor-pointer text-red-600
 									border-red-600 opacity-75 transition-colors hover:opacity-100 hover:bg-red-600 hover:text-white"
@@ -520,7 +518,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 								await updateActivity(activity, { footer: value });
 							}}
 						>
-							{t('course.add_footer')}
+							{t('course.activity.add_footer')}
 						</Link>
 					)
 				)}
@@ -571,6 +569,22 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 						e.target.files && setSelectedFile(e.target.files[0])
 					}
 				/>
+				<AlertConfirm
+					open={confirmDelete !== undefined}
+					setOpen={value => setConfirmDelete(value ? 'header' : undefined)}
+					title={
+						confirmDelete &&
+						t(`course.activity.remove_${confirmDelete}_confirm`)
+					}
+					onConfirm={async () => {
+						if (!confirmDelete) return;
+						await updateActivity(activity, { [confirmDelete]: null });
+					}}
+				>
+					<p className="text-red-600 pb-5 font-bold text-lg">
+						{t('action.irreversible')}
+					</p>
+				</AlertConfirm>
 			</div>
 		)
 	);

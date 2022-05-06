@@ -125,9 +125,9 @@ export const commonColors = {
 	dark_gray: '#616161',
 	logo: '#2E75FF',
 	danger: '#dc2626',
-	pdf: '#ff2f05',
+	pdf: '#ff3814',
 	challenge: '#2E75FF',
-	video: '#f40f02',
+	video: '#ff2e2e',
 	theory: '#92B7FF',
 };
 /*

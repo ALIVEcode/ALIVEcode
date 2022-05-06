@@ -10,7 +10,6 @@ import { CourseContext } from '../../../state/contexts/CourseContext';
 import { ACTIVITY_TYPE } from '../../../Models/Course/activity.entity';
 import ActivityChallenge from './ActivityChallenge';
 import RichTextEditor from '../../RichTextComponents/RichTextEditor/RichTextEditor';
-import ButtonAdd from './ButtonAdd';
 import { Descendant } from 'slate';
 import Button from '../../UtilsComponents/Buttons/Button';
 import { useTranslation } from 'react-i18next';
@@ -41,6 +40,7 @@ import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
 import Popup from 'reactjs-popup';
 import MenuResourceCreation from '../../Resources/MenuResourceCreation/MenuResourceCreation';
 import Info from '../../HelpComponents/index';
+import Link from '../../UtilsComponents/Link/Link';
 
 /**
  * Shows the opened activity. Renders different component depending on the type of the activity opened.
@@ -351,7 +351,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 						)}
 					</div>
 				</div>
-				{activity.header !== null ? (
+				{activity.header ? (
 					<div className="flex justify-center items-center pb-5">
 						<div className="flex flex-row gap-2 text-sm w-full">
 							<div className="w-full">
@@ -378,7 +378,25 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					</div>
 				) : (
 					editMode && (
-						<ButtonAdd className="mb-5" what="header" activity={activity} />
+						<Link
+							className="mb-5"
+							onClick={async () => {
+								if (!activity) return;
+								const value = [
+									{
+										type: 'paragraph',
+										children: [
+											{
+												text: '',
+											},
+										],
+									},
+								];
+								await updateActivity(activity, { header: value });
+							}}
+						>
+							{t('course.add_header')}
+						</Link>
 					)
 				)}
 				<div>
@@ -462,7 +480,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 						</div>
 					)}
 				</div>
-				{activity.footer !== null ? (
+				{activity.footer ? (
 					<div className="flex justify-center items-center pt-5">
 						<div className="flex flex-row gap-2 text-sm w-full">
 							<div className="w-full">
@@ -489,7 +507,25 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					</div>
 				) : (
 					editMode && (
-						<ButtonAdd className="mt-5" what="footer" activity={activity} />
+						<Link
+							className="mt-5"
+							onClick={async () => {
+								if (!activity) return;
+								const value = [
+									{
+										type: 'paragraph',
+										children: [
+											{
+												text: '',
+											},
+										],
+									},
+								];
+								await updateActivity(activity, { footer: value });
+							}}
+						>
+							{t('course.add_footer')}
+						</Link>
 					)
 				)}
 				<div className="flex flex-row items-center justify-evenly py-12">

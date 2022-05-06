@@ -344,6 +344,10 @@
 		"layout_view": "Layout view",
 		"delete": "Delete this course. (It will be removed from all the classrooms it is in)",
 		"deletion_test": "Enter the name of the course to confirm the deletion",
+		"add_header": "Add a text header to this activity",
+		"add_footer": "Add a text footer to this activity",
+		"validate": "Confirm changes",
+		"start_writing": "Begin writing here...",
 		"template": {
 			"add": "Add a template",
 			"remove": "Remove the template"
@@ -734,7 +738,7 @@
 			"previous": "Previous"
 		},
 		"activity": {
-			"theory": "Activity that displays some theory for the course in a stlyed text document.",
+			"theory": "Activity that displays some theory for the course in a styled text document.",
 			"pdf": "Activity for viewing a pdf file.",
 			"video": "Activity for viewing a YouTube video or an mp4 video.",
 			"challenge": "Activity challenge to test what the student learned in the course.",

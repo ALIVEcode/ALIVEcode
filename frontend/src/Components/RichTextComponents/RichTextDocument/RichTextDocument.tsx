@@ -4,6 +4,7 @@ import { withHistory } from 'slate-history';
 import { createEditor, Descendant } from 'slate';
 import RichTextDocumentToolBar from './RichTextDocumentToolBar';
 import { RichTextDocumentProps } from './richTextDocumentTypes';
+import { useTranslation } from 'react-i18next';
 import {
 	renderElement,
 	renderLeaf,
@@ -29,6 +30,8 @@ const RichTextDocument = ({
 
 	const [value, setValue] = useState<Descendant[]>(defaultText); // The value of the editor.
 
+	const { t } = useTranslation();
+
 	return (
 		<div className={`flex bg-[color:var(--background-color)] `}>
 			<Slate
@@ -43,7 +46,7 @@ const RichTextDocument = ({
 				<div className="rounded-sm pl-2 bg-[color:var(--background-color)] cursor-text border border-[color:var(--bg-shade-two-color)] py-3 w-full h-full drop-shadow-md">
 					{!readOnly && <RichTextDocumentToolBar />}
 					<Editable
-						placeholder="Commencer à écrire..."
+						placeholder={t('course.start_writing')}
 						readOnly={readOnly}
 						renderElement={props => renderElement(props as any)}
 						// @ts-ignore - The type of the renderLeaf function is not correct.

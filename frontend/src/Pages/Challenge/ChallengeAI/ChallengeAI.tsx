@@ -33,6 +33,7 @@ import {
 } from '../../../Models/Ai/ai_model.entity';
 import api from '../../../Models/api';
 import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
+import { ACTIVATION_FUNCTIONS } from '../../../Models/Ai/ai_model.entity';
 
 /**
  * Ai challenge page. Contains all the components to display and make the ai challenge functionnal.
@@ -267,7 +268,11 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				nb_inputs: 3,
 				nb_outputs: 1,
 				neurons_by_layer: [10, 10, 10],
-				activations_by_layer: [],
+				activations_by_layer: [
+					ACTIVATION_FUNCTIONS.RELU,
+					ACTIVATION_FUNCTIONS.RELU,
+					ACTIVATION_FUNCTIONS.RELU,
+				],
 			},
 			optimizer: {
 				cost_function: COST_FUNCTIONS.MEAN_SQUARED_ERROR,
@@ -310,12 +315,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		}
 		cmd?.print(str + ']');
 
-		let myNetwork: NeuralNetwork = new NeuralNetwork(
-			'1',
-			hyperparams,
-			modelParams,
-		);
+		let myNetwork: NeuralNetwork = new NeuralNetwork('1', hyperparams);
 		let myOpt: GradientDescent = new GradientDescent(myNetwork, hyperparams);
+		console.log(myOpt);
 
 		let predictions: Matrix = myNetwork.predict(inputs);
 		predictions.displayInCmd(cmd);

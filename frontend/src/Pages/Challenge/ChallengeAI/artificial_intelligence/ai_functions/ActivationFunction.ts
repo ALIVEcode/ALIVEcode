@@ -1,3 +1,4 @@
+import { ACTIVATION_FUNCTIONS } from '../../../../../Models/Ai/ai_model.entity';
 import { Matrix } from '../AIUtils';
 
 /**
@@ -11,6 +12,37 @@ import { Matrix } from '../AIUtils';
  * - the Tangent Hyperbolic function.
  */
 export abstract class ActivationFunction {
+	/**
+	 * Computes the activation function for a single input and returns the resulting output.
+	 * @param input the input of the function.
+	 * @return the corresponding output.
+	 */
+	public abstract compute(input: number): number;
+
+	public abstract derivative(input: number): number;
+
+	/**
+	 * Creates and returns a new ActivationFunction object based on the type given in arguments.
+	 * @param activationFunctionType the type of ActivationFunction to be created.
+	 * @returns the new ActivationFunction object.
+	 */
+	public static createActivationFunction(
+		activationFunctionType: ACTIVATION_FUNCTIONS,
+	): ActivationFunction {
+		switch (activationFunctionType) {
+			case ACTIVATION_FUNCTIONS.RELU:
+				return new Relu();
+			case ACTIVATION_FUNCTIONS.SIGMOID:
+				return new Sigmoid();
+			case ACTIVATION_FUNCTIONS.TANH:
+				return new Tanh();
+			default:
+				throw new Error(
+					'Error: could not create Activation Function. The given type is propably unknown.',
+				);
+		}
+	}
+
 	/**
 	 * Computes the activation function on each element of a Matrix object.
 	 *
@@ -47,15 +79,6 @@ export abstract class ActivationFunction {
 		);
 		return new Matrix(outputValue);
 	}
-
-	/**
-	 * Computes the activation function for a single input and returns the resulting output.
-	 * @param input the input of the function.
-	 * @return the corresponding output.
-	 */
-	public abstract compute(input: number): number;
-
-	public abstract derivative(input: number): number;
 }
 
 /**

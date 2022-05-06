@@ -1,7 +1,13 @@
 import { Matrix } from '../AIUtils';
-import { CostFunction } from '../ai_functions/CostFunction';
+import {
+	CostFunction,
+	MeanAbsoluteError,
+	MeanSquaredError,
+	BinaryCrossEntropy,
+} from '../ai_functions/CostFunction';
 import { NeuralNetwork } from '../ai_models/ai_neural_networks/NeuralNetwork';
 import AIModel from '../../../../../Models/Ai/ai_model.entity';
+import { COST_FUNCTIONS } from '../../../../../Models/Ai/ai_model.entity';
 
 /**
  * This abstract class defines every type of algorithm that can optimize a Machine Learning
@@ -22,11 +28,11 @@ export default abstract class Optimizer {
 	public constructor(
 		learningRate: number,
 		epochs: number,
-		costFunc: CostFunction,
+		costFunc: COST_FUNCTIONS,
 	) {
 		this.learningRate = learningRate;
 		this.epochs = epochs;
-		this.costFunc = costFunc;
+		this.costFunc = CostFunction.createCostFunction(costFunc);
 	}
 
 	/**

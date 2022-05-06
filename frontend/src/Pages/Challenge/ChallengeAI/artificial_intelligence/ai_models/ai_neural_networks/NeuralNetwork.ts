@@ -71,7 +71,7 @@ export class NeuralNetwork extends AIModel {
 		// Hidden layers
 		for (let layer: number = 0; layer < nbLayers; layer++) {
 			// Initiates the layers if its the first layer
-			const activationFunction = this.getActivationFunction(
+			const activationFunction = this.createActivationFunction(
 				this.hyperparameters.model.activations_by_layer[layer],
 			);
 			this.layers.push(
@@ -94,7 +94,7 @@ export class NeuralNetwork extends AIModel {
 
 		const activationFunctions =
 			this.hyperparameters.model.activations_by_layer.map(a =>
-				this.getActivationFunction(a),
+				this.createActivationFunction(a),
 			);
 
 		let nbActivations: number = activationFunctions.length;
@@ -142,7 +142,9 @@ export class NeuralNetwork extends AIModel {
 		}
 	}
 
-	private getActivationFunction(activationFunctionType: ACTIVATION_FUNCTIONS) {
+	private createActivationFunction(
+		activationFunctionType: ACTIVATION_FUNCTIONS,
+	) {
 		switch (activationFunctionType) {
 			case ACTIVATION_FUNCTIONS.RELU:
 				return new Relu();

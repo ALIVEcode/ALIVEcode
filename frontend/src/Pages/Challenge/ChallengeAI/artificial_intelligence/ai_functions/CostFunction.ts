@@ -1,3 +1,4 @@
+import { COST_FUNCTIONS } from '../../../../../Models/Ai/ai_model.entity';
 import {
 	Matrix,
 	matMulConstant,
@@ -39,6 +40,26 @@ export abstract class CostFunction {
 	 * @return the Matrix of all computed derivatives.
 	 */
 	public abstract matDerivative(predicted: Matrix, real: Matrix): Matrix;
+
+	/**
+	 * Creates and returns a new CostFunction object based on the type given in arguments.
+	 * @param functionType the type of CostFunction to be created.
+	 * @returns the new CostFunction object.
+	 */
+	public static createCostFunction(functionType: COST_FUNCTIONS): CostFunction {
+		switch (functionType) {
+			case COST_FUNCTIONS.MEAN_ABSOLUTE_ERROR:
+				return new MeanAbsoluteError();
+			case COST_FUNCTIONS.MEAN_SQUARED_ERROR:
+				return new MeanSquaredError();
+			case COST_FUNCTIONS.BINARY_CROSS_ENTROPY:
+				return new BinaryCrossEntropy();
+			default:
+				throw new Error(
+					'Error: could not create Cost Function. The given type is propably unknown.',
+				);
+		}
+	}
 }
 
 /**

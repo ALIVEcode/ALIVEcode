@@ -270,6 +270,7 @@ const ResourceMenu = ({
 							) : (
 								resources.map(r => (
 									<ResourceCard
+										key={r.id}
 										onSelectResource={onSelectResource}
 										mode={mode}
 										resource={r}

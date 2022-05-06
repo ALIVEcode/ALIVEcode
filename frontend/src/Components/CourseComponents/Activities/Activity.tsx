@@ -277,12 +277,9 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 				on="click"
 				position="top center"
 				trigger={
-					<div
-						className="border text-sm p-1 cursor-pointer text-[color:var(--fg-shade-four-color)] border-[color:var(--fg-shade-four-color)]
-										 opacity-75 transition-colors hover:opacity-100 hover:bg-[color:var(--fg-shade-four-color)] hover:text-[color:var(--background-color)]"
-					>
+					<Button variant="primary">
 						{t('course.activity.edit_resource')}
-					</div>
+					</Button>
 				}
 				closeOnDocumentClick
 				closeOnEscape
@@ -405,12 +402,12 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 							{editMode && (
 								<div className="flex flex-row items-end gap-2">
 									<EditResource resource={activity.resource} />
-									<div
+									<Button
+										variant="danger"
 										onClick={() => removeResourceFromActivity(activity)}
-										className="border text-sm p-1 cursor-pointer text-red-600 border-red-600 opacity-75 transition-colors hover:opacity-100 hover:bg-red-600 hover:text-white"
 									>
 										{t('course.activity.remove_resource')}
-									</div>
+									</Button>
 								</div>
 							)}
 						</div>

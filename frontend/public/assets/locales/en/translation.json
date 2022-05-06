@@ -378,7 +378,8 @@
 				},
 				"AS": "Upload a file from this device"
 			},
-			"remove_resource": "Remove the ressource",
+			"edit_resource": "Edit the resource",
+			"remove_resource": "Remove the resource",
 			"next": "Next activity",
 			"previous": "Previous activity",
 			"delete": "Are you sure you want to delete this activity? The resources contained inside it will not be deleted."

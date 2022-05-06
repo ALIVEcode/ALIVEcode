@@ -378,6 +378,7 @@
 				},
 				"AS": "Téléverser un fichier depuis cet appareil"
 			},
+			"edit_resource": "Modifier la ressource",
 			"remove_resource": "Retirer la ressource",
 			"next": "Activité suivante",
 			"previous": "Activité précédente",

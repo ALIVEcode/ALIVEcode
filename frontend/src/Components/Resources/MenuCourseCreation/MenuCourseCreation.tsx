@@ -161,9 +161,9 @@ const MenuCourseCreation = ({
 		return (
 			<div className="tablet:px-8 laptop:px-16 desktop:px-36 flex flex-row text-center">
 					{selectedTemplate ? (
-						<>
-							<div className="m-auto mb-4 w-11/12">
-								<CourseTemplateCard template={selectedTemplate} />
+						<div className="flex flex-col w-11/12">
+							<div className="m-auto mb-4 w-full">
+								<CourseTemplateCard template={selectedTemplate} className="!w-full" />
 							</div>
 							<Button
 								variant="danger"
@@ -171,7 +171,7 @@ const MenuCourseCreation = ({
 							>
 								{t('course.template.remove')}
 							</Button>
-						</>
+						</div>
 					) : (
 						<Button
 							variant="primary"

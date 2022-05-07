@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
  * CourseTemplate card used to render a visual representation of a CourseTemplate and its content
  * @param template CourseTemplate to render
  * @param onSelect Callback when the CourseTemplate is clicked
+ * @param className
  * @returns The CourseTemplate card
  *
  * @author Enric Soldevila
@@ -15,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 const CourseTemplateCard = ({
 	template,
 	onSelect,
+	className,
 }: CourseTemplateCardProps) => {
 	const { t } = useTranslation();
 
@@ -23,6 +25,7 @@ const CourseTemplateCard = ({
 			className={classNames(
 				'w-64 h-56 flex flex-col whitespace-nowrap gap-2 p-4 rounded-2xl border border-[color:var(--bg-shade-four-color)] bg-[color:var(--background-color)]',
 				onSelect && 'cursor-pointer hover:bg-[color:var(--bg-shade-one-color)]',
+				className,
 			)}
 			onClick={() => onSelect && onSelect(template)}
 		>

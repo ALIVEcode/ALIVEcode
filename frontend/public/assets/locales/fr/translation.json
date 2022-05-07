@@ -309,6 +309,7 @@
 		"delete": "Supprimer la classe",
 		"leave": "Quitter la classe",
 		"already_in": "Déjà dans la classe",
+		"import_course": "Ajouter un de vos cours dans votre classe",
 		"container": {
 			"courses": {
 				"title": "Cours",

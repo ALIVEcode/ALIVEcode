@@ -309,6 +309,7 @@
 		"delete": "Delete classroom",
 		"leave": "Leave classroom",
 		"already_in": "Already in classroom",
+		"import_course": "Add one of your courses inside your classroom",
 		"container": {
 			"courses": {
 				"title": "Courses",

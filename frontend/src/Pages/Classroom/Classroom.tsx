@@ -18,6 +18,7 @@ import ClassroomHeader from '../../Components/ClassroomComponents/ClassroomHeade
 import CourseCard from '../../Components/CourseComponents/CourseCard/CourseCard';
 import Badge from '../../Components/UtilsComponents/Badge/Badge';
 import { DashboardContext } from '../../state/contexts/DashboardContext';
+import Modal from '../../Components/UtilsComponents/Modal/Modal';
 
 const StyledDiv = styled.div`
 	background-color: var(--background-color);
@@ -42,7 +43,8 @@ const StyledDiv = styled.div`
 const Classroom = ({ classroomProp, ...props }: ClassroomProps) => {
 	const { t } = useTranslation();
 	const { user } = useContext(UserContext);
-	const { setOpenFormCreateCourse } = useContext(DashboardContext);
+	const [importModalOpen, setImportModalOpen] = useState(false);
+	const { getCourses } = useContext(DashboardContext);
 	const [classroom, setClassroom] = useState<ClassroomModel | undefined>(
 		classroomProp ?? undefined,
 	);
@@ -80,6 +82,8 @@ const Classroom = ({ classroomProp, ...props }: ClassroomProps) => {
 		return <LoadingScreen />;
 	}
 
+	const courses = getCourses();
+
 	return (
 		<StyledDiv>
 			<ClassroomHeader classroom={classroom} />
@@ -89,7 +93,7 @@ const Classroom = ({ classroomProp, ...props }: ClassroomProps) => {
 					title={t('classroom.container.courses.title')}
 					height="60px"
 					icon={classroom.creator.id === user.id ? faPlus : undefined}
-					onIconClick={() => setOpenFormCreateCourse(true, classroom)}
+					onIconClick={async () => setImportModalOpen(true)}
 				>
 					{classroom.courses && classroom.courses.length > 0 ? (
 						classroom.courses.map((c, idx) => (
@@ -139,6 +143,31 @@ const Classroom = ({ classroomProp, ...props }: ClassroomProps) => {
 					</div>
 				</div>
 			</div>
+			<Modal
+				title={t('classroom.import_course')}
+				open={importModalOpen}
+				setOpen={setImportModalOpen}
+			>
+				{courses.length === 0 ? (
+					<div>{t('dashboard.courses.empty')}</div>
+				) : (
+					courses
+						.filter(c => !classroom.courses?.some(course => course.id === c.id))
+						.map(c => (
+							<CourseCard
+								onSelect={async () => {
+									await api.db.courses.addCourseInsideClassroom(
+										c,
+										classroom.id,
+									);
+									await classroom.addCourse(c);
+									setImportModalOpen(false);
+								}}
+								course={c}
+							/>
+						))
+				)}
+			</Modal>
 		</StyledDiv>
 	);
 };

@@ -34,6 +34,11 @@ export class Classroom extends CreatedByUser {
 		return this.students;
 	}
 
+	async addCourse(course: Course) {
+		if (!this.courses) this.courses = await this.getCourses();
+		this.courses.push(course);
+	}
+
 	getSubjectDisplay() {
 		return this.subject[0].toUpperCase() + this.subject.slice(1);
 	}

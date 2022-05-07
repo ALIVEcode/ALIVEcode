@@ -287,6 +287,9 @@ const api = {
 				).data;
 				return URL.createObjectURL(res);
 			},
+			async addCourseInsideClassroom(course: Course, classId: string) {
+				return (await axios.post(`courses/${course.id}`, { classId })).data;
+			},
 			async addResourceInActivity(
 				course: Course,
 				activity: Activity,

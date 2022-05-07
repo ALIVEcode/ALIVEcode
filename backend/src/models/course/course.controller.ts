@@ -46,6 +46,7 @@ import { ResourceVideoEntity } from '../resource/entities/resources/resource_vid
 import { MoveElementDTO } from './dtos/MoveElement.dto';
 import { isUUID } from 'class-validator';
 import { SectionEntity } from './entities/section.entity';
+import { AddCourseInClassroomDTO } from './dtos/AddCourseInClassroom';
 
 /**
  * All the routes to create/update/delete/get a course or it's content (CourseElements)
@@ -106,6 +107,19 @@ export class CourseController {
   @UseGuards(CourseProfessor)
   async update(@Course() course: CourseEntity, @Body() updateCourseDto: CourseEntity) {
     return await this.courseService.update(course.id, updateCourseDto);
+  }
+
+  /**
+   * Route to add a course inside a classroom
+   * @param course Course to add inside the classroom
+   * @param dto DTO to add a course inside a classroom
+   * @returns The updated course
+   */
+  @Post(':id')
+  @Auth()
+  @UseGuards(CourseAccess)
+  async addCourseInClassroom(@Body() dto: AddCourseInClassroomDTO, @Course() course: CourseEntity) {
+    return await this.courseService.addCourseInClassroom(course, dto.classId);
   }
 
   /**

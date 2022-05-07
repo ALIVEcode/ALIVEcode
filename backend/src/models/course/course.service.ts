@@ -60,12 +60,23 @@ export class CourseService {
     course = await this.courseRepository.save(course);
 
     // If a classroom is specified, add the course to the classroom
-    if (createCourseDto.classId) {
-      const classroom = await this.classroomRepo.findOne(createCourseDto.classId, { relations: ['courses'] });
-      if (!classroom) throw new HttpException('Classroom not found', HttpStatus.NOT_FOUND);
-      classroom.courses.push(course);
-      await this.classroomRepo.save(classroom);
-    }
+    if (createCourseDto.classId) await this.addCourseInClassroom(course, createCourseDto.classId);
+
+    return course;
+  }
+
+  /**
+   * Adds a course inside a classroom
+   * @param course Course to add inside the classroom
+   * @param classroomId Id of the classroom to add the course in
+   * @returns The updated course
+   */
+  async addCourseInClassroom(course: CourseEntity, classroomId: string) {
+    // If a classroom is specified, add the course to the classroom
+    const classroom = await this.classroomRepo.findOne(classroomId, { relations: ['courses'] });
+    if (!classroom) throw new HttpException('Classroom not found', HttpStatus.NOT_FOUND);
+    classroom.courses.push(course);
+    await this.classroomRepo.save(classroom);
     return course;
   }
 

@@ -4,12 +4,12 @@ import {
 	typeAskForUserInput,
 } from './challengeTypes';
 import {
-	useEffect,
-	useState,
-	useContext,
-	useRef,
 	useCallback,
+	useContext,
+	useEffect,
 	useMemo,
+	useRef,
+	useState,
 } from 'react';
 import {
 	Challenge as ChallengeModel,

@@ -125,6 +125,7 @@
 		"cancel": "Annuler"
 	},
 	"msg": {
+		"language": "Langage",
 		"courseTemplate": "modèle de cours",
 		"bundle": "trousse pédagogique",
 		"resource": "ressource",

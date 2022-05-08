@@ -436,6 +436,7 @@
 		"news": "News",
 		"iot": {
 			"desc": "IoT has never been easier",
+			"to_home_page": "Go to ALIVEIoT Home Page",
 			"to_dashboard": "To Dashboard",
 			"to_trainings": "To Trainings",
 			"section": {

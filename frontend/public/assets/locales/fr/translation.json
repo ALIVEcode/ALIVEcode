@@ -773,6 +773,12 @@
 			"maximize": "Ce bouton remet la barre de navigation comme elle était",
 			"professor_view": "Vous pouvez retourner en mode vue professeur en cliquant sur ce bouton."
 		},
+		"course_layout": {
+			"welcome": "Bienvenue dans votre éditeur de cours. Ici vous pourrez modifier votre cours à votre guise. C'est-à-dire, créer des sections ou activités, modifier leur contenu, les supprimer, les cacher, les déplacer, etc.",
+			"edit_title": "Vous pouvez modifier le titre de votre cours en cliquant sur celui-ci.",
+			"see_student_view": "Vous pouvez basculer en vue élève à tout moment afin de visualiser le cours comme un élève le verrait en cliquant sur ce bouton.",
+			"see_view": "Vous pouvez voir à tout moment dans quel vue vous êtes grâce à cet indicateur ici."
+		},
 		"resource_menu": {
 			"resources": "Toutes vos ressources créées ou acquéries en tant que professeur seront affichées et modifiables ici",
 			"create_resource": "Si vous souhaitez créer une ressource, vous pouvez le faire depuis ce menu en cliquant sur le bouton \"$t(resources.form.create)\"",

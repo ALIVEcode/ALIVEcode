@@ -772,7 +772,10 @@
 			"see_view": "You can see in which view you are by looking here"
 		},
 		"course_layout": {
-			"welcome": "Welcome to the course layout editor"
+			"welcome": "Welcome to your course editor. Here you will be able to modify the content of your course as you please. That includes creating sections and activities, change their content, delete them, hide them, move them, etc.",
+			"edit_title": "You can modify the title of your course anytime by clicking on its name.",
+			"see_student_view": "You can go into the student view to see what a student would see if they were to follow your course by clicking on this button.",
+			"see_view": "At any given time, you can see in which view you are by checking this label."
 		},
 		"navigation": {
 			"explanation": "That is the student view of the course.",

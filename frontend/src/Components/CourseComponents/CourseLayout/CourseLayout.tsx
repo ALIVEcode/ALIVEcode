@@ -29,7 +29,6 @@ const CourseLayout = () => {
 	const { routes, goTo } = useRoutes();
 	const { t } = useTranslation();
 	const titleRef = useRef<HTMLDivElement>(null);
-	const addElementButtonRef = useRef<HTMLDivElement>(null);
 	const goToStudentViewRef = useRef<HTMLDivElement>(null);
 	const { registerTutorial } = useContext(TutorialContext);
 
@@ -42,28 +41,23 @@ const CourseLayout = () => {
 				},
 				{
 					ref: document.getElementById('course-title'),
-					infoBox: <Info.Box text={t('help.course.edit_title')} />,
-					position: 'bottom center',
-				},
-				{
-					ref: document.getElementById('course-view'),
-					infoBox: <Info.Box text={t('help.course.see_view')} />,
-					position: 'left center',
-				},
-				{
-					ref: addElementButtonRef.current,
-					infoBox: <Info.Box text="aa" />,
+					infoBox: <Info.Box text={t('help.course_layout.edit_title')} />,
 					position: 'bottom center',
 				},
 				{
 					ref: goToStudentViewRef.current,
-					infoBox: <Info.Box text={t('help.course.see_student_view')} />,
+					infoBox: <Info.Box text={t('help.course_layout.see_student_view')} />,
 					position: 'right center',
+				},
+				{
+					ref: document.getElementById('course-view'),
+					infoBox: <Info.Box text={t('help.course_layout.see_view')} />,
+					position: 'left center',
 				},
 			],
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [t]);
 
 	if (!course) {
 		goTo(routes.auth.dashboard.path);
@@ -75,6 +69,7 @@ const CourseLayout = () => {
 			<div className="sticky z-10 right-6 top-0">
 				<FontAwesomeIcon
 					icon={faUserGraduate}
+					forwardedRef={goToStudentViewRef}
 					name={t('course.activity.open_in_student_view')}
 					size="3x"
 					title={t('course.student_view')}

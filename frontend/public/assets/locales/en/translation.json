@@ -342,15 +342,15 @@
 		"deletion_test": "Enter the name of the course to confirm the deletion",
 		"validate_activity": "Confirm changes",
 		"start_writing": "Begin writing here...",
-		"template": {
-			"add": "Add a template",
-			"remove": "Remove the template"
-		},
 		"section": {
 			"empty": "This section has no activities.",
 			"new": "Add a Section",
 			"delete": "Are you sure you want to delete this section? All the elements contained inside it will also be deleted.",
 			"new_name": "Section #{{num}}"
+		},
+		"template": {
+			"add": "Add a template",
+			"remove": "Remove the template"
 		},
 		"activity": {
 			"open": "Open",
@@ -767,10 +767,6 @@
 				"recent_courses": "This view lets you access quickly where you last left off. You can see your courses sorted by the last time you went inside of it.",
 				"challenges": "This view is where all your challenges are stored. You can see all your challenges here and also create new ones, modify existing ones and deleting the ones you don't want."
 			}
-		},
-		"course": {
-			"edit_title": "Click here to edit the title",
-			"see_view": "You can see in which view you are by looking here"
 		},
 		"course_layout": {
 			"welcome": "Welcome to your course editor. Here you will be able to modify the content of your course as you please. That includes creating sections and activities, change their content, delete them, hide them, move them, etc.",

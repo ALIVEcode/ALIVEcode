@@ -44,7 +44,7 @@ const Classroom = ({ classroomProp, ...props }: ClassroomProps) => {
 	const { t } = useTranslation();
 	const { user } = useContext(UserContext);
 	const [importModalOpen, setImportModalOpen] = useState(false);
-	const { getCourses } = useContext(DashboardContext);
+	const { courses } = useContext(DashboardContext);
 	const [classroom, setClassroom] = useState<ClassroomModel | undefined>(
 		classroomProp ?? undefined,
 	);
@@ -81,8 +81,6 @@ const Classroom = ({ classroomProp, ...props }: ClassroomProps) => {
 	if (!classroom || !user) {
 		return <LoadingScreen />;
 	}
-
-	const courses = getCourses();
 
 	return (
 		<StyledDiv>
@@ -148,9 +146,7 @@ const Classroom = ({ classroomProp, ...props }: ClassroomProps) => {
 				open={importModalOpen}
 				setOpen={setImportModalOpen}
 			>
-				{courses.length === 0 ? (
-					<div>{t('dashboard.courses.empty')}</div>
-				) : (
+				{courses && courses.length > 0 ? (
 					courses
 						.filter(c => !classroom.courses?.some(course => course.id === c.id))
 						.map(c => (
@@ -166,6 +162,8 @@ const Classroom = ({ classroomProp, ...props }: ClassroomProps) => {
 								course={c}
 							/>
 						))
+				) : (
+					<div>{t('dashboard.courses.empty')}</div>
 				)}
 			</Modal>
 		</StyledDiv>

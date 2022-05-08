@@ -662,6 +662,13 @@ const Course = () => {
 					if (firstActivity) setTab({ openedActivity: firstActivity });
 				}
 
+				// Updating the global state of a user
+				if (user?.courses) {
+					user.courses = user.courses.map(c =>
+						c.id === course.current?.id ? course.current : c,
+					);
+				}
+
 				// Updating the state
 				course.current.elements = elements;
 				setCourseTitle(course.current.name);

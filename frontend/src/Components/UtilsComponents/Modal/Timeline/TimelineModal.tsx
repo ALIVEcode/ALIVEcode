@@ -222,6 +222,10 @@ const TimelineModal = ({
 			hideFooter
 			hideSubmitButton
 			title={title}
+			onKeyDownEnter={() => {
+				console.log(canGoNext());
+				canGoNext() && nextPageOrClose();
+			}}
 			onShow={() => {
 				setCurrentPage(0);
 				modalProps.onShow && modalProps.onShow();

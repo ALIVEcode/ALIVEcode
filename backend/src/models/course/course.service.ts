@@ -221,10 +221,6 @@ export class CourseService {
       .where('course.id = :courseId', { courseId })
       .andWhere('elements.sectionParentId IS NULL')
       .getOne();
-    /*const course = await this.courseRepository.findOne(courseId, {
-			where: { 'elements.section': null },
-			relations: ['elements'],
-		});*/
     if (!course) throw new HttpException('Course not found', HttpStatus.NOT_FOUND);
     course.elements.forEach(element => (element.courseId = course.id));
     return course;

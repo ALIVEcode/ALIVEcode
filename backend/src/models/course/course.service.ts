@@ -141,6 +141,8 @@ export class CourseService {
       creator: newProfessor,
       code: newCode,
       id: undefined,
+      elements: undefined,
+      classrooms: undefined,
     });
 
     const cloneElements = async (

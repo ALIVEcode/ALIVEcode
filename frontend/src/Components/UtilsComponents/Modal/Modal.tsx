@@ -69,7 +69,10 @@ const Modal = (props: ModalProps) => {
 	useEffect(() => {
 		if (open && onKeyDownEnter) {
 			const onKeyDownHandler = (e: KeyboardEvent) =>
-				onKeyDownEnter && e.key.toLowerCase() === 'enter' && onKeyDownEnter();
+				onKeyDownEnter &&
+				e.key &&
+				e.key.toLowerCase() === 'enter' &&
+				onKeyDownEnter();
 
 			window.addEventListener('keydown', onKeyDownHandler);
 			return () => window.removeEventListener('keydown', onKeyDownHandler);

@@ -756,19 +756,15 @@
 		},
 		"dashboard": {
 			"tabs": {
-				"recent_courses": "------",
-				"challenges": "------",
-				"my_resources": "------",
-				"create_classroom": "------",
-				"create_course": "------"
+				"recent_courses": "Here you can find the most recent courses you've been in",
+				"challenges": "Here you can find your created challenges",
+				"resources": "Here you can find, modify, delete and create your resources",
+				"create_classroom": "Here you can find your classrooms",
+				"create_course": "Here you can find all your created courses"
 			},
 			"views": {
-				"recent_courses": "------",
-				"challenges": "------",
-				"my_resources": "------",
-				"classroom": {
-					"create_course": "------"
-				}
+				"recent_courses": "This view lets you access quickly where you last left off. You can see your courses sorted by the last time you went inside of it.",
+				"challenges": "This view is where all your challenges are stored. You can see all your challenges here and also create new ones, modify existing ones and deleting the ones you don't want."
 			}
 		},
 		"course": {

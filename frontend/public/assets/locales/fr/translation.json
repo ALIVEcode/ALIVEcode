@@ -757,17 +757,13 @@
 			"tabs": {
 				"recent_courses": "Voici l'endroit où se retrouve vos cours récemment visité",
 				"challenges": "Voici l'endroit où se retrouve vos défis",
-				"resources": "Voici l'endroit où se retrouve vos ressources",
+				"resources": "Voici l'endroit où vous pouvez voir, modifier, supprimer et créer vos ressources",
 				"create_classroom": "Voici l'endroit où se retrouve vos classes",
 				"create_course": "Voici l'endroit où se retrouve les cours que vous avez créés"
 			},
 			"views": {
 				"recent_courses": "Cette vue vous permet de reprendre rapidement là où vous vous êtes arrêté en classant vos cours du plus récemment ouverts au moins récemment ouverts.",
-				"challenges": "Cette vue représente votre bibliothèque de défis. En plus d'y retrouvez tous les défis que vous avez, c'est ici que vous pourrez en créer de nouveaux, éditer ceux qui existent déjà et supprimer ceux que vous ne voulez plus.",
-				"my_resources": "",
-				"classroom": {
-					"create_course": ""
-				}
+				"challenges": "Cette vue représente votre bibliothèque de défis. En plus d'y retrouvez tous les défis que vous avez, c'est ici que vous pourrez en créer de nouveaux, éditer ceux qui existent déjà et supprimer ceux que vous ne voulez plus."
 			}
 		},
 		"navigation": {

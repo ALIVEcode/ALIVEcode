@@ -192,7 +192,15 @@ const MenuResourceCreation = ({
 			case RESOURCE_TYPE.THEORY:
 				return <></>;
 			case RESOURCE_TYPE.VIDEO:
-				return (
+				return updateMode ? (
+					!resourceIsFile && (
+						<InputGroup
+							label={t('resources.video.form.url')}
+							errors={errors.resource?.url}
+							{...register('resource.url', { required: false })}
+						/>
+					)
+				) : (
 					<>
 						<div onChange={onChangeRadio}>
 							<input
@@ -234,7 +242,9 @@ const MenuResourceCreation = ({
 					</>
 				);
 			case RESOURCE_TYPE.PDF:
-				return (
+				return updateMode ? (
+					<></>
+				) : (
 					<>
 						<InputGroup
 							type="file"
@@ -248,7 +258,9 @@ const MenuResourceCreation = ({
 					</>
 				);
 			case RESOURCE_TYPE.FILE:
-				return (
+				return updateMode ? (
+					<></>
+				) : (
 					<>
 						<InputGroup
 							type="file"

@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import {
+	getResourceColor,
 	getResourceIcon,
 	RESOURCE_TYPE,
 } from '../../../Models/Resource/resource.entity';
@@ -20,12 +21,10 @@ import FormInput from '../../UtilsComponents/FormInput/FormInput';
 import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
 import TypeCard from '../../UtilsComponents/Cards/TypeCard/TypeCard';
 import { SUBJECTS } from '../../../Types/sharedTypes';
-import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
-import MenuCreation from '../../UtilsComponents/MenuCreation/MenuCreation';
 import Button from '../../UtilsComponents/Buttons/Button';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import useComplexState from '../../../state/hooks/useComplexState';
-import { getResourceColor } from '../../../Models/Resource/resource.entity';
+import Timeline from '../../UtilsComponents/Modal/Timeline';
 
 /**
  * @description renders the menu for creating a resource of the given type
@@ -323,7 +322,36 @@ const MenuResourceCreation = ({
 	return (
 		<>
 			{mode === 'modal' ? (
-				<MenuCreation
+				<Timeline.Modal
+					title={
+						updateMode ? t('resources.form.update') : t('resources.form.create')
+					}
+					open={open!}
+					setOpen={setOpen!}
+					onSubmit={async () => {
+						try {
+							let r = true;
+							const func = handleSubmit(onSubmit, () => {
+								r = false;
+							});
+							await func();
+							return r;
+						} catch {
+							return false;
+						}
+					}}
+					submitText={
+						updateMode ? t('resources.form.update') : t('resources.form.create')
+					}
+					submitButtonVariant="primary"
+				>
+					{!updateMode && (
+						<Timeline.Page>{renderPageResourceType()}</Timeline.Page>
+					)}
+					<Timeline.Page>{renderPageResourceInfos()}</Timeline.Page>
+				</Timeline.Modal>
+			) : (
+				/*<MenuCreation
 					title={
 						updateMode ? t('resources.form.update') : t('resources.form.create')
 					}
@@ -335,8 +363,7 @@ const MenuResourceCreation = ({
 				>
 					{!updateMode && renderPageResourceType()}
 					{renderPageResourceInfos()}
-				</MenuCreation>
-			) : (
+				</MenuCreation>*/
 				<div className="flex flex-col justify-items-center">
 					{!updateMode && renderPageResourceType()}
 					{renderPageResourceInfos()}

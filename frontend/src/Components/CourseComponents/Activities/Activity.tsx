@@ -94,6 +94,23 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 	);
 
 	/**
+	 * Gets the accepted type files for the file HTML input
+	 */
+	const getAcceptedFileTypes = () => {
+		const resourceType = activity.allowedResources[0];
+		switch (resourceType) {
+			case RESOURCE_TYPE.PDF:
+				return 'application/pdf,application/vnd.ms-excel';
+			case RESOURCE_TYPE.VIDEO:
+				return 'video/mp4,video/x-m4v,video/*';
+			case RESOURCE_TYPE.FILE:
+			case RESOURCE_TYPE.CHALLENGE:
+			case RESOURCE_TYPE.THEORY:
+				return undefined;
+		}
+	};
+
+	/**
 	 * Loads the resource inside the activity
 	 * @author Enric Soldevila
 	 */
@@ -563,6 +580,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					id="file-upload"
 					name="file-upload"
 					type="file"
+					accept={getAcceptedFileTypes()}
 					className="hidden"
 					ref={inputFileRef}
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

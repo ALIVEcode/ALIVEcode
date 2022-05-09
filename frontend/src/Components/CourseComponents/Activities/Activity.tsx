@@ -392,25 +392,30 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					</div>
 				) : (
 					editMode && (
-						<Link
-							className="mb-5"
-							onClick={async () => {
-								if (!activity) return;
-								const value = [
-									{
-										type: 'paragraph',
-										children: [
-											{
-												text: '',
-											},
-										],
-									},
-								];
-								await updateActivity(activity, { header: value });
-							}}
-						>
-							{t('course.activity.add_header')}
-						</Link>
+						<div className="border-t border-b my-6 py-2 border-[color:var(--fg-shade-four-color)]">
+							<div
+								className="w-full hover:bg-[color:rgb(var(--bg-shade-two-color-rgb),0.5)] transition-all
+								py-2 px-1 cursor-pointer hover:underline"
+								onClick={async () => {
+									if (!activity) return;
+									const value = [
+										{
+											type: 'paragraph',
+											children: [
+												{
+													text: '',
+												},
+											],
+										},
+									];
+									await updateActivity(activity, { header: value });
+								}}
+							>
+								<Link className="mb-5 opacity-70 w-full pl-3 !text-[color:var(--fg-shade-four-color)]">
+									{t('course.activity.add_header') + '...'}
+								</Link>
+							</div>
+						</div>
 					)
 				)}
 				<div>
@@ -518,25 +523,30 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					</div>
 				) : (
 					editMode && (
-						<Link
-							className="mt-5"
-							onClick={async () => {
-								if (!activity) return;
-								const value = [
-									{
-										type: 'paragraph',
-										children: [
-											{
-												text: '',
-											},
-										],
-									},
-								];
-								await updateActivity(activity, { footer: value });
-							}}
-						>
-							{t('course.activity.add_footer')}
-						</Link>
+						<div className="border-t border-b my-6 py-2 border-[color:var(--fg-shade-four-color)]">
+							<div
+								className="w-full hover:bg-[color:rgb(var(--bg-shade-two-color-rgb),0.5)] transition-all
+								py-2 px-1 cursor-pointer hover:underline"
+								onClick={async () => {
+									if (!activity) return;
+									const value = [
+										{
+											type: 'paragraph',
+											children: [
+												{
+													text: '',
+												},
+											],
+										},
+									];
+									await updateActivity(activity, { footer: value });
+								}}
+							>
+								<Link className="mb-5 opacity-70 w-full pl-3 !text-[color:var(--fg-shade-four-color)]">
+									{t('course.activity.add_footer') + '...'}
+								</Link>
+							</div>
+						</div>
 					)
 				)}
 				{editMode && (

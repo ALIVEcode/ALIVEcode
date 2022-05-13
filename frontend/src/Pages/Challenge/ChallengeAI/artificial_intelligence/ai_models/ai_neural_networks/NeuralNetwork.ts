@@ -1,4 +1,4 @@
-import { Matrix, normalizeByRow, randomMatrix, zeros } from '../../AIUtils';
+import { Matrix, randomMatrix, zeros } from '../../AIUtils';
 import { NeuralLayer } from './NeuralLayer';
 import {
 	ActivationFunction,
@@ -6,7 +6,7 @@ import {
 	Sigmoid,
 	Tanh,
 } from '../../ai_functions/ActivationFunction';
-import { NNHyperparameters, NNModelParams } from '../../AIEnumsInterfaces';
+import { NNHyperparameters, NNModelParams } from '../../AIInterfaces';
 import AIModel, {
 	ACTIVATION_FUNCTIONS,
 	MODEL_TYPES,
@@ -42,7 +42,7 @@ export class NeuralNetwork extends AIModel {
 	 * property can be empty if we want to create a Neural Network from scratch.
 	 */
 	constructor(
-		id: string,
+		id: string | null,
 		hyperparameters: NNHyperparameters,
 		modelParams?: NNModelParams,
 	) {
@@ -71,7 +71,7 @@ export class NeuralNetwork extends AIModel {
 		// Hidden layers
 		for (let layer: number = 0; layer < nbLayers; layer++) {
 			// Initiates the layers if its the first layer
-			const activationFunction = this.createActivationFunction(
+			const activationFunction = ActivationFunction.createActivationFunction(
 				this.hyperparameters.model.activations_by_layer[layer],
 			);
 			this.layers.push(
@@ -94,7 +94,7 @@ export class NeuralNetwork extends AIModel {
 
 		const activationFunctions =
 			this.hyperparameters.model.activations_by_layer.map(a =>
-				this.createActivationFunction(a),
+				ActivationFunction.createActivationFunction(a),
 			);
 
 		let nbActivations: number = activationFunctions.length;
@@ -142,24 +142,10 @@ export class NeuralNetwork extends AIModel {
 		}
 	}
 
-	private createActivationFunction(
-		activationFunctionType: ACTIVATION_FUNCTIONS,
-	) {
-		switch (activationFunctionType) {
-			case ACTIVATION_FUNCTIONS.RELU:
-				return new Relu();
-			case ACTIVATION_FUNCTIONS.SIGMOID:
-				return new Sigmoid();
-			case ACTIVATION_FUNCTIONS.TANH:
-				return new Tanh();
-		}
-	}
-
 	//---- PREDICTION METHODS ----//
 
 	public predict(inputs: Matrix): Matrix {
 		let output: Matrix[] = this.predictReturnAll(inputs);
-		//throw new Error("Test des erreurs");
 		return output[output.length - 1];
 	}
 
@@ -171,7 +157,7 @@ export class NeuralNetwork extends AIModel {
 	 * @returns the outputs of all layers of the model.
 	 */
 	public predictReturnAll(inputs: Matrix): Matrix[] {
-		let output: Matrix = normalizeByRow(inputs);
+		let output: Matrix = this.normalizeByRow(inputs);
 		let outputArray: Matrix[] = [];
 
 		// Computes the outputs for each layer.
@@ -260,5 +246,15 @@ export class NeuralNetwork extends AIModel {
 			allActivations.push(this.layers[layer].getActivation());
 		}
 		return allActivations;
+	}
+
+	public setNormalization(
+		inputMeans: number[],
+		inputDeviations: number[],
+		outputMean?: number | undefined,
+		outputDeviation?: number | undefined,
+	): void {
+		this.inputMeans = inputMeans;
+		this.inputDeviations = inputDeviations;
 	}
 }

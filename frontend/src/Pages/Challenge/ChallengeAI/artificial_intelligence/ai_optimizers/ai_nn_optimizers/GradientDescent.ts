@@ -5,16 +5,21 @@ import {
 	matMulConstant,
 	zeros,
 	matSubtract,
-	normalizeByRow,
 } from '../../AIUtils';
 import { ActivationFunction } from '../../ai_functions/ActivationFunction';
 import { NeuralNetwork } from '../../ai_models/ai_neural_networks/NeuralNetwork';
-import { NNHyperparameters } from '../../AIEnumsInterfaces';
+import { NNHyperparameters } from '../../AIInterfaces';
 import { NNOptimizer } from './NNOptimizer';
 
 /**
- * This ANN Optimizer implements the Standard Gradient Descent algogithm to optimize the Model
+ * This NN Optimizer implements the Standard Gradient Descent algogithm to optimize the Model
  * parameters of a NeuralNetwork Model.
+ *
+ * Gradient descent is the basic algorithm for optimizing the parameters of a neural network.
+ * It uses a cost function that tells the algorithm if the model performs well or not. It then
+ * can change the model's parameters in order to minimize the cost function and find the
+ * smallest possible value. To achieve this, the algorithm uses derivatives of the cost function
+ * and those of the functions inside the neural network.
  */
 export class GradientDescent extends NNOptimizer {
 	/**
@@ -31,7 +36,7 @@ export class GradientDescent extends NNOptimizer {
 	public optimizeOneEpoch(inputs: Matrix, outputArray: Matrix[], real: Matrix) {
 		const activations: ActivationFunction[] = this.model.getAllActivations();
 		const nbLayers: number = this.model.getAllActivations().length;
-		const inputArray: Matrix[] = [normalizeByRow(inputs)]
+		const inputArray: Matrix[] = [this.model.normalizeByRow(inputs)]
 			.concat(outputArray)
 			.slice(0, -1);
 		const nbData: number = inputs.getValue()[0].length;
@@ -46,14 +51,14 @@ export class GradientDescent extends NNOptimizer {
 
 		for (let layer: number = nbLayers - 1; layer >= 0; layer--) {
 			if (layer !== nbLayers - 1) {
-				// Calculation of dz for the output layer
+				// Calculation of dz for hidden layers
 				dz = matMul(oldWeights[layer + 1].transpose(), dz);
 				dz = matMulElementWise(
 					dz,
 					activations[layer].matDerivative(outputArray[layer]),
 				);
 			} else {
-				// Calculation of dz for hidden layers
+				// Calculation of dz for the output layer
 				let actDev: Matrix = activations[layer].matDerivative(
 					outputArray[layer],
 				);
@@ -86,9 +91,5 @@ export class GradientDescent extends NNOptimizer {
 
 			this.model.setBiasesByLayer(layer, newBiases);
 		}
-	}
-
-	public getModel() {
-		return this.model;
 	}
 }

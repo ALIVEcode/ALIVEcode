@@ -2,6 +2,7 @@ import { Transform, Type } from 'class-transformer';
 import AIModel, { MODEL_TYPES } from '../Ai/ai_model.entity';
 import { IoTProject, IoTProjectLayout } from '../Iot/IoTproject.entity';
 import { NeuralNetwork } from '../../Pages/Challenge/ChallengeAI/artificial_intelligence/ai_models/ai_neural_networks/NeuralNetwork';
+import { GenAIModel } from '../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIInterfaces';
 
 export type ChallengeAliveProgressionData = {
 	code?: string;
@@ -48,7 +49,7 @@ export class ChallengeProgression {
 		}
 		return undefined;
 	})
-	aiModel?: NeuralNetwork;
+	aiModel?: GenAIModel;
 	aiModelId: string;
 
 	@Type(() => IoTProject)

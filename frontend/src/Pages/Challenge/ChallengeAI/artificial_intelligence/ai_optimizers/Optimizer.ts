@@ -1,19 +1,17 @@
 import { Matrix } from '../AIUtils';
-import {
-	CostFunction,
-	MeanAbsoluteError,
-	MeanSquaredError,
-	BinaryCrossEntropy,
-} from '../ai_functions/CostFunction';
-import { NeuralNetwork } from '../ai_models/ai_neural_networks/NeuralNetwork';
-import AIModel from '../../../../../Models/Ai/ai_model.entity';
+import { CostFunction } from '../ai_functions/CostFunction';
 import { COST_FUNCTIONS } from '../../../../../Models/Ai/ai_model.entity';
+import { GenAIModel, GenHyperparameters } from '../AIInterfaces';
 
 /**
  * This abstract class defines every type of algorithm that can optimize a Machine Learning
  * Model. All types of optimizer must extend from this class.
  */
 export default abstract class Optimizer {
+	protected abstract hyperparams: GenHyperparameters;
+	protected abstract model: GenAIModel;
+	// The following properties are already available in the hyperparams property. They are used for
+	// conveninence purpose.
 	protected learningRate: number;
 	protected epochs: number;
 	protected costFunc: CostFunction;
@@ -36,14 +34,14 @@ export default abstract class Optimizer {
 	}
 
 	/**
-	 * Optimizez the optimizer's modedl by applying one iteration of the optimizer's algorithm.
+	 * Optimizez the optimizer's model by applying one iteration of the optimizer's algorithm.
 	 * @param inputs the training dataset as a Matrix.
 	 * @param outputArray a Matrix array of outputs from each model's layers.
 	 * @param real the expected outputs for each input data.
 	 */
 	public abstract optimizeOneEpoch(
 		inputs: Matrix,
-		outputArray: Matrix[],
+		outputArray: Matrix[] | Matrix,
 		real: Matrix,
 	): void;
 
@@ -51,6 +49,7 @@ export default abstract class Optimizer {
 	 * Runs the Optimizer's algorithm on the model by plugging the input Matrix and the
 	 * expected values. The method goes through this algorithm for x iteration, where x is the
 	 * number of epochs.
+	 *
 	 * The returned model is a Neual Network with parameters that are set in a way that minimizes the
 	 * cost function of the optimizer. This can be achieved by making the model return values that are
 	 * as close as possible to the given expected values for their corresponding input data.
@@ -58,10 +57,11 @@ export default abstract class Optimizer {
 	 * @param real the expected values for each data.
 	 * @returns the model with optimized parameters.
 	 */
-	public abstract optimize(
-		inputs: Matrix,
-		real: Matrix,
-	): AIModel | NeuralNetwork;
+	public abstract optimize(inputs: Matrix, real: Matrix): GenAIModel;
+
+	public computeCost(inputs: Matrix, real: Matrix): number {
+		return this.costFunc.matCompute(this.model.predict(inputs), real);
+	}
 
 	/**
 	 * Returns the Cost Function object of this optimizer.

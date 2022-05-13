@@ -10,30 +10,36 @@ import dataAI from './dataAI.json';
 import ChallengeTable from '../../../Components/ChallengeComponents/ChallengeTable/ChallengeTable';
 import ChallengeGraph from '../../../Components/ChallengeComponents/ChallengeGraph/ChallengeGraph';
 import PolyOptimizer from './artificial_intelligence/PolyOptmizer';
-import RegressionOptimizer from './artificial_intelligence/RegressionOptimizer';
-import DataTypes from '../../../Components/ChallengeComponents/ChallengeGraph/DataTypes';
-import PolyRegression from '../../../Components/ChallengeComponents/ChallengeGraph/PolyRegression';
+import DataPoint from '../../../Components/ChallengeComponents/ChallengeGraph/DataTypes';
 import { ChallengeContext } from '../../../state/contexts/ChallengeContext';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import ChallengeToolsBar from '../../../Components/ChallengeComponents/ChallengeToolsBar/ChallengeToolsBar';
 import { NeuralNetwork } from './artificial_intelligence/ai_models/ai_neural_networks/NeuralNetwork';
-import { Relu } from './artificial_intelligence/ai_functions/ActivationFunction';
 import { Matrix } from './artificial_intelligence/AIUtils';
-import { MeanSquaredError } from './artificial_intelligence/ai_functions/CostFunction';
-import dataTest from './dataTest.json';
 import {
+	GenHyperparameters,
 	NNHyperparameters,
 	NNModelParams,
-} from './artificial_intelligence/AIEnumsInterfaces';
+} from './artificial_intelligence/AIInterfaces';
 import { useAlert } from 'react-alert';
 import { GradientDescent } from './artificial_intelligence/ai_optimizers/ai_nn_optimizers/GradientDescent';
 import {
 	NN_OPTIMIZER_TYPES,
 	COST_FUNCTIONS,
+	MODEL_TYPES,
 } from '../../../Models/Ai/ai_model.entity';
 import api from '../../../Models/api';
-import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
 import { ACTIVATION_FUNCTIONS } from '../../../Models/Ai/ai_model.entity';
+import { PolyRegression } from './artificial_intelligence/PolyRegression';
+import {
+	RegHyperparameters,
+	GenAIModel,
+} from './artificial_intelligence/AIInterfaces';
+import {
+	RegModelParams,
+	GenOptimizer,
+} from './artificial_intelligence/AIInterfaces';
+import { GenRegression } from './artificial_intelligence/AIInterfaces';
 
 /**
  * Ai challenge page. Contains all the components to display and make the ai challenge functionnal.
@@ -67,10 +73,20 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	const [cmdRef, cmd] = useCmd();
 	const alert = useAlert();
 
+	//TODO replace these codes with the ones chosen in the interface
+	const IOCodes = useRef<number[]>([-1, 1, 0]);
+	let inputs = useRef<Matrix>();
+	let outputs = useRef<Matrix>();
+	let means = useRef<number[]>();
+	let outputMean = useRef<number>();
+	let outputDeviation = useRef<number>();
+	let deviations = useRef<number[]>();
+
 	// Loading the dataset when first renders
 	useEffect(() => {
 		const getDataset = async () => {
 			challenge.dataset = await api.db.ai.getDataset(challenge.datasetId);
+			setDataset();
 		};
 		getDataset();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -86,9 +102,10 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					resetGraph,
 					optimizeRegression,
 					evaluate: (x: number) => evaluate(x),
-					costMSE: () => costMSE(),
+					costFunction,
 					showRegression,
 					testNeuralNetwork,
+					setDataset,
 				},
 				challenge.name,
 				askForUserInput,
@@ -116,11 +133,27 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	//Set the data for the challenge
 	const [data] = useState(dataAI);
-	let allFuncs = useRef<PolyRegression[]>([]);
-	let lastFunc = useRef<PolyRegression>();
+
+	let model = useRef<GenAIModel>();
+
+	/* To be implemented in the next commit
+	(() => {
+		if(editMode) {
+			if(challenge.hyperParams) 
+		}
+		if (progression?.aiModel) return progression.aiModel;
+		switch (challenge.modelType) {
+			case MODEL_TYPES.NEURAL_NETWORK:
+				return new NeuralNetwork(null, hyperparams);
+			case MODEL_TYPES.REGRESSION:
+				return new PolyRegression(null, hyperparams);
+		}
+	});
+	*/
+	let regression = useRef<GenRegression>();
 
 	//The dataset of the prototype AI course
-	const mainDataset: DataTypes = {
+	const mainDataset: DataPoint = {
 		type: 'scatter',
 		label: "Distance parcourue en fonction de l'énergie",
 		data: data,
@@ -129,7 +162,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	};
 
 	//The initial dataset of any course, which is no data
-	const initialDataset: DataTypes = Object.freeze({
+	const initialDataset: DataPoint = Object.freeze({
 		type: 'scatter',
 		label: "Distance parcourue en fonction de l'énergie",
 		data: [{}],
@@ -139,12 +172,41 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	let datasets = useRef([initialDataset, initialDataset]);
 	const [chartData, setChartData] = useState({ datasets: [initialDataset] });
 
+	//TODO link this declaration to the interface when completed
+	//Change the type to GenHyperparameters
+	const hyperparams: RegHyperparameters = Object.freeze({
+		model: {
+			regressionType: MODEL_TYPES.POLY_REGRESSION,
+		},
+		optimizer: {
+			costFunction: COST_FUNCTIONS.MEAN_SQUARED_ERROR,
+			learningRate: 0.1,
+			epochs: 2000,
+		},
+	});
+
+	let optimizer = useRef<GenOptimizer>();
+
+	/**
+	 * Sets the statistics related to the current dataset from this challenge.
+	 * This function is called every time the run button is hit and when the dataset is
+	 * loaded for the first time.
+	 */
+	function setDataset() {
+		[inputs.current, outputs.current] = challenge.dataset!.getInputsOutputs(
+			IOCodes.current,
+		);
+		means.current = inputs.current.meanOfAllRows();
+		outputMean.current = outputs.current.meanOfAllRows()[0];
+		deviations.current = inputs.current.deviationOfAllRows();
+		outputDeviation.current = outputs.current.deviationOfAllRows()[0];
+	}
+
 	/**
 	 * Resets the dataset array and the data shown on the graph.
 	 */
 	function resetGraph() {
 		datasets.current = [initialDataset, initialDataset];
-		allFuncs.current = [];
 		setChart();
 	}
 
@@ -159,7 +221,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * Adds a new datasets to the dataset array.
 	 * @param newData the new dataset to add.
 	 */
-	function setDataOnGraph(newData: DataTypes): void {
+	function setDataOnGraph(newData: DataPoint): void {
 		if (datasets.current[0] === initialDataset) {
 			datasets.current = [newData];
 		} else datasets.current[1] = newData;
@@ -183,15 +245,25 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @param d the param d of a polynomial regression.
 	 */
 	function createRegression(a: number, b: number, c: number, d: number) {
-		lastFunc.current = new PolyRegression(a, b, c, d);
-		allFuncs.current.push(lastFunc.current);
+		const modelParams: RegModelParams = {
+			params: [a, b, c, d],
+		};
+		regression.current = new PolyRegression('1', hyperparams, modelParams);
+		regression.current.setNormalization(
+			means.current!,
+			deviations.current!,
+			outputMean.current,
+			outputDeviation.current,
+		);
+		optimizer.current = new PolyOptimizer(regression.current, hyperparams);
+		model.current = regression.current;
 	}
 
 	/**
 	 * Generates the latest regression's points and shows them on the graph.
 	 */
 	function showRegression() {
-		const points = lastFunc.current!.generatePoints();
+		const points = regression.current!.generatePoints();
 		setDataOnGraph(points);
 	}
 
@@ -208,13 +280,17 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	}
 
 	/**
-	 * Calculates the MSE cost for the current regression compared to the dataset of the challenge.
+	 * Calculates the cost for the current model compared to the dataset of the challenge.
 	 * @returns the calculated cost.
 	 */
-	function costMSE(): string {
-		setDataOnGraph(mainDataset);
-		showRegression();
-		return 'Erreur du modèle : ' + lastFunc.current!.computeMSE(data);
+	function costFunction(): string {
+		if (!model.current) {
+			return "Erreur : aucun modèle n'a été créé jusqu'à présent. Veuillez créer un modèle afin de calculer son erreur.";
+		}
+		return (
+			'Erreur du modèle : ' +
+			optimizer.current!.computeCost(inputs.current!, outputs.current!)
+		);
 	}
 
 	/**
@@ -222,28 +298,29 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * the graph.
 	 * @param lr the learning rate for the optimization algorithm.
 	 */
-	function optimizeRegression(lr: number, epoch: number): string | void {
-		if (!lastFunc.current) return;
-		const optimizer: PolyOptimizer = new PolyOptimizer(
-			lastFunc.current,
-			lr,
-			epoch,
-			RegressionOptimizer.costMSE,
+	function optimizeRegression(): string | void {
+		if (!model.current) {
+			return "Erreur : aucun modèle n'a été créé jusqu'à présent.";
+		}
+		model.current = optimizer.current?.optimize(
+			inputs.current!,
+			outputs.current!,
 		);
-		lastFunc.current = optimizer.optimize(data);
 		showRegression();
-		return lastFunc.current.paramsToString();
+		return "Fin de l'optimisation";
 	}
 
+	//TODO rethink this function
 	/**
 	 * Evaluates the model with the value specified and returns the result.
 	 * @param x the input of the model.
 	 * @returns the output of the model.
 	 */
-	function evaluate(x: number): number {
+	function evaluate(predInputs: number): number {
 		setDataOnGraph(mainDataset);
 		showRegression();
-		return lastFunc.current!.compute(x);
+		const matInputs: Matrix = new Matrix([[predInputs]]);
+		return model.current!.predict(matInputs.transpose()).getValue()[0][0];
 	}
 
 	// FOR TESTING PURPOSE ONLY, TO BE DELETED WHEN NEURAL NETWORK IMPLEMENTATION WORKS //
@@ -260,8 +337,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				0,
 			);
 		}
-
-		let model = progression?.aiModel;
 
 		let hyperparams: NNHyperparameters = {
 			model: {

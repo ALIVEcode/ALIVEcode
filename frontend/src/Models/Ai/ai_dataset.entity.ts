@@ -2,6 +2,8 @@ import { Type } from 'class-transformer';
 import {
 	appendRow,
 	Matrix,
+	mean,
+	stdDev,
 } from '../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtils';
 
 /**
@@ -12,6 +14,8 @@ export class AIDataset {
 	private id: string;
 	private name: string;
 	private data: any[];
+	private means: number[];
+	private deviations: number[];
 
 	@Type(() => Date)
 	private creationDate: Date;
@@ -108,6 +112,7 @@ export class AIDataset {
 	/**
 	 * Returns the data as a Matrix object, where each row represents a parameter
 	 * and each column a data.
+	 *
 	 * The Matrix cannot accept strings, meaning that every string parameter should be converted
 	 * as numbers before calling this method.
 	 * @returns a Matrix representing the data.
@@ -125,8 +130,17 @@ export class AIDataset {
 			}
 		}
 
+		// Calculate the means and deviations for each parameter (for normalizaiton)
+		const dataArray: number[][] = this.getDataAsArray();
+		this.means = [];
+		this.deviations = [];
+		for (let param: number = 0; param < dataArray.length; param++) {
+			this.means.push(mean(dataArray[param]));
+			this.deviations.push(stdDev(dataArray[param]));
+		}
+
 		// Create and return the Matrix by calling get
-		return new Matrix(this.getDataAsArray());
+		return new Matrix(dataArray);
 	}
 
 	/**
@@ -183,6 +197,7 @@ export class AIDataset {
 					} else {
 						inputs = appendRow(inputs, dataMatrix.getMatrixRow(param));
 					}
+
 					break;
 
 				// If the selected param is an output
@@ -208,6 +223,16 @@ export class AIDataset {
 					);
 			}
 		}
+
+		// Calculate the means and deviations for each parameter (for normalizaiton)
+		const dataArray: number[][] = inputs.getValue();
+		this.means = [];
+		this.deviations = [];
+		for (let param: number = 0; param < dataArray.length; param++) {
+			this.means.push(mean(dataArray[param]));
+			this.deviations.push(stdDev(dataArray[param]));
+		}
+
 		return [inputs, outputs];
 	}
 
@@ -234,5 +259,21 @@ export class AIDataset {
 	 */
 	public getName(): string {
 		return this.name;
+	}
+
+	/**
+	 * Returns the array of means for this dataset.
+	 * @returns the array of means.
+	 */
+	public getMeans(): number[] {
+		return this.means;
+	}
+
+	/**
+	 * Returns the array of standard deviations for this dataset.
+	 * @returns the array of deviations.
+	 */
+	public getDeviations(): number[] {
+		return this.deviations;
 	}
 }

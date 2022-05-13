@@ -1,4 +1,4 @@
-import { NNHyperparameters } from '../../AIEnumsInterfaces';
+import { NNHyperparameters } from '../../AIInterfaces';
 import { Matrix } from '../../AIUtils';
 import { NeuralNetwork } from '../../ai_models/ai_neural_networks/NeuralNetwork';
 import Optimizer from '../Optimizer';
@@ -8,6 +8,9 @@ import Optimizer from '../Optimizer';
  * models. All Neural Network optimizers have to extend from this class.
  */
 export abstract class NNOptimizer extends Optimizer {
+	protected model: NeuralNetwork;
+	protected hyperparams: NNHyperparameters;
+
 	/**
 	 * Creates an Optimizer for the given Neural Network based on the hyperparameters
 	 * object.
@@ -18,15 +21,14 @@ export abstract class NNOptimizer extends Optimizer {
 	 * - the number of epochs,
 	 * - the type of cost function.
 	 */
-	public constructor(
-		protected model: NeuralNetwork,
-		protected hyperparams: NNHyperparameters,
-	) {
+	public constructor(model: NeuralNetwork, hyperparams: NNHyperparameters) {
 		super(
 			hyperparams.optimizer.learning_rate,
 			hyperparams.optimizer.epochs,
 			hyperparams.optimizer.cost_function,
 		);
+		this.model = model;
+		this.hyperparams = hyperparams;
 	}
 
 	public optimize(inputs: Matrix, real: Matrix): NeuralNetwork {

@@ -1,13 +1,8 @@
-import { DataSample, Matrix } from './AIUtils';
-import RegressionOptimizer from './RegressionOptimizer';
-import {
-	NNHyperparameters,
-	NNModelParams,
-	RegHyperparameters,
-	RegModelParams,
-} from './AIEnumsInterfaces';
+import { Matrix } from './AIUtils';
+import { RegHyperparameters, RegModelParams } from './AIInterfaces';
 import { Regression } from './ai_models/Regression';
-import DataTypes from '../../../../Components/ChallengeComponents/ChallengeGraph/DataTypes';
+import DataPoint from '../../../../Components/ChallengeComponents/ChallengeGraph/DataTypes';
+import { MODEL_TYPES } from '../../../../Models/Ai/ai_model.entity';
 
 /**
  * This class defines a third degree polynomial function that can be shown in a scatter plot of a line graph.
@@ -20,200 +15,31 @@ import DataTypes from '../../../../Components/ChallengeComponents/ChallengeGraph
  *
  * @author Félix Jobin
  */
-export default class PolyRegression {
-	private static ROUNDING = 1000;
-	private static DATA_FORMATTING: DataTypes = {
-		type: 'line',
-		label: 'Fonction polynomiale',
-		data: [{}],
-		borderColor: 'rgb(33, 87, 145)',
-		borderWidth: 3,
-		pointRadius: 3,
-		pointBorderWidth: 0,
-		pointBackgroundColor: 'black',
-	};
-	private static NB_POINTS = 20;
-	private static MIN_RANGE = 0;
-	private static MAX_RANGE = 100;
+export class PolyRegression extends Regression {
+	protected static NB_PARAMS = 4;
 
-	/**
-	 * Creates a function with its 4 parameters.
-	 * @param a the parameter for x^3.
-	 * @param b the parameter for x^2.
-	 * @param c the parameter for x^1.
-	 * @param d the parameter for x^0.
-	 */
-	constructor(
-		private a: number,
-		private b: number,
-		private c: number,
-		private d: number,
-	) {}
-
-	/**
-	 * Computes the polynomial regression with the specified input.
-	 * @param x the input of the regression.
-	 * @returns the output of the regression.
-	 */
-	public compute(x: number): number {
-		return this.a * Math.pow(x, 3) + this.b * x * x + this.c * x + this.d;
-	}
-
-	/**
-	 * Computes the regression for a given array of inputs.
-	 * @param x an array of inputs.
-	 * @returns the output for all inputs.
-	 */
-	public computeAll(x: number[]): number[] {
-		return x.map((sample: number) => this.compute(sample));
-	}
-
-	/**
-	 * Calculates the MSE cost function for this regression compared to a dataset.
-	 * @param dataset the dataset to fit.
-	 * @returns the value of the error.
-	 */
-	public computeMSE(dataset: DataSample[]): number {
-		const independent: number[] = dataset.map(
-			(sample: DataSample) => sample['x'],
-		);
-		const expected: number[] = dataset.map((sample: DataSample) => sample['y']);
-		const predicted: number[] = this.computeAll(independent);
-		return RegressionOptimizer.costMSE(predicted, expected);
-	}
-
-	/**
-	 * Generates an object with formatting settings and an array of points that can be used to be plotted on a graph.
-	 * @returns an object with formatting settings and an array of points
-	 */
-	public generatePoints(): DataTypes {
-		let points = [];
-
-		// Generate points
-		const jump =
-			(PolyRegression.MAX_RANGE - PolyRegression.MIN_RANGE) /
-			PolyRegression.NB_POINTS;
-		for (let i = 0; i < PolyRegression.NB_POINTS; i++) {
-			const x = PolyRegression.MIN_RANGE + i * jump;
-			const y = this.a * Math.pow(x, 3) + this.b * x * x + this.c * x + this.d;
-			points.push({
-				id: i * this.a * this.b * this.c * this.d * jump,
-				x: x,
-				y: Math.round(y * PolyRegression.ROUNDING) / PolyRegression.ROUNDING,
-			});
-		}
-
-		const data: DataTypes = PolyRegression.DATA_FORMATTING;
-		data.data = points;
-		return data;
-	}
-
-	/**
-	 * Returns a copy of the existing Regression.
-	 * @returns a copy of the Regression object.
-	 */
-	public copy(): PolyRegression {
-		return new PolyRegression(this.a, this.b, this.c, this.d);
-	}
-
-	/**
-	 * Returns the a parameter of the Regression.
-	 * @returns the a parameter.
-	 */
-	public getA(): number {
-		return this.a;
-	}
-
-	/**
-	 * Returns the b parameter of the Regression.
-	 * @returns the b parameter.
-	 */
-	public getB(): number {
-		return this.b;
-	}
-
-	/**
-	 * Returns the c parameter of the Regression.
-	 * @returns the c parameter.
-	 */
-	public getC(): number {
-		return this.c;
-	}
-
-	/**
-	 * Returns the d parameter of the Regression.
-	 * @returns the d parameter.
-	 */
-	public getD(): number {
-		return this.d;
-	}
-
-	/**
-	 * Sets all parameters of the PolyRegression at the same time.
-	 * @param newA the new parameter for x^3.
-	 * @param newB the new parameter for x^2.
-	 * @param newC the new parameter for x^1.
-	 * @param newD the new parameter for x^0.
-	 */
-	public setParams(newA: number, newB: number, newC: number, newD: number) {
-		this.a = newA;
-		this.b = newB;
-		this.c = newC;
-		this.d = newD;
-	}
-
-	/**
-	 * Returns the rounding factor of the class.
-	 * @returns the rounding factor.
-	 */
-	public static getRounding() {
-		return PolyRegression.ROUNDING;
-	}
-
-	public paramsToString(): string {
-		const rounding = PolyRegression.getRounding();
-		const roundA = Math.round(this.a * rounding) / rounding;
-		const roundB = Math.round(this.b * rounding) / rounding;
-		const roundC = Math.round(this.c * rounding) / rounding;
-		const roundD = Math.round(this.d * rounding) / rounding;
-		return (
-			'a = ' +
-			roundA +
-			', b = ' +
-			roundB +
-			', c = ' +
-			roundC +
-			', d = ' +
-			roundD
-		);
-	}
-}
-
-export class PolyRegression2 extends Regression {
 	private a: number;
 	private b: number;
 	private c: number;
 	private d: number;
 
 	constructor(
-		id: string,
+		id: string | null,
 		hyperparams: RegHyperparameters,
 		modelParams: RegModelParams,
 	) {
-		super(id, hyperparams, modelParams);
+		super(
+			id,
+			hyperparams,
+			modelParams,
+			MODEL_TYPES.POLY_REGRESSION,
+			PolyRegression.NB_PARAMS,
+		);
+		this.setParams(modelParams.params);
 	}
 
-	protected loadModel(): void {
-		this.setParams(this.modelParams.params);
-	}
-
-	protected createModel(): void {
-		throw new Error('Method not implemented.');
-	}
-
-	public generatePoints(): DataTypes {
+	public generatePoints(): DataPoint {
 		let points = [];
-
 		// Generate points
 		const jump =
 			(Regression.MAX_RANGE - Regression.MIN_RANGE) / Regression.NB_POINTS;
@@ -226,17 +52,16 @@ export class PolyRegression2 extends Regression {
 				y: Math.round(y * Regression.ROUNDING) / Regression.ROUNDING,
 			});
 		}
-
-		const data: DataTypes = Regression.DATA_FORMATTING;
+		const data: DataPoint = Regression.DATA_FORMATTING;
 		data.data = points;
 		return data;
 	}
 
-	public copy(): PolyRegression2 {
+	public copy(): PolyRegression {
 		let params: RegModelParams = {
 			params: [this.a, this.b, this.c, this.d],
 		};
-		return new PolyRegression2(this.id, this.hyperparameters, params);
+		return new PolyRegression(this.id, this.hyperparameters, params);
 	}
 
 	/**
@@ -272,15 +97,14 @@ export class PolyRegression2 extends Regression {
 	}
 
 	public setParams(newParams: number[]): void {
-		if (newParams.length !== Regression.NB_PARAMS_POLY) {
+		if (newParams.length !== PolyRegression.NB_PARAMS) {
 			throw new Error(
 				'Error: could not load the PolyRegression Model. There are ' +
 					newParams.length +
 					' when there should be ' +
-					Regression.NB_PARAMS_POLY,
+					PolyRegression.NB_PARAMS,
 			);
 		}
-
 		// Assigning the values to each parameter.
 		this.a = newParams[0];
 		this.b = newParams[1];
@@ -307,15 +131,7 @@ export class PolyRegression2 extends Regression {
 	}
 
 	public predictOne(input: number): number {
-		return (
-			this.a * Math.pow(input, 3) +
-			this.b * input * input +
-			this.c * input +
-			this.d
-		);
-	}
-
-	public predict(inputs: Matrix): Matrix {
-		return new Matrix(0, 0);
+		const x: number = input;
+		return this.a * Math.pow(x, 3) + this.b * x * x + this.c * x + this.d;
 	}
 }

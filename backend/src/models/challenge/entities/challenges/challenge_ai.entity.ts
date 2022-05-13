@@ -10,6 +10,10 @@ export class ChallengeAIEntity extends ChallengeEntity {
   @IsOptional()
   initialCode?: string;
 
+  @Column({ type: 'json', nullable: false })
+  @IsOptional()
+  hyperParams: object;
+
   @Column({ nullable: true })
   @IsOptional()
   solution?: string;

@@ -1,11 +1,15 @@
-import {
+import AIModel, {
 	ACTIVATION_FUNCTIONS,
 	COST_FUNCTIONS,
 	NN_OPTIMIZER_TYPES,
-	REGRESSION_TYPES,
 } from '../../../../Models/Ai/ai_model.entity';
-import { CostFunction } from './ai_functions/CostFunction';
-import Optimizer from './ai_optimizers/Optimizer';
+import { PolyRegression } from './PolyRegression';
+import { Regression } from './ai_models/Regression';
+import { NNOptimizer } from './ai_optimizers/ai_nn_optimizers/NNOptimizer';
+import { GradientDescent } from './ai_optimizers/ai_nn_optimizers/GradientDescent';
+import { NeuralNetwork } from './ai_models/ai_neural_networks/NeuralNetwork';
+import PolyOptimizer from './PolyOptmizer';
+import { MODEL_TYPES } from '../../../../Models/Ai/ai_model.entity';
 
 /*
 This file gathers all enum classes and interfaces used in AI algorithms.
@@ -38,13 +42,12 @@ export interface NNHyperparameters {
  */
 export interface RegHyperparameters {
 	model: {
-		RegressionType: REGRESSION_TYPES;
+		regressionType: MODEL_TYPES;
 	};
 	optimizer: {
-		costFunction: CostFunction;
+		costFunction: COST_FUNCTIONS;
 		learningRate: number;
 		epochs: number;
-		type: Optimizer;
 	};
 }
 
@@ -68,3 +71,9 @@ export interface LayerParams {
 export interface RegModelParams {
 	params: number[];
 }
+
+export type GenRegression = PolyRegression;
+export type GenOptimizer = GradientDescent | PolyOptimizer;
+export type GenAIModel = PolyRegression | NeuralNetwork;
+export type GenHyperparameters = NNHyperparameters | RegHyperparameters;
+export type GenModelParams = NNModelParams | RegModelParams;

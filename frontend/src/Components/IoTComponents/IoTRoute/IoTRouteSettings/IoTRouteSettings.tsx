@@ -9,11 +9,13 @@ import LoadingScreen from '../../../UtilsComponents/LoadingScreen/LoadingScreen'
 import Form from '../../../UtilsComponents/Form/Form';
 import { FORM_ACTION } from '../../../UtilsComponents/Form/formTypes';
 import FormLabel from '../../../UtilsComponents/FormLabel/FormLabel';
+import { UserContext } from '../../../../state/contexts/UserContext';
 
 const IoTRouteSettings = ({ route }: IoTRouteSettingsProps) => {
 	const { asScript: script } = route;
 	const { project, canEdit, updateScript, updateRoute } =
 		useContext(IoTProjectContext);
+	const { user } = useContext(UserContext);
 
 	if (!project) return <LoadingScreen />;
 
@@ -53,14 +55,17 @@ const IoTRouteSettings = ({ route }: IoTRouteSettingsProps) => {
 						updateScript(route, asScript);
 					}}
 					asScript={script}
-				></AsScript>
+				/>
 			) : (
 				<Button
 					variant="third"
 					onClick={async () => {
-						const asScript = new AsScriptModel();
-						asScript.content = '# New Script';
-						asScript.name = `Script for route ${route.name}`;
+						if (!user) return;
+						const asScript = new AsScriptModel(
+							`Script for route ${route.name}`,
+							'# New Script',
+							user,
+						);
 						const script = await api.db.iot.projects.createScriptRoute(
 							project.id,
 							route.id,

@@ -25,7 +25,7 @@ import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
  *
  * @param {Classroom} classroom classroom object
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const ClassroomHeader: React.FC<
 	ClassroomHeaderProps &
@@ -165,8 +165,8 @@ const ClassroomHeader: React.FC<
 				onConfirm={async () => {
 					user?.isProfessor()
 						? await api.db.classrooms.delete({ id: classroom.id })
-						: leaveClassroom();
-					await user?.removeClassroom(classroom);
+						: await leaveClassroom();
+					user?.removeClassroom(classroom);
 					navigate(routes.auth.dashboard.path + '/recents');
 				}}
 			/>

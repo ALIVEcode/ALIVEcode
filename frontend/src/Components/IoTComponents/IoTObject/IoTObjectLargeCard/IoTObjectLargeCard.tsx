@@ -5,7 +5,11 @@ import Card from '../../../UtilsComponents/Cards/Card/Card';
 import IoTIcon from '../../../../assets/images/icons/iot-icon.png';
 import { IoTObjectLargeCardProps } from './iotObjectLargeCardeTypes';
 
-const IoTObjectLargeCard = ({ object, onUpdate }: IoTObjectLargeCardProps) => {
+const IoTObjectLargeCard = ({
+	object,
+	onUpdate,
+	onDelete,
+}: IoTObjectLargeCardProps) => {
 	const [settingsOpen, setSettingsOpen] = useState(false);
 
 	return (
@@ -27,8 +31,12 @@ const IoTObjectLargeCard = ({ object, onUpdate }: IoTObjectLargeCardProps) => {
 						setSettingsOpen(false);
 						onUpdate(obj);
 					}}
+					onDelete={obj => {
+						setSettingsOpen(false);
+						onDelete && onDelete(obj);
+					}}
 					object={object}
-				></IoTObjectSettings>
+				/>
 			</Modal>
 		</>
 	);

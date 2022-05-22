@@ -8,20 +8,21 @@ import { useState, useContext } from 'react';
 import LoadingScreen from '../../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-	faRoute,
 	faCog,
 	faPlug,
 	faChevronUp,
 	faChevronDown,
 } from '@fortawesome/free-solid-svg-icons';
 import IoTProjectInterface from '../../../Components/IoTComponents/IoTProject/IoTProjectInterface/IotProjectInterface';
-import IoTProjectAccess from '../../../Components/IoTComponents/IoTProject/IoTProjectAccess/IoTProjectAccess';
+import IoTProjectObjects from '../../../Components/IoTComponents/IoTProject/IoTProjectObjects/IoTProjectObjects';
 import IoTProjectRoutes from '../../../Components/IoTComponents/IoTProject/IoTProjectRoutes/IoTProjectRoutes';
 import IoTProjectSettings from '../../../Components/IoTComponents/IoTProject/IoTProjectSettings/IoTProjectSettings';
 import { IoTProjectContext } from '../../../state/contexts/IoTProjectContext';
 import { Disclosure } from '@headlessui/react';
 import { classNames } from '../../../Types/utils';
 import IoTProjectDocuments from '../../../Components/IoTComponents/IoTProject/IoTProjectDocuments/IoTProjectDocuments';
+import { useTranslation } from 'react-i18next';
+import IoTProjectScripts from '../../../Components/IoTComponents/IoTProject/IoTProjectScripts/IoTProjectScripts';
 
 /**
  * IoTProject. On this page are all the components essential in the functionning of an IoTProject.
@@ -29,26 +30,31 @@ import IoTProjectDocuments from '../../../Components/IoTComponents/IoTProject/Io
  *
  * @param {string} id id of the project (as url prop)
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const IoTProjectPage = () => {
-	const { project } = useContext(IoTProjectContext);
+	const { project, objectsRunning } = useContext(IoTProjectContext);
+	const { t } = useTranslation();
 	const [selectedOption, setSelectedOption] =
 		useState<IoTProjectOptions>('settings');
 	const [selectedTab, setSelectedTab] = useState<IoTProjectTabs>('interface');
 
 	const tabs: IoTProjectTab[] = [
 		{
-			name: 'Interface',
+			name: t('iot.project.interface.name'),
 			type: 'interface',
 		},
 		{
-			name: 'Documents',
+			name: t('iot.project.documents.name'),
 			type: 'documents',
 		},
 		{
-			name: 'Network',
-			type: 'network',
+			name: t('iot.project.objects.name'),
+			type: 'objects',
+		},
+		{
+			name: t('iot.project.scripts.name'),
+			type: 'scripts',
 		},
 	];
 
@@ -62,8 +68,6 @@ const IoTProjectPage = () => {
 				return <IoTProjectSettings />;
 			case 'routes':
 				return <IoTProjectRoutes />;
-			case 'access':
-				return <IoTProjectAccess />;
 		}
 	};
 
@@ -73,8 +77,10 @@ const IoTProjectPage = () => {
 				return <IoTProjectInterface />;
 			case 'documents':
 				return <IoTProjectDocuments />;
-			case 'network':
-				return <IoTProjectAccess />;
+			case 'objects':
+				return <IoTProjectObjects />;
+			case 'scripts':
+				return <IoTProjectScripts />;
 		}
 	};
 	return (
@@ -97,7 +103,7 @@ const IoTProjectPage = () => {
 								as={FontAwesomeIcon}
 								icon={open ? faChevronDown : faChevronUp}
 								className="cursor-pointer tablet:hidden"
-							></Disclosure.Button>
+							/>
 						</div>
 
 						<div
@@ -120,7 +126,7 @@ const IoTProjectPage = () => {
 											className="project-details-tab-logo"
 											icon={faCog}
 										/>
-										<div>Settings</div>
+										<div>{t('iot.project.settings')}</div>
 									</div>
 								</div>
 								<div
@@ -136,23 +142,7 @@ const IoTProjectPage = () => {
 											className="project-details-tab-logo"
 											icon={faPlug}
 										/>
-										<div>Routes</div>
-									</div>
-								</div>
-								<div
-									className={
-										'flex align-middle justify-center project-details-tab ' +
-										(selectedOption === 'access' &&
-											'project-details-tab-selected')
-									}
-									onClick={() => setSelectedOption('access')}
-								>
-									<div className="text-center">
-										<FontAwesomeIcon
-											className="project-details-tab-logo"
-											icon={faRoute}
-										/>
-										<div>Access</div>
+										<div>{t('iot.project.routes')}</div>
 									</div>
 								</div>
 							</div>
@@ -165,19 +155,27 @@ const IoTProjectPage = () => {
 						className="flex-grow flex flex-col h-2/5 tablet:h-full order-2"
 						id="project-body"
 					>
-						<div className="text-lg h-[50px] border-b border-t border-[color:var(--bg-shade-four-color)] tablet:border-t-0 flex flex-row justify-evenly text-center">
+						<div className="flex flex-row border-b">
+							<h2 className="pr-2">Running scripts: </h2>
+							{objectsRunning.map((object, idx) => (
+								<label key={idx} className="px-3 border-x rounded-sm">
+									{object.target?.name}
+								</label>
+							))}
+						</div>
+						<div className="text-sm tablet:text-base laptop:text-lg overflow-x-auto h-[50px] border-b border-t border-[color:var(--bg-shade-four-color)] tablet:border-t-0 flex flex-row justify-evenly text-center">
 							{tabs.map((t, idx) => (
 								<div
 									key={idx}
 									onClick={() => setSelectedTab(t.type)}
 									className={classNames(
-										'w-full cursor-pointer  p-2',
+										'w-full cursor-pointer p-2 flex items-center justify-center',
 										t.type === selectedTab
 											? 'bg-[color:var(--bg-shade-two-color)]'
 											: 'hover:bg-[color:var(--bg-shade-one-color)]',
 									)}
 								>
-									{t.name}
+									<div>{t.name}</div>
 								</div>
 							))}
 						</div>

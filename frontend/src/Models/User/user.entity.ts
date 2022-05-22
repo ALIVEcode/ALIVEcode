@@ -2,14 +2,16 @@ import axios from 'axios';
 import { Exclude, plainToClass } from 'class-transformer';
 import { BackendUser, USER_TYPES } from '../../Types/userTypes';
 import { Classroom } from '../Classroom/classroom.entity';
+import { Course } from '../Course/course.entity';
 import { IoTObject } from '../Iot/IoTobject.entity';
 import { IoTProject } from '../Iot/IoTproject.entity';
-import { Level } from '../Level/level.entity';
+import { Challenge } from '../Challenge/challenge.entity';
+import { Resource } from '../Resource/resource.entity';
 
 /**
  * Frontend user model
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 export class User {
 	@Exclude({ toPlainOnly: true })
@@ -32,7 +34,9 @@ export class User {
 	@Exclude({ toPlainOnly: true })
 	isSuperUser?: boolean;
 
-	levels?: Level[];
+	challenges?: Challenge[];
+
+	resources?: Resource[];
 
 	IoTObjects?: IoTObject[];
 
@@ -40,7 +44,11 @@ export class User {
 
 	collabIoTProjects?: IoTProject[];
 
-	private classrooms?: Classroom[];
+	classrooms?: Classroom[];
+
+	courses?: Course[];
+
+	recentCourses?: Course[];
 
 	public getDisplayName(): string {
 		return `${this.firstName} ${this.lastName}`;
@@ -64,14 +72,44 @@ export class User {
 		return this.classrooms;
 	}
 
+	public async getCourses() {
+		if (!this.courses) {
+			const fetchedCourses: Course[] =
+				(await api.db.users.getCourses({ id: this.id })) ?? [];
+			this.courses = fetchedCourses;
+			return fetchedCourses;
+		}
+		return this.courses;
+	}
+
+	public async getRecentCourses() {
+		if (!this.recentCourses) {
+			const fetchedCourses: Course[] =
+				(await api.db.users.getRecentCourses({ id: this.id })) ?? [];
+			this.recentCourses = fetchedCourses;
+			return fetchedCourses;
+		}
+		return this.recentCourses;
+	}
+
 	public async addClassroom(classroom: Classroom) {
 		(await this.getClassrooms()).push(classroom);
 	}
 
-	public async removeClassroom(classroom: Classroom) {
-		this.classrooms = (await this.getClassrooms()).filter(
-			c => c.id !== classroom.id,
-		);
+	public async addCourse(course: Course) {
+		(await this.getCourses()).push(course);
+	}
+
+	public removeClassroom(classroom: Classroom) {
+		if (!this.classrooms) return;
+		this.classrooms = this.classrooms.filter(c => c.id !== classroom.id);
+	}
+
+	public removeCourse(course: Course) {
+		if (this.courses)
+			this.courses = this.courses.filter(c => c.id !== course.id);
+		if (this.recentCourses)
+			this.recentCourses = this.recentCourses.filter(c => c.id !== course.id);
 	}
 
 	static async loadUser() {
@@ -106,10 +144,6 @@ export class Student extends User {
 
 export class Professor extends User {
 	image: string;
-
-	getCourses() {
-		return api.db.users.getCourses(this.id);
-	}
 
 	getDisplayImage() {
 		return this.image;

@@ -33,7 +33,7 @@ const StyledSvg = styled.svg`
  * @param {() => void} onOpen callback called when the tab gets opened
  * @param {() => void} onClose callback called when the tab gets closed
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const EditorTab = ({
 	tab,

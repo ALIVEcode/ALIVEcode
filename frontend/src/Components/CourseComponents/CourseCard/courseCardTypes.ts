@@ -4,13 +4,18 @@ import CourseCardImage from '../../../assets/images/bg/courseCardBg.png';
 
 export type CourseCardProps = {
 	course: Course;
+	onSelect?: (course: Course) => {};
 };
 
 export const StyledCourseCard = styled.div`
 	box-sizing: border-box;
 	width: 180px;
 	height: 145px;
-	background-color: var(--background-color);
+
+	background-color: ${({ theme }) =>
+		theme.name === 'light'
+			? 'var(--background-color);'
+			: 'var(--bg-shade-one-color);'};
 	border-radius: 10px;
 	margin-left: auto;
 	margin-right: auto;

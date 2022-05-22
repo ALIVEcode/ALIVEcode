@@ -48,7 +48,7 @@ Plateforme Web faite par le laboraoire LRIMa du collège Maisonneuve touchant pl
      node --version
     ```
 
-    2. Si le problème persiste, demandez à @MoSk3 ou @Ecoral360, ou postez une issue sur le repo.
+    2. Si le problème persiste, demandez à @MoSk3 (Enric Soldevila) ou @Ecoral360 (Mathis Laroche), ou postez une issue sur le repo.
 
 - ### Setup des fichiers
 

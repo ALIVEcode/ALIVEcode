@@ -13,11 +13,12 @@ import useRoutes from '../../state/hooks/useRoutes';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from 'react-router';
 import { useForceUpdate } from '../../state/hooks/useForceUpdate';
-import { useNavigate } from 'react-router-dom';
 import { ClassroomProps } from './classroomTypes';
 import ClassroomHeader from '../../Components/ClassroomComponents/ClassroomHeader/ClassroomHeader';
 import CourseCard from '../../Components/CourseComponents/CourseCard/CourseCard';
 import Badge from '../../Components/UtilsComponents/Badge/Badge';
+import { DashboardContext } from '../../state/contexts/DashboardContext';
+import Modal from '../../Components/UtilsComponents/Modal/Modal';
 
 const StyledDiv = styled.div`
 	background-color: var(--background-color);
@@ -42,12 +43,13 @@ const StyledDiv = styled.div`
 const Classroom = ({ classroomProp, ...props }: ClassroomProps) => {
 	const { t } = useTranslation();
 	const { user } = useContext(UserContext);
+	const [importModalOpen, setImportModalOpen] = useState(false);
+	const { courses } = useContext(DashboardContext);
 	const [classroom, setClassroom] = useState<ClassroomModel | undefined>(
 		classroomProp ?? undefined,
 	);
 	const { id } = useParams<{ id: string }>();
-	const { goBack, routes } = useRoutes();
-	const navigate = useNavigate();
+	const { goBack } = useRoutes();
 	const alert = useAlert();
 	const forceUpdate = useForceUpdate();
 
@@ -89,9 +91,7 @@ const Classroom = ({ classroomProp, ...props }: ClassroomProps) => {
 					title={t('classroom.container.courses.title')}
 					height="60px"
 					icon={classroom.creator.id === user.id ? faPlus : undefined}
-					onIconClick={() =>
-						navigate(routes.auth.create_course.path, { state: { classroom } })
-					}
+					onIconClick={async () => setImportModalOpen(true)}
 				>
 					{classroom.courses && classroom.courses.length > 0 ? (
 						classroom.courses.map((c, idx) => (
@@ -141,6 +141,31 @@ const Classroom = ({ classroomProp, ...props }: ClassroomProps) => {
 					</div>
 				</div>
 			</div>
+			<Modal
+				title={t('classroom.import_course')}
+				open={importModalOpen}
+				setOpen={setImportModalOpen}
+			>
+				{courses && courses.length > 0 ? (
+					courses
+						.filter(c => !classroom.courses?.some(course => course.id === c.id))
+						.map(c => (
+							<CourseCard
+								onSelect={async () => {
+									await api.db.courses.addCourseInsideClassroom(
+										c,
+										classroom.id,
+									);
+									await classroom.addCourse(c);
+									setImportModalOpen(false);
+								}}
+								course={c}
+							/>
+						))
+				) : (
+					<div>{t('dashboard.courses.empty')}</div>
+				)}
+			</Modal>
 		</StyledDiv>
 	);
 };

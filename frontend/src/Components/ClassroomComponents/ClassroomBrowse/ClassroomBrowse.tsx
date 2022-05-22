@@ -10,7 +10,7 @@ import ClassroomCard from '../../DashboardComponents/ClassroomCard/ClassroomCard
 /**
  * Browsing menu that shows all the levels sorted with a query
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const ClassroomBrowse = () => {
 	const [browsingResult, setBrowsingResult] =

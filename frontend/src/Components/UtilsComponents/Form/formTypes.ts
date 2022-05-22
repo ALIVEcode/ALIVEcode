@@ -1,5 +1,4 @@
-import { AxiosResponse } from "axios";
-
+import { AxiosResponse } from 'axios';
 
 export enum MATCHES {
 	ALPHANUMERIC = 'ALPHANUMERIC',
@@ -30,6 +29,7 @@ export type FormProps = {
 	url: string;
 	action: FORM_ACTION;
 	onSubmit?: (response: AxiosResponse<any>) => void;
+	customSubmit?: (formValues: any) => void;
 	inputGroups: Array<InputGroup>;
 	alterFormValues?: (formValues: any) => any;
 	disabled?: boolean;

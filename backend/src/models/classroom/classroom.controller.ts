@@ -16,7 +16,7 @@ import { ClassroomEntity } from './entities/classroom.entity';
 import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserEntity, ProfessorEntity, StudentEntity } from '../user/entities/user.entity';
+import { ProfessorEntity, StudentEntity, UserEntity } from '../user/entities/user.entity';
 import { hasRole } from '../user/auth';
 import { JoinClassroomDTO } from './dto/joinClassroom.dto';
 import { UseGuards } from '@nestjs/common';
@@ -109,7 +109,7 @@ export class ClassroomController {
   ) {
     const classroom = await this.classroomService.findOne(id);
     if (!classroom || classroom.creator.id !== professor.id) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-    return this.classroomService.update(id, updateClassroomDto);
+    return await this.classroomService.update(id, updateClassroomDto);
   }
 
   @Delete(':id')

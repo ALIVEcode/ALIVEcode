@@ -1,8 +1,8 @@
 import './App.css';
 import { RouterSwitch } from './Router/RouterSwitch/RouterSwitch';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from './state/contexts/UserContext';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { UserContext, UserContextValues } from './state/contexts/UserContext';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import useRoutes from './state/hooks/useRoutes';
 import {
@@ -23,14 +23,23 @@ import background_image_dark from './assets/images/backgroundImageDark4.png';
 import api from './Models/api';
 import MaintenanceBar from './Components/SiteStatusComponents/MaintenanceBar/MaintenanceBar';
 import { Maintenance } from './Models/Maintenance/maintenance.entity';
-import openPlaySocket from './Pages/Level/PlaySocket';
-import { PlaySocket } from './Pages/Level/PlaySocket';
+import openPlaySocket from './Pages/Challenge/PlaySocket';
+import { PlaySocket } from './Pages/Challenge/PlaySocket';
 import Navbar from './Components/MainComponents/Navbar/Navbar';
 import { useLocation } from 'react-router';
 import { hot } from 'react-hot-loader/root';
 import Modal from './Components/UtilsComponents/Modal/Modal';
 import NameMigrationForm from './Components/SiteStatusComponents/NameMigrationForm/NameMigrationForm';
 import { useForceUpdate } from './state/hooks/useForceUpdate';
+import { Resource } from './Models/Resource/resource.entity';
+import FeedbackModal from './Components/MainComponents/FeedbackMenu/FeedbackModal';
+import Confetti from 'react-confetti';
+import useAudio from './state/hooks/useAudio';
+import Tutorial from './Pages/Help/InfoTutorial';
+import MenuResourceCreation from './Components/Resources/MenuResourceCreation/MenuResourceCreation';
+import { ResourceMenuSubjects } from './Pages/ResourceMenu/resourceMenuTypes';
+import { RESOURCE_TYPE } from '../../backend/src/models/resource/entities/resource.entity';
+import { MenuResourceCreationDTO } from './Components/Resources/MenuResourceCreation/menuResourceCreationTypes';
 
 type GlobalStyleProps = {
 	theme: Theme;
@@ -38,17 +47,17 @@ type GlobalStyleProps = {
 
 const GlobalStyle = createGlobalStyle`
 
-	body {
-		background-color: var(--background-color);
-		color: var(--foreground-color);
-		${({ theme }: GlobalStyleProps) => {
+  body {
+    background-color: var(--background-color);
+    color: var(--foreground-color);
+    ${({ theme }: GlobalStyleProps) => {
 			return theme.name === 'light'
 				? `background-image: url(${background_image_light});`
 				: `background-image: url(${background_image_dark});`;
 		}}
-	}
+  }
 
-	${({ theme }: GlobalStyleProps) => {
+  ${({ theme }: GlobalStyleProps) => {
 		const cssVars = [];
 		for (const [colorName, color] of Object.entries({
 			...commonColors,
@@ -96,16 +105,20 @@ const App = () => {
 	const [loading, setLoading] = useState(true);
 	const [theme, setTheme] = useState(themes.light);
 	const [maintenance, setMaintenance] = useState<Maintenance | null>(null);
+	const [resources, setResources] = useState<Resource[] | null>(null);
 	const [oldStudentNameMigrationOpen, setOldStudentNameMigrationOpen] =
 		useState(true);
+	const [resourceCreationMenuOpen, setResourceCreationMenuOpen] =
+		useState(false);
 
 	const { routes } = useRoutes();
 	const { t } = useTranslation();
 	const alert = useAlert();
 	const { pathname } = useLocation();
 	const forceUpdate = useForceUpdate();
-
 	const navigate = useNavigate();
+
+	const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
 
 	const handleSetUser = useCallback(
 		(user: User | null, doesForceUpdate?: boolean) => {
@@ -115,9 +128,97 @@ const App = () => {
 		[forceUpdate],
 	);
 
-	const providerValue = useMemo(
-		() => ({ user, setUser: handleSetUser, maintenance, playSocket }),
-		[user, handleSetUser, maintenance, playSocket],
+	/**
+	 * Function that get the resources of the user based on the query
+	 */
+	const getResources = useCallback(
+		async (
+			subject: ResourceMenuSubjects,
+			name?: string | undefined,
+			filters?: RESOURCE_TYPE[],
+		) => {
+			if (!user)
+				throw new Error('User is not loaded when trying to get the resources');
+			const loadedRes = await api.db.users.getResources(user.id, {
+				subject: subject !== 'all' ? subject : undefined,
+				types: filters && filters.length > 0 ? filters : undefined,
+				name,
+			});
+			setResources(loadedRes);
+			return loadedRes;
+		},
+		[user],
+	);
+
+	const createResource = useCallback(
+		async (
+			dto: MenuResourceCreationDTO,
+			progressSetter?: React.Dispatch<React.SetStateAction<number>>,
+		) => {
+			const res = resources ?? (await getResources('all'));
+			const resource = await api.db.resources.create(dto, progressSetter);
+			setResources([...res, resource]);
+			return resource;
+		},
+		[getResources, resources],
+	);
+
+	const deleteResource = useCallback(
+		async (resource: Resource) => {
+			const res = resources ?? (await getResources('all'));
+			await api.db.resources.delete({ id: resource.id });
+			setResources(res?.filter(r => r.id !== resource.id));
+		},
+		[getResources, resources],
+	);
+
+	const updateResource = useCallback(
+		async function <T>(
+			defaultResource: Resource,
+			newResource: Omit<T, keyof Resource> | MenuResourceCreationDTO,
+		) {
+			const res = resources ?? (await getResources('all'));
+			const updatedRes = await api.db.resources.update(
+				defaultResource,
+				newResource,
+			);
+
+			const matchingRes = res.find(r => r.id === updatedRes.id);
+			if (!matchingRes) return updatedRes;
+			Object.assign(matchingRes, updatedRes);
+
+			setResources([...res]);
+
+			return matchingRes;
+		},
+		[getResources, resources],
+	);
+
+	const userProviderValue: UserContextValues = useMemo(
+		() => ({
+			user,
+			setUser: handleSetUser,
+			maintenance,
+			playSocket,
+			resources: resources ?? [],
+			createResource,
+			deleteResource,
+			updateResource,
+			setResourceCreationMenuOpen,
+			getResources,
+		}),
+		[
+			user,
+			handleSetUser,
+			maintenance,
+			playSocket,
+			resources,
+			createResource,
+			deleteResource,
+			updateResource,
+			setResourceCreationMenuOpen,
+			getResources,
+		],
 	);
 
 	const handleSetTheme = (theme: Theme) => {
@@ -223,6 +324,20 @@ const App = () => {
 		window.scrollTo(0, 0);
 	}, [pathname]);
 
+	useEffect(() => {
+		const handleFeedbackModalOpen = (e: KeyboardEvent) => {
+			if (e.key === 'F2') {
+				e.preventDefault();
+				setIsFeedbackModalOpen(!isFeedbackModalOpen);
+			}
+		};
+		window.addEventListener('keydown', handleFeedbackModalOpen, {
+			once: true,
+		});
+	}, [isFeedbackModalOpen]);
+
+	const { playing: cheerPlaying, play: playCheer } = useAudio('cheer.mp3');
+
 	return (
 		<div className="App">
 			<ThemeContext.Provider
@@ -235,33 +350,61 @@ const App = () => {
 				{loading ? (
 					<LoadingScreen />
 				) : (
-					<UserContext.Provider value={providerValue}>
-						<section className="pt-[4rem] h-full">
-							<RouterSwitch />
-						</section>
-						{maintenance && !maintenance.hidden && (
-							<MaintenanceBar
-								onClose={() => setMaintenance({ ...maintenance, hidden: true })}
-								maintenance={maintenance}
+					<UserContext.Provider value={userProviderValue}>
+						<Tutorial>
+							<section className="pt-[4rem] h-full">
+								<RouterSwitch />
+							</section>
+							{maintenance && !maintenance.hidden && (
+								<MaintenanceBar
+									onClose={() =>
+										setMaintenance({ ...maintenance, hidden: true })
+									}
+									maintenance={maintenance}
+								/>
+							)}
+							<Navbar
+								handleLogout={async () => await logout()}
+								setFeedbackModalOpen={setIsFeedbackModalOpen}
 							/>
-						)}
-						<Navbar handleLogout={async () => await logout()} />
-						{user instanceof Student && (!user.lastName || !user.firstName) && (
-							<Modal
-								open={oldStudentNameMigrationOpen}
-								title={t('msg.auth.name_migration.title')}
-								setOpen={setOldStudentNameMigrationOpen}
-								size="sm"
-								hideCloseButton
-								hideFooter
-								unclosable
-							>
-								<NameMigrationForm setOpen={setOldStudentNameMigrationOpen} />
-							</Modal>
-						)}
+							{user instanceof Student && (!user.lastName || !user.firstName) && (
+								<Modal
+									open={oldStudentNameMigrationOpen}
+									title={t('msg.auth.name_migration.title')}
+									setOpen={setOldStudentNameMigrationOpen}
+									size="sm"
+									hideCloseButton
+									hideFooter
+									unclosable
+								>
+									<NameMigrationForm setOpen={setOldStudentNameMigrationOpen} />
+								</Modal>
+							)}
+							{user instanceof Professor && (
+								<MenuResourceCreation
+									setOpen={setResourceCreationMenuOpen}
+									open={resourceCreationMenuOpen}
+								/>
+							)}
+							{isFeedbackModalOpen && (
+								<FeedbackModal
+									isOpen={isFeedbackModalOpen}
+									setIsOpen={setIsFeedbackModalOpen}
+									onSuccess={async () => {
+										await playCheer();
+									}}
+									onFailure={() =>
+										alert.error(
+											'An error occurred while sending your feedback, please try again later.',
+										)
+									}
+								/>
+							)}
+						</Tutorial>
 					</UserContext.Provider>
 				)}
 			</ThemeContext.Provider>
+			{cheerPlaying && <Confetti className="w-full overflow-hidden" />}
 		</div>
 	);
 };

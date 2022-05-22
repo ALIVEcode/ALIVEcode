@@ -1,37 +1,83 @@
-import { createContext } from "react";
-import { Course } from "../../Models/Course/course.entity";
-import { Section } from '../../Models/Course/section.entity';
+import React, { createContext, MutableRefObject } from 'react';
 import { Activity } from '../../Models/Course/activity.entity';
+import { Course } from '../../Models/Course/course.entity';
+import {
+	CourseContent,
+	CourseElement,
+	CourseParent,
+} from '../../Models/Course/course_element.entity';
+import { Section } from '../../Models/Course/section.entity';
+import { CourseElementActivity } from '../../Models/Course/course_element.entity';
+import {
+	CourseTabState,
+	SwitchCourseTabActions,
+} from '../../Pages/Course/courseTypes';
 
-export type CourseContentValues = {
+export type CourseContextValues = {
 	course?: Course;
-	section?: Section;
-	activity?: Activity;
+	courseElements?: MutableRefObject<{ [id: number]: CourseElement }>;
+	isNewCourseElement: (element: CourseElement) => boolean;
+	setCourseElementNotNew: (element: CourseElement) => void;
 	isNavigationOpen: boolean;
-	canEdit: boolean;
-	setTitle: (newTitle: string) => void;
-	addSection: (section: Section) => void;
-	deleteSection: (section: Section) => void;
-	loadActivity: (section: Section, activity: Activity) => any;
-	closeCurrentActivity: () => void;
-	addActivity: (section: Section, activity: Activity) => void;
-	deleteActivity: (section: Section, activity: Activity) => void;
-	saveActivity: (activity: Activity) => void;
-	saveActivityContent: (data: string) => void;
+	tab: CourseTabState;
+	setTab: React.Dispatch<SwitchCourseTabActions>;
+	setTitle: (newTitle: string) => Promise<void>;
+	loadSectionElements: (section: Section) => Promise<any>;
+	renameElement: (element: CourseElement, newName: string) => void;
+	setIsElementVisible: (element: CourseElement, isVisible: boolean) => void;
+	updateActivity: (
+		activity: Activity,
+		fields: {
+			[name in keyof Activity]?: Activity[name];
+		},
+	) => Promise<void>;
 	setIsNavigationOpen: (bool: boolean) => void;
+	addContent: (
+		content: CourseContent,
+		name: string,
+		sectionParent?: Section,
+	) => Promise<CourseElement | undefined>;
+	deleteElement: (element: CourseElement) => Promise<void>;
+	moveElement: (
+		element: CourseElement,
+		newIdx: number,
+		newParent: CourseParent,
+	) => Promise<void>;
+	openActivityForm: (sectionParent?: Section) => void;
+	setOpenModalImportResource: (state: boolean) => void;
+	removeResourceFromActivity: (activity: Activity) => void;
+	loadActivityResource: (activity: Activity) => void;
+	getNextActivity: (
+		activity: CourseElementActivity,
+	) => CourseElementActivity | null;
+	getPreviousActivity: (
+		activity: CourseElementActivity,
+	) => CourseElementActivity | null;
+	isCreator: () => boolean;
+	forceUpdateCourse: () => void;
 };
 
-export const CourseContext = createContext<CourseContentValues>({
-	canEdit: false,
+export const CourseContext = createContext<CourseContextValues>({
 	isNavigationOpen: true,
-	setTitle: (newTitle: string) => {},
-	loadActivity: (section: Section, activity: Activity) => {},
-	addSection: (section: Section) => {},
-	deleteSection: (section: Section) => {},
-	addActivity: (section: Section, activity: Activity) => {},
-	closeCurrentActivity: () => {},
-	deleteActivity: (section: Section, activity: Activity) => {},
-	saveActivity: (activity: Activity) => {},
-	saveActivityContent: (data: string) => {},
-	setIsNavigationOpen: (bool: boolean) => {},
+	tab: { tab: 'view', openedSections: [] },
+	setCourseElementNotNew: () => {},
+	isNewCourseElement: () => false,
+	setTab: () => {},
+	setTitle: async () => {},
+	updateActivity: async () => {},
+	setIsNavigationOpen: async () => {},
+	addContent: async () => undefined,
+	renameElement: () => {},
+	setIsElementVisible: () => {},
+	deleteElement: async () => {},
+	moveElement: async () => {},
+	loadSectionElements: async () => {},
+	openActivityForm: () => {},
+	setOpenModalImportResource: () => {},
+	removeResourceFromActivity: () => {},
+	loadActivityResource: () => null,
+	getNextActivity: () => null,
+	getPreviousActivity: () => null,
+	isCreator: () => false,
+	forceUpdateCourse: () => {},
 });

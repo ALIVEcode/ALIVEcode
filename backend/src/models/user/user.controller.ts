@@ -5,36 +5,29 @@ import {
   Body,
   Patch,
   Delete,
+  Param,
   HttpException,
   HttpStatus,
   Res,
   UseInterceptors,
   Query,
-  UploadedFile,
-  Request,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { Param } from '@nestjs/common';
 import { Response } from 'express';
 import { Auth } from '../../utils/decorators/auth.decorator';
-import { UserEntity, StudentEntity, ProfessorEntity } from './entities/user.entity';
+import { UserEntity, StudentEntity, ProfessorEntity, USER_TYPES } from './entities/user.entity';
 import { hasRole } from './auth';
 import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
 import { Group } from '../../utils/decorators/group.decorator';
 import { User } from '../../utils/decorators/user.decorator';
 import { Role } from '../../utils/types/roles.types';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { editFileName, imageFileFilter } from 'src/utils/upload/file-uploading';
 import { NameMigrationDTO } from './dto/name_migration.dto';
+import { QueryResources } from './dto/query_resources.dto';
 
-export const storage = {
-  fileFilter: imageFileFilter,
-  storage: diskStorage({
-    destination: 'images/uploads',
-    filename: editFileName,
-  }),
-};
+/**
+ * All the routes of the api regarding operations on users.
+ * @author Enric Soldevila
+ */
 @Controller('users')
 @UseInterceptors(DTOInterceptor)
 export class UserController {
@@ -176,24 +169,34 @@ export class UserController {
     return this.userService.getRecentCourses(await this.userService.findById(id));
   }
 
-  @Get(':id/levels')
-  @Auth()
-  async getLevels(@User() user: UserEntity, @Param('id') id: string, @Query('search') query: string) {
+  /**
+   * Gets the resources of the user depending on a search query
+   * @param user User making the request
+   * @param id Id of the user
+   * @param query Query to use when fetching the resources
+   * @returns The queried resources
+   */
+  @Get(':id/resources')
+  @Auth(Role.PROFESSOR, Role.MOD)
+  async getResources(@User() user: ProfessorEntity, @Param('id') id: string, @Query() query: QueryResources) {
     if (!hasRole(user, Role.MOD) && user.id !== id) throw new HttpException('You cannot do that', HttpStatus.FORBIDDEN);
 
-    if (user.id === id) return this.userService.getLevels(user, query);
-    return this.userService.getLevels(await this.userService.findById(id), query);
+    if (user.id === id) return this.userService.getResources(user, query);
+
+    const target = await this.userService.findById(id);
+    if (target.type === USER_TYPES.STUDENT)
+      throw new HttpException('A student has no resources', HttpStatus.BAD_REQUEST);
+
+    return this.userService.getResources(target as ProfessorEntity, query);
   }
 
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('image', storage))
-  async uploadedFile(@UploadedFile() file, @Request() req) {
-    const user: UserEntity = req.user;
+  @Get(':id/challenges')
+  @Auth()
+  async getChallenges(@User() user: UserEntity, @Param('id') id: string, @Query('search') query: string) {
+    if (!hasRole(user, Role.MOD) && user.id !== id) throw new HttpException('You cannot do that', HttpStatus.FORBIDDEN);
 
-    user.image = file.filename;
-    console.log(__dirname);
-    console.log(file);
-    return await this.userService.update(user.id, user);
+    if (user.id === id) return this.userService.getChallenges(user, query);
+    return this.userService.getChallenges(await this.userService.findById(id), query);
   }
 }
 

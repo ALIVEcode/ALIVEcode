@@ -8,21 +8,24 @@ import {
   PrimaryGeneratedColumn,
   TableInheritance,
   CreateDateColumn,
+  JoinTable,
 } from 'typeorm';
-import { LevelEntity } from '../../level/entities/level.entity';
+import { ChallengeEntity } from '../../challenge/entities/challenge.entity';
 import { IoTObjectEntity } from '../../iot/IoTobject/entities/IoTobject.entity';
 import { IoTProjectEntity } from '../../iot/IoTproject/entities/IoTproject.entity';
-import { LevelProgressionEntity } from '../../level/entities/levelProgression.entity';
+import { ChallengeProgressionEntity } from '../../challenge/entities/challenge_progression.entity';
 import { Post as Post_Table } from 'src/models/social/post/entities/post.entity';
 import { Quiz } from 'src/models/social/quizzes/entities/quiz.entity';
 import { Result } from 'src/models/social/results/entities/result.entity';
 import { AsScriptEntity } from 'src/models/as-script/entities/as-script.entity';
 import { CommentairesForum as Comment_Table } from 'src/models/social/commentaires-forum/entities/commentaires-forum.entity';
 import Messages from 'src/models/social/messages/entities/messages.entity';
-import { Optional } from '@nestjs/common';
 import { ChildEntity, ManyToMany } from 'typeorm';
-import { ClassroomEntity } from '../../classroom/entities/classroom.entity';
 import { CourseEntity } from '../../course/entities/course.entity';
+import { ClassroomEntity } from '../../classroom/entities/classroom.entity';
+import { Optional } from '@nestjs/common';
+import { ResourceEntity } from '../../resource/entities/resource.entity';
+import { CourseTemplateEntity } from '../../course/entities/bundles/course_template.entity';
 
 export enum USER_TYPES {
   STUDENT = 'S',
@@ -45,7 +48,7 @@ export class UserEntity extends BaseEntity {
   @Column({ nullable: true })
   @IsNotEmpty()
   @Length(3, 25)
-  @Matches(/^[A-Za-z]*$/, { message: 'form.lastName.error.match' })
+  @Matches(/^[-\p{L}]{3,}$/u, { message: 'form.lastName.error.match' })
   lastName: string;
 
   @Exclude({ toClassOnly: true })
@@ -87,8 +90,8 @@ export class UserEntity extends BaseEntity {
   @Exclude({ toClassOnly: true })
   joinDate: Date;
 
-  @OneToMany(() => LevelEntity, level => level.creator, { cascade: true })
-  levels: LevelEntity[];
+  @OneToMany(() => ChallengeEntity, challenge => challenge.creator, { cascade: true })
+  challenges: ChallengeEntity[];
 
   @OneToMany(() => AsScriptEntity, asScript => asScript.creator)
   asScripts: AsScriptEntity[];
@@ -102,8 +105,8 @@ export class UserEntity extends BaseEntity {
   @OneToMany(() => IoTProjectEntity, iot => iot.creator)
   collabIoTProjects: IoTProjectEntity[];
 
-  @OneToMany(() => LevelProgressionEntity, prog => prog.user)
-  levelProgressions: LevelProgressionEntity[];
+  @OneToMany(() => ChallengeProgressionEntity, prog => prog.user)
+  challengeProgressions: ChallengeProgressionEntity[];
 
   @OneToMany(() => Post_Table, post => post.creator)
   post: Post_Table[];
@@ -122,6 +125,12 @@ export class UserEntity extends BaseEntity {
 
   @Column({ type: 'varchar', default: '' })
   image: string;
+
+  @Column({ type: 'bigint', default: 4000000000 }) // 4GB
+  storage: number;
+
+  @Column({ type: 'bigint', default: 0 })
+  storageUsed: number;
 }
 
 @ChildEntity(USER_TYPES.STUDENT)
@@ -144,4 +153,13 @@ export class ProfessorEntity extends UserEntity {
   @Exclude({ toClassOnly: true })
   @OneToMany(() => CourseEntity, course => course.creator, { cascade: true })
   courses: CourseEntity[];
+
+  @Exclude({ toClassOnly: true })
+  @OneToMany(() => ResourceEntity, resource => resource.creator)
+  resources: ResourceEntity[];
+
+  @Exclude({ toClassOnly: true })
+  @ManyToMany(() => CourseTemplateEntity, template => template.owners)
+  @JoinTable()
+  courseTemplates: CourseTemplateEntity[];
 }

@@ -1,27 +1,103 @@
 import { IoTProjectContext } from '../../../../state/contexts/IoTProjectContext';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import AceEditor from 'react-ace';
 import useWaitBeforeUpdate from '../../../../state/hooks/useWaitBeforeUpdate';
+import { StyledLineInterface } from '../../../ChallengeComponents/LineInterface/lineInterfaceTypes';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircle } from '@fortawesome/free-solid-svg-icons';
+
 import 'ace-builds/src-noconflict/mode-json';
-import { StyledLineInterface } from '../../../LevelComponents/LineInterface/lineInterfaceTypes';
 
 const IoTProjectDocuments = () => {
 	const { project, updateDocument } = useContext(IoTProjectContext);
 
+	const defaultState = JSON.stringify(project?.document, null, '\t');
+
+	const [isLive, setIsLive] = useState(true);
+
+	const [saving, setSaving] = useState(false);
+
+	const [error, setError] = useState(false);
+
 	const [doc, setDoc] = useWaitBeforeUpdate<string>(
-		{ wait: 1000, onUpdate: () => updateDocument(JSON.parse(doc)) },
-		JSON.stringify(project?.document, null, '\t'),
+		{
+			wait: 500,
+			onUpdate: () => {
+				try {
+					const c = JSON.parse(doc, (key: string, value: any) => {
+						if (value === null) throw new Error('null');
+						return value;
+					});
+					updateDocument(c);
+					setSaving(false);
+					setError(false);
+				} catch {
+					setError(true);
+				}
+			},
+		},
+		defaultState,
 	);
 
+	useEffect(() => {
+		if (project?.document && isLive)
+			setDoc(JSON.stringify(project.document, null, '\t'));
+	}, [project?.document]);
+
+	// TODO traductions pour "Update Mode:" et "LIVE"
 	return (
 		<StyledLineInterface className="w-full h-full">
-			<AceEditor
-				className="!w-full !h-full"
-				mode="json"
-				theme="cobalt"
-				value={doc}
-				onChange={content => setDoc(content)}
-			></AceEditor>
+			<div className="flex flex-col !h-full ">
+				<div className="flex justify-between items-center">
+					<div className="flex justify-start items-center">
+						<h2 className="text-2xl font-bold pr-2">Update Mode: </h2>
+						<div className="flex items-center">
+							<button
+								className={
+									(isLive
+										? 'text-red-600 bg-red-300'
+										: 'text-gray-500 bg-gray-300') +
+									' px-1 rounded-sm  top-5 z-[10000]'
+								}
+								onClick={() => {
+									setIsLive(!isLive);
+									if (project?.document && isLive)
+										setDoc(JSON.stringify(project.document, null, '\t'));
+								}}
+							>
+								<FontAwesomeIcon
+									icon={faCircle}
+									color={isLive ? 'red' : 'grey'}
+									className="pr-1"
+								/>
+								LIVE
+							</button>
+							{error && (
+								<span className="text-red-600 pl-4 text-sm">
+									<i>Cannot save, there's an error in the document</i>
+								</span>
+							)}
+						</div>
+					</div>
+					<span className="pr-3">{saving ? 'Saving...' : 'Saved'}</span>
+				</div>
+				<AceEditor
+					onInput={e => {
+						if (e.ctrlKey && e.key === 's') {
+							setSaving(true);
+						}
+					}}
+					className="!w-full !h-full"
+					mode="json"
+					theme="twilight"
+					fontSize="14px"
+					value={doc}
+					onChange={content => {
+						setSaving(true);
+						setDoc(content);
+					}}
+				/>
+			</div>
 		</StyledLineInterface>
 	);
 };

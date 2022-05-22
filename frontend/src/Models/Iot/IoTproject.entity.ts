@@ -15,12 +15,14 @@ import {
 import { IoTButton } from './IoTProjectClasses/Components/IoTButton';
 import { IoTProgressBar } from './IoTProjectClasses/Components/IoTProgressBar';
 import { IoTLogs } from './IoTProjectClasses/Components/IoTLogs';
-import { IoTObject } from './IoTobject.entity';
 import { IoTLed } from './IoTProjectClasses/Components/IoTLed';
 import { IoTLabel } from './IoTProjectClasses/Components/IoTLabel';
 import { IoTBuzzer } from './IoTProjectClasses/Components/IoTBuzzer';
 import { isArray } from 'tone';
 import { IoTTrafficLight } from './IoTProjectClasses/Components/IoTTrafficLight';
+import { IoTProjectObject } from './IoTprojectObject.entity';
+import { ChallengeProgression } from '../Challenge/challengeProgression';
+import { AsScript } from '../AsScript/as-script.entity';
 
 export enum IOTPROJECT_INTERACT_RIGHTS {
 	ANYONE = 'AN',
@@ -132,8 +134,18 @@ export class IoTProject extends CreatedByUser {
 	})
 	document: IoTProjectDocument;
 
-	@Type(() => IoTObject)
-	iotObjects?: IoTObject[];
+	@Type(() => IoTProject)
+	original?: IoTProject;
+	originalId?: string;
+
+	@Type(() => ChallengeProgression)
+	progression?: ChallengeProgression;
+
+	@Type(() => IoTProjectObject)
+	iotProjectObjects?: IoTProjectObject[];
+
+	@Type(() => AsScript)
+	scripts: AsScript[] = [];
 
 	access: IOTPROJECT_ACCESS;
 
@@ -148,7 +160,16 @@ export class IoTProject extends CreatedByUser {
 	}
 
 	async getIoTObjects() {
-		this.iotObjects = await api.db.iot.projects.getObjects({ id: this.id });
-		return this.iotObjects;
+		this.iotProjectObjects = await api.db.iot.projects.getObjects({
+			id: this.id,
+		});
+		return this.iotProjectObjects;
+	}
+
+	async getIoTScripts() {
+		this.scripts = await api.db.iot.projects.getScripts({
+			id: this.id,
+		});
+		return this.scripts;
 	}
 }

@@ -17,7 +17,7 @@ import CourseCard from '../../CourseComponents/CourseCard/CourseCard';
  * @param children
  * @returns tsx element
  *
- * @author Enric
+ * @author Enric Soldevila
  */
 const CourseContainer = ({ courses }: CourseContainerProps) => {
 	return (

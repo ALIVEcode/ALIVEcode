@@ -11,7 +11,7 @@ import { UserContext } from '../../../state/contexts/UserContext';
 /**
  * Component used to join a classroom with a provided classroom code
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const JoinClassroomForm = () => {
 	const { t } = useTranslation();

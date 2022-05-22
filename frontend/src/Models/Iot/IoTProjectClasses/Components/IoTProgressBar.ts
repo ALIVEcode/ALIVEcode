@@ -1,5 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
 import { IoTComponent, IOT_COMPONENT_TYPE } from '../IoTComponent';
+import { TFunction } from 'i18next';
 
 @Exclude()
 export class IoTProgressBar extends IoTComponent {
@@ -45,9 +46,9 @@ export class IoTProgressBar extends IoTComponent {
 	}
 }
 
-export const createDefaultIoTProgressBar = () => {
+export const createDefaultIoTProgressBar = (t: TFunction) => {
 	const progress = new IoTProgressBar();
-	progress.name = 'Default Progress';
+	progress.name = t('iot.project.interface.components.progress.name');
 	progress.id = '';
 	progress.min = 0;
 	progress.max = 100;

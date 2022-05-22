@@ -24,7 +24,7 @@ const StyledButton = styled.button`
  * @param {string} to url to redirect to on button click
  * @param {HTMLButtonElement} other HTMLButtonElement props
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
 	(props, ref) => {

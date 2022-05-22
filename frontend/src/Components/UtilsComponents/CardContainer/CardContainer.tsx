@@ -19,7 +19,7 @@ import { ThemeContext } from '../../../state/contexts/ThemeContext';
  * @param children
  * @returns tsx element
  *
- * @author Enric
+ * @author Enric Soldevila
  */
 const CardContainer = ({
 	children,

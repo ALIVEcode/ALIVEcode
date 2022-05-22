@@ -15,7 +15,7 @@ import { Link as RouterLink } from 'react-router-dom';
  * @param {string} className classNames
  * @param {any} children
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const Link = ({
 	to,
@@ -28,6 +28,7 @@ const Link = ({
 	pale,
 	openInNewTab,
 	outsideLink,
+	download,
 	onClick,
 }: LinkProps) => {
 	if (to && !outsideLink)
@@ -45,6 +46,7 @@ const Link = ({
 				target="_blank"
 				style={style}
 				className={className}
+				download={download}
 			>
 				{children}
 			</a>
@@ -72,7 +74,7 @@ export default styled(Link)`
 	color: ${(props: StyledLinkProps) => {
 		if (props.dark) return 'var(--contrast-color)';
 		if (props.pale) return 'var(--pale-color)';
-		else return 'var(--primary-color)';
+		else return 'var(--logo-color)';
 	}};
 	transition: 0.3s;
 	cursor: pointer;

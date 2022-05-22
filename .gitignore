@@ -218,7 +218,7 @@ node_modules
 out/production
 out/META-INF
 */log/
-backend/uploads/
+backend/uploads/resources/*
 
 node_modules
 frontend/package-lock.json

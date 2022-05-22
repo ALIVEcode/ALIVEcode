@@ -29,7 +29,7 @@ const StyledDiv = styled.div`
  * @param {string} name of the contributor
  * @param {string} className classNames of the card
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const AboutCard = ({ img, name, className }: AboutCardProps) => {
 	return (

@@ -1,21 +1,9 @@
-import {
-	faCalculator,
-	faCode,
-	faFlask,
-	faProjectDiagram,
-} from '@fortawesome/free-solid-svg-icons';
 import { Exclude, Type } from 'class-transformer';
+import { getSubjectIcon, SUBJECTS } from '../../Types/sharedTypes';
 import api from '../api';
 import { Course } from '../Course/course.entity';
 import { CreatedByUser } from '../Generics/createdByUser.entity';
 import { Professor, Student } from '../User/user.entity';
-
-export enum CLASSROOM_SUBJECT {
-	INFORMATIC = 'IN',
-	AI = 'AI',
-	MATH = 'MA',
-	SCIENCE = 'SC',
-}
 
 export enum CLASSROOM_ACCESS {
 	PUBLIC = 'PU', // can be found via a search
@@ -30,7 +18,7 @@ export class Classroom extends CreatedByUser {
 	// The code consists of letters from a-z and numbers from 0-9 | case non-senstive
 	code?: string;
 
-	subject: CLASSROOM_SUBJECT;
+	subject: SUBJECTS;
 	access: CLASSROOM_ACCESS;
 
 	students?: Student[];
@@ -46,21 +34,16 @@ export class Classroom extends CreatedByUser {
 		return this.students;
 	}
 
+	async addCourse(course: Course) {
+		if (!this.courses) this.courses = await this.getCourses();
+		this.courses.push(course);
+	}
+
 	getSubjectDisplay() {
 		return this.subject[0].toUpperCase() + this.subject.slice(1);
 	}
 
 	getSubjectIcon() {
-		switch (this.subject) {
-			case CLASSROOM_SUBJECT.INFORMATIC:
-				return faCode;
-			case CLASSROOM_SUBJECT.SCIENCE:
-				return faFlask;
-			case CLASSROOM_SUBJECT.MATH:
-				return faCalculator;
-			case CLASSROOM_SUBJECT.AI:
-				return faProjectDiagram;
-		}
-		return faCode;
+		return getSubjectIcon(this.subject);
 	}
 }

@@ -17,4 +17,5 @@ export type LinkProps = {
 	pale?: boolean;
 	outsideLink?: boolean;
 	openInNewTab?: boolean;
+	download?: boolean;
 };

@@ -1,11 +1,12 @@
 {
+	"lang": "fr",
 	"error": {
 		"sorry": "Désolé.",
 		"unknown": "Une erreur inconnue est survenue, veuillez réessayer.",
 		"custom": "Erreur: {{error}}.",
 		"back": "Retour en arrière",
 		"home": "Retour à la page d'accueil",
-		"signout": "Une erreur est survenue lors de la déconnexion, veuillez réesayer.",
+		"signout": "Une erreur est survenue lors de la déconnexion, veuillez réessayer.",
 		"signin": "Informations erronées, veuillez réessayer.",
 		"signin_first_time": "une erreur est survenue lors de votre connexion automatique à votre nouveau compte.",
 		"500": "Une erreur est survenue, veuillez réessayer.",
@@ -16,13 +17,37 @@
 			"short": "La requête n'a pas pu être faite, le site est présentement en maintenance."
 		}
 	},
+	"feedback": {
+		"title": "À quoi pensez-vous?",
+		"button": "Donner votre avis!",
+		"send": "Envoyer",
+		"cancel": "Annuler",
+		"choices": {
+			"like": "Quelque chose que j'aime",
+			"dislike": "Quelque chose que je n'aime pas",
+			"idea": "Une idée que j'ai",
+			"bug": "Un bug que j'ai rencontré"
+		},
+		"information": "informations",
+		"authorization_infos": "J'autorise de joindre (de manière anonyme) mes {{infos}} à cet avis.",
+		"info_collected": {
+			"url": "L'URL de la page que vous êtes en train de visiter",
+			"browser": "Le navigateur que vous utilisez",
+			"theme": "Le thème que vous utilisez (thème sombre/clair)",
+			"language": "La langue que vous utilisez"
+		},
+		"placeholder": "Veuillez entrer votre avis ici..."
+	},
 	"form": {
+		"optional": "Optionnel",
+		"required": "Requis",
 		"submit": {
 			"POST": "Créer {{name}}",
 			"PATCH": "Modifier {{name}}",
 			"DELETE": "Supprimer {{name}}"
 		},
 		"error": {
+			"cant_submit": "Votre requête n'a pas pu être envoyée, assurez-vous que tous les champs requis sont remplis et réessayez.",
 			"generic": "Ce champs est erroné",
 			"required": "Ce champs est requis",
 			"maxLength": "Ce champs dépasse {{max}} caractères",
@@ -39,9 +64,11 @@
 				"name": "Ce champs doit contenir uniquement des lettres et des chiffres"
 			}
 		},
-		"level": {
+		"challenge": {
 			"PATCH": {
-				"title": "Paramètres du niveau"
+				"title": "Paramètres du défi",
+				"fontSize": "Taille de la police",
+				"interface_settings": "L'interface"
 			}
 		},
 		"title": {
@@ -49,9 +76,10 @@
 			"signup": "Inscription",
 			"create_classroom": "Création d'une classe",
 			"create_course": "Création d'un cours",
-			"create_level": "Création d'un niveau",
+			"create_challenge": "Création d'un défi",
 			"create_iot_project": "Création d'un projet IoT",
-			"create_iot_object": "Création d'un objet IoT"
+			"create_iot_object": "Création d'un objet IoT",
+			"update_classroom": "Modification des paramètres de la classe"
 		},
 		"join_classroom": {
 			"title": "Rejoindre une classe",
@@ -69,7 +97,7 @@
 			"label": "Adresse courriel",
 			"placeholder": "MonAdresse@alivecode.ca",
 			"required": "Une adresse courriel est requise",
-			"taken": "Cette addresse courriel est déjà prise",
+			"taken": "Cette adresse courriel est déjà prise",
 			"info": "Nous ne partagerons pas votre adresse courriel"
 		},
 		"firstName": {
@@ -85,9 +113,9 @@
 			"pattern": "Votre nom de famille doit contenir uniquement des lettres et des tirets"
 		},
 		"scolarity": {
-			"label": "Niveau scholaire",
+			"label": "Niveau scolaire",
 			"placeholder": "4e année",
-			"required": "Votre niveau scholaire est requis"
+			"required": "Votre niveau scolaire est requis"
 		}
 	},
 	"modal": {
@@ -97,6 +125,10 @@
 		"cancel": "Annuler"
 	},
 	"msg": {
+		"language": "Langage",
+		"courseTemplate": "modèle de cours",
+		"bundle": "trousse pédagogique",
+		"resource": "ressource",
 		"professor": "professeur",
 		"student": "étudiant",
 		"creator": "Créateur",
@@ -104,11 +136,25 @@
 		"description": "description",
 		"deleted_user": "Ancien utilisateur",
 		"search": "Rechercher",
-		"community_levels": "Niveaux de la communauté",
+		"community_challenges": "Défis de la communauté",
 		"public_classrooms": "Classes publiques",
 		"creation_date": "Date de création",
 		"update_date": "Date de modification",
 		"see_links": "Voir les liens",
+		"activity_type": {
+			"challenge": "Défi",
+			"video": "Visionnement",
+			"pdf": "Pdf",
+			"assignment": "Énoncé de travail",
+			"theory": "Théorie"
+		},
+		"subjects": {
+			"iot": "Internet des Objets",
+			"ai": "Intelligence Artificielle",
+			"code": "Programmation",
+			"other": "Autre",
+			"all": "Tout"
+		},
 		"time": {
 			"format": "{{dayName}}, {{day}} {{monthName}} {{year}} - {{hour}}:{{minute}}",
 			"day": {
@@ -146,7 +192,7 @@
 			"signup_professor": "Compte professeur",
 			"signup_student": "Compte étudiant",
 			"signout": "Se déconnecter",
-			"already_registered": "Tu as déjà un compte ?",
+			"already_registered": "Vous avez déjà un compte ?",
 			"account_required": "Il te faut un compte pour faire ça",
 			"name_migration": {
 				"title": "Changement de la façon dont les étudiants sont identifiés",
@@ -159,7 +205,7 @@
 			"alive": "ALIVE Play",
 			"dashboard": "Tableau de bord",
 			"ai": "Intelligence artificielle",
-			"iot": "IoT",
+			"iot": "Internet des Objets",
 			"amc": "Contrôle par la pensée",
 			"about": "À propos",
 			"avp": "Perception de véhicule augmentée",
@@ -169,8 +215,8 @@
 		"maintenance": {
 			"more_info": "Plus d'informations",
 			"no_desc": "Pas de description disponible.",
-			"ongoing": "Une maintenance est présentement en cours du {{startDate}} au {{finishDate}}. Vous ne pouvez pas utiliser votre compte ou voir les niveaux des utilisateurs durant cette période. Désolé pour cet inconvénient.",
-			"upcoming": "Une maintenance est prévue du {{startDate}} au {{finishDate}}. Vous ne pourrez pas utiliser votre compte ou voir les niveaux des utilisateurs durant cette période. Désolé pour cet inconvénient.",
+			"ongoing": "Une maintenance est présentement en cours du {{startDate}} au {{finishDate}}. Vous ne pouvez pas utiliser votre compte ou voir les défis des utilisateurs durant cette période. Désolé pour cet inconvénient.",
+			"upcoming": "Une maintenance est prévue du {{startDate}} au {{finishDate}}. Vous ne pourrez pas utiliser votre compte ou voir les défis des utilisateurs durant cette période. Désolé pour cet inconvénient.",
 			"status": {
 				"ongoing": "En cours",
 				"finished": "Terminée",
@@ -182,15 +228,18 @@
 		"recents": {
 			"title": "Cours Récents",
 			"empty": {
-				"student": "Tu n'as pas d'activité récente. Rejoins une classe publique ou privée pour commencer à apprendre",
-				"professor": "Tu n'as pas d'activité récente. Crée une classe pour commencer"
+				"student": "Vous n'avez pas d'activité récente. Rejoinez une classe publique ou privée pour commencer à apprendre",
+				"professor": "Vous n'avez pas d'activité récente. Créez une classe pour commencer"
 			}
 		},
-		"levels": {
-			"title": "Niveaux",
-			"browse_levels": "Explorer les niveaux de la communauté",
-			"create_level": "Créer un niveau",
-			"empty": "Tu n'as pas de niveau"
+		"challenges": {
+			"title": "Défis",
+			"browse_challenges": "Explorer les défis de la communauté",
+			"create_challenge": "Créer un défi",
+			"empty": "Vous ne possèdez aucun défi"
+		},
+		"resources": {
+			"title": "Mes Ressources"
 		},
 		"classrooms": {
 			"title": "Classes",
@@ -198,12 +247,62 @@
 			"browse_public": "Explorer les classes publiques",
 			"empty": {
 				"student": "Tu ne fais parti d'aucune classe",
-				"professor": "Tu ne possède aucune classe"
+				"professor": "Vous ne possédez aucune classe"
 			},
 			"add": {
 				"student": "Rejoindre une classe",
 				"professor": "Créer une classe"
 			}
+		},
+		"courses": {
+			"title": "Vos cours",
+			"add": "Créer un cours",
+			"empty": "Vous ne possédez aucun cours"
+		}
+	},
+	"resources": {
+		"menu": {
+			"title": "Ressources",
+			"search": "Rechercher",
+			"bundles": "Obtenir des ressources"
+		},
+		"video": {
+			"name": "Vidéo",
+			"form": {
+				"url": "URL vers la vidéo",
+				"invalid_url": "URL de la vidéo youtube invalide",
+				"file": "Glissez ou sélectionnez un fichier"
+			}
+		},
+		"file": {
+			"name": "Fichier",
+			"form": {
+				"file": "Glissez ou sélectionnez un fichier"
+			}
+		},
+		"pdf": {
+			"name": "Pdf",
+			"form": {
+				"file": "Glissez ou sélectionnez un fichier"
+			}
+		},
+		"challenge": {
+			"name": "Défi",
+			"form": {
+				"select": "Sélectionnez un défi pour la liaison"
+			}
+		},
+		"theory": {
+			"name": "Théorie"
+		},
+		"form": {
+			"create": "Créer une ressource",
+			"update": "Modifier la ressource",
+			"delete": "Supprimer la ressource",
+			"delete_confirm": "Êtes-vous sûr de vouloir supprimer cette ressource? Si vous l'avez utilisée dans un cours, celle-ci sera perdue à jamais.",
+			"subject": "Matière de la ressource",
+			"type": "Type de ressource",
+			"name": "Nom de la ressource"
 		}
 	},
 	"classroom": {
@@ -211,6 +310,7 @@
 		"delete": "Supprimer la classe",
 		"leave": "Quitter la classe",
 		"already_in": "Déjà dans la classe",
+		"import_course": "Ajouter un de vos cours dans votre classe",
 		"container": {
 			"courses": {
 				"title": "Cours",
@@ -220,30 +320,97 @@
 				"title": "Détails"
 			},
 			"students": {
-				"title": "Élèves dans la classe",
-				"empty": "Il n'y a aucun élève dans la classe"
+				"title": "Étudiants dans la classe",
+				"empty": "Il n'y a aucun étudiant dans la classe"
 			}
 		},
 		"desc": "Classe de {{professor}}",
-		"subject": "Sujet",
+		"subject": "Matière",
 		"code": {
 			"title": "Code de la classe",
-			"desc": "Donnez ce code aux élèves afin qu'ils puissent rejoindre la classe depuis le tableau de bord!"
+			"desc": "Donnez ce code aux étudiants afin qu'ils puissent rejoindre la classe depuis le tableau de bord!"
 		}
 	},
 	"course": {
 		"desc": "Cours de {{professor}}",
-		"subject": "Sujet",
+		"subject": "Matière du cours",
 		"empty": "Ce cours est vide.",
+		"student_view": "Vue étudiant",
+		"layout": "Structure du cours",
+		"layout_view": "Vue professeur",
+		"delete": "Supprimer le cours. (Il sera retiré de toutes les classes où il est présent)",
+		"deletion_test": "Écrivez le nom du cours pour confirmer la suppression",
+		"validate_activity": "Confirmer les changements",
+		"start_writing": "Commencez à écrire ici...",
 		"section": {
 			"empty": "Cette section ne possède aucune activité",
-			"new": "Nouvelle section"
+			"new": "Ajouter une section",
+			"delete": "Êtes-vous sûr de vouloir supprimer cette section? Tout le contenu à l'intérieur de celle-ci sera supprimé.",
+			"new_name": "Section #{{num}}"
+		},
+		"template": {
+			"add": "Utiliser un modèle",
+			"remove": "Enlever le modèle"
 		},
 		"activity": {
+			"open": "Ouvrir",
+			"open_in_student_view": "Ouvrir dans la vue étudiante",
+			"edit_in_layout_view": "Modifier dans la vue professeur",
 			"empty": "Cette activité est vide.",
-			"no_activity": "Ouvre une activité pour commencer à apprendre.",
+			"no_activity": "Ouvre une activité pour commencer",
 			"new": "Ajouter une activité",
-			"new_name": "Activité #{{num}}"
+			"new_name": "Activité #{{num}}",
+			"remove_header": "Retirer le texte en entête.",
+			"remove_footer": "Retirer le texte en bas de page.",
+			"remove_header_confirm": "Êtes-vous certain de vouloir retirer le texte en entête de cette activité?",
+			"remove_footer_confirm": "Êtes-vous certain de vouloir retirer le texte en bas de page de cette activité?",
+			"add_header": "Ajouter du texte en entête à cette activité",
+			"add_footer": "Ajouter du texte en bas de page à cette activité",
+			"download_file": "Télécharger le fichier",
+			"no_download": "Il n'y a aucun fichier à télécharger ici.",
+			"import_resource": {
+				"generic": "Ajouter une ressource existante",
+				"PF": "Ajouter un pdf existant",
+				"TH": "Ajouter un document de théorie existant",
+				"VI": "Ajouter une vidéo existante",
+				"AS": "Ajouter un fichier existant",
+				"CH": "Ajouter un défi"
+			},
+			"create_resource": {
+				"generic": "Créer une nouvelle ressource",
+				"PF": "Téléverser un pdf depuis cet appareil",
+				"TH": "Créer un nouveau document de théorie",
+				"VI": {
+					"upload": "Téléverser une vidéo depuis cet appareil",
+					"url": "Ajouter une vidéo depuis un URL"
+				},
+				"AS": "Téléverser un fichier depuis cet appareil"
+			},
+			"edit_resource": "Modifier la ressource",
+			"remove_resource": "Retirer la ressource",
+			"next": "Activité suivante",
+			"previous": "Activité précédente",
+			"delete": "Êtes-vous sûr de vouloir supprimer cette activité? Les ressources comprises à l'intérieur de celle-ci ne seront pas supprimées."
+		},
+		"form": {
+			"create": "Créer un cours",
+			"update": "Modifier le cours",
+			"name": "Nom du cours",
+			"description": "Description du cours",
+			"subject": "Matière du cours"
+		},
+		"navigation": {
+			"minimize": "Réduire",
+			"maximize": "Agrandir"
+		}
+	},
+	"bundle": {
+		"courseTemplate": {
+			"name": "Modèle de cours",
+			"content": "Contient"
+		},
+		"browse": {
+			"title": "Trousses pédagogiques fournies par ALIVEcode"
 		}
 	},
 	"menu": {
@@ -251,11 +418,11 @@
 			"professor": "Compte professeur",
 			"student": "Compte étudiant"
 		},
-		"level": {
-			"alive": "Niveau avec voiture ALIVE",
-			"code": "Niveau avec console",
-			"ai": "Niveau avec intelligence artificielle",
-			"iot": "Niveau avec Internet des Objets"
+		"challenge": {
+			"alive": "Défi avec voiture ALIVE",
+			"code": "Défi avec console",
+			"ai": "Défi avec intelligence artificielle",
+			"iot": "Défi avec Internet des Objets"
 		}
 	},
 	"home": {
@@ -270,6 +437,7 @@
 		"news": "Nouvelles",
 		"iot": {
 			"desc": "L'IoT n'a jamais été aussi facile",
+			"to_home_page": "Aller à la page d'accueil d'ALIVEIoT",
 			"to_dashboard": "Accéder au Tableau de Bord",
 			"to_trainings": "Accéder aux Formations",
 			"section": {
@@ -290,11 +458,11 @@
 			},
 			"us": {
 				"title": "Qui sommes-nous ?",
-				"desc": "Nous sommes des chercheurs du Laboratoire de Recherche Informatique Maisonneuve LRIMa. Chaque année nous avons comme but d'innover dans l'industrie informatique en menant des recherches et en publiant/partageant les résultats de nos recherches durant des conférences à travers le monde. Visitez le site du LRIMa pour plus de détails et la section à propos."
+				"desc": "Nous sommes des chercheurs du Laboratoire de Recherche Informatique du collège Maisonneuve LRIMa. Chaque année nous avons comme but d'innover dans l'industrie informatique en menant des recherches et en publiant/partageant les résultats de nos recherches durant des conférences à travers le monde. Visitez le site du LRIMa pour plus de détails et la section à propos."
 			},
 			"story": {
 				"title": "Notre histoire",
-				"desc": "Les origines d'ALIVEcode remontent à loin dans le temps. Il y a trois ans, nous avons eu l'idée de créer des véhicules miniatures autonomes dans le but de recherches scientifiques. Un an plus tard, nous avons eu l'idée d'utiliser ces robots afin d'apprendre la programmation à de jeunes étudiants. L'année suivante, nous avons décidé de créer ALIVEcode afin de rendre l'apprentissage de la programmation accessible à tous. Cela fait maintenant plus d'un an qu'ALIVEcode existe et continue d'être amélioré."
+				"desc": "Les origines d'ALIVEcode remontent à loin dans le temps. Il y a trois ans, nous avons eu l'idée de créer des véhicules miniatures autonomes dans le but de recherches scientifiques. Un an plus tard, nous avons eu l'idée d'utiliser ces robots afin d'apprendre la programmation à de jeunes étudiants. L'année suivante, nous avons décidé de créer ALIVEcode afin de rendre l'apprentissage de la programmation accessible à tous. Cela fait maintenant plus d'un an qu'ALIVEcode existe et continue de grandir."
 			},
 			"training_ai": {
 				"title": "Formation en Intelligence Artificielle",
@@ -347,7 +515,7 @@
 		"section": {
 			"artificial-intelligence": {
 				"title": "Le potentiel de l'intelligence artificielle",
-				"paragraph1": "L’intelligence artificielle prend une place de plus en plus importante dans notre quotidien. En fait, nous pouvons déjà nous en apercevoir aujourd’hui : des assistants intelligents sont présents dans nos téléphones, nos ordinateurs ainsi que dans des haut-parleurs; de plus en plus d’essais avec des technologies d’IA sont effectués dans le domaine des transports, de l’agriculture, de la médecine et bien plus; les moteurs de recherche sur Internet ainsi que plusieurs sites utilisent l’IA pour des raison commerciales; et il existe bien d’autres exemples!",
+				"paragraph1": "L’intelligence artificielle prend une place de plus en plus importante dans notre quotidien. En fait, nous pouvons déjà nous en apercevoir aujourd'hui : des assistants intelligents sont présents dans nos téléphones, nos ordinateurs ainsi que dans des haut-parleurs; de plus en plus d’essais avec des technologies d’IA sont effectués dans le domaine des transports, de l’agriculture, de la médecine et bien plus; les moteurs de recherche sur Internet ainsi que plusieurs sites utilisent l’IA pour des raison commerciales; et il existe bien d’autres exemples!",
 				"paragraph2": "Au fil des cours sur les différentes facettes de l’intelligence artificielle, tu apprendras comment peut-on s’en servir pour résoudre des problèmes variés :",
 				"point1": "Comment prédire la consommation d’une voiture si on fait varier son moteur, son poids et plusieurs autres caractéristiques?",
 				"point2": "Comment développer une formule qui saura prédire la grandeur maximale d’une personne?",
@@ -373,11 +541,165 @@
 		}
 	},
 	"iot": {
+		"dashboard": {
+			"title": "Tableau de bord IoT",
+			"no_object": "Aucun objet IoT",
+			"no_project": "Aucun projet IoT"
+		},
 		"project": {
-			"name": "Projet IoT"
+			"name": "Projet IoT",
+			"settings": "Paramètres",
+			"routes": "Routage",
+			"documents": {
+				"name": "Documents"
+			},
+			"interface": {
+				"name": "Interface",
+				"add_component": "Ajouter un composant",
+				"delete_component": "Supprimer le composant",
+				"delete_component_confirm": "Êtes-vous sûr de vouloir supprimer le composant",
+				"edit_component": "Modifier le composant",
+				"copy_project_id": "Copier l'ID du projet",
+				"errors": {
+					"ref": "ERREUR",
+					"no_id": "Le composant n'a pas d'ID"
+				},
+				"components": {
+					"progress": {
+						"name": "Jauge de progression"
+					},
+					"button": {
+						"name": "Bouton"
+					},
+					"logs": {
+						"name": "Journaux",
+						"clear": "Supprimer toutes les entrées",
+						"add": "Ajouter une entrée",
+						"empty": "Aucune entrée"
+					},
+					"led": {
+						"name": "LED"
+					},
+					"label": {
+						"name": "Étiquette"
+					},
+					"buzzer": {
+						"name": "Avertisseur sonore",
+						"sine": "Sinus",
+						"sawtooth": "Dents de scie",
+						"square": "Carré",
+						"triangle": "Triangle",
+						"start": "Activer l'avertisseur",
+						"stop": "Arrêter l'avertisseur"
+					},
+					"traffic_light": {
+						"name": "Feu de circulation",
+						"red": "rouge",
+						"yellow": "jaune",
+						"green": "vert",
+						"off": "éteint"
+					}
+				},
+				"components_form": {
+					"name": {
+						"label": "Nom du composant",
+						"placeholder": "Nom"
+					},
+					"id": {
+						"label": "Identifiant du composant",
+						"placeholder": "ID"
+					},
+					"ref": {
+						"label": "Référence à une entrée du document",
+						"static": "Valeur statique",
+						"invalid": "VALEUR INVALIDE"
+					},
+					"progress": {
+						"value": {
+							"label": "Progression de la jauge"
+						},
+						"min": {
+							"label": "Minimum de la jauge",
+							"placeholder": "0"
+						},
+						"max": {
+							"label": "Maximum de la jauge",
+							"placeholder": "100"
+						},
+						"is_percentage": {
+							"label": "Est sous forme de pourcentage?"
+						}
+					},
+					"button": {
+						"on_click": "Lors du clic du bouton",
+						"value": {
+							"label": "Affichage du bouton",
+							"placeholder": "Clic-moi"
+						},
+						"target": {
+							"label": "Objet qui subira une action lors du clic du bouton",
+							"placeholder": "Objet visé"
+						},
+						"action_id": {
+							"label": "Identifiant de l'action à faire subir",
+							"placeholder": "avancer"
+						},
+						"action_data": {
+							"label": "Données concernant l'action",
+							"placeholder": "{}"
+						}
+					},
+					"logs": {
+						"value": {
+							"label": "Journaux"
+						}
+					},
+					"led": {
+						"value": {
+							"label": "État éteint/allumé du LED"
+						}
+					},
+					"label": {
+						"value": {
+							"label": "Texte d'affichage",
+							"placeholder": "Bonjour Monde!"
+						},
+						"font_size": {
+							"label": "Taille de la police"
+						}
+					},
+					"buzzer": {
+						"value": {
+							"label": "Fréquence à jouer",
+							"placeholder": "500"
+						},
+						"duration": {
+							"label": "Durée du son à jouer (secondes)"
+						},
+						"frequency_type": {
+							"label": "Type de fréquence",
+							"placeholder": "Sinus"
+						}
+					},
+					"traffic_light": {
+						"value": {
+							"label": "État du feu de circulation",
+							"placeholder": "Éteint"
+						}
+					}
+				}
+			},
+			"objects": {
+				"name": "Objets"
+			},
+			"scripts": {
+				"name": "Scripts"
+			}
 		},
 		"object": {
-			"name": "Objet IoT"
+			"name": "Objet IoT",
+			"copy_id": "Copier l'ID de l'objet",
+			"deleted": "Objet IoT supprimé"
 		}
 	},
 	"user": {
@@ -408,5 +730,68 @@
 	},
 	"cmd": {
 		"clear": "Effacer les lignes"
+	},
+	"action": {
+		"irreversible": "Cette action est irréversible"
+	},
+	"help": {
+		"start_tutorial": "Tutoriel de la page",
+		"click_for_more": "Cliquez pour plus d'informations",
+		"slides": {
+			"next": "Suivant",
+			"previous": "Précédent"
+		},
+		"activity": {
+			"theory": "Activité permettant l'affichage de matière théorique sous format d'un fichier texte stylisé.",
+			"pdf": "Activité de visionnement d'un document pdf.",
+			"video": "Activité de visionnement d'une vidéo YouTube ou en format mp4.",
+			"challenge": "Activité défi permettant de mettre en pratique la matière apprise dans le cours.",
+			"assignment": "Activité permettant à un étudiant de télécharger un certain fichier nécessaire à son apprentissage."
+		},
+		"resource": {
+			"theory": "Un document text stylisé qui peut être réutilisé.",
+			"pdf": "Un fichier de présentation powerpoint qui peut être réutilisé",
+			"video": "Une vidéo YouTube ou une vidéo en format mp4 qui peut être réutilisée.",
+			"challenge": "Un défi qui peut être réutilisé dans un cours.",
+			"file": "Tout type de fichier qui peut être réutilisé."
+		},
+		"dashboard": {
+			"tabs": {
+				"recent_courses": "Voici l'endroit où se retrouve vos cours récemment visité",
+				"challenges": "Voici l'endroit où se retrouve vos défis",
+				"resources": "Voici l'endroit où vous pouvez voir, modifier, supprimer et créer vos ressources",
+				"create_classroom": "Voici l'endroit où se retrouve vos classes",
+				"create_course": "Voici l'endroit où se retrouve les cours que vous avez créés"
+			},
+			"views": {
+				"recent_courses": "Cette vue vous permet de reprendre rapidement là où vous vous êtes arrêté en classant vos cours du plus récemment ouverts au moins récemment ouverts.",
+				"challenges": "Cette vue représente votre bibliothèque de défis. En plus d'y retrouvez tous les défis que vous avez, c'est ici que vous pourrez en créer de nouveaux, éditer ceux qui existent déjà et supprimer ceux que vous ne voulez plus."
+			}
+		},
+		"course_layout": {
+			"welcome": "Bienvenue dans votre éditeur de cours. Ici vous pourrez modifier votre cours à votre guise. C'est-à-dire, créer des sections ou activités, modifier leur contenu, les supprimer, les cacher, les déplacer, etc.",
+			"edit_title": "Vous pouvez modifier le titre de votre cours en cliquant sur celui-ci.",
+			"see_student_view": "Vous pouvez basculer en vue élève à tout moment afin de visualiser le cours comme un élève le verrait en cliquant sur ce bouton.",
+			"see_view": "Vous pouvez voir à tout moment dans quel vue vous êtes grâce à cet indicateur ici."
+		},
+		"navigation": {
+			"explanation": "Ceci est la vue étudiante du cours.",
+			"sections": "Les sections et le contenu du cours peuvent être vu ici.",
+			"minimize": "Ce bouton réduit la barre de navigation afin de voir l'activité ouverte en pleine largeur.",
+			"maximize": "Ce bouton remet la barre de navigation comme elle était",
+			"professor_view": "Vous pouvez retourner en mode vue professeur en cliquant sur ce bouton."
+		},
+		"resource_menu": {
+			"resources": "Toutes vos ressources créées ou acquéries en tant que professeur seront affichées et modifiables ici",
+			"create_resource": "Si vous souhaitez créer une ressource, vous pouvez le faire depuis ce menu en cliquant sur le bouton \"$t(resources.form.create)\"",
+			"acquire_resource": "Vous pouvez aussi vous procurer des ressources préfaites en cliquant sur le bouton \"$t(resources.menu.bundles)\"",
+			"filters": "Vous pouvez trier vos ressources selon le type de celles-ci...",
+			"sections": "...ainsi que selon leur catégorie...",
+			"search": "...et leur nom",
+			"help": "Les ressources sont le contenu utilisé dans une activité. Elles sont du contenu partagé qui peuvent être réutilisées partout sur tout le site dans plusieurs cours. Si la ressource change, le changement affectera tous les cours l'utilisant."
+		},
+		"course_template": {
+			"help": "En utilisant un $t(msg.courseTemplate) vous pourrez avoir une fondation sur laquelle vous fier afin de construire votre propre cours. Il n'est pas obligatoire d'en utiliser pour créer un cours."
+		}
 	}
 }

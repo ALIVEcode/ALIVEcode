@@ -18,3 +18,4 @@ ts-node ./node_modules/typeorm/cli.js migration:run
 ### Reverting the migrations
 
 ts-node ./node_modules/typeorm/cli.js migration:revert
+

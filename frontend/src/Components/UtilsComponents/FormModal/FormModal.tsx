@@ -14,7 +14,7 @@ import { classNames } from '../../../Types/utils';
  * @param {ButtonVariants} buttonVariant variant of the submit button
  * @param {() => any} setOpen method to change modal open state
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
 const FormModal = ({ children: form, onSubmit, ...props }: FormModalProps) => {
 	const makeChildrenWithProps = () => {
@@ -24,7 +24,11 @@ const FormModal = ({ children: form, onSubmit, ...props }: FormModalProps) => {
 	};
 
 	return (
-		<Modal hideFooter closeCross {...props}>
+		<Modal
+			hideFooter={'hideFooter' in props ? props['hideFooter'] : true}
+			closeCross
+			{...props}
+		>
 			{makeChildrenWithProps()}
 		</Modal>
 	);

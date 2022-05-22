@@ -22,6 +22,8 @@ const AccountPage = () => {
 	const { user } = useContext(UserContext);
 	const { register, handleSubmit } = useForm();
 
+	const isPublic = false;
+
 	const onSubmit = async (image: { file: any }) => {
 		let fileData = new FormData();
 		fileData.append('image', image.file[0]);
@@ -32,43 +34,7 @@ const AccountPage = () => {
 		});
 		window.location.reload();
 	};
-	return (
-		<>
-			<StyledCenteredContainer>
-				<div>
-					<div className="col-md-6">
-						<div className="pb-5">
-							<CardContainer title="Profil">
-								{!user ? (
-									<FontAwesomeIcon icon={faSpinner} />
-								) : (
-									<>
-										<div>
-											<AboutCard
-												name={user.getDisplayName()}
-												img={`http://localhost:8000/uploads/${user.getDisplayImage()}`}
-											/>
-										</div>
-										<form onSubmit={handleSubmit(onSubmit)}>
-											<div>
-												<input
-													type="file"
-													{...register('file', { required: true })}
-												/>
-											</div>
-											<div>
-												<button type="submit">upload</button>
-											</div>
-										</form>
-									</>
-								)}
-							</CardContainer>
-						</div>
-					</div>
-				</div>
-			</StyledCenteredContainer>
-		</>
-	);
+	return <div>{isPublic ? <>Public!</> : <>Pas public</>}</div>;
 };
 
 export default AccountPage;

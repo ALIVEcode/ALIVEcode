@@ -77,6 +77,7 @@ export const IoTProjectSettings = () => {
 				open={confirmDeleteOpen}
 				setOpen={setConfirmDeleteOpen}
 				onConfirm={async () => {
+					if (!project) return;
 					await api.db.iot.projects.delete({ id: project.id });
 					goTo(routes.auth.iot_dashboard.path);
 					alert.success('Iot Project Deleted');

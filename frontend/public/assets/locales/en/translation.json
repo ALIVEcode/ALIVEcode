@@ -1,7 +1,8 @@
 {
+	"lang": "en",
 	"error": {
 		"sorry": "Sorry.",
-		"unknown": "An unknow error occured, please try again.",
+		"unknown": "An unknown error occurred, please try again.",
 		"custom": "Error: {{error}}.",
 		"back": "Go back",
 		"home": "Back to the main page",
@@ -16,13 +17,37 @@
 			"short": "The request could not be made, the website is currently under maintenance."
 		}
 	},
+	"feedback": {
+		"title": "What's on your mind?",
+		"button": "Give feedback!",
+		"send": "Send",
+		"cancel": "Cancel",
+		"choices": {
+			"like": "Something I like",
+			"dislike": "Something I dislike",
+			"idea": "Something I would like to see",
+			"bug": "A bug I found"
+		},
+		"information": "informations",
+		"authorization_infos": "I authorize my {{infos}} to be sent anonymously with my feedback",
+		"info_collected": {
+			"url": "The url of the page you are on right now",
+			"browser": "The browser you are using",
+			"theme": "The theme you are using (dark/light theme)",
+			"language": "Your language setting"
+		},
+		"placeholder": "Write your feedback here..."
+	},
 	"form": {
+		"optional": "Optional",
+		"required": "Required",
 		"submit": {
 			"POST": "Create {{name}}",
 			"PATCH": "Modify {{name}}",
 			"DELETE": "Delete {{name}}"
 		},
 		"error": {
+			"cant_submit": "Something went wrong when submitting your form, please make sure you filled all the required fields and try again.",
 			"generic": "This field is wrong",
 			"required": "This field is required",
 			"maxLength": "This field exceeds {{max}} characters",
@@ -39,9 +64,11 @@
 				"name": "This field should only contains alphanumeric characters"
 			}
 		},
-		"level": {
+		"challenge": {
 			"PATCH": {
-				"title": "Level settings"
+				"title": "Challenge settings",
+				"fontSize": "Font size",
+				"interface_settings": "Interface"
 			}
 		},
 		"title": {
@@ -49,9 +76,10 @@
 			"signup": "Sign up",
 			"create_classroom": "Creation of a classroom",
 			"create_course": "Creation of a course",
-			"create_level": "Creation of a level",
+			"create_challenge": "Creation of a Challenge",
 			"create_iot_project": "Creation of an IoT project",
-			"create_iot_object": "Creation of an IoT object"
+			"create_iot_object": "Creation of an IoT object",
+			"update_classroom": "Updating the classroom settings"
 		},
 		"join_classroom": {
 			"title": "Join a classroom",
@@ -97,6 +125,10 @@
 		"cancel": "Cancel"
 	},
 	"msg": {
+		"language": "Language",
+		"courseTemplate": "course template",
+		"bundle": "bundle",
+		"resource": "resource",
 		"professor": "professor",
 		"student": "student",
 		"creator": "Creator",
@@ -104,11 +136,25 @@
 		"description": "description",
 		"deleted_user": "Deleted user",
 		"search": "Search",
-		"community_levels": "Community levels",
+		"community_challenges": "Community challenges",
 		"public_classrooms": "Public classrooms",
 		"creation_date": "Creation date",
 		"update_date": "Update date",
 		"see_links": "See links",
+		"activity_type": {
+			"challenge": "Challenge",
+			"video": "Video",
+			"pdf": "Pdf",
+			"assignment": "Assignment",
+			"theory": "Theory"
+		},
+		"subjects": {
+			"iot": "Internet of Things",
+			"ai": "Artificial Intelligence",
+			"code": "Programming",
+			"other": "Other",
+			"all": "All"
+		},
 		"time": {
 			"format": "{{dayName}}, {{day}} {{monthName}} {{year}} {{hour}}:{{minute}}",
 			"day": {
@@ -169,8 +215,8 @@
 		"maintenance": {
 			"more_info": "More info",
 			"no_desc": "No description available.",
-			"ongoing": "The website is currently undergoing a maintenance from {{startDate}} to {{finishDate}}. You cannot use your account or see other users' levels during this period of time. Sorry for the inconvenience.",
-			"upcoming": "The website will be undergoing a maintenance from {{startDate}} to {{finishDate}}. You will not be able to use your account or see other users' levels during this period of time. Sorry for the inconvenience.",
+			"ongoing": "The website is currently undergoing a maintenance from {{startDate}} to {{finishDate}}. You cannot use your account or see other users' challenges during this period of time. Sorry for the inconvenience.",
+			"upcoming": "The website will be undergoing a maintenance from {{startDate}} to {{finishDate}}. You will not be able to use your account or see other users' challgenes during this period of time. Sorry for the inconvenience.",
 			"status": {
 				"ongoing": "Ongoing",
 				"finished": "Finished",
@@ -183,14 +229,17 @@
 			"title": "Recent Courses",
 			"empty": {
 				"student": "You have no recent activity. Join a public or private classroom to get started",
-				"professor": "You have no recent activity. Create a classroom to get started"
+				"professor": "You have no recent activity. Create a classroom or a course to get started"
 			}
 		},
-		"levels": {
-			"title": "Levels",
-			"browse_levels": "Explore the community levels",
-			"create_level": "Create a level",
-			"empty": "You have no level"
+		"challenges": {
+			"title": "Challenges",
+			"browse_challenges": "Explore the community challenges",
+			"create_challenge": "Create a challenge",
+			"empty": "You do not have any challenge"
+		},
+		"resources": {
+			"title": "My Resources"
 		},
 		"classrooms": {
 			"title": "Classrooms",
@@ -204,6 +253,56 @@
 				"student": "Join a classroom",
 				"professor": "Create a classroom"
 			}
+		},
+		"courses": {
+			"title": "Your courses",
+			"add": "Create a course",
+			"empty": "You have do not have any course"
+		}
+	},
+	"resources": {
+		"menu": {
+			"title": "Resources",
+			"search": "Search",
+			"bundles": "Acquire resources"
+		},
+		"video": {
+			"name": "Video",
+			"form": {
+				"url": "URL of the youtube video",
+				"invalid_url": "Invalid YouTube video URL",
+				"file": "Drag and drop a file or insert one"
+			}
+		},
+		"file": {
+			"name": "File",
+			"form": {
+				"file": "Drag and drop a file or insert one"
+			}
+		},
+		"pdf": {
+			"name": "Pdf",
+			"form": {
+				"file": "Drag and drop a file or insert one"
+			}
+		},
+		"challenge": {
+			"name": "Challenge",
+			"form": {
+				"select": "Select a challenge for the linkage"
+			}
+		},
+		"theory": {
+			"name": "Theory"
+		},
+		"form": {
+			"create": "Create a resource",
+			"update": "Update the resource",
+			"delete": "Delete the resource",
+			"delete_confirm": "Are you sure you want to delete this resource? If you have used it in a course, it will be forever lost.",
+			"subject": "Subject of the resource",
+			"type": "Type of resource",
+			"name": "Name of the resource"
 		}
 	},
 	"classroom": {
@@ -211,6 +310,7 @@
 		"delete": "Delete classroom",
 		"leave": "Leave classroom",
 		"already_in": "Already in classroom",
+		"import_course": "Add one of your courses inside your classroom",
 		"container": {
 			"courses": {
 				"title": "Courses",
@@ -233,17 +333,84 @@
 	},
 	"course": {
 		"desc": "Course of {{professor}}",
-		"subject": "Subject",
+		"subject": "Subject of the course",
 		"empty": "This course is empty.",
+		"student_view": "Student view",
+		"layout": "Course Layout",
+		"layout_view": "Layout view",
+		"delete": "Delete this course. (It will be removed from all the classrooms it is in)",
+		"deletion_test": "Enter the name of the course to confirm the deletion",
+		"validate_activity": "Confirm changes",
+		"start_writing": "Begin writing here...",
 		"section": {
 			"empty": "This section has no activities.",
-			"new": "New section"
+			"new": "Add a Section",
+			"delete": "Are you sure you want to delete this section? All the elements contained inside it will also be deleted.",
+			"new_name": "Section #{{num}}"
+		},
+		"template": {
+			"add": "Add a template",
+			"remove": "Remove the template"
 		},
 		"activity": {
+			"open": "Open",
+			"open_in_student_view": "Open in student view",
+			"edit_in_layout_view": "Edit in layout view",
 			"empty": "This activity is empty.",
-			"no_activity": "Open an activity to get started.",
-			"new": "Add an activity",
-			"new_name": "Activity #{{num}}"
+			"no_activity": "Open an activity to get started",
+			"new": "Add an Activity",
+			"new_name": "Activity #{{num}}",
+			"remove_header": "Remove the text header.",
+			"remove_footer": "Remove the text footer.",
+			"remove_header_confirm": "Are you sure you want to remove the text header of this activity?",
+			"remove_footer_confirm": "Are you sure you want to remove the text footer of this activity?",
+			"add_header": "Add a text header to this activity",
+			"add_footer": "Add a text footer to this activity",
+			"download_file": "Download the file",
+			"no_download": "There is no file to download here.",
+			"import_resource": {
+				"generic": "Add an exisiting resource",
+				"PF": "Add an existing pdf",
+				"TH": "Add a text document",
+				"VI": "Add an existing video",
+				"AS": "Add an existing file",
+				"CH": "Add a challenge"
+			},
+			"create_resource": {
+				"generic": "Create ",
+				"PF": "Upload a pdf from this device",
+				"TH": "Create a new text document",
+				"VI": {
+					"upload": "Upload a video from this device",
+					"url": "Add a video from a youtube URL"
+				},
+				"AS": "Upload a file from this device"
+			},
+			"edit_resource": "Edit the resource",
+			"remove_resource": "Remove the resource",
+			"next": "Next activity",
+			"previous": "Previous activity",
+			"delete": "Are you sure you want to delete this activity? The resources contained inside it will not be deleted."
+		},
+		"form": {
+			"create": "Create a course",
+			"update": "Update the course",
+			"name": "Name of the course",
+			"description": "Description of the course",
+			"subject": "Subject of the course"
+		},
+		"navigation": {
+			"minimize": "Minimize",
+			"maximize": "Maximize"
+		}
+	},
+	"bundle": {
+		"courseTemplate": {
+			"name": "Course Template",
+			"content": "Contains"
+		},
+		"browse": {
+			"title": "Bundles provided by ALIVEcode"
 		}
 	},
 	"menu": {
@@ -251,11 +418,11 @@
 			"professor": "Professor account",
 			"student": "Student account"
 		},
-		"level": {
-			"alive": "Level with ALIVE car",
-			"code": "Level with console",
-			"ai": "Level with artificial intelligence",
-			"iot": "Level with Internet of Things"
+		"challenge": {
+			"alive": "Challenge with ALIVE car",
+			"code": "Challenge with console",
+			"ai": "Challenge with artificial intelligence",
+			"iot": "Challenge with Internet of Things"
 		}
 	},
 	"home": {
@@ -270,11 +437,12 @@
 		"news": "News",
 		"iot": {
 			"desc": "IoT has never been easier",
+			"to_home_page": "Go to ALIVEIoT Home Page",
 			"to_dashboard": "To Dashboard",
 			"to_trainings": "To Trainings",
 			"section": {
 				"develop": {
-					"title": "Start Developping",
+					"title": "Start Developing",
 					"desc": "Practice your notions of the Internet of Things by developing IoT Projects. Register your IoT Objects. Create a network of connected devices and establish communications between them. Collect and share data between those objects. Show in real-time your data in a graphical user interface."
 				},
 				"learn": {
@@ -294,11 +462,11 @@
 			},
 			"story": {
 				"title": "Our story",
-				"desc": "ALIVEcode comes from way back in time. Three years from now we thought of making miniature autonomous vehicles for researchs' purposes. A year later, we had the idea to use those robots to teach programming to young students. Fast-forward one year and we decided to create ALIVEcode to make our teaching more accessible to the mass. It's now been over a year that the website exists and keeps expanding."
+				"desc": "ALIVEcode comes from way back in time. Three years from now we thought of making miniature autonomous vehicles for researches' purposes. A year later, we had the idea to use those robots to teach programming to young students. Fast-forward one year and we decided to create ALIVEcode to make our teaching more accessible to the mass. It's now been over a year that the website exists and keeps expanding."
 			},
 			"training_ai": {
 				"title": "Artificial Intelligence Training",
-				"desc": "Learn the theory and current usage of AI in society. Follow one or multiple complete pieces of training offered by ALIVEcode that will teach you all there is to know about AI. Such as linear regressions, classification, decisional trees, neural networks, etc."
+				"desc": "Learn the theory and current usage of AI in society. Follow one or multiple complete pieces of training offered by ALIVEcode that will teach you all there is to know about AI. Such as linear regressions, classification, decision trees, neural networks, etc."
 			},
 			"training_iot": {
 				"title": "Internet of Things Training",
@@ -347,18 +515,18 @@
 		"section": {
 			"artificial-intelligence": {
 				"title": "The Potential of Artificial Intelligence",
-				"paragraph1": "Artificial intelligence is taking an increasingly important place in our daily lives. In fact, we can already see it today: there are smart assiistants in our phones, computers and speakers; more and more experiments with AI technologies are carried out in the fiels of transport, agriculture, medicine and more; Internet search engines and many sites use AI for buisness purposes; and there are many more examples!",
+				"paragraph1": "Artificial intelligence is taking an increasingly important place in our daily lives. In fact, we can already see it today: there are smart assistants in our phones, computers and speakers; more and more experiments with AI technologies are carried out in the fiels of transport, agriculture, medicine and more; Internet search engines and many sites use AI for business purposes; and there are many more examples!",
 				"paragraph2": "While following the courses on the different facets of artificial intelligence, you will learn how it can be used to solve a variety of problems:",
 				"point1": "How to predict the fuel consumption of a car if we vary its engine, weight, and several other characteristics?",
 				"point2": "How to develop a formula that will predict the maximum height of a person",
 				"point3": "How to find the optimal configuration for a robot to accomplish a task?",
 				"point4": "And much more!",
-				"paragraph3": "Additionnaly, even if we have covered only a few applications of artificial intelligence, the possibilities are endless, so there is still so much to discover!"
+				"paragraph3": "Additionally, even if we have covered only a few applications of artificial intelligence, the possibilities are endless, so there is still so much to discover!"
 			},
 			"machine-learning": {
 				"title": "Machine Learning and Its Place in AI",
 				"paragraph1": "If you are not familiar with the field of artificial intelligence, the first thing to know is that there are multiple major branches that focus on a more specific topic of AI. For example, the computer vision branch specializes in image recognition, while the speech recognition branch seeks more to recognize or generate human speech. Machine learning is just one of these categories, but it contains several sub-branches, including the famous neural networks.",
-				"paragraph2": "Machine learning mainly specializes in predicting values based on data relevant to the situation being analyzed. It makes predicting results possible in situations which would require extremely complex calculations to arrive at the same results. To do this, the algorithm trains on values from previous experimets and tries to predict their results with a random model. Then, we compare the prediction with the real value and we adapt the model according to the error in order to improve it. Finally, this process is repeated until a satisfactory resolt is achieved. It is this process that is used in all machine learning algorithms, whether they are regressions or even neural networks."
+				"paragraph2": "Machine learning mainly specializes in predicting values based on data relevant to the situation being analyzed. It makes predicting results possible in situations which would require extremely complex calculations to arrive at the same results. To do this, the algorithm trains on values from previous experiments and tries to predict their results with a random model. Then, we compare the prediction with the real value and we adapt the model according to the error in order to improve it. Finally, this process is repeated until a satisfactory resolt is achieved. It is this process that is used in all machine learning algorithms, whether they are regressions or even neural networks."
 			},
 			"deep-learning": {
 				"title": "Deep Neural Networks in AI",
@@ -373,11 +541,165 @@
 		}
 	},
 	"iot": {
+		"dashboard": {
+			"title": "IoT Dashboard",
+			"no_object": "No IoT Object",
+			"no_project": "No IoT Project"
+		},
 		"project": {
-			"name": "IoT Project"
+			"name": "IoT Project",
+			"settings": "Settings",
+			"routes": "Routing",
+			"documents": {
+				"name": "Documents"
+			},
+			"interface": {
+				"name": "Interface",
+				"add_component": "Add a component",
+				"delete_component": "Delete the component",
+				"delete_component_confirm": "Are you sure you want to delete the component",
+				"edit_component": "Edit the component",
+				"copy_project_id": "Copy project ID",
+				"errors": {
+					"ref": "ERROR",
+					"no_id": "The component has no ID"
+				},
+				"components": {
+					"progress": {
+						"name": "Progress"
+					},
+					"button": {
+						"name": "Button"
+					},
+					"logs": {
+						"name": "Logs",
+						"clear": "Clear logs",
+						"add": "Add a log",
+						"empty": "No logs"
+					},
+					"led": {
+						"name": "LED"
+					},
+					"label": {
+						"name": "Label"
+					},
+					"buzzer": {
+						"name": "Buzzer",
+						"sine": "Sine",
+						"sawtooth": "Sawtooth",
+						"square": "Square",
+						"triangle": "Triangle",
+						"start": "Activate the buzzer",
+						"stop": "Stop the buzzer"
+					},
+					"traffic_light": {
+						"name": "Traffic Light",
+						"red": "red",
+						"yellow": "yellow",
+						"green": "green",
+						"off": "off"
+					}
+				},
+				"components_form": {
+					"name": {
+						"label": "Name of the component",
+						"placeholder": "Name"
+					},
+					"id": {
+						"label": "ID of the component",
+						"placeholder": "ID"
+					},
+					"ref": {
+						"label": "Reference to a document field",
+						"static": "Valeur statique",
+						"invalid": "INVALID VALUE"
+					},
+					"progress": {
+						"value": {
+							"label": "Value of the progress"
+						},
+						"min": {
+							"label": "Minimum value of the progress",
+							"placeholder": "0"
+						},
+						"max": {
+							"label": "Maximum value of the progress",
+							"placeholder": "100"
+						},
+						"is_percentage": {
+							"label": "Is percentage?"
+						}
+					},
+					"button": {
+						"on_click": "When the button gets pressed",
+						"value": {
+							"label": "Displayed text of the button",
+							"placeholder": "Click me"
+						},
+						"target": {
+							"label": "Object that will be affected by the button click",
+							"placeholder": "Targetted object"
+						},
+						"action_id": {
+							"label": "ID of the action to perform on the object",
+							"placeholder": "forward"
+						},
+						"action_data": {
+							"label": "Data for the event",
+							"placeholder": "{}"
+						}
+					},
+					"logs": {
+						"value": {
+							"label": "Logs"
+						}
+					},
+					"led": {
+						"value": {
+							"label": "State ON/OFF of the LED"
+						}
+					},
+					"label": {
+						"value": {
+							"label": "Displayed text",
+							"placeholder": "Hello World!"
+						},
+						"font_size": {
+							"label": "Font size"
+						}
+					},
+					"buzzer": {
+						"value": {
+							"label": "Frequency to play",
+							"placeholder": "500"
+						},
+						"duration": {
+							"label": "Duration of the sound (seconds)"
+						},
+						"frequency_type": {
+							"label": "Type of the frequency",
+							"placeholder": "Sine"
+						}
+					},
+					"traffic_light": {
+						"value": {
+							"label": "State of the traffic light",
+							"placeholder": "OFF"
+						}
+					}
+				}
+			},
+			"objects": {
+				"name": "Objects"
+			},
+			"scripts": {
+				"name": "Scripts"
+			}
 		},
 		"object": {
-			"name": "IoT Object"
+			"name": "IoT Object",
+			"copy_id": "Copy ID of object",
+			"deleted": "IoT Object Deleted"
 		}
 	},
 	"user": {
@@ -408,5 +730,68 @@
 	},
 	"cmd": {
 		"clear": "Clear lines"
+	},
+	"action": {
+		"irreversible": "This action is irreversible"
+	},
+	"help": {
+		"start_tutorial": "Page's tutorial",
+		"click_for_more": "Click to see more",
+		"slides": {
+			"next": "Next",
+			"previous": "Previous"
+		},
+		"activity": {
+			"theory": "Activity that displays some theory for the course in a styled text document.",
+			"pdf": "Activity for viewing a pdf file.",
+			"video": "Activity for viewing a YouTube video or an mp4 video.",
+			"challenge": "Activity challenge to test what the student learned in the course.",
+			"assignment": "Activity allowing a student to download a file that is required for its learning."
+		},
+		"resource": {
+			"theory": "A styled text document that can be reused.",
+			"pdf": "A powerpoint presentation file that can be reused.",
+			"video": "A YouTube video or a mp4 video that can be reused.",
+			"challenge": "A challenge that can be reused inside a course.",
+			"file": "Any type of file that can be reused."
+		},
+		"dashboard": {
+			"tabs": {
+				"recent_courses": "Here you can find the most recent courses you've been in",
+				"challenges": "Here you can find your created challenges",
+				"resources": "Here you can find, modify, delete and create your resources",
+				"create_classroom": "Here you can find your classrooms",
+				"create_course": "Here you can find all your created courses"
+			},
+			"views": {
+				"recent_courses": "This view lets you access quickly where you last left off. You can see your courses sorted by the last time you went inside of it.",
+				"challenges": "This view is where all your challenges are stored. You can see all your challenges here and also create new ones, modify existing ones and deleting the ones you don't want."
+			}
+		},
+		"course_layout": {
+			"welcome": "Welcome to your course editor. Here you will be able to modify the content of your course as you please. That includes creating sections and activities, change their content, delete them, hide them, move them, etc.",
+			"edit_title": "You can modify the title of your course anytime by clicking on its name.",
+			"see_student_view": "You can go into the student view to see what a student would see if they were to follow your course by clicking on this button.",
+			"see_view": "At any given time, you can see in which view you are by checking this label."
+		},
+		"navigation": {
+			"explanation": "That is the student view of the course.",
+			"sections": "The sections and content of the course can be seen here.",
+			"minimize": "This button hides the sidebar to reveal a full-width view of the opened activity.",
+			"maximize": "This button re-opens the sidebar.",
+			"professor_view": "You can go back to the professor view by clicking on this button."
+		},
+		"resource_menu": {
+			"resources": "All your created or acquired resources will be shown here. You can also modify them inside this menu",
+			"create_resource": "If you wish to create a new resource, you can do it from this menu by clicking on the button \"$t(resources.form.create)\"",
+			"acquire_resource": "You can also acquire pre-made resources by clicking on the button \"$t(resources.form.create)\"",
+			"filters": "You can filter your resources by their type...",
+			"sections": "...their categories...",
+			"search": "...and their name",
+			"help": "Resources are the content used inside an activity. They are shared content that can be reused throughout the website in different courses. If the resource changes, it will affect every courses using this resource."
+		},
+		"course_template": {
+			"help": "By using a $t(msg.courseTemplate) you will have a good base of a course on which to build upon. It is not mandatory to select one when creating a course."
+		}
 	}
 }

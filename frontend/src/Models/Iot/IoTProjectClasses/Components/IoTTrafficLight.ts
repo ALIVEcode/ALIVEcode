@@ -1,5 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { IoTComponent, IOT_COMPONENT_TYPE } from '../IoTComponent';
+import { TFunction } from 'i18next';
 
 export enum TRAFFIC_LIGHT_STATE {
 	RED = 'RED',
@@ -35,9 +36,9 @@ export class IoTTrafficLight extends IoTComponent {
 	}
 }
 
-export const createDefaultStreetLight = () => {
-	const street_light = new IoTTrafficLight();
-	street_light.name = 'Traffic Light';
+export const createDefaultTrafficLight = (t: TFunction) => {
+	const traffic_light = new IoTTrafficLight();
+	traffic_light.name = t('iot.project.interface.components.traffic_light.name');
 
-	return street_light;
+	return traffic_light;
 };

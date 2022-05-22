@@ -22,16 +22,24 @@ import {
 	IoTProjectContextValues,
 } from '../../../state/contexts/IoTProjectContext';
 import { IotRoute } from '../../../Models/Iot/IoTroute.entity';
-import { IoTObject } from '../../../Models/Iot/IoTobject.entity';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import { useParams } from 'react-router';
 import IoTProjectPage from '../IoTProjectPage/IoTProjectPage';
-import IoTLevel from '../../Level/LevelIoT/LevelIoT';
-import { AsScript } from '../../../Models/AsScript/as-script.entity';
+import IoTChallenge from '../../Challenge/ChallengeIoT/ChallengeIoT';
+import { AsScript as AsScriptModel } from '../../../Models/AsScript/as-script.entity';
 import { useNavigate } from 'react-router-dom';
 import { IoTProjectDocument } from '../../../../../backend/src/models/iot/IoTproject/entities/IoTproject.entity';
-import { IoTSocket } from '../../../Models/Iot/IoTProjectClasses/IoTSocket';
+import {
+	IoTSocket,
+	IoTActionDoneRequestToWatcher,
+} from '../../../Models/Iot/IoTProjectClasses/IoTSocket';
 import { instanceToPlain } from 'class-transformer';
+import { IoTObject } from '../../../Models/Iot/IoTobject.entity';
+import Modal from '../../../Components/UtilsComponents/Modal/Modal';
+import AsScript from '../../../Components/AliveScriptComponents/AsScript/AsScript';
+import IoTObjectLogs from '../../../Components/IoTComponents/IoTObject/IoTObjectLogs/IoTObjectLogs';
+import { IoTProjectObject } from '../../../Models/Iot/IoTprojectObject.entity';
+import AliotASExecutor from '../../Challenge/ChallengeIoT/AliotASExecutor';
 
 /**
  * IoTProject. On this page are all the components essential in the functionning of an IoTProject.
@@ -39,10 +47,10 @@ import { instanceToPlain } from 'class-transformer';
  *
  * @param {string} id id of the project (as url prop)
  *
- * @author MoSk3
+ * @author Enric Soldevila
  */
-const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
-	const projectRef = useRef<ProjectModel | null>(level?.project ?? null);
+const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
+	const projectRef = useRef<ProjectModel | null>(challenge?.project ?? null);
 	const project = projectRef.current;
 
 	const navigate = useNavigate();
@@ -50,15 +58,19 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 	const { t } = useTranslation();
 	const { user } = useContext(UserContext);
 	const { id: paramId } = useParams<{ id: string | undefined }>();
+	const objectsRunning = useRef<IoTProjectObject[]>([]);
 	const forceUpdate = useForceUpdate();
 
-	const id = level?.id ?? paramId;
+	const id = challenge?.id ?? paramId;
 
-	const isLevel = level ? true : false;
-	const canEdit = user?.id === projectRef.current?.creator?.id && !isLevel;
+	const isChallenge = challenge ? true : false;
+	const canEdit = user?.id === projectRef.current?.creator?.id && !isChallenge;
 
 	const saveTimeout = useRef<any>(null);
 	const [lastSaved, setLastSaved] = useState<number>(Date.now() - 4000);
+
+	const [scriptOpen, setScriptOpen] = useState<AsScriptModel>();
+	const [logsOpen, setLogsOpen] = useState<IoTObject>();
 
 	const saveComponents = useCallback(async () => {
 		if (!canEdit || !project) return;
@@ -86,10 +98,36 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 		[forceUpdate, saveComponentsTimed],
 	);
 
-	const socket = useMemo(() => {
-		if (!project) return;
+	const handleOnReceiveListen = (fields: { [key: string]: any }) => {
+		objectsRunning.current.forEach(o => {
+			if (o.hasExecutor()) {
+				const executor = o.executor as AliotASExecutor;
+				executor.running && executor.docFieldChanged(fields);
+			}
+		});
+	};
 
-		return new IoTSocket(project.id, project, project.name, onRequestRender);
+	const handleOnReceiveActionDone = (data: IoTActionDoneRequestToWatcher) => {
+		objectsRunning.current.forEach(o => {
+			if (o.hasExecutor()) {
+				const executor = o.executor as AliotASExecutor;
+				executor.running && executor.receiveActionDone(data);
+			}
+		});
+	};
+
+	const socket = useMemo(() => {
+		if (!project || !user) return;
+
+		return new IoTSocket(
+			project.id,
+			user.id,
+			project,
+			project.name,
+			onRequestRender,
+			handleOnReceiveListen,
+			handleOnReceiveActionDone,
+		);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [project]);
 
@@ -99,7 +137,7 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 	}, [socket, onRequestRender]);
 
 	useEffect(() => {
-		if (!id || level?.project) return;
+		if (!id || challenge?.project) return;
 		const getProject = async () => {
 			try {
 				const project: ProjectModel = await api.db.iot.projects.get({
@@ -116,6 +154,12 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 		getProject();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [id, user]);
+
+	useEffect(() => {
+		return () => {
+			socket?.closeSocket();
+		};
+	}, [socket]);
 
 	const addRoute = useCallback(
 		(route: IotRoute) => {
@@ -140,9 +184,9 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 	);
 
 	const addIoTObject = useCallback(
-		(iotObject: IoTObject) => {
+		(iotObject: IoTProjectObject) => {
 			if (!canEdit || !project) return;
-			project.iotObjects?.push(iotObject);
+			project.iotProjectObjects?.push(iotObject);
 			alert.success(t('iot.project.add_object.success'));
 		},
 		[alert, canEdit, project, t],
@@ -151,6 +195,12 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 	const loadIoTObjects = useCallback(async () => {
 		if (!project) return;
 		await project.getIoTObjects();
+		forceUpdate();
+	}, [project, forceUpdate]);
+
+	const loadIoTScripts = useCallback(async () => {
+		if (!project) return;
+		await project.getIoTScripts();
 		forceUpdate();
 	}, [project, forceUpdate]);
 
@@ -183,7 +233,7 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 	);
 
 	const updateScript = useCallback(
-		(route: IotRoute, asScript: AsScript) => {
+		(route: IotRoute, asScript: AsScriptModel) => {
 			const routeFound = project?.routes.find(r => r.id === route.id);
 			if (routeFound) {
 				routeFound.asScript = asScript;
@@ -204,36 +254,119 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 		[forceUpdate, project],
 	);
 
+	const connectObjectToProject = useCallback(
+		async (object: IoTObject) => {
+			if (!project) return;
+			await api.db.iot.objects.connectObjectToProject(object, project);
+			object.currentIotProject = project;
+			object.currentIoTProjectId = project.id;
+			forceUpdate();
+		},
+		[project, forceUpdate],
+	);
+
+	const disconnectObjectFromProject = useCallback(
+		async (object: IoTObject) => {
+			if (!project) return;
+			await api.db.iot.objects.disconnectObjectFromProject(object, project);
+			object.currentIoTProjectId = undefined;
+			object.currentIotProject = undefined;
+			forceUpdate();
+		},
+		[project, forceUpdate],
+	);
+
+	const createScript = useCallback(
+		async (script: AsScriptModel) => {
+			if (!project) return;
+			const newScript = await api.db.iot.projects.createScript(project, script);
+			project.scripts.push(newScript);
+			forceUpdate();
+		},
+		[forceUpdate, project],
+	);
+
+	const setScriptOfObject = useCallback(
+		async (projectObject: IoTProjectObject, script: AsScriptModel) => {
+			if (!project) return;
+			await api.db.iot.projects.setScriptOfObject(
+				project,
+				projectObject,
+				script,
+			);
+			projectObject.script = script;
+			projectObject.scriptId = script.id;
+			forceUpdate();
+		},
+		[forceUpdate, project],
+	);
+
+	const addRunningObject = useCallback(
+		(obj: IoTProjectObject) => {
+			if (objectsRunning.current.includes(obj)) return;
+			objectsRunning.current.push(obj);
+			forceUpdate();
+		},
+		[forceUpdate],
+	);
+
+	const removeRunningObject = useCallback(
+		(obj: IoTProjectObject) => {
+			objectsRunning.current = objectsRunning.current.filter(
+				o => o.id !== obj.id,
+			);
+			forceUpdate();
+		},
+		[forceUpdate],
+	);
+
 	const providerValues: IoTProjectContextValues = useMemo(() => {
 		return {
 			project: project ?? null,
 			canEdit,
 			updateId: updateId ? updateId : project ? project.id : '',
-			isLevel,
+			isChallenge,
 			socket: socket ?? null,
+			objectsRunning: objectsRunning.current,
+			addRunningObject,
+			removeRunningObject,
 			addRoute,
 			deleteRoute,
 			updateRoute,
 			addIoTObject,
 			loadIoTObjects,
+			loadIoTScripts,
 			updateProjectData,
 			updateScript,
 			updateDocument,
+			connectObjectToProject,
+			disconnectObjectFromProject,
+			createScript,
+			setScriptOpen,
+			setLogsOpen,
+			setScriptOfObject,
 		};
 	}, [
 		project,
 		canEdit,
 		updateId,
-		isLevel,
+		isChallenge,
 		socket,
+		addRunningObject,
+		removeRunningObject,
 		addRoute,
 		deleteRoute,
 		updateRoute,
 		addIoTObject,
 		loadIoTObjects,
+		loadIoTScripts,
 		updateProjectData,
 		updateScript,
 		updateDocument,
+		connectObjectToProject,
+		disconnectObjectFromProject,
+		createScript,
+		setScriptOfObject,
 	]);
 
 	if (!project) {
@@ -242,11 +375,32 @@ const IoTProject = ({ level, initialCode, updateId }: IoTProjectProps) => {
 
 	return (
 		<IoTProjectContext.Provider value={providerValues}>
-			{level ? (
-				<IoTLevel initialCode={initialCode ?? ''} />
+			{challenge ? (
+				<IoTChallenge initialCode={initialCode ?? ''} />
 			) : (
 				<IoTProjectPage />
 			)}
+			<Modal
+				title="Script"
+				open={scriptOpen !== undefined}
+				setOpen={state => !state && setScriptOpen(undefined)}
+				size="lg"
+			>
+				{scriptOpen && (
+					<AsScript
+						onSave={(asScript: AsScriptModel) => {}}
+						asScript={scriptOpen}
+					/>
+				)}
+			</Modal>
+			<Modal
+				title="Script"
+				open={logsOpen !== undefined}
+				setOpen={state => !state && setLogsOpen(undefined)}
+				size="lg"
+			>
+				{logsOpen && <IoTObjectLogs object={logsOpen} />}
+			</Modal>
 		</IoTProjectContext.Provider>
 	);
 };

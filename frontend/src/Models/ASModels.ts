@@ -1,9 +1,14 @@
+import { SUPPORTED_LANG } from './Challenge/challenge.entity';
 
 export enum CompileStatus {
-  INTERRUPT = 'interrupted',
+	INTERRUPT = 'interrupted',
 }
 
+export type SupportedLanguagesAS = SUPPORTED_LANG;
+
 export class CompileDTO {
+	lang?: SupportedLanguagesAS;
+
 	backendCompiling?: boolean;
 
 	lines?: string;

@@ -1,0 +1,40 @@
+# Ce document présente les différents fichiers modifiés dans le cadre du projet
+
+- frontend\src\state\contexts\CourseContext.ts
+
+- frontend\src\Models\api.ts
+- frontend\src\Models\Course\course_element.entity.ts
+- frontend\src\Models\Course\activities\*.entity.ts
+- frontend\src\Models\Course\dtos\*.dto.ts
+- frontend\src\Models\Course\activity.entity.ts
+- frontend\src\Models\Course\section.entity.ts
+- frontend\src\Models\Course\course.entity.ts
+- frontend\src\Models\Resource\**\*.ts
+
+- frontend\src\Pages\Course\Course.tsx
+- frontend\src\Pages\Course\courseTypes.ts
+- frontend\src\Pages\Dashboard\Dashboard.tsx
+- frontend\src\Pages\ResourceMenu\ResourceMenu.tsx
+- frontend\src\Pages\ResourceMenu\resourceMenuTypes.ts
+
+- frontend\src\Components\CourseComponents\Activities\*.tsx
+- frontend\src\Components\CourseComponents\CourseBody\CourseBody.tsx
+- frontend\src\Components\CourseComponents\CourseLayout\*.ts(x)
+- frontend\src\Components\CourseComponents\CourseNavigation\*.ts(x)
+- frontend\src\Components\CourseComponents\CourseActivityMenu\*.ts(x)
+- frontend\src\Components\CourseComponents\CreationMenu\*.ts(x)
+- frontend\src\Components\Utils\MenuCreation\*.ts(x)
+- frontend\src\Components\Resources\**\*.ts(x)
+
+- frontend\src\Components\RichTextComponents\**
+
+- backend\src\models\course\dtos\*.dto.ts
+- backend\src\models\course\entites\activities\*.entity.ts
+- backend\src\models\course\entites\activity.entity.ts
+- backend\src\models\course\entites\section.entity.ts
+- backend\src\models\course\entites\course.entity.ts
+- backend\src\models\course\entites\course_element.entity.ts
+- backend\src\models\course\course.controller.ts
+- backend\src\models\course\course.service.ts
+- backend\src\models\resource\**\*.*
+

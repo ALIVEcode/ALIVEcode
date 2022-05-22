@@ -1,28 +1,64 @@
-import { Exclude, Type } from 'class-transformer';
-import { IsEmpty, IsNotEmpty, Length } from 'class-validator';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { ActivityLevelEntity } from './activity_level.entity';
+import { Exclude } from 'class-transformer';
+import { Entity, PrimaryGeneratedColumn, TableInheritance, Column, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
+import { IsEmpty, IsOptional } from 'class-validator';
+import { CourseElementEntity } from './course_element.entity';
+import { Descendant } from 'slate';
+import { ResourceEntity, RESOURCE_TYPE } from '../../resource/entities/resource.entity';
 
-export class ActivityContent {
-  body: string;
+/** Enum for all the types of activities */
+export enum ACTIVITY_TYPE {
+  THEORY = 'TH',
+  PDF = 'PF',
+  VIDEO = 'VI',
+  CHALLENGE = 'CH',
+  ASSIGNMENT = 'AS',
 }
 
+/**
+ * Generic activity model in the database
+ * @author Enric Soldevila, Mathis Laroche
+ */
 @Entity()
-export class ActivityEntity {
+@TableInheritance({ column: 'type' })
+export abstract class ActivityEntity {
+  /** Id of the activity (0, 1, 2, ..., n) */
   @PrimaryGeneratedColumn('increment')
   @Exclude({ toClassOnly: true })
   @IsEmpty()
   id: number;
 
-  @IsNotEmpty()
-  @Column({ nullable: false })
-  @Length(1, 100)
-  name: string;
+  /** Type of the activity */
+  @Exclude({ toClassOnly: true })
+  @IsEmpty()
+  @Column({ type: 'enum', name: 'type', enum: ACTIVITY_TYPE, default: ACTIVITY_TYPE.THEORY })
+  readonly type: ACTIVITY_TYPE;
 
-  @Column({ type: 'json', default: {} })
-  @Type(() => ActivityContent)
-  content: ActivityContent;
+  /** Header of the activity */
+  @IsOptional()
+  @Column({ nullable: true, default: null, type: 'json' })
+  header: Descendant[];
 
-  @OneToMany(() => ActivityLevelEntity, actLevel => actLevel.activity)
-  levels: ActivityLevelEntity[];
+  /** Footer of the activity */
+  @IsOptional()
+  @Column({ nullable: true, default: null, type: 'json' })
+  footer: Descendant[];
+
+  /** CourseElement attached to the activity */
+  @OneToOne(() => CourseElementEntity, el => el.activity, { onDelete: 'CASCADE', nullable: false })
+  @JoinColumn({ name: 'courseElementId' })
+  courseElement: CourseElementEntity;
+
+  @Column({ type: 'varchar', name: 'courseElementId', nullable: false })
+  courseElementId: string;
+
+  /** Id of the referenced resource */
+  @Column({ type: 'uuid', nullable: true })
+  resourceId: string;
+
+  abstract readonly allowedResources: RESOURCE_TYPE[];
+
+  /** Reference to the resource linked to the activity */
+  @ManyToOne(() => ResourceEntity, res => res.activities, { eager: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'resourceId' })
+  resource: ResourceEntity;
 }

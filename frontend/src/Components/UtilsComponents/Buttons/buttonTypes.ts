@@ -1,7 +1,12 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import styled from 'styled-components';
 
-export type ButtonVariants = 'primary' | 'secondary' | 'third' | 'danger';
+export type ButtonVariants =
+	| 'primary'
+	| 'secondary'
+	| 'third'
+	| 'danger'
+	| 'none';
 
 export type StyledButtonProps = {
 	padding?: string;
@@ -13,6 +18,7 @@ export type ButtonProps = {
 	to?: string;
 	variant: ButtonVariants;
 	icon?: IconProp;
+	noHoverColor?: boolean;
 };
 
 export const StyledButton = styled.button`

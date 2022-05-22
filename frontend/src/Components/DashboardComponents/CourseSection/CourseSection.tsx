@@ -1,21 +1,28 @@
 import { CourseSectionProps } from './courseSectionTypes';
-import { faFile } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { formatTooLong } from '../../../Types/formatting';
+import { classNames } from '../../../Types/utils';
 
-const CourseSection = ({ course }: CourseSectionProps) => {
+const CourseSection = ({ course, className }: CourseSectionProps) => {
 	const { routes, goTo } = useRoutes();
 
 	return (
 		<div
-			className="sidebar-course"
-			onClick={() => goTo(routes.auth.course.path.replace(':id', course.id))}
+			className={classNames(
+				'text-[color:var(--fg-shade-three-color)] font-medium cursor-pointer',
+				'text-ellipsis whitespace-nowrap overflow-hidden',
+				className,
+			)}
+			onClick={() =>
+				goTo(routes.auth.course.path.replace(':id', course.id) + '/layout')
+			}
 		>
-			<FontAwesomeIcon className="sidebar-icon" icon={faFile} />
-			<label className="sidebar-course-text">
-				{formatTooLong(course.name, 18)}
-			</label>
+			<FontAwesomeIcon
+				className="sidebar-icon"
+				icon={course.getSubjectIcon()}
+			/>
+			<label className="sidebar-course-text">{course.name}</label>
 		</div>
 	);
 };

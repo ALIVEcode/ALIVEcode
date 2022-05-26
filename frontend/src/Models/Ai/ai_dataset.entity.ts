@@ -14,6 +14,7 @@ export class AIDataset {
 	private id: string;
 	private name: string;
 	private data: any[];
+	private initialData: any[];
 	private means: number[];
 	private deviations: number[];
 
@@ -37,6 +38,7 @@ export class AIDataset {
 	constructor(id: string, name: string, data: any[]) {
 		this.id = id;
 		this.name = name;
+		this.initialData = data;
 		this.data = data;
 	}
 
@@ -106,6 +108,29 @@ export class AIDataset {
 			dataArray.push(paramArray);
 		}
 
+		return dataArray;
+	}
+
+	/**
+	 * Returns a 2-D array containing all data from this AIDataset with its
+	 * original values.
+	 * @returns a 2-D array with data from this AIDataset.
+	 */
+	public getDataForTable(): any[][] {
+		const nbData: number = this.data.length;
+		const nbParams: number = this.paramNames.length;
+		let dataArray: any[][] = [];
+		let dataLine: any[];
+
+		// Each row represents a data
+		for (let row: number = 0; row < nbData; row++) {
+			dataLine = [];
+			// Each column represents a parameter
+			for (let col: number = 0; col < nbParams; col++) {
+				dataLine.push(this.data[row][this.paramNames[col]]);
+			}
+			dataArray.push(dataLine);
+		}
 		return dataArray;
 	}
 
@@ -236,6 +261,11 @@ export class AIDataset {
 		return [inputs, outputs];
 	}
 
+	/**
+	 * Sets the param names for this AIDataset. If there is no data yet, sets
+	 * the property to an empty array.
+	 * @returns the paramNames property.
+	 */
 	public loadParamNames() {
 		if (!this.data || !Array.isArray(this.data) || this.data.length < 1) {
 			this._paramNames = [];

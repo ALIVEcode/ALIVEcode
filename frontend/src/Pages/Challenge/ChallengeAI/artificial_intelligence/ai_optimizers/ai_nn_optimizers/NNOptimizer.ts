@@ -1,4 +1,4 @@
-import { NNHyperparameters } from '../../AIInterfaces';
+import { NNHyperparameters } from '../../AIUtilsInterfaces';
 import { Matrix } from '../../AIUtils';
 import { NeuralNetwork } from '../../ai_models/ai_neural_networks/NeuralNetwork';
 import Optimizer from '../Optimizer';
@@ -23,9 +23,9 @@ export abstract class NNOptimizer extends Optimizer {
 	 */
 	public constructor(model: NeuralNetwork, hyperparams: NNHyperparameters) {
 		super(
-			hyperparams.optimizer.learning_rate,
-			hyperparams.optimizer.epochs,
-			hyperparams.optimizer.cost_function,
+			hyperparams.learning_rate,
+			hyperparams.epochs,
+			hyperparams.cost_function,
 		);
 		this.model = model;
 		this.hyperparams = hyperparams;

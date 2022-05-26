@@ -1,8 +1,8 @@
-import DataPoint from '../../../../../Components/ChallengeComponents/ChallengeGraph/DataTypes';
-import { MODEL_TYPES } from '../../../../../Models/Ai/ai_model.entity';
-import { RegHyperparameters, RegModelParams } from '../AIInterfaces';
-import { Matrix } from '../AIUtils';
-import AIModel from '../../../../../Models/Ai/ai_model.entity';
+import DataPoint from '../../../../../../Components/ChallengeComponents/ChallengeGraph/DataTypes';
+import { MODEL_TYPES } from '../../../../../../Models/Ai/ai_model.entity';
+import { RegHyperparameters, RegModelParams } from '../../AIUtilsInterfaces';
+import { Matrix } from '../../AIUtils';
+import AIModel from '../../../../../../Models/Ai/ai_model.entity';
 
 /**
  * This abstract class represents every Regression Model available in AI challenges.

@@ -1,7 +1,6 @@
-import Optimizer from './ai_optimizers/Optimizer';
-import { RegHyperparameters, GenRegression, GenAIModel } from './AIInterfaces';
-import { Regression } from './ai_models/Regression';
-import { Matrix } from './AIUtils';
+import Optimizer from '../Optimizer';
+import { RegHyperparameters, GenRegression } from '../../AIUtilsInterfaces';
+import { Matrix } from '../../AIUtils';
 
 /**
  * Superclass for every Optimizer class. It contains all usefull static and abstract methods
@@ -21,9 +20,9 @@ export default abstract class RegressionOptimizer extends Optimizer {
 	 */
 	constructor(model: GenRegression, hyperparams: RegHyperparameters) {
 		super(
-			hyperparams.optimizer.learningRate,
-			hyperparams.optimizer.epochs,
-			hyperparams.optimizer.costFunction,
+			hyperparams.learningRate,
+			hyperparams.epochs,
+			hyperparams.costFunction,
 		);
 		this.hyperparams = hyperparams;
 		this.model = model;

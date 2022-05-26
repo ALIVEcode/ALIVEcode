@@ -8,7 +8,7 @@ import {
 } from '../../AIUtils';
 import { ActivationFunction } from '../../ai_functions/ActivationFunction';
 import { NeuralNetwork } from '../../ai_models/ai_neural_networks/NeuralNetwork';
-import { NNHyperparameters } from '../../AIInterfaces';
+import { NNHyperparameters } from '../../AIUtilsInterfaces';
 import { NNOptimizer } from './NNOptimizer';
 
 /**

@@ -3,12 +3,12 @@ import {
 	RegModelParams,
 	NNHyperparameters,
 	RegHyperparameters,
-} from '../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIInterfaces';
+} from '../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
 import { Matrix } from '../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtils';
 import {
 	GenHyperparameters,
 	GenModelParams,
-} from '../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIInterfaces';
+} from '../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
 
 /**
  * This enum describles all possible types of Cost Function available in AI challenges.

@@ -2,7 +2,7 @@ import { Transform, Type } from 'class-transformer';
 import AIModel, { MODEL_TYPES } from '../Ai/ai_model.entity';
 import { IoTProject, IoTProjectLayout } from '../Iot/IoTproject.entity';
 import { NeuralNetwork } from '../../Pages/Challenge/ChallengeAI/artificial_intelligence/ai_models/ai_neural_networks/NeuralNetwork';
-import { GenAIModel } from '../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIInterfaces';
+import { GenAIModel } from '../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
 
 export type ChallengeAliveProgressionData = {
 	code?: string;

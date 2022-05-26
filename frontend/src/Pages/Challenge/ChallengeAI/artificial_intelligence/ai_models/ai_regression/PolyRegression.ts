@@ -1,8 +1,7 @@
-import { Matrix } from './AIUtils';
-import { RegHyperparameters, RegModelParams } from './AIInterfaces';
-import { Regression } from './ai_models/Regression';
-import DataPoint from '../../../../Components/ChallengeComponents/ChallengeGraph/DataTypes';
-import { MODEL_TYPES } from '../../../../Models/Ai/ai_model.entity';
+import { RegHyperparameters, RegModelParams } from '../../AIUtilsInterfaces';
+import { Regression } from './Regression';
+import DataPoint from '../../../../../../Components/ChallengeComponents/ChallengeGraph/DataTypes';
+import { MODEL_TYPES } from '../../../../../../Models/Ai/ai_model.entity';
 
 /**
  * This class defines a third degree polynomial function that can be shown in a scatter plot of a line graph.

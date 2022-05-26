@@ -1,14 +1,14 @@
 import RegressionOptimizer from './RegressionOptimizer';
-import { GenRegression } from './AIInterfaces';
+import { GenRegression } from '../../AIUtilsInterfaces';
 import {
 	DataSample,
 	Matrix,
 	matMulElementWise,
 	matPowElementWise,
 	mean,
-} from './AIUtils';
-import { PolyRegression } from './PolyRegression';
-import { Sigmoid } from './ai_functions/ActivationFunction';
+} from '../../AIUtils';
+import { PolyRegression } from '../../ai_models/ai_regression/PolyRegression';
+import { Sigmoid } from '../../ai_functions/ActivationFunction';
 
 /**
  * This class contains all necessary methods to optimize a polynomial regression

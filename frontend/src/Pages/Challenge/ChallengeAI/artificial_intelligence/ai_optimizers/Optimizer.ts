@@ -1,7 +1,7 @@
 import { Matrix } from '../AIUtils';
 import { CostFunction } from '../ai_functions/CostFunction';
 import { COST_FUNCTIONS } from '../../../../../Models/Ai/ai_model.entity';
-import { GenAIModel, GenHyperparameters } from '../AIInterfaces';
+import { GenAIModel, GenHyperparameters } from '../AIUtilsInterfaces';
 
 /**
  * This abstract class defines every type of algorithm that can optimize a Machine Learning
@@ -69,5 +69,21 @@ export default abstract class Optimizer {
 	 */
 	public getCostFunction(): CostFunction {
 		return this.costFunc;
+	}
+
+	/**
+	 * Sets the learning rate of this optimizer with the value in arguments.
+	 * @param newLr the new value for the learning rate.
+	 */
+	public setLearningRate(newLr: number): void {
+		this.learningRate = newLr;
+	}
+
+	/**
+	 * Sets the number of epochs of this optimizer with the value in arguments.
+	 * @param newEpochs the new value for the number of epochs.
+	 */
+	public setEpochs(newEpochs: number): void {
+		this.epochs = newEpochs;
 	}
 }

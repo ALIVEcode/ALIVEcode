@@ -9,7 +9,7 @@ import { ChallengeAI as ChallengeAIModel } from '../../../Models/Challenge/chall
 import dataAI from './dataAI.json';
 import ChallengeTable from '../../../Components/ChallengeComponents/ChallengeTable/ChallengeTable';
 import ChallengeGraph from '../../../Components/ChallengeComponents/ChallengeGraph/ChallengeGraph';
-import PolyOptimizer from './artificial_intelligence/PolyOptmizer';
+import PolyOptimizer from './artificial_intelligence/ai_optimizers/ai_reg_optimizers/PolyOptmizer';
 import DataPoint from '../../../Components/ChallengeComponents/ChallengeGraph/DataTypes';
 import { ChallengeContext } from '../../../state/contexts/ChallengeContext';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
@@ -20,7 +20,7 @@ import {
 	GenHyperparameters,
 	NNHyperparameters,
 	NNModelParams,
-} from './artificial_intelligence/AIInterfaces';
+} from './artificial_intelligence/AIUtilsInterfaces';
 import { useAlert } from 'react-alert';
 import { GradientDescent } from './artificial_intelligence/ai_optimizers/ai_nn_optimizers/GradientDescent';
 import {
@@ -30,16 +30,17 @@ import {
 } from '../../../Models/Ai/ai_model.entity';
 import api from '../../../Models/api';
 import { ACTIVATION_FUNCTIONS } from '../../../Models/Ai/ai_model.entity';
-import { PolyRegression } from './artificial_intelligence/PolyRegression';
+import { PolyRegression } from './artificial_intelligence/ai_models/ai_regression/PolyRegression';
 import {
 	RegHyperparameters,
 	GenAIModel,
-} from './artificial_intelligence/AIInterfaces';
+} from './artificial_intelligence/AIUtilsInterfaces';
 import {
 	RegModelParams,
 	GenOptimizer,
-} from './artificial_intelligence/AIInterfaces';
-import { GenRegression } from './artificial_intelligence/AIInterfaces';
+} from './artificial_intelligence/AIUtilsInterfaces';
+import { GenRegression } from './artificial_intelligence/AIUtilsInterfaces';
+import AIInterface from '../../../Components/ChallengeComponents/AIInterface/AIInterface';
 
 /**
  * Ai challenge page. Contains all the components to display and make the ai challenge functionnal.
@@ -73,8 +74,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	const [cmdRef, cmd] = useCmd();
 	const alert = useAlert();
 
+	const activeAITab = useRef<number>(0); // index of active tab in AI Interface
 	//TODO replace these codes with the ones chosen in the interface
-	const IOCodes = useRef<number[]>([-1, 1, 0]);
+	const IOCodes = useRef<number[]>([-1, -1, -1, -1]);
 	let inputs = useRef<Matrix>();
 	let outputs = useRef<Matrix>();
 	let means = useRef<number[]>();
@@ -123,6 +125,14 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			setProgression(updatedProgression);
 			saveProgressionTimed();
 		}
+	};
+
+	/**
+	 * Updates the content in the AI interface
+	 */
+	const aiInterfaceContentChanges = (newHyperparams: any) => {
+		console.log('New Hyperparams');
+		console.log(newHyperparams);
 	};
 
 	useEffect(() => {
@@ -174,16 +184,12 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	//TODO link this declaration to the interface when completed
 	//Change the type to GenHyperparameters
-	const hyperparams: RegHyperparameters = Object.freeze({
-		model: {
-			regressionType: MODEL_TYPES.POLY_REGRESSION,
-		},
-		optimizer: {
-			costFunction: COST_FUNCTIONS.MEAN_SQUARED_ERROR,
-			learningRate: 0.1,
-			epochs: 2000,
-		},
-	});
+	const hyperparams: RegHyperparameters = {
+		regressionType: MODEL_TYPES.POLY_REGRESSION,
+		costFunction: COST_FUNCTIONS.MEAN_SQUARED_ERROR,
+		learningRate: 0.0001,
+		epochs: 1000,
+	};
 
 	let optimizer = useRef<GenOptimizer>();
 
@@ -196,10 +202,16 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		[inputs.current, outputs.current] = challenge.dataset!.getInputsOutputs(
 			IOCodes.current,
 		);
-		means.current = inputs.current.meanOfAllRows();
-		outputMean.current = outputs.current.meanOfAllRows()[0];
-		deviations.current = inputs.current.deviationOfAllRows();
-		outputDeviation.current = outputs.current.deviationOfAllRows()[0];
+		if (inputs.current) {
+			console.log('Existing inputs');
+			means.current = inputs.current.meanOfAllRows();
+			deviations.current = inputs.current.deviationOfAllRows();
+		}
+		if (outputs.current) {
+			console.log('Existing outputs');
+			outputMean.current = outputs.current.meanOfAllRows()[0];
+			outputDeviation.current = outputs.current.deviationOfAllRows()[0];
+		}
 	}
 
 	/**
@@ -298,10 +310,14 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * the graph.
 	 * @param lr the learning rate for the optimization algorithm.
 	 */
-	function optimizeRegression(): string | void {
+	function optimizeRegression(lr: number, epochs: number): string | void {
 		if (!model.current) {
 			return "Erreur : aucun modèle n'a été créé jusqu'à présent.";
 		}
+
+		//These lines are temporary, waiting for the frontend to be reworked
+		optimizer.current?.setLearningRate(lr);
+		optimizer.current?.setEpochs(epochs);
 		model.current = optimizer.current?.optimize(
 			inputs.current!,
 			outputs.current!,
@@ -337,8 +353,10 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				0,
 			);
 		}
-
+		/*
 		let hyperparams: NNHyperparameters = {
+			
+			
 			model: {
 				nb_inputs: 3,
 				nb_outputs: 1,
@@ -413,6 +431,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		);
 		console.log(predictions.getRows() + ' par ' + predictions.getColumns());
 		console.log(outputs.getRows() + ' par ' + outputs.getColumns());
+		*/
 	}
 
 	// END OF TEST FUNCTION //
@@ -467,7 +486,30 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 							Contains the graph and the console
 					*/}
 					<div className="flex flex-col w-1/2">
-						<div className="h-3/5 w-full flex flex-row data-section">
+						<AIInterface
+							handleHyperparamChange={aiInterfaceContentChanges}
+							tabs={[
+								{
+									title: 'Données',
+									open: true,
+								},
+								{
+									title: 'Modèle',
+									open: false,
+								},
+								{
+									title: 'Hyperparamètres',
+									open: false,
+								},
+								{
+									title: 'Optimiseur',
+									open: false,
+								},
+							]}
+							data={challenge.dataset}
+							hyperparams={hyperparams}
+						/>
+						{/*
 							<div className="w-1/3 h-full">
 								<ChallengeTable
 									data={data}
@@ -483,7 +525,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 									yAxis="Distance parcourue (km)"
 								/>
 							</div>
-						</div>
+						*/}
 						<div className="h-2/5 flex-1 command">
 							<Cmd ref={cmdRef}></Cmd>
 						</div>

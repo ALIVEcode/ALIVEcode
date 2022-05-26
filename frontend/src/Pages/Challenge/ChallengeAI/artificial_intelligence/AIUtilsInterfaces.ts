@@ -3,12 +3,12 @@ import AIModel, {
 	COST_FUNCTIONS,
 	NN_OPTIMIZER_TYPES,
 } from '../../../../Models/Ai/ai_model.entity';
-import { PolyRegression } from './PolyRegression';
-import { Regression } from './ai_models/Regression';
+import { PolyRegression } from './ai_models/ai_regression/PolyRegression';
+import { Regression } from './ai_models/ai_regression/Regression';
 import { NNOptimizer } from './ai_optimizers/ai_nn_optimizers/NNOptimizer';
 import { GradientDescent } from './ai_optimizers/ai_nn_optimizers/GradientDescent';
 import { NeuralNetwork } from './ai_models/ai_neural_networks/NeuralNetwork';
-import PolyOptimizer from './PolyOptmizer';
+import PolyOptimizer from './ai_optimizers/ai_reg_optimizers/PolyOptmizer';
 import { MODEL_TYPES } from '../../../../Models/Ai/ai_model.entity';
 
 /*
@@ -21,19 +21,15 @@ They generally describe objects or types of Model/Optimizer.
  * a NeuralNetwork Model.
  */
 export interface NNHyperparameters {
-	model: {
-		nb_inputs: number; // number of inputs
-		nb_outputs: number; // number of outputs
-		neurons_by_layer: number[]; // number of neurons in each hidden layer
-		// activation function in hidden layers and in the output layer
-		activations_by_layer: ACTIVATION_FUNCTIONS[];
-	};
-	optimizer: {
-		cost_function: COST_FUNCTIONS;
-		learning_rate: number;
-		epochs: number;
-		type: NN_OPTIMIZER_TYPES;
-	};
+	nb_inputs: number; // number of inputs
+	nb_outputs: number; // number of outputs
+	neurons_by_layer: number[]; // number of neurons in each hidden layer
+	// activation function in hidden layers and in the output layer
+	activations_by_layer: ACTIVATION_FUNCTIONS[];
+	cost_function: COST_FUNCTIONS;
+	learning_rate: number;
+	epochs: number;
+	type: NN_OPTIMIZER_TYPES;
 }
 
 /**
@@ -41,14 +37,10 @@ export interface NNHyperparameters {
  * a Regression Model.
  */
 export interface RegHyperparameters {
-	model: {
-		regressionType: MODEL_TYPES;
-	};
-	optimizer: {
-		costFunction: COST_FUNCTIONS;
-		learningRate: number;
-		epochs: number;
-	};
+	regressionType: MODEL_TYPES;
+	costFunction: COST_FUNCTIONS;
+	learningRate: number;
+	epochs: number;
 }
 
 /**

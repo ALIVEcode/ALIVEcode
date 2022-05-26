@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
 	ChallengeTableProps,
 	StyledChallengeTable,
@@ -7,45 +8,101 @@ import {
  * This module defines all properties related to the data table in AI challenges.
  * The structure of the table is described in this object while the style of
  * the table is set in ChallengeTableTypes.
- * @param props the props of the table :
- *     - data the data to insert in the table.
- *     - dataX the name of the X column of the table.
- *     - dataY the name of the Y column of the table.
+ * @param props the props of the table
+
  * @returns
  */
-
 const ChallengeTable = (props: ChallengeTableProps) => {
+	const [currHyperparams, setCurrHyperparams] = useState<any>(
+		props.hyperparams,
+	);
+
+	function updateHyperparams(newValue: any, key: string): void {
+		let tempHyperparams: any = currHyperparams;
+		console.log(newValue);
+		tempHyperparams[key] = newValue;
+		setCurrHyperparams(tempHyperparams);
+		props.handleHyperparamsChange!(currHyperparams);
+	}
+
+	/**
+	 * Returns a component representing the headers of this ChallengeTable
+	 * @returns the headers in a component.
+	 */
+	function renderTableHeaders() {
+		if (props.data && props.isData)
+			return (
+				<tr>
+					{props.data.getParamNames().map((param: string, index: number) => {
+						return <th className="titles">{param}</th>;
+					})}
+				</tr>
+			);
+		if (props.hyperparams && !props.isData)
+			return (
+				<tr>
+					<th className="titles">Hyperparamètre</th>
+					<th className="titles">Valeur</th>
+				</tr>
+			);
+	}
+
+	/**
+	 * Returns a component representing the data rows of this ChallengeTable.
+	 * @returns the data in a component.
+	 */
 	function renderTableData() {
-		return (
-			<>
-				{props.data.map((point: any, index: number) => {
-					const { id, x, y } = point;
-					return (
-						<tr key={id}>
-							<td className="data-number">{index}</td>
-							<td className="data">{x}</td>
-							<td className="data">{y}</td>
-						</tr>
-					);
-				})}
-			</>
-		);
+		if (props.data && props.isData)
+			return (
+				<>
+					{props.data.getDataForTable().map((dataLine: any, row: number) => {
+						return (
+							<tr key={row}>
+								{dataLine.map((element: any, col: number) => {
+									return <td className="data">{element}</td>;
+								})}
+							</tr>
+						);
+					})}
+				</>
+			);
+		if (props.hyperparams && !props.isData)
+			return (
+				<>
+					{Object.keys(props.hyperparams).map((key: string, index: number) => {
+						return (
+							<tr>
+								<td className="hyperparam-name data">{key}</td>
+								<td className="hyperparam-value data">
+									<input
+										className="inputs"
+										onBlur={e => updateHyperparams(e.target.value, key)}
+										defaultValue={props.hyperparams![key]}
+									></input>
+								</td>
+							</tr>
+						);
+					})}
+				</>
+			);
 	}
 
 	return (
-		<StyledChallengeTable className="w-full h-full p-4">
-			<div className="w-full h-full overflow-y-auto">
-				<table className="table">
-					<tbody className="body">
-						<tr>
-							<td className="titles"></td>
-							<td className="titles">{props.xData}</td>
-							<td className="titles">{props.yData}</td>
-						</tr>
-						{renderTableData()}
-					</tbody>
-				</table>
-			</div>
+		<StyledChallengeTable
+			className={
+				'w-full h-full overflow-x-auto overflow-y-auto ' + props.className
+			}
+		>
+			<table
+				className={
+					props.isData ? 'body self-center w-full' : 'body self-center w-5/6'
+				}
+			>
+				<tbody>
+					{renderTableHeaders()}
+					{renderTableData()}
+				</tbody>
+			</table>
 		</StyledChallengeTable>
 	);
 };

@@ -33,6 +33,11 @@ export class ChallengeService {
   }
 
   async createChallengeAI(creator: UserEntity, createChallengeDto: ChallengeAIEntity) {
+    if (!createChallengeDto.modelType)
+      throw new HttpException(
+        "Can't create an AI challenge without specifying the model type inside of it",
+        HttpStatus.BAD_REQUEST,
+      );
     const challenge = this.challengeAIRepo.create({ ...createChallengeDto, creator });
     return await this.challengeAIRepo.save(challenge);
   }

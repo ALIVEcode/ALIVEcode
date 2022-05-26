@@ -1,6 +1,6 @@
 import { ChallengeEntity, CHALLENGE_TYPE } from "../challenge.entity";
 import { Column, ChildEntity, ManyToOne, JoinColumn } from 'typeorm';
-import { IsOptional } from 'class-validator';
+import { IsEnum, IsOptional } from 'class-validator';
 import { AIDatasetEntity } from '../../../ai/entities/ai_dataset.entity';
 import { MODEL_TYPES } from '../../../ai/entities/ai_model.entity';
 
@@ -19,6 +19,7 @@ export class ChallengeAIEntity extends ChallengeEntity {
   solution?: string;
 
   @Column({ type: 'enum', enum: MODEL_TYPES, nullable: false, default: MODEL_TYPES.POLY_REGRESSION })
+  @IsEnum(MODEL_TYPES)
   modelType: MODEL_TYPES;
 
   @ManyToOne(() => AIDatasetEntity, { nullable: false })

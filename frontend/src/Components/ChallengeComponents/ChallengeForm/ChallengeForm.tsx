@@ -26,6 +26,7 @@ import { RESOURCE_TYPE } from '../../../Models/Resource/resource.entity';
 import { plainToInstance } from 'class-transformer';
 import { UserContext } from '../../../state/contexts/UserContext';
 import { ChallengeAlive } from '../../../Models/Challenge/challenges/challenge_alive.entity';
+import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
 
 /**
  * Component that renders the create form for the selected challenge type
@@ -195,6 +196,13 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 								inputType: 'select',
 								selectOptions: CHALLENGE_DIFFICULTY,
 								default: CHALLENGE_DIFFICULTY.MEDIUM,
+							},
+							{
+								name: 'modelType',
+								required: true,
+								inputType: 'select',
+								selectOptions: MODEL_TYPES,
+								default: MODEL_TYPES.POLY_REGRESSION,
 							},
 							...sharedInputGroup,
 						]}

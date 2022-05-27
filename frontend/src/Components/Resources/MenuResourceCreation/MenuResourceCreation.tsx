@@ -25,6 +25,7 @@ import Button from '../../UtilsComponents/Buttons/Button';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import useComplexState from '../../../state/hooks/useComplexState';
 import Timeline from '../../UtilsComponents/Modal/Timeline';
+import ResourceTheoryDocument from '../ResourceTheoryDocument/ResourceTheoryDocument';
 
 /**
  * @description renders the menu for creating a resource of the given type
@@ -190,6 +191,13 @@ const MenuResourceCreation = ({
 					</>
 				);
 			case RESOURCE_TYPE.THEORY:
+				if (updateMode && defaultResource)
+					return (
+						<ResourceTheoryDocument
+							resource={defaultResource}
+							editMode={true}
+						/>
+					);
 				return <></>;
 			case RESOURCE_TYPE.VIDEO:
 				return updateMode ? (

@@ -56,7 +56,7 @@ const RichTextDocument = ({
 								? !readOnly && renderLeaf(props as any)
 								: renderLeaf(props as any)
 						}
-						onKeyDown={event => {}}
+						onKeyDown={event => event.stopPropagation()}
 						onSelect={() => setEditMode(true)}
 						onBlur={() => setEditMode(false)}
 						aria-expanded

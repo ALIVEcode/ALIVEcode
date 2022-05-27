@@ -68,7 +68,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				},
 				challenge.name,
 				askForUserInput,
-				alerts,
+				alert,
 			)),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[challenge?.id, user],

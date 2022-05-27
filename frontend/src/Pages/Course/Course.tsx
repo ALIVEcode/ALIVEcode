@@ -6,6 +6,7 @@ import {
 	useState,
 	useCallback,
 } from 'react';
+import { inspect } from 'util';
 import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
 import { useParams, useLocation } from 'react-router';
@@ -41,8 +42,11 @@ import {
 	CourseElementActivity,
 	CourseElementSection,
 } from '../../Models/Course/course_element.entity';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSkull } from '@fortawesome/free-solid-svg-icons';
+import Button from '../../Components/UtilsComponents/Buttons/Button';
+import { FeedBackTypes } from '../../Models/Feedbacks/entities/feedback.entity';
+import { getBrowser } from '../../Components/MainComponents/FeedbackMenu/FeedbackModal';
+import { ThemeContext } from '../../state/contexts/ThemeContext';
+import { ThemeTypes } from '../../Models/sharedTypes';
 
 /**
  * Course page that shows the content of a course
@@ -63,6 +67,7 @@ const Course = () => {
 	const { id } = useParams<{ id: string }>();
 	const [loading, setLoading] = useState(true);
 	const { t } = useTranslation();
+	const { theme } = useContext(ThemeContext);
 	const alert = useAlert();
 	const navigate = useNavigate();
 	const forceUpdate = useForceUpdate();
@@ -73,7 +78,7 @@ const Course = () => {
 	const [courseTitle, setCourseTitle] = useState(course.current?.name);
 	const [editTitle, setEditTitle] = useState(false);
 	const [courseNavigationOpen, setCourseNavigationOpen] = useState(true);
-	const [isCursed, setIsCursed] = useState(false);
+	const [cursedError, setCursedError] = useState<Error>();
 
 	/**
 	 * Check if the current logged in user is the creator of the course
@@ -395,7 +400,7 @@ const Course = () => {
 		const { courseElement, newOrder } = await api.db.courses
 			.addContent(course.current.id, content, name, sectionParent?.id)
 			.catch(e => {
-				setIsCursed(true);
+				setCursedError(e);
 				throw e;
 			});
 
@@ -686,10 +691,42 @@ const Course = () => {
 	if (!course.current) return <></>;
 	return (
 		<CourseContext.Provider value={contextValue}>
-			{isCursed && (
-				<div className="flex flex-row bg-red-600 text-white text-center justify-center">
-					<h2 className="text-2xl">Your course is cursed</h2>
-					<FontAwesomeIcon icon={faSkull} className="ml-2 text-white mt-2" />
+			{cursedError && (
+				<div className="w-full z-30 fixed p-4 bg-red-600 text-white text-center justify-center">
+					<div className="text-lg font-semibold">{t('course.cursed.msg1')}</div>
+					<div>{t('course.cursed.msg2')}</div>
+					<div className="mt-2">
+						<Button
+							variant="primary"
+							autoFocus
+							className="w-[200px] mr-0 mb-2 phone:mr-2 phone:mb-0"
+							onClick={async () => {
+								await api.db.feedback.create({
+									feedbackType: FeedBackTypes.Bug,
+									feedbackMessage:
+										'Error: \n\n' +
+										cursedError +
+										'\n\nCourse state: \n\n' +
+										inspect(course.current, true, null),
+									language: t('lang'),
+									browser: getBrowser(),
+									url: window.location.href,
+									theme: theme.name as ThemeTypes,
+								});
+								alert.success(t('course.cursed.thanks'));
+								setTimeout(() => window.location.reload(), 5000);
+							}}
+						>
+							{t('course.cursed.send_report')}
+						</Button>
+						<Button
+							variant="secondary"
+							className="w-[200px]"
+							onClick={() => window.location.reload()}
+						>
+							{t('course.cursed.no')}
+						</Button>
+					</div>
 				</div>
 			)}
 			<div className="w-full h-full flex flex-col bg-[color:var(--background-color)] text-[color:var(--foreground-color)]">

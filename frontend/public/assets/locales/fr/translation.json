@@ -342,6 +342,13 @@
 		"deletion_test": "Écrivez le nom du cours pour confirmer la suppression",
 		"validate_activity": "Confirmer les changements",
 		"start_writing": "Commencez à écrire ici...",
+		"cursed": {
+			"msg1": "Une erreur inattendue s'est produite lors de votre dernière interaction.",
+			"msg2": "Voudriez-vous nous partager un rapport d'erreur ainsi que des informations à propos du contenu de votre cours? Cela nous aiderait beaucoup à corriger cette erreur. Si cette erreur persiste, veuillez s'il vous plaît nous contacter à l'adresse suivante: alivecode.developers@gmail.com",
+			"send_report": "Oui, signaler l'erreur.",
+			"no": "Non, rafraîchir la page.",
+			"thanks": "Merci d'avoir signalé cette erreur! Nous allons essayer de corriger celle-ci au plus vite! La page va maintenant être rafraîchie..."
+		},
 		"section": {
 			"empty": "Cette section ne possède aucune activité",
 			"new": "Ajouter une section",

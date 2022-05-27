@@ -73,6 +73,7 @@ module.exports = (env, argv) => {
 				https: false,
 				stream: false,
 				crypto: false,
+				util: require.resolve('util/'),
 			},
 		},
 		plugins: [

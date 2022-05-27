@@ -342,6 +342,13 @@
 		"deletion_test": "Enter the name of the course to confirm the deletion",
 		"validate_activity": "Confirm changes",
 		"start_writing": "Begin writing here...",
+		"cursed": {
+			"msg1": "An unexpected error occured during your last interaction.",
+			"msg2": "Would you like to send us a report of this error alongside some informations about the current state of your course? This would greatly help us fix this issue quickly. If the issue persists, please contact us at alivecode.developers@gmail.com",
+			"send_report": "Yes, send a bug report.",
+			"no": "No, refresh the page.",
+			"thanks": "Thank you for reporting this issue! We'll try to fix this issue as quickly as we can! The page will now be refreshed..."
+		},
 		"section": {
 			"empty": "This section has no activities.",
 			"new": "Add a Section",

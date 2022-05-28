@@ -28,6 +28,11 @@ export class AiController {
     return await this.aiService.updateDataset(id, updateDatasetDto);
   }
 
+  @Get('datasets')
+  async findAllDatasets() {
+    return await this.aiService.findAllDatasets();
+  }
+
   /***** Datasets routes *****/
 
   @Get('modlels/:id')

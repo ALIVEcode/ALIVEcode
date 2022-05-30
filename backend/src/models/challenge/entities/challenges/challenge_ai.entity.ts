@@ -18,8 +18,8 @@ export class ChallengeAIEntity extends ChallengeEntity {
   @IsOptional()
   solution?: string;
 
-  @Column({ type: 'enum', enum: MODEL_TYPES, nullable: false, default: MODEL_TYPES.POLY_REGRESSION })
-  @IsEnum(MODEL_TYPES)
+  @Column({ type: 'enum', enum: MODEL_TYPES, nullable: true, default: MODEL_TYPES.POLY_REGRESSION })
+  @IsOptional()
   modelType: MODEL_TYPES;
 
   @ManyToOne(() => AIDatasetEntity, { nullable: false })

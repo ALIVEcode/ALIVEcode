@@ -34,6 +34,12 @@ export class AiService {
     return await this.datasetRepo.save({ ...updateDatasetDto, id });
   }
 
+  async findAllDatasets() {
+    const datasets = this.datasetRepo.find();
+    if (!datasets) throw new HttpException('No dataset found', HttpStatus.NOT_FOUND);
+    return datasets;
+  }
+
   async findModel(id: string) {
     if (!id) throw new HttpException('No id specified, bad request', HttpStatus.BAD_REQUEST);
     const model = this.modelRepo.findOne(id);

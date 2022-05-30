@@ -27,6 +27,7 @@ import { plainToInstance } from 'class-transformer';
 import { UserContext } from '../../../state/contexts/UserContext';
 import { ChallengeAlive } from '../../../Models/Challenge/challenges/challenge_alive.entity';
 import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
+import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
 
 /**
  * Component that renders the create form for the selected challenge type
@@ -41,6 +42,7 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 	const alert = useAlert();
 	const navigate = useNavigate();
 	const [projects, setProjects] = useState<IoTProject[]>([]);
+	const [datasets, setDatasets] = useState<AIDataset[]>([]);
 
 	/**
 	 * Creates a resource Challenge based on the challenge if the user is a profesor.
@@ -64,7 +66,8 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 	};
 
 	/**
-	 * Loads the IoTProjects of a user when he switched to a level of type IoT
+	 * Loads the IoTProjects of a user when he switched to a level of type IoT.
+	 * Also loads all possible datasets if its creating a ChallengeAI
 	 */
 	useEffect(() => {
 		if (type === CHALLENGE_TYPE.IOT) {
@@ -74,6 +77,13 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 			};
 
 			getIoTProjects();
+		} else if (type === CHALLENGE_TYPE.AI) {
+			const getDatasets = async () => {
+				const datasets = await api.db.ai.getAllDatasets({});
+				setDatasets(datasets);
+			};
+
+			getDatasets();
 		}
 	}, [type]);
 
@@ -198,11 +208,16 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 								default: CHALLENGE_DIFFICULTY.MEDIUM,
 							},
 							{
-								name: 'modelType',
+								name: 'dataset',
 								required: true,
 								inputType: 'select',
-								selectOptions: MODEL_TYPES,
-								default: MODEL_TYPES.POLY_REGRESSION,
+								selectOptions: datasets.flatMap(dataset => {
+									return {
+										value: dataset,
+										display: dataset.getName(),
+									};
+								}),
+								default: datasets.length === 0 ? null : datasets[0],
 							},
 							...sharedInputGroup,
 						]}

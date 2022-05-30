@@ -546,6 +546,7 @@ const api = {
 					(await axios.get(`ai/datasets/${id}`)).data,
 				) as any as AIDataset;
 			},
+			getAllDatasets: apiGet('ai/datasets', AIDataset, true),
 		},
 		iot: {
 			projects: {

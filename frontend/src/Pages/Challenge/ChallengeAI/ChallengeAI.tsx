@@ -41,6 +41,7 @@ import {
 } from './artificial_intelligence/AIUtilsInterfaces';
 import { GenRegression } from './artificial_intelligence/AIUtilsInterfaces';
 import AIInterface from '../../../Components/ChallengeComponents/AIInterface/AIInterface';
+import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
 
 /**
  * Ai challenge page. Contains all the components to display and make the ai challenge functionnal.
@@ -87,8 +88,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	// Loading the dataset when first renders
 	useEffect(() => {
 		const getDataset = async () => {
-			challenge.dataset = await api.db.ai.getDataset(challenge.datasetId);
-			setDataset();
+			if (!challenge.dataset)
+				challenge.dataset = await api.db.ai.getDataset(challenge.datasetId);
+			forceUpdate();
 		};
 		getDataset();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -107,7 +109,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					costFunction,
 					showRegression,
 					testNeuralNetwork,
-					setDataset,
+					setDataset: setDatasetStats,
 				},
 				challenge.name,
 				askForUserInput,
@@ -198,7 +200,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * This function is called every time the run button is hit and when the dataset is
 	 * loaded for the first time.
 	 */
-	function setDataset() {
+	function setDatasetStats() {
 		[inputs.current, outputs.current] = challenge.dataset!.getInputsOutputs(
 			IOCodes.current,
 		);
@@ -435,7 +437,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	}
 
 	// END OF TEST FUNCTION //
-
+	console.log(challenge.dataset);
 	return (
 		<>
 			<StyledAliveChallenge>
@@ -509,7 +511,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 							data={challenge.dataset}
 							hyperparams={hyperparams}
 						/>
-						{/*
+						{/* TODO Code for visual regression ************
 							<div className="w-1/3 h-full">
 								<ChallengeTable
 									data={data}

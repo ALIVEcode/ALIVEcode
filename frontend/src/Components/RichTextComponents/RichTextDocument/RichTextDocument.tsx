@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Editable, Slate, withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
-import { createEditor, Descendant } from 'slate';
+import { createEditor } from 'slate';
 import RichTextDocumentToolBar from './RichTextDocumentToolBar';
 import { RichTextDocumentProps } from './richTextDocumentTypes';
 import { useTranslation } from 'react-i18next';
@@ -20,15 +20,13 @@ import {
  * @constructor
  */
 const RichTextDocument = ({
-	defaultText,
 	onChange,
 	readOnly = false,
+	value,
 }: RichTextDocumentProps) => {
 	// @ts-ignore
 	const editor = useMemo(() => withReact(withHistory(createEditor())), []);
 	const [editMode, setEditMode] = useState(false); // The flag to determine if the editor is in edit mode or not.
-
-	const [value, setValue] = useState<Descendant[]>(defaultText); // The value of the editor.
 
 	const { t } = useTranslation();
 
@@ -38,8 +36,7 @@ const RichTextDocument = ({
 				editor={editor}
 				value={value}
 				onChange={value => {
-					setValue(value);
-					onChange(value);
+					onChange([...value]);
 				}}
 			>
 				{/*page*/}

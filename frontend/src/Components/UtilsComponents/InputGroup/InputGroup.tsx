@@ -77,7 +77,7 @@ const InputGroup = React.forwardRef<any, InputGroupProps>(
 		};
 
 		return (
-			<div className={'mb-2 w-full ' + className}>
+			<div className={`mb-2 w-full ${className ?? ''}`}>
 				<FormLabel htmlFor={name} className={labelClassName}>
 					{label}
 				</FormLabel>

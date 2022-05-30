@@ -8,9 +8,7 @@ import {
  * This module defines all properties related to the data table in AI challenges.
  * The structure of the table is described in this object while the style of
  * the table is set in ChallengeTableTypes.
- * @param props the props of the table
-
- * @returns
+ * @param props the props of the table (ChallengeTableProps)
  */
 const ChallengeTable = (props: ChallengeTableProps) => {
 	const [currHyperparams, setCurrHyperparams] = useState<any>(
@@ -53,6 +51,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	 */
 	function renderTableData() {
 		if (props.data && props.isData)
+			//When this table represents data
 			return (
 				<>
 					{props.data.getDataForTable().map((dataLine: any, row: number) => {
@@ -67,6 +66,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 				</>
 			);
 		if (props.hyperparams && !props.isData)
+			//When this table represents hyperparameters
 			return (
 				<>
 					{Object.keys(props.hyperparams).map((key: string, index: number) => {
@@ -88,11 +88,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	}
 
 	return (
-		<StyledChallengeTable
-			className={
-				'w-full h-full overflow-x-auto overflow-y-auto ' + props.className
-			}
-		>
+		<StyledChallengeTable className={props.className}>
 			<table
 				className={
 					props.isData ? 'body self-center w-full' : 'body self-center w-5/6'

@@ -51,7 +51,12 @@ export const StyledAIInterface = styled.div`
 
 	.ai-tabs {
 		display: flex;
-		background-color: var(--background-color);
+		height: 12%;
+		background-color: var(--bg-shade-two-color);
+	}
+
+	.ai-display {
+		height: 88%;
 	}
 
 	.header {
@@ -64,6 +69,8 @@ export const StyledAIInterface = styled.div`
 
 	.dropdown-menu {
 		display: flex;
+		align-items: center;
+		height: max-content;
 		margin-right: 0.5vw;
 		color: var(--foreground-color);
 	}
@@ -71,16 +78,21 @@ export const StyledAIInterface = styled.div`
 	.dropdown {
 		font-size: 12px;
 		width: 100%;
-		justify-content: flex-end;
+		border-width: 2px;
+		border-color: var(--bg-shade-four-color);
 		background-color: var(--bg-shade-one-color);
+		margin-top: 50%;
+		margin-bottom: 50%;
 	}
 
 	.head-text {
 		width: 250px;
-		font-size: 14px;
+		margin-right: 2%;
+		margin-left: 0;
+		margin-top: 50%;
+		margin-bottom: 50%;
+		font-size: 100%;
 		text-align: right;
-		align-items: center;
-		margin-right: 0.5vw;
 		display: inline-block;
 		font-weight: 700;
 	}

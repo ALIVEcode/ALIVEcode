@@ -47,7 +47,7 @@ const AITab = ({ tab, setOpen, onClick, onOpen, onClose }: AITabProps) => {
 		<AIStyledSvg
 			open={tab.open}
 			xmlns="http://www.w3.org/2000/svg"
-			viewBox="0 0 130 40"
+			viewBox="0 0 130 60"
 			preserveAspectRatio="none"
 			onClick={() => {
 				if (tab.open && onClose) onClose();
@@ -56,7 +56,7 @@ const AITab = ({ tab, setOpen, onClick, onOpen, onClose }: AITabProps) => {
 				setOpen(!tab.open);
 			}}
 		>
-			<polygon points="0 0 130 0 130 40 0 40 0" />
+			<polygon points="0 0 130 0 130 60 0 60 0" />
 			<text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle">
 				{tab.title}
 			</text>

@@ -63,42 +63,44 @@ const AIInterface = memo(
 				theme={theme}
 				className={'h-3/5 w-full flex flex-col ' + className}
 			>
-				<div className="bg w-full h-full">
-					<div className="ai-tabs w-full items-center overflow-x-auto">
-						<div className="dropdown-menu w-full h-full">
-							<div className="head-text">Modèle choisi :</div>
-							<select className="dropdown">
-								<option value="NN">Réseau de neurones</option>
-								<option value="REG">Régression</option>
-							</select>
-						</div>
-						{tabs.map((tab, index) => (
-							<div className="w-fit">
-								<AITab
-									key={index}
-									tab={tab}
-									setOpen={() => setOpenedTab(index)}
-								/>
-							</div>
-						))}
+				{/*AIInterface tabs*/}
+				<div className="ai-tabs w-full items-center overflow-x-auto overflow-y-clip">
+					<div className="dropdown-menu w-full">
+						<h1 className="head-text">Modèle choisi :</h1>
+						<select className="dropdown">
+							<option value="NN">Réseau de neurones</option>
+							<option value="REG">Régression</option>
+						</select>
 					</div>
-					{tabs[0].open ? (
-						<ChallengeTable data={data} isData={true} />
-					) : tabs[1].open ? (
-						<div />
-					) : tabs[2].open ? (
-						<>
-							<h1 className="header">Valeurs des hyperparamètres</h1>
-							<ChallengeTable
-								hyperparams={initialHyperparams}
-								isData={false}
-								handleHyperparamsChange={handleHyperparamChange}
+					{tabs.map((tab, index) => (
+						<div className="w-fit">
+							<AITab
+								key={index}
+								tab={tab}
+								setOpen={() => setOpenedTab(index)}
 							/>
-						</>
-					) : (
-						<div />
-					)}
+						</div>
+					))}
 				</div>
+				{tabs[0].open ? (
+					<div className="ai-display w-full overflow-auto">
+						<ChallengeTable data={data} isData={true} />
+					</div>
+				) : tabs[1].open ? (
+					<div />
+				) : tabs[2].open ? (
+					<>
+						<h1 className="header h-1/6">Valeurs des hyperparamètres</h1>
+						<ChallengeTable
+							hyperparams={initialHyperparams}
+							className="h-5/6"
+							isData={false}
+							handleHyperparamsChange={handleHyperparamChange}
+						/>
+					</>
+				) : (
+					<div />
+				)}
 			</StyledAIInterface>
 		);
 	},

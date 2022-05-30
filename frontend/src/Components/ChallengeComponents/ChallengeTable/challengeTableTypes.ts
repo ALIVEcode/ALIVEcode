@@ -20,6 +20,22 @@ export interface ChallengeTableProps {
 }
 
 /**
+ * This component represents the name associated with his hyperparam
+ */
+export const HyperparamID:any  = {
+	"nbInputs" :  "Nombre de paramètres d'entrée",
+	"nbOutputs": "Nombre de paramètres de sortie",
+	"neuronsByLayer": "Nombre de neuronnes par couche",
+	"activationsByLayer": "Fonction d'activation par couches",
+	"costFunction": "Fonction de coût",
+	"learningRate": "Taux d'apprentissage",
+	"epochs": "Nombre d'epochs",
+	"type": "Type d'optimiseur",
+	"regressionType": "Type de régression"
+}
+
+	
+/**
  * This component represents the CSS code for every ChallengeTable component.
  *
  * @author Félix Jobin

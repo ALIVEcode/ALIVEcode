@@ -2,6 +2,7 @@ import { useState } from 'react';
 import {
 	ChallengeTableProps,
 	StyledChallengeTable,
+	HyperparamID,
 } from './challengeTableTypes';
 
 /**
@@ -46,6 +47,16 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 				</tr>
 			);
 	}
+	
+
+	/**
+	 * Returns the name associated with the hyperparameter.
+	 * @param key the hyperparameter
+	 * @returns the name of the hyperparameter
+	 */
+	function nameHyperparam(key: string){
+		return (HyperparamID![key])
+	}
 
 	/**
 	 * Returns a component representing the data rows of this ChallengeTable.
@@ -72,7 +83,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 					{Object.keys(props.hyperparams).map((key: string, index: number) => {
 						return (
 							<tr>
-								<td className="hyperparam-name data">{key}</td>
+								<td className="hyperparam-name data">{nameHyperparam(key)}</td>
 								<td className="hyperparam-value data">
 									<input
 										className="inputs"

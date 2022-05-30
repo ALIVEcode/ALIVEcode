@@ -1,6 +1,6 @@
 import { ChallengeEntity, CHALLENGE_TYPE } from "../challenge.entity";
 import { Column, ChildEntity, ManyToOne, JoinColumn } from 'typeorm';
-import { IsEnum, IsOptional } from 'class-validator';
+import { IsOptional } from 'class-validator';
 import { AIDatasetEntity } from '../../../ai/entities/ai_dataset.entity';
 import { MODEL_TYPES } from '../../../ai/entities/ai_model.entity';
 
@@ -27,5 +27,6 @@ export class ChallengeAIEntity extends ChallengeEntity {
   dataset: AIDatasetEntity;
 
   @Column({ name: 'datasetId', type: 'varchar', nullable: false })
+  @IsOptional()
   datasetId: string;
 }

@@ -11,7 +11,7 @@ import {
  */
 export class AIDataset {
 	private _paramNames?: string[];
-	private id: string;
+	public id: string;
 	private name: string;
 	private data: any[];
 	private initialData: any[];

@@ -26,7 +26,6 @@ import { RESOURCE_TYPE } from '../../../Models/Resource/resource.entity';
 import { plainToInstance } from 'class-transformer';
 import { UserContext } from '../../../state/contexts/UserContext';
 import { ChallengeAlive } from '../../../Models/Challenge/challenges/challenge_alive.entity';
-import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
 import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
 
 /**
@@ -208,12 +207,12 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 								default: CHALLENGE_DIFFICULTY.MEDIUM,
 							},
 							{
-								name: 'dataset',
+								name: 'datasetId',
 								required: true,
 								inputType: 'select',
 								selectOptions: datasets.flatMap(dataset => {
 									return {
-										value: dataset,
+										value: dataset.id,
 										display: dataset.getName(),
 									};
 								}),

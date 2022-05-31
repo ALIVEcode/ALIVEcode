@@ -17,7 +17,6 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 
 		this.doBeforeRun(() => {
 			this.executableFuncs.resetGraph();
-			this.executableFuncs.setDataset();
 		});
 
 		this.doAfterStop(() => {

@@ -42,7 +42,7 @@ import {
 import { GenRegression } from './artificial_intelligence/AIUtilsInterfaces';
 import AIInterface from '../../../Components/ChallengeComponents/AIInterface/AIInterface';
 import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
-import {mainAIUtilsTest} from "./artificial_intelligence/ai_tests/AIUtilsTest";
+import { mainAIUtilsTest } from './artificial_intelligence/ai_tests/AIUtilsTest';
 
 /**
  * Ai challenge page. Contains all the components to display and make the ai challenge functionnal.
@@ -300,7 +300,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 */
 	function costFunction(): string {
 		mainAIUtilsTest();
-		return "";
+		return '';
 
 		/*
 		if (!model.current) {
@@ -443,7 +443,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	}
 
 	// END OF TEST FUNCTION //
-	console.log(challenge.dataset);
 	return (
 		<>
 			<StyledAliveChallenge>

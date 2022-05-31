@@ -42,6 +42,7 @@ import {
 import { GenRegression } from './artificial_intelligence/AIUtilsInterfaces';
 import AIInterface from '../../../Components/ChallengeComponents/AIInterface/AIInterface';
 import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
+import {mainAIUtilsTest} from "./artificial_intelligence/ai_tests/AIUtilsTest";
 
 /**
  * Ai challenge page. Contains all the components to display and make the ai challenge functionnal.
@@ -298,6 +299,10 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @returns the calculated cost.
 	 */
 	function costFunction(): string {
+		mainAIUtilsTest();
+		return "";
+
+		/*
 		if (!model.current) {
 			return "Erreur : aucun modèle n'a été créé jusqu'à présent. Veuillez créer un modèle afin de calculer son erreur.";
 		}
@@ -305,6 +310,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			'Erreur du modèle : ' +
 			optimizer.current!.computeCost(inputs.current!, outputs.current!)
 		);
+		 */
 	}
 
 	/**

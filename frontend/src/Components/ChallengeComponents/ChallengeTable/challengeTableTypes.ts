@@ -23,15 +23,41 @@ export interface ChallengeTableProps {
  * This component represents the name associated with his hyperparam
  */
 export const HyperparamID:any  = {
-	"nbInputs" :  "Nombre de paramètres d'entrée",
-	"nbOutputs": "Nombre de paramètres de sortie",
-	"neuronsByLayer": "Nombre de neuronnes par couche",
-	"activationsByLayer": "Fonction d'activation par couches",
-	"costFunction": "Fonction de coût",
-	"learningRate": "Taux d'apprentissage",
-	"epochs": "Nombre d'epochs",
-	"type": "Type d'optimiseur",
-	"regressionType": "Type de régression"
+	"nbInputs" : {
+		"name" :"Nombre de paramètres d'entrée", 
+		"componant" : "input"
+	},
+	"nbOutputs": {
+		"name" :"Nombre de paramètres de sortie", 
+		"componant" : "input"
+	},
+	"neuronsByLayer": {
+		"name" :"Nombre de neuronnes par couche",
+		"componant" : "input"
+	},
+	"activationsByLayer": {
+		"name" : "Fonction d'activation par couches", 
+		"componant" : "ACTIVATION_FUNCTIONS"
+	},//
+	"costFunction": {
+		"name" :"Fonction de coût",
+		 "componant" : "COST_FUNCTIONS"
+		},//
+	"learningRate": {
+		"name" :"Taux d'apprentissage", 
+		"componant" : "input"
+	},
+	"epochs": {"name" :"Nombre d'epochs", 
+	"componant" : "input"
+},
+	"type": {
+		"name" :"Type d'optimiseur", 
+		"componant" : "MODEL_TYPES"
+	},//
+	"regressionType": {
+		"name" :"Type de régression", 
+		"componant" : "NN_OPTIMIZER_TYPES"
+	}//
 }
 
 	

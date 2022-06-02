@@ -2,7 +2,16 @@ import { useState } from 'react';
 import {
 	ChallengeTableProps,
 	StyledChallengeTable,
+	HyperparamID,
 } from './challengeTableTypes';
+
+import { 
+	COST_FUNCTIONS,
+	ACTIVATION_FUNCTIONS,
+	NN_OPTIMIZER_TYPES,
+	MODEL_TYPES
+ } from '../../../Models/Ai/ai_model.entity';
+
 
 /**
  * This module defines all properties related to the data table in AI challenges.
@@ -44,6 +53,86 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 				</tr>
 			);
 	}
+	
+
+	/**
+	 * Returns the name associated with the hyperparameter.
+	 * @param key the hyperparameter
+	 * @returns the name of the hyperparameter
+	 */
+	function nameHyperparam(key: string){
+		return (HyperparamID![key]["name"])
+	}
+
+	/**
+	 * Returns the component associated with the hyperparameter.
+	 * @param key the hyperparameter
+	 * @returns the component corresponding to the hyperparameter
+	 */
+	function composanHyperparam(key: string){
+
+		if (HyperparamID![key]["componant"] =="input")
+			return(
+				<input
+					className="inputs"
+					onBlur={e => updateHyperparams(e.target.value, key)}
+					defaultValue={props.hyperparams![key]}
+				></input>
+			)
+		else 
+			var keys, values
+			switch(HyperparamID![key]["componant"]) { 
+				case "NN_OPTIMIZER_TYPES": { 
+					values = Object.values(NN_OPTIMIZER_TYPES)
+					keys = Object.keys(NN_OPTIMIZER_TYPES)
+					return(
+						<select id="select">
+								<option value={values.at(0)}>{keys.at(0)}</option>
+						   </select>
+				
+					)
+				break; 
+				} 
+				case "ACTIVATION_FUNCTIONS": { 
+					values = Object.values(ACTIVATION_FUNCTIONS)
+					keys = Object.keys(ACTIVATION_FUNCTIONS)
+					return(
+						<select id="select">
+								<option value={values.at(0)}>{keys.at(0)}</option>
+								<option value={values.at(1)}>{keys.at(1)}</option>
+								<option value={values.at(2)}>{keys.at(2)}</option>
+						</select>
+				
+					)
+				break; 
+				} case "MODEL_TYPES": { 
+					values = Object.values(MODEL_TYPES)
+					keys = Object.keys(MODEL_TYPES)
+					return(
+						<select id="select">
+								<option value={values.at(0)}>{keys.at(0)}</option>
+								<option value={values.at(1)}>{keys.at(1)}</option>
+						   </select>
+				
+					)
+				break; 
+				} case "COST_FUNCTIONS": { 
+					values = Object.values(COST_FUNCTIONS)
+					keys = Object.keys(COST_FUNCTIONS)
+					return(
+						<select id="select">
+								<option value={values.at(0)}>{keys.at(0)}</option>
+								<option value={values.at(1)}>{keys.at(1)}</option>
+								<option value={values.at(2)}>{keys.at(2)}</option>     			
+						 </select>
+				
+					)
+				break; 
+				} 
+			}
+		
+
+	}
 
 	/**
 	 * Returns a component representing the data rows of this ChallengeTable.
@@ -72,13 +161,9 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 					{Object.keys(props.hyperparams).map((key: string, index: number) => {
 						return (
 							<tr>
-								<td className="hyperparam-name data">{key}</td>
+								<td className="hyperparam-name data">{nameHyperparam(key)}</td>
 								<td className="hyperparam-value data">
-									<input
-										className="inputs"
-										onBlur={e => updateHyperparams(e.target.value, key)}
-										defaultValue={props.hyperparams![key]}
-									></input>
+									{composanHyperparam(key)}
 								</td>
 							</tr>
 						);

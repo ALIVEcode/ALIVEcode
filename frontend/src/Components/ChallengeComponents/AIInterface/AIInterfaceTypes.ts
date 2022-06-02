@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { GenHyperparameters } from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
 import { Theme } from '../../../state/contexts/ThemeContext';
-import { EditorTabModel } from '../LineInterface/lineInterfaceTypes';
+import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
 
 /**
  * This type describes all properties of an AIInterface.
@@ -14,6 +14,7 @@ import { EditorTabModel } from '../LineInterface/lineInterfaceTypes';
  */
 export type AIInterfaceProps = {
 	handleHyperparamChange: (newHyperparams: any) => void;
+	handleModelChange: (newModel: string) => void;
 	className?: string;
 	tabs: AITabModel[];
 	data: any;

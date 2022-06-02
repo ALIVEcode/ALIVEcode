@@ -76,7 +76,11 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	const [cmdRef, cmd] = useCmd();
 	const alert = useAlert();
 
-	const activeAITab = useRef<number>(0); // index of active tab in AI Interface
+	//Model variables to keep track on the current Model, its type and hyperparameters.
+	let model = useRef<GenAIModel>();
+	let activeModelType = useRef<string>();
+	let regression = useRef<PolyRegression>();
+
 	//TODO replace these codes with the ones chosen in the interface
 	const IOCodes = useRef<number[]>([-1, -1, -1, -1]);
 	let inputs = useRef<Matrix>();
@@ -133,9 +137,13 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	/**
 	 * Updates the content in the AI interface
 	 */
-	const aiInterfaceContentChanges = (newHyperparams: any) => {
+	const aiInterfaceHyperparamsChanges = (newHyperparams: any) => {
 		console.log('New Hyperparams');
 		console.log(newHyperparams);
+	};
+
+	const aiInterfaceModelChange = (newModelType: string) => {
+		activeModelType.current = newModelType;
 	};
 
 	useEffect(() => {
@@ -146,24 +154,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	//Set the data for the challenge
 	const [data] = useState(dataAI);
-
-	let model = useRef<GenAIModel>();
-
-	/* To be implemented in the next commit
-	(() => {
-		if(editMode) {
-			if(challenge.hyperParams) 
-		}
-		if (progression?.aiModel) return progression.aiModel;
-		switch (challenge.modelType) {
-			case MODEL_TYPES.NEURAL_NETWORK:
-				return new NeuralNetwork(null, hyperparams);
-			case MODEL_TYPES.REGRESSION:
-				return new PolyRegression(null, hyperparams);
-		}
-	});
-	*/
-	let regression = useRef<GenRegression>();
 
 	//The dataset of the prototype AI course
 	const mainDataset: DataPoint = {
@@ -494,7 +484,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					*/}
 					<div className="flex flex-col w-1/2">
 						<AIInterface
-							handleHyperparamChange={aiInterfaceContentChanges}
+							handleHyperparamChange={aiInterfaceHyperparamsChanges}
+							handleModelChange={aiInterfaceModelChange}
 							tabs={[
 								{
 									title: 'Données',

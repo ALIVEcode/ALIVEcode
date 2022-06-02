@@ -7,6 +7,7 @@ import {
 import { ThemeContext } from '../../../state/contexts/ThemeContext';
 import AITab from './AITab';
 import ChallengeTable from '../ChallengeTable/ChallengeTable';
+import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
 
 /**
  * This component represents the visual interface in every ChallengeAI. It handles the
@@ -14,6 +15,7 @@ import ChallengeTable from '../ChallengeTable/ChallengeTable';
  *
  * @param handleHyperparamChange a callback function called when a hyperparameter is changed in
  * the hyperparameters tab.
+ * @param handleModelChange a callback function called when the Model is changed in the hyperparameters tab.
  * @param className the names of optional CSS classes.
  * @param tabs the tab components of the AIInterface.
  * @param hyperparams the initial hyperparameter values for the hyperparameters table.
@@ -23,6 +25,7 @@ import ChallengeTable from '../ChallengeTable/ChallengeTable';
 const AIInterface = memo(
 	({
 		handleHyperparamChange,
+		handleModelChange,
 		className,
 		tabs: initialTabs,
 		data,
@@ -67,9 +70,14 @@ const AIInterface = memo(
 				<div className="ai-tabs w-full items-center overflow-x-auto overflow-y-clip">
 					<div className="dropdown-menu w-full">
 						<h1 className="head-text">Modèle choisi :</h1>
-						<select className="dropdown">
-							<option value="NN">Réseau de neurones</option>
-							<option value="REG">Régression</option>
+						<select
+							className="dropdown"
+							onChange={e => handleModelChange(e.target.value)}
+						>
+							<option value={MODEL_TYPES.NEURAL_NETWORK}>
+								Réseau de neurones
+							</option>
+							<option value={MODEL_TYPES.POLY_REGRESSION}>Régression</option>
 						</select>
 					</div>
 					{tabs.map((tab, index) => (

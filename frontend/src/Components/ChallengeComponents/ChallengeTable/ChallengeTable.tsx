@@ -63,7 +63,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	function nameHyperparam(key: string){
 		return (HyperparamID![key]["name"])
 	}
-
+ 
 	/**
 	 * Returns the component associated with the hyperparameter.
 	 * @param key the hyperparameter

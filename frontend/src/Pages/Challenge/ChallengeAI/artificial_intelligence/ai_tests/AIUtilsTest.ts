@@ -170,7 +170,15 @@ function matMulTest() {
 }
 
 function appendRowTest() {
-	testLog('appendRow', appendRow(mat3, new Matrix([[5, 6]])), mat4);
+	testLog(
+		'appendRow',
+		appendRow(mat3, new Matrix([[5, 6]])),
+		new Matrix([
+			[3, 4],
+			[1, 2],
+			[5, 6],
+		]),
+	);
 }
 
 function matEqualsTest() {

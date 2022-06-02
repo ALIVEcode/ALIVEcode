@@ -16,8 +16,37 @@ const mat5: Matrix = new Matrix([[1, 2], [3, 4], [5, 6]]);
  * Simplify test logging.
  */
 function testLog<T>(functionName: string, result: T, expected: T) {
-  let resultMessage: string = result === expected ? "Success" : "Failure";
+  let same: boolean;
+  let isMatrix: boolean = result instanceof Matrix;
+  if (isMatrix) {
+    // @ts-ignore
+    same = result.equals(expected);
+    isMatrix = true;
+  } else {
+    same = result === expected;
+    isMatrix = false;
+  }
+
+  let resultMessage: string = same ? "PASS" : "FAIL";
   console.log("Test for " + functionName + " function : " + resultMessage);
+
+  if (!same) {
+    if (isMatrix) {
+      console.log("RESULT: ");
+      // @ts-ignore
+      result.display();
+      console.log("EXPECTED: ");
+      // @ts-ignore
+      expected.display();
+    } else if (!isMatrix) {
+      console.log("RESULT: ");
+      console.log(result);
+      console.log("EXPECTED: ");
+      console.log(expected);
+    }
+  }
+
+  return same;
 }
 
 /**
@@ -25,6 +54,7 @@ function testLog<T>(functionName: string, result: T, expected: T) {
  * in the navigator's console.
  */
 export function mainAIUtilsTest() {
+  // It looks like the order of functions make some tests PASS and other FAIL. This means that one or more of these functions is modifying one or more of the five matrices declared above.
   matSumOfAllTest();
   matTransposeTest();
   matGetMatrixColumnTest();
@@ -33,6 +63,7 @@ export function mainAIUtilsTest() {
   matDivElementWiseTest();
   matMulTest();
   appendRowTest();
+  matEqualsTest();
 }
 
 //-------------- TEST FUNCTIONS FOR Matrix CLASS ----------------//
@@ -41,7 +72,7 @@ export function mainAIUtilsTest() {
  * Test for the sumOfAll function of the Matrix class.
  */
 function matSumOfAllTest() {
-  testLog("Matrix.sumOfAll()", mat1.sumOfAll(), 45)
+  testLog("Matrix.sumOfAll", mat1.sumOfAll(), 45)
 }
 
 function matTransposeTest() {
@@ -56,7 +87,10 @@ function matTransposeTest() {
 }
 
 function matGetMatrixColumnTest() {
-  testLog("Matrix.getMatrixColumn()", mat1.getMatrixColumn(2), new Matrix([[101, 102, 103], [104, 105, 106], [107, 108, 109]]));
+  const result = mat1.getMatrixColumn(1);
+  const expected = new Matrix([[2], [5], [8]])
+
+  testLog("Matrix.getMatrixColumn", result, expected);
 }
 
 //-------------- TEST FUNCTIONS FOR Matrix CLASS ----------------//
@@ -65,14 +99,17 @@ function matGetMatrixColumnTest() {
  * Test for the matAddConstant function of the AIUtils module.
  */
 function matAddConstantTest() {
-  testLog("matAddConstantTest()", matAddConstant(mat1, 100), new Matrix([[10, 10, 10], [10, 10, 10], [10, 10, 10]]));
+  testLog("matAddConstantTest", matAddConstant(mat1, 100), new Matrix([[101, 102, 103], [104, 105, 106], [107, 108, 109]]));
 }
 
 /**
  * Test for the matAdd function of the AIUtils class.
  */
 function matAddTest() {
-  testLog("matAddTest()", matAdd(mat1, mat2), new Matrix([[10, 10, 10], [10, 10, 10], [10, 10, 10]]));
+  const result = matAdd(mat1, mat2);
+  const expected = new Matrix([[10, 10, 10], [10, 10, 10], [10, 10, 10]]);
+
+  testLog("matAddTest", result, expected);
 }
 
 function matDivElementWiseTest() {
@@ -83,7 +120,7 @@ function matDivElementWiseTest() {
       [7/3, 4, 9]
   ]);
 
-  testLog("matDivElementWise()", result, expected);
+  testLog("matDivElementWise", result, expected);
 }
 
 function matMulTest() {
@@ -94,10 +131,25 @@ function matMulTest() {
       [76, 100]
   ]);
 
-  testLog("MatMul()", result, expected);
+  testLog("MatMul", result, expected);
 }
 
 function appendRowTest() {
-  testLog("MatMul()", appendRow(mat3, new Matrix([[5, 6]])), mat5);
+  testLog("MatMul", appendRow(mat3, new Matrix([[5, 6]])), mat5);
 }
 
+function matEqualsTest() {
+   let result = mat2.equals(new Matrix([
+       [9, 8, 7],
+       [6, 5, 4],
+       [3, 2, 1]
+   ]));
+    testLog("Matrix.equals (working)", result, true)
+
+    result = mat2.equals(new Matrix([
+        [9, 8, 7],
+        [6, 5, 4],
+        [3, 2, -1]
+    ]));
+    testLog("Matrix.equals (sensibility)", result, false)
+}

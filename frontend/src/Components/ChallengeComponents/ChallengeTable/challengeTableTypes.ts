@@ -25,12 +25,12 @@ export interface ChallengeTableProps {
 export const HyperparamID:any  = {
 	"nbInputs" : {
 		"name" :"Nombre de paramètres d'entrée", 
-		"componant" : "input"
-	},
+		"componant" : "integer input"
+	},//
 	"nbOutputs": {
 		"name" :"Nombre de paramètres de sortie", 
-		"componant" : "input"
-	},
+		"componant" : "integer input"
+	},//
 	"neuronsByLayer": {
 		"name" :"Nombre de neuronnes par couche",
 		"componant" : "input"
@@ -38,26 +38,26 @@ export const HyperparamID:any  = {
 	"activationsByLayer": {
 		"name" : "Fonction d'activation par couches", 
 		"componant" : "ACTIVATION_FUNCTIONS"
-	},//
+	},
 	"costFunction": {
 		"name" :"Fonction de coût",
 		 "componant" : "COST_FUNCTIONS"
-		},//
+		},
 	"learningRate": {
 		"name" :"Taux d'apprentissage", 
 		"componant" : "input"
-	},
+	},//Nombre réel
 	"epochs": {"name" :"Nombre d'epochs", 
-	"componant" : "input"
-},
+	"componant" : "integer input"
+	},//
 	"type": {
 		"name" :"Type d'optimiseur", 
 		"componant" : "MODEL_TYPES"
-	},//
+	},
 	"regressionType": {
 		"name" :"Type de régression", 
 		"componant" : "NN_OPTIMIZER_TYPES"
-	}//
+	}
 }
 
 	

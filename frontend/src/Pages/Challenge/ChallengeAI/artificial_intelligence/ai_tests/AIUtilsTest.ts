@@ -1,3 +1,4 @@
+import {testLog} from "./AITestLogging"
 import {appendRow, matAdd, matAddConstant, matDivElementWise, matMul, Matrix} from '../AIUtils';
 
 /**
@@ -9,12 +10,12 @@ import {appendRow, matAdd, matAddConstant, matDivElementWise, matMul, Matrix} fr
 const mat1: Matrix = new Matrix([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
 const mat2: Matrix = new Matrix([[9, 8, 7], [6, 5, 4], [3, 2, 1]]);
 const mat3: Matrix = new Matrix([[3, 4], [1, 2]]);
-const mat4: Matrix = new Matrix([[2], [3], [4]]);
-const mat5: Matrix = new Matrix([[1, 2], [3, 4], [5, 6]]);
+const mat4: Matrix = new Matrix([[1, 2], [3, 4], [5, 6]]);
 
 /**
  * Simplify test logging.
  */
+/*
 function testLog<T>(functionName: string, result: T, expected: T) {
   let same: boolean;
   let isMatrix: boolean = result instanceof Matrix;
@@ -48,18 +49,18 @@ function testLog<T>(functionName: string, result: T, expected: T) {
 
   return same;
 }
-
+*/
 /**
  * Launches all test function in this file. The results will appear
  * in the navigator's console.
  */
 export function mainAIUtilsTest() {
   // It looks like the order of functions make some tests PASS and other FAIL. This means that one or more of these functions is modifying one or more of the five matrices declared above.
+  matAddTest();
   matSumOfAllTest();
   matTransposeTest();
   matGetMatrixColumnTest();
   matAddConstantTest();
-  matAddTest();
   matDivElementWiseTest();
   matMulTest();
   appendRowTest();
@@ -124,7 +125,7 @@ function matDivElementWiseTest() {
 }
 
 function matMulTest() {
-  const result: Matrix = matMul(mat1, mat5);
+  const result: Matrix = matMul(mat1, mat4);
   const expected = new Matrix([
       [22, 28],
       [49, 64],
@@ -135,7 +136,7 @@ function matMulTest() {
 }
 
 function appendRowTest() {
-  testLog("MatMul", appendRow(mat3, new Matrix([[5, 6]])), mat5);
+  testLog("MatMul", appendRow(mat3, new Matrix([[5, 6]])), mat4);
 }
 
 function matEqualsTest() {

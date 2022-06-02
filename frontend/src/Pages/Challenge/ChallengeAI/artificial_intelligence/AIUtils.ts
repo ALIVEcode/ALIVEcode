@@ -12,7 +12,7 @@ export interface DataSample {
  * matrix operations such as matrix multiplications.
  */
 export class Matrix {
-	private value: number[][];
+	private readonly value: number[][];
 	private rows: number;
 	private columns: number;
 
@@ -162,16 +162,6 @@ export class Matrix {
 	}
 
 	/**
-	 * Sets the value of the Matrix and adjusts the number of rows and columns.
-	 * @param newValue the new value of the Matrix.
-	 */
-	public setValue(newValue: number[][]) {
-		this.value = newValue;
-		this.rows = newValue.length;
-		this.columns = newValue[0].length;
-	}
-
-	/**
 	 * Asserts that the Matrix parameter is equal to the current Matrix. To be considered equal, 2
 	 * Matrices must have the following points in common :
 	 * - the same number of rows;
@@ -210,6 +200,8 @@ export class Matrix {
 			return true;
 		return false;
 	}
+
+	public static add() {}
 
 	/**
 	 * Displays the Matrix on the application's console.
@@ -291,30 +283,33 @@ export function matAddConstant(mat: Matrix, constant: number): Matrix {
  * @returns the resulting Matrix of the addition. Its size is the same as the mat1 size.
  */
 export function matAdd(mat1: Matrix, mat2: Matrix): Matrix {
-	const value1: number[][] = mat1.getValue();
-	const value2: number[][] = mat2.getValue();
-	let output: number[][] = value1;
+	let array1: number[][] = mat1.getValue();
+	let array2: number[][] = mat2.getValue();
 
-	for (let row: number = 0; row < mat1.getRows(); row++) {
-		for (let col: number = 0; col < mat1.getColumns(); col++) {
-			// If both Matrices are of the same size, element-wise addition.
-			if (
-				mat1.getRows() === mat2.getRows() &&
-				mat1.getColumns() === mat2.getColumns()
-			) {
-				output[row][col] += value2[row][col];
-			}
-			// If both Matrices have the same number of rows but the second Matrix has 1 column,
-			// the same column of value2 is applied to all columns of value1.
-			else if (mat1.getRows() === mat2.getRows() && mat2.getColumns() === 1) {
-				output[row][col] += value2[row][0];
-			} else
-				console.log(
-					'Erreur : les tailles ne sont pas compatibles pour une addition de matrices',
-				);
-		}
+	// Error management
+	if (
+		mat1.getRows() !== mat2.getRows() ||
+		(mat1.getColumns() !== mat2.getColumns() && mat2.getColumns() !== 1)
+	) {
+		console.log(
+			'Erreur : les tailles ne sont pas compatibles pour une addition de matrices',
+		);
+		return mat1;
 	}
-	return new Matrix(output);
+
+	//Addition computation
+	return new Matrix(
+		array1.map((row, rowIdx) =>
+			row.map((col, colIdx) => {
+				// For a normal addition
+				if (mat1.getColumns() === mat2.getColumns()) {
+					return col + array2[rowIdx][colIdx];
+				}
+				// If mat2 is a column Matrix
+				return col + array2[rowIdx][0];
+			}),
+		),
+	);
 }
 
 /**

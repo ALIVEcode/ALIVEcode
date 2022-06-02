@@ -112,6 +112,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 						}
 					}}
 					step={inputStep(key)}
+					min="0"
 				></input>
 			);
 		else var keys: any[];

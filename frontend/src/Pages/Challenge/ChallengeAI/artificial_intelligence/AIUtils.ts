@@ -259,14 +259,16 @@ export function zeros(rows: number, columns: number): number[][] {
 	return output;
 }
 
+/**
+ * Returns a new Matrix in which a constant value is added to each element.
+ * @param mat the Matrix in which to add a constant.
+ * @param constant the constant to add.
+ * @returns the resulting Matrix from this operation.
+ */
 export function matAddConstant(mat: Matrix, constant: number): Matrix {
 	let output: number[][] = mat.getValue();
-	for (let row: number = 0; row < mat.getRows(); row++) {
-		for (let col: number = 0; col < mat.getColumns(); col++) {
-			output[row][col] += constant;
-		}
-	}
-	return new Matrix(output);
+
+	return new Matrix(output.map(rowEl => rowEl.map(colEl => colEl + constant)));
 }
 
 /**
@@ -461,6 +463,7 @@ export function matMul(m1: Matrix, m2: Matrix): Matrix {
 	let outputValue: number[][] = zeros(m1.getRows(), m2.getColumns());
 
 	// Computation of a matrix mulltiplication
+	/*
 	for (let row: number = 0; row < m1.getRows(); row++) {
 		for (let col: number = 0; col < m2.getColumns(); col++) {
 			for (let i: number = 0; i < m1.getColumns(); i++) {
@@ -468,8 +471,18 @@ export function matMul(m1: Matrix, m2: Matrix): Matrix {
 			}
 		}
 	}
-
-	return new Matrix(outputValue);
+	*/
+	return new Matrix(
+		outputValue.map((row, rowNum) =>
+			row.map((el, colNum) => {
+				let result: number = 0;
+				for (let i: number = 0; i < m1.getColumns(); i++) {
+					result += value1[rowNum][i] * value2[i][colNum];
+				}
+				return result;
+			}),
+		),
+	);
 }
 
 /**

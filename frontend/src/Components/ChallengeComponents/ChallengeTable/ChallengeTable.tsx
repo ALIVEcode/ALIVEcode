@@ -145,7 +145,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 			}
 		}
 		return (
-			<select className="dropdowntable">
+			<select className="inputs">
 				{values.map((index: number) => {
 					var i = values.indexOf(index);
 					return <option value={index}>{keys.at(i)}</option>;

@@ -79,6 +79,9 @@ export const StyledChallengeTable = styled.div`
 		line-height: 18px;
 		font-weight: bolder;
 		background-color: var(--secondary-color);
+		border-left: 1px solid var(--databack-color);
+		border-right: 1px solid var(--databack-color);
+		border-bottom: 1px solid var(--databack-color);
 		width: 50px;
 		padding: 5px;
 		position: sticky;
@@ -88,6 +91,7 @@ export const StyledChallengeTable = styled.div`
 	.data {
 		background-color: var(--tableback-color);
 		border-top: 0.1vh solid var(--databack-color);
+		font-size: 12px;
 	}
 
 	.data-number {
@@ -107,6 +111,7 @@ export const StyledChallengeTable = styled.div`
 		background-color: var(--tableback-color);
 		text-align: center;
 		border: 2px solid var(--secondary-color);
+		border-radius: 6px;
 	}
 
 	td {

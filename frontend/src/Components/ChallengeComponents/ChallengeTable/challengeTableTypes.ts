@@ -16,6 +16,8 @@ export interface ChallengeTableProps {
 	data?: AIDataset;
 	hyperparams?: any;
 	isData: boolean;
+	ioCodes?: number[];
+	handleIOChange?: (newIO: number[]) => void;
 	handleHyperparamsChange?: (newHyperparams: any) => void;
 }
 

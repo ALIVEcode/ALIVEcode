@@ -15,6 +15,7 @@ import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
 export type AIInterfaceProps = {
 	handleHyperparamChange: (newHyperparams: any) => void;
 	handleModelChange: (newModel: string) => void;
+	handleIOChange: (newIO: number[]) => void;
 	className?: string;
 	tabs: AITabModel[];
 	data: any;

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useRef, useState } from 'react';
 import {
 	ChallengeTableProps,
 	StyledChallengeTable,
@@ -25,21 +25,8 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 		props.hyperparams,
 	);
 
-	const [ioCodes, setIOCodes] = useState<number[]>()
+	const [ioCodes, setIOCodes] = useState<number[]>(props.ioCodes!,)
 
-	function initIOCodes(){
-		
-			if(props.data && props.isData){
-				var array:number[] = []
-				for (let i = 0; i< props.data.paramNames.length; i++){
-					array.push(-1)
-				}
-				setIOCodes(array)
-				props.handleIOChange!(array)
-			}
-		
-		
-	}
 
 
 	function updateHyperparams(
@@ -58,12 +45,25 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 		props.handleHyperparamsChange!(currHyperparams);
 	}
 
+	function ioCodesHeader(index: number){
+		switch (ioCodes[index]){
+			case 1 : {
+				return " entrée"
+			}
+			case 0 : {
+				return " sortie"
+			}
+			default : {
+				return ""
+			}
+		}
+	}
+
 	/**
 	 * Returns a component representing the headers of this ChallengeTable
 	 * @returns the headers in a component.
 	 */
 	function renderTableHeaders() {
-		initIOCodes()
 		if (props.data && props.isData)
 			return (
 				<tr>
@@ -72,14 +72,15 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 						className="titles"
 						onClick={(event) => {
 							console.log(event.currentTarget.cellIndex)
-							var i = (ioCodes![event.currentTarget.cellIndex]+2) % 3 - 1
+							var i = ioCodes![event.currentTarget.cellIndex]
+							i = (i+2) % 3 - 1
 							var array = ioCodes!
 							array[event.currentTarget.cellIndex] = i
 							setIOCodes(array)
 							props.handleIOChange!(array)
 							console.log(array);
 						}}
-						>{param}
+						>{param + ioCodesHeader(index)}
 						</th>;
 					})}		
 				</tr>
@@ -128,7 +129,9 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 				<input
 					className="inputs"
 					type="number"
-					onBlur={e => updateHyperparams(e, e.target.value, key)}
+					onBlur={e => {
+						updateHyperparams(e, e.target.value, key);
+					}}
 					defaultValue={props.hyperparams![key]}
 					onKeyPress={event => {
 						if (

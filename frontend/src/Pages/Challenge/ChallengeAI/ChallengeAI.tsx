@@ -82,7 +82,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	let regression = useRef<PolyRegression>();
 
 	//TODO replace these codes with the ones chosen in the interface
-	const IOCodes = useRef<number[]>([-1, -1, -1, -1]);
+	const ioCodes = useRef<number[]>([]);
 	let inputs = useRef<Matrix>();
 	let outputs = useRef<Matrix>();
 	let means = useRef<number[]>();
@@ -96,8 +96,13 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			if (!challenge.dataset)
 				challenge.dataset = await api.db.ai.getDataset(challenge.datasetId);
 			forceUpdate();
+			if (challenge.dataset)
+				ioCodes.current = challenge.dataset.getDataAsArray().map(() => -1);
+			else
+				console.error("Erreur : la table ne s'est pas chargée correctement.");
 		};
 		getDataset();
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -134,16 +139,31 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		}
 	};
 
+	//-----CALLBACK FUNCTIONS-------//
+
 	/**
-	 * Updates the content in the AI interface
+	 * Callback function called when an hyperparam is changed in the interface.
+	 * @param newHyperparams the new Hyperparams object.
 	 */
 	const aiInterfaceHyperparamsChanges = (newHyperparams: any) => {
 		console.log('New Hyperparams');
 		console.log(newHyperparams);
 	};
 
+	/**
+	 * Callback function called when the model is changed in the interface.
+	 * @param newModelType the new model type.
+	 */
 	const aiInterfaceModelChange = (newModelType: string) => {
 		activeModelType.current = newModelType;
+	};
+
+	/**
+	 * Callback function called when the inputs or outputs are changed in the interface.
+	 * @param newIOCodes the new codes for inputs/outputs.
+	 */
+	const aiInterfaceIOChange = (newIOCodes: number[]) => {
+		ioCodes.current = newIOCodes;
 	};
 
 	useEffect(() => {
@@ -193,7 +213,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 */
 	function setDatasetStats() {
 		[inputs.current, outputs.current] = challenge.dataset!.getInputsOutputs(
-			IOCodes.current,
+			ioCodes.current,
 		);
 		if (inputs.current) {
 			console.log('Existing inputs');
@@ -289,10 +309,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @returns the calculated cost.
 	 */
 	function costFunction(): string {
-		mainAIUtilsTest();
-		return '';
-
-		/*
 		if (!model.current) {
 			return "Erreur : aucun modèle n'a été créé jusqu'à présent. Veuillez créer un modèle afin de calculer son erreur.";
 		}
@@ -300,7 +316,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			'Erreur du modèle : ' +
 			optimizer.current!.computeCost(inputs.current!, outputs.current!)
 		);
-		 */
 	}
 
 	/**
@@ -433,6 +448,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	}
 
 	// END OF TEST FUNCTION //
+
+	console.log('ChallengeAI updated');
 	return (
 		<>
 			<StyledAliveChallenge>
@@ -486,6 +503,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 						<AIInterface
 							handleHyperparamChange={aiInterfaceHyperparamsChanges}
 							handleModelChange={aiInterfaceModelChange}
+							handleIOChange={aiInterfaceIOChange}
 							tabs={[
 								{
 									title: 'Données',

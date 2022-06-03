@@ -11,19 +11,36 @@ import {
 	NN_OPTIMIZER_TYPES,
 	MODEL_TYPES,
 } from '../../../Models/Ai/ai_model.entity';
+import { getSystemErrorMap } from 'util';
 
 /**
  * This module defines all properties related to the data table in AI challenges.
  * The structure of the table is described in this object while the style of
  * the table is set in ChallengeTableTypes.
  * @param props the props of the table
-
  * @returns
  */
 const ChallengeTable = (props: ChallengeTableProps) => {
 	const [currHyperparams, setCurrHyperparams] = useState<any>(
 		props.hyperparams,
 	);
+
+	const [ioCodes, setIOCodes] = useState<number[]>()
+
+	function initIOCodes(){
+		
+			if(props.data && props.isData){
+				var array:number[] = []
+				for (let i = 0; i< props.data.paramNames.length; i++){
+					array.push(-1)
+				}
+				setIOCodes(array)
+				props.handleIOChange!(array)
+			}
+		
+		
+	}
+
 
 	function updateHyperparams(
 		e: React.FocusEvent<HTMLInputElement, Element>,
@@ -46,6 +63,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	 * @returns the headers in a component.
 	 */
 	function renderTableHeaders() {
+		initIOCodes()
 		if (props.data && props.isData)
 			return (
 				<tr>
@@ -54,6 +72,12 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 						className="titles"
 						onClick={(event) => {
 							console.log(event.currentTarget.cellIndex)
+							var i = (ioCodes![event.currentTarget.cellIndex]+2) % 3 - 1
+							var array = ioCodes!
+							array[event.currentTarget.cellIndex] = i
+							setIOCodes(array)
+							props.handleIOChange!(array)
+							console.log(array);
 						}}
 						>{param}
 						</th>;

@@ -16,6 +16,7 @@ import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
  * @param handleHyperparamChange a callback function called when a hyperparameter is changed in
  * the hyperparameters tab.
  * @param handleModelChange a callback function called when the Model is changed in the hyperparameters tab.
+ * @param handleIOChange a callback function called when the inputs or outputs are changed in the data tab.
  * @param className the names of optional CSS classes.
  * @param tabs the tab components of the AIInterface.
  * @param hyperparams the initial hyperparameter values for the hyperparameters table.
@@ -26,6 +27,7 @@ const AIInterface = memo(
 	({
 		handleHyperparamChange,
 		handleModelChange,
+		handleIOChange,
 		className,
 		tabs: initialTabs,
 		data,
@@ -92,7 +94,11 @@ const AIInterface = memo(
 				</div>
 				{tabs[0].open ? (
 					<div className="ai-display w-full overflow-auto">
-						<ChallengeTable data={data} isData={true} />
+						<ChallengeTable
+							data={data}
+							isData={true}
+							handleIOChange={handleIOChange}
+						/>
 					</div>
 				) : tabs[1].open ? (
 					<div />

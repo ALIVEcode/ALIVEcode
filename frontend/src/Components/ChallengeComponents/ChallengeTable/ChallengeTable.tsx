@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
 	ChallengeTableProps,
 	StyledChallengeTable,
@@ -98,7 +98,9 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 				<input
 					className="inputs"
 					type="number"
-					onBlur={e => updateHyperparams(e, e.target.value, key)}
+					onBlur={e => {
+						updateHyperparams(e, e.target.value, key);
+					}}
 					defaultValue={props.hyperparams![key]}
 					onKeyPress={event => {
 						if (

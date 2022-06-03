@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import {
 	ChallengeTableProps,
 	StyledChallengeTable,
@@ -47,8 +47,14 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 			return (
 				<tr>
 					{props.data.getParamNames().map((param: string, index: number) => {
-						return <th className="titles">{param}</th>;
-					})}
+						return <th 
+						className="titles"
+						onClick={(event) => {
+							console.log(event.currentTarget.cellIndex)
+						}}
+						>{param}
+						</th>;
+					})}		
 				</tr>
 			);
 		if (props.hyperparams && !props.isData)
@@ -59,7 +65,6 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 				</tr>
 			);
 	}
-	
 
 	/**
 	 * Returns the name associated with the hyperparameter.

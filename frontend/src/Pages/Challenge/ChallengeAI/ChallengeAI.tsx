@@ -164,6 +164,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 */
 	const aiInterfaceIOChange = (newIOCodes: number[]) => {
 		ioCodes.current = newIOCodes;
+		forceUpdate();
 	};
 
 	useEffect(() => {

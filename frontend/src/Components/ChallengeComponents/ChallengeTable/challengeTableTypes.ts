@@ -16,51 +16,50 @@ export interface ChallengeTableProps {
 	data?: AIDataset;
 	hyperparams?: any;
 	isData: boolean;
+	ioCodes?: number[];
+	handleIOChange?: (newIO: number[]) => void;
 	handleHyperparamsChange?: (newHyperparams: any) => void;
 }
 
 /**
  * This component represents the name associated with his hyperparam
  */
-export const HyperparamID:any  = {
-	"nbInputs" : {
-		"name" :"Nombre de paramètres d'entrée", 
-		"componant" : "integer input"
-	},//
-	"nbOutputs": {
-		"name" :"Nombre de paramètres de sortie", 
-		"componant" : "integer input"
-	},//
-	"neuronsByLayer": {
-		"name" :"Nombre de neuronnes par couche",
-		"componant" : "input"
+export const HyperparamID: any = {
+	nbInputs: {
+		name: "Nombre de paramètres d'entrée",
+		componant: 'integer input',
+	}, //
+	nbOutputs: {
+		name: 'Nombre de paramètres de sortie',
+		componant: 'integer input',
+	}, //
+	neuronsByLayer: {
+		name: 'Nombre de neuronnes par couche',
+		componant: 'input',
 	},
-	"activationsByLayer": {
-		"name" : "Fonction d'activation par couches", 
-		"componant" : "ACTIVATION_FUNCTIONS"
+	activationsByLayer: {
+		name: "Fonction d'activation par couches",
+		componant: 'ACTIVATION_FUNCTIONS',
 	},
-	"costFunction": {
-		"name" :"Fonction de coût",
-		 "componant" : "COST_FUNCTIONS"
-		},
-	"learningRate": {
-		"name" :"Taux d'apprentissage", 
-		"componant" : "input"
-	},//Nombre réel
-	"epochs": {"name" :"Nombre d'epochs", 
-	"componant" : "integer input"
-	},//
-	"type": {
-		"name" :"Type d'optimiseur", 
-		"componant" : "MODEL_TYPES"
+	costFunction: {
+		name: 'Fonction de coût',
+		componant: 'COST_FUNCTIONS',
 	},
-	"regressionType": {
-		"name" :"Type de régression", 
-		"componant" : "NN_OPTIMIZER_TYPES"
-	}
-}
+	learningRate: {
+		name: "Taux d'apprentissage",
+		componant: 'input',
+	}, //Nombre réel
+	epochs: { name: "Nombre d'epochs", componant: 'integer input' }, //
+	type: {
+		name: "Type d'optimiseur",
+		componant: 'MODEL_TYPES',
+	},
+	regressionType: {
+		name: 'Type de régression',
+		componant: 'NN_OPTIMIZER_TYPES',
+	},
+};
 
-	
 /**
  * This component represents the CSS code for every ChallengeTable component.
  *
@@ -82,6 +81,9 @@ export const StyledChallengeTable = styled.div`
 		line-height: 18px;
 		font-weight: bolder;
 		background-color: var(--secondary-color);
+		border-left: 1px solid var(--databack-color);
+		border-right: 1px solid var(--databack-color);
+		border-bottom: 1px solid var(--databack-color);
 		width: 50px;
 		padding: 5px;
 		position: sticky;
@@ -91,6 +93,7 @@ export const StyledChallengeTable = styled.div`
 	.data {
 		background-color: var(--tableback-color);
 		border-top: 0.1vh solid var(--databack-color);
+		font-size: 12px;
 	}
 
 	.data-number {
@@ -110,6 +113,7 @@ export const StyledChallengeTable = styled.div`
 		background-color: var(--tableback-color);
 		text-align: center;
 		border: 2px solid var(--secondary-color);
+		border-radius: 6px;
 	}
 
 	td {

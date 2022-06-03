@@ -53,6 +53,7 @@ export const StyledAIInterface = styled.div`
 	.ai-tabs {
 		display: flex;
 		height: 12%;
+		max-height: 5.5vh;
 		background-color: var(--bg-shade-two-color);
 	}
 

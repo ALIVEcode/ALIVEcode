@@ -15,7 +15,7 @@ import { ChallengeContext } from '../../../state/contexts/ChallengeContext';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import ChallengeToolsBar from '../../../Components/ChallengeComponents/ChallengeToolsBar/ChallengeToolsBar';
 import { NeuralNetwork } from './artificial_intelligence/ai_models/ai_neural_networks/NeuralNetwork';
-import { Matrix } from './artificial_intelligence/AIUtils';
+import { matAdd, Matrix } from './artificial_intelligence/AIUtils';
 import {
 	GenHyperparameters,
 	NNHyperparameters,

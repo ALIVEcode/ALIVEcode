@@ -5,13 +5,12 @@ import {
 	HyperparamID,
 } from './challengeTableTypes';
 
-import { 
+import {
 	COST_FUNCTIONS,
 	ACTIVATION_FUNCTIONS,
 	NN_OPTIMIZER_TYPES,
-	MODEL_TYPES
- } from '../../../Models/Ai/ai_model.entity';
-
+	MODEL_TYPES,
+} from '../../../Models/Ai/ai_model.entity';
 
 /**
  * This module defines all properties related to the data table in AI challenges.
@@ -26,10 +25,14 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 		props.hyperparams,
 	);
 
-	function updateHyperparams(e : React.FocusEvent<HTMLInputElement, Element>, newValue: any, key: string): void {
-		if (HyperparamID![key]["componant"] == "integer input"){
-			e.target.value = Number(parseInt(newValue)).toString()
-			newValue = e.target.value 
+	function updateHyperparams(
+		e: React.FocusEvent<HTMLInputElement, Element>,
+		newValue: any,
+		key: string,
+	): void {
+		if (HyperparamID![key]['componant'] == 'integer input') {
+			e.target.value = Number(parseInt(newValue)).toString();
+			newValue = e.target.value;
 		}
 		let tempHyperparams: any = currHyperparams;
 		console.log(newValue);
@@ -71,8 +74,8 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	 * @param key the hyperparameter
 	 * @returns the name of the hyperparameter
 	 */
-	function nameHyperparam(key: string){
-		return (HyperparamID![key]["name"])
+	function nameHyperparam(key: string) {
+		return HyperparamID![key]['name'];
 	}
 
 	/**
@@ -80,11 +83,9 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	 * @param key the hyperparameter
 	 * @returns the step of the hyperparameter
 	 */
-	function inputStep(key:string){
-		if (HyperparamID![key]["componant"]=="input")
-			return "0.01"
-		else 
-			return "1"
+	function inputStep(key: string) {
+		if (HyperparamID![key]['componant'] == 'input') return '0.01';
+		else return '1';
 	}
 
 	/**
@@ -92,67 +93,71 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	 * @param key the hyperparameter
 	 * @returns the component corresponding to the hyperparameter
 	 */
-	function addHypperparamInput(key: string){
-		var select = document.getElementById("SelectTypeHyperParameter");
+	function addHypperparamInput(key: string) {
+		var select = document.getElementById('SelectTypeHyperParameter');
 
-		if (HyperparamID![key]["componant"]=="integer input" ||HyperparamID![key]["componant"]=="input")
-			return(
+		if (
+			HyperparamID![key]['componant'] == 'integer input' ||
+			HyperparamID![key]['componant'] == 'input'
+		)
+			return (
 				<input
 					className="inputs"
 					type="number"
-					onBlur={e => updateHyperparams(e,e.target.value, key)}
-					defaultValue={props.hyperparams![key]
-					}
-					onKeyPress={(event) => {
-						if (!(/[0-9]/.test(event.key)|| /[.]/.test(event.key) || /[,]/.test(event.key))) {
-						  event.preventDefault();
+					onBlur={e => updateHyperparams(e, e.target.value, key)}
+					defaultValue={props.hyperparams![key]}
+					onKeyPress={event => {
+						if (
+							!(
+								/[0-9]/.test(event.key) ||
+								/[.]/.test(event.key) ||
+								/[,]/.test(event.key)
+							)
+						) {
+							event.preventDefault();
 						}
 					}}
-					step = {inputStep(key)}
-					min = "0"
+					step={inputStep(key)}
+					min="0"
 				></input>
-			)
-		else 
-			var keys : any[] 
-			var values : any[]
+			);
+		else var keys: any[];
+		var values: any[];
 
-			switch(HyperparamID![key]["componant"]) { 
-				case "NN_OPTIMIZER_TYPES": { 
-					values = Object.values(NN_OPTIMIZER_TYPES)
-					keys = Object.keys(NN_OPTIMIZER_TYPES)
-				break; 
-				} 
-				case "ACTIVATION_FUNCTIONS": { 
-					values = Object.values(ACTIVATION_FUNCTIONS)
-					keys = Object.keys(ACTIVATION_FUNCTIONS)
-				break; 
-				} case "MODEL_TYPES": { 
-					values = Object.values(MODEL_TYPES)
-					keys = Object.keys(MODEL_TYPES)
-				break; 
-				} case "COST_FUNCTIONS": { 
-					values = Object.values(COST_FUNCTIONS)
-					keys = Object.keys(COST_FUNCTIONS)
-				break; 
-				}
-				default: {
-					values = []
-					keys = []
-				}
+		switch (HyperparamID![key]['componant']) {
+			case 'NN_OPTIMIZER_TYPES': {
+				values = Object.values(NN_OPTIMIZER_TYPES);
+				keys = Object.keys(NN_OPTIMIZER_TYPES);
+				break;
 			}
-			return(
-				<select className="dropdowntable"> 
-				{
-					values.map((index: number) => {
-						var i = values.indexOf(index)
-						return (
-							<option value={index}>{keys.at(i)}</option>
-							)
-					})
-				}
-				</select>
-				
-			)
+			case 'ACTIVATION_FUNCTIONS': {
+				values = Object.values(ACTIVATION_FUNCTIONS);
+				keys = Object.keys(ACTIVATION_FUNCTIONS);
+				break;
+			}
+			case 'MODEL_TYPES': {
+				values = Object.values(MODEL_TYPES);
+				keys = Object.keys(MODEL_TYPES);
+				break;
+			}
+			case 'COST_FUNCTIONS': {
+				values = Object.values(COST_FUNCTIONS);
+				keys = Object.keys(COST_FUNCTIONS);
+				break;
+			}
+			default: {
+				values = [];
+				keys = [];
+			}
+		}
+		return (
+			<select className="inputs">
+				{values.map((index: number) => {
+					var i = values.indexOf(index);
+					return <option value={index}>{keys.at(i)}</option>;
+				})}
+			</select>
+		);
 	}
 
 	/**

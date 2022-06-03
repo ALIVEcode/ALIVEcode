@@ -12,7 +12,7 @@ const AIStyledSvg = styled.svg`
 	width: 120px;
 	text-align: center;
 	border-width: 1px;
-	border-color: var(--bg-shade-two-color);
+	border-color: var(--bg-shade-four-color);
 	cursor: pointer;
 
 	&:hover {

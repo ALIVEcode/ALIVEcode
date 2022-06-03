@@ -524,6 +524,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 							]}
 							data={challenge.dataset}
 							hyperparams={hyperparams}
+							ioCodes={ioCodes.current}
 						/>
 						{/* TODO Code for visual regression ************
 							<div className="w-1/3 h-full">

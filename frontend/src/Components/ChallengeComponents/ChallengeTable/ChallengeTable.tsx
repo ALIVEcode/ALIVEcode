@@ -23,10 +23,7 @@ import { getSystemErrorMap } from 'util';
 const ChallengeTable = (props: ChallengeTableProps) => {
 	const [currHyperparams, setCurrHyperparams] = useState<any>(
 		props.hyperparams,
-	);
-
-	const [ioCodes, setIOCodes] = useState<number[]>(props.ioCodes!,)
-
+	);		
 
 
 	function updateHyperparams(
@@ -46,19 +43,22 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	}
 
 	function ioCodesHeader(index: number){
-		switch (ioCodes[index]){
-			case 1 : {
-				return " entrée"
-			}
-			case 0 : {
-				return " sortie"
-			}
-			default : {
-				return ""
+		if(props.ioCodes!= null){
+			switch (props.ioCodes[index]){
+				case 1 : {
+					return " entrée"
+				}
+				case 0 : {
+					return " sortie"
+				}
+				default : {
+					return ""
+				}
 			}
 		}
+		return ("")
 	}
-
+	console.log(props.ioCodes)
 	/**
 	 * Returns a component representing the headers of this ChallengeTable
 	 * @returns the headers in a component.
@@ -71,15 +71,14 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 						return <th 
 						className="titles"
 						onClick={(event) => {
-							console.log(event.currentTarget.cellIndex)
-							var i = ioCodes![event.currentTarget.cellIndex]
-							i = (i+2) % 3 - 1
-							var array = ioCodes!
+							let i = props.ioCodes![event.currentTarget.cellIndex]
+							i = (i+3) % 3 - 1
+							let array = props.ioCodes!
 							array[event.currentTarget.cellIndex] = i
-							setIOCodes(array)
 							props.handleIOChange!(array)
-							console.log(array);
-						}}
+							//console.log(array);
+						}
+					}
 						>{param + ioCodesHeader(index)}
 						</th>;
 					})}		
@@ -119,8 +118,6 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	 * @returns the component corresponding to the hyperparameter
 	 */
 	function addHypperparamInput(key: string) {
-		var select = document.getElementById('SelectTypeHyperParameter');
-
 		if (
 			HyperparamID![key]['componant'] == 'integer input' ||
 			HyperparamID![key]['componant'] == 'input'
@@ -148,43 +145,44 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 					min="0"
 				></input>
 			);
-		else var keys: any[];
-		var values: any[];
+		else 
+			var keys: any[];
+			var values: any[];
 
-		switch (HyperparamID![key]['componant']) {
-			case 'NN_OPTIMIZER_TYPES': {
-				values = Object.values(NN_OPTIMIZER_TYPES);
-				keys = Object.keys(NN_OPTIMIZER_TYPES);
-				break;
+			switch (HyperparamID![key]['componant']) {
+				case 'NN_OPTIMIZER_TYPES': {
+					values = Object.values(NN_OPTIMIZER_TYPES);
+					keys = Object.keys(NN_OPTIMIZER_TYPES);
+					break;
+				}
+				case 'ACTIVATION_FUNCTIONS': {
+					values = Object.values(ACTIVATION_FUNCTIONS);
+					keys = Object.keys(ACTIVATION_FUNCTIONS);
+					break;
+				}
+				case 'MODEL_TYPES': {
+					values = Object.values(MODEL_TYPES);
+					keys = Object.keys(MODEL_TYPES);
+					break;
+				}
+				case 'COST_FUNCTIONS': {
+					values = Object.values(COST_FUNCTIONS);
+					keys = Object.keys(COST_FUNCTIONS);
+					break;
+				}
+				default: {
+					values = [];
+					keys = [];
+				}
 			}
-			case 'ACTIVATION_FUNCTIONS': {
-				values = Object.values(ACTIVATION_FUNCTIONS);
-				keys = Object.keys(ACTIVATION_FUNCTIONS);
-				break;
-			}
-			case 'MODEL_TYPES': {
-				values = Object.values(MODEL_TYPES);
-				keys = Object.keys(MODEL_TYPES);
-				break;
-			}
-			case 'COST_FUNCTIONS': {
-				values = Object.values(COST_FUNCTIONS);
-				keys = Object.keys(COST_FUNCTIONS);
-				break;
-			}
-			default: {
-				values = [];
-				keys = [];
-			}
-		}
-		return (
-			<select className="inputs">
-				{values.map((index: number) => {
-					var i = values.indexOf(index);
-					return <option value={index}>{keys.at(i)}</option>;
-				})}
-			</select>
-		);
+			return (
+				<select className="inputs">
+					{values.map((index: number) => {
+						let i = values.indexOf(index);
+						return <option value={index}>{keys.at(i)}</option>;
+					})}
+				</select>
+			);
 	}
 
 	/**

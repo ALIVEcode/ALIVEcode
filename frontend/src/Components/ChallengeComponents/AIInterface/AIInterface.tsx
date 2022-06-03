@@ -19,6 +19,7 @@ import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
  * @param handleIOChange a callback function called when the inputs or outputs are changed in the data tab.
  * @param className the names of optional CSS classes.
  * @param tabs the tab components of the AIInterface.
+ * @param ioCodes the inputs and output codes for the data table.
  * @param hyperparams the initial hyperparameter values for the hyperparameters table.
  *
  * @author Félix Jobin

@@ -6,9 +6,14 @@ import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
 /**
  * This type describes all properties of an AIInterface.
  *
- * @param handleChange a callback function updating the parent component of this AIInterface.
+ * @param handleHyperparamChange a callback function callend when an hyperparameter changes.
+ * @param handleModelChange a callback function called when the model changes.
+ * @param handleIOChange a callback function called when the inputs or outputs change.
+ * @param ioCodes the input output codes to give to the data table.
  * @param className the class name of this component.
  * @param tabs the AITabModel objects for this AIInterface
+ * @param data the data object to display with the data table.
+ * @param hyperparams the hyperparams object to display with the hyperparams table.
  *
  * @author Félix Jobin
  */
@@ -16,6 +21,7 @@ export type AIInterfaceProps = {
 	handleHyperparamChange: (newHyperparams: any) => void;
 	handleModelChange: (newModel: string) => void;
 	handleIOChange: (newIO: number[]) => void;
+	ioCodes?: number[];
 	className?: string;
 	tabs: AITabModel[];
 	data: any;

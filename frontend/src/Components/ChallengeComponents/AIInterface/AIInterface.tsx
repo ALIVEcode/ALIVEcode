@@ -28,6 +28,7 @@ const AIInterface = memo(
 		handleHyperparamChange,
 		handleModelChange,
 		handleIOChange,
+		ioCodes,
 		className,
 		tabs: initialTabs,
 		data,
@@ -97,6 +98,7 @@ const AIInterface = memo(
 						<ChallengeTable
 							data={data}
 							isData={true}
+							ioCodes={ioCodes}
 							handleIOChange={handleIOChange}
 						/>
 					</div>

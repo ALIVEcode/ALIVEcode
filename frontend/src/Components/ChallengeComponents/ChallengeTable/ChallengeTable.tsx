@@ -11,7 +11,6 @@ import {
 	NN_OPTIMIZER_TYPES,
 	MODEL_TYPES,
 } from '../../../Models/Ai/ai_model.entity';
-import { getSystemErrorMap } from 'util';
 
 /**
  * This module defines all properties related to the data table in AI challenges.
@@ -23,8 +22,7 @@ import { getSystemErrorMap } from 'util';
 const ChallengeTable = (props: ChallengeTableProps) => {
 	const [currHyperparams, setCurrHyperparams] = useState<any>(
 		props.hyperparams,
-	);		
-
+	);
 
 	function updateHyperparams(
 		e: React.FocusEvent<HTMLInputElement, Element>,
@@ -42,55 +40,24 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 		props.handleHyperparamsChange!(currHyperparams);
 	}
 
-	function ioCodesHeader(index: number){
-		if(props.ioCodes!= null){
-			switch (props.ioCodes[index]){
-				case 1 : {
-					return " entrée"
-				}
-				case 0 : {
-					return " sortie"
-				}
-				default : {
-					return ""
-				}
-			}
-		}
-		return ("")
-	}
-	console.log(props.ioCodes)
 	/**
-	 * Returns a component representing the headers of this ChallengeTable
-	 * @returns the headers in a component.
+	 * Sets the IOCodes after a change in the interface.
+	 * @param value the selected value in the interface.
+	 * @param index the index of the column in which the code was changed.
 	 */
-	function renderTableHeaders() {
-		if (props.data && props.isData)
-			return (
-				<tr>
-					{props.data.getParamNames().map((param: string, index: number) => {
-						return <th 
-						className="titles"
-						onClick={(event) => {
-							let i = props.ioCodes![event.currentTarget.cellIndex]
-							i = (i+3) % 3 - 1
-							let array = props.ioCodes!
-							array[event.currentTarget.cellIndex] = i
-							props.handleIOChange!(array)
-							//console.log(array);
-						}
-					}
-						>{param + ioCodesHeader(index)}
-						</th>;
-					})}		
-				</tr>
-			);
-		if (props.hyperparams && !props.isData)
-			return (
-				<tr>
-					<th className="titles">Hyperparamètre</th>
-					<th className="titles">Valeur</th>
-				</tr>
-			);
+	function setIOCode(value: string, index: number) {
+		let array: number[] = props.ioCodes!;
+		switch (value) {
+			case '1':
+				array[index] = 1;
+				break;
+			case '0':
+				array[index] = 0;
+				break;
+			default:
+				array[index] = -1;
+		}
+		props.handleIOChange!(array);
 	}
 
 	/**
@@ -145,43 +112,83 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 					min="0"
 				></input>
 			);
-		else 
-			var keys: any[];
-			var values: any[];
+		else var keys: any[];
+		var values: any[];
 
-			switch (HyperparamID![key]['componant']) {
-				case 'NN_OPTIMIZER_TYPES': {
-					values = Object.values(NN_OPTIMIZER_TYPES);
-					keys = Object.keys(NN_OPTIMIZER_TYPES);
-					break;
-				}
-				case 'ACTIVATION_FUNCTIONS': {
-					values = Object.values(ACTIVATION_FUNCTIONS);
-					keys = Object.keys(ACTIVATION_FUNCTIONS);
-					break;
-				}
-				case 'MODEL_TYPES': {
-					values = Object.values(MODEL_TYPES);
-					keys = Object.keys(MODEL_TYPES);
-					break;
-				}
-				case 'COST_FUNCTIONS': {
-					values = Object.values(COST_FUNCTIONS);
-					keys = Object.keys(COST_FUNCTIONS);
-					break;
-				}
-				default: {
-					values = [];
-					keys = [];
-				}
+		switch (HyperparamID![key]['componant']) {
+			case 'NN_OPTIMIZER_TYPES': {
+				values = Object.values(NN_OPTIMIZER_TYPES);
+				keys = Object.keys(NN_OPTIMIZER_TYPES);
+				break;
 			}
+			case 'ACTIVATION_FUNCTIONS': {
+				values = Object.values(ACTIVATION_FUNCTIONS);
+				keys = Object.keys(ACTIVATION_FUNCTIONS);
+				break;
+			}
+			case 'MODEL_TYPES': {
+				values = Object.values(MODEL_TYPES);
+				keys = Object.keys(MODEL_TYPES);
+				break;
+			}
+			case 'COST_FUNCTIONS': {
+				values = Object.values(COST_FUNCTIONS);
+				keys = Object.keys(COST_FUNCTIONS);
+				break;
+			}
+			default: {
+				values = [];
+				keys = [];
+			}
+		}
+		return (
+			<select className="inputs">
+				{values.map((index: number) => {
+					let i = values.indexOf(index);
+					return <option value={index}>{keys.at(i)}</option>;
+				})}
+			</select>
+		);
+	}
+
+	/**
+	 * Returns a component representing the headers of this ChallengeTable
+	 * @returns the headers in a component.
+	 */
+	function renderTableHeaders() {
+		if (props.data && props.isData && props.ioCodes)
 			return (
-				<select className="inputs">
-					{values.map((index: number) => {
-						let i = values.indexOf(index);
-						return <option value={index}>{keys.at(i)}</option>;
-					})}
-				</select>
+				<>
+					<tr>
+						{props.data.getParamNames().map((param: string, index: number) => {
+							return <th className="titles">{param}</th>;
+						})}
+					</tr>
+
+					<tr>
+						{props.ioCodes.map((code: number, index: number) => {
+							return (
+								<th className="io">
+									<select
+										className="inputs"
+										onChange={e => setIOCode(e.target.value, index)}
+									>
+										<option value={-1}>Ignorée</option>
+										<option value={1}>Entrée</option>
+										<option value={0}>Sortie</option>
+									</select>
+								</th>
+							);
+						})}
+					</tr>
+				</>
+			);
+		if (props.hyperparams && !props.isData)
+			return (
+				<tr>
+					<th className="titles">Hyperparamètre</th>
+					<th className="titles">Valeur</th>
+				</tr>
 			);
 	}
 

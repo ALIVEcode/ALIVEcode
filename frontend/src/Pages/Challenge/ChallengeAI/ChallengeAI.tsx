@@ -199,7 +199,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	//TODO link this declaration to the interface when completed
 	//Change the type to GenHyperparameters
 	const hyperparams: RegHyperparameters = {
-		regressionType: MODEL_TYPES.POLY_REGRESSION,
 		costFunction: COST_FUNCTIONS.MEAN_SQUARED_ERROR,
 		learningRate: 0.0001,
 		epochs: 1000,
@@ -450,7 +449,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	// END OF TEST FUNCTION //
 
-	console.log('ChallengeAI updated');
 	return (
 		<>
 			<StyledAliveChallenge>

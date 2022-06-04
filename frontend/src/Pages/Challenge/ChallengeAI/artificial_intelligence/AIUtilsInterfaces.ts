@@ -11,7 +11,6 @@ import { NeuralNetwork } from './ai_models/ai_neural_networks/NeuralNetwork';
 import PolyOptimizer from './ai_optimizers/ai_reg_optimizers/PolyOptmizer';
 import { MODEL_TYPES } from '../../../../Models/Ai/ai_model.entity';
 
-
 /*
 This file gathers all enum classes and interfaces used in AI algorithms.
 They generally describe objects or types of Model/Optimizer.
@@ -38,7 +37,6 @@ export interface NNHyperparameters {
  * a Regression Model.
  */
 export interface RegHyperparameters {
-	regressionType: MODEL_TYPES;
 	costFunction: COST_FUNCTIONS;
 	learningRate: number;
 	epochs: number;

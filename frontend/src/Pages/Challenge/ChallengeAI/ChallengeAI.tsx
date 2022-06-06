@@ -118,6 +118,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					evaluate: (x: number) => evaluate(x),
 					costFunction,
 					showRegression,
+					columnValues,
+					modelCreation,
 					testNeuralNetwork,
 					setDataset: setDatasetStats,
 				},
@@ -351,6 +353,26 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		showRegression();
 		const matInputs: Matrix = new Matrix([[predInputs]]);
 		return model.current!.predict(matInputs.transpose()).getValue()[0][0];
+	}
+
+	/**
+	 * Returns a table representing the data of the column asked.
+	 * @param column The name of the column of the data base.
+	 * @returns Table representing the data of the column asked.
+	 */
+	function columnValues(column: string): any[] {
+		let index = challenge.dataset!.getParamNames().indexOf(column);
+		let array: any[] = []
+		if(index != -1){
+			for (let i = challenge.dataset!.getDataAsArray().at(0)!.length-1; i>=0; i--){
+				array.push(challenge.dataset!.getDataAsArray().at(index)?.at(i))
+			}
+		}
+		return array
+	}
+
+	function modelCreation() {
+		
 	}
 
 	// FOR TESTING PURPOSE ONLY, TO BE DELETED WHEN NEURAL NETWORK IMPLEMENTATION WORKS //

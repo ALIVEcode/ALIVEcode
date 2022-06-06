@@ -109,6 +109,33 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					},
 				},
 			},
+			{
+				actionId: 806,
+				action: {
+					label: 'Valeurs Colonne',
+					type: 'GET',
+					apply: (params, _, response) => {
+						if (typeof params[0] === 'string') {
+							response?.push("Creation of a list");
+							let objectList: any[] = this.executableFuncs.columnValues(params[0])
+							objectList.forEach(e => response?.push(e))
+
+							console.log('Column list ',objectList);
+							this.perform_next();
+						}
+					},
+				},
+			},{
+				actionId: 807,
+				action: {
+					label: 'Création Modèle',
+					type: 'NORMAL',
+					apply: () => {
+						this.executableFuncs.modelCreation;
+						this.perform_next();
+					},
+				},
+			},
 		]);
 
 		this.executableFuncs = executables;

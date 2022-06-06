@@ -54,10 +54,6 @@ export const HyperparamID: any = {
 		name: "Type d'optimiseur",
 		componant: 'MODEL_TYPES',
 	},
-	regressionType: {
-		name: 'Type de régression',
-		componant: 'NN_OPTIMIZER_TYPES',
-	},
 };
 
 /**
@@ -83,9 +79,11 @@ export const StyledChallengeTable = styled.div`
 		background-color: var(--secondary-color);
 		border-left: 1px solid var(--databack-color);
 		border-right: 1px solid var(--databack-color);
-		border-bottom: 1px solid var(--databack-color);
+
+		padding-top: 0.5vh;
+		padding-left: 3px;
+		padding-right: 3px;
 		width: 50px;
-		padding: 5px;
 		position: sticky;
 		top: 0;
 	}
@@ -121,5 +119,14 @@ export const StyledChallengeTable = styled.div`
 		text-align: center;
 		justify-content: center;
 		font-size: 14px;
+	}
+
+	.io {
+		font-size: 12px;
+		border-bottom: 1px solid var(--databack-color);
+		background-color: var(--secondary-color);
+		border-left: 1px solid var(--databack-color);
+		border-right: 1px solid var(--databack-color);
+		padding: 0.5vh;
 	}
 `;

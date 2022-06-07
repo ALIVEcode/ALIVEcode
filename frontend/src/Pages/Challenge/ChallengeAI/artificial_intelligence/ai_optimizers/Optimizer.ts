@@ -8,7 +8,7 @@ import { GenAIModel, GenHyperparameters } from '../AIUtilsInterfaces';
  * Model. All types of optimizer must extend from this class.
  */
 export default abstract class Optimizer {
-	protected abstract hyperparams: GenHyperparameters;
+	protected abstract hyperparams: any;
 	protected abstract model: GenAIModel;
 	// The following properties are already available in the hyperparams property. They are used for
 	// conveninence purpose.
@@ -60,7 +60,7 @@ export default abstract class Optimizer {
 	public abstract optimize(inputs: Matrix, real: Matrix): GenAIModel;
 
 	public computeCost(inputs: Matrix, real: Matrix): number {
-		return this.costFunc.matCompute(this.model.predict(inputs), real);
+		return this.costFunc.matCompute(this.model.predict(inputs, false), real);
 	}
 
 	/**

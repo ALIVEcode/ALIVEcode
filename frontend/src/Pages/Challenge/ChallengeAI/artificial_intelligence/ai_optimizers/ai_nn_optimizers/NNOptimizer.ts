@@ -1,4 +1,8 @@
-import { NNHyperparameters } from '../../AIUtilsInterfaces';
+import {
+	Hyperparams,
+	NNHyperparameters,
+	GenHyperparameters,
+} from '../../AIUtilsInterfaces';
 import { Matrix } from '../../AIUtils';
 import { NeuralNetwork } from '../../ai_models/ai_neural_networks/NeuralNetwork';
 import Optimizer from '../Optimizer';
@@ -35,7 +39,7 @@ export abstract class NNOptimizer extends Optimizer {
 		let predictions: Matrix[];
 
 		for (let i: number = 0; i < this.epochs; i++) {
-			predictions = this.model.predictReturnAll(inputs);
+			predictions = this.model.predictReturnAll(inputs, false);
 			this.optimizeOneEpoch(inputs, predictions, real);
 		}
 		return this.model;

@@ -256,7 +256,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * loaded for the first time.
 	 */
 	function setDatasetStats() {
-		activeDataset.current = challenge.dataset!;
+		activeDataset.current = challenge.dataset!.clone();
 		[inputs.current, outputs.current] = activeDataset.current!.getInputsOutputs(
 			ioCodes.current,
 		);
@@ -440,7 +440,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				newIOCodes.splice(index+e, 0,valueIO!);
 			}
 			ioCodes.current = newIOCodes
-			resetGraph()
+			forceUpdate()
 		}else{
 			if (index != -1) 
 				return "Erreur : Les éléments de la colonne ne sont pas des chaines de caratères"
@@ -456,6 +456,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 function normalize(column : string):string | void {
 		let index = activeDataset.current!.getParamNames().indexOf(column);
 		if (index != -1 && !activeDataset.current.getDataAsMatrix().equals(new Matrix(1,1))){
+
 			activeDataset.current.getDataAsMatrix()
 			let columnData: number[] = activeDataset.current.getDataAsArray()[index]
 			const mean = activeDataset.current.getMeans().at(index)
@@ -468,9 +469,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 			//Change to :
 			//columnData = model.current!.normalizeArray(column, mean!, deviation!)
-			
 			activeDataset.current!.replaceColumn(column, columnData)
-			resetGraph()
+
+			forceUpdate()
 		}else{
 			if (index != -1) return "Erreur : Une colonne possède des chaines de caractères comme donnée dans la base de données"
 			else return "Erreur : Le nom de la colonne entrée en paramètre est inexistante"

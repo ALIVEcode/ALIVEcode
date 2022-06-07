@@ -1,8 +1,5 @@
 import styled from 'styled-components';
-import {
-	GenHyperparameters,
-	Hyperparams,
-} from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
+import { GenHyperparameters, Hyperparams } from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
 import { Theme } from '../../../state/contexts/ThemeContext';
 import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
 
@@ -29,6 +26,7 @@ export type AIInterfaceProps = {
 	tabs: AITabModel[];
 	data: any;
 	hyperparams: Hyperparams;
+	initData: any
 };
 
 /**

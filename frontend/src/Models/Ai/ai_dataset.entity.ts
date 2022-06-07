@@ -366,9 +366,8 @@ export class AIDataset {
 				return false;
 			}
 		}
-
 		//Change the data of the parameter
-		if( typeof(this.data[0][param]) != 'string') return false
+		if( typeof(this.data[0][param]) == 'string') return false
 		for (let dataNum: number = 0; dataNum < this.data.length; dataNum++) {
 			this.data[dataNum][param] = data[dataNum]
 		}

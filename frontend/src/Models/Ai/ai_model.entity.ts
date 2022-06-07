@@ -181,7 +181,8 @@ export default abstract class AIModel {
 	 * the normalization of inputs by taking the mean and deviation of each parameter
 	 * in arrays.
 	 * @param inputs the inputs from which to compute the outputs (1 x nbInputs).
+	 * @param normalize a boolean indicating if we want to normalize the data.
 	 * @returns the outputs of the model.
 	 */
-	public abstract predict(inputs: Matrix): Matrix;
+	public abstract predict(inputs: Matrix, normalize: boolean): Matrix;
 }

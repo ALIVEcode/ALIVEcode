@@ -45,6 +45,7 @@ import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
 import { mainAIUtilsTest } from './artificial_intelligence/ai_tests/AIUtilsTest';
 import { defaultHyperparams } from './artificial_intelligence/ai_models/defaultHyperparams';
 import useComplexState from '../../../state/hooks/useComplexState';
+import { mainAINeuralNetworkTest } from './artificial_intelligence/ai_tests/AINeuralNetworkTest';
 
 /**
  * Ai challenge page. Contains all the components to display and make the ai challenge functionnal.
@@ -318,6 +319,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @returns the calculated cost.
 	 */
 	function costFunction(): string {
+		mainAINeuralNetworkTest();
+
 		if (!model.current) {
 			return "Erreur : aucun modèle n'a été créé jusqu'à présent. Veuillez créer un modèle afin de calculer son erreur.";
 		}

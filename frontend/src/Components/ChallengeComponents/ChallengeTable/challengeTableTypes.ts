@@ -1,5 +1,11 @@
 import styled from 'styled-components';
 import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
+import { OneOf } from '../../../Types/utils';
+import {
+	GenHyperparameters,
+	Hyperparams,
+} from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
+import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
 
 /**
  * This interface represents every property of a ChallengeTable.
@@ -11,15 +17,20 @@ import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
  *
  * @author Félix Jobin
  */
-export interface ChallengeTableProps {
+export type ChallengeTableProps = {
 	className?: string;
-	data?: AIDataset;
-	hyperparams?: any;
 	isData: boolean;
-	ioCodes?: number[];
-	handleIOChange?: (newIO: number[]) => void;
-	handleHyperparamsChange?: (newHyperparams: any) => void;
-}
+} & OneOf<
+	{
+		data: AIDataset;
+		ioCodes: number[];
+		handleIOChange: (newIO: number[]) => void;
+	},
+	{
+		hyperparams: Hyperparams;
+		handleHyperparamsChange: (newHyperparams: Hyperparams) => void;
+	}
+>;
 
 /**
  * This component represents the name associated with his hyperparam

@@ -1,4 +1,9 @@
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
+import {
+	Hyperparams,
+	NNHyperparameters,
+	RegHyperparameters,
+} from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
 import {
 	ChallengeTableProps,
 	StyledChallengeTable,
@@ -20,54 +25,60 @@ import {
  * @returns
  */
 const ChallengeTable = (props: ChallengeTableProps) => {
-	const [currHyperparams, setCurrHyperparams] = useState<any>(
-		props.hyperparams,
-	);
+	const [currHyperparams, setCurrHyperparams] = useState(props.hyperparams);
 
-	function updateHyperparams(
-		e: React.FocusEvent<HTMLInputElement, Element>,
-		newValue: any,
-		key: string,
-	): void {
-		if (HyperparamID![key]['componant'] == 'integer input') {
-			e.target.value = Number(parseInt(newValue)).toString();
-			newValue = e.target.value;
-		}
-		let tempHyperparams: any = currHyperparams;
-		console.log(newValue);
-		tempHyperparams[key] = newValue;
-		setCurrHyperparams(tempHyperparams);
-		props.handleHyperparamsChange!(currHyperparams);
-	}
+	const updateHyperparams = useCallback(
+		(
+			e: React.FocusEvent<HTMLInputElement, Element>,
+			newValue: any,
+			key: string,
+		): void => {
+			if (!currHyperparams || !props.handleHyperparamsChange) return;
+
+			if (HyperparamID![key]['componant'] === 'integer input') {
+				e.target.value = Number(parseInt(newValue)).toString();
+				newValue = e.target.value;
+			}
+			let tempHyperparams: any = currHyperparams;
+			console.log(newValue);
+			tempHyperparams[key] = newValue;
+			setCurrHyperparams(tempHyperparams);
+			props.handleHyperparamsChange(currHyperparams);
+		},
+		[currHyperparams, props],
+	);
 
 	/**
 	 * Sets the IOCodes after a change in the interface.
 	 * @param value the selected value in the interface.
 	 * @param index the index of the column in which the code was changed.
 	 */
-	function setIOCode(value: string, index: number) {
-		let array: number[] = props.ioCodes!;
-		switch (value) {
-			case '1':
-				array[index] = 1;
-				break;
-			case '0':
-				array[index] = 0;
-				break;
-			default:
-				array[index] = -1;
-		}
-		props.handleIOChange!(array);
-	}
+	const setIOCode = useCallback(
+		(value: string, index: number) => {
+			let array: number[] = props.ioCodes!;
+			switch (value) {
+				case '1':
+					array[index] = 1;
+					break;
+				case '0':
+					array[index] = 0;
+					break;
+				default:
+					array[index] = -1;
+			}
+			props.handleIOChange && props.handleIOChange(array);
+		},
+		[props],
+	);
 
 	/**
 	 * Returns the name associated with the hyperparameter.
 	 * @param key the hyperparameter
 	 * @returns the name of the hyperparameter
 	 */
-	function nameHyperparam(key: string) {
+	const nameHyperparam = useCallback((key: string) => {
 		return HyperparamID![key]['name'];
-	}
+	}, []);
 
 	/**
 	 * Returns the step associated with the hyperparameter.
@@ -84,7 +95,8 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	 * @param key the hyperparameter
 	 * @returns the component corresponding to the hyperparameter
 	 */
-	function addHypperparamInput(key: string) {
+	function addHypperparamInput(key: keyof Hyperparams) {
+		if (!currHyperparams) return;
 		if (
 			HyperparamID![key]['componant'] === 'integer input' ||
 			HyperparamID![key]['componant'] === 'input'
@@ -96,7 +108,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 					onBlur={e => {
 						updateHyperparams(e, e.target.value, key);
 					}}
-					defaultValue={props.hyperparams![key]}
+					defaultValue={currHyperparams[key]}
 					onKeyPress={event => {
 						if (
 							!(
@@ -145,7 +157,11 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 			<select className="inputs">
 				{values.map((index: number) => {
 					let i = values.indexOf(index);
-					return <option value={index}>{keys.at(i)}</option>;
+					return (
+						<option key={index} value={index}>
+							{keys.at(i)}
+						</option>
+					);
 				})}
 			</select>
 		);
@@ -188,7 +204,10 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 					<tr>
 						{props.data.getParamNames().map((param: string, index: number) => {
 							return (
-								<th className={setDataTabClassName(true, 'titles', index)}>
+								<th
+									key={index}
+									className={setDataTabClassName(true, 'titles', index)}
+								>
 									{param}
 								</th>
 							);
@@ -198,7 +217,10 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 					<tr>
 						{props.ioCodes.map((code: number, index: number) => {
 							return (
-								<th className={setDataTabClassName(true, 'io', index)}>
+								<th
+									key={index}
+									className={setDataTabClassName(true, 'io', index)}
+								>
 									<select
 										className="inputs"
 										onChange={e => setIOCode(e.target.value, index)}
@@ -235,7 +257,10 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 							<tr key={row}>
 								{dataLine.map((element: any, col: number) => {
 									return (
-										<td className={setDataTabClassName(false, 'data', col)}>
+										<td
+											key={col}
+											className={setDataTabClassName(false, 'data', col)}
+										>
 											{element}
 										</td>
 									);
@@ -250,10 +275,10 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 				<>
 					{Object.keys(props.hyperparams).map((key: string, index: number) => {
 						return (
-							<tr>
+							<tr key={index}>
 								<td className="hyperparam-name data">{nameHyperparam(key)}</td>
 								<td className="hyperparam-value data">
-									{addHypperparamInput(key)}
+									{addHypperparamInput(key as keyof Hyperparams)}
 								</td>
 							</tr>
 						);

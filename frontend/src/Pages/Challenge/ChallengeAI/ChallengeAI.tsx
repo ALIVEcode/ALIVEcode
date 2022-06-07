@@ -78,7 +78,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	//Model variables to keep track on the current Model, its type and hyperparameters.
 	let model = useRef<GenAIModel>();
-	let activeModelType = useRef<string>();
+	let activeModelType = useRef<string>(MODEL_TYPES.NEURAL_NETWORK);
 	let regression = useRef<PolyRegression>();
 
 	//TODO replace these codes with the ones chosen in the interface
@@ -120,6 +120,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					showRegression,
 					columnValues,
 					modelCreation,
+					oneHot,
 					testNeuralNetwork,
 					setDataset: setDatasetStats,
 				},
@@ -370,8 +371,70 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		return array
 	}
 
-	function modelCreation() {
-		
+	/**
+	 * Creates an ai model 
+	 */
+	function modelCreation():void {
+		let modelVisible = true;
+
+		switch (activeModelType.current) {
+			case MODEL_TYPES.POLY_REGRESSION:
+				console.log("POLY")
+			/*
+				model.current = new PolyRegression(
+					"Poly Regression Model",
+					hyperparams,
+					modelParams)
+			*/
+
+				break;
+			case MODEL_TYPES.NEURAL_NETWORK:
+				console.log("NN");
+
+				/*model.current = new NeuralNetwork(
+					"Neural Network Model",
+					hyperparams,
+				[])
+				break;
+				*/
+			default:
+				break;
+		}
+
+		//Crée objet math -model -> c'est des useRef
+		//Crée visuel --> Mettre dans variable :
+		//bool affiche model ou pas - 
+		//Paramètre pour AIInterface --> 
+	}
+
+	/**
+	 * Creats of a one shot associate to the column selected
+	 * @param column the parameter's name to replace.
+	 */
+	function oneHot(column : string):string | void {
+		let index = challenge.dataset!.getParamNames().indexOf(column);
+		const oldNumberParams = challenge.dataset!.getParamNames().length;
+
+		// ------- Problème : impossible de revenir à l'ancience data" -----------
+
+		if (challenge.dataset!.createOneHot(column)){
+			const newNumberParams = challenge.dataset!.getParamNames().length;
+			const numberNewParams = newNumberParams-oldNumberParams
+			
+			//Remove the column to replace of the IOcodes
+			let newIOCodes= ioCodes.current
+			newIOCodes.forEach((value,index)=>{
+				if(value==index) newIOCodes.splice(index,1);
+			});
+
+			//Addind the new column to the IOcodes
+			for (let e = 0; e<numberNewParams;e++){
+				newIOCodes.splice(index+e, 0, -1);
+			}
+		}else{
+			if (index != -1) return "Erreur : Les éléments de la colonne ne sont pas des chaines de caratères"
+			else return "Erreur : Le nom de la colonne entrée en paramètre est inexistante"
+		}
 	}
 
 	// FOR TESTING PURPOSE ONLY, TO BE DELETED WHEN NEURAL NETWORK IMPLEMENTATION WORKS //

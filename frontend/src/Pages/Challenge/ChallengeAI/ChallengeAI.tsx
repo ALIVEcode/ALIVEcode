@@ -43,7 +43,7 @@ import {
 import AIInterface from '../../../Components/ChallengeComponents/AIInterface/AIInterface';
 import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
 import { mainAIUtilsTest } from './artificial_intelligence/ai_tests/AIUtilsTest';
-import { defaultHyperparams } from './artificial_intelligence/ai_models/defaultHyperparams';
+import { defaultHyperparams } from './artificial_intelligence/ai_models/DefaultHyperparams';
 import useComplexState from '../../../state/hooks/useComplexState';
 import { mainAINeuralNetworkTest } from './artificial_intelligence/ai_tests/AINeuralNetworkTest';
 
@@ -168,8 +168,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 */
 	const aiInterfaceModelChange = (newModelType: MODEL_TYPES) => {
 		setActiveModelType(newModelType);
-		forceUpdate();
-		console.log(activeModelType);
 	};
 
 	/**

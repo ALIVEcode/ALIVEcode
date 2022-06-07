@@ -17,6 +17,7 @@ import ChallengeTable from '../ChallengeTable/ChallengeTable';
 import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
 import { ThreeScene } from './AIVisualModels/AINeuralNet';
 import { GenHyperparameters } from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
+import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 
 /**
  * This component represents the visual interface in every ChallengeAI. It handles the
@@ -48,7 +49,7 @@ const AIInterface = memo(
 		const { theme } = useContext(ThemeContext);
 
 		// The active model type on this inteface
-		const [activeModelType, setActiveModelType] = useState<MODEL_TYPES>(
+		const [activeModelType, setActiveModelType] = useState(
 			MODEL_TYPES.NEURAL_NETWORK,
 		);
 
@@ -86,13 +87,10 @@ const AIInterface = memo(
 		 * Also calls the callback function for a model change in its parent component.
 		 * @param value the string value of the dropdown.
 		 */
-		const handleDropdownChange = useCallback(
-			(value: keyof GenHyperparameters) => {
-				setActiveModelType(value as MODEL_TYPES);
-				handleModelChange(activeModelType);
-			},
-			[activeModelType, handleModelChange, initialHyperparams],
-		);
+		const handleDropdownChange = (value: keyof GenHyperparameters) => {
+			setActiveModelType(value as MODEL_TYPES);
+			handleModelChange(value as MODEL_TYPES);
+		};
 
 		useEffect(() => {
 			console.log(initialHyperparams);

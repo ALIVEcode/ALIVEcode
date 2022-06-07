@@ -11,6 +11,8 @@ import {
 	NN_OPTIMIZER_TYPES,
 	MODEL_TYPES,
 } from '../../../Models/Ai/ai_model.entity';
+import { data } from 'jquery';
+import { init } from 'i18next';
 
 /**
  * This module defines all properties related to the data table in AI challenges.
@@ -77,6 +79,20 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	function inputStep(key: string) {
 		if (HyperparamID![key]['componant'] === 'input') return '0.01';
 		else return '1';
+	}
+
+	/**
+	 * Returns a boolean about if a dropdown shoulds be disable or not
+	 * @param index the index of the dropdown
+	 * @returns If the dropdown is disable or not
+	 */
+	 function disableDropdown(index : number){
+		const header = props.data?.getParamNames().at(index)
+		if (props.initData!.getParamNames().indexOf(header!)=== -1){
+			return true
+		}else{
+			return false
+		}
 	}
 
 	/**
@@ -202,6 +218,8 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 									<select
 										className="inputs"
 										onChange={e => setIOCode(e.target.value, index)}
+										disabled={disableDropdown(index)}
+										value={code}
 									>
 										<option value={-1}>Ignorée</option>
 										<option value={1}>Entrée</option>
@@ -236,7 +254,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 								{dataLine.map((element: any, col: number) => {
 									return (
 										<td className={setDataTabClassName(false, 'data', col)}>
-											{element}
+											{typeof element === 'number'? Math.round(element * 10000) / 10000 : element}
 										</td>
 									);
 								})}

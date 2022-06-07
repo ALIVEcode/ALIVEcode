@@ -14,6 +14,7 @@ import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
 export interface ChallengeTableProps {
 	className?: string;
 	data?: AIDataset;
+	initData?: AIDataset;
 	hyperparams?: any;
 	isData: boolean;
 	ioCodes?: number[];

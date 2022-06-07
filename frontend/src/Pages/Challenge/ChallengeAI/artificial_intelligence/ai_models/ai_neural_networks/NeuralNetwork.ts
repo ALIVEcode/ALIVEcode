@@ -57,8 +57,8 @@ export class NeuralNetwork extends AIModel {
 				  };
 
 		// Assinging values to properties
-		this.nbInputs = hyperparameters.nb_inputs;
-		this.nbOutputs = hyperparameters.nb_outputs;
+		this.nbInputs = hyperparameters.nbInputs;
+		this.nbOutputs = hyperparameters.nbOutputs;
 
 		// Choosing the right method depending if the model already exists
 		if (this.modelParams.layerParams.length === 0) this.createModel();
@@ -72,7 +72,7 @@ export class NeuralNetwork extends AIModel {
 		for (let layer: number = 0; layer < nbLayers; layer++) {
 			// Initiates the layers if its the first layer
 			const activationFunction = ActivationFunction.createActivationFunction(
-				this.hyperparameters.activations_by_layer[layer],
+				this.hyperparameters.activationsByLayer[layer],
 			);
 			this.layers.push(
 				new NeuralLayer(
@@ -90,10 +90,10 @@ export class NeuralNetwork extends AIModel {
 		let biases: Matrix;
 		let previousNbNeurons: number = 0;
 		let currentNbNeurons: number = 0;
-		let neuronsByLayer = this.hyperparameters.neurons_by_layer;
+		let neuronsByLayer = this.hyperparameters.neuronsByLayer;
 
-		const activationFunctions = this.hyperparameters.activations_by_layer.map(
-			a => ActivationFunction.createActivationFunction(a),
+		const activationFunctions = this.hyperparameters.activationsByLayer.map(a =>
+			ActivationFunction.createActivationFunction(a),
 		);
 
 		let nbActivations: number = activationFunctions.length;

@@ -21,13 +21,13 @@ They generally describe objects or types of Model/Optimizer.
  * a NeuralNetwork Model.
  */
 export interface NNHyperparameters {
-	nb_inputs: number; // number of inputs
-	nb_outputs: number; // number of outputs
-	neurons_by_layer: number[]; // number of neurons in each hidden layer
+	nbInputs: number; // number of inputs
+	nbOutputs: number; // number of outputs
+	neuronsByLayer: number[]; // number of neurons in each hidden layer
 	// activation function in hidden layers and in the output layer
-	activations_by_layer: ACTIVATION_FUNCTIONS[];
-	cost_function: COST_FUNCTIONS;
-	learning_rate: number;
+	activationsByLayer: ACTIVATION_FUNCTIONS[];
+	costFunction: COST_FUNCTIONS;
+	learningRate: number;
 	epochs: number;
 	type: NN_OPTIMIZER_TYPES;
 }
@@ -37,9 +37,15 @@ export interface NNHyperparameters {
  * a Regression Model.
  */
 export interface RegHyperparameters {
+	modelParams: RegModelParams;
 	costFunction: COST_FUNCTIONS;
 	learningRate: number;
 	epochs: number;
+}
+
+export interface GenHyperparameters {
+	neuralNetwork: NNHyperparameters;
+	polyRegression: RegHyperparameters;
 }
 
 /**
@@ -66,5 +72,4 @@ export interface RegModelParams {
 export type GenRegression = PolyRegression;
 export type GenOptimizer = GradientDescent | PolyOptimizer;
 export type GenAIModel = PolyRegression | NeuralNetwork;
-export type GenHyperparameters = NNHyperparameters | RegHyperparameters;
 export type GenModelParams = NNModelParams | RegModelParams;

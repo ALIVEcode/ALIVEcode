@@ -43,6 +43,7 @@ import {
 import AIInterface from '../../../Components/ChallengeComponents/AIInterface/AIInterface';
 import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
 import { mainAIUtilsTest } from './artificial_intelligence/ai_tests/AIUtilsTest';
+import { defaultHyperparams } from './artificial_intelligence/ai_models/defaultHyperparams';
 
 /**
  * Ai challenge page. Contains all the components to display and make the ai challenge functionnal.
@@ -200,11 +201,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	//TODO link this declaration to the interface when completed
 	//Change the type to GenHyperparameters
-	const hyperparams = useRef<RegHyperparameters>({
-		costFunction: COST_FUNCTIONS.MEAN_SQUARED_ERROR,
-		learningRate: 0.0001,
-		epochs: 1000,
-	});
+	const hyperparams = useRef<GenHyperparameters>(defaultHyperparams);
 
 	let optimizer = useRef<GenOptimizer>();
 
@@ -277,8 +274,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		};
 		regression.current = new PolyRegression(
 			'1',
-			hyperparams.current,
-			modelParams,
+			hyperparams.current.polyRegression,
 		);
 		regression.current.setNormalization(
 			means.current!,
@@ -288,7 +284,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		);
 		optimizer.current = new PolyOptimizer(
 			regression.current,
-			hyperparams.current,
+			hyperparams.current.polyRegression,
 		);
 		model.current = regression.current;
 	}

@@ -65,7 +65,6 @@ export enum NN_OPTIMIZER_TYPES {
 export default abstract class AIModel {
 	protected id: string | null;
 	protected type: MODEL_TYPES;
-	protected abstract hyperparameters: GenHyperparameters;
 	protected abstract modelParams: GenModelParams;
 	protected inputMeans: number[] = [0];
 	protected inputDeviations: number[] = [1];

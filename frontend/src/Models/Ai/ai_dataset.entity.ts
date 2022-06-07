@@ -66,6 +66,8 @@ export class AIDataset {
 			}
 		}
 
+		if (typeof this.data[0][param] != 'string') return false;
+
 		// Create all possible values for the parameter
 		for (let dataNum: number = 0; dataNum < this.data.length; dataNum++) {
 			if (!posValues.includes(this.data[dataNum][param])) {
@@ -78,9 +80,21 @@ export class AIDataset {
 			for (let i: number = 0; i < posValues.length; i++) {
 				this.data[dataNum][posValues[i]] =
 					this.data[dataNum][param] === posValues[i] ? 1 : 0;
+				//this.paramNames[i] = param
 			}
 			delete this.data[dataNum][param];
 		}
+
+		//Remove the parameter to replace of the array of parameters
+		this.paramNames.forEach((value, index) => {
+			if (value == param) this.paramNames.splice(index, 1);
+		});
+
+		//Addind the new prarameter to the array of parameters
+		posValues.forEach(e => {
+			this.paramNames.splice(iterator, 0, e);
+			iterator++;
+		});
 
 		return true;
 	}

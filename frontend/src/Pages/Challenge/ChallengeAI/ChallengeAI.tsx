@@ -79,7 +79,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	//Model variables to keep track on the current Model, its type and hyperparameters.
 	let model = useRef<GenAIModel>();
-	let activeModelType = useRef<string>();
+	let activeModelType = useRef<string>(MODEL_TYPES.NEURAL_NETWORK);
 	let regression = useRef<PolyRegression>();
 
 	//TODO replace these codes with the ones chosen in the interface
@@ -90,17 +90,21 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	let outputMean = useRef<number>();
 	let outputDeviation = useRef<number>();
 	let deviations = useRef<number[]>();
+	let activeDataset = useRef<AIDataset>(challenge.dataset!);
 
 	// Loading the dataset when first renders
 	useEffect(() => {
 		const getDataset = async () => {
 			if (!challenge.dataset)
 				challenge.dataset = await api.db.ai.getDataset(challenge.datasetId);
+			activeDataset.current = challenge.dataset;
 			forceUpdate();
-			if (challenge.dataset)
+			if (challenge.dataset) {
+				activeDataset.current = challenge.dataset;
 				ioCodes.current = challenge.dataset.getDataAsArray().map(() => -1);
-			else
+			} else {
 				console.error("Erreur : la table ne s'est pas chargée correctement.");
+			}
 		};
 		getDataset();
 
@@ -121,6 +125,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					showRegression,
 					columnValues,
 					modelCreation,
+					oneHot,
 					testNeuralNetwork,
 					setDataset: setDatasetStats,
 				},
@@ -211,7 +216,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * loaded for the first time.
 	 */
 	function setDatasetStats() {
-		[inputs.current, outputs.current] = challenge.dataset!.getInputsOutputs(
+		activeDataset.current = challenge.dataset!;
+
+		[inputs.current, outputs.current] = activeDataset.current!.getInputsOutputs(
 			ioCodes.current,
 		);
 		if (inputs.current) {
@@ -377,7 +384,41 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		return array;
 	}
 
-	function modelCreation() {}
+	/**
+	 * Creates an ai model
+	 */
+	function modelCreation(): void {}
+
+	/**
+	 * Creats of a one shot associate to the column selected
+	 * @param column the parameter's name to replace.
+	 */
+	function oneHot(column: string): string | void {
+		let index = activeDataset.current!.getParamNames().indexOf(column);
+		const oldNumberParams = activeDataset.current!.getParamNames().length;
+
+		// ------- Problem: impossible to return to the old data" -----------
+		if (activeDataset.current.createOneHot(column)) {
+			const newNumberParams = activeDataset.current!.getParamNames().length;
+			const numberNewParams = newNumberParams - oldNumberParams;
+
+			//Remove the column to replace of the IOcodes
+			let newIOCodes = ioCodes.current;
+			newIOCodes.forEach((value, index) => {
+				if (value == index) newIOCodes.splice(index, 1);
+			});
+
+			//Addind the new column to the IOcodes
+			for (let e = 0; e < numberNewParams; e++) {
+				newIOCodes.splice(index + e, 0, -1);
+			}
+		} else {
+			if (index != -1)
+				return 'Erreur : Les éléments de la colonne ne sont pas des chaines de caratères';
+			else
+				return 'Erreur : Le nom de la colonne entrée en paramètre est inexistante';
+		}
+	}
 
 	// FOR TESTING PURPOSE ONLY, TO BE DELETED WHEN NEURAL NETWORK IMPLEMENTATION WORKS //
 
@@ -386,7 +427,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		mainAIUtilsTest();
 		mainAINeuralNetworkTest();
 		*/
-		let dataset = challenge.dataset;
+		let dataset = activeDataset.current;
 		if (!dataset) {
 			return cmd.error(
 				'Challenge is still loading. Please try again after the challenge is properly loaded',
@@ -548,7 +589,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 									open: false,
 								},
 							]}
-							data={challenge.dataset}
+							data={activeDataset.current}
 							hyperparams={hyperparams.current}
 							ioCodes={ioCodes.current}
 						/>

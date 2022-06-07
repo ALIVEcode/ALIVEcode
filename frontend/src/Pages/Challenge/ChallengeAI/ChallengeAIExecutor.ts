@@ -1,6 +1,7 @@
 import ChallengeCodeExecutor from '../ChallengeCode/ChallengeCodeExecutor';
 import { typeAskForUserInput } from '../challengeTypes';
 import { AlertManager } from 'react-alert';
+import { Console } from 'console';
 
 // TODO: robotConnected
 
@@ -131,8 +132,23 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					label: 'Création Modèle',
 					type: 'NORMAL',
 					apply: () => {
-						this.executableFuncs.modelCreation;
-						this.perform_next();
+						this.executableFuncs.modelCreation();
+					},
+				},
+			},{
+				actionId: 808,
+				action: {
+					label: 'One Hot',
+					type: 'NORMAL',
+					apply: (params) => {
+						if (typeof params[0] === 'string') {
+							const out = this.executableFuncs.oneHot(params[0])
+							if(out != null){
+								this.cmd?.print(out)
+							}
+							
+						}
+						
 					},
 				},
 			},

@@ -23,9 +23,9 @@ export abstract class NNOptimizer extends Optimizer {
 	 */
 	public constructor(model: NeuralNetwork, hyperparams: NNHyperparameters) {
 		super(
-			hyperparams.learning_rate,
+			hyperparams.learningRate,
 			hyperparams.epochs,
-			hyperparams.cost_function,
+			hyperparams.costFunction,
 		);
 		this.model = model;
 		this.hyperparams = hyperparams;

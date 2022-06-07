@@ -70,7 +70,7 @@ export class AIDataset {
 			}
 		}
 
-		if( typeof(this.data[0][param]) != 'string') return false
+		if (typeof this.data[0][param] != 'string') return false;
 
 		// Create all possible values for the parameter
 		for (let dataNum: number = 0; dataNum < this.data.length; dataNum++) {
@@ -90,16 +90,15 @@ export class AIDataset {
 		}
 
 		//Remove the parameter to replace of the array of parameters
-		this.paramNames.forEach((value,index)=>{
-			if(value==param) this.paramNames.splice(index,1);
+		this.paramNames.forEach((value, index) => {
+			if (value == param) this.paramNames.splice(index, 1);
 		});
 
 		//Addind the new prarameter to the array of parameters
 		posValues.forEach(e => {
 			this.paramNames.splice(iterator, 0, e);
-			iterator++
-		})		
-
+			iterator++;
+		});
 
 		return true;
 	}

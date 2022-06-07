@@ -65,7 +65,6 @@ export enum NN_OPTIMIZER_TYPES {
 export default abstract class AIModel {
 	protected id: string | null;
 	protected type: MODEL_TYPES;
-	protected abstract hyperparameters: GenHyperparameters;
 	protected abstract modelParams: GenModelParams;
 	protected inputMeans: number[] = [0];
 	protected inputDeviations: number[] = [1];
@@ -182,7 +181,8 @@ export default abstract class AIModel {
 	 * the normalization of inputs by taking the mean and deviation of each parameter
 	 * in arrays.
 	 * @param inputs the inputs from which to compute the outputs (1 x nbInputs).
+	 * @param normalize a boolean indicating if we want to normalize the data.
 	 * @returns the outputs of the model.
 	 */
-	public abstract predict(inputs: Matrix): Matrix;
+	public abstract predict(inputs: Matrix, normalize: boolean): Matrix;
 }

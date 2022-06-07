@@ -57,8 +57,8 @@ export class NeuralNetwork extends AIModel {
 				  };
 
 		// Assinging values to properties
-		this.nbInputs = hyperparameters.nb_inputs;
-		this.nbOutputs = hyperparameters.nb_outputs;
+		this.nbInputs = hyperparameters.nbInputs;
+		this.nbOutputs = hyperparameters.nbOutputs;
 
 		// Choosing the right method depending if the model already exists
 		if (this.modelParams.layerParams.length === 0) this.createModel();
@@ -72,7 +72,7 @@ export class NeuralNetwork extends AIModel {
 		for (let layer: number = 0; layer < nbLayers; layer++) {
 			// Initiates the layers if its the first layer
 			const activationFunction = ActivationFunction.createActivationFunction(
-				this.hyperparameters.activations_by_layer[layer],
+				this.hyperparameters.activationsByLayer[layer],
 			);
 			this.layers.push(
 				new NeuralLayer(
@@ -90,10 +90,10 @@ export class NeuralNetwork extends AIModel {
 		let biases: Matrix;
 		let previousNbNeurons: number = 0;
 		let currentNbNeurons: number = 0;
-		let neuronsByLayer = this.hyperparameters.neurons_by_layer;
+		let neuronsByLayer = this.hyperparameters.neuronsByLayer;
 
-		const activationFunctions = this.hyperparameters.activations_by_layer.map(
-			a => ActivationFunction.createActivationFunction(a),
+		const activationFunctions = this.hyperparameters.activationsByLayer.map(a =>
+			ActivationFunction.createActivationFunction(a),
 		);
 
 		let nbActivations: number = activationFunctions.length;
@@ -143,8 +143,8 @@ export class NeuralNetwork extends AIModel {
 
 	//---- PREDICTION METHODS ----//
 
-	public predict(inputs: Matrix): Matrix {
-		let output: Matrix[] = this.predictReturnAll(inputs);
+	public predict(inputs: Matrix, normalize: boolean): Matrix {
+		let output: Matrix[] = this.predictReturnAll(inputs, normalize);
 		return output[output.length - 1];
 	}
 
@@ -153,10 +153,11 @@ export class NeuralNetwork extends AIModel {
 	 * current weights and biases. Returns an array of Matrices containing the outputs
 	 * of all layers in order (each element is the output of one layer).
 	 * @param inputs the inputs from which we want to find the outputs.
+	 * @param normalize boolean to indicate if we want to normalize the data.
 	 * @returns the outputs of all layers of the model.
 	 */
-	public predictReturnAll(inputs: Matrix): Matrix[] {
-		let output: Matrix = this.normalizeByRow(inputs);
+	public predictReturnAll(inputs: Matrix, normalize: boolean): Matrix[] {
+		let output: Matrix = normalize ? this.normalizeByRow(inputs) : inputs;
 		let outputArray: Matrix[] = [];
 
 		// Computes the outputs for each layer.

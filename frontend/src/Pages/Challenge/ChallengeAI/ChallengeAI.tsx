@@ -43,7 +43,8 @@ import {
 import AIInterface from '../../../Components/ChallengeComponents/AIInterface/AIInterface';
 import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
 import { mainAIUtilsTest } from './artificial_intelligence/ai_tests/AIUtilsTest';
-import { DatasetChartOptions } from 'chart.js';
+import { defaultHyperparams } from './artificial_intelligence/ai_models/DefaultHyperparams';
+import useComplexState from '../../../state/hooks/useComplexState';
 
 /**
  * Ai challenge page. Contains all the components to display and make the ai challenge functionnal.
@@ -79,7 +80,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	//Model variables to keep track on the current Model, its type and hyperparameters.
 	let model = useRef<GenAIModel>();
-	let activeModelType = useRef<string>(MODEL_TYPES.NEURAL_NETWORK);
+	let activeModelType = useRef<MODEL_TYPES>(MODEL_TYPES.NEURAL_NETWORK);
 	let regression = useRef<PolyRegression>();
 
 	//TODO replace these codes with the ones chosen in the interface
@@ -90,7 +91,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	let outputMean = useRef<number>();
 	let outputDeviation = useRef<number>();
 	let deviations = useRef<number[]>();
-	let activeDataset =  useRef<AIDataset>(challenge.dataset!);
+	let activeDataset = useRef<AIDataset>(challenge.dataset!);
 
 	// Loading the dataset when first renders
 	useEffect(() => {
@@ -99,10 +100,13 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				challenge.dataset = await api.db.ai.getDataset(challenge.datasetId);
 				activeDataset.current = challenge.dataset.clone();
 			forceUpdate();
-			if (challenge.dataset){
+			if (challenge.dataset)
 				activeDataset.current = challenge.dataset.clone()
+			forceUpdate();
+			if (challenge.dataset) {
+				activeDataset.current = challenge.dataset;
 				ioCodes.current = challenge.dataset.getDataAsArray().map(() => -1);
-			}else{
+			} else {
 				console.error("Erreur : la table ne s'est pas chargée correctement.");
 			}
 		};
@@ -196,8 +200,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * Callback function called when the model is changed in the interface.
 	 * @param newModelType the new model type.
 	 */
-	const aiInterfaceModelChange = (newModelType: string) => {
+	const aiInterfaceModelChange = (newModelType: MODEL_TYPES) => {
 		activeModelType.current = newModelType;
+		forceUpdate();
 	};
 
 	/**
@@ -240,11 +245,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	//TODO link this declaration to the interface when completed
 	//Change the type to GenHyperparameters
-	const hyperparams = useRef<RegHyperparameters>({
-		costFunction: COST_FUNCTIONS.MEAN_SQUARED_ERROR,
-		learningRate: 0.0001,
-		epochs: 1000,
-	});
+	const [hyperparams, setHyperparams] =
+		useComplexState<GenHyperparameters>(defaultHyperparams);
 
 	let optimizer = useRef<GenOptimizer>();
 
@@ -254,6 +256,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * loaded for the first time.
 	 */
 	function setDatasetStats() {
+		activeDataset.current = challenge.dataset!;
 		[inputs.current, outputs.current] = activeDataset.current!.getInputsOutputs(
 			ioCodes.current,
 		);
@@ -267,7 +270,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			outputMean.current = outputs.current.meanOfAllRows()[0];
 			outputDeviation.current = outputs.current.deviationOfAllRows()[0];
 		}
-
 	}
 
 	/**
@@ -313,24 +315,14 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @param d the param d of a polynomial regression.
 	 */
 	function createRegression(a: number, b: number, c: number, d: number) {
-		const modelParams: RegModelParams = {
-			params: [a, b, c, d],
-		};
-		regression.current = new PolyRegression(
-			'1',
-			hyperparams.current,
-			modelParams,
-		);
+		regression.current = new PolyRegression('1', hyperparams.POLY);
 		regression.current.setNormalization(
 			means.current!,
 			deviations.current!,
 			outputMean.current,
 			outputDeviation.current,
 		);
-		optimizer.current = new PolyOptimizer(
-			regression.current,
-			hyperparams.current,
-		);
+		optimizer.current = new PolyOptimizer(regression.current, hyperparams.POLY);
 		model.current = regression.current;
 	}
 
@@ -399,7 +391,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		setDataOnGraph(mainDataset);
 		showRegression();
 		const matInputs: Matrix = new Matrix([[predInputs]]);
-		return model.current!.predict(matInputs.transpose()).getValue()[0][0];
+		return model
+			.current!.predict(matInputs.transpose(), false)
+			.getValue()[0][0];
 	}
 
 	/**
@@ -410,7 +404,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	function columnValues(column: string): any[] {
 		let index = activeDataset.current!.getParamNames().indexOf(column);
 		let array: any[] = [];
-		if (index != -1) {
+		if (index !== -1) {
 			for (
 				let i = activeDataset.current!.getDataAsArray().at(0)!.length - 1;
 				i >= 0;
@@ -423,16 +417,15 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	}
 
 	/**
-	 * Creates an ai model 
+	 * Creates an ai model
 	 */
-	function modelCreation():void {
-	}
+	function modelCreation(): void {}
 
 	/**
 	 * Creats of a one shot associate to the column selected
 	 * @param column the parameter's name to replace.
 	 */
-	function oneHot(column : string):string | void {
+	function oneHot(column: string): string | void {
 		let index = activeDataset.current!.getParamNames().indexOf(column);
 		const oldNumberParams = activeDataset.current!.getParamNames().length;
 		const valueIO = ioCodes.current.at(index)
@@ -449,8 +442,10 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			ioCodes.current = newIOCodes
 			resetGraph()
 		}else{
-			if (index != -1) return "Erreur : Les éléments de la colonne ne sont pas des chaines de caratères"
-			else return "Erreur : Le nom de la colonne entrée en paramètre est inexistante"
+			if (index != -1) 
+				return "Erreur : Les éléments de la colonne ne sont pas des chaines de caratères"
+			else 
+				return "Erreur : Le nom de la colonne entrée en paramètre est inexistante"
 		}
 	}
 
@@ -580,6 +575,10 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	// END OF TEST FUNCTION //
 
+	useEffect(() => {
+		console.log(hyperparams);
+	}, [hyperparams]);
+
 	return (
 		<>
 			<StyledAliveChallenge>
@@ -654,7 +653,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 							]}
 							data={activeDataset.current}
 							initData={challenge.dataset}
-							hyperparams={hyperparams.current}
+							hyperparams={hyperparams[activeModelType.current]}
 							ioCodes={ioCodes.current}
 						/>
 						{/* TODO Code for visual regression ************

@@ -22,19 +22,15 @@ export class PolyRegression extends Regression {
 	private c: number;
 	private d: number;
 
-	constructor(
-		id: string | null,
-		hyperparams: RegHyperparameters,
-		modelParams: RegModelParams,
-	) {
+	constructor(id: string | null, hyperparams: RegHyperparameters) {
 		super(
 			id,
 			hyperparams,
-			modelParams,
+			hyperparams.modelParams,
 			MODEL_TYPES.POLY_REGRESSION,
 			PolyRegression.NB_PARAMS,
 		);
-		this.setParams(modelParams.params);
+		this.setParams(hyperparams.modelParams.params);
 	}
 
 	public generatePoints(): DataPoint {
@@ -57,10 +53,15 @@ export class PolyRegression extends Regression {
 	}
 
 	public copy(): PolyRegression {
-		let params: RegModelParams = {
-			params: [this.a, this.b, this.c, this.d],
+		let hyperparams: RegHyperparameters = {
+			modelParams: {
+				params: [this.a, this.b, this.c, this.d],
+			},
+			costFunction: this.hyperparameters.costFunction,
+			learningRate: this.hyperparameters.learningRate,
+			epochs: this.hyperparameters.epochs,
 		};
-		return new PolyRegression(this.id, this.hyperparameters, params);
+		return new PolyRegression(this.id, hyperparams);
 	}
 
 	/**

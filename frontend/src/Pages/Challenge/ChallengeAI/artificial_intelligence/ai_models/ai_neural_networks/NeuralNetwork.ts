@@ -14,7 +14,7 @@ import AIModel, {
 
 /**
  * This class represents a whole Neural Network. It contains every layers that
- * composes it, its number of inputs and numebr of outputs.
+ * composes it, its number of inputs and number of outputs.
  *
  * A Neural Network can be used to make predictions based on its parameters, which
  * have a randomized initial value and can be trained with a NNOptimizer to make
@@ -56,7 +56,7 @@ export class NeuralNetwork extends AIModel {
 						layerParams: [],
 				  };
 
-		// Assinging values to properties
+		// Assigning values to properties
 		this.nbInputs = hyperparameters.nbInputs;
 		this.nbOutputs = hyperparameters.nbOutputs;
 
@@ -70,7 +70,7 @@ export class NeuralNetwork extends AIModel {
 
 		// Hidden layers
 		for (let layer: number = 0; layer < nbLayers; layer++) {
-			// Initiates the layers if its the first layer
+			// Initiates the layers if it's the first layer
 			const activationFunction = ActivationFunction.createActivationFunction(
 				this.hyperparameters.activationsByLayer[layer],
 			);
@@ -111,14 +111,14 @@ export class NeuralNetwork extends AIModel {
 			// Number of neurons from the previous layer (can be the input layer)
 			previousNbNeurons =
 				layer === 0 ? this.nbInputs : neuronsByLayer[layer - 1];
-			// NUmber of neurons of the current layer (can be the output layer)
+			// Number of neurons of the current layer (can be the output layer)
 			currentNbNeurons =
 				layer === nbActivations - 1 ? this.nbOutputs : neuronsByLayer[layer];
 			// Initialization of weights and biases
 			weights = randomMatrix(currentNbNeurons, previousNbNeurons);
 			biases = new Matrix(zeros(currentNbNeurons, 1));
 
-			// Initiates the layers if its the first layer
+			// Initiates the layers if it's the first layer
 			if (layer === 0)
 				this.layers = [
 					new NeuralLayer(

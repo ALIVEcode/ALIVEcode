@@ -110,8 +110,8 @@ function matTransposeTest() {
 }
 
 function matGetMatrixColumnTest() {
-	const result = mat1.getMatrixColumn(1);
-	const expected = new Matrix([[2], [5], [8]]);
+  const result = mat1.getMatrixColumn(1);
+  const expected = new Matrix([[2], [5], [8]])
 
 	testLog('Matrix.getMatrixColumn', result, expected);
 }

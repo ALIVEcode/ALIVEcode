@@ -31,15 +31,15 @@ import {
 import api from '../../../Models/api';
 import { ACTIVATION_FUNCTIONS } from '../../../Models/Ai/ai_model.entity';
 import { PolyRegression } from './artificial_intelligence/ai_models/ai_regression/PolyRegression';
-import {
-	RegHyperparameters,
-	GenAIModel,
-} from './artificial_intelligence/AIUtilsInterfaces';
+import { GenAIModel } from './artificial_intelligence/AIUtilsInterfaces';
 import {
 	RegModelParams,
 	GenOptimizer,
 } from './artificial_intelligence/AIUtilsInterfaces';
-import { GenRegression } from './artificial_intelligence/AIUtilsInterfaces';
+import {
+	GenRegression,
+	RegHyperparameters,
+} from './artificial_intelligence/AIUtilsInterfaces';
 import AIInterface from '../../../Components/ChallengeComponents/AIInterface/AIInterface';
 import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
 import { mainAIUtilsTest } from './artificial_intelligence/ai_tests/AIUtilsTest';
@@ -200,11 +200,11 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	//TODO link this declaration to the interface when completed
 	//Change the type to GenHyperparameters
-	const hyperparams: RegHyperparameters = {
+	const hyperparams = useRef<RegHyperparameters>({
 		costFunction: COST_FUNCTIONS.MEAN_SQUARED_ERROR,
 		learningRate: 0.0001,
 		epochs: 1000,
-	};
+	});
 
 	let optimizer = useRef<GenOptimizer>();
 
@@ -275,14 +275,21 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		const modelParams: RegModelParams = {
 			params: [a, b, c, d],
 		};
-		regression.current = new PolyRegression('1', hyperparams, modelParams);
+		regression.current = new PolyRegression(
+			'1',
+			hyperparams.current,
+			modelParams,
+		);
 		regression.current.setNormalization(
 			means.current!,
 			deviations.current!,
 			outputMean.current,
 			outputDeviation.current,
 		);
-		optimizer.current = new PolyOptimizer(regression.current, hyperparams);
+		optimizer.current = new PolyOptimizer(
+			regression.current,
+			hyperparams.current,
+		);
 		model.current = regression.current;
 	}
 
@@ -361,18 +368,20 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 */
 	function columnValues(column: string): any[] {
 		let index = challenge.dataset!.getParamNames().indexOf(column);
-		let array: any[] = []
-		if(index != -1){
-			for (let i = challenge.dataset!.getDataAsArray().at(0)!.length-1; i>=0; i--){
-				array.push(challenge.dataset!.getDataAsArray().at(index)?.at(i))
+		let array: any[] = [];
+		if (index != -1) {
+			for (
+				let i = challenge.dataset!.getDataAsArray().at(0)!.length - 1;
+				i >= 0;
+				i--
+			) {
+				array.push(challenge.dataset!.getDataAsArray().at(index)?.at(i));
 			}
 		}
-		return array
+		return array;
 	}
 
-	function modelCreation() {
-		
-	}
+	function modelCreation() {}
 
 	// FOR TESTING PURPOSE ONLY, TO BE DELETED WHEN NEURAL NETWORK IMPLEMENTATION WORKS //
 
@@ -544,7 +553,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 								},
 							]}
 							data={challenge.dataset}
-							hyperparams={hyperparams}
+							hyperparams={hyperparams.current}
 							ioCodes={ioCodes.current}
 						/>
 						{/* TODO Code for visual regression ************

@@ -43,7 +43,7 @@ import {
 import AIInterface from '../../../Components/ChallengeComponents/AIInterface/AIInterface';
 import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
 import { mainAIUtilsTest } from './artificial_intelligence/ai_tests/AIUtilsTest';
-import { defaultHyperparams } from './artificial_intelligence/ai_models/DefaultHyperparams';
+import { defaultHyperparams } from './artificial_intelligence/ai_models/defaultHyperparams';
 import useComplexState from '../../../state/hooks/useComplexState';
 
 /**
@@ -80,7 +80,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	//Model variables to keep track on the current Model, its type and hyperparameters.
 	let model = useRef<GenAIModel>();
-	let activeModelType = useRef<MODEL_TYPES>(MODEL_TYPES.NEURAL_NETWORK);
+	let [activeModelType, setActiveModelType] = useState(
+		MODEL_TYPES.NEURAL_NETWORK,
+	);
 	let regression = useRef<PolyRegression>();
 
 	//TODO replace these codes with the ones chosen in the interface
@@ -164,8 +166,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @param newModelType the new model type.
 	 */
 	const aiInterfaceModelChange = (newModelType: MODEL_TYPES) => {
-		activeModelType.current = newModelType;
+		setActiveModelType(newModelType);
 		forceUpdate();
+		console.log(activeModelType);
 	};
 
 	/**
@@ -590,7 +593,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 								},
 							]}
 							data={activeDataset.current}
-							hyperparams={hyperparams[activeModelType.current]}
+							hyperparams={hyperparams[activeModelType]}
 							ioCodes={ioCodes.current}
 						/>
 						{/* TODO Code for visual regression ************

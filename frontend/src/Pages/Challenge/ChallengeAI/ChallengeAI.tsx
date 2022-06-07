@@ -45,7 +45,6 @@ import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
 import { mainAIUtilsTest } from './artificial_intelligence/ai_tests/AIUtilsTest';
 import { defaultHyperparams } from './artificial_intelligence/ai_models/DefaultHyperparams';
 import useComplexState from '../../../state/hooks/useComplexState';
-import { mainAINeuralNetworkTest } from './artificial_intelligence/ai_tests/AINeuralNetworkTest';
 
 /**
  * Ai challenge page. Contains all the components to display and make the ai challenge functionnal.
@@ -80,11 +79,11 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	const alert = useAlert();
 
 	//Model variables to keep track on the current Model, its type and hyperparameters.
-	let model = useRef<GenAIModel>();
-	let [activeModelType, setActiveModelType] = useState(
+	const model = useRef<GenAIModel>();
+	const [activeModelType, setActiveModelType] = useState(
 		MODEL_TYPES.NEURAL_NETWORK,
 	);
-	let regression = useRef<PolyRegression>();
+	const regression = useRef<PolyRegression>();
 
 	//TODO replace these codes with the ones chosen in the interface
 	const ioCodes = useRef<number[]>([]);
@@ -101,7 +100,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		const getDataset = async () => {
 			if (!challenge.dataset)
 				challenge.dataset = await api.db.ai.getDataset(challenge.datasetId);
-			activeDataset.current = challenge.dataset;
+			activeDataset.current = challenge.dataset.clone();
+			forceUpdate();
+			if (challenge.dataset) activeDataset.current = challenge.dataset.clone();
 			forceUpdate();
 			if (challenge.dataset) {
 				activeDataset.current = challenge.dataset;
@@ -121,6 +122,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			(executor.current = new ChallengeAIExecutor(
 				{
 					createAndShowReg,
+					initializeDataset,
 					showDataCloud,
 					resetGraph,
 					optimizeRegression,
@@ -130,6 +132,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					columnValues,
 					modelCreation,
 					oneHot,
+					normalize,
 					testNeuralNetwork,
 					setDataset: setDatasetStats,
 				},
@@ -150,6 +153,38 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			saveProgressionTimed();
 		}
 	};
+
+	/**
+	 * Initialies the dataset and the iocodes when the button run is clicked
+	 */
+	function initializeDataset() {
+		//Initialize the ioCodes according to the table
+		console.log('--- User click on run ---');
+		let first = true;
+		let array = activeDataset.current!.getDataAsArray().map((val, index) => {
+			const header = activeDataset.current!.getParamNames().at(index);
+			if (challenge.dataset!.getParamNames().indexOf(header!) === -1) {
+				if (first) {
+					first = false;
+					return ioCodes.current[index];
+				} else {
+					return -200;
+				}
+			} else {
+				first = true;
+				return ioCodes.current[index];
+			}
+		});
+		let newIOCodes: number[] = [];
+		array.forEach(e => {
+			if (e !== -200) newIOCodes.push(e);
+		});
+		ioCodes.current = newIOCodes;
+		console.log('current iocodes : ', ioCodes.current);
+
+		//Cloning the initial data
+		activeDataset.current = challenge.dataset!.clone();
+	}
 
 	//-----CALLBACK FUNCTIONS-------//
 
@@ -221,8 +256,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * loaded for the first time.
 	 */
 	function setDatasetStats() {
-		activeDataset.current = challenge.dataset!;
-
+		activeDataset.current = challenge.dataset!.clone();
 		[inputs.current, outputs.current] = activeDataset.current!.getInputsOutputs(
 			ioCodes.current,
 		);
@@ -317,8 +351,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @returns the calculated cost.
 	 */
 	function costFunction(): string {
-		mainAINeuralNetworkTest();
-
 		if (!model.current) {
 			return "Erreur : aucun modèle n'a été créé jusqu'à présent. Veuillez créer un modèle afin de calculer son erreur.";
 		}
@@ -370,15 +402,15 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @returns Table representing the data of the column asked.
 	 */
 	function columnValues(column: string): any[] {
-		let index = challenge.dataset!.getParamNames().indexOf(column);
+		let index = activeDataset.current!.getParamNames().indexOf(column);
 		let array: any[] = [];
 		if (index !== -1) {
 			for (
-				let i = challenge.dataset!.getDataAsArray().at(0)!.length - 1;
+				let i = activeDataset.current!.getDataAsArray().at(0)!.length - 1;
 				i >= 0;
 				i--
 			) {
-				array.push(challenge.dataset!.getDataAsArray().at(index)?.at(i));
+				array.push(activeDataset.current!.getDataAsArray().at(index)?.at(i));
 			}
 		}
 		return array;
@@ -396,25 +428,55 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	function oneHot(column: string): string | void {
 		let index = activeDataset.current!.getParamNames().indexOf(column);
 		const oldNumberParams = activeDataset.current!.getParamNames().length;
+		const valueIO = ioCodes.current.at(index);
 
-		// ------- Problem: impossible to return to the old data" -----------
 		if (activeDataset.current.createOneHot(column)) {
 			const newNumberParams = activeDataset.current!.getParamNames().length;
 			const numberNewParams = newNumberParams - oldNumberParams;
 
-			//Remove the column to replace of the IOcodes
 			let newIOCodes = ioCodes.current;
-			newIOCodes.forEach((value, index) => {
-				if (value === index) newIOCodes.splice(index, 1);
+			//Addind the new column to the IOcodes
+			for (let e = 1; e <= numberNewParams; e++) {
+				newIOCodes.splice(index + e, 0, valueIO!);
+			}
+			ioCodes.current = newIOCodes;
+			forceUpdate();
+		} else {
+			if (index != -1)
+				return 'Erreur : Les éléments de la colonne ne sont pas des chaines de caratères';
+			else
+				return 'Erreur : Le nom de la colonne entrée en paramètre est inexistante';
+		}
+	}
+
+	/**
+	 * Normalizes the data of the parameter and change the data of the table
+	 * @param column the parameter's name to replace.
+	 */
+	function normalize(column: string): string | void {
+		let index = activeDataset.current!.getParamNames().indexOf(column);
+		if (
+			index != -1 &&
+			!activeDataset.current.getDataAsMatrix().equals(new Matrix(1, 1))
+		) {
+			activeDataset.current.getDataAsMatrix();
+			let columnData: number[] = activeDataset.current.getDataAsArray()[index];
+			const mean = activeDataset.current.getMeans().at(index);
+			const deviation = activeDataset.current.getDeviations().at(index);
+
+			//Problem with creating a model
+			columnData = columnData.copyWithin(0, 0).map((value: number): number => {
+				return (value - mean!) / deviation!;
 			});
 
-			//Addind the new column to the IOcodes
-			for (let e = 0; e < numberNewParams; e++) {
-				newIOCodes.splice(index + e, 0, -1);
-			}
+			//Change to :
+			//columnData = model.current!.normalizeArray(column, mean!, deviation!)
+			activeDataset.current!.replaceColumn(column, columnData);
+
+			forceUpdate();
 		} else {
-			if (index !== -1)
-				return 'Erreur : Les éléments de la colonne ne sont pas des chaines de caratères';
+			if (index != -1)
+				return 'Erreur : Une colonne possède des chaines de caractères comme donnée dans la base de données';
 			else
 				return 'Erreur : Le nom de la colonne entrée en paramètre est inexistante';
 		}
@@ -594,6 +656,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 								},
 							]}
 							data={activeDataset.current}
+							initData={challenge.dataset}
 							hyperparams={hyperparams[activeModelType]}
 							ioCodes={ioCodes.current}
 						/>

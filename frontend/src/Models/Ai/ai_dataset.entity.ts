@@ -29,6 +29,7 @@ export class AIDataset {
 		return this._paramNames;
 	}
 
+
 	/**
 	 * Constructor of the class. It requires the sames parameters as the columns in the website's database.
 	 * @param id the id pof the dataset.
@@ -40,7 +41,10 @@ export class AIDataset {
 		this.name = name;
 		this.initialData = data;
 		this.data = data;
+		
 	}
+
+	
 
 	/**
 	 * Replace the parameter with the given name by other one-hot parameters.
@@ -319,5 +323,54 @@ export class AIDataset {
 	 */
 	public getDeviations(): number[] {
 		return this.deviations;
+	}
+
+	/**
+	 * This function clones this classe object
+	 * @returns the clone
+	 */
+	 public clone(){
+		//Clone the data
+		let dataClone: any[] = [];
+		this.data!.forEach(val => dataClone.push(Object.assign({}, val)));
+
+		//Clone the aparamNames
+		let paramNamesClone: any[] = [];
+		this.paramNames!.forEach(val => paramNamesClone.push(Object.assign({}, val)));
+
+		//Clone the object
+		let clone = new AIDataset(
+			this.id,
+			this.name,
+			dataClone
+		)
+		console.log("CLONE : ", clone)
+		clone.loadParamNames()
+		return clone;
+	}
+
+	/**
+	 * Replace the data of a parameter
+	 * @param param the parameter's name to replace.
+	 * @param data Elements to replace
+	 * @returns a boolean indicating if the replacement has been made.
+	 */
+	public replaceColumn(param: string, data: any[]):boolean {
+		let iterator: number = 0;
+		// Check if the given name is a parameter in the database
+		while (this.paramNames[iterator] !== param) {
+			iterator++;
+			// If no correspondance were found, end the function and print an error
+			if (iterator === Object.keys(this.data[0]).length) {
+				console.log('Error: key is not the name of any parameter.');
+				return false;
+			}
+		}
+		//Change the data of the parameter
+		if( typeof(this.data[0][param]) == 'string') return false
+		for (let dataNum: number = 0; dataNum < this.data.length; dataNum++) {
+			this.data[dataNum][param] = data[dataNum]
+		}
+		return true
 	}
 }

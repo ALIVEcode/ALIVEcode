@@ -19,6 +19,9 @@ import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
  */
 export type ChallengeTableProps = {
 	className?: string;
+	data?: AIDataset;
+	initData?: AIDataset;
+	hyperparams?: any;
 	isData: boolean;
 } & OneOf<
 	{

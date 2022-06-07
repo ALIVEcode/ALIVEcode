@@ -43,6 +43,7 @@ const AIInterface = memo(
 		className,
 		tabs: initialTabs,
 		data,
+		initData,
 		hyperparams: initialHyperparams,
 	}: AIInterfaceProps) => {
 		// The selected theme to apply to this component
@@ -134,6 +135,7 @@ const AIInterface = memo(
 						<ChallengeTable
 							data={data}
 							isData={true}
+							initData = {initData}
 							ioCodes={ioCodes!}
 							handleIOChange={handleIOChange}
 						/>

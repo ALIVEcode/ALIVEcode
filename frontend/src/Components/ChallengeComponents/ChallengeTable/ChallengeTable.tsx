@@ -76,9 +76,13 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	 * @param key the hyperparameter
 	 * @returns the name of the hyperparameter
 	 */
-	const nameHyperparam = useCallback((key: string) => {
-		return HyperparamID![key]['name'];
-	}, []);
+	const nameHyperparam = useCallback(
+		(key: string) => {
+			if (!HyperparamID) return 'Erreur';
+			return HyperparamID![key]['name'];
+		},
+		[HyperparamID],
+	);
 
 	/**
 	 * Returns the step associated with the hyperparameter.

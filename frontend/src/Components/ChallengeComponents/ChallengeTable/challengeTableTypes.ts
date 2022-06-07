@@ -65,6 +65,10 @@ export const HyperparamID: any = {
 		name: "Type d'optimiseur",
 		componant: 'MODEL_TYPES',
 	},
+	modelParams: {
+		name: 'Paramètres du modèle',
+		componant: 'integer input',
+	},
 };
 
 /**

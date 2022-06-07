@@ -6,7 +6,7 @@ import {
 import { GenHyperparameters } from '../AIUtilsInterfaces';
 
 export const defaultHyperparams: GenHyperparameters = {
-	neuralNetwork: {
+	NN: {
 		nbInputs: 3,
 		nbOutputs: 1,
 		neuronsByLayer: [7, 5],
@@ -20,7 +20,7 @@ export const defaultHyperparams: GenHyperparameters = {
 		epochs: 1000,
 		type: NN_OPTIMIZER_TYPES.GradientDescent,
 	},
-	polyRegression: {
+	POLY: {
 		modelParams: {
 			params: [0, 0.1, 1, 1],
 		},

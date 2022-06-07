@@ -44,9 +44,11 @@ export interface RegHyperparameters {
 }
 
 export interface GenHyperparameters {
-	neuralNetwork: NNHyperparameters;
-	polyRegression: RegHyperparameters;
+	NN: NNHyperparameters;
+	POLY: RegHyperparameters;
 }
+
+export type Hyperparams = GenHyperparameters[keyof GenHyperparameters];
 
 /**
  * This interface describles the json object containing all Model parameters from

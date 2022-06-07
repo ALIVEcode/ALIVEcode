@@ -29,7 +29,7 @@ export interface NNHyperparameters {
 	costFunction: COST_FUNCTIONS;
 	learningRate: number;
 	epochs: number;
-	type: NN_OPTIMIZER_TYPES;
+	type: NN_OPTIMIZER_TYPES.GradientDescent;
 }
 
 /**

@@ -80,7 +80,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	//Model variables to keep track on the current Model, its type and hyperparameters.
 	let model = useRef<GenAIModel>();
-	let activeModelType = useRef<MODEL_TYPES>(MODEL_TYPES.NEURAL_NETWORK);
+	let activeModelType = useRef<string>(MODEL_TYPES.NEURAL_NETWORK);
 	let regression = useRef<PolyRegression>();
 
 	//TODO replace these codes with the ones chosen in the interface
@@ -351,6 +351,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @returns the calculated cost.
 	 */
 	function costFunction(): string {
+		mainAINeuralNetworkTest();
+
 		if (!model.current) {
 			return "Erreur : aucun modèle n'a été créé jusqu'à présent. Veuillez créer un modèle afin de calculer son erreur.";
 		}

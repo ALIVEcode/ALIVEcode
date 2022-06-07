@@ -77,7 +77,7 @@ const AIInterface = memo(
 						<h1 className="head-text">Modèle choisi :</h1>
 						<select
 							className="dropdown"
-							onChange={e => handleModelChange(e.target.value)}
+							onChange={e => handleModelChange(e.target.value)}//ajouter faux afficher modele
 						>
 							<option value={MODEL_TYPES.NEURAL_NETWORK}>
 								Réseau de neurones

@@ -43,6 +43,7 @@ import { GenRegression } from './artificial_intelligence/AIUtilsInterfaces';
 import AIInterface from '../../../Components/ChallengeComponents/AIInterface/AIInterface';
 import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
 import { mainAIUtilsTest } from './artificial_intelligence/ai_tests/AIUtilsTest';
+import { DatasetChartOptions } from 'chart.js';
 
 /**
  * Ai challenge page. Contains all the components to display and make the ai challenge functionnal.
@@ -89,17 +90,21 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	let outputMean = useRef<number>();
 	let outputDeviation = useRef<number>();
 	let deviations = useRef<number[]>();
+	let activeDataset =  useRef<AIDataset>(challenge.dataset!);
 
 	// Loading the dataset when first renders
 	useEffect(() => {
 		const getDataset = async () => {
 			if (!challenge.dataset)
 				challenge.dataset = await api.db.ai.getDataset(challenge.datasetId);
+				activeDataset.current = challenge.dataset;
 			forceUpdate();
-			if (challenge.dataset)
+			if (challenge.dataset){
+				activeDataset.current = challenge.dataset
 				ioCodes.current = challenge.dataset.getDataAsArray().map(() => -1);
-			else
+			}else{
 				console.error("Erreur : la table ne s'est pas chargée correctement.");
+			}
 		};
 		getDataset();
 
@@ -215,7 +220,10 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * loaded for the first time.
 	 */
 	function setDatasetStats() {
-		[inputs.current, outputs.current] = challenge.dataset!.getInputsOutputs(
+
+		activeDataset.current = challenge.dataset!;
+
+		[inputs.current, outputs.current] = activeDataset.current!.getInputsOutputs(
 			ioCodes.current,
 		);
 		if (inputs.current) {
@@ -228,6 +236,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			outputMean.current = outputs.current.meanOfAllRows()[0];
 			outputDeviation.current = outputs.current.deviationOfAllRows()[0];
 		}
+
 	}
 
 	/**
@@ -412,13 +421,12 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @param column the parameter's name to replace.
 	 */
 	function oneHot(column : string):string | void {
-		let index = challenge.dataset!.getParamNames().indexOf(column);
-		const oldNumberParams = challenge.dataset!.getParamNames().length;
+		let index = activeDataset.current!.getParamNames().indexOf(column);
+		const oldNumberParams = activeDataset.current!.getParamNames().length;
 
-		// ------- Problème : impossible de revenir à l'ancience data" -----------
-
-		if (challenge.dataset!.createOneHot(column)){
-			const newNumberParams = challenge.dataset!.getParamNames().length;
+		// ------- Problem: impossible to return to the old data" -----------
+		if (activeDataset.current.createOneHot(column)){
+			const newNumberParams =activeDataset.current!.getParamNames().length;
 			const numberNewParams = newNumberParams-oldNumberParams
 			
 			//Remove the column to replace of the IOcodes
@@ -444,7 +452,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		mainAIUtilsTest();
 		mainAINeuralNetworkTest();
 		*/
-		let dataset = challenge.dataset;
+		let dataset = activeDataset.current;
 		if (!dataset) {
 			return cmd.error(
 				'Challenge is still loading. Please try again after the challenge is properly loaded',
@@ -606,7 +614,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 									open: false,
 								},
 							]}
-							data={challenge.dataset}
+							data={activeDataset.current}
 							hyperparams={hyperparams}
 							ioCodes={ioCodes.current}
 						/>

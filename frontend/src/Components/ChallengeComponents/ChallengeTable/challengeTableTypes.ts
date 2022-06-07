@@ -129,4 +129,20 @@ export const StyledChallengeTable = styled.div`
 		border-right: 1px solid var(--databack-color);
 		padding: 0.5vh;
 	}
+
+	.input-header {
+		background-color: var(--input-header-color);
+	}
+
+	.input-data {
+		background-color: var(--input-data-color);
+	}
+
+	.output-data {
+		background-color: var(--output-data-color);
+	}
+
+	.output-header {
+		background-color: var(--output-header-color);
+	}
 `;

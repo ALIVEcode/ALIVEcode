@@ -8,7 +8,7 @@ import { ThemeContext } from '../../../state/contexts/ThemeContext';
 import AITab from './AITab';
 import ChallengeTable from '../ChallengeTable/ChallengeTable';
 import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
-import {ThreeScene} from "./AIVisualModels/AINeuralNet";
+import { ThreeScene } from './AIVisualModels/AINeuralNet';
 
 /**
  * This component represents the visual interface in every ChallengeAI. It handles the
@@ -77,7 +77,9 @@ const AIInterface = memo(
 						<h1 className="head-text">Modèle choisi :</h1>
 						<select
 							className="dropdown"
-							onChange={e => handleModelChange(e.target.value)}//ajouter faux afficher modele
+							onChange={e => {
+								handleModelChange(e.target.value);
+							}}
 						>
 							<option value={MODEL_TYPES.NEURAL_NETWORK}>
 								Réseau de neurones
@@ -106,11 +108,16 @@ const AIInterface = memo(
 					</div>
 				) : tabs[1].open ? (
 					<div className="ai-display w-full overflow-auto right-200">
-						<ThreeScene/>
-						<div className={"absolute top-[9%] right-[2%] bg-black text-base p-5 hidden"} id={"SelectedValue"}>Content</div>
-
+						<ThreeScene />
+						<div
+							className={
+								'absolute top-[9%] right-[2%] bg-black text-base p-5 hidden'
+							}
+							id={'SelectedValue'}
+						>
+							Content
+						</div>
 					</div>
-
 				) : tabs[2].open ? (
 					<>
 						<h1 className="header h-1/6">Valeurs des hyperparamètres</h1>

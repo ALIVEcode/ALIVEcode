@@ -75,7 +75,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	 * @returns the step of the hyperparameter
 	 */
 	function inputStep(key: string) {
-		if (HyperparamID![key]['componant'] == 'input') return '0.01';
+		if (HyperparamID![key]['componant'] === 'input') return '0.01';
 		else return '1';
 	}
 
@@ -86,8 +86,8 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	 */
 	function addHypperparamInput(key: string) {
 		if (
-			HyperparamID![key]['componant'] == 'integer input' ||
-			HyperparamID![key]['componant'] == 'input'
+			HyperparamID![key]['componant'] === 'integer input' ||
+			HyperparamID![key]['componant'] === 'input'
 		)
 			return (
 				<input
@@ -152,6 +152,32 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	}
 
 	/**
+	 * Returns the className property of a cell in the Data table depending on its state
+	 * (input, output or unused) and its nature (header or data).
+	 * @param isHeader true if the cell is a header, false otherwise.
+	 * @param initialClassName the beginning of the cell's className.
+	 * @param index the column number of the cell.
+	 * @returns the className property of the cell.
+	 */
+	function setDataTabClassName(
+		isHeader: boolean,
+		initialClassName: string,
+		index: number,
+	): string {
+		let className: string = initialClassName;
+		if (isHeader) {
+			if (props.ioCodes![index] === 1) className += ' input-header';
+			else if (props.ioCodes![index] === 0) className += ' output-header';
+			else className += ' ignore-header';
+		} else {
+			if (props.ioCodes![index] === 1) className += ' input-data';
+			else if (props.ioCodes![index] === 0) className += ' output-data';
+			else className += ' ignore-data';
+		}
+		return className;
+	}
+
+	/**
 	 * Returns a component representing the headers of this ChallengeTable
 	 * @returns the headers in a component.
 	 */
@@ -161,14 +187,18 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 				<>
 					<tr>
 						{props.data.getParamNames().map((param: string, index: number) => {
-							return <th className="titles">{param}</th>;
+							return (
+								<th className={setDataTabClassName(true, 'titles', index)}>
+									{param}
+								</th>
+							);
 						})}
 					</tr>
 
 					<tr>
 						{props.ioCodes.map((code: number, index: number) => {
 							return (
-								<th className="io">
+								<th className={setDataTabClassName(true, 'io', index)}>
 									<select
 										className="inputs"
 										onChange={e => setIOCode(e.target.value, index)}
@@ -204,7 +234,11 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 						return (
 							<tr key={row}>
 								{dataLine.map((element: any, col: number) => {
-									return <td className="data">{element}</td>;
+									return (
+										<td className={setDataTabClassName(false, 'data', col)}>
+											{element}
+										</td>
+									);
 								})}
 							</tr>
 						);

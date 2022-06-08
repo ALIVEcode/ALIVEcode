@@ -26,9 +26,8 @@ export class PolyRegression extends Regression {
 		super(
 			id,
 			hyperparams,
-			hyperparams.modelParams,
 			MODEL_TYPES.POLY_REGRESSION,
-			PolyRegression.NB_PARAMS,
+			hyperparams.modelParams.params.length,
 		);
 		this.setParams(hyperparams.modelParams.params);
 	}

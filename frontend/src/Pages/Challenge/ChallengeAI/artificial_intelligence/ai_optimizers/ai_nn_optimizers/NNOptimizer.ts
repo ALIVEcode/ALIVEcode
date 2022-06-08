@@ -25,14 +25,14 @@ export abstract class NNOptimizer extends Optimizer {
 	 * - the number of epochs,
 	 * - the type of cost function.
 	 */
-	public constructor(model: NeuralNetwork, hyperparams: NNHyperparameters) {
+	public constructor(model: NeuralNetwork) {
 		super(
-			hyperparams.learningRate,
-			hyperparams.epochs,
-			hyperparams.costFunction,
+			model.getHyperparameters().learningRate,
+			model.getHyperparameters().epochs,
+			model.getHyperparameters().costFunction,
 		);
 		this.model = model;
-		this.hyperparams = hyperparams;
+		this.hyperparams = model.getHyperparameters();
 	}
 
 	public optimize(inputs: Matrix, real: Matrix): NeuralNetwork {

@@ -248,6 +248,14 @@ export class NeuralNetwork extends AIModel {
 		return allActivations;
 	}
 
+	/**
+	 * Returns the hyperparameters object of this Neural Network.
+	 * @returns the hyperparameters object.
+	 */
+	public getHyperparameters(): NNHyperparameters {
+		return this.hyperparameters;
+	}
+
 	public setNormalization(
 		inputMeans: number[],
 		inputDeviations: number[],

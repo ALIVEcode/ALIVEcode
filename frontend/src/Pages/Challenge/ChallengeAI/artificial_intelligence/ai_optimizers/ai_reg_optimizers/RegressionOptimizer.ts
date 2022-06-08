@@ -18,13 +18,13 @@ export default abstract class RegressionOptimizer extends Optimizer {
 	 * @param regression the regression to optimize.
 	 * @param hyperparams the hyperparameters realted to the regression model.
 	 */
-	constructor(model: GenRegression, hyperparams: RegHyperparameters) {
+	constructor(model: GenRegression) {
 		super(
-			hyperparams.learningRate,
-			hyperparams.epochs,
-			hyperparams.costFunction,
+			model.getHyperparameters().learningRate,
+			model.getHyperparameters().epochs,
+			model.getHyperparameters().costFunction,
 		);
-		this.hyperparams = hyperparams;
+		this.hyperparams = model.getHyperparameters();
 		this.model = model;
 	}
 

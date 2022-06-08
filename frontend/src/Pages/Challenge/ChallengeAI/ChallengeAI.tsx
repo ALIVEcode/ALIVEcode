@@ -322,7 +322,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			outputMean.current,
 			outputDeviation.current,
 		);
-		optimizer.current = new PolyOptimizer(regression.current, hyperparams.POLY);
+		optimizer.current = new PolyOptimizer(regression.current);
 		model.current = regression.current;
 	}
 

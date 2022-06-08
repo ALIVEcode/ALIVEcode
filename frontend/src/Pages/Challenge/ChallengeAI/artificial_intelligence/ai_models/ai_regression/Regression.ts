@@ -42,18 +42,16 @@ export abstract class Regression extends AIModel {
 	constructor(
 		id: string | null,
 		hyperparams: RegHyperparameters,
-		modelParams: RegModelParams,
 		modelType: MODEL_TYPES,
 		nbParams: number,
 	) {
 		super(id, modelType);
 		this.hyperparameters = hyperparams;
-		this.modelParams = modelParams;
 
-		if (nbParams !== modelParams.params.length) {
+		if (nbParams !== hyperparams.modelParams.params.length) {
 			throw new Error(
 				'Error: could not create the Regression Model. There are ' +
-					modelParams.params.length +
+					hyperparams.modelParams.params.length +
 					' when there should be ' +
 					nbParams,
 			);
@@ -156,6 +154,14 @@ export abstract class Regression extends AIModel {
 	 */
 	public static getRounding() {
 		return Regression.ROUNDING;
+	}
+
+	/**
+	 * Returns the hyperparameters object from this model.
+	 * @returns the hyperparameters object
+	 */
+	public getHyperparameters() {
+		return this.hyperparameters;
 	}
 
 	/**

@@ -23,14 +23,12 @@ import { NNOptimizer } from './NNOptimizer';
  */
 export class GradientDescent extends NNOptimizer {
 	/**
-	 * Creates a Gradient Descent Optimizer based on the given hyperparameters object to
-	 * optimize the given model.
+	 * Creates a Gradient Descent Optimizer to optimize the given model.
 	 * @param model the Neural Network to optimize with the new object.
-	 * @param hyperparams the hyperparameters object that defines the Gradient
 	 * Descent Optimizer.
 	 */
-	public constructor(model: NeuralNetwork, hyperparams: NNHyperparameters) {
-		super(model, hyperparams);
+	public constructor(model: NeuralNetwork) {
+		super(model);
 	}
 
 	public optimizeOneEpoch(inputs: Matrix, outputArray: Matrix[], real: Matrix) {

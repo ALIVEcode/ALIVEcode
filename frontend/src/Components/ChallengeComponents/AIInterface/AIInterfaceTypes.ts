@@ -1,5 +1,8 @@
 import styled from 'styled-components';
-import { GenHyperparameters, Hyperparams } from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
+import {
+	GenHyperparameters,
+	Hyperparams,
+} from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
 import { Theme } from '../../../state/contexts/ThemeContext';
 import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
 
@@ -18,7 +21,7 @@ import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
  * @author Félix Jobin
  */
 export type AIInterfaceProps = {
-	handleHyperparamChange: (newHyperparams: any) => void;
+	handleHyperparamChange: (newHyperparams: Hyperparams) => void;
 	handleModelChange: (newModel: MODEL_TYPES) => void;
 	handleIOChange: (newIO: number[]) => void;
 	ioCodes?: number[];
@@ -26,7 +29,7 @@ export type AIInterfaceProps = {
 	tabs: AITabModel[];
 	data: any;
 	hyperparams: Hyperparams;
-	initData: any
+	initData: any;
 };
 
 /**

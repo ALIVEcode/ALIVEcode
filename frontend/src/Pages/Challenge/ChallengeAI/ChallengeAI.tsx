@@ -31,7 +31,10 @@ import {
 import api from '../../../Models/api';
 import { ACTIVATION_FUNCTIONS } from '../../../Models/Ai/ai_model.entity';
 import { PolyRegression } from './artificial_intelligence/ai_models/ai_regression/PolyRegression';
-import { GenAIModel } from './artificial_intelligence/AIUtilsInterfaces';
+import {
+	GenAIModel,
+	Hyperparams,
+} from './artificial_intelligence/AIUtilsInterfaces';
 import {
 	RegModelParams,
 	GenOptimizer,
@@ -192,7 +195,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * Callback function called when an hyperparam is changed in the interface.
 	 * @param newHyperparams the new Hyperparams object.
 	 */
-	const aiInterfaceHyperparamsChanges = (newHyperparams: any) => {
+	const aiInterfaceHyperparamsChanges = (newHyperparams: Hyperparams) => {
 		console.log('New Hyperparams');
 		console.log(newHyperparams);
 	};

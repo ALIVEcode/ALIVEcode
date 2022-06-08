@@ -29,7 +29,6 @@ export class AIDataset {
 		return this._paramNames;
 	}
 
-
 	/**
 	 * Constructor of the class. It requires the sames parameters as the columns in the website's database.
 	 * @param id the id pof the dataset.
@@ -41,10 +40,7 @@ export class AIDataset {
 		this.name = name;
 		this.initialData = data;
 		this.data = data;
-		
 	}
-
-	
 
 	/**
 	 * Replace the parameter with the given name by other one-hot parameters.
@@ -173,17 +169,8 @@ export class AIDataset {
 			}
 		}
 
-		// Calculate the means and deviations for each parameter (for normalizaiton)
-		const dataArray: number[][] = this.getDataAsArray();
-		this.means = [];
-		this.deviations = [];
-		for (let param: number = 0; param < dataArray.length; param++) {
-			this.means.push(mean(dataArray[param]));
-			this.deviations.push(stdDev(dataArray[param]));
-		}
-
 		// Create and return the Matrix by calling get
-		return new Matrix(dataArray);
+		return new Matrix(this.getDataAsArray());
 	}
 
 	/**
@@ -267,16 +254,20 @@ export class AIDataset {
 			}
 		}
 
-		// Calculate the means and deviations for each parameter (for normalizaiton)
-		const dataArray: number[][] = inputs.getValue();
+		return [inputs, outputs];
+	}
+
+	/**
+	 * Sets the means and deviations for each parameter in the dataset.
+	 */
+	public setMeansAndDeviations(): void {
+		const dataArray: number[][] = this.getDataAsArray();
 		this.means = [];
 		this.deviations = [];
 		for (let param: number = 0; param < dataArray.length; param++) {
 			this.means.push(mean(dataArray[param]));
 			this.deviations.push(stdDev(dataArray[param]));
 		}
-
-		return [inputs, outputs];
 	}
 
 	/**
@@ -291,6 +282,80 @@ export class AIDataset {
 		}
 		this._paramNames = Object.keys(this.data[0]);
 		return this._paramNames;
+	}
+
+	/**
+	 * Normalizes a data by subtracting the mean and dividing
+	 * by the standard deviation. This function is meant to be used
+	 * for a data that is going to be passed as an input but was not part
+	 * of the original Dataset.
+	 * @param data the data to normalize.
+	 * @param mean the mean of the parameter related to this data.
+	 * @param deviation the standard deviation of the parameter related to this data.
+	 * @returns the normalized data.
+	 */
+	public normalize(data: number, mean: number, deviation: number): number {
+		return (data - mean) / deviation;
+	}
+
+	/**
+	 * Normalizes an array of numbers by subtracting the mean and dividing
+	 * by the standard deviation for each data of the given array. The resulting
+	 * array will contain values near zero.
+	 * @param data the array to normalize.
+	 * @param mean the mean of the parameter in the original Dataset.
+	 * @param deviation the standard deviation of the parameter in the original Dataset.
+	 * @returns a new array with normalized data.
+	 */
+	public normalizeArray(
+		data: number[],
+		mean: number,
+		deviation: number,
+	): number[] {
+		return data.copyWithin(0, 0).map((value: number): number => {
+			return this.normalize(value, mean, deviation);
+		});
+	}
+
+	/**
+	 * Normalizes a parameter of this dataset, then replace the parameter's values
+	 * with the normalized ones. Cannot normalize of the param name is unknown or
+	 * the param defines a string value.
+	 * @param paramName the name of the parameter to normalize.
+	 * @returns a boolean indicating if the normalization could have been done.
+	 */
+	public normalizeParam(paramName: string): boolean {
+		let iterator: number = 0;
+
+		// Check if the given name is a parameter in the database
+		while (this.paramNames[iterator] !== paramName) {
+			iterator++;
+			// If no correspondance were found, end the function and print an error
+			if (iterator === Object.keys(this.data[0]).length) {
+				console.log('Error: key is not the name of any parameter.');
+				return false;
+			}
+		}
+
+		if (typeof this.data[0][paramName] === 'string') {
+			console.log('Error: string data is not normalizable.');
+			return false;
+		}
+
+		// Setting means and deviations for each parameter
+		if (!this.means || !this.deviations) this.setMeansAndDeviations();
+		if (!this._paramNames) this.loadParamNames();
+
+		const index: number = this._paramNames!.indexOf(paramName);
+
+		const newData: number[] = this.normalizeArray(
+			this.getDataAsArray()[index],
+			this.means[index],
+			this.deviations[index],
+		);
+
+		this.replaceColumn(paramName, newData);
+		return true;
 	}
 
 	/**
@@ -329,23 +394,21 @@ export class AIDataset {
 	 * This function clones this classe object
 	 * @returns the clone
 	 */
-	 public clone(){
+	public clone() {
 		//Clone the data
 		let dataClone: any[] = [];
 		this.data!.forEach(val => dataClone.push(Object.assign({}, val)));
 
 		//Clone the aparamNames
 		let paramNamesClone: any[] = [];
-		this.paramNames!.forEach(val => paramNamesClone.push(Object.assign({}, val)));
+		this.paramNames!.forEach(val =>
+			paramNamesClone.push(Object.assign({}, val)),
+		);
 
 		//Clone the object
-		let clone = new AIDataset(
-			this.id,
-			this.name,
-			dataClone
-		)
-		console.log("CLONE : ", clone)
-		clone.loadParamNames()
+		let clone = new AIDataset(this.id, this.name, dataClone);
+		console.log('CLONE : ', clone);
+		clone.loadParamNames();
 		return clone;
 	}
 
@@ -355,7 +418,7 @@ export class AIDataset {
 	 * @param data Elements to replace
 	 * @returns a boolean indicating if the replacement has been made.
 	 */
-	public replaceColumn(param: string, data: any[]):boolean {
+	public replaceColumn(param: string, data: any[]): boolean {
 		let iterator: number = 0;
 		// Check if the given name is a parameter in the database
 		while (this.paramNames[iterator] !== param) {
@@ -367,10 +430,10 @@ export class AIDataset {
 			}
 		}
 		//Change the data of the parameter
-		if( typeof(this.data[0][param]) == 'string') return false
+		if (typeof this.data[0][param] == 'string') return false;
 		for (let dataNum: number = 0; dataNum < this.data.length; dataNum++) {
-			this.data[dataNum][param] = data[dataNum]
+			this.data[dataNum][param] = data[dataNum];
 		}
-		return true
+		return true;
 	}
 }

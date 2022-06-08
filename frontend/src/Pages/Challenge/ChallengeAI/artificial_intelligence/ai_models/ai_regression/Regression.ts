@@ -28,8 +28,6 @@ export abstract class Regression extends AIModel {
 	protected nbParams: number;
 	protected hyperparameters: RegHyperparameters;
 	protected modelParams: RegModelParams;
-	protected outputMean: number;
-	protected outputDeviation: number;
 
 	/**
 	 * Constructor of a Regression. Initializes all properties and decides if
@@ -58,38 +56,6 @@ export abstract class Regression extends AIModel {
 		}
 	}
 
-	/**
-	 * Normalizes the output Matrix by applying the normalize() function to the row
-	 * containing the output.
-	 * @param outputs the output Matrix to normalize.
-	 * @returns a new Matrix with normalized values with respect to their row.
-	 */
-	public normalizeOutputByRow(outputs: Matrix): Matrix {
-		const baseOutputs: number[][] = outputs.getValue();
-		let normalized: number[][] = [];
-
-		// Check if there is enough means and deviations in the arrays.
-		if (
-			outputs.getRows() > this.inputMeans.length ||
-			outputs.getRows() > this.inputDeviations.length
-		) {
-			throw new Error(
-				'Error: could not normalize data. Some means or deviations were missing.',
-			);
-		}
-
-		for (let row: number = 0; row < outputs.getRows(); row++) {
-			normalized.push(
-				this.normalizeArray(
-					baseOutputs[row],
-					this.outputMean,
-					this.outputDeviation,
-				),
-			);
-		}
-		return new Matrix(normalized);
-	}
-
 	public predict(inputs: Matrix): Matrix {
 		if (inputs.getRows() !== 1) {
 			throw new Error(
@@ -103,23 +69,6 @@ export abstract class Regression extends AIModel {
 			});
 
 		return new Matrix([outputs]);
-	}
-
-	public setNormalization(
-		inputMeans: number[],
-		inputDeviations: number[],
-		outputMean?: number | undefined,
-		outputDeviation?: number | undefined,
-	): void {
-		this.inputMeans = inputMeans;
-		this.inputDeviations = inputDeviations;
-		if (!outputMean || !outputDeviation) {
-			throw new Error(
-				'Error: missing arguments for setting normalization for a regression.',
-			);
-		}
-		this.outputMean = outputMean;
-		this.outputDeviation = outputDeviation;
 	}
 
 	/**

@@ -144,7 +144,7 @@ export class NeuralNetwork extends AIModel {
 	//---- PREDICTION METHODS ----//
 
 	public predict(inputs: Matrix, normalize: boolean): Matrix {
-		let output: Matrix[] = this.predictReturnAll(inputs, normalize);
+		let output: Matrix[] = this.predictReturnAll(inputs);
 		return output[output.length - 1];
 	}
 
@@ -153,11 +153,10 @@ export class NeuralNetwork extends AIModel {
 	 * current weights and biases. Returns an array of Matrices containing the outputs
 	 * of all layers in order (each element is the output of one layer).
 	 * @param inputs the inputs from which we want to find the outputs.
-	 * @param normalize boolean to indicate if we want to normalize the data.
 	 * @returns the outputs of all layers of the model.
 	 */
-	public predictReturnAll(inputs: Matrix, normalize: boolean): Matrix[] {
-		let output: Matrix = normalize ? this.normalizeByRow(inputs) : inputs;
+	public predictReturnAll(inputs: Matrix): Matrix[] {
+		let output: Matrix = inputs;
 		let outputArray: Matrix[] = [];
 
 		// Computes the outputs for each layer.

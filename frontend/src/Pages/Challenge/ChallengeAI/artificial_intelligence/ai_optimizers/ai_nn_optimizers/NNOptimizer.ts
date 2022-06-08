@@ -39,7 +39,7 @@ export abstract class NNOptimizer extends Optimizer {
 		let predictions: Matrix[];
 
 		for (let i: number = 0; i < this.epochs; i++) {
-			predictions = this.model.predictReturnAll(inputs, false);
+			predictions = this.model.predictReturnAll(inputs);
 			this.optimizeOneEpoch(inputs, predictions, real);
 		}
 		return this.model;

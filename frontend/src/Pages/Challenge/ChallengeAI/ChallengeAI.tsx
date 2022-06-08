@@ -316,12 +316,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 */
 	function createRegression(a: number, b: number, c: number, d: number) {
 		regression.current = new PolyRegression('1', hyperparams.POLY);
-		regression.current.setNormalization(
-			means.current!,
-			deviations.current!,
-			outputMean.current,
-			outputDeviation.current,
-		);
 		optimizer.current = new PolyOptimizer(regression.current);
 		model.current = regression.current;
 	}
@@ -449,6 +443,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		}
 	}
 
+	//TODO ERROR HANDLING
 	/**
 	 * Normalizes the data of the parameter and change the data of the table
 	 * @param column the parameter's name to replace.
@@ -459,6 +454,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			index != -1 &&
 			!activeDataset.current.getDataAsMatrix().equals(new Matrix(1, 1))
 		) {
+			activeDataset.current.normalizeParam(column);
+
+			/*
 			activeDataset.current.getDataAsMatrix();
 			let columnData: number[] = activeDataset.current.getDataAsArray()[index];
 			const mean = activeDataset.current.getMeans().at(index);
@@ -472,6 +470,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			//Change to :
 			//columnData = model.current!.normalizeArray(column, mean!, deviation!)
 			activeDataset.current!.replaceColumn(column, columnData);
+
+			*/
 
 			forceUpdate();
 		} else {

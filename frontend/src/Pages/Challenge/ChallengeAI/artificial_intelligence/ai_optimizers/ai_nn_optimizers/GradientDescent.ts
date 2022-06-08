@@ -23,7 +23,8 @@ import { NNOptimizer } from './NNOptimizer';
  */
 export class GradientDescent extends NNOptimizer {
 	/**
-	 * Creates a Gradient Descent Optimizer to optimize the given model.
+	 * Creates a Gradient Descent Optimizer to
+optimize the given model.
 	 * @param model the Neural Network to optimize with the new object.
 	 * Descent Optimizer.
 	 */
@@ -34,9 +35,7 @@ export class GradientDescent extends NNOptimizer {
 	public optimizeOneEpoch(inputs: Matrix, outputArray: Matrix[], real: Matrix) {
 		const activations: ActivationFunction[] = this.model.getAllActivations();
 		const nbLayers: number = this.model.getAllActivations().length;
-		const inputArray: Matrix[] = [this.model.normalizeByRow(inputs)]
-			.concat(outputArray)
-			.slice(0, -1);
+		const inputArray: Matrix[] = [inputs].concat(outputArray).slice(0, -1);
 		const nbData: number = inputs.getValue()[0].length;
 		const predicted: Matrix = outputArray[outputArray.length - 1];
 		const oldWeights: Matrix[] = this.model.getAllWeights();

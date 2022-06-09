@@ -228,7 +228,6 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 				</>
 			);
 		if (currHyperparams && !props.isData) {
-			console.log(props.activeModelType);
 			return (
 				<>
 					{Object.keys(currHyperparams).map((key: string, index: number) => {

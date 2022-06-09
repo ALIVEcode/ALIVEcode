@@ -53,7 +53,7 @@ export abstract class ActivityEntity {
 
   /** Id of the referenced resource */
   @Column({ type: 'uuid', nullable: true })
-  resourceId: string;
+  resourceId?: string;
 
   abstract readonly allowedResources: RESOURCE_TYPE[];
 

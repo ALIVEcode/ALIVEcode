@@ -47,6 +47,8 @@ import { MoveElementDTO } from './dtos/MoveElement.dto';
 import { isUUID } from 'class-validator';
 import { SectionEntity } from './entities/section.entity';
 import { AddCourseInClassroomDTO } from './dtos/AddCourseInClassroom';
+import { ChallengeService } from '../challenge/challenge.service';
+import { ResourceChallengeEntity } from '../resource/entities/resources/resource_challenge.entity';
 
 /**
  * All the routes to create/update/delete/get a course or it's content (CourseElements)
@@ -60,6 +62,7 @@ export class CourseController {
     private readonly courseService: CourseService,
     private readonly userService: UserService,
     private readonly resourceService: ResourceService,
+    private readonly challengeService: ChallengeService,
   ) {}
 
   /**
@@ -396,6 +399,25 @@ export class CourseController {
     const resource = await this.resourceService.findOne(addResourceDTO.resourceId);
     if (resource.creator.id !== professor.id) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     return await this.courseService.addResourceToActivity(activity, resource);
+  }
+
+  /**
+   * Loads the challenge inside an activity
+   * @param id Id of the course
+   * @param activityId Id of the activity to load the challenge from
+   * @returns Challenge
+   */
+  @Get(':id/activities/:activityId/loadChallenge')
+  @Auth()
+  @UseGuards(CourseAccess)
+  async loadChallengeInActivity(@Param('id') id: string, @Param('activityId') activityId: string) {
+    const act = await this.courseService.findActivity(id, activityId);
+    if (act.type !== ACTIVITY_TYPE.CHALLENGE || !act.resourceId)
+      throw new HttpException('Activity is not of type challenge or has no resource', HttpStatus.BAD_REQUEST);
+    const res = await this.resourceService.findOne(act.resourceId);
+    if (res.type !== RESOURCE_TYPE.CHALLENGE)
+      throw new HttpException('Resource has no challenge', HttpStatus.BAD_REQUEST);
+    return await this.challengeService.findOne((res as any as ResourceChallengeEntity).challengeId);
   }
 
   /**

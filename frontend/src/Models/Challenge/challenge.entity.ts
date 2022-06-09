@@ -3,6 +3,17 @@ import { SUBJECTS } from '../../Types/sharedTypes';
 import { USER_TYPES } from '../../Types/userTypes';
 import { CreatedByUser } from '../Generics/createdByUser.entity';
 import { User, Professor, Student } from '../User/user.entity';
+import { ChallengeAI } from './challenges/challenge_ai.entity';
+import { ChallengeAlive } from './challenges/challenge_alive.entity';
+import { ChallengeCode } from './challenges/challenge_code.entity';
+import { ChallengeIoT } from './challenges/challenge_IoT.entity';
+
+/** Typing for all different type of resources */
+export type DifferentChallenges =
+	| ChallengeAI
+	| ChallengeCode
+	| ChallengeAlive
+	| ChallengeIoT;
 
 export enum CHALLENGE_TAG {}
 

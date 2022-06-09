@@ -60,6 +60,7 @@ import { MenuCourseCreationDTO } from '../Components/Resources/MenuCourseCreatio
 import { BundleQueryDTO } from './Course/bundles/dto/BundleQuery.dto';
 import { Bundle } from './Course/bundles/bundle.entity';
 import { ClaimBundleDTO } from './Course/bundles/dto/ClaimBundle.dto';
+import { GenericChallengeTransformer } from './Challenge/transformer/GenericChallengeTransformer';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;
@@ -398,6 +399,17 @@ const api = {
 				const res = (await axios.patch(`courses/${courseId}/moveElement`, dto))
 					.data;
 				return res as ResultPatchMoveElement;
+			},
+			loadChallenge: async (courseId: string, activityId: string) => {
+				return (
+					plainToInstance(GenericChallengeTransformer, {
+						challenge: (
+							await axios.get(
+								`courses/${courseId}/activities/${activityId}/loadChallenge`,
+							)
+						).data,
+					}) as any
+				).challenge;
 			},
 		},
 		resources: {

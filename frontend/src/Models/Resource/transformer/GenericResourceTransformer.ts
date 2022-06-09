@@ -8,6 +8,7 @@ import { ResourceFile } from '../resources/resource_file.entity';
 import { ResourceTheory } from '../resources/resource_theory.entity';
 import { ResourceVideo } from '../resources/resource_video.entity';
 import { ResourceChallenge } from '../resources/resource_challenge.entity';
+import { ResourcePdf } from '../resources/resource_pdf.entity';
 
 /**
  * DTO transformer for transforming to instance a generic Resource object
@@ -23,6 +24,8 @@ export class GenericResourceTransformer {
 				return ResourceVideo;
 			case RESOURCE_TYPE.CHALLENGE:
 				return ResourceChallenge;
+			case RESOURCE_TYPE.PDF:
+				return ResourcePdf;
 		}
 		return Resource;
 	})

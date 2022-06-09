@@ -1,5 +1,5 @@
 import {
-	Hyperparams,
+	Hyperparameters,
 	NNHyperparameters,
 	GenHyperparameters,
 } from '../../AIUtilsInterfaces';

@@ -33,7 +33,7 @@ import { ACTIVATION_FUNCTIONS } from '../../../Models/Ai/ai_model.entity';
 import { PolyRegression } from './artificial_intelligence/ai_models/ai_regression/PolyRegression';
 import {
 	GenAIModel,
-	Hyperparams,
+	Hyperparameters,
 } from './artificial_intelligence/AIUtilsInterfaces';
 import {
 	RegModelParams,
@@ -46,7 +46,10 @@ import {
 import AIInterface from '../../../Components/ChallengeComponents/AIInterface/AIInterface';
 import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
 import { mainAIUtilsTest } from './artificial_intelligence/ai_tests/AIUtilsTest';
-import { defaultHyperparams } from './artificial_intelligence/ai_models/DefaultHyperparams';
+import {
+	defaultHyperparams,
+	defaultModelType,
+} from './artificial_intelligence/ai_models/DefaultHyperparams';
 import useComplexState from '../../../state/hooks/useComplexState';
 
 /**
@@ -81,12 +84,20 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	const [cmdRef, cmd] = useCmd();
 	const alert = useAlert();
 
-	//Model variables to keep track on the current Model, its type and hyperparameters.
+	//Active model object for this challenge
 	const model = useRef<GenAIModel>();
-	const [activeModelType, setActiveModelType] = useState(
-		MODEL_TYPES.NEURAL_NETWORK,
-	);
+
+	//Active model type for this challenge
+	const [activeModelType, setActiveModelType] =
+		useState<MODEL_TYPES>(defaultModelType);
 	const regression = useRef<PolyRegression>();
+
+	//TODO link this declaration to the interface when completed
+	//Change the type to GenHyperparameters
+	const [hyperparams, setHyperparams] =
+		useState<GenHyperparameters>(defaultHyperparams);
+
+	let optimizer = useRef<GenOptimizer>();
 
 	//TODO replace these codes with the ones chosen in the interface
 	const ioCodes = useRef<number[]>([]);
@@ -103,12 +114,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		const getDataset = async () => {
 			if (!challenge.dataset)
 				challenge.dataset = await api.db.ai.getDataset(challenge.datasetId);
-			activeDataset.current = challenge.dataset.clone();
-			forceUpdate();
-			if (challenge.dataset) activeDataset.current = challenge.dataset.clone();
-			forceUpdate();
 			if (challenge.dataset) {
-				activeDataset.current = challenge.dataset;
+				activeDataset.current = challenge.dataset.clone();
+				forceUpdate();
 				ioCodes.current = challenge.dataset.getDataAsArray().map(() => -1);
 			} else {
 				console.error("Erreur : la table ne s'est pas chargée correctement.");
@@ -195,9 +203,13 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * Callback function called when an hyperparam is changed in the interface.
 	 * @param newHyperparams the new Hyperparams object.
 	 */
-	const aiInterfaceHyperparamsChanges = (newHyperparams: Hyperparams) => {
-		console.log('New Hyperparams');
-		console.log(newHyperparams);
+	const aiInterfaceHyperparamsChanges = (newHyperparams: Hyperparameters) => {
+		let tempHyperparams: GenHyperparameters = JSON.parse(
+			JSON.stringify(hyperparams),
+		);
+		(tempHyperparams[activeModelType] as Hyperparameters) = newHyperparams;
+		setHyperparams(tempHyperparams);
+		console.log('New Hyperparams ', hyperparams);
 	};
 
 	/**
@@ -245,13 +257,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	});
 	let datasets = useRef([initialDataset, initialDataset]);
 	const [chartData, setChartData] = useState({ datasets: [initialDataset] });
-
-	//TODO link this declaration to the interface when completed
-	//Change the type to GenHyperparameters
-	const [hyperparams, setHyperparams] =
-		useComplexState<GenHyperparameters>(defaultHyperparams);
-
-	let optimizer = useRef<GenOptimizer>();
 
 	/**
 	 * Sets the statistics related to the current dataset from this challenge.
@@ -318,7 +323,10 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @param d the param d of a polynomial regression.
 	 */
 	function createRegression(a: number, b: number, c: number, d: number) {
-		regression.current = new PolyRegression('1', hyperparams.POLY);
+		regression.current = new PolyRegression(
+			'1',
+			hyperparams[activeModelType] as RegHyperparameters,
+		);
 		optimizer.current = new PolyOptimizer(regression.current);
 		model.current = regression.current;
 	}
@@ -582,10 +590,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	// END OF TEST FUNCTION //
 
-	useEffect(() => {
-		console.log(hyperparams);
-	}, [hyperparams]);
-
 	return (
 		<>
 			<StyledAliveChallenge>
@@ -660,6 +664,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 							]}
 							data={activeDataset.current}
 							initData={challenge.dataset}
+							initialModelType={activeModelType}
 							hyperparams={hyperparams[activeModelType]}
 							ioCodes={ioCodes.current}
 						/>

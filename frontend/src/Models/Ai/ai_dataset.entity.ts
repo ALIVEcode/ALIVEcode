@@ -407,7 +407,6 @@ export class AIDataset {
 
 		//Clone the object
 		let clone = new AIDataset(this.id, this.name, dataClone);
-		console.log('CLONE : ', clone);
 		clone.loadParamNames();
 		return clone;
 	}

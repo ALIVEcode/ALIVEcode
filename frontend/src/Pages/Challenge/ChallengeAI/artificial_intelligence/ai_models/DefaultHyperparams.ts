@@ -1,6 +1,7 @@
 import {
 	ACTIVATION_FUNCTIONS,
 	COST_FUNCTIONS,
+	MODEL_TYPES,
 	NN_OPTIMIZER_TYPES,
 } from '../../../../../Models/Ai/ai_model.entity';
 import { GenHyperparameters } from '../AIUtilsInterfaces';
@@ -26,6 +27,8 @@ export const defaultHyperparams: GenHyperparameters = {
 		},
 		costFunction: COST_FUNCTIONS.MEAN_SQUARED_ERROR,
 		learningRate: 0.1,
-		epochs: 1000,
+		epochs: 3000,
 	},
 };
+
+export const defaultModelType: MODEL_TYPES = MODEL_TYPES.NEURAL_NETWORK;

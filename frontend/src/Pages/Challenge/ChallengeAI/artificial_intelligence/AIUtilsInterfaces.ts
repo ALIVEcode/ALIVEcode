@@ -48,7 +48,7 @@ export interface GenHyperparameters {
 	POLY: RegHyperparameters;
 }
 
-export type Hyperparams = GenHyperparameters[keyof GenHyperparameters];
+export type Hyperparameters = GenHyperparameters[keyof GenHyperparameters];
 
 /**
  * This interface describles the json object containing all Model parameters from

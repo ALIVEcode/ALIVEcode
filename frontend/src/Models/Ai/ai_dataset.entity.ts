@@ -285,6 +285,38 @@ export class AIDataset {
 	}
 
 	/**
+	 * Checks if the normalization is  possible for a specific parameter.
+	 * If the parameter is string type or does not exist, returns false.
+	 * Otherwise returns true
+	 * @param paramName the parameter's name.
+	 * @returns a boolean indicating if the normalization can happen.
+	 */
+	private prepareNormalization(paramName: string): boolean {
+		let iterator: number = 0;
+
+		// Check if the given name is a parameter in the database
+		while (this.paramNames[iterator] !== paramName) {
+			iterator++;
+			// If no correspondance were found, end the function and print an error
+			if (iterator === Object.keys(this.data[0]).length) {
+				console.log('Error: key is not the name of any parameter.');
+				return false;
+			}
+		}
+
+		if (typeof this.data[0][paramName] === 'string') {
+			console.log('Error: string data is not normalizable.');
+			return false;
+		}
+
+		// Setting means and deviations for each parameter
+		if (!this.means || !this.deviations) this.setMeansAndDeviations();
+		if (!this._paramNames) this.loadParamNames();
+
+		return true;
+	}
+
+	/**
 	 * Normalizes a data by subtracting the mean and dividing
 	 * by the standard deviation. This function is meant to be used
 	 * for a data that is going to be passed as an input but was not part
@@ -318,6 +350,23 @@ export class AIDataset {
 	}
 
 	/**
+	 * Normalizes a values based on its assigned parameter and returns
+	 * the result.
+	 * @param value the value to normalize.
+	 * @param paramName the name of the parameter associated with the value.
+	 * @returns the normalized result.
+	 */
+	public normalizeValue(value: number, paramName: string): number {
+		// Check if the given name is a parameter in the database
+		if (!this.prepareNormalization(paramName))
+			throw new Error('Error in normalization');
+
+		const index: number = this._paramNames!.indexOf(paramName);
+
+		return this.normalize(value, this.means[index], this.deviations[index]);
+	}
+
+	/**
 	 * Normalizes a parameter of this dataset, then replace the parameter's values
 	 * with the normalized ones. Cannot normalize of the param name is unknown or
 	 * the param defines a string value.
@@ -325,26 +374,8 @@ export class AIDataset {
 	 * @returns a boolean indicating if the normalization could have been done.
 	 */
 	public normalizeParam(paramName: string): boolean {
-		let iterator: number = 0;
-
 		// Check if the given name is a parameter in the database
-		while (this.paramNames[iterator] !== paramName) {
-			iterator++;
-			// If no correspondance were found, end the function and print an error
-			if (iterator === Object.keys(this.data[0]).length) {
-				console.log('Error: key is not the name of any parameter.');
-				return false;
-			}
-		}
-
-		if (typeof this.data[0][paramName] === 'string') {
-			console.log('Error: string data is not normalizable.');
-			return false;
-		}
-
-		// Setting means and deviations for each parameter
-		if (!this.means || !this.deviations) this.setMeansAndDeviations();
-		if (!this._paramNames) this.loadParamNames();
+		if (this.prepareNormalization(paramName)) return false;
 
 		const index: number = this._paramNames!.indexOf(paramName);
 

@@ -62,7 +62,7 @@ export const StyledAIInterface = styled.div`
 			: 'color: var(--foreground-color)'}
 
 	.bg {
-		background-color: var(--background-color);
+		background-color: var(--bg-shade-one-color);
 	}
 
 	.ai-tabs {

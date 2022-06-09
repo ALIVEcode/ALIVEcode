@@ -626,7 +626,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 							]}
 							data={activeDataset}
 							initData={challenge.dataset}
-							initialModelType={activeModelType}
+							modelType={activeModelType}
 							hyperparams={hyperparams[activeModelType]}
 							ioCodes={ioCodes.current}
 						/>

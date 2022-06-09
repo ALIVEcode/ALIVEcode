@@ -36,6 +36,9 @@ import { defaultModelType } from '../../../Pages/Challenge/ChallengeAI/artificia
  * @param tabs the tab components of the AIInterface.
  * @param ioCodes the inputs and output codes for the data table.
  * @param hyperparams the initial hyperparameter values for the hyperparameters table.
+ * @param data the current dataset used for the challenge.
+ * @param initData the dataset linked to this challenge in the backend.
+ * @param modelType the current model type of the challenge.
  *
  * @author Félix Jobin
  */
@@ -48,7 +51,7 @@ const AIInterface = ({
 	tabs: initialTabs,
 	data,
 	initData,
-	initialModelType,
+	modelType,
 	hyperparams,
 }: AIInterfaceProps) => {
 	// The selected theme to apply to this component
@@ -72,16 +75,13 @@ const AIInterface = ({
 	 * shown in the parent component.
 	 * @param idx the opened tab's index.
 	 */
-	const setOpenedTab = useCallback(
-		(idx: number) => {
-			const updatedTabs = tabs.map((t, i) => {
-				t.open = i === idx;
-				return t;
-			});
-			setTabs(updatedTabs);
-		},
-		[tabs],
-	);
+	const setOpenedTab = (idx: number) => {
+		const updatedTabs = tabs.map((t, i) => {
+			t.open = i === idx;
+			return t;
+		});
+		setTabs(updatedTabs);
+	};
 
 	/**
 	 * Handles the model change when the dropdown menu is used in this component.
@@ -106,7 +106,7 @@ const AIInterface = ({
 						onChange={e => {
 							handleDropdownChange(e.target.value as MODEL_TYPES);
 						}}
-						defaultValue={initialModelType}
+						defaultValue={modelType}
 					>
 						<option value={MODEL_TYPES.NEURAL_NETWORK}>
 							Réseau de neurones
@@ -151,7 +151,7 @@ const AIInterface = ({
 						hyperparams={hyperparams}
 						handleHyperparamsChange={handleHyperparamChange}
 						ioCodes={ioCodes}
-						activeModelType={initialModelType}
+						activeModelType={modelType}
 					/>
 				</>
 			) : (

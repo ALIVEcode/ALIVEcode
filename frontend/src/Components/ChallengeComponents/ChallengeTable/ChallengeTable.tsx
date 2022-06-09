@@ -27,11 +27,11 @@ import { GenHyperparameters } from '../../../Pages/Challenge/ChallengeAI/artific
  * The structure of the table is described in this object while the style of
  * the table is set in ChallengeTableTypes.
  * @param props the props of the table
- * @returns
  */
 const ChallengeTable = (props: ChallengeTableProps) => {
-	const [currHyperparams, setCurrHyperparams] = useState(props.hyperparams);
+	const [currHyperparams, setCurrHyperparams] = useState(props.hyperparams); //The current hyperparams of the table
 
+	//Function called after a change on hyperparams.
 	useEffect(() => {
 		setCurrHyperparams(props.hyperparams);
 	}, [props.hyperparams]);
@@ -57,6 +57,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 		);
 
 		if (props.activeModelType) {
+			// Determine the type of the hyperparam
 			switch (HyperparamTranslator![key].componant) {
 				case 'integer input':
 					newNumValue = parseInt(newValue);
@@ -135,10 +136,12 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	): string {
 		let className: string = initialClassName;
 		if (isHeader) {
+			// For header components
 			if (props.ioCodes![index] === 1) className += ' input-header';
 			else if (props.ioCodes![index] === 0) className += ' output-header';
 			else className += ' ignore-header';
 		} else {
+			// For data components
 			if (props.ioCodes![index] === 1) className += ' input-data';
 			else if (props.ioCodes![index] === 0) className += ' output-data';
 			else className += ' ignore-data';

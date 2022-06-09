@@ -134,6 +134,7 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					label: 'Création Modèle',
 					type: 'NORMAL',
 					apply: () => {
+						console.log("Execute Création Modèle")
 						this.executableFuncs.modelCreation();
 					},
 				},
@@ -144,8 +145,8 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					type: 'NORMAL',
 					apply: (params) => {
 						console.log("Execute One Hot")
-						if (typeof params[0] === 'string') {
-							const out = this.executableFuncs.oneHot(params[0])
+						if (typeof params[0] === 'string' && typeof params[1] === 'object') {
+							const out = this.executableFuncs.oneHot(params[0],params[1])
 							if(out != null){
 								this.cmd?.print(out)
 							}
@@ -155,7 +156,7 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 			},{
 				actionId: 809,
 				action: {
-					label: 'Normalisert',
+					label: 'Normaliser',
 					type: 'NORMAL',
 					apply: (params) => {
 						console.log("Execute Normalize")

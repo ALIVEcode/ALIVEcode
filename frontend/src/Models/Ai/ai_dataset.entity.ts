@@ -52,7 +52,7 @@ export class AIDataset {
 	 * @param param the parameter's name to replace.
 	 * @returns a boolean indicating if the replacement has been made.
 	 */
-	public createOneHot(param: string): boolean {
+	 public createOneHot(param: string): boolean {
 		let iterator: number = 0;
 		let posValues: string[] = [];
 
@@ -81,6 +81,70 @@ export class AIDataset {
 				this.data[dataNum][posValues[i]] =
 					this.data[dataNum][param] === posValues[i] ? 1 : 0;
 				//this.paramNames[i] = param
+			}
+			delete this.data[dataNum][param];
+		}
+
+		//Remove the parameter to replace of the array of parameters
+		this.paramNames.forEach((value, index) => {
+			if (value == param) this.paramNames.splice(index, 1);
+		});
+
+		//Addind the new prarameter to the array of parameters
+		posValues.forEach(e => {
+			this.paramNames.splice(iterator, 0, e);
+			iterator++;
+		});
+
+		return true;
+	}
+
+
+	/**
+	 * Replace the parameter with the given name by other one-hot parameters.
+	 * A one-hot parameter is a boolean parameter indicating if the data had one of
+	 * its parameters equal to a specific value or not.
+	 * In order to replace a qualitative parameter, we have to create a new one-hot
+	 * parameter for each possible value of the original parameter.
+	 *
+	 * @param param the parameter's name to replace.
+	 * @param oneHposValuesotParam One-hot parameter
+	 * @returns a boolean indicating if the replacement has been made.
+	 */
+	 public createcreateOneHotWithNewParamsOneHot(param: string, posValues: string[]): boolean {
+		let iterator: number = 0;
+		let allValue: string[] =[]
+		let autre = 0
+		let autre2= false
+
+		// Check if the given name is a parameter in the database
+		while (this.paramNames[iterator] !== param) {
+			iterator++;
+			// If no correspondance were found, end the function and print an error
+			if (iterator === Object.keys(this.data[0]).length) {
+				console.log('Error: key is not the name of any parameter.');
+				return false;
+			}
+		}
+
+		// Create all possible values for the parameter
+		for (let dataNum: number = 0; dataNum < this.data.length; dataNum++) {
+			if (!allValue.includes(this.data[dataNum][param])) {
+				allValue.push(this.data[dataNum][param]);
+			}
+		}
+
+		allValue.every(elem => posValues.indexOf(elem) !== -1)? autre = 0: autre = 1
+
+		
+		if (autre ===1) posValues.push('autre')
+		// Create a one-hot parameter for each possible value and remove the original parameter
+		for (let dataNum: number = 0; dataNum < this.data.length; dataNum++) {
+			this.data[dataNum]['autre'] =
+					posValues.indexOf(this.data[dataNum][param])===-1 ? 1 : 0;
+			for (let i: number = 0; i < posValues.length-autre; i++) {
+				this.data[dataNum][posValues[i]] =
+					this.data[dataNum][param] === posValues[i] ? 1 : 0;
 			}
 			delete this.data[dataNum][param];
 		}

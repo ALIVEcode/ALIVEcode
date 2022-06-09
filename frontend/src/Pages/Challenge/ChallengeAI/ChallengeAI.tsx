@@ -95,6 +95,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	let deviations = useRef<number[]>();
 	let activeDataset = useRef<AIDataset>(challenge.dataset!);
 
+	let activeModel =  useRef<MODEL_TYPES | undefined >(undefined);
+
 	// Loading the dataset when first renders
 	useEffect(() => {
 		const getDataset = async () => {
@@ -184,6 +186,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 		//Cloning the initial data
 		activeDataset.current = challenge.dataset!.clone();
+		activeModel.current = undefined
 	}
 
 	//-----CALLBACK FUNCTIONS-------//
@@ -211,6 +214,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 */
 	const aiInterfaceIOChange = (newIOCodes: number[]) => {
 		ioCodes.current = newIOCodes;
+		hyperparams.NN.nbInputs = ioCodes.current.filter(e => e===1).length
+		hyperparams.NN.nbOutputs = ioCodes.current.filter(e => e===0).length
 		forceUpdate();
 	};
 
@@ -413,20 +418,35 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	/**
 	 * Creates an ai model
 	 */
-	function modelCreation(): void {}
+	function modelCreation(): void {
+
+		switch (activeModelType) {
+			case MODEL_TYPES.NEURAL_NETWORK:
+				let modelParams: NNModelParams = {
+					layerParams: [],
+				};
+				model.current = new NeuralNetwork('Neural Network Model',hyperparams.NN, modelParams)
+				activeModel.current = MODEL_TYPES.NEURAL_NETWORK
+				console.log("Current Model", model.current)
+				break;
+			default:
+				break;
+		}
+
+		forceUpdate()
+	}
 
 	/**
 	 * Creats of a one shot associate to the column selected
 	 * @param column the parameter's name to replace.
 	 */
-	function oneHot(column: string): string | void {
-		let index = activeDataset.current!.getParamNames().indexOf(column);
+	function oneHot(name: string, colomn: string[]): string | void {
+		let index = activeDataset.current!.getParamNames().indexOf(name);
 		const oldNumberParams = activeDataset.current!.getParamNames().length;
 		const valueIO = ioCodes.current.at(index);
 
-		if (activeDataset.current.createOneHot(column)) {
-			const newNumberParams = activeDataset.current!.getParamNames().length;
-			const numberNewParams = newNumberParams - oldNumberParams;
+		if (activeDataset.current.createcreateOneHotWithNewParamsOneHot(name, colomn)) {
+			const numberNewParams = activeDataset.current!.getParamNames().length- oldNumberParams;
 
 			let newIOCodes = ioCodes.current;
 			//Addind the new column to the IOcodes
@@ -434,6 +454,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				newIOCodes.splice(index + e, 0, valueIO!);
 			}
 			ioCodes.current = newIOCodes;
+			hyperparams.NN.nbInputs = ioCodes.current.filter(e => e===1).length
+			hyperparams.NN.nbOutputs = ioCodes.current.filter(e => e===0).length
 			forceUpdate();
 		} else {
 			if (index != -1)
@@ -659,6 +681,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 							initData={challenge.dataset}
 							hyperparams={hyperparams[activeModelType]}
 							ioCodes={ioCodes.current}
+							activeModel = {activeModel.current}
 						/>
 						{/* TODO Code for visual regression ************
 							<div className="w-1/3 h-full">

@@ -31,8 +31,11 @@ const CourseLayout = () => {
 	const titleRef = useRef<HTMLDivElement>(null);
 	const goToStudentViewRef = useRef<HTMLDivElement>(null);
 	const { registerTutorial } = useContext(TutorialContext);
+	const openedActivityRef = useRef<HTMLDivElement>(null);
 
 	useLayoutEffect(() => {
+		if (openedActivityRef.current) openedActivityRef.current.scrollIntoView();
+
 		return registerTutorial({
 			name: 'CourseLayout',
 			targets: [
@@ -138,6 +141,7 @@ const CourseLayout = () => {
 										id in courseElements.current && (
 											<div key={id} className="course-layout-element">
 												<CourseLayoutElement
+													ref={openedActivityRef}
 													element={courseElements.current[id]}
 												/>
 											</div>

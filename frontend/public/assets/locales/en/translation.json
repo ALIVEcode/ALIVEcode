@@ -383,6 +383,10 @@
 				"AS": "Add an existing file",
 				"CH": "Add a challenge"
 			},
+			"import_challenge_private": {
+				"title": "Warning: Your challenge will go from PRIVATE to RESTRICTED.",
+				"msg": "For your challenge to be accessible to your students, it must at least be saved as RESTRICTED. By adding this challenge to your activity, its accessibility will be changed from PRIVATE to RESTRICTED."
+			},
 			"create_resource": {
 				"generic": "Create ",
 				"PF": "Upload a pdf from this device",

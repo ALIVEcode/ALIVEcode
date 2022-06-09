@@ -12,7 +12,7 @@ export class ResourceChallengeEntity extends ResourceEntity {
   /** Reference to the challenge to display */
   @ManyToOne(() => ChallengeEntity, challenge => challenge.resources)
   @JoinColumn({ name: 'challengeId' })
-  challenge: ChallengeEntity;
+  challenge?: ChallengeEntity;
 
   /** Id of the referenced challenge */
   @Column({ type: 'uuid', name: 'challengeId' })

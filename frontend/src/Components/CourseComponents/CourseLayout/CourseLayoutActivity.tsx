@@ -32,7 +32,7 @@ const CourseLayoutActivity = ({ courseElement }: CourseLayoutActivityProps) => {
 			</div>
 			<Modal
 				key={courseElement?.activity?.id + tab.tab}
-				size="lg"
+				size="xl"
 				open={tab.openedActivity === courseElement}
 				setOpen={(state: boolean) => !state && setTab({ openedActivity: null })}
 				centered

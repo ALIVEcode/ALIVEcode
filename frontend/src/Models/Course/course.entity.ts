@@ -1,9 +1,3 @@
-import { faCloudsmith } from '@fortawesome/free-brands-svg-icons';
-import {
-	faBrain,
-	faClipboardList,
-	faCode,
-} from '@fortawesome/free-solid-svg-icons';
 import { Exclude, Type } from 'class-transformer';
 import { getSubjectIcon, SUBJECTS } from '../../Types/sharedTypes';
 import { CreatedByUser } from '../Generics/createdByUser.entity';

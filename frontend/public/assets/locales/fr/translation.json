@@ -383,6 +383,10 @@
 				"AS": "Ajouter un fichier existant",
 				"CH": "Ajouter un défi"
 			},
+			"import_challenge_private": {
+				"title": "Attention: Votre défi va passer de PRIVÉ à RESTREINT.",
+				"msg": "Pour que votre défi soit accessible à vos étudiants dans un cours, il faut que son accessibilité soit au moins en mode RESTREINT. En important votre défi dans votre activité, celui-ci passera de PRIVÉ à RESTREINT."
+			},
 			"create_resource": {
 				"generic": "Créer une nouvelle ressource",
 				"PF": "Téléverser un pdf depuis cet appareil",

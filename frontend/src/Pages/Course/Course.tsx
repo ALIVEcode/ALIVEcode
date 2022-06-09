@@ -19,7 +19,7 @@ import FormInput from '../../Components/UtilsComponents/FormInput/FormInput';
 import LoadingScreen from '../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
 import Modal from '../../Components/UtilsComponents/Modal/Modal';
 import api from '../../Models/api';
-import { Activity } from '../../Models/Course/activity.entity';
+import { Activity as ActivityModel } from '../../Models/Course/activity.entity';
 import { Course as CourseModel } from '../../Models/Course/course.entity';
 import {
 	CourseContent,
@@ -47,6 +47,10 @@ import { FeedBackTypes } from '../../Models/Feedbacks/entities/feedback.entity';
 import { getBrowser } from '../../Components/MainComponents/FeedbackMenu/FeedbackModal';
 import { ThemeContext } from '../../state/contexts/ThemeContext';
 import { ThemeTypes } from '../../Models/sharedTypes';
+import { ResourceChallenge } from '../../Models/Resource/resources/resource_challenge.entity';
+import { CHALLENGE_ACCESS } from '../../Models/Challenge/challenge.entity';
+import AlertConfirm from '../../Components/UtilsComponents/Alert/AlertConfirm/AlertConfirm';
+import { Resource, RESOURCE_TYPE } from '../../Models/Resource/resource.entity';
 
 /**
  * Course page that shows the content of a course
@@ -79,6 +83,8 @@ const Course = () => {
 	const [editTitle, setEditTitle] = useState(false);
 	const [courseNavigationOpen, setCourseNavigationOpen] = useState(true);
 	const [cursedError, setCursedError] = useState<Error>();
+	const [modalChallengePrivateOpen, setModalChallengePrivateOpen] =
+		useState<Resource>();
 
 	/**
 	 * Check if the current logged in user is the creator of the course
@@ -384,7 +390,7 @@ const Course = () => {
 	};
 
 	/**
-	 * Adds a new content ({@link Activity} or {@link Section}) to the course.
+	 * Adds a new content ({@link ActivityModel} or {@link Section}) to the course.
 	 *
 	 * @param content the content to add to the course
 	 * @param name the name of the acitivity
@@ -478,7 +484,7 @@ const Course = () => {
 	};
 
 	type keyofActivity = {
-		[name in keyof Activity]?: Activity[name];
+		[name in keyof ActivityModel]?: ActivityModel[name];
 	};
 
 	/**
@@ -487,7 +493,10 @@ const Course = () => {
 	 * @param fields Fields to update the activity with
 	 */
 
-	const updateActivity = async (activity: Activity, fields: keyofActivity) => {
+	const updateActivity = async (
+		activity: ActivityModel,
+		fields: keyofActivity,
+	) => {
 		if (!activity || !course.current) return;
 		await api.db.courses.updateActivity(
 			{
@@ -538,7 +547,7 @@ const Course = () => {
 	 * @returns void
 	 * @author Enric Soldevila
 	 */
-	const removeResourceFromActivity = async (activity: Activity) => {
+	const removeResourceFromActivity = async (activity: ActivityModel) => {
 		if (!course.current) return;
 		await api.db.courses.removeResourceFromActivity({
 			id: course.current.id,
@@ -555,7 +564,7 @@ const Course = () => {
 	 * @returns The activity contained inside the activity
 	 * @author Enric Soldevila
 	 */
-	const loadActivityResource = async (activity: Activity) => {
+	const loadActivityResource = async (activity: ActivityModel) => {
 		if (!course.current) return;
 		activity.resource = await api.db.courses.getActivityResource({
 			courseId: course.current.id,
@@ -730,6 +739,12 @@ const Course = () => {
 				</div>
 			)}
 			<div className="w-full h-full flex flex-col bg-[color:var(--background-color)] text-[color:var(--foreground-color)]">
+				{/*previousActivity && (
+					<div className="absolute left-0 right-0">
+						{console.log(previ)}
+						<Activity courseElement={previousActivity}></Activity>
+					</div>
+				)*/}
 				<div className="border-b border-[color:var(--bg-shade-four-color)]">
 					<div className="text-4xl text-left text-[color:var(--foreground-color)] pl-5 pt-3 pb-3">
 						{isCreator() ? (
@@ -814,6 +829,30 @@ const Course = () => {
 				setOpen={setOpenModalImportResource}
 				open={openModalImportResource}
 			>
+				<AlertConfirm
+					title={t('course.activity.import_challenge_private.title')}
+					open={modalChallengePrivateOpen != null}
+					setOpen={bool => !bool && setModalChallengePrivateOpen(undefined)}
+					onConfirm={async () => {
+						if (
+							!course.current ||
+							!tab.openedActivity ||
+							!tab.openedActivity.activity ||
+							!modalChallengePrivateOpen
+						)
+							return;
+						await api.db.courses.addResourceInActivity(
+							course.current,
+							tab.openedActivity.activity,
+							modalChallengePrivateOpen,
+						);
+						(tab.openedActivity.activity as ActivityModel).resource =
+							modalChallengePrivateOpen;
+						setOpenModalImportResource(false);
+					}}
+				>
+					{t('course.activity.import_challenge_private.msg')}
+				</AlertConfirm>
 				<ResourceMenu
 					mode="import"
 					filters={tab.openedActivity?.activity.allowedResources}
@@ -824,12 +863,21 @@ const Course = () => {
 							!tab.openedActivity.activity
 						)
 							return;
+						if (resource.type === RESOURCE_TYPE.CHALLENGE) {
+							const resChallenge = resource as ResourceChallenge;
+							if (!resChallenge.challenge)
+								resChallenge.challenge = await api.db.challenges.get({
+									id: resChallenge.challengeId,
+								});
+							if (resChallenge.challenge.access === CHALLENGE_ACCESS.PRIVATE)
+								return setModalChallengePrivateOpen(resource);
+						}
 						await api.db.courses.addResourceInActivity(
 							course.current,
 							tab.openedActivity.activity,
 							resource,
 						);
-						(tab.openedActivity.activity as Activity).resource = resource;
+						(tab.openedActivity.activity as ActivityModel).resource = resource;
 						setOpenModalImportResource(false);
 					}}
 				/>

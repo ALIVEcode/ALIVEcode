@@ -18,6 +18,8 @@ import { UpdateCourseElementDTO } from './dtos/UpdateCourseElement.dto';
 import { CreateSectionDTO } from './dtos/CreateSection.dto';
 import { ResourceEntity } from '../resource/entities/resource.entity';
 import { ActivityAssignmentEntity } from './entities/activities/activity_assignment.entity';
+import { ResourceChallengeEntity } from '../resource/entities/resources/resource_challenge.entity';
+import { ChallengeEntity, CHALLENGE_ACCESS } from '../challenge/entities/challenge.entity';
 
 /**
  * All the methods to communicate to the database. To create/update/delete/get
@@ -39,6 +41,7 @@ export class CourseService {
     @InjectRepository(ClassroomEntity) private classroomRepo: Repository<ClassroomEntity>,
     @InjectRepository(CourseElementEntity) private courseElRepo: Repository<CourseElementEntity>,
     @InjectRepository(StudentEntity) private studentRepo: Repository<StudentEntity>,
+    @InjectRepository(ChallengeEntity) private challengeRepo: Repository<ChallengeEntity>,
   ) {}
 
   /**
@@ -594,6 +597,15 @@ export class CourseService {
     // Check if the activity accept this type of resource
     if (!activity.allowedResources.includes(resource.type))
       throw new HttpException('Cannot add this type of resource to this activity', HttpStatus.BAD_REQUEST);
+
+    // Change the visibility of the challenge from private to restricted
+    if (resource instanceof ResourceChallengeEntity) {
+      const challenge = await this.challengeRepo.findOne(resource.challengeId);
+      if (challenge.access === CHALLENGE_ACCESS.PRIVATE) {
+        challenge.access = CHALLENGE_ACCESS.RESTRICTED;
+        await this.challengeRepo.save(challenge);
+      }
+    }
 
     activity.resource = resource;
     return await this.activityRepository.save(activity);

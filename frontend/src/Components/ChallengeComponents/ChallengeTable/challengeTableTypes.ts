@@ -3,7 +3,7 @@ import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
 import { OneOf } from '../../../Types/utils';
 import {
 	GenHyperparameters,
-	Hyperparams,
+	Hyperparameters,
 } from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
 import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
 
@@ -19,19 +19,18 @@ import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
  */
 export type ChallengeTableProps = {
 	className?: string;
-	data?: AIDataset;
 	initData?: AIDataset;
-	hyperparams?: any;
 	isData: boolean;
+	ioCodes: number[];
 } & OneOf<
 	{
 		data: AIDataset;
-		ioCodes: number[];
 		handleIOChange: (newIO: number[]) => void;
 	},
 	{
-		hyperparams: Hyperparams;
-		handleHyperparamsChange: (newHyperparams: Hyperparams) => void;
+		hyperparams: Hyperparameters;
+		activeModelType: MODEL_TYPES;
+		handleHyperparamsChange: (newHyperparams: Hyperparameters) => void;
 	}
 >;
 
@@ -66,11 +65,11 @@ export const HyperparamID: any = {
 	epochs: { name: "Nombre d'epochs", componant: 'integer input' }, //
 	type: {
 		name: "Type d'optimiseur",
-		componant: 'MODEL_TYPES',
+		componant: 'NN_OPTIMIZER_TYPES',
 	},
 	modelParams: {
 		name: 'Paramètres du modèle',
-		componant: 'integer input',
+		componant: 'input',
 	},
 };
 

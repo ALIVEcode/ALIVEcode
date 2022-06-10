@@ -143,7 +143,7 @@ export class NeuralNetwork extends AIModel {
 
 	//---- PREDICTION METHODS ----//
 
-	public predict(inputs: Matrix, normalize: boolean): Matrix {
+	public predict(inputs: Matrix): Matrix {
 		let output: Matrix[] = this.predictReturnAll(inputs);
 		return output[output.length - 1];
 	}

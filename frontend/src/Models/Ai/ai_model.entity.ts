@@ -102,5 +102,5 @@ export default abstract class AIModel {
 	 * @param normalize a boolean indicating if we want to normalize the data.
 	 * @returns the outputs of the model.
 	 */
-	public abstract predict(inputs: Matrix, normalize: boolean): Matrix;
+	public abstract predict(inputs: Matrix): Matrix;
 }

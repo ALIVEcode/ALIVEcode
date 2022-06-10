@@ -1,33 +1,40 @@
 import styled from 'styled-components';
-import { GenHyperparameters, Hyperparams } from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
+import {
+	GenHyperparameters,
+	Hyperparameters as Hyperparameters,
+} from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
 import { Theme } from '../../../state/contexts/ThemeContext';
 import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
 
 /**
  * This type describes all properties of an AIInterface.
  *
- * @param handleHyperparamChange a callback function callend when an hyperparameter changes.
- * @param handleModelChange a callback function called when the model changes.
- * @param handleIOChange a callback function called when the inputs or outputs change.
- * @param ioCodes the input output codes to give to the data table.
- * @param className the class name of this component.
- * @param tabs the AITabModel objects for this AIInterface
- * @param data the data object to display with the data table.
- * @param hyperparams the hyperparams object to display with the hyperparams table.
+ * @param handleHyperparamChange a callback function called when a hyperparameter is changed in
+ * the hyperparameters tab.
+ * @param handleModelChange a callback function called when the Model is changed in the hyperparameters tab.
+ * @param handleIOChange a callback function called when the inputs or outputs are changed in the data tab.
+ * @param className the names of optional CSS classes.
+ * @param tabs the tab components of the AIInterface.
+ * @param ioCodes the inputs and output codes for the data table.
+ * @param hyperparams the initial hyperparameter values for the hyperparameters table.
+ * @param data the current dataset used for the challenge.
+ * @param initData the dataset linked to this challenge in the backend.
+ * @param modelType the current model type of the challenge.
  *
  * @author Félix Jobin
  */
 export type AIInterfaceProps = {
-	handleHyperparamChange: (newHyperparams: any) => void;
+	handleHyperparamChange: (newHyperparams: Hyperparameters) => void;
 	handleModelChange: (newModel: MODEL_TYPES) => void;
 	handleIOChange: (newIO: number[]) => void;
-	ioCodes?: number[];
+	ioCodes: number[];
 	className?: string;
 	tabs: AITabModel[];
 	data: any;
-	hyperparams: Hyperparams;
-	initData: any
 	activeModel: MODEL_TYPES|undefined
+	hyperparams: Hyperparameters;
+	modelType: MODEL_TYPES;
+	initData: any;
 };
 
 /**
@@ -56,7 +63,7 @@ export const StyledAIInterface = styled.div`
 			: 'color: var(--foreground-color)'}
 
 	.bg {
-		background-color: var(--background-color);
+		background-color: var(--bg-shade-one-color);
 	}
 
 	.ai-tabs {

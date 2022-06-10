@@ -16,8 +16,13 @@ import AITab from './AITab';
 import ChallengeTable from '../ChallengeTable/ChallengeTable';
 import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
 import { ThreeScene } from './AIVisualModels/AINeuralNet';
-import { GenHyperparameters } from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
+import {
+	GenHyperparameters,
+	Hyperparameters,
+} from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
+import useComplexState from '../../../state/hooks/useComplexState';
+import { defaultModelType } from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/ai_models/DefaultHyperparams';
 
 /**
  * This component represents the visual interface in every ChallengeAI. It handles the
@@ -31,68 +36,62 @@ import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
  * @param tabs the tab components of the AIInterface.
  * @param ioCodes the inputs and output codes for the data table.
  * @param hyperparams the initial hyperparameter values for the hyperparameters table.
+ * @param data the current dataset used for the challenge.
+ * @param initData the dataset linked to this challenge in the backend.
+ * @param modelType the current model type of the challenge.
  *
  * @author Félix Jobin
  */
-const AIInterface = memo(
-	({
-		handleHyperparamChange,
-		handleModelChange,
-		handleIOChange,
-		ioCodes,
-		className,
-		tabs: initialTabs,
-		data,
-		initData,
-		activeModel,
-		hyperparams: initialHyperparams,
-	}: AIInterfaceProps) => {
-		// The selected theme to apply to this component
-		const { theme } = useContext(ThemeContext);
+const AIInterface = ({
+	handleHyperparamChange,
+	handleModelChange,
+	handleIOChange,
+	ioCodes,
+	className,
+	tabs: initialTabs,
+	data,
+	initData,
+	modelType,
+	hyperparams,
+	activeModel,
+}: AIInterfaceProps) => {
+	// The selected theme to apply to this component
+	const { theme } = useContext(ThemeContext);
 
-		// The active model type on this inteface
-		const [activeModelType, setActiveModelType] = useState(
-			MODEL_TYPES.NEURAL_NETWORK,
+	// The tab icons to display on the interface
+	const [tabs, setTabs] = useState<AITabModel[]>(() => {
+		return (
+			initialTabs || [
+				// If the tabs array was empty
+				{
+					title: 'New tab',
+					open: true,
+				},
+			]
 		);
+	});
 
-		// The tab icons to display on the interface
-		const [tabs, setTabs] = useState<AITabModel[]>(() => {
-			return (
-				initialTabs || [
-					// If the tabs array was empty
-					{
-						title: 'New tab',
-						open: true,
-					},
-				]
-			);
+	/**
+	 * Updates the state of every tab icon and the content
+	 * shown in the parent component.
+	 * @param idx the opened tab's index.
+	 */
+	const setOpenedTab = (idx: number) => {
+		const updatedTabs = tabs.map((t, i) => {
+			t.open = i === idx;
+			return t;
 		});
+		setTabs(updatedTabs);
+	};
 
-		/**
-		 * Updates the state of every tab icon and the content
-		 * shown in the parent component.
-		 * @param idx the opened tab's index.
-		 */
-		const setOpenedTab = useCallback(
-			(idx: number) => {
-				const updatedTabs = tabs.map((t, i) => {
-					t.open = i === idx;
-					return t;
-				});
-				setTabs(updatedTabs);
-			},
-			[tabs],
-		);
-
-		/**
-		 * Handles the model change when the dropdown menu is used in this component.
-		 * Also calls the callback function for a model change in its parent component.
-		 * @param value the string value of the dropdown.
-		 */
-		const handleDropdownChange = (value: keyof GenHyperparameters) => {
-			setActiveModelType(value as MODEL_TYPES);
-			handleModelChange(value as MODEL_TYPES);
-		};
+	/**
+	 * Handles the model change when the dropdown menu is used in this component.
+	 * Also calls the callback function for a model change in its parent component.
+	 * @param value the string value of the dropdown.
+	 */
+	const handleDropdownChange = (value: MODEL_TYPES) => {
+		handleModelChange(value);
+	};
 
 		function showModel(){
 			switch (activeModel) {
@@ -103,15 +102,12 @@ const AIInterface = memo(
 			}
 		}
 
-		useEffect(() => {
-			console.log(initialHyperparams);
-		}, [initialHyperparams]);
-
-		return (
-			<StyledAIInterface
-				theme={theme}
-				className={'h-3/5 w-full flex flex-col ' + className}
-			>
+	return (
+		<StyledAIInterface
+			theme={theme}
+			className={'h-3/5 w-full flex flex-col ' + className}
+		>
+			<div className="bg w-full h-full">
 				{/*AIInterface tabs*/}
 				<div className="ai-tabs w-full items-center overflow-x-auto overflow-y-clip">
 					<div className="dropdown-menu w-full">
@@ -119,10 +115,9 @@ const AIInterface = memo(
 						<select
 							className="dropdown"
 							onChange={e => {
-								handleDropdownChange(
-									e.target.value as keyof GenHyperparameters,
-								);
+								handleDropdownChange(e.target.value as MODEL_TYPES);
 							}}
+							defaultValue={modelType}
 						>
 							<option value={MODEL_TYPES.NEURAL_NETWORK}>
 								Réseau de neurones
@@ -145,7 +140,7 @@ const AIInterface = memo(
 						<ChallengeTable
 							data={data}
 							isData={true}
-							initData = {initData}
+							initData={initData}
 							ioCodes={ioCodes!}
 							handleIOChange={handleIOChange}
 						/>
@@ -166,18 +161,20 @@ const AIInterface = memo(
 					<>
 						<h1 className="header h-1/6">Valeurs des hyperparamètres</h1>
 						<ChallengeTable
-							hyperparams={initialHyperparams}
 							className="h-5/6"
 							isData={false}
+							hyperparams={hyperparams}
 							handleHyperparamsChange={handleHyperparamChange}
+							ioCodes={ioCodes}
+							activeModelType={modelType}
 						/>
 					</>
 				) : (
 					<div />
 				)}
-			</StyledAIInterface>
-		);
-	},
-);
+			</div>
+		</StyledAIInterface>
+	);
+};
 
 export default AIInterface;

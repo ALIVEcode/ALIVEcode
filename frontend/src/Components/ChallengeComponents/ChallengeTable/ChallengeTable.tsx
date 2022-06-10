@@ -1,13 +1,13 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
-	Hyperparams,
+	Hyperparameters,
 	NNHyperparameters,
 	RegHyperparameters,
 } from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
 import {
 	ChallengeTableProps,
 	StyledChallengeTable,
-	HyperparamID,
+	HyperparamID as HyperparamTranslator,
 } from './challengeTableTypes';
 
 import {
@@ -18,37 +18,61 @@ import {
 } from '../../../Models/Ai/ai_model.entity';
 import { data } from 'jquery';
 import { init } from 'i18next';
+import useComplexState from '../../../state/hooks/useComplexState';
+import { defaultHyperparams } from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/ai_models/DefaultHyperparams';
+import { GenHyperparameters } from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
 
 /**
  * This module defines all properties related to the data table in AI challenges.
  * The structure of the table is described in this object while the style of
  * the table is set in ChallengeTableTypes.
  * @param props the props of the table
- * @returns
  */
 const ChallengeTable = (props: ChallengeTableProps) => {
-	const [currHyperparams, setCurrHyperparams] = useState(props.hyperparams);
+	const [currHyperparams, setCurrHyperparams] = useState(props.hyperparams); //The current hyperparams of the table
 
-	const updateHyperparams = useCallback(
-		(
-			e: React.FocusEvent<HTMLInputElement, Element>,
-			newValue: any,
-			key: string,
-		): void => {
-			if (!currHyperparams || !props.handleHyperparamsChange) return;
+	//Function called after a change on hyperparams.
+	useEffect(() => {
+		setCurrHyperparams(props.hyperparams);
+	}, [props.hyperparams]);
 
-			if (HyperparamID![key]['componant'] === 'integer input') {
-				e.target.value = Number(parseInt(newValue)).toString();
-				newValue = e.target.value;
+	/**
+	 * Callback function called whenever a new value is entered in an input field associated
+	 * with an hyperparameter. Changes the hyperparameter object and sends its new
+	 * value to its parent component.
+	 * @param newValue the hyperparameter's new value as a string.
+	 * @param key the key name of the hyperparameter to change.
+	 */
+	const updateHyperparams = (
+		newValue: string,
+		key: keyof Hyperparameters,
+	): void => {
+		let newNumValue: number = 0;
+
+		// If hyperparams object of handleHyperparams function is null, cancel.
+		if (!props.handleHyperparamsChange) return;
+
+		let tempHyperparams: Hyperparameters = JSON.parse(
+			JSON.stringify(currHyperparams),
+		);
+
+		if (props.activeModelType) {
+			// Determine the type of the hyperparam
+			switch (HyperparamTranslator![key].componant) {
+				case 'integer input':
+					newNumValue = parseInt(newValue);
+					(tempHyperparams[key] as number) = newNumValue;
+					break;
+				case 'input':
+					newNumValue = parseFloat(newValue);
+					(tempHyperparams[key] as number) = newNumValue;
+					break;
+				default:
+					(tempHyperparams[key] as string) = newValue;
 			}
-			let tempHyperparams: any = currHyperparams;
-			console.log(newValue);
-			tempHyperparams[key] = newValue;
 			setCurrHyperparams(tempHyperparams);
-			props.handleHyperparamsChange(currHyperparams);
-		},
-		[currHyperparams, props],
-	);
+		}
+	};
 
 	/**
 	 * Sets the IOCodes after a change in the interface.
@@ -74,25 +98,12 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	);
 
 	/**
-	 * Returns the name associated with the hyperparameter.
-	 * @param key the hyperparameter
-	 * @returns the name of the hyperparameter
-	 */
-	const nameHyperparam = useCallback(
-		(key: string) => {
-			if (!HyperparamID) return 'Erreur';
-			return HyperparamID![key]['name'];
-		},
-		[HyperparamID],
-	);
-
-	/**
 	 * Returns the step associated with the hyperparameter.
 	 * @param key the hyperparameter
 	 * @returns the step of the hyperparameter
 	 */
 	function inputStep(key: string) {
-		if (HyperparamID![key]['componant'] === 'input') return '0.01';
+		if (HyperparamTranslator![key]['componant'] === 'input') return '0.01';
 		else return '1';
 	}
 
@@ -101,90 +112,13 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	 * @param index the index of the dropdown
 	 * @returns If the dropdown is disable or not
 	 */
-	 function disableDropdown(index : number){
-		const header = props.data?.getParamNames().at(index)
-		if (props.initData!.getParamNames().indexOf(header!)=== -1){
-			return true
-		}else{
-			return false
+	function disableDropdown(index: number) {
+		const header = props.data?.getParamNames().at(index);
+		if (props.initData!.getParamNames().indexOf(header!) === -1) {
+			return true;
+		} else {
+			return false;
 		}
-	}
-
-	/**
-	 * Returns the component associated with the hyperparameter.
-	 * @param key the hyperparameter
-	 * @returns the component corresponding to the hyperparameter
-	 */
-	function addHypperparamInput(key: keyof Hyperparams) {
-		if (!currHyperparams) return;
-		if (
-			HyperparamID![key]['componant'] === 'integer input' ||
-			HyperparamID![key]['componant'] === 'input'
-		)
-			return (
-				<input
-					className="inputs"
-					type="number"
-					onBlur={e => {
-						updateHyperparams(e, e.target.value, key);
-					}}
-					defaultValue={currHyperparams[key]}
-					onKeyPress={event => {
-						if (
-							!(
-								/[0-9]/.test(event.key) ||
-								/[.]/.test(event.key) ||
-								/[,]/.test(event.key)
-							)
-						) {
-							event.preventDefault();
-						}
-					}}
-					step={inputStep(key)}
-					min="0"
-				></input>
-			);
-		else var keys: any[];
-		var values: any[];
-
-		switch (HyperparamID![key]['componant']) {
-			case 'NN_OPTIMIZER_TYPES': {
-				values = Object.values(NN_OPTIMIZER_TYPES);
-				keys = Object.keys(NN_OPTIMIZER_TYPES);
-				break;
-			}
-			case 'ACTIVATION_FUNCTIONS': {
-				values = Object.values(ACTIVATION_FUNCTIONS);
-				keys = Object.keys(ACTIVATION_FUNCTIONS);
-				break;
-			}
-			case 'MODEL_TYPES': {
-				values = Object.values(MODEL_TYPES);
-				keys = Object.keys(MODEL_TYPES);
-				break;
-			}
-			case 'COST_FUNCTIONS': {
-				values = Object.values(COST_FUNCTIONS);
-				keys = Object.keys(COST_FUNCTIONS);
-				break;
-			}
-			default: {
-				values = [];
-				keys = [];
-			}
-		}
-		return (
-			<select className="inputs">
-				{values.map((index: number) => {
-					let i = values.indexOf(index);
-					return (
-						<option key={index} value={index}>
-							{keys.at(i)}
-						</option>
-					);
-				})}
-			</select>
-		);
 	}
 
 	/**
@@ -202,10 +136,12 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	): string {
 		let className: string = initialClassName;
 		if (isHeader) {
+			// For header components
 			if (props.ioCodes![index] === 1) className += ' input-header';
 			else if (props.ioCodes![index] === 0) className += ' output-header';
 			else className += ' ignore-header';
 		} else {
+			// For data components
 			if (props.ioCodes![index] === 1) className += ' input-data';
 			else if (props.ioCodes![index] === 0) className += ' output-data';
 			else className += ' ignore-data';
@@ -257,7 +193,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 					</tr>
 				</>
 			);
-		if (props.hyperparams && !props.isData)
+		if (props.activeModelType && !props.isData)
 			return (
 				<tr>
 					<th className="titles">Hyperparamètre</th>
@@ -283,7 +219,9 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 											key={col}
 											className={setDataTabClassName(false, 'data', col)}
 										>
-											{typeof element === 'number'? Math.round(element * 10000) / 10000 : element}
+											{typeof element === 'number'
+												? Math.round(element * 10000) / 10000
+												: element}
 										</td>
 									);
 								})}
@@ -292,21 +230,122 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 					})}
 				</>
 			);
-		if (props.hyperparams && !props.isData)
+		if (currHyperparams && !props.isData) {
 			return (
 				<>
-					{Object.keys(props.hyperparams).map((key: string, index: number) => {
+					{Object.keys(currHyperparams).map((key: string, index: number) => {
 						return (
 							<tr key={index}>
-								<td className="hyperparam-name data">{nameHyperparam(key)}</td>
+								<td className="hyperparam-name data">
+									{addHyperparamName(key)}
+								</td>
 								<td className="hyperparam-value data">
-									{addHypperparamInput(key as keyof Hyperparams)}
+									{addHypperparamInput(key as keyof Hyperparameters)}
 								</td>
 							</tr>
 						);
 					})}
 				</>
 			);
+		}
+	}
+
+	/**
+	 * Returns the name associated with the hyperparameter.
+	 * @param key the hyperparameter
+	 * @returns the name of the hyperparameter
+	 */
+	const addHyperparamName = useCallback((key: string) => {
+		if (!HyperparamTranslator) return 'Erreur';
+		return HyperparamTranslator![key]['name'];
+	}, []);
+
+	/**
+	 * Returns the input component associated with the hyperparameter.
+	 * @param key the hyperparameter
+	 * @returns the component corresponding to the hyperparameter
+	 */
+	function addHypperparamInput(key: keyof Hyperparameters) {
+		if (
+			HyperparamTranslator![key]['componant'] === 'integer input' ||
+			HyperparamTranslator![key]['componant'] === 'input'
+		) {
+			// Returned component if the hyperparam needs an input field
+
+			return (
+				currHyperparams &&
+				props.handleHyperparamsChange && (
+					<input
+						className="inputs"
+						type="number"
+						onBlur={e => {
+							props.handleHyperparamsChange(currHyperparams);
+						}}
+						value={currHyperparams[key]}
+						onChange={e => {
+							updateHyperparams(e.target.value, key);
+						}}
+						onKeyPress={event => {
+							if (
+								!(
+									/[0-9]/.test(event.key) ||
+									/[.]/.test(event.key) ||
+									/[,]/.test(event.key)
+								)
+							) {
+								event.preventDefault();
+							}
+						}}
+						step={inputStep(key)}
+						min="0"
+					></input>
+				)
+			);
+		}
+		var keys: any[];
+		var values: any[];
+
+		switch (HyperparamTranslator![key]['componant']) {
+			case 'NN_OPTIMIZER_TYPES': {
+				values = Object.values(NN_OPTIMIZER_TYPES);
+				keys = Object.keys(NN_OPTIMIZER_TYPES);
+				break;
+			}
+			case 'ACTIVATION_FUNCTIONS': {
+				values = Object.values(ACTIVATION_FUNCTIONS);
+				keys = Object.keys(ACTIVATION_FUNCTIONS);
+				break;
+			}
+			case 'MODEL_TYPES': {
+				values = Object.values(MODEL_TYPES);
+				keys = Object.keys(MODEL_TYPES);
+				break;
+			}
+			case 'COST_FUNCTIONS': {
+				values = Object.values(COST_FUNCTIONS);
+				keys = Object.keys(COST_FUNCTIONS);
+				break;
+			}
+			default: {
+				values = [];
+				keys = [];
+			}
+		}
+		return (
+			<select
+				className="inputs"
+				onChange={e => updateHyperparams(e.target.value, key)}
+			>
+				{values.map((index: number) => {
+					let i = values.indexOf(index);
+					return (
+						<option key={index} value={index}>
+							{keys.at(i)}
+						</option>
+					);
+				})}
+			</select>
+		);
 	}
 
 	return (

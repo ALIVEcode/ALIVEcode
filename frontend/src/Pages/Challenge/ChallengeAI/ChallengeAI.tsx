@@ -7,44 +7,31 @@ import ChallengeAIExecutor from './ChallengeAIExecutor';
 import useCmd from '../../../state/hooks/useCmd';
 import { ChallengeAI as ChallengeAIModel } from '../../../Models/Challenge/challenges/challenge_ai.entity';
 import dataAI from './dataAI.json';
-import ChallengeTable from '../../../Components/ChallengeComponents/ChallengeTable/ChallengeTable';
-import ChallengeGraph from '../../../Components/ChallengeComponents/ChallengeGraph/ChallengeGraph';
 import PolyOptimizer from './artificial_intelligence/ai_optimizers/ai_reg_optimizers/PolyOptmizer';
 import DataPoint from '../../../Components/ChallengeComponents/ChallengeGraph/DataTypes';
 import { ChallengeContext } from '../../../state/contexts/ChallengeContext';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import ChallengeToolsBar from '../../../Components/ChallengeComponents/ChallengeToolsBar/ChallengeToolsBar';
 import { NeuralNetwork } from './artificial_intelligence/ai_models/ai_neural_networks/NeuralNetwork';
-import { matAdd, Matrix } from './artificial_intelligence/AIUtils';
-import {
-	GenHyperparameters,
-	NNHyperparameters,
-	NNModelParams,
-} from './artificial_intelligence/AIUtilsInterfaces';
+import { GenHyperparameters } from './artificial_intelligence/AIUtilsInterfaces';
 import { useAlert } from 'react-alert';
-import { GradientDescent } from './artificial_intelligence/ai_optimizers/ai_nn_optimizers/GradientDescent';
-import {
-	NN_OPTIMIZER_TYPES,
-	COST_FUNCTIONS,
-	MODEL_TYPES,
-} from '../../../Models/Ai/ai_model.entity';
+import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
 import api from '../../../Models/api';
-import { ACTIVATION_FUNCTIONS } from '../../../Models/Ai/ai_model.entity';
 import { PolyRegression } from './artificial_intelligence/ai_models/ai_regression/PolyRegression';
-import { GenAIModel } from './artificial_intelligence/AIUtilsInterfaces';
 import {
-	RegModelParams,
-	GenOptimizer,
+	GenAIModel,
+	Hyperparameters,
 } from './artificial_intelligence/AIUtilsInterfaces';
-import {
-	GenRegression,
-	RegHyperparameters,
-} from './artificial_intelligence/AIUtilsInterfaces';
+import { GenOptimizer } from './artificial_intelligence/AIUtilsInterfaces';
+import { RegHyperparameters } from './artificial_intelligence/AIUtilsInterfaces';
 import AIInterface from '../../../Components/ChallengeComponents/AIInterface/AIInterface';
 import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
-import { mainAIUtilsTest } from './artificial_intelligence/ai_tests/AIUtilsTest';
-import { defaultHyperparams } from './artificial_intelligence/ai_models/DefaultHyperparams';
-import useComplexState from '../../../state/hooks/useComplexState';
+import {
+	defaultHyperparams,
+	defaultModelType,
+} from './artificial_intelligence/ai_models/DefaultHyperparams';
+import { Matrix } from './artificial_intelligence/AIUtils';
+import { act } from '@testing-library/react';
 
 /**
  * Ai challenge page. Contains all the components to display and make the ai challenge functionnal.
@@ -59,6 +46,7 @@ import useComplexState from '../../../state/hooks/useComplexState';
  * @author Félix Jobin, Enric Soldevila, Mathis Laroche
  */
 const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
+	//Context objects related to challenges and users
 	const { user } = useContext(UserContext);
 	const {
 		challenge: challengeUntyped,
@@ -71,52 +59,32 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		askForUserInput,
 	} = useContext(ChallengeContext);
 	const challenge = challengeUntyped as ChallengeAIModel;
-	const executor =
-		executorUntyped as React.MutableRefObject<ChallengeAIExecutor | null>;
 
-	const forceUpdate = useForceUpdate();
-	const [cmdRef, cmd] = useCmd();
+	const executor =
+		executorUntyped as React.MutableRefObject<ChallengeAIExecutor | null>; //Executor of the challenge
+
+	const forceUpdate = useForceUpdate(); //To force the render on this component
+
+	const [cmdRef, cmd] = useCmd(); //The console of this inteface
 	const alert = useAlert();
 
-	//Model variables to keep track on the current Model, its type and hyperparameters.
+	//Active model object for this challenge
 	const model = useRef<GenAIModel>();
-	const [activeModelType, setActiveModelType] = useState(
-		MODEL_TYPES.NEURAL_NETWORK,
-	);
+
+	//Active model type for this challenge
+	const [activeModelType, setActiveModelType] =
+		useState<MODEL_TYPES>(defaultModelType);
 	const regression = useRef<PolyRegression>();
+
+	const [hyperparams, setHyperparams] =
+		useState<GenHyperparameters>(defaultHyperparams); //Current hyperparameters of the challenge
+
+	let optimizer = useRef<GenOptimizer>();
 
 	//TODO replace these codes with the ones chosen in the interface
 	const ioCodes = useRef<number[]>([]);
-	let inputs = useRef<Matrix>();
-	let outputs = useRef<Matrix>();
-	let means = useRef<number[]>();
-	let outputMean = useRef<number>();
-	let outputDeviation = useRef<number>();
-	let deviations = useRef<number[]>();
-	let activeDataset = useRef<AIDataset>(challenge.dataset!);
-
-	let activeModel =  useRef<MODEL_TYPES | undefined >(undefined);
-
-	// Loading the dataset when first renders
-	useEffect(() => {
-		const getDataset = async () => {
-			if (!challenge.dataset)
-				challenge.dataset = await api.db.ai.getDataset(challenge.datasetId);
-			activeDataset.current = challenge.dataset.clone();
-			forceUpdate();
-			if (challenge.dataset) activeDataset.current = challenge.dataset.clone();
-			forceUpdate();
-			if (challenge.dataset) {
-				activeDataset.current = challenge.dataset;
-				ioCodes.current = challenge.dataset.getDataAsArray().map(() => -1);
-			} else {
-				console.error("Erreur : la table ne s'est pas chargée correctement.");
-			}
-		};
-		getDataset();
-
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	const [activeDataset, setActiveDataset] = useState(challenge.dataset);
+	let activeModel : MODEL_TYPES|undefined = undefined;
 
 	// Initializing the LevelAIExecutor
 	executor.current = useMemo(
@@ -137,58 +105,20 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					normalize,
 					predict,
 					testNeuralNetwork,
-					setDataset: setDatasetStats,
 				},
 				challenge.name,
 				askForUserInput,
 				alert,
 			)),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[challenge?.id, user],
+		[challenge?.id, user, activeDataset, hyperparams, ioCodes],
 	);
 
-	const lineInterfaceContentChanges = (content: any) => {
-		if (executor.current) executor.current.lineInterfaceContent = content;
-		if (!editMode && progression) {
-			progression.data.code = content;
-			const updatedProgression = progression;
-			setProgression(updatedProgression);
-			saveProgressionTimed();
-		}
-	};
-
-	/**
-	 * Initialies the dataset and the iocodes when the button run is clicked
-	 */
-	function initializeDataset() {
-		//Initialize the ioCodes according to the table
-		console.log('--- User click on run ---');
-		let first = true;
-		let array = activeDataset.current!.getDataAsArray().map((val, index) => {
-			const header = activeDataset.current!.getParamNames().at(index);
-			if (challenge.dataset!.getParamNames().indexOf(header!) === -1) {
-				if (first) {
-					first = false;
-					return ioCodes.current[index];
-				} else {
-					return -200;
-				}
-			} else {
-				first = true;
-				return ioCodes.current[index];
-			}
-		});
-		let newIOCodes: number[] = [];
-		array.forEach(e => {
-			if (e !== -200) newIOCodes.push(e);
-		});
-		ioCodes.current = newIOCodes;
-		console.log('current iocodes : ', ioCodes.current);
-
-		//Cloning the initial data
-		activeDataset.current = challenge.dataset!.clone();
-		activeModel.current = undefined
-	}
+	//--------UseEffects-------//
+	useEffect(() => {
+		if (!cmd) return forceUpdate();
+		if (executor.current) executor.current.cmd = cmd;
+	}, [cmd, executor, forceUpdate]);
 
 	//-----CALLBACK FUNCTIONS-------//
 
@@ -196,9 +126,13 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * Callback function called when an hyperparam is changed in the interface.
 	 * @param newHyperparams the new Hyperparams object.
 	 */
-	const aiInterfaceHyperparamsChanges = (newHyperparams: any) => {
-		console.log('New Hyperparams');
-		console.log(newHyperparams);
+	const aiInterfaceHyperparamsChanges = (newHyperparams: Hyperparameters) => {
+		let tempHyperparams: GenHyperparameters = JSON.parse(
+			JSON.stringify(hyperparams),
+		);
+		(tempHyperparams[activeModelType] as Hyperparameters) = newHyperparams;
+		setHyperparams(tempHyperparams);
+		console.log('New Hyperparams ', hyperparams);
 	};
 
 	/**
@@ -220,12 +154,59 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		forceUpdate();
 	};
 
-	useEffect(() => {
-		if (!cmd) return forceUpdate();
-		if (executor.current) executor.current.cmd = cmd;
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [cmd]);
+	/**
+	 * Callback function called when a change occurs in the LineInterface component.
+	 * @param content the LineInterface's new content.
+	 */
+	const lineInterfaceContentChanges = (content: any) => {
+		if (executor.current) executor.current.lineInterfaceContent = content;
+		if (!editMode && progression) {
+			progression.data.code = content;
+			const updatedProgression = progression;
+			setProgression(updatedProgression);
+			saveProgressionTimed();
+		}
+	};
 
+	//-------END OF CALLBACK FUNCTIONS-------//
+
+	/**
+	 * Initialies the dataset and the iocodes when the button run is clicked
+	 */
+	function initializeDataset() {
+		//Initialize the ioCodes according to the table
+		console.log('--- User click on run ---');
+
+		//If the dataset is loaded
+		if (activeDataset) {
+			let first = true;
+			let array = activeDataset.getDataAsArray().map((val, index) => {
+				const header = activeDataset.getParamNames().at(index);
+				if (challenge.dataset!.getParamNames().indexOf(header!) === -1) {
+					if (first) {
+						first = false;
+						return ioCodes.current[index];
+					} else {
+						return -200;
+					}
+				} else {
+					first = true;
+					return ioCodes.current[index];
+				}
+			});
+			let newIOCodes: number[] = [];
+			array.forEach(e => {
+				if (e !== -200) newIOCodes.push(e);
+			});
+			ioCodes.current = newIOCodes;
+			console.log('current iocodes : ', ioCodes.current);
+
+			//Cloning the initial data
+			setActiveDataset(challenge.dataset!.clone());
+		}
+	}
+
+	//-----------TODO change the followings when regressions are implemented---------//
 	//Set the data for the challenge
 	const [data] = useState(dataAI);
 
@@ -248,35 +229,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	});
 	let datasets = useRef([initialDataset, initialDataset]);
 	const [chartData, setChartData] = useState({ datasets: [initialDataset] });
-
-	//TODO link this declaration to the interface when completed
-	//Change the type to GenHyperparameters
-	const [hyperparams, setHyperparams] =
-		useComplexState<GenHyperparameters>(defaultHyperparams);
-
-	let optimizer = useRef<GenOptimizer>();
-
-	/**
-	 * Sets the statistics related to the current dataset from this challenge.
-	 * This function is called every time the run button is hit and when the dataset is
-	 * loaded for the first time.
-	 */
-	function setDatasetStats() {
-		activeDataset.current = challenge.dataset!.clone();
-		[inputs.current, outputs.current] = activeDataset.current!.getInputsOutputs(
-			ioCodes.current,
-		);
-		if (inputs.current) {
-			console.log('Existing inputs');
-			means.current = inputs.current.meanOfAllRows();
-			deviations.current = inputs.current.deviationOfAllRows();
-		}
-		if (outputs.current) {
-			console.log('Existing outputs');
-			outputMean.current = outputs.current.meanOfAllRows()[0];
-			outputDeviation.current = outputs.current.deviationOfAllRows()[0];
-		}
-	}
 
 	/**
 	 * Resets the dataset array and the data shown on the graph.
@@ -321,7 +273,10 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @param d the param d of a polynomial regression.
 	 */
 	function createRegression(a: number, b: number, c: number, d: number) {
-		regression.current = new PolyRegression('1', hyperparams.POLY);
+		regression.current = new PolyRegression(
+			'1',
+			hyperparams[activeModelType] as RegHyperparameters,
+		);
 		optimizer.current = new PolyOptimizer(regression.current);
 		model.current = regression.current;
 	}
@@ -354,10 +309,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		if (!model.current) {
 			return "Erreur : aucun modèle n'a été créé jusqu'à présent. Veuillez créer un modèle afin de calculer son erreur.";
 		}
-		return (
-			'Erreur du modèle : ' +
-			optimizer.current!.computeCost(inputs.current!, outputs.current!)
-		);
+		return 'Erreur du modèle : fonction à implémenter';
 	}
 
 	/**
@@ -370,7 +322,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			return "Erreur : aucun modèle n'a été créé jusqu'à présent.";
 		}
 
-		//These lines are temporary, waiting for the frontend to be reworked
+		/*These lines are temporary, waiting for the frontend to be reworked
+
 		optimizer.current?.setLearningRate(lr);
 		optimizer.current?.setEpochs(epochs);
 		model.current = optimizer.current?.optimize(
@@ -378,6 +331,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			outputs.current!,
 		);
 		showRegression();
+		*/
 		return "Fin de l'optimisation";
 	}
 
@@ -391,9 +345,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		setDataOnGraph(mainDataset);
 		showRegression();
 		const matInputs: Matrix = new Matrix([[predInputs]]);
-		return model
-			.current!.predict(matInputs.transpose(), false)
-			.getValue()[0][0];
+		return model.current!.predict(matInputs.transpose()).getValue()[0][0];
 	}
 
 	/**
@@ -402,15 +354,15 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @returns Table representing the data of the column asked.
 	 */
 	function columnValues(column: string): any[] {
-		let index = activeDataset.current!.getParamNames().indexOf(column);
+		let index = activeDataset!.getParamNames().indexOf(column);
 		let array: any[] = [];
 		if (index !== -1) {
 			for (
-				let i = activeDataset.current!.getDataAsArray().at(0)!.length - 1;
+				let i = activeDataset!.getDataAsArray().at(0)!.length - 1;
 				i >= 0;
 				i--
 			) {
-				array.push(activeDataset.current!.getDataAsArray().at(index)?.at(i));
+				array.push(activeDataset!.getDataAsArray().at(index)?.at(i));
 			}
 		}
 		return array;
@@ -423,11 +375,11 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 		switch (activeModelType) {
 			case MODEL_TYPES.NEURAL_NETWORK:
-				let modelParams: NNModelParams = {
+				
+				model.current = new NeuralNetwork('Neural Network Model',hyperparams.NN, {
 					layerParams: [],
-				};
-				model.current = new NeuralNetwork('Neural Network Model',hyperparams.NN, modelParams)
-				activeModel.current = MODEL_TYPES.NEURAL_NETWORK
+				  })
+				activeModel = MODEL_TYPES.NEURAL_NETWORK
 				console.log("Current Model", model.current)
 				break;
 			default:
@@ -442,12 +394,12 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @param column the parameter's name to replace.
 	 */
 	function oneHot(name: string, colomn: string[]): string | void {
-		let index = activeDataset.current!.getParamNames().indexOf(name);
-		const oldNumberParams = activeDataset.current!.getParamNames().length;
+		let index = activeDataset!.getParamNames().indexOf(name);
+		const oldNumberParams = activeDataset!.getParamNames().length;
 		const valueIO = ioCodes.current.at(index);
 
-		if (activeDataset.current.createcreateOneHotWithNewParamsOneHot(name, colomn)) {
-			const numberNewParams = activeDataset.current!.getParamNames().length- oldNumberParams;
+		if (activeDataset!.createcreateOneHotWithNewParamsOneHot(name, colomn)) {
+			const numberNewParams = activeDataset!.getParamNames().length- oldNumberParams;
 
 			let newIOCodes = ioCodes.current;
 			//Addind the new column to the IOcodes
@@ -472,62 +424,46 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @param column the parameter's name to replace.
 	 */
 	function normalize(column: string): string | void {
-		let index = activeDataset.current!.getParamNames().indexOf(column);
-		if (
-			index != -1 &&
-			!activeDataset.current.getDataAsMatrix().equals(new Matrix(1, 1))
-		) {
-			activeDataset.current.normalizeParam(column);
+		if (activeDataset) {
+			let index = activeDataset.getParamNames().indexOf(column);
+			if (
+				index !== -1 &&
+				!activeDataset.getDataAsMatrix().equals(new Matrix(1, 1))
+			) {
+				activeDataset.normalizeParam(column);
 
-			forceUpdate();
-		} else {
-			if (index != -1)
-				return 'Erreur : Une colonne possède des chaines de caractères comme donnée dans la base de données';
-			else
-				return 'Erreur : Le nom de la colonne entrée en paramètre est inexistante';
-		}
+			} else {
+				if (index !== -1)
+					return 'Erreur : Une colonne possède des chaines de caractères comme donnée dans la base de données';
+				else
+					return 'Erreur : Le nom de la colonne entrée en paramètre est inexistante';
+			}
+		} else return "Erreur : la base de données n'a pas été chargée.";
 	}
 
 	function predict(input : number[]){
 		//Creats temporaly model
-		let modelParams: NNModelParams = {
-			layerParams: [],
-		};
 		console.log("TEST ")
-
-		
-		let nnHPrarams : NNHyperparameters = {
-			nbInputs: 3,
-			nbOutputs: 1,
-			neuronsByLayer: [7, 5],
-			activationsByLayer: 
-			[
-				ACTIVATION_FUNCTIONS.RELU,
-				ACTIVATION_FUNCTIONS.RELU,
-				ACTIVATION_FUNCTIONS.SIGMOID,
-			],
-			costFunction: COST_FUNCTIONS.MEAN_SQUARED_ERROR,
-			learningRate: 0.1,
-			epochs: 1000,
-			type: NN_OPTIMIZER_TYPES.GradientDescent,
-		}
-		let modelDef:GenAIModel = new NeuralNetwork('Neural Network Model',nnHPrarams, modelParams)
+		const neuralNet: NeuralNetwork = new NeuralNetwork('1', hyperparams.NN, {
+			layerParams: [],
+		  });
 
 
-		///-----------------------------///
 		console.log("test 1 : ")
 		let tab : number[][] = []
 		console.log("TEST ")
+
+		//Column Matrix
 		input.forEach(e => {
 			let a = []
 			a.push(e)
 			tab.push(a)
 		})
-
 		let matInput = new Matrix(tab)
 
-		console.log("PREDICTION : ",modelDef.predict(matInput,false).getValue())
-		return modelDef.predict(matInput,false).getValue()
+		//Prediction
+		console.log("PREDICTION : ",neuralNet.predict(matInput).getValue())
+		return neuralNet.predict(matInput).getValue()
 	}
 
 
@@ -538,13 +474,12 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		mainAIUtilsTest();
 		mainAINeuralNetworkTest();
 		*/
-		let dataset = activeDataset.current;
-		if (!dataset) {
-			return cmd.error(
-				'Challenge is still loading. Please try again after the challenge is properly loaded',
-				0,
-			);
-		}
+
+		const neuralNet: NeuralNetwork = new NeuralNetwork('1', hyperparams.NN, {
+			layerParams: [],
+		});
+
+		console.log(neuralNet);
 		/*
 		let hyperparams: NNHyperparameters = {
 			
@@ -628,10 +563,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	// END OF TEST FUNCTION //
 
-	useEffect(() => {
-		console.log(hyperparams);
-	}, [hyperparams]);
-
 	return (
 		<>
 			<StyledAliveChallenge>
@@ -679,7 +610,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					</div>
 
 					{/* Right Side of screen 
-							Contains the graph and the console
+							Contains the graph and the console	
 					*/}
 					<div className="flex flex-col w-1/2">
 						<AIInterface
@@ -704,11 +635,12 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 									open: false,
 								},
 							]}
-							data={activeDataset.current}
+							data={activeDataset}
 							initData={challenge.dataset}
+							modelType={activeModelType}
 							hyperparams={hyperparams[activeModelType]}
 							ioCodes={ioCodes.current}
-							activeModel = {activeModel.current}
+							activeModel = {activeModel}
 						/>
 						{/* TODO Code for visual regression ************
 							<div className="w-1/3 h-full">

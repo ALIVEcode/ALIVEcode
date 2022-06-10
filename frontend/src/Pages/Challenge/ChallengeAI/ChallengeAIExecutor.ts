@@ -117,16 +117,18 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					label: 'Valeurs Colonne',
 					type: 'GET',
 					apply: (params, _, response) => {
-						console.log("Execute Colonne Values")
+						console.log('Execute Colonne Values');
 						if (typeof params[0] === 'string') {
 							response?.push("Creation of a list");
 							let objectList: any[] = this.executableFuncs.columnValues(params[0])
 							objectList.forEach(e => response?.push(e))
+
 							this.perform_next();
 						}
 					},
 				},
-			},{
+			},
+			{
 				actionId: 807,
 				action: {
 					label: 'Création Modèle',
@@ -136,7 +138,8 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 						this.executableFuncs.modelCreation();
 					},
 				},
-			},{
+			},
+			{
 				actionId: 808,
 				action: {
 					label: 'One Hot',
@@ -147,21 +150,23 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 							const out = this.executableFuncs.oneHot(params[0],params[1])
 							if(out != null){
 								this.cmd?.print(out)
+
 							}
 						}
 					},
 				},
-			},{
+			},
+			{
 				actionId: 809,
 				action: {
 					label: 'Normaliser',
 					type: 'NORMAL',
-					apply: (params) => {
-						console.log("Execute Normalize")
+					apply: params => {
+						console.log('Execute Normalize');
 						if (typeof params[0] === 'string') {
-							const out = this.executableFuncs.normalize(params[0])
-							if(out != null){
-								this.cmd?.print(out)
+							const out = this.executableFuncs.normalize(params[0]);
+							if (out != null) {
+								this.cmd?.print(out);
 							}
 						}
 					},

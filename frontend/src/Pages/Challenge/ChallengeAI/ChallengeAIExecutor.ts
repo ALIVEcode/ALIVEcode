@@ -155,16 +155,15 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 						}
 					},
 				},
-			},
-			{
+			},{
 				actionId: 809,
 				action: {
-					label: 'Normaliser',
+					label: 'Normaliser Colonne',
 					type: 'NORMAL',
 					apply: params => {
-						console.log('Execute Normalize');
+						console.log('Execute Column Normalize');
 						if (typeof params[0] === 'string') {
-							const out = this.executableFuncs.normalize(params[0]);
+							const out = this.executableFuncs.normalizeColumn(params[0]);
 							if (out != null) {
 								this.cmd?.print(out);
 							}
@@ -173,6 +172,27 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 				},
 			},{
 				actionId: 810,
+				action: {
+					label: 'Normaliser',
+					type: 'GET',
+					apply:  (params, _, response) => {
+						console.log('Execute Normalize');
+						if (typeof params[0] === 'string' && typeof params[1] === 'number') {
+							const out = this.executableFuncs.normalize(params[0], params[1]);
+							if (typeof out === 'string') {
+								this.cmd?.print(out);
+							}else if (out){
+								console.log("respond : ", out)
+								response?.push(out)
+								this.perform_next();
+							}else{
+								response?.push(null)
+							}
+						}
+					},
+				},
+			},{
+				actionId: 811,
 				action: {
 					label: 'Predire',
 					type: 'GET',

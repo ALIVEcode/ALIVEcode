@@ -31,7 +31,7 @@ import {
 	defaultModelType,
 } from './artificial_intelligence/ai_models/DefaultHyperparams';
 import { Matrix } from './artificial_intelligence/AIUtils';
-import { act } from '@testing-library/react';
+import { act, waitFor } from '@testing-library/react';
 import {mainAINeuralNetworkTest} from "./artificial_intelligence/ai_tests/AINeuralNetworkTest";
 
 /**
@@ -103,6 +103,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					columnValues,
 					modelCreation,
 					oneHot,
+					normalizeColumn,
 					normalize,
 					predict,
 					testNeuralNetwork,
@@ -393,11 +394,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * Creates an ai model
 	 */
 	function modelCreation(): void {
-
 		switch (activeModelType) {
 			case MODEL_TYPES.NEURAL_NETWORK:
-				
-				model.current = new NeuralNetwork('Neural Network Model',hyperparams.NN, {
+				model.current = new NeuralNetwork('Neural Network Model',hyperparams[activeModelType], {
 					layerParams: [],
 				  })
 				setActiveModel(MODEL_TYPES.NEURAL_NETWORK)
@@ -445,7 +444,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * Normalizes the data of the parameter and change the data of the table
 	 * @param column the parameter's name to replace.
 	 */
-	function normalize(column: string): string | void {
+	function normalizeColumn(column: string): string | void {
 		if (activeDataset) {
 			let index = activeDataset.getParamNames().indexOf(column);
 			if (
@@ -453,6 +452,29 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				!activeDataset.getDataAsMatrix().equals(new Matrix(1, 1))
 			) {
 				activeDataset.normalizeParam(column);
+
+			} else {
+				if (index !== -1)
+					return 'Erreur : Une colonne possède des chaines de caractères comme donnée dans la base de données';
+				else
+					return 'Erreur : Le nom de la colonne entrée en paramètre est inexistante';
+			}
+		} else return "Erreur : la base de données n'a pas été chargée.";
+	}
+
+	/**
+	 * Normalizes the data of the parameter and change the data of the table
+	 * @param column the parameter's name to replace.
+	 * @param data 
+	 */
+	 function normalize(column: string, data: number): string | number {
+		if (activeDataset) {
+			let index = activeDataset.getParamNames().indexOf(column);
+			if (
+				index !== -1 &&
+				!activeDataset.getDataAsMatrix().equals(new Matrix(1, 1))
+			) {
+				return activeDataset.normalizeValue(data, column)
 
 			} else {
 				if (index !== -1)

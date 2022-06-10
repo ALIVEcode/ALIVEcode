@@ -34,44 +34,8 @@ const mat4: Matrix = new Matrix([
 	[5, 6],
 ]);
 
-/**
- * Simplify test logging.
- */
-/*
-function testLog<T>(functionName: string, result: T, expected: T) {
-  let same: boolean;
-  let isMatrix: boolean = result instanceof Matrix;
-  if (isMatrix) {
-    // @ts-ignore
-    same = result.equals(expected);
-    isMatrix = true;
-  } else {
-    same = result === expected;
-    isMatrix = false;
-  }
+export {mat1, mat2, mat3, mat4};
 
-  let resultMessage: string = same ? "PASS" : "FAIL";
-  console.log("Test for " + functionName + " function : " + resultMessage);
-
-  if (!same) {
-    if (isMatrix) {
-      console.log("RESULT: ");
-      // @ts-ignore
-      result.display();
-      console.log("EXPECTED: ");
-      // @ts-ignore
-      expected.display();
-    } else if (!isMatrix) {
-      console.log("RESULT: ");
-      console.log(result);
-      console.log("EXPECTED: ");
-      console.log(expected);
-    }
-  }
-
-  return same;
-}
-*/
 /**
  * Launches all test function in this file. The results will appear
  * in the navigator's console.

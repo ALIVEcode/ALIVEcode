@@ -12,7 +12,7 @@ import { NNHyperparameters } from '../../AIUtilsInterfaces';
 import { NNOptimizer } from './NNOptimizer';
 
 /**
- * This NN Optimizer implements the Standard Gradient Descent algogithm to optimize the Model
+ * This NN Optimizer implements the Standard Gradient Descent algorithm to optimize the Model
  * parameters of a NeuralNetwork Model.
  *
  * Gradient descent is the basic algorithm for optimizing the parameters of a neural network.

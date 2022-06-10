@@ -131,3 +131,28 @@ export function testLog<T>(functionName: string, result: T, expectedOrTestResult
   return didTestPass;
 }
 
+/**
+ * Helper function
+ */
+export function areAllElementsBetweenRange(matOrMatArray: Matrix | Matrix[], lowerBound: number = 0, upperBound: number = 1): TestResult {
+  let result: boolean = true;
+  if (matOrMatArray instanceof Matrix) {
+    const rawMat: number[][] = matOrMatArray.getValue();
+    const rowCount: number = matOrMatArray.getRows();
+    const colCount: number = matOrMatArray.getColumns();
+
+    for (let i: number = 0; result && i < rowCount; i++) {
+      for (let j: number = 0; result && j < colCount; j++) {
+        const value: number = rawMat[i][j]
+        if (!(lowerBound <= value && value <= upperBound)) result = false;
+      }
+    }
+  } else {
+    for (let i: number = 0; i < matOrMatArray.length; i++) {
+      if (!(areAllElementsBetweenRange(matOrMatArray[i]).isSuccessful)) result = false;
+    }
+  }
+
+  return new TestResult(result, "at least one value was not in the range [" + lowerBound + ", " + upperBound + "]");
+}
+

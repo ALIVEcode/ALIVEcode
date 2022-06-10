@@ -48,7 +48,7 @@ export const HyperparamID: any = {
 	}, //
 	neuronsByLayer: {
 		name: 'Nombre de neuronnes par couche',
-		componant: 'input',
+		componant: 'multiple inputs',
 	},
 	activationsByLayer: {
 		name: "Fonction d'activation par couches",
@@ -61,8 +61,9 @@ export const HyperparamID: any = {
 	learningRate: {
 		name: "Taux d'apprentissage",
 		componant: 'input',
-	}, //Nombre réel
-	epochs: { name: "Nombre d'epochs", componant: 'integer input' }, //
+	}, 
+	epochs: { name: "Nombre d'epochs",
+	componant: 'integer input' }, //
 	type: {
 		name: "Type d'optimiseur",
 		componant: 'NN_OPTIMIZER_TYPES',

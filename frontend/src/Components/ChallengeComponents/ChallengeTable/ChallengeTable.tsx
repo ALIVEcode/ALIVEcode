@@ -34,8 +34,11 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 
 	//Function called after a change on hyperparams.
 	useEffect(() => {
-		setCurrHyperparams(props.hyperparams);
-	}, [props.hyperparams]);
+		//setCurrHyperparams(props.hyperparams);
+		if(props.handleHyperparamsChange && currHyperparams){
+			props.handleHyperparamsChange(currHyperparams)
+		}
+	}, [currHyperparams]);
 	
 	let forceUpdate = useForceUpdate();
 	useEffect(() => {
@@ -53,6 +56,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	const updateHyperparams = (
 		newValue: string,
 		key: keyof Hyperparameters,
+		index?: number
 	): void => {
 		let newNumValue: number = 0;
 
@@ -73,6 +77,12 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 				case 'input':
 					newNumValue = parseFloat(newValue);
 					(tempHyperparams[key] as number) = newNumValue;
+					break;
+				case 'multiple inputs':
+					newNumValue = parseInt(newValue);
+					let NNtempHyperparams = (tempHyperparams as NNHyperparameters )
+					NNtempHyperparams.neuronsByLayer[index!] = newNumValue
+					tempHyperparams = NNtempHyperparams
 					break;
 				default:
 					(tempHyperparams[key] as string) = newValue;
@@ -258,6 +268,25 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	}
 
 	/**
+	 * Add another input to the neurones by layer cell
+	 * @param add add or substract. If true, an input is added. If false, an input is substarted
+	 */
+	function layer(add : boolean){
+		if (props.handleHyperparamsChange && currHyperparams){
+			let tempHyperparams: NNHyperparameters = JSON.parse(
+				JSON.stringify(currHyperparams),
+			);
+			if (add){
+				tempHyperparams.neuronsByLayer.push(1)
+			}else{
+				tempHyperparams.neuronsByLayer.pop()
+			}
+			setCurrHyperparams(tempHyperparams);
+			props.handleHyperparamsChange(tempHyperparams)
+		}
+	}
+
+	/**
 	 * Returns the name associated with the hyperparameter.
 	 * @param key the hyperparameter
 	 * @returns the name of the hyperparameter
@@ -278,7 +307,6 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 			HyperparamTranslator![key]['componant'] === 'input'
 		) {
 			// Returned component if the hyperparam needs an input field
-
 			return (
 				currHyperparams &&
 				props.handleHyperparamsChange && (
@@ -309,6 +337,47 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 				)
 			);
 		}
+
+		if (HyperparamTranslator![key]['componant'] === 'multiple inputs' && currHyperparams &&
+				props.handleHyperparamsChange){
+					let hyperparams = currHyperparams as NNHyperparameters
+			let inputFieldNb = hyperparams.neuronsByLayer.length
+			let inputArray = []
+			for (let i = 0; i< inputFieldNb; i++){
+				inputArray.push(
+					<div className="input-container">
+						<label>Couche {i+1} :  </label>
+ 						 <input 
+						className="inputs" 
+						type="number"
+						value={hyperparams.neuronsByLayer[i]}
+						onBlur={e => {
+							props.handleHyperparamsChange(currHyperparams);
+						}}
+						onChange={e => {
+							updateHyperparams(e.target.value, key, i);
+						}}
+						step='1'
+						min='1'
+						></input>
+					</div>
+					
+				)
+			}
+
+			inputArray.push(
+				<div className="input-container">
+						<button onClick={e => layer(true)}> + </button>
+						<button onClick={e => layer(false)}> - </button>
+				</div>
+			)
+
+			return inputArray
+
+			
+
+		}
+
 		var keys: any[];
 		var values: any[];
 
@@ -342,6 +411,9 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 			<select
 				className="inputs"
 				onChange={e => updateHyperparams(e.target.value, key)}
+				onBlur={e => {
+					props.handleHyperparamsChange!(currHyperparams!);
+				}}
 			>
 				{values.map((index: number) => {
 					let i = values.indexOf(index);

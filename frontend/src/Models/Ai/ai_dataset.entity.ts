@@ -108,7 +108,7 @@ export class AIDataset {
 	 * parameter for each possible value of the original parameter.
 	 *
 	 * @param param the parameter's name to replace.
-	 * @param oneHposValuesotParam One-hot parameter
+	 * @param posValues One-hot parameter
 	 * @returns a boolean indicating if the replacement has been made.
 	 */
 	 public createcreateOneHotWithNewParamsOneHot(param: string, posValues: string[]): boolean {

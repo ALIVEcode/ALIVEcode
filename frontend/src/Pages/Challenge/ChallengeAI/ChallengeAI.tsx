@@ -135,6 +135,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					modelCreation,
 					oneHot,
 					normalize,
+					predict,
 					testNeuralNetwork,
 					setDataset: setDatasetStats,
 				},
@@ -478,23 +479,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		) {
 			activeDataset.current.normalizeParam(column);
 
-			/*
-			activeDataset.current.getDataAsMatrix();
-			let columnData: number[] = activeDataset.current.getDataAsArray()[index];
-			const mean = activeDataset.current.getMeans().at(index);
-			const deviation = activeDataset.current.getDeviations().at(index);
-
-			//Problem with creating a model
-			columnData = columnData.copyWithin(0, 0).map((value: number): number => {
-				return (value - mean!) / deviation!;
-			});
-
-			//Change to :
-			//columnData = model.current!.normalizeArray(column, mean!, deviation!)
-			activeDataset.current!.replaceColumn(column, columnData);
-
-			*/
-
 			forceUpdate();
 		} else {
 			if (index != -1)
@@ -503,6 +487,49 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				return 'Erreur : Le nom de la colonne entrée en paramètre est inexistante';
 		}
 	}
+
+	function predict(input : number[]){
+		//Creats temporaly model
+		let modelParams: NNModelParams = {
+			layerParams: [],
+		};
+		console.log("TEST ")
+
+		
+		let nnHPrarams : NNHyperparameters = {
+			nbInputs: 3,
+			nbOutputs: 1,
+			neuronsByLayer: [7, 5],
+			activationsByLayer: 
+			[
+				ACTIVATION_FUNCTIONS.RELU,
+				ACTIVATION_FUNCTIONS.RELU,
+				ACTIVATION_FUNCTIONS.SIGMOID,
+			],
+			costFunction: COST_FUNCTIONS.MEAN_SQUARED_ERROR,
+			learningRate: 0.1,
+			epochs: 1000,
+			type: NN_OPTIMIZER_TYPES.GradientDescent,
+		}
+		let modelDef:GenAIModel = new NeuralNetwork('Neural Network Model',nnHPrarams, modelParams)
+
+
+		///-----------------------------///
+		console.log("test 1 : ")
+		let tab : number[][] = []
+		console.log("TEST ")
+		input.forEach(e => {
+			let a = []
+			a.push(e)
+			tab.push(a)
+		})
+
+		let matInput = new Matrix(tab)
+
+		console.log("PREDICTION : ",modelDef.predict(matInput,false).getValue())
+		return modelDef.predict(matInput,false).getValue()
+	}
+
 
 	// FOR TESTING PURPOSE ONLY, TO BE DELETED WHEN NEURAL NETWORK IMPLEMENTATION WORKS //
 

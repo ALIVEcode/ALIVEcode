@@ -122,8 +122,6 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 							response?.push("Creation of a list");
 							let objectList: any[] = this.executableFuncs.columnValues(params[0])
 							objectList.forEach(e => response?.push(e))
-
-							console.log('Column list ',objectList);
 							this.perform_next();
 						}
 					},
@@ -165,6 +163,22 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 							if(out != null){
 								this.cmd?.print(out)
 							}
+						}
+					},
+				},
+			},{
+				actionId: 810,
+				action: {
+					label: 'Predire',
+					type: 'GET',
+					apply: (params, _, response) => {
+						console.log("Execute Predire")
+						if (typeof params[0] === 'object') {
+							response?.push("Creation of a list");
+							let objectList: number[] = this.executableFuncs.predict(params[0])
+							objectList.forEach(e => response?.push(e))
+							console.log('Prediction : ',objectList);
+							this.perform_next();
 						}
 					},
 				},

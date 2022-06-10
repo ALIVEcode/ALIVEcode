@@ -21,6 +21,7 @@ import { init } from 'i18next';
 import useComplexState from '../../../state/hooks/useComplexState';
 import { defaultHyperparams } from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/ai_models/DefaultHyperparams';
 import { GenHyperparameters } from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
+import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 
 /**
  * This module defines all properties related to the data table in AI challenges.
@@ -35,6 +36,12 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	useEffect(() => {
 		setCurrHyperparams(props.hyperparams);
 	}, [props.hyperparams]);
+	
+	let forceUpdate = useForceUpdate();
+	useEffect(() => {
+		forceUpdate()
+	}, [props.data]);
+
 
 	/**
 	 * Callback function called whenever a new value is entered in an input field associated
@@ -154,11 +161,11 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	 * @returns the headers in a component.
 	 */
 	function renderTableHeaders() {
-		if (props.data && props.isData && props.ioCodes)
+		if (props.data && props.isData && props.ioCodes){
 			return (
 				<>
 					<tr>
-						{props.data.getParamNames().map((param: string, index: number) => {
+						{props.data!.getParamNames().map((param: string, index: number) => {
 							return (
 								<th
 									key={index}
@@ -192,7 +199,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 						})}
 					</tr>
 				</>
-			);
+			);}
 		if (props.activeModelType && !props.isData)
 			return (
 				<tr>

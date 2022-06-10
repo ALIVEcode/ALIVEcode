@@ -111,7 +111,7 @@ export class AIDataset {
 	 * @param posValues One-hot parameter
 	 * @returns a boolean indicating if the replacement has been made.
 	 */
-	 public createcreateOneHotWithNewParamsOneHot(param: string, posValues: string[]): boolean {
+	 public createOneHotWithNewParamsOneHot(param: string, posValues: string[]): boolean {
 		let iterator: number = 0;
 		let allValue: string[] =[]
 		let autre = 0

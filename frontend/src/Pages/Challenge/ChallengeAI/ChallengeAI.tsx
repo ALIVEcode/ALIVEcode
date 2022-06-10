@@ -83,8 +83,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	//TODO replace these codes with the ones chosen in the interface
 	const ioCodes = useRef<number[]>([]);
-	const [activeDataset, setActiveDataset] = useState(challenge.dataset);
-	let activeModel : MODEL_TYPES|undefined = undefined;
+	const [activeDataset, setActiveDataset] = useState(challenge.dataset?.clone());
+	const [activeModel, setActiveModel] = useState<MODEL_TYPES|undefined >();
 
 	// Initializing the LevelAIExecutor
 	executor.current = useMemo(
@@ -115,6 +115,24 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	);
 
 	//--------UseEffects-------//
+	// Loading the dataset when first renders
+	useEffect(() => {
+		const getDataset = async () => {
+			if (!challenge.dataset)
+				challenge.dataset = await api.db.ai.getDataset(challenge.datasetId);
+			if (challenge.dataset) {
+				setActiveDataset(challenge.dataset.clone());
+				forceUpdate();
+				ioCodes.current = challenge.dataset.getDataAsArray().map(() => -1);
+			} else {
+				console.error("Erreur : la table ne s'est pas chargée correctement.");
+			}
+		};
+		getDataset();
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	useEffect(() => {
 		if (!cmd) return forceUpdate();
 		if (executor.current) executor.current.cmd = cmd;
@@ -203,6 +221,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 			//Cloning the initial data
 			setActiveDataset(challenge.dataset!.clone());
+			setActiveModel(undefined)
 		}
 	}
 
@@ -379,13 +398,12 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				model.current = new NeuralNetwork('Neural Network Model',hyperparams.NN, {
 					layerParams: [],
 				  })
-				activeModel = MODEL_TYPES.NEURAL_NETWORK
+				setActiveModel(MODEL_TYPES.NEURAL_NETWORK)
 				console.log("Current Model", model.current)
 				break;
 			default:
 				break;
 		}
-
 		forceUpdate()
 	}
 
@@ -394,11 +412,12 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @param column the parameter's name to replace.
 	 */
 	function oneHot(name: string, colomn: string[]): string | void {
+		console.log(activeDataset!)
 		let index = activeDataset!.getParamNames().indexOf(name);
 		const oldNumberParams = activeDataset!.getParamNames().length;
 		const valueIO = ioCodes.current.at(index);
 
-		if (activeDataset!.createcreateOneHotWithNewParamsOneHot(name, colomn)) {
+		if (activeDataset!.createOneHotWithNewParamsOneHot(name, colomn)) {
 			const numberNewParams = activeDataset!.getParamNames().length- oldNumberParams;
 
 			let newIOCodes = ioCodes.current;
@@ -409,7 +428,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			ioCodes.current = newIOCodes;
 			hyperparams.NN.nbInputs = ioCodes.current.filter(e => e===1).length
 			hyperparams.NN.nbOutputs = ioCodes.current.filter(e => e===0).length
-			forceUpdate();
+			setActiveDataset(activeDataset)
+		
 		} else {
 			if (index != -1)
 				return 'Erreur : Les éléments de la colonne ne sont pas des chaines de caratères';

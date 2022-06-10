@@ -93,14 +93,14 @@ const AIInterface = ({
 		handleModelChange(value);
 	};
 
-		function showModel(){
-			switch (activeModel) {
-				case MODEL_TYPES.NEURAL_NETWORK:
-					return (ThreeScene());
-				default:
-					break;
-			}
+	function showModel(){
+		switch (activeModel) {
+			case MODEL_TYPES.NEURAL_NETWORK:
+				return (ThreeScene());
+			default:
+				break;
 		}
+	}
 
 	return (
 		<StyledAIInterface

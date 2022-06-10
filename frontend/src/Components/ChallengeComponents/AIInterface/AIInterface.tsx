@@ -44,6 +44,7 @@ const AIInterface = memo(
 		tabs: initialTabs,
 		data,
 		initData,
+		activeModel,
 		hyperparams: initialHyperparams,
 	}: AIInterfaceProps) => {
 		// The selected theme to apply to this component
@@ -92,6 +93,15 @@ const AIInterface = memo(
 			setActiveModelType(value as MODEL_TYPES);
 			handleModelChange(value as MODEL_TYPES);
 		};
+
+		function showModel(){
+			switch (activeModel) {
+				case MODEL_TYPES.NEURAL_NETWORK:
+					return (ThreeScene());
+				default:
+					break;
+			}
+		}
 
 		useEffect(() => {
 			console.log(initialHyperparams);
@@ -142,7 +152,7 @@ const AIInterface = memo(
 					</div>
 				) : tabs[1].open ? (
 					<div className="ai-display w-full overflow-auto right-200">
-						<ThreeScene />
+						{showModel()}
 						<div
 							className={
 								'absolute top-[9%] right-[2%] bg-black text-base p-5 hidden'

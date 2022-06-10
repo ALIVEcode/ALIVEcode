@@ -27,6 +27,7 @@ export type AIInterfaceProps = {
 	data: any;
 	hyperparams: Hyperparams;
 	initData: any
+	activeModel: MODEL_TYPES|undefined
 };
 
 /**

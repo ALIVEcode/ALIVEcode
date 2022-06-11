@@ -148,17 +148,17 @@ const AIInterface = ({
 						</div>
 					</div>
 				) : tabs[2].open ? (
-					<>
+					<div className="flex flex-col">
 						<h1 className="header h-1/6">Valeurs des hyperparamètres</h1>
 						<ChallengeTable
-							className="h-5/6"
+							className="h-3/4"
 							isData={false}
 							hyperparams={hyperparams}
 							handleHyperparamsChange={handleHyperparamChange}
 							ioCodes={ioCodes}
 							activeModelType={modelType}
 						/>
-					</>
+					</div>
 				) : (
 					<div />
 				)}

@@ -34,17 +34,9 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 
 	//Function called after a change on hyperparams.
 	useEffect(() => {
-		//setCurrHyperparams(props.hyperparams);
-		if(props.handleHyperparamsChange && currHyperparams){
-			props.handleHyperparamsChange(currHyperparams)
-		}
+		if (props.handleHyperparamsChange && currHyperparams)
+			props.handleHyperparamsChange(currHyperparams);
 	}, [currHyperparams]);
-	
-	let forceUpdate = useForceUpdate();
-	useEffect(() => {
-		forceUpdate()
-	}, [props.data]);
-
 
 	/**
 	 * Callback function called whenever a new value is entered in an input field associated
@@ -87,6 +79,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 				default:
 					(tempHyperparams[key] as string) = newValue;
 			}
+
 			setCurrHyperparams(tempHyperparams);
 		}
 	};
@@ -179,31 +172,27 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 							return (
 								<th
 									key={index}
-									className={setDataTabClassName(true, 'titles', index)}
+									className={setDataTabClassName(
+										true,
+										'titles data-header',
+										index,
+									)}
 								>
-									{param}
-								</th>
-							);
-						})}
-					</tr>
-
-					<tr>
-						{props.ioCodes.map((code: number, index: number) => {
-							return (
-								<th
-									key={index}
-									className={setDataTabClassName(true, 'io', index)}
-								>
-									<select
-										className="inputs"
-										onChange={e => setIOCode(e.target.value, index)}
-										disabled={disableDropdown(index)}
-										value={code}
-									>
-										<option value={-1}>Ignorée</option>
-										<option value={1}>Entrée</option>
-										<option value={0}>Sortie</option>
-									</select>
+									<div className="h-full w-full flex flex-col justify-between">
+										<div className="h-full flex items-center justify-center">
+											<div className="param-name">{param}</div>
+										</div>
+										<select
+											className="inputs"
+											onChange={e => setIOCode(e.target.value, index)}
+											disabled={disableDropdown(index)}
+											value={props.ioCodes[index]}
+										>
+											<option value={-1}>Ignorée</option>
+											<option value={1}>Entrée</option>
+											<option value={0}>Sortie</option>
+										</select>
+									</div>
 								</th>
 							);
 						})}
@@ -213,8 +202,8 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 		if (props.activeModelType && !props.isData)
 			return (
 				<tr>
-					<th className="titles">Hyperparamètre</th>
-					<th className="titles">Valeur</th>
+					<th className="titles hyperparam-header">Hyperparamètre</th>
+					<th className="titles hyperparam-header">Valeur</th>
 				</tr>
 			);
 	}

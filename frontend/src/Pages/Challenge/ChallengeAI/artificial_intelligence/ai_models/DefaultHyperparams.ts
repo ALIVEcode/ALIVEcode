@@ -8,8 +8,8 @@ import { GenHyperparameters } from '../AIUtilsInterfaces';
 
 export const defaultHyperparams: GenHyperparameters = {
 	NN: {
-		nbInputs: 3,
-		nbOutputs: 1,
+		nbInputs: 0,
+		nbOutputs: 0,
 		neuronsByLayer: [7, 5],
 		activationsByLayer: [
 			ACTIVATION_FUNCTIONS.RELU,

@@ -119,9 +119,11 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					apply: (params, _, response) => {
 						console.log('Execute Colonne Values');
 						if (typeof params[0] === 'string') {
-							response?.push("Creation of a list");
-							let objectList: any[] = this.executableFuncs.columnValues(params[0])
-							objectList.forEach(e => response?.push(e))
+							response?.push('Creation of a list');
+							let objectList: any[] = this.executableFuncs.columnValues(
+								params[0],
+							);
+							objectList.forEach(e => response?.push(e));
 
 							this.perform_next();
 						}
@@ -134,7 +136,7 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					label: 'Création Modèle',
 					type: 'NORMAL',
 					apply: () => {
-						console.log("Execute Création Modèle")
+						console.log('Execute Création Modèle');
 						this.executableFuncs.modelCreation();
 					},
 				},
@@ -144,18 +146,24 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 				action: {
 					label: 'One Hot',
 					type: 'NORMAL',
-					apply: (params) => {
-						console.log("Execute One Hot")
-						if (typeof params[0] === 'string' && typeof params[1] === 'object') {
-							const out = this.executableFuncs.oneHot(params[0],params[1])
-							if(out != null){
-								this.cmd?.print(out)
-
+					apply: params => {
+						console.log('Execute One Hot');
+						if (
+							typeof params[0] === 'string' &&
+							typeof params[1] === 'object'
+						) {
+							const out: string | null = this.executableFuncs.oneHot(
+								params[0],
+								params[1],
+							);
+							if (out !== null) {
+								this.cmd?.print(out);
 							}
 						}
 					},
 				},
-			},{
+			},
+			{
 				actionId: 809,
 				action: {
 					label: 'Normaliser Colonne',
@@ -170,41 +178,50 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 						}
 					},
 				},
-			},{
+			},
+			{
 				actionId: 810,
 				action: {
 					label: 'Normaliser',
 					type: 'GET',
-					apply:  (params, _, response) => {
+					apply: (params, _, response) => {
 						console.log('Execute Normalize');
-						if (typeof params[0] === 'string' && typeof params[1] === 'number') {
+						if (
+							typeof params[0] === 'string' &&
+							typeof params[1] === 'number'
+						) {
 							const out = this.executableFuncs.normalize(params[0], params[1]);
 							if (typeof out === 'string') {
 								this.cmd?.print(out);
-							}else if (out){
-								response?.push(out)
+							} else if (out) {
+								response?.push(out);
 								this.perform_next();
-							}else{
-								response?.push(null)
+							} else {
+								response?.push(null);
 							}
 						}
 					},
 				},
-			},{
+			},
+			{
 				actionId: 811,
 				action: {
 					label: 'Predire',
 					type: 'GET',
 					apply: (params, _, response) => {
-						console.log("Execute Predire")
+						console.log('Execute Predire');
 						if (typeof params[0] === 'object') {
-							let objectList= this.executableFuncs.predict(params[0])
-							if(typeof objectList !== 'string'){
-								response?.push("Creation of a list");
-								let objectList: number[][]= this.executableFuncs.predict(params[0])
-								objectList[0].forEach(e => {response?.push(e)})
-							}else{
-								response?.push(objectList)
+							let objectList = this.executableFuncs.predict(params[0]);
+							if (typeof objectList !== 'string') {
+								response?.push('Creation of a list');
+								let objectList: number[][] = this.executableFuncs.predict(
+									params[0],
+								);
+								objectList[0].forEach(e => {
+									response?.push(e);
+								});
+							} else {
+								response?.push(objectList);
 							}
 							this.perform_next();
 						}

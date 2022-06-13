@@ -182,7 +182,6 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 							if (typeof out === 'string') {
 								this.cmd?.print(out);
 							}else if (out){
-								console.log("respond : ", out)
 								response?.push(out)
 								this.perform_next();
 							}else{
@@ -199,10 +198,14 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					apply: (params, _, response) => {
 						console.log("Execute Predire")
 						if (typeof params[0] === 'object') {
-							response?.push("Creation of a list");
-							let objectList: number[] = this.executableFuncs.predict(params[0])
-							objectList.forEach(e => response?.push(e))
-							console.log('Prediction : ',objectList);
+							let objectList= this.executableFuncs.predict(params[0])
+							if(typeof objectList !== 'string'){
+								response?.push("Creation of a list");
+								let objectList: number[][]= this.executableFuncs.predict(params[0])
+								objectList[0].forEach(e => {response?.push(e)})
+							}else{
+								response?.push(objectList)
+							}
 							this.perform_next();
 						}
 					},

@@ -136,11 +136,11 @@ export class AIDataset {
 
 		allValue.every(elem => posValues.indexOf(elem) !== -1)? autre = 0: autre = 1
 
-		
-		if (autre ===1) posValues.push('autre')
+		const paramOther = 'autre '+ param
+		if (autre ===1) posValues.push(paramOther)
 		// Create a one-hot parameter for each possible value and remove the original parameter
 		for (let dataNum: number = 0; dataNum < this.data.length; dataNum++) {
-			this.data[dataNum]['autre'] =
+			this.data[dataNum][paramOther] =
 					posValues.indexOf(this.data[dataNum][param])===-1 ? 1 : 0;
 			for (let i: number = 0; i < posValues.length-autre; i++) {
 				this.data[dataNum][posValues[i]] =
@@ -426,7 +426,6 @@ export class AIDataset {
 			throw new Error('Error in normalization');
 
 		const index: number = this._paramNames!.indexOf(paramName);
-
 		return this.normalize(value, this.means[index], this.deviations[index]);
 	}
 
@@ -439,7 +438,8 @@ export class AIDataset {
 	 */
 	public normalizeParam(paramName: string): boolean {
 		// Check if the given name is a parameter in the database
-		if (this.prepareNormalization(paramName)) return false;
+		console.log(this.prepareNormalization(paramName))
+		if (!this.prepareNormalization(paramName)) return false;
 
 		const index: number = this._paramNames!.indexOf(paramName);
 
@@ -450,6 +450,7 @@ export class AIDataset {
 		);
 
 		this.replaceColumn(paramName, newData);
+		console.log("new data : ", newData)
 		return true;
 	}
 

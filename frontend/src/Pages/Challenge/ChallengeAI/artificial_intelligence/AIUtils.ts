@@ -293,7 +293,8 @@ export function matAdd(mat1: Matrix, mat2: Matrix): Matrix {
 		mat1.getRows() !== mat2.getRows() ||
 		(mat1.getColumns() !== mat2.getColumns() && mat2.getColumns() !== 1)
 	) {
-		console.log(
+		console.log('Erreur : les tailles ne sont pas compatibles pour une addition de matrices')
+		throw new Error(
 			'Erreur : les tailles ne sont pas compatibles pour une addition de matrices',
 		);
 		return mat1;
@@ -362,7 +363,8 @@ export function matMulElementWise(mat1: Matrix, mat2: Matrix): Matrix {
 		mat1.getRows() !== mat2.getRows() ||
 		mat1.getColumns() !== mat2.getColumns()
 	) {
-		console.log(
+		console.log("Erreur Matrices: la taille des matrices n'est pas compatible pour une mutliplication par élément.")
+		throw new Error(
 			"Erreur Matrices: la taille des matrices n'est pas compatible pour une mutliplication par élément.",
 		);
 		return mat1;
@@ -395,7 +397,8 @@ export function matDivElementWise(mat1: Matrix, mat2: Matrix): Matrix {
 		mat1.getRows() !== mat2.getRows() ||
 		mat1.getColumns() !== mat2.getColumns()
 	) {
-		console.log(
+		console.log("Erreur Matrices : la taille des matrices n'est pas compatible pour une division par élément.")
+		throw new Error(
 			"Erreur Matrices : la taille des matrices n'est pas compatible pour une division par élément.",
 		);
 		return mat1;
@@ -452,7 +455,8 @@ export function matMul(m1: Matrix, m2: Matrix): Matrix {
 	//If the number of m1 columns doesn't equal the number of m2 rows, the equation
 	//can't be solved, return a Matrix full of zeros.
 	if (m1.getColumns() !== m2.getRows()) {
-		console.log(
+		console.log("Erreur Matrices : la taille des matrices n'est pas compatible pour une multiplication matricielle.")
+		throw new Error(
 			"Erreur Matrices : la taille des matrices n'est pas compatible pour une multiplication matricielle.",
 		);
 		return new Matrix(zeros(m1.getRows(), m2.getColumns()));

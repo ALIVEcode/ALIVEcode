@@ -84,7 +84,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	//TODO replace these codes with the ones chosen in the interface
 	const ioCodes = useRef<number[]>([]);
-	const [activeDataset, setActiveDataset] = useState(challenge.dataset?.clone());
+	const activeDataset = useRef<AIDataset>();
 	const [activeModel, setActiveModel] = useState<MODEL_TYPES|undefined >();
 
 	// Initializing the LevelAIExecutor
@@ -123,7 +123,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			if (!challenge.dataset)
 				challenge.dataset = await api.db.ai.getDataset(challenge.datasetId);
 			if (challenge.dataset) {
-				setActiveDataset(challenge.dataset.clone());
+				activeDataset.current = (challenge.dataset.clone());
 				forceUpdate();
 				ioCodes.current = challenge.dataset.getDataAsArray().map(() => -1);
 			} else {
@@ -198,10 +198,10 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		console.log('--- User click on run ---');
 
 		//If the dataset is loaded
-		if (activeDataset) {
+		if (activeDataset.current) {
 			let first = true;
-			let array = activeDataset.getDataAsArray().map((val, index) => {
-				const header = activeDataset.getParamNames().at(index);
+			let array = activeDataset.current.getDataAsArray().map((val, index) => {
+				const header = activeDataset.current!.getParamNames().at(index);
 				if (challenge.dataset!.getParamNames().indexOf(header!) === -1) {
 					if (first) {
 						first = false;
@@ -222,8 +222,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			console.log('current iocodes : ', ioCodes.current);
 
 			//Cloning the initial data
-			setActiveDataset(challenge.dataset!.clone());
+			activeDataset.current=(challenge.dataset!.clone());
 			setActiveModel(undefined)
+			forceUpdate()
 		}
 	}
 
@@ -376,15 +377,15 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @returns Table representing the data of the column asked.
 	 */
 	function columnValues(column: string): any[] {
-		let index = activeDataset!.getParamNames().indexOf(column);
+		let index = activeDataset.current!.getParamNames().indexOf(column);
 		let array: any[] = [];
 		if (index !== -1) {
 			for (
-				let i = activeDataset!.getDataAsArray().at(0)!.length - 1;
+				let i = activeDataset.current!.getDataAsArray().at(0)!.length - 1;
 				i >= 0;
 				i--
 			) {
-				array.push(activeDataset!.getDataAsArray().at(index)?.at(i));
+				array.push(activeDataset.current!.getDataAsArray().at(index)?.at(i));
 			}
 		}
 		return array;
@@ -414,12 +415,12 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 */
 	function oneHot(name: string, colomn: string[]): string | void {
 		console.log(activeDataset!)
-		let index = activeDataset!.getParamNames().indexOf(name);
-		const oldNumberParams = activeDataset!.getParamNames().length;
+		let index = activeDataset.current!.getParamNames().indexOf(name);
+		const oldNumberParams = activeDataset.current!.getParamNames().length;
 		const valueIO = ioCodes.current.at(index);
 
-		if (activeDataset!.createOneHotWithNewParamsOneHot(name, colomn)) {
-			const numberNewParams = activeDataset!.getParamNames().length- oldNumberParams;
+		if (activeDataset.current!.createOneHotWithNewParamsOneHot(name, colomn)) {
+			const numberNewParams = activeDataset.current!.getParamNames().length- oldNumberParams;
 
 			let newIOCodes = ioCodes.current;
 			//Addind the new column to the IOcodes
@@ -429,7 +430,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			ioCodes.current = newIOCodes;
 			hyperparams.NN.nbInputs = ioCodes.current.filter(e => e===1).length
 			hyperparams.NN.nbOutputs = ioCodes.current.filter(e => e===0).length
-			setActiveDataset(activeDataset)
+			activeDataset.current=(activeDataset.current)
+			forceUpdate()
 		
 		} else {
 			if (index != -1)
@@ -439,19 +441,20 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		}
 	}
 
-	//TODO ERROR HANDLING
+	
 	/**
 	 * Normalizes the data of the parameter and change the data of the table
 	 * @param column the parameter's name to replace.
 	 */
 	function normalizeColumn(column: string): string | void {
-		if (activeDataset) {
-			let index = activeDataset.getParamNames().indexOf(column);
+		if (activeDataset.current) {
+			let index = activeDataset.current.getParamNames().indexOf(column);
 			if (
 				index !== -1 &&
-				!activeDataset.getDataAsMatrix().equals(new Matrix(1, 1))
+				!activeDataset.current.getDataAsMatrix().equals(new Matrix(1, 1))
 			) {
-				activeDataset.normalizeParam(column);
+				activeDataset.current.normalizeParam(column);
+				forceUpdate()
 
 			} else {
 				if (index !== -1)
@@ -468,13 +471,13 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @param data 
 	 */
 	 function normalize(column: string, data: number): string | number {
-		if (activeDataset) {
-			let index = activeDataset.getParamNames().indexOf(column);
+		if (activeDataset.current) {
+			let index = activeDataset.current.getParamNames().indexOf(column);
 			if (
 				index !== -1 &&
-				!activeDataset.getDataAsMatrix().equals(new Matrix(1, 1))
+				!activeDataset.current.getDataAsMatrix().equals(new Matrix(1, 1))
 			) {
-				return activeDataset.normalizeValue(data, column)
+				return activeDataset.current.normalizeValue(data, column)
 
 			} else {
 				if (index !== -1)
@@ -487,15 +490,13 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	function predict(input : number[]){
 		//Creats temporaly model
-		console.log("TEST ")
+		/*console.log("TEST ")
 		const neuralNet: NeuralNetwork = new NeuralNetwork('1', hyperparams.NN, {
 			layerParams: [],
-		  });
+		  });*/
 
 
-		console.log("test 1 : ")
 		let tab : number[][] = []
-		console.log("TEST ")
 
 		//Column Matrix
 		input.forEach(e => {
@@ -504,10 +505,18 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			tab.push(a)
 		})
 		let matInput = new Matrix(tab)
-
+		let respond
 		//Prediction
-		console.log("PREDICTION : ",neuralNet.predict(matInput).getValue())
-		return neuralNet.predict(matInput).getValue()
+		try {
+			respond = model.current?.predict(matInput).transpose()
+			console.log("PREDICTION : ",respond?.getValue()) 
+		}
+		catch(e){
+			if (e instanceof Error){
+				return e.message
+			}
+		}
+		return respond?.getValue()
 	}
 
 
@@ -679,7 +688,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 									open: false,
 								},
 							]}
-							data={activeDataset}
+							data={activeDataset.current}
 							initData={challenge.dataset}
 							modelType={activeModelType}
 							hyperparams={hyperparams[activeModelType]}

@@ -31,7 +31,7 @@ export type AIInterfaceProps = {
 	className?: string;
 	tabs: AITabModel[];
 	data: any;
-	activeModel: MODEL_TYPES|undefined
+	activeModel: MODEL_TYPES | undefined;
 	hyperparams: Hyperparameters;
 	modelType: MODEL_TYPES;
 	initData: any;
@@ -74,7 +74,7 @@ export const StyledAIInterface = styled.div`
 	}
 
 	.ai-display {
-		height: 88%;
+		height: 90%;
 	}
 
 	.header {

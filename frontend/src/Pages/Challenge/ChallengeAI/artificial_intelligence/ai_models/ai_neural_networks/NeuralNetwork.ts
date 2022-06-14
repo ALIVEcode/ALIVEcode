@@ -144,6 +144,18 @@ export class NeuralNetwork extends AIModel {
 	//---- PREDICTION METHODS ----//
 
 	public predict(inputs: Matrix): Matrix {
+		if (inputs.getRows() !== this.hyperparameters.nbInputs)
+			throw new Error(
+				"Erreur predire() : la liste entrée ne contient pas autant de valeurs qu'il y a de paramètres d'entrée dans le modèle.",
+			);
+		inputs.getValue().map((value: number[]) => {
+			if (typeof value[0] === 'string')
+				throw new Error(
+					"Erreur predire() : Une des vsleurs de la liste en entrée n'est pas un nombre",
+				);
+			return null;
+		});
+
 		let output: Matrix[] = this.predictReturnAll(inputs);
 		return output[output.length - 1];
 	}

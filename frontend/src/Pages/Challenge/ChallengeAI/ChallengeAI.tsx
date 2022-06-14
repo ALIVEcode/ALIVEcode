@@ -43,6 +43,7 @@ import { CostFunction } from './artificial_intelligence/ai_functions/CostFunctio
 import Optimizer from './artificial_intelligence/ai_optimizers/Optimizer';
 import { NNOptimizer } from './artificial_intelligence/ai_optimizers/ai_nn_optimizers/NNOptimizer';
 
+
 /**
  * Ai challenge page. Contains all the components to display and make the ai challenge functionnal.
  *
@@ -91,10 +92,12 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	let optimizer = useRef<GenOptimizer>();
 
-	//TODO replace these codes with the ones chosen in the interface
+	//Active ioCodes and dataset of this challenge
 	const ioCodes = useRef<number[]>([]);
 	const activeDataset = useRef<AIDataset>();
-	const [activeModel, setActiveModel] = useState<MODEL_TYPES|undefined >();
+
+	//Active model type of this challenge
+	const [activeModel, setActiveModel] = useState<MODEL_TYPES | undefined>();
 
 	// Initializing the LevelAIExecutor
 	executor.current = useMemo(
@@ -132,7 +135,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			if (!challenge.dataset)
 				challenge.dataset = await api.db.ai.getDataset(challenge.datasetId);
 			if (challenge.dataset) {
-				activeDataset.current = (challenge.dataset.clone());
+				activeDataset.current = challenge.dataset.clone();
 				forceUpdate();
 				ioCodes.current = challenge.dataset.getDataAsArray().map(() => -1);
 			} else {
@@ -178,8 +181,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 */
 	const aiInterfaceIOChange = (newIOCodes: number[]) => {
 		ioCodes.current = newIOCodes;
-		hyperparams.NN.nbInputs = ioCodes.current.filter(e => e===1).length
-		hyperparams.NN.nbOutputs = ioCodes.current.filter(e => e===0).length
+		hyperparams.NN.nbInputs = ioCodes.current.filter(e => e === 1).length;
+		hyperparams.NN.nbOutputs = ioCodes.current.filter(e => e === 0).length;
 		forceUpdate();
 	};
 
@@ -231,9 +234,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			console.log('current iocodes : ', ioCodes.current);
 
 			//Cloning the initial data
-			activeDataset.current=(challenge.dataset!.clone());
-			setActiveModel(undefined)
-			forceUpdate()
+			activeDataset.current = challenge.dataset!.clone();
+			setActiveModel(undefined);
+			forceUpdate();
 		}
 	}
 
@@ -441,16 +444,20 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	function modelCreation(): void {
 		switch (activeModelType) {
 			case MODEL_TYPES.NEURAL_NETWORK:
-				model.current = new NeuralNetwork('Neural Network Model',hyperparams[activeModelType], {
-					layerParams: [],
-				  })
-				setActiveModel(MODEL_TYPES.NEURAL_NETWORK)
-				console.log("Current Model", model.current)
+				model.current = new NeuralNetwork(
+					'Neural Network Model',
+					hyperparams[activeModelType],
+					{
+						layerParams: [],
+					},
+				);
+				setActiveModel(MODEL_TYPES.NEURAL_NETWORK);
+				console.log('Current Model', model.current);
 				break;
 			default:
 				break;
 		}
-		forceUpdate()
+		forceUpdate();
 	}
 
 	/**
@@ -458,13 +465,14 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @param column the parameter's name to replace.
 	 */
 	function oneHot(name: string, colomn: string[]): string | void {
-		console.log(activeDataset!)
+		console.log(activeDataset!);
 		let index = activeDataset.current!.getParamNames().indexOf(name);
 		const oldNumberParams = activeDataset.current!.getParamNames().length;
 		const valueIO = ioCodes.current.at(index);
 
 		if (activeDataset.current!.createOneHotWithNewParamsOneHot(name, colomn)) {
-			const numberNewParams = activeDataset.current!.getParamNames().length- oldNumberParams;
+			const numberNewParams =
+				activeDataset.current!.getParamNames().length - oldNumberParams;
 
 			let newIOCodes = ioCodes.current;
 			//Addind the new column to the IOcodes
@@ -472,20 +480,17 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				newIOCodes.splice(index + e, 0, valueIO!);
 			}
 			ioCodes.current = newIOCodes;
-			hyperparams.NN.nbInputs = ioCodes.current.filter(e => e===1).length
-			hyperparams.NN.nbOutputs = ioCodes.current.filter(e => e===0).length
-			activeDataset.current=(activeDataset.current)
-			forceUpdate()
-		
+			hyperparams.NN.nbInputs = ioCodes.current.filter(e => e === 1).length;
+			hyperparams.NN.nbOutputs = ioCodes.current.filter(e => e === 0).length;
+			forceUpdate();
 		} else {
-			if (index != -1)
+			if (index !== -1)
 				return 'Erreur : Les éléments de la colonne ne sont pas des chaines de caratères';
 			else
 				return 'Erreur : Le nom de la colonne entrée en paramètre est inexistante';
 		}
 	}
 
-	
 	/**
 	 * Normalizes the data of the parameter and change the data of the table
 	 * @param column the parameter's name to replace.
@@ -498,8 +503,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				!activeDataset.current.getDataAsMatrix().equals(new Matrix(1, 1))
 			) {
 				activeDataset.current.normalizeParam(column);
-				forceUpdate()
-
+				forceUpdate();
 			} else {
 				if (index !== -1)
 					return 'Erreur : Une colonne possède des chaines de caractères comme donnée dans la base de données';
@@ -512,17 +516,16 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	/**
 	 * Normalizes the data of the parameter and change the data of the table
 	 * @param column the parameter's name to replace.
-	 * @param data 
+	 * @param data
 	 */
-	 function normalize(column: string, data: number): string | number {
+	function normalize(column: string, data: number): string | number {
 		if (activeDataset.current) {
 			let index = activeDataset.current.getParamNames().indexOf(column);
 			if (
 				index !== -1 &&
 				!activeDataset.current.getDataAsMatrix().equals(new Matrix(1, 1))
 			) {
-				return activeDataset.current.normalizeValue(data, column)
-
+				return activeDataset.current.normalizeValue(data, column);
 			} else {
 				if (index !== -1)
 					return 'Erreur : Une colonne possède des chaines de caractères comme donnée dans la base de données';
@@ -532,30 +535,29 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		} else return "Erreur : la base de données n'a pas été chargée.";
 	}
 
-	function predict(input : number[]){
-		let tab : number[][] = []
+
+	function predict(input: number[]) {
+		let tab: number[][] = [];
 
 		//Column Matrix
 		input.forEach(e => {
-			let a = []
-			a.push(e)
-			tab.push(a)
-		})
-		let matInput = new Matrix(tab)
-		let respond
+			let a = [];
+			a.push(e);
+			tab.push(a);
+		});
+		let matInput = new Matrix(tab);
+		let respond;
 		//Prediction
 		try {
-			respond = model.current?.predict(matInput).transpose()
-			console.log("PREDICTION : ",respond?.getValue()) 
-		}
-		catch(e){
-			if (e instanceof Error){
-				return e.message
+			respond = model.current?.predict(matInput).transpose();
+			console.log('PREDICTION : ', respond?.getValue());
+		} catch (e) {
+			if (e instanceof Error) {
+				return e.message;
 			}
 		}
-		return respond?.getValue()
+		return respond?.getValue();
 	}
-
 
 	// FOR TESTING PURPOSE ONLY, TO BE DELETED WHEN NEURAL NETWORK IMPLEMENTATION WORKS //
 
@@ -730,7 +732,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 							modelType={activeModelType}
 							hyperparams={hyperparams[activeModelType]}
 							ioCodes={ioCodes.current}
-							activeModel = {activeModel}
+							activeModel={activeModel}
 						/>
 						{/* TODO Code for visual regression ************
 							<div className="w-1/3 h-full">

@@ -283,6 +283,7 @@ export function matAddConstant(mat: Matrix, constant: number): Matrix {
  * - the same size as the first Matrix
  * - the same number of rows as the first Matrix and 1 column.
  * @returns the resulting Matrix of the addition. Its size is the same as the mat1 size.
+ * If the sizes are not compatible, returns an error.
  */
 export function matAdd(mat1: Matrix, mat2: Matrix): Matrix {
 	let array1: number[][] = mat1.getValue();
@@ -293,11 +294,12 @@ export function matAdd(mat1: Matrix, mat2: Matrix): Matrix {
 		mat1.getRows() !== mat2.getRows() ||
 		(mat1.getColumns() !== mat2.getColumns() && mat2.getColumns() !== 1)
 	) {
-		console.log('Erreur : les tailles ne sont pas compatibles pour une addition de matrices')
+		console.log(
+			'Erreur : les tailles ne sont pas compatibles pour une addition de matrices',
+		);
 		throw new Error(
 			'Erreur : les tailles ne sont pas compatibles pour une addition de matrices',
 		);
-		return mat1;
 	}
 
 	//Addition computation
@@ -356,18 +358,19 @@ export function matMulConstant(mat: Matrix, constant: number): Matrix {
  * @param mat1 the Matrix that will be multiplied.
  * @param mat2 the Matrix that will multiply the first one.
  * @returns the resulting Matrix from the element-wise multiplication. If both Matrices are not of
- * the same size, returns the first Matrix.
+ * the same size, returns an error.
  */
 export function matMulElementWise(mat1: Matrix, mat2: Matrix): Matrix {
 	if (
 		mat1.getRows() !== mat2.getRows() ||
 		mat1.getColumns() !== mat2.getColumns()
 	) {
-		console.log("Erreur Matrices: la taille des matrices n'est pas compatible pour une mutliplication par élément.")
+		console.log(
+			"Erreur Matrices: la taille des matrices n'est pas compatible pour une mutliplication par élément.",
+		);
 		throw new Error(
 			"Erreur Matrices: la taille des matrices n'est pas compatible pour une mutliplication par élément.",
 		);
-		return mat1;
 	}
 	let output: number[][] = mat1.getValue();
 	const values2: number[][] = mat2.getValue();
@@ -390,18 +393,19 @@ export function matMulElementWise(mat1: Matrix, mat2: Matrix): Matrix {
  * @param mat1 the Matrix that will be divided.
  * @param mat2 the Matrix that will divide the first one
  * @returns the resulting Matrix from the element-wise division. If both Matrices are not of
- * the same size, returns the first Matrix.
+ * the same size, returns an error.
  */
 export function matDivElementWise(mat1: Matrix, mat2: Matrix): Matrix {
 	if (
 		mat1.getRows() !== mat2.getRows() ||
 		mat1.getColumns() !== mat2.getColumns()
 	) {
-		console.log("Erreur Matrices : la taille des matrices n'est pas compatible pour une division par élément.")
+		console.log(
+			"Erreur Matrices : la taille des matrices n'est pas compatible pour une division par élément.",
+		);
 		throw new Error(
 			"Erreur Matrices : la taille des matrices n'est pas compatible pour une division par élément.",
 		);
-		return mat1;
 	}
 	let output: number[][] = mat1.getValue();
 	const values2: number[][] = mat2.getValue();
@@ -449,17 +453,18 @@ export function matPowElementWise(mat: Matrix, pow: number): Matrix {
  * of rows as the first matrix and the same number of columns as the second matrixé
  *
  * If the number of columns of the first matrix doesn't match the number of rows
- * of the second matrix, returns a matrix full of zeros (same size as if the equation could have been solved).
+ * of the second matrix, returns an error.
  */
 export function matMul(m1: Matrix, m2: Matrix): Matrix {
 	//If the number of m1 columns doesn't equal the number of m2 rows, the equation
 	//can't be solved, return a Matrix full of zeros.
 	if (m1.getColumns() !== m2.getRows()) {
-		console.log("Erreur Matrices : la taille des matrices n'est pas compatible pour une multiplication matricielle.")
+		console.log(
+			"Erreur Matrices : la taille des matrices n'est pas compatible pour une multiplication matricielle.",
+		);
 		throw new Error(
 			"Erreur Matrices : la taille des matrices n'est pas compatible pour une multiplication matricielle.",
 		);
-		return new Matrix(zeros(m1.getRows(), m2.getColumns()));
 	}
 
 	const value1: number[][] = m1.getValue();
@@ -514,7 +519,7 @@ export function matAbs(mat: Matrix): Matrix {
  * @param m1 the Matrix to which we will append the other Matrix.
  * @param m2 the Matrix which will be appended to the first Matrix.
  * @returns the resulting Matrix. If the 2 Matrices do not have the same number
- * of rows, returns a copy of the first Matrix.
+ * of rows, returns an error.
  */
 export function appendRow(m1: Matrix, m2: Matrix): Matrix {
 	let outputValue: number[][] = m1.getValue();
@@ -542,7 +547,7 @@ export function appendRow(m1: Matrix, m2: Matrix): Matrix {
  * @param m1 the Matrix to which we will append the other Matrix.
  * @param m2 the Matrix which will be appended to the first Matrix.
  * @returns the resulting Matrix. If the 2 Matrices do not have the same number
- * of columns, returns a copy of the first Matrix.
+ * of columns, returns an error.
  */
 export function appendColumn(m1: Matrix, m2: Matrix): Matrix {
 	let outputValue: number[][] = m1.getValue();

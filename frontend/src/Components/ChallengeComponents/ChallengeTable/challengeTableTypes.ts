@@ -61,9 +61,8 @@ export const HyperparamID: any = {
 	learningRate: {
 		name: "Taux d'apprentissage",
 		componant: 'input',
-	}, 
-	epochs: { name: "Nombre d'epochs",
-	componant: 'integer input' }, //
+	},
+	epochs: { name: "Nombre d'epochs", componant: 'integer input' }, //
 	type: {
 		name: "Type d'optimiseur",
 		componant: 'NN_OPTIMIZER_TYPES',
@@ -86,14 +85,13 @@ export const StyledChallengeTable = styled.div`
 		color: var(--foreground-color);
 		text-align: center;
 		margin-bottom: 0;
-		margin-left: auto;
-		margin-right: auto;
+		width: 100%;
 	}
 
 	.titles {
 		background-color: var(--secondary-color);
-		border-left: 1px solid var(--bg-shade-one-color);
-		border-right: 1px solid var(--bg-shade-one-color);
+		border-left: 0.1vh solid var(--bg-shade-one-color);
+		border-right: 0.1vh solid var(--bg-shade-one-color);
 		padding: 8px;
 		position: sticky;
 		top: 0;
@@ -118,22 +116,22 @@ export const StyledChallengeTable = styled.div`
 
 	.data {
 		background-color: var(--tableback-color);
-		border-top: 0.1vh solid var(--databack-color);
+		border-left: 0.1vh solid var(--databack-color);
+		border-right: 0.1vh solid var(--databack-color);
 		font-size: 12px;
+	}
+
+	.hyperparam-data {
+		border-top: 0.1vh solid var(--databack-color);
 	}
 
 	.data-number {
 		background-color: var(--secondary-color);
-		border-top: 0.1vh solid var(--databack-color);
 	}
 
 	.hyperparam-name {
 		font-weight: bold;
 		font-size: 14px;
-	}
-
-	.hyperparam-value {
-		border-left: 0.1vh solid var(--databack-color);
 	}
 
 	.inputs {

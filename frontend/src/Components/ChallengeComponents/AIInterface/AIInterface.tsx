@@ -93,10 +93,10 @@ const AIInterface = ({
 		handleModelChange(value);
 	};
 
-	function showModel(){
+	function showModel() {
 		switch (activeModel) {
 			case MODEL_TYPES.NEURAL_NETWORK:
-				return (ThreeScene());
+				return ThreeScene();
 			default:
 				break;
 		}
@@ -158,10 +158,10 @@ const AIInterface = ({
 						</div>
 					</div>
 				) : tabs[2].open ? (
-					<div className="flex flex-col">
+					<div className="ai-display flex flex-col">
 						<h1 className="header h-1/6">Valeurs des hyperparamètres</h1>
 						<ChallengeTable
-							className="h-3/4"
+							className="h-5/6"
 							isData={false}
 							hyperparams={hyperparams}
 							handleHyperparamsChange={handleHyperparamChange}

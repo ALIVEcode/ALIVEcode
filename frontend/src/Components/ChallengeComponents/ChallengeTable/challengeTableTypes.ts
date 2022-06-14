@@ -90,8 +90,8 @@ export const StyledChallengeTable = styled.div`
 
 	.titles {
 		background-color: var(--secondary-color);
-		border-left: 1px solid var(--bg-shade-one-color);
-		border-right: 1px solid var(--bg-shade-one-color);
+		border-left: 0.1vh solid var(--bg-shade-one-color);
+		border-right: 0.1vh solid var(--bg-shade-one-color);
 		padding: 8px;
 		position: sticky;
 		top: 0;

@@ -96,9 +96,8 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					label: 'Cost Function',
 					type: 'GET',
 					apply: (params, _, response) => {
-						console.log("Execute Predire")
+						console.log("Execute Cost Function")
 						const out = this.executableFuncs.costFunction();
-						console.log(out)
 						response?.push(out)
 						this.perform_next();
 					},

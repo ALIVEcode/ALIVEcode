@@ -181,8 +181,13 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 */
 	const aiInterfaceIOChange = (newIOCodes: number[]) => {
 		ioCodes.current = newIOCodes;
-		hyperparams.NN.nbInputs = ioCodes.current.filter(e => e === 1).length;
-		hyperparams.NN.nbOutputs = ioCodes.current.filter(e => e === 0).length;
+		let tempHyperparams: GenHyperparameters = JSON.parse(
+			JSON.stringify(hyperparams),
+		);		
+		tempHyperparams.NN.nbInputs = ioCodes.current.filter(e => e === 1).length;
+		tempHyperparams.NN.nbOutputs = ioCodes.current.filter(e => e === 0).length;
+		setHyperparams(tempHyperparams)
+		console.log('New Hyperparams ', hyperparams);
 		forceUpdate();
 	};
 
@@ -335,6 +340,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		showRegression();
 	}
 
+	/**
+	 * Creates an optimizer if there isn't one
+	 */
 	function creatOptimizer(){
 		if(model.current && !optimizer.current){
 			switch (activeModelType) {
@@ -361,19 +369,15 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		}
 
 		if (activeDataset.current){
-			let input = activeDataset.current.getInputsOutputs(ioCodes.current)[1]
+			let input = activeDataset.current.getInputsOutputs(ioCodes.current)[0]
 			let real = activeDataset.current.getDataAsMatrix()
 			let value 
 			creatOptimizer()
-	
 			try {
-				console.log(optimizer.current)
 				value = optimizer.current?.computeCost(input, real!)
 			}catch (e){
-				if (e instanceof Error){
-					console.log("Error : ",e.message)
+				if (e instanceof Error)
 					return e.message
-				}
 			}
 			if (value)
 				console.log("CostFunction : ",value)
@@ -536,6 +540,10 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	}
 
 
+	/**
+	 * Predicts an array of outputs with the model
+	 * @param input array of inputs
+	 */
 	function predict(input: number[]) {
 		let tab: number[][] = [];
 

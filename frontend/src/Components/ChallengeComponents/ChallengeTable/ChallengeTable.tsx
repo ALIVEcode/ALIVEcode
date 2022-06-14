@@ -72,9 +72,9 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 					break;
 				case 'multiple inputs':
 					newNumValue = parseInt(newValue);
-					let NNtempHyperparams = tempHyperparams as NNHyperparameters;
-					NNtempHyperparams.neuronsByLayer[index!] = newNumValue;
-					tempHyperparams = NNtempHyperparams;
+					const obj = tempHyperparams[key] as Object
+					const array = obj as number[]
+					array[index!] = newNumValue;
 					break;
 				default:
 					(tempHyperparams[key] as string) = newValue;
@@ -260,16 +260,21 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	/**
 	 * Add another input to the neurones by layer cell
 	 * @param add add or substract. If true, an input is added. If false, an input is substarted
+	 * @param key the hyperparameter
 	 */
-	function layer(add: boolean) {
+	function layer(add: boolean, key: string) {
 		if (props.handleHyperparamsChange && currHyperparams) {
-			let tempHyperparams: NNHyperparameters = JSON.parse(
+			let tempHyperparams = JSON.parse(
 				JSON.stringify(currHyperparams),
 			);
+
+			const obj = tempHyperparams[key] as Object
+			const array = obj as number[]
+			
 			if (add) {
-				tempHyperparams.neuronsByLayer.push(1);
+				array.push(1);
 			} else {
-				tempHyperparams.neuronsByLayer.pop();
+				array.pop();
 			}
 			setCurrHyperparams(tempHyperparams);
 			props.handleHyperparamsChange(tempHyperparams);
@@ -334,9 +339,9 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 			props.handleHyperparamsChange
 		) {
 			// Returned component if the hyperparam needs multiple input fields
-			const hyperparams: NNHyperparameters =
-				currHyperparams as NNHyperparameters;
-			const inputFieldNb: number = hyperparams.neuronsByLayer.length;
+			const obj = currHyperparams[key] as Object
+			const array = obj as number[]
+			const inputFieldNb: number =array.length;
 			let inputArray = [];
 			for (let i = 0; i < inputFieldNb; i++) {
 				inputArray.push(
@@ -345,7 +350,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 						<input
 							className="inputs my-1"
 							type="number"
-							value={hyperparams.neuronsByLayer[i]}
+							value={array[i]}
 							onBlur={e => {
 								props.handleHyperparamsChange(currHyperparams);
 							}}
@@ -363,14 +368,14 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 				<div className="input-container my-1">
 					<button
 						className="w-5/12 mx-0.5 rounded-md text-white text-base font-medium transition-colors hover:bg-[color:var(--contrast-color)] bg-[color:var(--primary-color)] btn-clearCmdLines"
-						onClick={e => layer(true)}
+						onClick={e => layer(true, key)}
 					>
 						{' '}
 						+{' '}
 					</button>
 					<button
 						className="w-5/12 mx-0.5 rounded-md text-white text-base font-medium transition-colors hover:bg-[color:var(--contrast-color)] bg-[color:var(--primary-color)] btn-clearCmdLines"
-						onClick={e => layer(false)}
+						onClick={e => layer(false, key)}
 					>
 						{' '}
 						-{' '}

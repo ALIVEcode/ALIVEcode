@@ -60,7 +60,7 @@ export default abstract class Optimizer {
 	public abstract optimize(inputs: Matrix, real: Matrix): GenAIModel;
 
 	public computeCost(inputs: Matrix, real: Matrix): number {
-		return this.costFunc.matCompute(this.model.predict(inputs, false), real);
+		return this.costFunc.matCompute(this.model.predict(inputs), real);
 	}
 
 	/**

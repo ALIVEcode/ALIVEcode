@@ -31,8 +31,17 @@ import {
 	defaultModelType,
 } from './artificial_intelligence/ai_models/DefaultHyperparams';
 import { Matrix } from './artificial_intelligence/AIUtils';
+import AIModel, {
+	ACTIVATION_FUNCTIONS,
+	COST_FUNCTIONS,
+	NN_OPTIMIZER_TYPES,
+} from '../../../Models/Ai/ai_model.entity';
+import { GradientDescent } from './artificial_intelligence/ai_optimizers/ai_nn_optimizers/GradientDescent';
 import { act, waitFor } from '@testing-library/react';
 import {mainAINeuralNetworkTest} from "./artificial_intelligence/ai_tests/AINeuralNetworkTest";
+import { CostFunction } from './artificial_intelligence/ai_functions/CostFunction';
+import Optimizer from './artificial_intelligence/ai_optimizers/Optimizer';
+import { NNOptimizer } from './artificial_intelligence/ai_optimizers/ai_nn_optimizers/NNOptimizer';
 
 /**
  * Ai challenge page. Contains all the components to display and make the ai challenge functionnal.
@@ -323,16 +332,51 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		showRegression();
 	}
 
+	function creatOptimizer(){
+		if(model.current && !optimizer.current){
+			switch (activeModelType) {
+				case MODEL_TYPES.NEURAL_NETWORK :
+					let modelTemp = model.current as NeuralNetwork
+					optimizer.current = new GradientDescent(modelTemp)
+					break;
+				case MODEL_TYPES.POLY_REGRESSION:
+					regression.current = model.current as PolyRegression
+					optimizer.current = new PolyOptimizer(regression.current);
+					break;
+			}
+		}
+	}
+
 	/**
 	 * Calculates the cost for the current model compared to the dataset of the challenge.
 	 * @returns the calculated cost.
 	 */
-	function costFunction(): string {
-		mainAINeuralNetworkTest();
+	function costFunction() {
+		//mainAINeuralNetworkTest();
 		if (!model.current) {
 			return "Erreur : aucun modèle n'a été créé jusqu'à présent. Veuillez créer un modèle afin de calculer son erreur.";
 		}
-		return 'Erreur du modèle : fonction à implémenter';
+
+		if (activeDataset.current){
+			let input = activeDataset.current.getInputsOutputs(ioCodes.current)[1]
+			let real = activeDataset.current.getDataAsMatrix()
+			let value 
+			creatOptimizer()
+	
+			try {
+				console.log(optimizer.current)
+				value = optimizer.current?.computeCost(input, real!)
+			}catch (e){
+				if (e instanceof Error){
+					console.log("Error : ",e.message)
+					return e.message
+				}
+			}
+			if (value)
+				console.log("CostFunction : ",value)
+				return 	value
+		}
+		return "Erreur : aucune donnée n'a été créé"
 	}
 
 	/**
@@ -489,13 +533,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	}
 
 	function predict(input : number[]){
-		//Creats temporaly model
-		/*console.log("TEST ")
-		const neuralNet: NeuralNetwork = new NeuralNetwork('1', hyperparams.NN, {
-			layerParams: [],
-		  });*/
-
-
 		let tab : number[][] = []
 
 		//Column Matrix

@@ -94,10 +94,13 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 				actionId: 804,
 				action: {
 					label: 'Cost Function',
-					type: 'NORMAL',
-					apply: () => {
+					type: 'GET',
+					apply: (params, _, response) => {
+						console.log("Execute Predire")
 						const out = this.executableFuncs.costFunction();
-						this.cmd?.print(out);
+						console.log(out)
+						response?.push(out)
+						this.perform_next();
 					},
 				},
 			},

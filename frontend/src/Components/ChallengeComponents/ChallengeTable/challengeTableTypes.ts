@@ -40,11 +40,11 @@ export type ChallengeTableProps = {
 export const HyperparamID: any = {
 	nbInputs: {
 		name: "Nombre de paramètres d'entrée",
-		componant: 'integer input',
+		componant: 'disable integer input',
 	}, //
 	nbOutputs: {
 		name: 'Nombre de paramètres de sortie',
-		componant: 'integer input',
+		componant: 'disable integer input',
 	}, //
 	neuronsByLayer: {
 		name: 'Nombre de neuronnes par couche',

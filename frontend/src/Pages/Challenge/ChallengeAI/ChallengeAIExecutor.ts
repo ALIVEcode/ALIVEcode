@@ -229,6 +229,21 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 						}
 					},
 				},
+			},{
+				actionId: 812,
+				action: {
+					label: 'Optimiser',
+					type: 'NORMAL',
+					apply: () => {
+						console.log('Execute Optimize');
+						let out = this.executableFuncs.optimize();
+
+						if (typeof out === 'string'){
+							this.cmd?.print(out)
+						}
+
+					},
+				},
 			},
 		]);
 

@@ -118,6 +118,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					normalizeColumn,
 					normalize,
 					predict,
+					optimize,
 					testNeuralNetwork,
 				},
 				challenge.name,
@@ -216,6 +217,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 		//If the dataset is loaded
 		if (activeDataset.current) {
+			//Set IOCodes
 			let first = true;
 			let array = activeDataset.current.getDataAsArray().map((val, index) => {
 				const header = activeDataset.current!.getParamNames().at(index);
@@ -238,8 +240,21 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			ioCodes.current = newIOCodes;
 			console.log('current iocodes : ', ioCodes.current);
 
+			//Update some hyperparams
+			hyperparams.NN.nbInputs = ioCodes.current.filter(e => e === 1).length;
+			hyperparams.NN.nbOutputs = ioCodes.current.filter(e => e === 0).length;
+			let indexArray: number[] = []
+			hyperparams.NN.neuronsByLayer = hyperparams.NN.neuronsByLayer.filter((e, i) =>{
+				if (e === 0) indexArray.push(1)
+				else return e
+			})
+			indexArray.forEach(i=>{
+				hyperparams.NN.activationsByLayer.splice(i,1)
+			})
+
 			//Cloning the initial data
 			activeDataset.current = challenge.dataset!.clone();
+			optimizer.current = undefined;
 			setActiveModel(undefined);
 			forceUpdate();
 		}
@@ -343,7 +358,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	/**
 	 * Creates an optimizer if there isn't one
 	 */
-	function creatOptimizer(){
+	function createsOptimizer(){
 		if(model.current && !optimizer.current){
 			switch (activeModelType) {
 				case MODEL_TYPES.NEURAL_NETWORK :
@@ -355,6 +370,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					optimizer.current = new PolyOptimizer(regression.current);
 					break;
 			}
+			console.log("Current Optimizer : ", optimizer.current)
 		}
 	}
 
@@ -370,18 +386,15 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 		if (activeDataset.current){
 			let input = activeDataset.current.getInputsOutputs(ioCodes.current)[0]
-			let real = activeDataset.current.getDataAsMatrix()
-			let value 
-			creatOptimizer()
+			let real = activeDataset.current.getInputsOutputs(ioCodes.current)[1]
+			createsOptimizer()
+			
 			try {
-				value = optimizer.current?.computeCost(input, real!)
+				return optimizer.current?.computeCost(input, real)
 			}catch (e){
 				if (e instanceof Error)
 					return e.message
 			}
-			if (value)
-				console.log("CostFunction : ",value)
-				return 	value
 		}
 		return "Erreur : aucune donnée n'a été créé"
 	}
@@ -558,13 +571,31 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		//Prediction
 		try {
 			respond = model.current?.predict(matInput).transpose();
-			console.log('PREDICTION : ', respond?.getValue());
 		} catch (e) {
 			if (e instanceof Error) {
 				return e.message;
 			}
 		}
 		return respond?.getValue();
+	}
+
+
+	function optimize() {
+		if (activeDataset.current){
+			let input = activeDataset.current.getInputsOutputs(ioCodes.current)[0]
+			let real = activeDataset.current.getInputsOutputs(ioCodes.current)[1]
+			createsOptimizer()
+
+			try {
+				console.log(input)
+				console.log(real)
+				model.current=optimizer.current?.optimize(input,real)
+				console.log(model)
+			}catch(e){
+				if (e instanceof Error)
+					return e.message
+			}
+		}
 	}
 
 	// FOR TESTING PURPOSE ONLY, TO BE DELETED WHEN NEURAL NETWORK IMPLEMENTATION WORKS //

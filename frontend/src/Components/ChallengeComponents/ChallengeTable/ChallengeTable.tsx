@@ -72,9 +72,14 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 					break;
 				case 'multiple inputs':
 					newNumValue = parseInt(newValue);
-					let NNtempHyperparams = tempHyperparams as NNHyperparameters;
-					NNtempHyperparams.neuronsByLayer[index!] = newNumValue;
-					tempHyperparams = NNtempHyperparams;
+					const obj = tempHyperparams[key] as Object
+					const array = obj as number[]
+					array[index!] = newNumValue;
+					break;
+				case 'ACTIVATION_FUNCTIONS':
+					const obj2 = tempHyperparams[key] as Object
+					const array2 = obj2 as string[]
+					array2[index!] = newValue;
 					break;
 				default:
 					(tempHyperparams[key] as string) = newValue;
@@ -260,16 +265,24 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	/**
 	 * Add another input to the neurones by layer cell
 	 * @param add add or substract. If true, an input is added. If false, an input is substarted
+	 * @param key the hyperparameter
 	 */
-	function layer(add: boolean) {
+	function layer(add: boolean, key: string) {
 		if (props.handleHyperparamsChange && currHyperparams) {
-			let tempHyperparams: NNHyperparameters = JSON.parse(
+			let tempHyperparams = JSON.parse(
 				JSON.stringify(currHyperparams),
 			);
+
+			const obj = tempHyperparams[key] as Object
+			const array = obj as number[]
+			
+
 			if (add) {
-				tempHyperparams.neuronsByLayer.push(1);
+				array.push(1);
+				tempHyperparams['activationsByLayer'].push('RE')
 			} else {
-				tempHyperparams.neuronsByLayer.pop();
+				array.pop();
+				tempHyperparams['activationsByLayer'].pop()
 			}
 			setCurrHyperparams(tempHyperparams);
 			props.handleHyperparamsChange(tempHyperparams);
@@ -291,53 +304,75 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	 * @param key the hyperparameter
 	 * @returns the component corresponding to the hyperparameter
 	 */
-	function addHypperparamInput(key: keyof Hyperparameters) {
-		if (
-			HyperparamTranslator![key]['componant'] === 'integer input' ||
-			HyperparamTranslator![key]['componant'] === 'input'
-		) {
+	 function addHypperparamInput(key: keyof Hyperparameters) {
+		const component = HyperparamTranslator![key]['componant'] as string
+		if (component.includes('input')) {
 			// Returned component if the hyperparam needs an input field
-			return (
-				currHyperparams &&
-				props.handleHyperparamsChange && (
-					<input
-						className="inputs"
-						type="number"
-						onBlur={e => {
-							props.handleHyperparamsChange(currHyperparams);
-						}}
-						value={currHyperparams[key]}
-						onChange={e => {
-							updateHyperparams(e.target.value, key);
-						}}
-						onKeyPress={event => {
-							if (
-								!(
-									/[0-9]/.test(event.key) ||
-									/[.]/.test(event.key) ||
-									/[,]/.test(event.key)
-								)
-							) {
-								event.preventDefault();
-							}
-						}}
-						step={inputStep(key)}
-						min="0"
-					></input>
-				)
-			);
+			if (!component.includes('multiple')) {
+				return singleInputField(key)
+			}else{ 
+				return multipleInputFields(key)
+			}
 		}
+		return creatDropBox(key)
+	}
 
+
+	/**
+	 * Returns the input field associated with the hyperparameter.
+	 * @param key the hyperparameter
+	 * @returns the field corresponding to the hyperparameter
+	 */
+	function singleInputField(key: keyof Hyperparameters){
+		const component = HyperparamTranslator![key]['componant'] as string
+		return (
+			currHyperparams &&
+			props.handleHyperparamsChange && (
+				<input
+					className="inputs"
+					type="number"
+					onBlur={e => {
+						props.handleHyperparamsChange(currHyperparams);
+					}}
+					value={currHyperparams[key]}
+					disabled={component.includes('disable')}
+					onChange={e => {
+						updateHyperparams(e.target.value, key);
+					}}
+					onKeyPress={event => {
+						if (
+							!(
+								/[0-9]/.test(event.key) ||
+								/[.]/.test(event.key) ||
+								/[,]/.test(event.key)
+							)
+						) {
+							event.preventDefault();
+						}
+					}}
+					step={inputStep(key)}
+					min='0'
+				></input>
+			)
+		);
+	}
+
+	/**
+	 * Returns the input fields associated with the hyperparameter.
+	 * @param key the hyperparameter
+	 * @returns the fields corresponding to the hyperparameter
+	 */
+	function multipleInputFields(key: keyof Hyperparameters){
 		if (
-			HyperparamTranslator![key]['componant'] === 'multiple inputs' &&
 			currHyperparams &&
 			props.handleHyperparamsChange
 		) {
 			// Returned component if the hyperparam needs multiple input fields
-			const hyperparams: NNHyperparameters =
-				currHyperparams as NNHyperparameters;
-			const inputFieldNb: number = hyperparams.neuronsByLayer.length;
+			const obj = currHyperparams[key] as Object
+			const array = obj as number[]
+			const inputFieldNb: number =array.length;
 			let inputArray = [];
+
 			for (let i = 0; i < inputFieldNb; i++) {
 				inputArray.push(
 					<div className="input-container">
@@ -345,7 +380,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 						<input
 							className="inputs my-1"
 							type="number"
-							value={hyperparams.neuronsByLayer[i]}
+							value={array[i]}
 							onBlur={e => {
 								props.handleHyperparamsChange(currHyperparams);
 							}}
@@ -363,14 +398,14 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 				<div className="input-container my-1">
 					<button
 						className="w-5/12 mx-0.5 rounded-md text-white text-base font-medium transition-colors hover:bg-[color:var(--contrast-color)] bg-[color:var(--primary-color)] btn-clearCmdLines"
-						onClick={e => layer(true)}
+						onClick={e => layer(true, key)}
 					>
 						{' '}
 						+{' '}
 					</button>
 					<button
 						className="w-5/12 mx-0.5 rounded-md text-white text-base font-medium transition-colors hover:bg-[color:var(--contrast-color)] bg-[color:var(--primary-color)] btn-clearCmdLines"
-						onClick={e => layer(false)}
+						onClick={e => layer(false, key)}
 					>
 						{' '}
 						-{' '}
@@ -380,9 +415,20 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 
 			return inputArray;
 		}
+	}
 
-		var keys: any[];
-		var values: any[];
+	/**
+	 * Returns the input dropdown associated with the hyperparameter.
+	 * @param key the hyperparameter
+	 * @returns the dropdown corresponding to the hyperparameter
+	 */
+	function creatDropBox(key: keyof Hyperparameters){
+		let keys: any[] = [];
+		let values: any[] = [];
+		let inputs: any[] =[];
+		var obj: Object
+		let array: number[] = []
+		let dropboxdNb = 1
 
 		switch (HyperparamTranslator![key]['componant']) {
 			case 'NN_OPTIMIZER_TYPES': {
@@ -393,6 +439,9 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 			case 'ACTIVATION_FUNCTIONS': {
 				values = Object.values(ACTIVATION_FUNCTIONS);
 				keys = Object.keys(ACTIVATION_FUNCTIONS);
+				obj = currHyperparams![key] as Object
+				array = obj as number[]
+				dropboxdNb =array.length;
 				break;
 			}
 			case 'MODEL_TYPES': {
@@ -403,31 +452,56 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 			case 'COST_FUNCTIONS': {
 				values = Object.values(COST_FUNCTIONS);
 				keys = Object.keys(COST_FUNCTIONS);
-				break;
-			}
-			default: {
-				values = [];
-				keys = [];
 			}
 		}
-		return (
-			<select
-				className="inputs"
-				onChange={e => updateHyperparams(e.target.value, key)}
-				onBlur={e => {
-					props.handleHyperparamsChange!(currHyperparams!);
-				}}
-			>
-				{values.map((index: number) => {
-					let i = values.indexOf(index);
-					return (
-						<option key={index} value={index}>
-							{keys.at(i)}
-						</option>
-					);
-				})}
-			</select>
-		);
+		if(dropboxdNb === 1){
+			//Creat one dropdown
+			inputs.push(
+					<select
+						className="inputs"
+						onChange={e => updateHyperparams(e.target.value, key)}
+						onBlur={e => {
+							props.handleHyperparamsChange!(currHyperparams!);
+						}}
+					>
+						{values.map((index: number) => {
+							let i = values.indexOf(index);
+							return (
+								<option key={index} value={index}>
+									{keys.at(i)}
+								</option>
+							);
+						})}
+					</select>
+				)
+		}else{
+		//Creat multiple dropdowns
+			for (let index = 0; index < dropboxdNb; index++) {
+				inputs.push(
+					<div className="input-container">
+						<label>Couche {index+1 === dropboxdNb? 'de sortie':index + 1} : </label>
+						<select
+							className="inputs my-1"
+							value={array![index]}
+							onChange={e => updateHyperparams(e.target.value, key, index)}
+							onBlur={e => {
+								props.handleHyperparamsChange!(currHyperparams!);
+							}}
+						>
+							{values.map((index: number) => {
+								let i = values.indexOf(index);
+								return (
+									<option key={index} value={index}>
+										{keys.at(i)}
+									</option>
+								);
+							})}
+						</select>
+					</div>,
+				)
+			}
+		}
+		return inputs
 	}
 
 	return (

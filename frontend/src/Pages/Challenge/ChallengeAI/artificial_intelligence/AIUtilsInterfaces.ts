@@ -41,6 +41,7 @@ export interface RegHyperparameters {
 	costFunction: COST_FUNCTIONS;
 	learningRate: number;
 	epochs: number;
+
 }
 
 export interface GenHyperparameters {

@@ -63,16 +63,14 @@ export default class PolyOptimizer extends RegressionOptimizer {
 	): void {
 		let costDev: Matrix;
 		let da, db, dc, dd: number;
-		// Normalization of inputs
-		const normInputs: Matrix = this.model.normalizeByRow(inputs);
 
 		// Normalization of outputs for smaller values
 		const actFunc: Sigmoid = new Sigmoid();
 		const activatedPred: Matrix = actFunc.matCompute(
-			this.model.normalizeOutputByRow(outputArray),
+			outputArray,
 		);
 		const activatedReal: Matrix = actFunc.matCompute(
-			this.model.normalizeOutputByRow(real),
+			real,
 		);
 
 		// Backpropagation
@@ -82,19 +80,19 @@ export default class PolyOptimizer extends RegressionOptimizer {
 		// 2. Computation of derivatives
 		// We multiply by param/param to avoid increasing a 0 variable
 		da =
-			this.paramDerivative('a', costDev, normInputs) *
+			this.paramDerivative('a', costDev, inputs) *
 			this.gradientDirection *
 			(this.model.getA() / (this.model.getA() + RegressionOptimizer.EPSILON));
 		db =
-			this.paramDerivative('b', costDev, normInputs) *
+			this.paramDerivative('b', costDev, inputs) *
 			this.gradientDirection *
 			(this.model.getB() / (this.model.getB() + RegressionOptimizer.EPSILON));
 		dc =
-			this.paramDerivative('c', costDev, normInputs) *
+			this.paramDerivative('c', costDev, inputs) *
 			this.gradientDirection *
 			(this.model.getC() / (this.model.getC() + RegressionOptimizer.EPSILON));
 		dd =
-			this.paramDerivative('d', costDev, normInputs) *
+			this.paramDerivative('d', costDev, inputs) *
 			this.gradientDirection *
 			(this.model.getD() / (this.model.getD() + RegressionOptimizer.EPSILON));
 

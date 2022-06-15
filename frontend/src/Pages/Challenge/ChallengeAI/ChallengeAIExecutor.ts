@@ -94,10 +94,12 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 				actionId: 804,
 				action: {
 					label: 'Cost Function',
-					type: 'NORMAL',
-					apply: () => {
+					type: 'GET',
+					apply: (params, _, response) => {
+						console.log("Execute Cost Function")
 						const out = this.executableFuncs.costFunction();
-						this.cmd?.print(out);
+						response?.push(out)
+						this.perform_next();
 					},
 				},
 			},
@@ -152,11 +154,11 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 							typeof params[0] === 'string' &&
 							typeof params[1] === 'object'
 						) {
-							const out: string | null = this.executableFuncs.oneHot(
+							const out: string | undefined = this.executableFuncs.oneHot(
 								params[0],
 								params[1],
 							);
-							if (out !== null) {
+							if (out !== undefined) {
 								this.cmd?.print(out);
 							}
 						}
@@ -225,6 +227,21 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 							}
 							this.perform_next();
 						}
+					},
+				},
+			},{
+				actionId: 812,
+				action: {
+					label: 'Optimiser',
+					type: 'NORMAL',
+					apply: () => {
+						console.log('Execute Optimize');
+						let out = this.executableFuncs.optimize();
+
+						if (typeof out === 'string'){
+							this.cmd?.print(out)
+						}
+
 					},
 				},
 			},

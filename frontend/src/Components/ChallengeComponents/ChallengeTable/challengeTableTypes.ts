@@ -116,8 +116,7 @@ export const StyledChallengeTable = styled.div`
 
 	.data {
 		background-color: var(--tableback-color);
-		border-left: 0.1vh solid var(--databack-color);
-		border-right: 0.1vh solid var(--databack-color);
+		border: 0.1vh solid var(--databack-color);
 		font-size: 12px;
 	}
 

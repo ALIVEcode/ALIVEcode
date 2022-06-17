@@ -76,6 +76,10 @@ export const ThreeNeuralNet = (props : NNProps) => {
             missingNeurons[i] -= finalSize[i]
             lastVisualNeuronsEqualsTo.push(props.topology[i] % divider)
         }
+    } else {
+        for (let i = 0; i < props.topology.length; i++) {
+            lastVisualNeuronsEqualsTo.push(0)
+        }
     }
 
     for (let i = 0; i < finalSize.length; i++) {

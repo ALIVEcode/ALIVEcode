@@ -531,4 +531,8 @@ export class AIDataset {
 		}
 		return true;
 	}
+
+	public deleteLine(index : number){
+		this.data.splice(index,1)
+	}
 }

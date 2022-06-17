@@ -119,6 +119,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					normalize,
 					predict,
 					optimize,
+					getIONames,
+					deleteLine,
 					testNeuralNetwork,
 				},
 				challenge.name,
@@ -390,7 +392,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			createsOptimizer()
 			
 			try {
-				return optimizer.current?.computeCost(input, real)
+				if(optimizer.current)
+					return optimizer.current.computeCost(input, real)
 			}catch (e){
 				if (e instanceof Error)
 					return e.message
@@ -580,6 +583,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	}
 
 
+	/**
+	 * Trains the model
+	 */
 	function optimize() {
 		if (activeDataset.current){
 			let input = activeDataset.current.getInputsOutputs(ioCodes.current)[0]
@@ -587,14 +593,42 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			createsOptimizer()
 
 			try {
-				console.log(input)
-				console.log(real)
 				model.current=optimizer.current?.optimize(input,real)
 				console.log(model)
 			}catch(e){
 				if (e instanceof Error)
 					return e.message
 			}
+		}
+	}
+
+	/**
+	 * Returns the names of the paraters that are an input or an output
+	 * @returns 
+	 */
+	function getIONames(){
+		if(activeDataset.current){
+			let params:string[] = activeDataset.current.getParamNames();
+			let ioParams: string[] = [];
+			for (let i =ioCodes.current.length-1 ; i >= 0 ; i--){
+				if(ioCodes.current[i] !== -1)
+					ioParams.push(params[i])
+			}
+			return ioParams;
+		}	
+		return "Erreur : la base de données n'a pas été chargée.";
+	}
+
+	/**
+	 * Delete the line indicated in the dataset
+	 * @param index the index of the line to delete
+	 */
+	function deleteLine(index : number){
+		if(activeDataset.current){
+			activeDataset.current.deleteLine(index)
+			forceUpdate()
+		}else {
+			return "Erreur : la base de données n'a pas été chargée."
 		}
 	}
 

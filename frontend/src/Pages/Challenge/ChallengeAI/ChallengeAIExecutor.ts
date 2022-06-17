@@ -242,6 +242,35 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 							this.cmd?.print(out)
 						}
 
+					}
+				}
+			},{
+				actionId: 813,
+				action: {
+					label: 'IO Names',
+					type: 'GET',
+					apply: (params, _, response) => {
+						console.log('IO Names');
+						let out:string[] = this.executableFuncs.getIONames();
+						console.log(out)
+						response?.push('Creation of a list');
+						out.forEach(e => response?.push(e))
+						this.perform_next();
+					},
+				}
+			},{
+				actionId: 814,
+				action: {
+					label: 'Delete Line',
+					type: 'NORMAL',
+					apply: (params) => {
+						console.log('Execute Delete Line');
+						if(typeof params[0] === 'number'){
+							let out = this.executableFuncs.deleteLine(params[0]);
+							if (typeof out === 'string'){
+								this.cmd?.print(out)
+							}
+						}
 					},
 				},
 			},

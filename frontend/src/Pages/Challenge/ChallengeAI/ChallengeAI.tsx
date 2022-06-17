@@ -31,18 +31,7 @@ import {
 	defaultModelType,
 } from './artificial_intelligence/ai_models/DefaultHyperparams';
 import { Matrix } from './artificial_intelligence/AIUtils';
-import AIModel, {
-	ACTIVATION_FUNCTIONS,
-	COST_FUNCTIONS,
-	NN_OPTIMIZER_TYPES,
-} from '../../../Models/Ai/ai_model.entity';
 import { GradientDescent } from './artificial_intelligence/ai_optimizers/ai_nn_optimizers/GradientDescent';
-import { act, waitFor } from '@testing-library/react';
-import {mainAINeuralNetworkTest} from "./artificial_intelligence/ai_tests/AINeuralNetworkTest";
-import { CostFunction } from './artificial_intelligence/ai_functions/CostFunction';
-import Optimizer from './artificial_intelligence/ai_optimizers/Optimizer';
-import { NNOptimizer } from './artificial_intelligence/ai_optimizers/ai_nn_optimizers/NNOptimizer';
-
 
 /**
  * Ai challenge page. Contains all the components to display and make the ai challenge functionnal.
@@ -186,10 +175,10 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		ioCodes.current = newIOCodes;
 		let tempHyperparams: GenHyperparameters = JSON.parse(
 			JSON.stringify(hyperparams),
-		);		
+		);
 		tempHyperparams.NN.nbInputs = ioCodes.current.filter(e => e === 1).length;
 		tempHyperparams.NN.nbOutputs = ioCodes.current.filter(e => e === 0).length;
-		setHyperparams(tempHyperparams)
+		setHyperparams(tempHyperparams);
 		console.log('New Hyperparams ', hyperparams);
 		forceUpdate();
 	};
@@ -245,14 +234,16 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			//Update some hyperparams
 			hyperparams.NN.nbInputs = ioCodes.current.filter(e => e === 1).length;
 			hyperparams.NN.nbOutputs = ioCodes.current.filter(e => e === 0).length;
-			let indexArray: number[] = []
-			hyperparams.NN.neuronsByLayer = hyperparams.NN.neuronsByLayer.filter((e, i) =>{
-				if (e === 0) indexArray.push(1)
-				else return e
-			})
-			indexArray.forEach(i=>{
-				hyperparams.NN.activationsByLayer.splice(i,1)
-			})
+			let indexArray: number[] = [];
+			hyperparams.NN.neuronsByLayer = hyperparams.NN.neuronsByLayer.filter(
+				(e, i) => {
+					if (e === 0) indexArray.push(1);
+					else return e;
+				},
+			);
+			indexArray.forEach(i => {
+				hyperparams.NN.activationsByLayer.splice(i, 1);
+			});
 
 			//Cloning the initial data
 			activeDataset.current = challenge.dataset!.clone();
@@ -360,19 +351,19 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	/**
 	 * Creates an optimizer if there isn't one
 	 */
-	function createsOptimizer(){
-		if(model.current && !optimizer.current){
+	function createsOptimizer() {
+		if (model.current && !optimizer.current) {
 			switch (activeModelType) {
-				case MODEL_TYPES.NEURAL_NETWORK :
-					let modelTemp = model.current as NeuralNetwork
-					optimizer.current = new GradientDescent(modelTemp)
+				case MODEL_TYPES.NEURAL_NETWORK:
+					let modelTemp = model.current as NeuralNetwork;
+					optimizer.current = new GradientDescent(modelTemp);
 					break;
 				case MODEL_TYPES.POLY_REGRESSION:
-					regression.current = model.current as PolyRegression
+					regression.current = model.current as PolyRegression;
 					optimizer.current = new PolyOptimizer(regression.current);
 					break;
 			}
-			console.log("Current Optimizer : ", optimizer.current)
+			console.log('Current Optimizer : ', optimizer.current);
 		}
 	}
 
@@ -386,11 +377,11 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			return "Erreur : aucun modèle n'a été créé jusqu'à présent. Veuillez créer un modèle afin de calculer son erreur.";
 		}
 
-		if (activeDataset.current){
-			let input = activeDataset.current.getInputsOutputs(ioCodes.current)[0]
-			let real = activeDataset.current.getInputsOutputs(ioCodes.current)[1]
-			createsOptimizer()
-			
+		if (activeDataset.current) {
+			let input = activeDataset.current.getInputsOutputs(ioCodes.current)[0];
+			let real = activeDataset.current.getInputsOutputs(ioCodes.current)[1];
+			createsOptimizer();
+
 			try {
 				if(optimizer.current)
 					return optimizer.current.computeCost(input, real)
@@ -399,7 +390,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					return e.message
 			}
 		}
-		return "Erreur : aucune donnée n'a été créé"
+		return "Erreur : aucune donnée n'a été créé";
 	}
 
 	/**
@@ -555,7 +546,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		} else return "Erreur : la base de données n'a pas été chargée.";
 	}
 
-
 	/**
 	 * Predicts an array of outputs with the model
 	 * @param input array of inputs
@@ -587,10 +577,10 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * Trains the model
 	 */
 	function optimize() {
-		if (activeDataset.current){
-			let input = activeDataset.current.getInputsOutputs(ioCodes.current)[0]
-			let real = activeDataset.current.getInputsOutputs(ioCodes.current)[1]
-			createsOptimizer()
+		if (activeDataset.current) {
+			let input = activeDataset.current.getInputsOutputs(ioCodes.current)[0];
+			let real = activeDataset.current.getInputsOutputs(ioCodes.current)[1];
+			createsOptimizer();
 
 			try {
 				model.current=optimizer.current?.optimize(input,real)

@@ -1,11 +1,4 @@
-import {
-	memo,
-	useContext,
-	useRef,
-	useState,
-	useCallback,
-	useEffect,
-} from 'react';
+import { useContext, useState } from 'react';
 import {
 	AIInterfaceProps,
 	AITabModel,
@@ -15,14 +8,8 @@ import { ThemeContext } from '../../../state/contexts/ThemeContext';
 import AITab from './AITab';
 import ChallengeTable from '../ChallengeTable/ChallengeTable';
 import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
-import { ThreeScene } from './AIVisualModels/AINeuralNet';
-import {
-	GenHyperparameters,
-	Hyperparameters,
-} from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
-import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
-import useComplexState from '../../../state/hooks/useComplexState';
-import { defaultModelType } from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/ai_models/DefaultHyperparams';
+import { AICanvas } from './AIVisualModels/AIVisualNeuralNet/AICanvas';
+import { NNHyperparameters } from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
 
 /**
  * This component represents the visual interface in every ChallengeAI. It handles the
@@ -94,12 +81,21 @@ const AIInterface = ({
 	};
 
 	function showModel() {
-		switch (activeModel) {
-			case MODEL_TYPES.NEURAL_NETWORK:
-				return ThreeScene();
-			default:
-				break;
-		}
+		return (
+			<AICanvas
+				filter={0}
+				maxNeuronPerLayer={10}
+				spacing={20}
+				hyperparameters={hyperparams as NNHyperparameters}
+			/>
+		);
+		//
+		// switch (activeModel) {
+		// 	case MODEL_TYPES.NEURAL_NETWORK:
+		// 		return <AICanvas filter={0} maxNeuronPerLayer={10} spacing={20} topology={[5, 6, 20, 60, 5]}/>;
+		// 	default:
+		// 		break;
+		// }
 	}
 
 	return (

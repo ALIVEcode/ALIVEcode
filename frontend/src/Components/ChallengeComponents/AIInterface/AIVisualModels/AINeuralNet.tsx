@@ -9,6 +9,7 @@ import {
 } from "@react-three/fiber";
 import {Vector3} from "three";
 import {ChallengeContext} from "../../../../state/contexts/ChallengeContext";
+import {Neuron} from "./AIVisualNeuralNet/AIVisualNeuron";
 
 extend({Line_: THREE.Line})
 
@@ -18,22 +19,6 @@ declare global {
             line_: ReactThreeFiber.Object3DNode<THREE.Line, typeof THREE.Line>
         }
     }
-}
-
-function showValue(path:any, type:String) {
-    const divpath: HTMLElement = document.getElementById("SelectedValue")!;
-
-    if(path !== "" )
-        divpath.innerHTML = type + " : " + String(path);
-    else
-        divpath.innerHTML = ""
-    //alert(type + " : " + String(path))
-    if(path === "")
-        divpath.style.display = "none"
-    else
-        divpath.style.display = "block"
-
-
 }
 let selected = false;
 
@@ -60,13 +45,11 @@ namespace NNNeuron {
                 {...props}
 
                 onClick={(e) => {
-                    showValue(props.path, props.type)
                     e.stopPropagation()
                     click(true)
                     selected = true
                 }}
                 onPointerMissed={(e)=>{
-                    showValue("", "")
                     e.stopPropagation()
                     click(false);
                     selected = false;
@@ -74,7 +57,7 @@ namespace NNNeuron {
                 onPointerOver={(e) => {
                     hover(true);
                     e.stopPropagation()
-                    if(!selected) { showValue(props.path, props.type) }
+                    if(!selected) {}
                 }}
                 onPointerOut={(e) => {
                     hover(false);
@@ -175,20 +158,18 @@ namespace NNWeights  {
             // Parce que line est déjà utilisé par React
             <line_ geometry={lineGeometry}
                    onClick={(e) => {
-                       showValue(props.path, props.type)
                        e.stopPropagation()
                        click(true)
 
                    }}
                    onPointerMissed={(e)=>{
-                       showValue(0, "")
                        e.stopPropagation()
                        click(false);
                    }}
                    onPointerOver={(e) => {
                        hover(true);
                        e.stopPropagation()
-                       if(!selected) { showValue(props.path, props.type) }
+                       if(!selected) {}
                    }}
                    onPointerOut={(e) => {hover(false); e.stopPropagation() }}>
                 <lineBasicMaterial
@@ -296,31 +277,31 @@ type NNProps = {
     maxNeuronPerLayer: number
 }
 
-function compactLayer(size : number, targetCompaction : number) {
-    let required50 : number = 0;
-    let required10 : number = 0;
-    let required5 : number = 0;
-    let required1;
-    while(size > targetCompaction && size - 50 >= 0) {
-        size -= 50;
-        required50++;
-    }
-    while(size > targetCompaction && size - 10 >= 0) {
-        size -= 10;
-        required10++;
-    }
-    while(size > targetCompaction && size - 5 >= 0) {
-        size -= 5;
-        required5++;
-    }
-    required1 = size;
-    let compactSize : number = required1 + required5 + required10 + required50;
-    //alert(compactSize + ":" + required1 + "," + required5 + "," +
-    //required10 + "," +required50 + "," )
-
-    return [required1, required5, required10, required50, compactSize]
-
-}
+// function compactLayer(size : number, targetCompaction : number) {
+//     let required50 : number = 0;
+//     let required10 : number = 0;
+//     let required5 : number = 0;
+//     let required1;
+//     while(size > targetCompaction && size - 50 >= 0) {
+//         size -= 50;
+//         required50++;
+//     }
+//     while(size > targetCompaction && size - 10 >= 0) {
+//         size -= 10;
+//         required10++;
+//     }
+//     while(size > targetCompaction && size - 5 >= 0) {
+//         size -= 5;
+//         required5++;
+//     }
+//     required1 = size;
+//     let compactSize : number = required1 + required5 + required10 + required50;
+//     //alert(compactSize + ":" + required1 + "," + required5 + "," +
+//     //required10 + "," +required50 + "," )
+//
+//     return [required1, required5, required10, required50, compactSize]
+//
+// }
 
 function ThreeNN (props : NNProps) {
     let neuronCoords = [];
@@ -333,20 +314,17 @@ function ThreeNN (props : NNProps) {
 
     if(biggestLayer > props.maxNeuronPerLayer) {
         let oldTopology = [...props.topology];
-        divider = biggestLayer/props.maxNeuronPerLayer;
+        divider = biggestLayer / props.maxNeuronPerLayer;
         //alert("Each neuron/weight = " + divider)
-        for(let i = 0; i < props.topology.length; i++) {
+        for (let i = 0; i < props.topology.length; i++) {
             props.topology[i] /= divider;
             props.topology[i] = Math.ceil(props.topology[i]);
             oldTopology[i] -= props.topology[i]
         }
-        // alert(props.topology)
-        //alert(oldTopology)
-
     }
 
 
-    let finalSize = props.topology;
+    let finalSize = [...props.topology];
 
     for (let i = 0; i < props.topology.length; i++) {
         let layerPos = layerPositions(props.topology[i], 1, i * props.spacing, props.spacing / 2);
@@ -354,7 +332,8 @@ function ThreeNN (props : NNProps) {
             //@ts-ignore
             layerPos[j].push((i+1)+":"+(j+1))
             neuronCoords.push(layerPos[j]);
-            neurons.push(<NNNeuron.Neuron position={new Vector3(...layerPos[j])} path={(i+1)+":"+(j+1) }/>)
+            neurons.push(<NNNeuron.Neuron
+                position={new Vector3(...layerPos[j])} path={(i+1)+":"+(j+1) }/>)
         }
     }
 
@@ -451,7 +430,7 @@ function ThreeNN (props : NNProps) {
 
         const raycaster = new THREE.Raycaster();
         // @ts-ignore
-        raycaster.params.Line.threshold = 0.8;
+        raycaster.params.Line.threshold = 0.2;
 
 
         // const [mouse] = useState([0, 0]);;

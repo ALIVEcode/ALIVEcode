@@ -92,7 +92,7 @@ export const StyledChallengeTable = styled.div`
 		background-color: var(--secondary-color);
 		border-left: 0.1vh solid var(--bg-shade-one-color);
 		border-right: 0.1vh solid var(--bg-shade-one-color);
-		padding: 8px;
+		padding: 5px;
 		position: sticky;
 		top: 0;
 	}
@@ -102,9 +102,9 @@ export const StyledChallengeTable = styled.div`
 	}
 
 	.param-name {
-		font-size: 16px;
+		font-size: 14px;
 		padding-bottom: 5px;
-		line-height: 18px;
+		line-height: 15px;
 		font-weight: bolder;
 	}
 
@@ -116,9 +116,9 @@ export const StyledChallengeTable = styled.div`
 
 	.data {
 		background-color: var(--tableback-color);
-		border-left: 0.1vh solid var(--databack-color);
-		border-right: 0.1vh solid var(--databack-color);
+		border: 0.1vh solid var(--databack-color);
 		font-size: 12px;
+		max-width: 10vw;
 	}
 
 	.hyperparam-data {

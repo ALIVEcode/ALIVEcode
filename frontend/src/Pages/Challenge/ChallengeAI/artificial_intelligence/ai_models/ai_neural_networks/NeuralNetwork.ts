@@ -66,7 +66,7 @@ export class NeuralNetwork extends AIModel {
 	}
 
 	protected loadModel() {
-		let nbLayers: number = this.layers.length;
+		let nbLayers: number = this.hyperparameters.neuronsByLayer.length + 1;
 
 		// Hidden layers
 		for (let layer: number = 0; layer < nbLayers; layer++) {
@@ -275,5 +275,20 @@ export class NeuralNetwork extends AIModel {
 	): void {
 		this.inputMeans = inputMeans;
 		this.inputDeviations = inputDeviations;
+	}
+
+	public getModelParams(): NNModelParams {
+		this.modelParams = {
+			layerParams: [],
+		};
+
+		this.layers.map((layer: NeuralLayer, index: number) => {
+			this.modelParams.layerParams.push({
+				weights: this.getWeightsByLayer(index).getValue(),
+				biases: this.getBiasesByLayer(index).getValue().flat(),
+			});
+		});
+
+		return this.modelParams;
 	}
 }

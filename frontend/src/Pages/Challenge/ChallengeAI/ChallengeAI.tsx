@@ -15,7 +15,12 @@ import ChallengeToolsBar from '../../../Components/ChallengeComponents/Challenge
 import { NeuralNetwork } from './artificial_intelligence/ai_models/ai_neural_networks/NeuralNetwork';
 import { GenHyperparameters } from './artificial_intelligence/AIUtilsInterfaces';
 import { useAlert } from 'react-alert';
-import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
+import {
+	ACTIVATION_FUNCTIONS,
+	COST_FUNCTIONS,
+	MODEL_TYPES,
+	NN_OPTIMIZER_TYPES,
+} from '../../../Models/Ai/ai_model.entity';
 import api from '../../../Models/api';
 import { PolyRegression } from './artificial_intelligence/ai_models/ai_regression/PolyRegression';
 import {
@@ -593,90 +598,42 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		mainAINeuralNetworkTest();
 		*/
 
-		const neuralNet: NeuralNetwork = new NeuralNetwork('1', hyperparams.NN, {
-			layerParams: [],
-		});
-
-		console.log(neuralNet);
-		/*
-		let hyperparams: NNHyperparameters = {
-			
-			
-			model: {
-				nb_inputs: 3,
-				nb_outputs: 1,
-				neurons_by_layer: [10, 10, 10],
-				activations_by_layer: [
+		const neuralNet: NeuralNetwork = new NeuralNetwork(
+			'1',
+			{
+				nbInputs: 2,
+				nbOutputs: 2,
+				neuronsByLayer: [2],
+				activationsByLayer: [
 					ACTIVATION_FUNCTIONS.RELU,
-					ACTIVATION_FUNCTIONS.RELU,
-					ACTIVATION_FUNCTIONS.RELU,
+					ACTIVATION_FUNCTIONS.SIGMOID,
 				],
-			},
-			optimizer: {
-				cost_function: COST_FUNCTIONS.MEAN_SQUARED_ERROR,
-				learning_rate: 0.0001,
+				costFunction: COST_FUNCTIONS.MEAN_SQUARED_ERROR,
+				learningRate: 0.1,
 				epochs: 1000,
 				type: NN_OPTIMIZER_TYPES.GradientDescent,
 			},
-		};
-
-		let modelParams: NNModelParams = {
-			layerParams: [],
-		};
-
-		const inputsOutputs: Matrix[] = dataset.getInputsOutputs([1, 1, 1, 0]);
-		const inputs: Matrix = inputsOutputs[0];
-		const outputs: Matrix = inputsOutputs[1];
-		const paramNames: string[] = dataset.getParamNames();
-
-		const nbInputs: number = hyperparams.model.nb_inputs;
-		const nbOutputs: number = hyperparams.model.nb_outputs;
-		const neuronsByLayer: number[] = hyperparams.model.neurons_by_layer;
-
-		for (let i: number = 0; i < paramNames.length; i++) {
-			cmd?.print('Colonne ' + i + ' : ' + paramNames[i]);
-		}
-
-		cmd?.print('Les entrées : ');
-		inputs.displayInCmd(cmd);
-
-		cmd?.print('Les sorties : ');
-		outputs.displayInCmd(cmd);
-
-		cmd?.print("Nombre de paramètres d'entrée : " + nbInputs);
-		cmd?.print('Nombre de sorties : ' + nbOutputs);
-
-		let str: string =
-			'Le nombre de neurones par couche : [' + neuronsByLayer[0];
-		for (let i: number = 1; i < neuronsByLayer.length; i++) {
-			str += ', ' + neuronsByLayer[i];
-		}
-		cmd?.print(str + ']');
-
-		let myNetwork: NeuralNetwork = new NeuralNetwork('1', hyperparams);
-		let myOpt: GradientDescent = new GradientDescent(myNetwork, hyperparams);
-		console.log(myOpt);
-
-		let predictions: Matrix = myNetwork.predict(inputs);
-		predictions.displayInCmd(cmd);
-		console.log(
-			"Erreur avant l'entraînement : " +
-				myOpt.getCostFunction().matCompute(predictions, outputs),
+			{
+				layerParams: [
+					{
+						weights: [
+							[1, 2],
+							[3, 4],
+						],
+						biases: [1, 1],
+					},
+					{
+						weights: [
+							[4, 4],
+							[4, 4],
+						],
+						biases: [1, 1],
+					},
+				],
+			},
 		);
-		cmd?.print('');
-
-		myNetwork = myOpt.optimize(inputs, outputs);
-
-		predictions = myNetwork.predict(inputs);
-		predictions.displayInCmd(cmd);
-
-		console.log(
-			"Erreur après l'entraînement: " +
-				myOpt.getCostFunction().matCompute(predictions, outputs),
-		);
-		console.log(predictions.getRows() + ' par ' + predictions.getColumns());
-		console.log(outputs.getRows() + ' par ' + outputs.getColumns());
-		*/
+		console.log(neuralNet);
+		console.log(neuralNet.getModelParams());
 	}
 
 	// END OF TEST FUNCTION //

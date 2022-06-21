@@ -26,7 +26,15 @@ export function AICanvas(props:NNProps) {
     const topology = [props.hyperparameters.nbInputs, ...props.hyperparameters.neuronsByLayer, props.hyperparameters.nbOutputs]
     const biggestLayer = Math.max(...topology)
 
+    if(props.hyperparameters.nbInputs !== 0) {
+
+    }
+
+    const hasInput = props.hyperparameters.nbInputs !== 0
+    const hasOutput = props.hyperparameters.nbOutputs !== 0
+
     const divider = biggestLayer>props.maxNeuronPerLayer ? biggestLayer / props.maxNeuronPerLayer: 1;
+
 
     const spacing = props.spacing
 
@@ -46,25 +54,14 @@ export function AICanvas(props:NNProps) {
     }
     containerSize += actualTopology[actualTopology.length-1]
 
-    console.log(actualTopology);
-    console.log(containerSize)
+    // console.log(actualTopology);
+    // console.log(containerSize)
 
-    function useArrayState(initArray:any[])
-    {
-        var array = useRef(initArray)
-        console.log("TEST42")
-        function useModifyArray(value:any, index:number){
-            array.current[index] = value
-        }
-        return [array, useModifyArray]
-    }
-
-    const test = useArrayState(new Array(containerSize).fill(false))
 
     //const clickedStates:boolean[] | ((value: any, index: number) => void) = test[0]
 
-    const [clickedStates, updateClickedStates] = useArrayState(new Array(containerSize).fill(false))
-    const [hoveredStates, updateHoveredStates] = useArrayState(new Array(containerSize).fill(false))
+    const clickedStates = useRef(new Array(containerSize).fill(false))
+    const hoveredStates = useRef(new Array(containerSize).fill(false))
 
 
 
@@ -77,8 +74,14 @@ export function AICanvas(props:NNProps) {
     // }
 
     function Test() {
-        return <div className={"absolute right-10"}>
+        return <div className={"absolute right-10"
+             // + (currentPath.current === "default val" ? "hidden" : "visible")
+            }
+        >
+
             {currentPath.current}
+            <br />
+            {divider === 1 ? "" : "Chaque neurone visible représente " + divider }
         </div>
     }
 
@@ -91,7 +94,8 @@ export function AICanvas(props:NNProps) {
                 <OrbitControls target={[0, 0, spacing * topology.length/2 - 5]}/>
                 <ThreeNeuralNet topology={topology} spacing={spacing} filter={0} maxNeuronPerLayer={10}
                                 clickedStates={clickedStates} hoveredStates={hoveredStates}
-                                updateClickedStates={updateClickedStates} updateHoveredStates={updateHoveredStates}
+                                hasInput={hasInput}
+                                hasOutput={hasOutput}
                                 forceUpdate={forceUpdate}
                                 currentPath={currentPath}
                 />

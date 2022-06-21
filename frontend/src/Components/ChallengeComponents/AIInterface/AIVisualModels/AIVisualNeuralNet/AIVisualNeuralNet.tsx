@@ -1,4 +1,4 @@
-import {Neuron} from "./AIVisualNeuron";
+import {InputNeuron, Neuron, OutputNeuron} from "./AIVisualNeuron";
 import {Vector3} from "three";
 import {Weight} from "./AIVisualWeight";
 import React, { MutableRefObject } from "react";
@@ -29,11 +29,11 @@ type NNProps = {
     spacing: number
     filter: number
     maxNeuronPerLayer: number
+    hasInput:boolean
+    hasOutput:boolean
 
-    clickedStates:MutableRefObject<boolean[]> | ((value: MutableRefObject<boolean[]>, index: number) => void)
-    hoveredStates:MutableRefObject<boolean[]> | ((value: MutableRefObject<boolean[]>, index: number) => void)
-    updateClickedStates:any
-    updateHoveredStates:any
+    clickedStates:MutableRefObject<boolean[]>;
+    hoveredStates:MutableRefObject<boolean[]>;
 
     forceUpdate:any;
     currentPath:any
@@ -98,10 +98,25 @@ export const ThreeNeuralNet = (props : NNProps) => {
             // console.log(indexArray)
 
             // eslint-disable-next-line react-hooks/rules-of-hooks
-            // @ts-ignore
+
+            if(props.hasInput && i === 0) {
+                neurons.push(<InputNeuron clickedStates={props.clickedStates} hoveredStates={props.hoveredStates}
+                                     currentPath={props.currentPath}
+                                     forceUpdate={props.forceUpdate}
+                    // updatePath={props.updatePath}
+                                     index={pos++}
+                                     filledLevel={layerPos[j][5]} full={layerPos[j][4]} position={new Vector3(...layerPos[j])}
+                                     path={(i + 1) + ":" + (j + 1)} radius={3}/>)
+            } else if(props.hasOutput && i === finalSize.length-1) {
+                neurons.push(<OutputNeuron clickedStates={props.clickedStates} hoveredStates={props.hoveredStates}
+                                          currentPath={props.currentPath}
+                                          forceUpdate={props.forceUpdate}
+                    // updatePath={props.updatePath}
+                                          index={pos++}
+                                          filledLevel={layerPos[j][5]} full={layerPos[j][4]} position={new Vector3(...layerPos[j])}
+                                          path={(i + 1) + ":" + (j + 1)} radius={3}/>)
+            } else
             neurons.push(<Neuron clickedStates={props.clickedStates} hoveredStates={props.hoveredStates}
-                updateClickedStates={props.updateClickedStates}
-                updateHoveredStates={props.updateClickedStates}
                 currentPath={props.currentPath}
                                  forceUpdate={props.forceUpdate}
                 // updatePath={props.updatePath}
@@ -131,8 +146,6 @@ export const ThreeNeuralNet = (props : NNProps) => {
             if (Math.random() < probabilities) {
                 // @ts-ignore
                 weights.push(<Weight clickedStates={props.clickedStates} hoveredStates={props.hoveredStates}
-                    updateClickedStates={props.updateClickedStates}
-                    updateHoveredStates={props.updateHoveredStates}
                                      forceUpdate={props.forceUpdate}
                     // updatePath={props.updatePath}
                     currentPath={props.currentPath}

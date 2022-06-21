@@ -10,7 +10,6 @@ import ChallengeTable from '../ChallengeTable/ChallengeTable';
 import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
 import { AICanvas } from './AIVisualModels/AIVisualNeuralNet/AICanvas';
 import { NNHyperparameters } from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
-
 /**
  * This component represents the visual interface in every ChallengeAI. It handles the
  * management of all 4 tabs in this component.
@@ -85,7 +84,7 @@ const AIInterface = ({
 			<AICanvas
 				filter={0}
 				maxNeuronPerLayer={10}
-				spacing={20}
+				spacing={40}
 				hyperparameters={hyperparams as NNHyperparameters}
 			/>
 		);

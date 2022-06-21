@@ -35,7 +35,11 @@ import {
 	defaultHyperparams,
 	defaultModelType,
 } from './artificial_intelligence/ai_models/DefaultHyperparams';
-import { Matrix } from './artificial_intelligence/AIUtils';
+import { 
+	Matrix,
+	correlationCoeff,
+	determinationCoeff,
+} from './artificial_intelligence/AIUtils';
 import { GradientDescent } from './artificial_intelligence/ai_optimizers/ai_nn_optimizers/GradientDescent';
 
 /**
@@ -627,11 +631,11 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	}
 
 	function coefficientCorrelation(lst1: number[], list2: number[]){
-
+		return correlationCoeff(lst1,list2)
 	}
 
 	function coefficientDetermination(lst1: number[], list2: number[]){
-
+		return determinationCoeff(lst1,list2)
 	}
 
 	// FOR TESTING PURPOSE ONLY, TO BE DELETED WHEN NEURAL NETWORK IMPLEMENTATION WORKS //

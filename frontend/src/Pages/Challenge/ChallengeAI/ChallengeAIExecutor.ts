@@ -279,11 +279,13 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 				actionId: 815,
 				action: {
 					label: 'Coefficient Correlation',
-					type: 'NORMAL',
-					apply: (params) => {
+					type: 'GET',
+					apply: (params, _, response) => {
 						console.log('Execute Coefficient Correlation');
 						if(typeof params[0] === 'object' && typeof params[1] === 'object'){
 							let out = this.executableFuncs.coefficientCorrelation(params[0], params[1]);
+							response?.push(out)
+							this.perform_next();
 						}
 					},
 				},
@@ -291,11 +293,13 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 				actionId: 816,
 				action: {
 					label: 'Coefficient Dermination',
-					type: 'NORMAL',
-					apply: (params) => {
+					type: 'GET',
+					apply: (params, _ , response) => {
 						console.log('Execute Coefficient Correlation');
 						if(typeof params[0] === 'object' && typeof params[1] === 'object'){
-							let out = this.executableFuncs.coefficientDerermination(params[0], params[1]);
+							let out = this.executableFuncs.coefficientDetermination(params[0], params[1]);
+							response?.push(out)
+							this.perform_next();
 						}
 					},
 				},

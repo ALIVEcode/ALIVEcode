@@ -1,14 +1,20 @@
 import React, { MutableRefObject,  useEffect, useState} from "react";
-import {Color, extend, MeshProps} from "@react-three/fiber";
+import {Color, extend, MeshProps, ReactThreeFiber} from "@react-three/fiber";
 import * as THREE from "three";
 
 extend({Line_: THREE.Line})
 
+declare global {
+    namespace JSX {
+        interface IntrinsicElements {
+            line_: ReactThreeFiber.Object3DNode<THREE.Line, typeof THREE.Line>
+        }
+    }
+}
+
 type WeightData = {
     clickedStates: MutableRefObject<boolean[]>
-    updateClickedStates: any
     hoveredStates: MutableRefObject<boolean[]>
-    updateHoveredStates: any
 
     index: number
     // updatePath:any
@@ -27,9 +33,6 @@ type customLineProps = MeshProps & WeightData & {
     width: number;
 }
 function Line( props: customLineProps ) {
-    const [hovered, hover] = useState(false)
-    const [clicked, click] = useState(false)
-
 
     const points = []
     points.push(new THREE.Vector3( ...props.start))
@@ -37,9 +40,6 @@ function Line( props: customLineProps ) {
 
     const lineGeometry = new THREE.BufferGeometry().setFromPoints(points)
 
-    useEffect(()=>{
-        console.log(props.clickedStates.current)
-    })
     return (
         // Parce que line est déjà utilisé par React
         <line_ geometry={lineGeometry}
@@ -84,7 +84,7 @@ function Line( props: customLineProps ) {
                    props.forceUpdate()
                }}>
             <lineBasicMaterial
-                opacity={props.clickedStates.current[props.index] || props.clickedStates.current[props.index] ? 0.7 : 0.3}
+                opacity={((props.hoveredStates.current[props.index] || props.clickedStates.current[props.index]) ? 0.6 : 0.3)}
                 transparent
                 attach="material"
                 linewidth={props.width}
@@ -112,8 +112,6 @@ export function Weight(props: WeightData) {
                 clickedStates={props.clickedStates}
                 hoveredStates={props.hoveredStates}
                 index={props.index}
-                updateClickedStates={props.updateClickedStates}
-                updateHoveredStates={props.updateHoveredStates}
                 // updatePath={props.updatePath}
                 currentPath={props.currentPath}
             />

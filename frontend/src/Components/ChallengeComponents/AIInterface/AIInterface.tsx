@@ -85,7 +85,7 @@ const AIInterface = ({
 			<AICanvas
 				filter={0}
 				maxNeuronPerLayer={10}
-				spacing={20}
+				spacing={40}
 				hyperparameters={hyperparams as NNHyperparameters}
 			/>
 		);

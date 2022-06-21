@@ -22,6 +22,7 @@ import { ResourceChallengeEntity } from '../resource/entities/resources/resource
 import { ChallengeEntity, CHALLENGE_ACCESS } from '../challenge/entities/challenge.entity';
 import { ActivityWordEntity } from './entities/activities/activity_word.entity';
 import { ResourceFileEntity } from '../resource/entities/resources/resource_file.entity';
+import { ActivityPowerPointEntity } from './entities/activities/activity_powerpoint.entity';
 
 /**
  * All the methods to communicate to the database. To create/update/delete/get
@@ -41,6 +42,7 @@ export class CourseService {
     @InjectRepository(ActivityAssignmentEntity) private actAssignmentRepo: Repository<ActivityAssignmentEntity>,
     @InjectRepository(ActivityChallengeEntity) private actChallengeRepo: Repository<ActivityChallengeEntity>,
     @InjectRepository(ActivityWordEntity) private actWordRepo: Repository<ActivityWordEntity>,
+    @InjectRepository(ActivityPowerPointEntity) private actPptxRepo: Repository<ActivityPowerPointEntity>,
     @InjectRepository(ClassroomEntity) private classroomRepo: Repository<ClassroomEntity>,
     @InjectRepository(CourseElementEntity) private courseElRepo: Repository<CourseElementEntity>,
     @InjectRepository(StudentEntity) private studentRepo: Repository<StudentEntity>,
@@ -558,6 +560,8 @@ export class CourseService {
         return await this.actAssignmentRepo.save(activity);
       case ACTIVITY_TYPE.WORD:
         return await this.actWordRepo.save(activity);
+      case ACTIVITY_TYPE.POWERPOINT:
+        return await this.actPptxRepo.save(activity);
       default:
         throw new HttpException(`Invalid activity type ${activity.type}`, HttpStatus.BAD_REQUEST);
     }

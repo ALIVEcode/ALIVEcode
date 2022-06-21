@@ -40,6 +40,7 @@ import { ChallengeProgressionEntity } from '../challenge/entities/challenge_prog
 import { ChallengeAIEntity } from '../challenge/entities/challenges/challenge_ai.entity';
 import { ChallengeIoTEntity } from '../challenge/entities/challenges/challenge_iot.entity';
 import { ActivityWordEntity } from './entities/activities/activity_word.entity';
+import { ActivityPowerPointEntity } from './entities/activities/activity_powerpoint.entity';
 
 /**
  * Module for the course nestjs resource
@@ -58,6 +59,7 @@ import { ActivityWordEntity } from './entities/activities/activity_word.entity';
       ActivityAssignmentEntity,
       ActivityChallengeEntity,
       ActivityWordEntity,
+      ActivityPowerPointEntity,
       ResourceEntity,
       UserEntity,
       ClassroomEntity,

@@ -16,6 +16,7 @@ import { ActivityAssignment } from '../../../Models/Course/activities/activity_a
 import { CourseElementActivity } from '../../../Models/Course/course_element.entity';
 import { getActivityColor } from '../../../Models/Course/activity.entity';
 import { ActivityWord } from '../../../Models/Course/activities/activity_word.entity';
+import { ActivityPowerPoint } from '../../../Models/Course/activities/activity_powerpoint.entity';
 
 /**
  * Creation Menu for an activity
@@ -64,6 +65,9 @@ const MenuActivityCreation = ({
 			case ACTIVITY_TYPE.WORD:
 				activity = new ActivityWord();
 				break;
+			// case ACTIVITY_TYPE.POWERPOINT:
+			// 	activity = new ActivityPowerPoint();
+			// 	break;
 		}
 		activity.type = type;
 

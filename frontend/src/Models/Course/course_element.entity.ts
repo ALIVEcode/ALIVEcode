@@ -15,6 +15,7 @@ import { ActivityChallenge } from './activities/activity_challenge.entity';
 import { ActivityAssignment } from './activities/activity_assignment.entity';
 import { ActivityPdf } from './activities/activity_pdf.entity';
 import { ActivityWord } from './activities/activity_word.entity';
+import { ActivityPowerPoint } from './activities/activity_powerpoint.entity';
 
 /** Types of contents of a course (activity or section) */
 export type CourseContent = Activity | Section;
@@ -72,6 +73,8 @@ export class CourseElement {
 			return plainToInstance(ActivityPdf, activity);
 		if (activity.type === ACTIVITY_TYPE.WORD)
 			return plainToInstance(ActivityWord, activity);
+		// if (activity.type === ACTIVITY_TYPE.POWERPOINT)
+		// 	return plainToInstance(ActivityPowerPoint, activity);
 
 		// return plainToInstance(Activity, activity);
 	})

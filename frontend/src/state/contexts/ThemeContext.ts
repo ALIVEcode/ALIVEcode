@@ -130,6 +130,7 @@ export const commonColors = {
 	video: '#ff2e2e',
 	theory: '#92B7FF',
 	word: '#92B7FF',
+	powerpoint: '#EA3C00',
 };
 /*
 

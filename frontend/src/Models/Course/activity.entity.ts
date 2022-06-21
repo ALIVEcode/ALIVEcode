@@ -10,6 +10,7 @@ import {
 	faQuestion,
 	faFilePdf,
 	faFileWord,
+	faFilePowerpoint,
 } from '@fortawesome/free-solid-svg-icons';
 import { commonColors } from '../../state/contexts/ThemeContext';
 import { ActivityTheory } from './activities/activity_theory.entity';
@@ -18,6 +19,7 @@ import { ActivityVideo } from './activities/activity_video.entity';
 import { ActivityChallenge } from './activities/activity_challenge.entity';
 import { ActivityAssignment } from './activities/activity_assignment.entity';
 import { ActivityWord } from './activities/activity_word.entity';
+import { ActivityPowerPoint } from './activities/activity_powerpoint.entity';
 
 /** All the types of activities */
 export enum ACTIVITY_TYPE {
@@ -27,6 +29,7 @@ export enum ACTIVITY_TYPE {
 	CHALLENGE = 'CH',
 	ASSIGNMENT = 'AS',
 	WORD = 'WO',
+	//POWERPOINT = 'PP',
 }
 
 export type ActivityTypes =
@@ -36,6 +39,7 @@ export type ActivityTypes =
 	| ActivityChallenge
 	| ActivityAssignment
 	| ActivityWord;
+//| ActivityPowerPoint;
 
 /**
  * Activity model in the database
@@ -112,6 +116,8 @@ export const getActivityIcon = (activityType: ACTIVITY_TYPE) => {
 			return faTasks;
 		case ACTIVITY_TYPE.WORD:
 			return faFileWord;
+		//case ACTIVITY_TYPE.POWERPOINT:
+		//	return faFilePowerpoint;
 	}
 	return faQuestion;
 };
@@ -136,6 +142,8 @@ export const getActivityColor = (activityType: ACTIVITY_TYPE): string => {
 			return 'var(--fg-shade-four-color)';
 		case ACTIVITY_TYPE.WORD:
 			return commonColors.word;
+		// case ACTIVITY_TYPE.POWERPOINT:
+		// 	return commonColors.powerpoint;
 	}
 	return 'var(--fg-shade-four-color)';
 };

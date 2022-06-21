@@ -13,6 +13,7 @@ export enum ACTIVITY_TYPE {
   CHALLENGE = 'CH',
   ASSIGNMENT = 'AS',
   WORD = 'WO',
+  POWERPOINT = 'PP',
 }
 
 /**

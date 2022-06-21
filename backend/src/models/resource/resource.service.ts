@@ -6,7 +6,6 @@ import { ResourceChallengeEntity } from './entities/resources/resource_challenge
 import { CreateResourceDTO, CreateResourceDTOSimple } from './dto/CreateResource.dto';
 import { ProfessorEntity, UserEntity } from '../user/entities/user.entity';
 import { ResourceFileEntity } from './entities/resources/resource_file.entity';
-import { ResourcePdfEntity } from './entities/resources/resource_pdf.entity';
 import { ResourceTheoryEntity } from './entities/resources/resource_theory.entity';
 import { ResourceVideoEntity } from './entities/resources/resource_video.entity';
 import { unlinkSync } from 'fs';
@@ -23,7 +22,6 @@ export class ResourceService {
     @InjectRepository(ResourceEntity) private readonly resRepo: Repository<ResourceEntity>,
     @InjectRepository(ResourceChallengeEntity) private readonly resChallengeRepo: Repository<ResourceChallengeEntity>,
     @InjectRepository(ResourceFileEntity) private readonly resFileRepo: Repository<ResourceFileEntity>,
-    @InjectRepository(ResourcePdfEntity) private readonly resPdfRepo: Repository<ResourcePdfEntity>,
     @InjectRepository(ResourceTheoryEntity) private readonly resTheoryRepo: Repository<ResourceTheoryEntity>,
     @InjectRepository(ResourceVideoEntity) private readonly resVideoRepo: Repository<ResourceVideoEntity>,
     @InjectRepository(UserEntity) private readonly userRepo: Repository<UserEntity>,
@@ -41,8 +39,6 @@ export class ResourceService {
     switch (dto.type) {
       case RESOURCE_TYPE.CHALLENGE:
         return await this.resChallengeRepo.save({ ...dto.resource, type: RESOURCE_TYPE.CHALLENGE });
-      case RESOURCE_TYPE.PDF:
-        return await this.resPdfRepo.save({ ...dto.resource, type: RESOURCE_TYPE.PDF });
       case RESOURCE_TYPE.FILE:
         return await this.resFileRepo.save({ ...dto.resource, type: RESOURCE_TYPE.FILE });
       case RESOURCE_TYPE.THEORY:

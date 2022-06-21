@@ -19,7 +19,6 @@ import { ActivityVideo } from './activities/activity_video.entity';
 import { ActivityChallenge } from './activities/activity_challenge.entity';
 import { ActivityAssignment } from './activities/activity_assignment.entity';
 import { ActivityWord } from './activities/activity_word.entity';
-import { ActivityPowerPoint } from './activities/activity_powerpoint.entity';
 
 /** All the types of activities */
 export enum ACTIVITY_TYPE {

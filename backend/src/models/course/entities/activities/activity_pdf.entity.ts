@@ -9,7 +9,7 @@ import { RESOURCE_TYPE } from '../../../resource/entities/resource.entity';
 @ChildEntity(ACTIVITY_TYPE.PDF)
 export class ActivityPdfEntity extends ActivityEntity {
   /** Allowed types of resources inside the activity */
-  readonly allowedResources: RESOURCE_TYPE[] = [RESOURCE_TYPE.PDF];
+  readonly allowedResources: RESOURCE_TYPE[] = [RESOURCE_TYPE.FILE];
 
   /** Mime types allowed as a resource inside the activity */
   acceptedMimeTypes = ['application/pdf', 'application/vnd.ms-excel'];

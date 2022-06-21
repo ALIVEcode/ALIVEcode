@@ -249,22 +249,6 @@ const MenuResourceCreation = ({
 						)}
 					</>
 				);
-			case RESOURCE_TYPE.PDF:
-				return updateMode ? (
-					<></>
-				) : (
-					<>
-						<InputGroup
-							type="file"
-							label={t('resources.PF.form.file')}
-							errors={errors.resource?.url}
-							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-								e.target.files && setFile(e.target.files[0])
-							}
-							progress={uploadProgress}
-						/>
-					</>
-				);
 			case RESOURCE_TYPE.FILE:
 				return updateMode ? (
 					<></>

@@ -1,6 +1,6 @@
 import { Type } from 'class-transformer';
 import { Activity } from '../activity.entity';
-import { RESOURCE_TYPE } from '../../Resource/resource.entity';
+import { RESOURCE_TYPE, wordMimeTypes } from '../../Resource/resource.entity';
 import { ResourceFile } from '../../Resource/resources/resource_file.entity';
 
 /**
@@ -19,8 +19,5 @@ export class ActivityWord extends Activity {
 	readonly allowedResources: RESOURCE_TYPE[] = [RESOURCE_TYPE.FILE];
 
 	/** Mime types allowed as a resource inside the activity */
-	acceptedMimeTypes = [
-		'application/msword',
-		'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-	];
+	acceptedMimeTypes = wordMimeTypes;
 }

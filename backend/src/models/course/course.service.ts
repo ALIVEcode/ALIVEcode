@@ -16,7 +16,7 @@ import { ActivityPdfEntity } from './entities/activities/activity_pdf.entity';
 import { CreateActivityDTO } from './dtos/CreateActivities.dto';
 import { UpdateCourseElementDTO } from './dtos/UpdateCourseElement.dto';
 import { CreateSectionDTO } from './dtos/CreateSection.dto';
-import { ResourceEntity } from '../resource/entities/resource.entity';
+import { ResourceEntity, RESOURCE_TYPE } from '../resource/entities/resource.entity';
 import { ActivityAssignmentEntity } from './entities/activities/activity_assignment.entity';
 import { ResourceChallengeEntity } from '../resource/entities/resources/resource_challenge.entity';
 import { ChallengeEntity, CHALLENGE_ACCESS } from '../challenge/entities/challenge.entity';
@@ -617,7 +617,7 @@ export class CourseService {
     }
 
     // Checks if the file resource is of the correct Mime type
-    if (resource instanceof ResourceFileEntity && !activity.acceptedMimeTypes.includes(resource.file.mimetype)) {
+    if (resource.type === RESOURCE_TYPE.FILE && !activity.acceptedMimeTypes.includes(resource.file.mimetype)) {
       throw new HttpException(
         `Mime type ${resource.file.mimetype} not accepted. ${activity.acceptedMimeTypes.join(
           ', ',

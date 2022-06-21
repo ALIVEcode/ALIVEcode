@@ -281,12 +281,6 @@
 				"file": "Glissez ou sélectionnez un fichier"
 			}
 		},
-		"PF": {
-			"name": "Pdf",
-			"form": {
-				"file": "Glissez ou sélectionnez un fichier"
-			}
-		},
 		"CH": {
 			"name": "Défi",
 			"form": {
@@ -765,7 +759,6 @@
 		},
 		"resource": {
 			"TH": "Un document text stylisé qui peut être réutilisé.",
-			"PF": "Un fichier de présentation powerpoint qui peut être réutilisé",
 			"VI": "Une vidéo YouTube ou une vidéo en format mp4 qui peut être réutilisée.",
 			"CH": "Un défi qui peut être réutilisé dans un cours.",
 			"FI": "Tout type de fichier qui peut être réutilisé."

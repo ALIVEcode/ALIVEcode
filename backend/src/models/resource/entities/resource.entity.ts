@@ -17,7 +17,6 @@ import { OneToMany } from 'typeorm';
 import { ResourceChallengeEntity } from './resources/resource_challenge.entity';
 import { ActivityEntity } from '../../course/entities/activity.entity';
 import { ResourceFileEntity } from './resources/resource_file.entity';
-import { ResourcePdfEntity } from './resources/resource_pdf.entity';
 import { ResourceTheoryEntity } from './resources/resource_theory.entity';
 import { ResourceVideoEntity } from './resources/resource_video.entity';
 import { FileEntity } from 'src/models/file/entities/file.entity';
@@ -26,7 +25,6 @@ import { FileEntity } from 'src/models/file/entities/file.entity';
 export enum RESOURCE_TYPE {
   VIDEO = 'VI',
   FILE = 'FI',
-  PDF = 'PF',
   CHALLENGE = 'CH',
   THEORY = 'TH',
 }
@@ -35,7 +33,6 @@ export enum RESOURCE_TYPE {
 export type DifferentResources =
   | ResourceChallengeEntity
   | ResourceFileEntity
-  | ResourcePdfEntity
   | ResourceTheoryEntity
   | ResourceVideoEntity;
 

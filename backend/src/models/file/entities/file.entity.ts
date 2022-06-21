@@ -1,7 +1,6 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { IsEmpty, IsNotEmpty } from 'class-validator';
-import { ResourceEntity } from 'src/models/resource/entities/resource.entity';
 
 /**
  * File model in the database

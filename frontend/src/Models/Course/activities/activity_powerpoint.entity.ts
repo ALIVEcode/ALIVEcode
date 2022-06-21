@@ -1,6 +1,9 @@
 import { Type } from 'class-transformer';
 import { Activity } from '../activity.entity';
-import { RESOURCE_TYPE } from '../../Resource/resource.entity';
+import {
+	RESOURCE_TYPE,
+	powerpointMimeTypes,
+} from '../../Resource/resource.entity';
 import { ResourceFile } from '../../Resource/resources/resource_file.entity';
 
 /**
@@ -19,8 +22,5 @@ export class ActivityPowerPoint extends Activity {
 	readonly allowedResources: RESOURCE_TYPE[] = [RESOURCE_TYPE.FILE];
 
 	/** Mime types allowed as a resource inside the activity */
-	acceptedMimeTypes = [
-		'application/vnd.ms-powerpoint',
-		'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-	];
+	acceptedMimeTypes = powerpointMimeTypes;
 }

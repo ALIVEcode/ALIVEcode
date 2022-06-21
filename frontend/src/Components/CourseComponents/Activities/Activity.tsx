@@ -256,7 +256,6 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 		const resourceType = activity.allowedResources[0];
 		switch (resourceType) {
 			case RESOURCE_TYPE.FILE:
-			case RESOURCE_TYPE.PDF:
 				inputFileRef.current?.click();
 				break;
 			case RESOURCE_TYPE.VIDEO:
@@ -582,7 +581,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					id="file-upload"
 					name="file-upload"
 					type="file"
-					accept={activity.acceptedMimeTypes}
+					accept={activity.acceptedMimeTypes?.join(',')}
 					className="hidden"
 					ref={inputFileRef}
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

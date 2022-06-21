@@ -31,7 +31,6 @@ import { CourseTemplateEntity } from './entities/bundles/course_template.entity'
 import { FileEntity } from '../file/entities/file.entity';
 import { FileService } from '../file/file.service';
 import { ActivityPdfEntity } from './entities/activities/activity_pdf.entity';
-import { ResourcePdfEntity } from '../resource/entities/resources/resource_pdf.entity';
 import { BundleService } from './bundle.service';
 import { ChallengeService } from '../challenge/challenge.service';
 import { ChallengeAliveEntity } from '../challenge/entities/challenges/challenge_alive.entity';
@@ -71,7 +70,6 @@ import { ActivityPowerPointEntity } from './entities/activities/activity_powerpo
       ChallengeEntity,
       ResourceChallengeEntity,
       ResourceVideoEntity,
-      ResourcePdfEntity,
       ResourceFileEntity,
       ResourceTheoryEntity,
       BundleEntity,

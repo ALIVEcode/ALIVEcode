@@ -281,12 +281,6 @@
 				"file": "Drag and drop a file or insert one"
 			}
 		},
-		"PF": {
-			"name": "Pdf",
-			"form": {
-				"file": "Drag and drop a file or insert one"
-			}
-		},
 		"CH": {
 			"name": "Challenge",
 			"form": {
@@ -765,7 +759,6 @@
 		},
 		"resource": {
 			"TH": "A styled text document that can be reused.",
-			"PF": "A powerpoint presentation file that can be reused.",
 			"VI": "A YouTube video or a mp4 video that can be reused.",
 			"CH": "A challenge that can be reused inside a course.",
 			"FI": "Any type of file that can be reused."

@@ -234,7 +234,7 @@ const ResourceMenu = ({
 							{Object.entries(RESOURCE_TYPE).map(entry => (
 								<ResourceFilter
 									key={entry[0]}
-									name={t(`resources.${entry[0].toLowerCase()}.name`)}
+									name={t(`resources.${entry[1]}.name`)}
 									filter={entry[1]}
 								/>
 							))}

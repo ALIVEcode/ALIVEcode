@@ -9,8 +9,15 @@ import {
 	faTasks,
 	faQuestion,
 	faFilePdf,
+	faFileWord,
 } from '@fortawesome/free-solid-svg-icons';
 import { commonColors } from '../../state/contexts/ThemeContext';
+import { ActivityTheory } from './activities/activity_theory.entity';
+import { ActivityPdf } from './activities/activity_pdf.entity';
+import { ActivityVideo } from './activities/activity_video.entity';
+import { ActivityChallenge } from './activities/activity_challenge.entity';
+import { ActivityAssignment } from './activities/activity_assignment.entity';
+import { ActivityWord } from './activities/activity_word.entity';
 
 /** All the types of activities */
 export enum ACTIVITY_TYPE {
@@ -19,7 +26,16 @@ export enum ACTIVITY_TYPE {
 	VIDEO = 'VI',
 	CHALLENGE = 'CH',
 	ASSIGNMENT = 'AS',
+	WORD = 'WO',
 }
+
+export type ActivityTypes =
+	| ActivityTheory
+	| ActivityPdf
+	| ActivityVideo
+	| ActivityChallenge
+	| ActivityAssignment
+	| ActivityWord;
 
 /**
  * Activity model in the database
@@ -71,6 +87,9 @@ export abstract class Activity {
 
 	/** Allowed resources types in the activity for the ResourceMenu filters */
 	abstract readonly allowedResources: RESOURCE_TYPE[];
+
+	/** Mime types allowed as a resource inside the activity */
+	acceptedMimeTypes?: string[];
 }
 
 /**
@@ -91,10 +110,18 @@ export const getActivityIcon = (activityType: ACTIVITY_TYPE) => {
 			return faFilePdf;
 		case ACTIVITY_TYPE.ASSIGNMENT:
 			return faTasks;
+		case ACTIVITY_TYPE.WORD:
+			return faFileWord;
 	}
 	return faQuestion;
 };
 
+/**
+ * Gets the color of an activity depending on its type
+ * @param activityType Type of the activity
+ * @returns The good color to display
+ * @author Enric Soldevila
+ */
 export const getActivityColor = (activityType: ACTIVITY_TYPE): string => {
 	switch (activityType) {
 		case ACTIVITY_TYPE.CHALLENGE:
@@ -107,6 +134,8 @@ export const getActivityColor = (activityType: ACTIVITY_TYPE): string => {
 			return commonColors.pdf;
 		case ACTIVITY_TYPE.ASSIGNMENT:
 			return 'var(--fg-shade-four-color)';
+		case ACTIVITY_TYPE.WORD:
+			return commonColors.word;
 	}
 	return 'var(--fg-shade-four-color)';
 };

@@ -42,6 +42,8 @@ import MenuResourceCreation from '../../Resources/MenuResourceCreation/MenuResou
 import Info from '../../HelpComponents/index';
 import Link from '../../UtilsComponents/Link/Link';
 import AlertConfirm from '../../UtilsComponents/Alert/AlertConfirm/AlertConfirm';
+import ActivityWord from './ActivityWord';
+import { ActivityWord as ActivityWordModel } from '../../../Models/Course/activities/activity_word.entity';
 
 /**
  * Shows the opened activity. Renders different component depending on the type of the activity opened.
@@ -92,23 +94,6 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 		() => getNextActivity(courseElement),
 		[courseElement, getNextActivity],
 	);
-
-	/**
-	 * Gets the accepted type files for the file HTML input
-	 */
-	const getAcceptedFileTypes = () => {
-		const resourceType = activity.allowedResources[0];
-		switch (resourceType) {
-			case RESOURCE_TYPE.PDF:
-				return 'application/pdf,application/vnd.ms-excel';
-			case RESOURCE_TYPE.VIDEO:
-				return 'video/mp4,video/x-m4v,video/*';
-			case RESOURCE_TYPE.FILE:
-			case RESOURCE_TYPE.CHALLENGE:
-			case RESOURCE_TYPE.THEORY:
-				return undefined;
-		}
-	};
 
 	/**
 	 * Loads the resource inside the activity
@@ -165,6 +150,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					case ACTIVITY_TYPE.PDF:
 					case ACTIVITY_TYPE.VIDEO:
 					case ACTIVITY_TYPE.ASSIGNMENT:
+					case ACTIVITY_TYPE.WORD:
 						createdRes = await createResource({
 							file: selectedFile,
 							type: resourceType,
@@ -249,6 +235,8 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 				return (
 					<ActivityAssignment activity={activity as ActivityAssignmentModel} />
 				);
+			case ACTIVITY_TYPE.WORD:
+				return <ActivityWord activity={activity as ActivityWordModel} />;
 			default:
 				return (
 					<div className="w-full h-full flex justify-center items-center">
@@ -258,6 +246,11 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 		}
 	};
 
+	/**
+	 * Method called when clicking the button to create a new resource. Each activity creates the resource differently
+	 * @param fromVideoUrl If the resource needs to be created from a video url
+	 * @returns Nothing (void)
+	 */
 	const createSpecificResource = async (fromVideoUrl?: boolean) => {
 		if (!course) return;
 		const resourceType = activity.allowedResources[0];
@@ -276,8 +269,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					file: null,
 					type: resourceType,
 					resource: {
-						name:
-							activity.name + ' ' + t('resources.theory.name').toLowerCase(),
+						name: activity.name + ' ' + t('resources.TH.name').toLowerCase(),
 						subject: course?.subject,
 					},
 				});
@@ -333,7 +325,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 				>
 					<Info.Box
 						useDefaultStyle
-						text={t(`help.activity.${activity.enumKey}`)}
+						text={t(`help.activity.${activity.type}`)}
 					/>
 				</Info.Icon>
 				<div className="text-4xl bg-[color:var(--background-color)] mb-6 w-full border-[color:var(--bg-shade-four-color)]">
@@ -488,7 +480,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 												}
 												errors={isInvalidURL ? { type: 'pattern' } : undefined}
 												messages={{
-													pattern: t('resources.video.form.invalid_url'),
+													pattern: t('resources.VI.form.invalid_url'),
 												}}
 											/>
 										))}
@@ -590,7 +582,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					id="file-upload"
 					name="file-upload"
 					type="file"
-					accept={getAcceptedFileTypes()}
+					accept={activity.acceptedMimeTypes}
 					className="hidden"
 					ref={inputFileRef}
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

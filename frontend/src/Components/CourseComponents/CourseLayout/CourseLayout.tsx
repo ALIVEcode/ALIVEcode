@@ -69,6 +69,21 @@ const CourseLayout = () => {
 
 	return (
 		<div className="w-full h-full overflow-y-auto relative p-6">
+			<div className="absolute l-0">
+				{/*
+				courseElements?.current &&
+					course.elementsOrder.map(
+						id =>
+							id in courseElements.current && (
+								<div key={id} className="course-layout-element">
+									<div>
+										{courseElements.current[id].isSection &&
+											courseElements.current[id].section?.name}
+									</div>
+								</div>
+							),
+										)*/}
+			</div>
 			<div className="sticky z-10 right-6 top-0">
 				<FontAwesomeIcon
 					icon={faUserGraduate}

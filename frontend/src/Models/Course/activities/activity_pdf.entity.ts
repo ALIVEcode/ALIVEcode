@@ -17,4 +17,7 @@ export class ActivityPdf extends Activity {
 
 	/** Allowed types of resources inside the activity */
 	readonly allowedResources: RESOURCE_TYPE[] = [RESOURCE_TYPE.PDF];
+
+	/** Mime types allowed as a resource inside the activity */
+	acceptedMimeTypes = ['application/pdf', 'application/vnd.ms-excel'];
 }

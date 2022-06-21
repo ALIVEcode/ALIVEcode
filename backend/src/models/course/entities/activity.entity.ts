@@ -12,6 +12,7 @@ export enum ACTIVITY_TYPE {
   VIDEO = 'VI',
   CHALLENGE = 'CH',
   ASSIGNMENT = 'AS',
+  WORD = 'WO',
 }
 
 /**
@@ -61,4 +62,7 @@ export abstract class ActivityEntity {
   @ManyToOne(() => ResourceEntity, res => res.activities, { eager: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'resourceId' })
   resource: ResourceEntity;
+
+  /** Mime types allowed as a resource inside the activity */
+  acceptedMimeTypes?: string[];
 }

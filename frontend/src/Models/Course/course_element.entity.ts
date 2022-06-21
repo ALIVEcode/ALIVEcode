@@ -6,7 +6,7 @@ import {
 	Type,
 	plainToInstance,
 } from 'class-transformer';
-import { Activity, ACTIVITY_TYPE } from './activity.entity';
+import { Activity, ActivityTypes, ACTIVITY_TYPE } from './activity.entity';
 import { Course } from './course.entity';
 import { Section } from './section.entity';
 import { ActivityTheory } from './activities/activity_theory.entity';
@@ -14,6 +14,7 @@ import { ActivityVideo } from './activities/activity_video.entity';
 import { ActivityChallenge } from './activities/activity_challenge.entity';
 import { ActivityAssignment } from './activities/activity_assignment.entity';
 import { ActivityPdf } from './activities/activity_pdf.entity';
+import { ActivityWord } from './activities/activity_word.entity';
 
 /** Types of contents of a course (activity or section) */
 export type CourseContent = Activity | Section;
@@ -69,15 +70,12 @@ export class CourseElement {
 			return plainToInstance(ActivityAssignment, activity);
 		if (activity.type === ACTIVITY_TYPE.PDF)
 			return plainToInstance(ActivityPdf, activity);
+		if (activity.type === ACTIVITY_TYPE.WORD)
+			return plainToInstance(ActivityWord, activity);
 
 		// return plainToInstance(Activity, activity);
 	})
-	activity?:
-		| ActivityChallenge
-		| ActivityTheory
-		| ActivityVideo
-		| ActivityAssignment
-		| ActivityPdf;
+	activity?: ActivityTypes;
 
 	/** If the element is a section **/
 	@Expose({ toClassOnly: true })
@@ -175,12 +173,7 @@ export class CourseElement {
 }
 
 export class CourseElementActivity extends CourseElement {
-	activity:
-		| ActivityChallenge
-		| ActivityVideo
-		| ActivityTheory
-		| ActivityAssignment
-		| ActivityPdf;
+	activity: ActivityTypes;
 	section: undefined;
 }
 

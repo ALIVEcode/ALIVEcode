@@ -15,6 +15,7 @@ import { ActivityPdf } from '../../../Models/Course/activities/activity_pdf.enti
 import { ActivityAssignment } from '../../../Models/Course/activities/activity_assignment.entity';
 import { CourseElementActivity } from '../../../Models/Course/course_element.entity';
 import { getActivityColor } from '../../../Models/Course/activity.entity';
+import { ActivityWord } from '../../../Models/Course/activities/activity_word.entity';
 
 /**
  * Creation Menu for an activity
@@ -60,6 +61,9 @@ const MenuActivityCreation = ({
 			case ACTIVITY_TYPE.ASSIGNMENT:
 				activity = new ActivityAssignment();
 				break;
+			case ACTIVITY_TYPE.WORD:
+				activity = new ActivityWord();
+				break;
 		}
 		activity.type = type;
 
@@ -78,14 +82,6 @@ const MenuActivityCreation = ({
 		}
 	};
 
-	const activityTypes = [
-		ACTIVITY_TYPE.THEORY,
-		ACTIVITY_TYPE.PDF,
-		ACTIVITY_TYPE.VIDEO,
-		ACTIVITY_TYPE.CHALLENGE,
-		ACTIVITY_TYPE.ASSIGNMENT,
-	];
-
 	return (
 		<Modal
 			size="lg"
@@ -98,8 +94,8 @@ const MenuActivityCreation = ({
 				{Object.entries(ACTIVITY_TYPE).map(entry => (
 					<TypeCard
 						key={entry[1].toLowerCase()}
-						title={t(`msg.activity_type.${entry[0].toLowerCase()}`)}
-						tooltip={t(`help.activity.${entry[0].toLowerCase()}`)}
+						title={t(`msg.activity_type.${entry[1]}`)}
+						tooltip={t(`help.activity.${entry[1]}`)}
 						color={getActivityColor(entry[1])}
 						icon={getActivityIcon(entry[1])}
 						onClick={() => onSelect(entry[1])}

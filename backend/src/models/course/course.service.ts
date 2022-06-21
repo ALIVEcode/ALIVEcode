@@ -20,6 +20,8 @@ import { ResourceEntity } from '../resource/entities/resource.entity';
 import { ActivityAssignmentEntity } from './entities/activities/activity_assignment.entity';
 import { ResourceChallengeEntity } from '../resource/entities/resources/resource_challenge.entity';
 import { ChallengeEntity, CHALLENGE_ACCESS } from '../challenge/entities/challenge.entity';
+import { ActivityWordEntity } from './entities/activities/activity_word.entity';
+import { ResourceFileEntity } from '../resource/entities/resources/resource_file.entity';
 
 /**
  * All the methods to communicate to the database. To create/update/delete/get
@@ -38,6 +40,7 @@ export class CourseService {
     @InjectRepository(ActivityPdfEntity) private actPdfRepo: Repository<ActivityPdfEntity>,
     @InjectRepository(ActivityAssignmentEntity) private actAssignmentRepo: Repository<ActivityAssignmentEntity>,
     @InjectRepository(ActivityChallengeEntity) private actChallengeRepo: Repository<ActivityChallengeEntity>,
+    @InjectRepository(ActivityWordEntity) private actWordRepo: Repository<ActivityWordEntity>,
     @InjectRepository(ClassroomEntity) private classroomRepo: Repository<ClassroomEntity>,
     @InjectRepository(CourseElementEntity) private courseElRepo: Repository<CourseElementEntity>,
     @InjectRepository(StudentEntity) private studentRepo: Repository<StudentEntity>,
@@ -553,6 +556,8 @@ export class CourseService {
         return await this.actPdfRepo.save(activity);
       case ACTIVITY_TYPE.ASSIGNMENT:
         return await this.actAssignmentRepo.save(activity);
+      case ACTIVITY_TYPE.WORD:
+        return await this.actWordRepo.save(activity);
       default:
         throw new HttpException(`Invalid activity type ${activity.type}`, HttpStatus.BAD_REQUEST);
     }
@@ -605,6 +610,16 @@ export class CourseService {
         challenge.access = CHALLENGE_ACCESS.RESTRICTED;
         await this.challengeRepo.save(challenge);
       }
+    }
+
+    // Checks if the file resource is of the correct Mime type
+    if (resource instanceof ResourceFileEntity && !activity.acceptedMimeTypes.includes(resource.file.mimetype)) {
+      throw new HttpException(
+        `Mime type ${resource.file.mimetype} not accepted. ${activity.acceptedMimeTypes.join(
+          ', ',
+        )} are the only Mime types accepted`,
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     activity.resource = resource;

@@ -6,11 +6,11 @@ import { RESOURCE_TYPE } from '../../../resource/entities/resource.entity';
  * Activity of type video model in the database
  * @author Enric Solevila
  */
-@ChildEntity(ACTIVITY_TYPE.VIDEO)
-export class ActivityVideoEntity extends ActivityEntity {
+@ChildEntity(ACTIVITY_TYPE.WORD)
+export class ActivityWordEntity extends ActivityEntity {
   /** Allowed types of resources inside the activity */
-  readonly allowedResources: RESOURCE_TYPE[] = [RESOURCE_TYPE.VIDEO];
+  readonly allowedResources: RESOURCE_TYPE[] = [RESOURCE_TYPE.FILE];
 
   /** Mime types allowed as a resource inside the activity */
-  acceptedMimeTypes = ['video/mp4', 'video/x-m4v', 'video/*'];
+  acceptedMimeTypes = ['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
 }

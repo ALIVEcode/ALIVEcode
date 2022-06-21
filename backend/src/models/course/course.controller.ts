@@ -323,7 +323,7 @@ export class CourseController {
     @Res() res: Response,
   ) {
     const activity = await this.courseService.findActivity(course.id, activityId);
-    const acceptedActivityTypes = [ACTIVITY_TYPE.CHALLENGE, ACTIVITY_TYPE.PDF];
+    const acceptedActivityTypes = [ACTIVITY_TYPE.PDF, ACTIVITY_TYPE.WORD];
     if (!acceptedActivityTypes.includes(activity.type))
       throw new HttpException(
         `Can only get the file on activities of type ${acceptedActivityTypes.join(', ')}`,

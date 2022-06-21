@@ -142,11 +142,12 @@
 		"update_date": "Date de modification",
 		"see_links": "Voir les liens",
 		"activity_type": {
-			"challenge": "Défi",
-			"video": "Visionnement",
-			"pdf": "Pdf",
-			"assignment": "Énoncé de travail",
-			"theory": "Théorie"
+			"CH": "Défi",
+			"VI": "Visionnement",
+			"PF": "Pdf",
+			"AS": "Énoncé de travail",
+			"TH": "Théorie",
+			"WO": "Word"
 		},
 		"subjects": {
 			"iot": "Internet des Objets",
@@ -266,7 +267,7 @@
 			"search": "Rechercher",
 			"bundles": "Obtenir des ressources"
 		},
-		"video": {
+		"VI": {
 			"name": "Vidéo",
 			"form": {
 				"url": "URL vers la vidéo",
@@ -274,25 +275,25 @@
 				"file": "Glissez ou sélectionnez un fichier"
 			}
 		},
-		"file": {
+		"FI": {
 			"name": "Fichier",
 			"form": {
 				"file": "Glissez ou sélectionnez un fichier"
 			}
 		},
-		"pdf": {
+		"PF": {
 			"name": "Pdf",
 			"form": {
 				"file": "Glissez ou sélectionnez un fichier"
 			}
 		},
-		"challenge": {
+		"CH": {
 			"name": "Défi",
 			"form": {
 				"select": "Sélectionnez un défi pour la liaison"
 			}
 		},
-		"theory": {
+		"TH": {
 			"name": "Théorie"
 		},
 		"form": {
@@ -381,7 +382,8 @@
 				"TH": "Ajouter un document de théorie existant",
 				"VI": "Ajouter une vidéo existante",
 				"AS": "Ajouter un fichier existant",
-				"CH": "Ajouter un défi"
+				"CH": "Ajouter un défi",
+				"WO": "Ajouter un document Word existant"
 			},
 			"import_challenge_private": {
 				"title": "Attention: Votre défi va passer de PRIVÉ à RESTREINT.",
@@ -395,7 +397,8 @@
 					"upload": "Téléverser une vidéo depuis cet appareil",
 					"url": "Ajouter une vidéo depuis un URL"
 				},
-				"AS": "Téléverser un fichier depuis cet appareil"
+				"AS": "Téléverser un fichier depuis cet appareil",
+				"WO": "Téléverser un document Word depuis cet appareil"
 			},
 			"edit_resource": "Modifier la ressource",
 			"remove_resource": "Retirer la ressource",
@@ -753,18 +756,19 @@
 			"previous": "Précédent"
 		},
 		"activity": {
-			"theory": "Activité permettant l'affichage de matière théorique sous format d'un fichier texte stylisé.",
-			"pdf": "Activité de visionnement d'un document pdf.",
-			"video": "Activité de visionnement d'une vidéo YouTube ou en format mp4.",
-			"challenge": "Activité défi permettant de mettre en pratique la matière apprise dans le cours.",
-			"assignment": "Activité permettant à un étudiant de télécharger un certain fichier nécessaire à son apprentissage."
+			"TH": "Activité permettant l'affichage de matière théorique sous format d'un fichier texte stylisé.",
+			"PF": "Activité de visionnement d'un document pdf.",
+			"VI": "Activité de visionnement d'une vidéo YouTube ou en format mp4.",
+			"CH": "Activité défi permettant de mettre en pratique la matière apprise dans le cours.",
+			"AS": "Activité permettant à un étudiant de télécharger un certain fichier nécessaire à son apprentissage.",
+			"WO": "Activité de visionnement d'un document Word."
 		},
 		"resource": {
-			"theory": "Un document text stylisé qui peut être réutilisé.",
-			"pdf": "Un fichier de présentation powerpoint qui peut être réutilisé",
-			"video": "Une vidéo YouTube ou une vidéo en format mp4 qui peut être réutilisée.",
-			"challenge": "Un défi qui peut être réutilisé dans un cours.",
-			"file": "Tout type de fichier qui peut être réutilisé."
+			"TH": "Un document text stylisé qui peut être réutilisé.",
+			"PF": "Un fichier de présentation powerpoint qui peut être réutilisé",
+			"VI": "Une vidéo YouTube ou une vidéo en format mp4 qui peut être réutilisée.",
+			"CH": "Un défi qui peut être réutilisé dans un cours.",
+			"FI": "Tout type de fichier qui peut être réutilisé."
 		},
 		"dashboard": {
 			"tabs": {

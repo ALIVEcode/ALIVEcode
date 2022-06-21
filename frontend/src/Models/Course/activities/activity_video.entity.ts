@@ -17,4 +17,7 @@ export class ActivityVideo extends Activity {
 
 	/** Allowed types of resources inside the activity */
 	readonly allowedResources: RESOURCE_TYPE[] = [RESOURCE_TYPE.VIDEO];
+
+	/** Mime types allowed as a resource inside the activity */
+	acceptedMimeTypes = ['video/mp4', 'video/x-m4v', 'video/*'];
 }

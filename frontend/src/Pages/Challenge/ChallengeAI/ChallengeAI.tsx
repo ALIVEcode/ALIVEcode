@@ -639,85 +639,84 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	// END OF TEST FUNCTION //
 
 	return (
-		<>
-			<StyledAliveChallenge>
-				<div className="h-full flex flex-row">
-					{/* Left Side of screen */}
-					<div className="w-1/2 h-full flex flex-col">
-						{/* Barre d'infos du niveau */}
-						<ChallengeToolsBar />
-						{/* Interface de code */}
-						{editMode ? (
-							/* Interface du code avec les tabs */
-							<LineInterface
-								key="edit-mode"
-								hasTabs
-								tabs={[
-									{
-										title: 'Initial Code',
-										open: true,
-										defaultContent: challenge.initialCode,
-										onChange: content => {
-											challenge.initialCode = content;
-											saveChallengeTimed();
-										},
-									},
-									{
-										title: 'Solution',
-										open: false,
-										defaultContent: challenge.solution,
-										onChange: content => {
-											challenge.solution = content;
-											saveChallengeTimed();
-										},
-									},
-								]}
-								handleChange={lineInterfaceContentChanges}
-							/>
-						) : (
-							/* Interface de code sans les tabs */
-							<LineInterface
-								key="play-mode"
-								initialContent={initialCode}
-								handleChange={lineInterfaceContentChanges}
-							/>
-						)}
-					</div>
-
-					{/* Right Side of screen 
-							Contains the graph and the console	
-					*/}
-					<div className="flex flex-col w-1/2">
-						<AIInterface
-							handleHyperparamChange={aiInterfaceHyperparamsChanges}
-							handleModelChange={aiInterfaceModelChange}
-							handleIOChange={aiInterfaceIOChange}
+		<div className="relative h-full w-full">
+			<div className="h-full flex flex-row">
+				{/* Left Side of screen */}
+				<div className="w-1/2 h-full flex flex-col">
+					{/* Barre d'infos du niveau */}
+					<ChallengeToolsBar />
+					{/* Interface de code */}
+					{editMode ? (
+						/* Interface du code avec les tabs */
+						<LineInterface
+							key="edit-mode"
+							hasTabs
 							tabs={[
 								{
-									title: 'Données',
+									title: 'Initial Code',
 									open: true,
+									defaultContent: challenge.initialCode,
+									onChange: content => {
+										challenge.initialCode = content;
+										saveChallengeTimed();
+									},
 								},
 								{
-									title: 'Modèle',
+									title: 'Solution',
 									open: false,
-								},
-								{
-									title: 'Hyperparamètres',
-									open: false,
-								},
-								{
-									title: 'Optimiseur',
-									open: false,
+									defaultContent: challenge.solution,
+									onChange: content => {
+										challenge.solution = content;
+										saveChallengeTimed();
+									},
 								},
 							]}
-							data={activeDataset.current}
-							initData={challenge.dataset}
-							modelType={activeModelType}
-							hyperparams={hyperparams[activeModelType]}
-							ioCodes={ioCodes.current}
-							activeModel={activeModel}
+							handleChange={lineInterfaceContentChanges}
 						/>
-						{/* TODO Code for visual regression ************
+					) : (
+						/* Interface de code sans les tabs */
+						<LineInterface
+							key="play-mode"
+							initialContent={initialCode}
+							handleChange={lineInterfaceContentChanges}
+						/>
+					)}
+				</div>
+
+				{/* Right Side of screen 
+							Contains the graph and the console	
+					*/}
+				<div className="flex flex-col w-1/2">
+					<AIInterface
+						handleHyperparamChange={aiInterfaceHyperparamsChanges}
+						handleModelChange={aiInterfaceModelChange}
+						handleIOChange={aiInterfaceIOChange}
+						tabs={[
+							{
+								title: 'Données',
+								open: true,
+							},
+							{
+								title: 'Modèle',
+								open: false,
+							},
+							{
+								title: 'Hyperparamètres',
+								open: false,
+							},
+							{
+								title: 'Optimiseur',
+								open: false,
+							},
+						]}
+						data={activeDataset.current}
+						initData={challenge.dataset}
+						modelType={activeModelType}
+						hyperparams={hyperparams[activeModelType]}
+						ioCodes={ioCodes.current}
+						activeModel={activeModel}
+					/>
+					{/* TODO Code for visual regression ************
 							<div className="w-1/3 h-full">
 								<ChallengeTable
 									data={data}
@@ -734,13 +733,12 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 								/>
 							</div>
 						*/}
-						<div className="h-2/5 flex-1 command">
-							<Cmd ref={cmdRef}></Cmd>
-						</div>
+					<div className="h-2/5 flex-1 command">
+						<Cmd ref={cmdRef}></Cmd>
 					</div>
 				</div>
-			</StyledAliveChallenge>
-		</>
+			</div>
+		</div>
 	);
 };
 

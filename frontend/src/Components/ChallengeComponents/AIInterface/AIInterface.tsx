@@ -10,7 +10,6 @@ import ChallengeTable from '../ChallengeTable/ChallengeTable';
 import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
 import { AICanvas } from './AIVisualModels/AIVisualNeuralNet/AICanvas';
 import { NNHyperparameters } from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
-import GradientDescentScheme from "./AIOptimizers/GradientDescent/GradientDescentScheme"
 /**
  * This component represents the visual interface in every ChallengeAI. It handles the
  * management of all 4 tabs in this component.
@@ -166,7 +165,7 @@ const AIInterface = ({
 						/>
 					</div>
 				) : (
-					<GradientDescentScheme />
+					<div />
 				)}
 			</div>
 		</StyledAIInterface>

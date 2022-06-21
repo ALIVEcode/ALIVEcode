@@ -111,7 +111,7 @@ export class AIDataset {
 	 * @param posValues One-hot parameter
 	 * @returns a boolean indicating if the replacement has been made.
 	 */
-	 public createOneHotWithNewParamsOneHot(param: string, posValues: string[]): boolean {
+	 public createOneHotWithNewParamsOneHot(param: string, posValues: string[], isother: boolean): boolean {
 		let iterator: number = 0;
 		let allValue: string[] =[]
 		let autre = 0
@@ -135,6 +135,7 @@ export class AIDataset {
 		}
 
 		allValue.every(elem => posValues.indexOf(elem) !== -1)? autre = 0: autre = 1
+		if(!isother) autre=0
 
 		const paramOther = 'autre '+ param
 		if (autre ===1) posValues.push(paramOther)
@@ -530,5 +531,9 @@ export class AIDataset {
 			this.data[dataNum][param] = data[dataNum];
 		}
 		return true;
+	}
+
+	public deleteLine(index : number){
+		this.data.splice(index,1)
 	}
 }

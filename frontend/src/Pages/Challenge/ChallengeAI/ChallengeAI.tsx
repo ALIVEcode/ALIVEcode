@@ -35,7 +35,11 @@ import {
 	defaultHyperparams,
 	defaultModelType,
 } from './artificial_intelligence/ai_models/DefaultHyperparams';
-import { Matrix } from './artificial_intelligence/AIUtils';
+import { 
+	Matrix,
+	correlationCoeff,
+	determinationCoeff,
+} from './artificial_intelligence/AIUtils';
 import { GradientDescent } from './artificial_intelligence/ai_optimizers/ai_nn_optimizers/GradientDescent';
 
 /**
@@ -113,6 +117,10 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					normalize,
 					predict,
 					optimize,
+					getIONames,
+					deleteLine,
+					coefficientCorrelation,
+					coefficientDetermination,
 					testNeuralNetwork,
 				},
 				challenge.name,
@@ -386,9 +394,11 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			createsOptimizer();
 
 			try {
-				return optimizer.current?.computeCost(input, real);
-			} catch (e) {
-				if (e instanceof Error) return e.message;
+				if(optimizer.current)
+					return optimizer.current.computeCost(input, real)
+			}catch (e){
+				if (e instanceof Error)
+					return e.message
 			}
 		}
 		return "Erreur : aucune donnée n'a été créé";
@@ -476,13 +486,12 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * Creats of a one shot associate to the column selected
 	 * @param column the parameter's name to replace.
 	 */
-	function oneHot(name: string, colomn: string[]): string | void {
-		console.log(activeDataset!);
+	function oneHot(name: string, colomn: string[], isother: boolean): string | void {
 		let index = activeDataset.current!.getParamNames().indexOf(name);
 		const oldNumberParams = activeDataset.current!.getParamNames().length;
 		const valueIO = ioCodes.current.at(index);
 
-		if (activeDataset.current!.createOneHotWithNewParamsOneHot(name, colomn)) {
+		if (activeDataset.current!.createOneHotWithNewParamsOneHot(name, colomn,isother)) {
 			const numberNewParams =
 				activeDataset.current!.getParamNames().length - oldNumberParams;
 
@@ -510,10 +519,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	function normalizeColumn(column: string): string | void {
 		if (activeDataset.current) {
 			let index = activeDataset.current.getParamNames().indexOf(column);
-			if (
-				index !== -1 &&
-				!activeDataset.current.getDataAsMatrix().equals(new Matrix(1, 1))
-			) {
+			if (index !== -1){
 				activeDataset.current.normalizeParam(column);
 				forceUpdate();
 			} else {
@@ -573,6 +579,10 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		return respond?.getValue();
 	}
 
+
+	/**
+	 * Trains the model
+	 */
 	function optimize() {
 		if (activeDataset.current) {
 			let input = activeDataset.current.getInputsOutputs(ioCodes.current)[0];
@@ -580,14 +590,52 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			createsOptimizer();
 
 			try {
-				console.log(input);
-				console.log(real);
-				model.current = optimizer.current?.optimize(input, real);
-				console.log(model);
-			} catch (e) {
-				if (e instanceof Error) return e.message;
+				model.current=optimizer.current?.optimize(input,real)
+				console.log(model)
+			}catch(e){
+				if (e instanceof Error)
+					return e.message
 			}
 		}
+	}
+
+	/**
+	 * Returns the names of the paraters that are an input or an output
+	 * @returns 
+	 */
+	function getIONames(){
+		if(activeDataset.current){
+			let params:string[] = activeDataset.current.getParamNames();
+			let ioParams: string[] = [];
+			for (let i =ioCodes.current.length-1 ; i >= 0 ; i--){
+				if(ioCodes.current[i] !== -1)
+					ioParams.push(params[i])
+			}
+			//return ioParams;
+			return  activeDataset.current.getParamNames()
+		}	
+		return "Erreur : la base de données n'a pas été chargée.";
+	}
+
+	/**
+	 * Delete the line indicated in the dataset
+	 * @param index the index of the line to delete
+	 */
+	function deleteLine(index : number){
+		if(activeDataset.current){
+			activeDataset.current.deleteLine(index)
+			forceUpdate()
+		}else {
+			return "Erreur : la base de données n'a pas été chargée."
+		}
+	}
+
+	function coefficientCorrelation(lst1: number[], list2: number[]){
+		return correlationCoeff(lst1,list2)
+	}
+
+	function coefficientDetermination(lst1: number[], list2: number[]){
+		return determinationCoeff(lst1,list2)
 	}
 
 	// FOR TESTING PURPOSE ONLY, TO BE DELETED WHEN NEURAL NETWORK IMPLEMENTATION WORKS //

@@ -152,11 +152,13 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 						console.log('Execute One Hot');
 						if (
 							typeof params[0] === 'string' &&
-							typeof params[1] === 'object'
+							typeof params[1] === 'object'&&
+							typeof params[2] === 'boolean'
 						) {
 							const out: string | undefined = this.executableFuncs.oneHot(
 								params[0],
 								params[1],
+								params[2]
 							);
 							if (out !== undefined) {
 								this.cmd?.print(out);
@@ -270,6 +272,30 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 							if (typeof out === 'string'){
 								this.cmd?.print(out)
 							}
+						}
+					},
+				},
+			},{
+				actionId: 815,
+				action: {
+					label: 'Coefficient Correlation',
+					type: 'NORMAL',
+					apply: (params) => {
+						console.log('Execute Coefficient Correlation');
+						if(typeof params[0] === 'object' && typeof params[1] === 'object'){
+							let out = this.executableFuncs.coefficientCorrelation(params[0], params[1]);
+						}
+					},
+				},
+			},{
+				actionId: 816,
+				action: {
+					label: 'Coefficient Dermination',
+					type: 'NORMAL',
+					apply: (params) => {
+						console.log('Execute Coefficient Correlation');
+						if(typeof params[0] === 'object' && typeof params[1] === 'object'){
+							let out = this.executableFuncs.coefficientDerermination(params[0], params[1]);
 						}
 					},
 				},

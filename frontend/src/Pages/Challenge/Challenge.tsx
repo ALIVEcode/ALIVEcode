@@ -150,6 +150,8 @@ const Challenge = ({
 						{},
 					);
 				}
+				// TODO: Keep an eye for bugs with the progression data saving
+				if (!progression.data) progression.data = {};
 				progression.data.code &&
 					setInitialProgressionCode(progression.data.code);
 				setProgression(progression);

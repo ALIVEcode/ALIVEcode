@@ -166,7 +166,9 @@ const AIInterface = ({
 						/>
 					</div>
 				) : (
-					<GradientDescentScheme />
+					<div className="ai-display w-full overflow-auto">
+						<GradientDescentScheme />
+					</div>
 				)}
 			</div>
 		</StyledAIInterface>

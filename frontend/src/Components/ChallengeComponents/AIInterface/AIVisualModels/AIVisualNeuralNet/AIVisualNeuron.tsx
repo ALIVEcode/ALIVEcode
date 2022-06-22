@@ -9,7 +9,8 @@ type NeuronData = {
 
     index: number
     // updatePath:any
-    currentPath:any
+    currentPath:MutableRefObject<string>
+    currentHoveredPath:MutableRefObject<string>
 
     position:Vector3;
     path: string;
@@ -27,6 +28,7 @@ const Sphere = (props : CustomSphereProps) => {
 
     const ref = useRef()
 
+    let clicked = false;
     // let fakeStates = new Array(props.clickedStates.length)
     // fakeStates.fill(false)
     // fakeStates[props.identifier] = true;
@@ -37,42 +39,38 @@ const Sphere = (props : CustomSphereProps) => {
                   ref={ref}
                   onClick={(event) => {
                       event.stopPropagation()
-
+                      if(!props.clickedStates.current[props.index])
+                        props.clickedStates.current[props.clickedStates.current.indexOf(true)] = false;
                       props.clickedStates.current[props.index] = !props.clickedStates.current[props.index]
                       props.currentPath.current = props.path
 
                       props.forceUpdate()
-                      // click(!clicked)
-
-                      // if(props.clickedStates.current[props.index])
-
-
                   }}
                   onPointerMissed={(event) => {
                       event.stopPropagation()
-                      props.clickedStates.current[props.index] = false
 
+                      props.clickedStates.current[props.index] = false;
+                      //props.clickedStates.current[props.clickedStates.current.indexOf(true)] = false;
+                      props.currentPath.current = ""
                       props.forceUpdate()
-                      // click(false)
                   }}
                   onPointerOver={(event) => {
                       event.stopPropagation()
+
+                      props.hoveredStates.current[props.hoveredStates.current.indexOf(true)] = false;
                       props.hoveredStates.current[props.index] = true
-                      // hover(true)
+                      props.currentHoveredPath.current = props.path
+
                       props.forceUpdate()
                   }}
                   onPointerOut={(event) => {
                       event.stopPropagation()
-                      props.hoveredStates.current[props.index] = false
-                      // if(props.clickedStates.current.indexOf(true) === -1) {
-                      //     props.hoveredStates.current.fill(false)
-                      //     //props.hoveredStates.current[props.index] = true
-                      // }
-                      // else {
-                      //     props.hoveredStates.current.fill(false)
-                      //
-                      // }
-                      // hover(false)
+
+                      if(props.clickedStates.current.indexOf(true) !== -1) {
+                          props.hoveredStates.current[props.hoveredStates.current.indexOf(true)] = false
+                          props.currentHoveredPath.current = ""
+                      }
+
                       props.forceUpdate()
                   }}>
                 <sphereGeometry attach="geometry" args={[3, 16, 16]} />
@@ -107,7 +105,7 @@ export const Neuron = (props: NeuronData) => {
             clickedStates={props.clickedStates}
             hoveredStates={props.hoveredStates}
 
-            // updatePath={props.updatePath}
+            currentHoveredPath={props.currentHoveredPath}
             currentPath={props.currentPath}
             index={props.index}
 
@@ -132,6 +130,7 @@ export const InputNeuron = (props: NeuronData) => {
 
             // updatePath={props.updatePath}
             currentPath={props.currentPath}
+            currentHoveredPath={props.currentHoveredPath}
             index={props.index}
 
             filledLevel={props.filledLevel}
@@ -155,6 +154,7 @@ export const OutputNeuron = (props: NeuronData) => {
 
             // updatePath={props.updatePath}
             currentPath={props.currentPath}
+            currentHoveredPath={props.currentHoveredPath}
             index={props.index}
 
             filledLevel={props.filledLevel}

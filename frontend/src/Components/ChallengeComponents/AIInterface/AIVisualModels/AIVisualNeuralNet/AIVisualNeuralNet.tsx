@@ -34,9 +34,10 @@ type NNProps = {
 
     clickedStates:MutableRefObject<boolean[]>;
     hoveredStates:MutableRefObject<boolean[]>;
-
+    
     forceUpdate:any;
-    currentPath:any
+    currentPath:MutableRefObject<string>
+    currentHoveredPath:MutableRefObject<string>
     // updatePath:any
 }
 
@@ -100,29 +101,38 @@ export const ThreeNeuralNet = (props : NNProps) => {
             // eslint-disable-next-line react-hooks/rules-of-hooks
 
             if(props.hasInput && i === 0) {
-                neurons.push(<InputNeuron clickedStates={props.clickedStates} hoveredStates={props.hoveredStates}
-                                     currentPath={props.currentPath}
-                                     forceUpdate={props.forceUpdate}
-                    // updatePath={props.updatePath}
-                                     index={pos++}
-                                     filledLevel={layerPos[j][5]} full={layerPos[j][4]} position={new Vector3(...layerPos[j])}
-                                     path={(i + 1) + ":" + (j + 1)} radius={3}/>)
-            } else if(props.hasOutput && i === finalSize.length-1) {
-                neurons.push(<OutputNeuron clickedStates={props.clickedStates} hoveredStates={props.hoveredStates}
+                neurons.push(<InputNeuron clickedStates={props.clickedStates}
+                                          hoveredStates={props.hoveredStates}
+
+                                          currentHoveredPath={props.currentHoveredPath}
                                           currentPath={props.currentPath}
                                           forceUpdate={props.forceUpdate}
-                    // updatePath={props.updatePath}
+
                                           index={pos++}
                                           filledLevel={layerPos[j][5]} full={layerPos[j][4]} position={new Vector3(...layerPos[j])}
                                           path={(i + 1) + ":" + (j + 1)} radius={3}/>)
+            } else if(props.hasOutput && i === finalSize.length-1) {
+                neurons.push(<OutputNeuron clickedStates={props.clickedStates}
+                                           hoveredStates={props.hoveredStates}
+
+                                           currentHoveredPath={props.currentHoveredPath}
+                                           currentPath={props.currentPath}
+                                           forceUpdate={props.forceUpdate}
+
+                                           index={pos++}
+                                           filledLevel={layerPos[j][5]} full={layerPos[j][4]} position={new Vector3(...layerPos[j])}
+                                           path={(i + 1) + ":" + (j + 1)} radius={3}/>)
             } else
-            neurons.push(<Neuron clickedStates={props.clickedStates} hoveredStates={props.hoveredStates}
-                currentPath={props.currentPath}
+            neurons.push(<Neuron clickedStates={props.clickedStates}
+                                 hoveredStates={props.hoveredStates}
+
+                                 currentHoveredPath={props.currentHoveredPath}
+                                 currentPath={props.currentPath}
                                  forceUpdate={props.forceUpdate}
-                // updatePath={props.updatePath}
-                index={pos++}
-                filledLevel={layerPos[j][5]} full={layerPos[j][4]} position={new Vector3(...layerPos[j])}
-                path={(i + 1) + ":" + (j + 1)} radius={3}/>)
+                
+                                 index={pos++}
+                                 filledLevel={layerPos[j][5]} full={layerPos[j][4]} position={new Vector3(...layerPos[j])}
+                                 path={(i + 1) + ":" + (j + 1)} radius={3}/>)
 
         }
     }
@@ -145,12 +155,15 @@ export const ThreeNeuralNet = (props : NNProps) => {
         for (let k = previous; k < finalSize[t + 1] + previous; k++)
             if (Math.random() < probabilities) {
                 // @ts-ignore
-                weights.push(<Weight clickedStates={props.clickedStates} hoveredStates={props.hoveredStates}
+                weights.push(<Weight clickedStates={props.clickedStates}
+                                     hoveredStates={props.hoveredStates}
+
                                      forceUpdate={props.forceUpdate}
-                    // updatePath={props.updatePath}
-                    currentPath={props.currentPath}
-                    index={pos++} start={neuronCoords[j]} end={neuronCoords[k]}
-                    path={neuronCoords[j][3] + ":" + String(neuronCoords[k][3]).split(":")[1]}/>)
+                                     currentPath={props.currentPath}
+                                     currentHoveredPath={props.currentHoveredPath}
+
+                                     index={pos++} start={neuronCoords[j]} end={neuronCoords[k]}
+                                     path={neuronCoords[j][3] + ":" + String(neuronCoords[k][3]).split(":")[1]}/>)
             }
 
     }

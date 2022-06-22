@@ -17,16 +17,13 @@ type WeightData = {
     hoveredStates: MutableRefObject<boolean[]>
 
     index: number
-    // updatePath:any
-    currentPath:any
+    currentPath:MutableRefObject<string>
+    currentHoveredPath:MutableRefObject<string>
 
     start:number[];
     end:number[]
     path: string;
     forceUpdate:any;
-    // radius: number;
-    // full: boolean;
-    // filledLevel: number;
 }
 type customLineProps = MeshProps & WeightData & {
     colors: Color[];
@@ -37,7 +34,6 @@ function Line( props: customLineProps ) {
     const points = []
     points.push(new THREE.Vector3( ...props.start))
     points.push(new THREE.Vector3(...props.end))
-
     const lineGeometry = new THREE.BufferGeometry().setFromPoints(points)
 
     return (
@@ -46,47 +42,45 @@ function Line( props: customLineProps ) {
                onClick={(event) => {
                    event.stopPropagation()
 
+                   if(!props.clickedStates.current[props.index])
+                       props.clickedStates.current[props.clickedStates.current.indexOf(true)] = false;
                    props.clickedStates.current[props.index] = !props.clickedStates.current[props.index]
                    props.currentPath.current = props.path
 
                    props.forceUpdate()
-                   // click(!clicked)
-
-                   // if(props.clickedStates.current[props.index])
-
-
                }}
                onPointerMissed={(event) => {
                    event.stopPropagation()
-                   props.clickedStates.current.fill(false)
 
+                   //props.clickedStates.current[props.clickedStates.current.indexOf(true)] = false;
+                   props.clickedStates.current[props.index] = false;
+                   props.currentPath.current = ""
                    props.forceUpdate()
-                   // click(false)
                }}
                onPointerOver={(event) => {
                    event.stopPropagation()
+
+                   props.hoveredStates.current[props.hoveredStates.current.indexOf(true)] = false;
                    props.hoveredStates.current[props.index] = true
-                   // hover(true)
+                   props.currentHoveredPath.current = props.path
+
                    props.forceUpdate()
                }}
                onPointerOut={(event) => {
                    event.stopPropagation()
-                   props.hoveredStates.current[props.index] = false
-                   // if(props.clickedStates.current.indexOf(true) === -1) {
-                   //     props.hoveredStates.current.fill(false)
-                   //     //props.hoveredStates.current[props.index] = true
-                   // }
-                   // else {
-                   //     props.hoveredStates.current.fill(false)
-                   //
-                   // }
-                   // hover(false)
+
+                   if(props.clickedStates.current.indexOf(true) !== -1) {
+                       props.hoveredStates.current[props.hoveredStates.current.indexOf(true)] = false
+                       props.currentHoveredPath.current = ""
+                   }
+
                    props.forceUpdate()
                }}>
             <lineBasicMaterial
                 opacity={((props.hoveredStates.current[props.index] || props.clickedStates.current[props.index]) ? 0.6 : 0.3)}
                 transparent
                 attach="material"
+
                 linewidth={props.width}
                 color={props.clickedStates.current[props.index] ?
                         (props.hoveredStates.current[props.index] ? props.colors[2] : "red") :
@@ -109,11 +103,13 @@ export function Weight(props: WeightData) {
                 colors={['#4a5f70','#337ef5', '#2ba3f8']}
                 type={"Weight"}
                 path={props.path}
+
                 clickedStates={props.clickedStates}
                 hoveredStates={props.hoveredStates}
                 index={props.index}
-                // updatePath={props.updatePath}
+
                 currentPath={props.currentPath}
+                currentHoveredPath={props.currentHoveredPath}
             />
         </React.Fragment>
     )

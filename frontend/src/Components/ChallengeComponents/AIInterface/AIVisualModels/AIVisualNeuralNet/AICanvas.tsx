@@ -33,7 +33,7 @@ export function AICanvas(props:NNProps) {
     const hasInput = props.hyperparameters.nbInputs !== 0
     const hasOutput = props.hyperparameters.nbOutputs !== 0
 
-    const divider = biggestLayer>props.maxNeuronPerLayer ? biggestLayer / props.maxNeuronPerLayer: 1;
+    const divider = biggestLayer>props.maxNeuronPerLayer ? Math.floor(biggestLayer / props.maxNeuronPerLayer): 1;
 
 
     const spacing = props.spacing
@@ -65,38 +65,84 @@ export function AICanvas(props:NNProps) {
 
 
 
-    const currentPath = useRef("default val");
+    const currentPath = useRef("");
+    const currentHoveredPath = useRef("");
     const forceUpdate = useForceUpdate();
 
-    // const setCurrentPath = (newPath:string) => {
-    //     currentPath.current = newPath;
-    //     forceUpdate();
-    // }
+    function AAAMenu() {
 
-    function Test() {
-        return <div className={"absolute right-10"
-             // + (currentPath.current === "default val" ? "hidden" : "visible")
+        const typeClicked = currentPath.current.split(':').length === 3 ? "Poid": "Neurone";
+        let layerClicked: string;
+        let fromClicked : string
+        let toClicked : string = ""
+        layerClicked = ((+currentPath.current.split(':')[0])-1).toString();
+        layerClicked += (layerClicked === "1" ? "re" : "e");
+        fromClicked = currentPath.current.split(':')[1]
+        if(typeClicked==="Poid") {
+            toClicked = currentPath.current.split(':')[2]
+        }
+
+        const typeHovered = currentHoveredPath.current.split(':').length === 3 ? "Poid": "Neurone";
+        let layerHovered: string;
+        let fromHovered : string
+        let toHovered : string = ""
+        layerHovered = ((+currentHoveredPath.current.split(':')[0])-1).toString();
+        layerHovered += (layerHovered === "1" ? "re" : "e");
+        fromHovered = currentHoveredPath.current.split(':')[1]
+        if(typeHovered==="Poid") {
+            toHovered = currentHoveredPath.current.split(':')[2]
+        }
+
+
+        return <div className={"absolute right-10 bg-black" + ((currentHoveredPath.current === "" && currentPath.current === "") ? "hidden": "visible" )}>
+
+            {currentPath.current === "" ? null :
+                <div className={"bg-black p-2"}>
+                    {
+                        divider > 1 ? <div>
+                            {(typeClicked === "Neurone" ? "La neurone": "Le poid")
+                            + " sélectionné"+ (typeClicked === "Neurone" ? "e ": "")
+                            + " équivaut à " + divider + " " + typeClicked.toLocaleLowerCase() + "s"}
+                        </div> : null
+                    }
+
+                    {
+                        layerClicked + " couche"
+                    }
+                    <br />
+                    {
+                        (currentPath.current.split(':').length === 3 ? "Poid ": "Neurone ")
+                        + currentPath.current
+                    }
+                </div>
             }
-        >
 
-            {currentPath.current}
-            <br />
-            {divider === 1 ? "" : "Chaque neurone visible représente " + divider }
+            {currentHoveredPath.current === "" ? null :
+                <div className={"bg-black p-5"}>
+                    {
+                        layerHovered + " couche"
+                    }
+                    <br />
+                    {
+                        (currentHoveredPath.current.split(':').length === 3 ? "Poid ": "Neurone ")
+                        + currentHoveredPath.current
+                    }
+                </div>}
         </div>
     }
 
     return (
         <>
-            {Test()}
+            {AAAMenu()}
             <Canvas raycaster={raycaster} camera={{fov: 75, position: [spacing * -4, 0, 20 * topology.length / 2]}}>
                 <pointLight position={[64, 64, 64]}/>
                 <ambientLight intensity={1} color={'#bcd9ff'}/>
                 <OrbitControls target={[0, 0, spacing * topology.length/2 - 5]}/>
                 <ThreeNeuralNet topology={topology} spacing={spacing} filter={0} maxNeuronPerLayer={10}
                                 clickedStates={clickedStates} hoveredStates={hoveredStates}
-                                hasInput={hasInput}
-                                hasOutput={hasOutput}
+                                hasInput={hasInput} hasOutput={hasOutput}
                                 forceUpdate={forceUpdate}
+                                currentHoveredPath={currentHoveredPath}
                                 currentPath={currentPath}
                 />
             </Canvas>

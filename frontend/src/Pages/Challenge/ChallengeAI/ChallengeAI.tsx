@@ -35,7 +35,11 @@ import {
 	defaultHyperparams,
 	defaultModelType,
 } from './artificial_intelligence/ai_models/DefaultHyperparams';
-import { Matrix } from './artificial_intelligence/AIUtils';
+import {
+	Matrix,
+	correlationCoeff,
+	determinationCoeff,
+} from './artificial_intelligence/AIUtils';
 import { GradientDescent } from './artificial_intelligence/ai_optimizers/ai_nn_optimizers/GradientDescent';
 
 /**
@@ -77,8 +81,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	const model = useRef<GenAIModel>();
 
 	//Active model type for this challenge
-	const [activeModelType, setActiveModelType] =
-		useState<MODEL_TYPES>(defaultModelType);
+	const [modelType, setModelType] = useState<MODEL_TYPES>(defaultModelType);
 	const regression = useRef<PolyRegression>();
 
 	const [hyperparams, setHyperparams] =
@@ -113,6 +116,10 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					normalize,
 					predict,
 					optimize,
+					getIONames,
+					deleteLine,
+					coefficientCorrelation,
+					coefficientDetermination,
 					testNeuralNetwork,
 				},
 				challenge.name,
@@ -157,7 +164,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		let tempHyperparams: GenHyperparameters = JSON.parse(
 			JSON.stringify(hyperparams),
 		);
-		(tempHyperparams[activeModelType] as Hyperparameters) = newHyperparams;
+		(tempHyperparams[modelType] as Hyperparameters) = newHyperparams;
 		setHyperparams(tempHyperparams);
 		console.log('New Hyperparams ', hyperparams);
 	};
@@ -167,7 +174,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @param newModelType the new model type.
 	 */
 	const aiInterfaceModelChange = (newModelType: MODEL_TYPES) => {
-		setActiveModelType(newModelType);
+		setModelType(newModelType);
 	};
 
 	/**
@@ -325,7 +332,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	function createRegression(a: number, b: number, c: number, d: number) {
 		regression.current = new PolyRegression(
 			'1',
-			hyperparams[activeModelType] as RegHyperparameters,
+			hyperparams[modelType] as RegHyperparameters,
 		);
 		optimizer.current = new PolyOptimizer(regression.current);
 		model.current = regression.current;
@@ -354,9 +361,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	/**
 	 * Creates an optimizer if there isn't one
 	 */
-	function createsOptimizer() {
+	function createOptimizer() {
 		if (model.current && !optimizer.current) {
-			switch (activeModelType) {
+			switch (modelType) {
 				case MODEL_TYPES.NEURAL_NETWORK:
 					let modelTemp = model.current as NeuralNetwork;
 					optimizer.current = new GradientDescent(modelTemp);
@@ -375,7 +382,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @returns the calculated cost.
 	 */
 	function costFunction() {
-		//mainAINeuralNetworkTest();
 		if (!model.current) {
 			return "Erreur : aucun modèle n'a été créé jusqu'à présent. Veuillez créer un modèle afin de calculer son erreur.";
 		}
@@ -383,10 +389,11 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		if (activeDataset.current) {
 			let input = activeDataset.current.getInputsOutputs(ioCodes.current)[0];
 			let real = activeDataset.current.getInputsOutputs(ioCodes.current)[1];
-			createsOptimizer();
+			createOptimizer();
 
 			try {
-				return optimizer.current?.computeCost(input, real);
+				if (optimizer.current)
+					return optimizer.current.computeCost(input, real);
 			} catch (e) {
 				if (e instanceof Error) return e.message;
 			}
@@ -454,11 +461,11 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * Creates an ai model
 	 */
 	function modelCreation(): void {
-		switch (activeModelType) {
+		switch (modelType) {
 			case MODEL_TYPES.NEURAL_NETWORK:
 				model.current = new NeuralNetwork(
 					'Neural Network Model',
-					hyperparams[activeModelType],
+					hyperparams[modelType],
 					{
 						layerParams: [],
 					},
@@ -476,13 +483,22 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * Creats of a one shot associate to the column selected
 	 * @param column the parameter's name to replace.
 	 */
-	function oneHot(name: string, colomn: string[]): string | void {
-		console.log(activeDataset!);
+	function oneHot(
+		name: string,
+		colomn: string[],
+		isother: boolean,
+	): string | void {
 		let index = activeDataset.current!.getParamNames().indexOf(name);
 		const oldNumberParams = activeDataset.current!.getParamNames().length;
 		const valueIO = ioCodes.current.at(index);
 
-		if (activeDataset.current!.createOneHotWithNewParamsOneHot(name, colomn)) {
+		if (
+			activeDataset.current!.createOneHotWithNewParamsOneHot(
+				name,
+				colomn,
+				isother,
+			)
+		) {
 			const numberNewParams =
 				activeDataset.current!.getParamNames().length - oldNumberParams;
 
@@ -510,10 +526,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	function normalizeColumn(column: string): string | void {
 		if (activeDataset.current) {
 			let index = activeDataset.current.getParamNames().indexOf(column);
-			if (
-				index !== -1 &&
-				!activeDataset.current.getDataAsMatrix().equals(new Matrix(1, 1))
-			) {
+			if (index !== -1) {
 				activeDataset.current.normalizeParam(column);
 				forceUpdate();
 			} else {
@@ -533,12 +546,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	function normalize(column: string, data: number): string | number {
 		if (activeDataset.current) {
 			let index = activeDataset.current.getParamNames().indexOf(column);
-			if (
-				index !== -1 &&
-				!activeDataset.current.getDataAsMatrix().equals(new Matrix(1, 1))
-			) {
+			try {
 				return activeDataset.current.normalizeValue(data, column);
-			} else {
+			} catch (e) {
 				if (index !== -1)
 					return 'Erreur : Une colonne possède des chaines de caractères comme donnée dans la base de données';
 				else
@@ -573,21 +583,61 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		return respond?.getValue();
 	}
 
+	/**
+	 * Trains the model
+	 */
 	function optimize() {
 		if (activeDataset.current) {
 			let input = activeDataset.current.getInputsOutputs(ioCodes.current)[0];
 			let real = activeDataset.current.getInputsOutputs(ioCodes.current)[1];
-			createsOptimizer();
+			createOptimizer();
 
 			try {
-				console.log(input);
-				console.log(real);
+				console.log('before :', model.current);
 				model.current = optimizer.current?.optimize(input, real);
-				console.log(model);
+				console.log('after :', model.current);
 			} catch (e) {
 				if (e instanceof Error) return e.message;
 			}
 		}
+	}
+
+	/**
+	 * Returns the names of the paraters that are an input or an output
+	 * @returns
+	 */
+	function getIONames() {
+		if (activeDataset.current) {
+			let params: string[] = activeDataset.current.getParamNames();
+			let ioParams: string[] = [];
+			for (let i = ioCodes.current.length - 1; i >= 0; i--) {
+				if (ioCodes.current[i] !== -1) ioParams.push(params[i]);
+			}
+			//return ioParams;
+			return activeDataset.current.getParamNames();
+		}
+		return "Erreur : la base de données n'a pas été chargée.";
+	}
+
+	/**
+	 * Delete the line indicated in the dataset
+	 * @param index the index of the line to delete
+	 */
+	function deleteLine(index: number) {
+		if (activeDataset.current) {
+			activeDataset.current.deleteLine(index);
+			forceUpdate();
+		} else {
+			return "Erreur : la base de données n'a pas été chargée.";
+		}
+	}
+
+	function coefficientCorrelation(lst1: number[], list2: number[]) {
+		return correlationCoeff(lst1, list2);
+	}
+
+	function coefficientDetermination(lst1: number[], list2: number[]) {
+		return determinationCoeff(lst1, list2);
 	}
 
 	// FOR TESTING PURPOSE ONLY, TO BE DELETED WHEN NEURAL NETWORK IMPLEMENTATION WORKS //
@@ -639,85 +689,84 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	// END OF TEST FUNCTION //
 
 	return (
-		<>
-			<StyledAliveChallenge>
-				<div className="h-full flex flex-row">
-					{/* Left Side of screen */}
-					<div className="w-1/2 h-full flex flex-col">
-						{/* Barre d'infos du niveau */}
-						<ChallengeToolsBar />
-						{/* Interface de code */}
-						{editMode ? (
-							/* Interface du code avec les tabs */
-							<LineInterface
-								key="edit-mode"
-								hasTabs
-								tabs={[
-									{
-										title: 'Initial Code',
-										open: true,
-										defaultContent: challenge.initialCode,
-										onChange: content => {
-											challenge.initialCode = content;
-											saveChallengeTimed();
-										},
-									},
-									{
-										title: 'Solution',
-										open: false,
-										defaultContent: challenge.solution,
-										onChange: content => {
-											challenge.solution = content;
-											saveChallengeTimed();
-										},
-									},
-								]}
-								handleChange={lineInterfaceContentChanges}
-							/>
-						) : (
-							/* Interface de code sans les tabs */
-							<LineInterface
-								key="play-mode"
-								initialContent={initialCode}
-								handleChange={lineInterfaceContentChanges}
-							/>
-						)}
-					</div>
-
-					{/* Right Side of screen 
-							Contains the graph and the console	
-					*/}
-					<div className="flex flex-col w-1/2">
-						<AIInterface
-							handleHyperparamChange={aiInterfaceHyperparamsChanges}
-							handleModelChange={aiInterfaceModelChange}
-							handleIOChange={aiInterfaceIOChange}
+		<div className="relative h-full w-full">
+			<div className="h-full flex flex-row">
+				{/* Left Side of screen */}
+				<div className="w-1/2 h-full flex flex-col">
+					{/* Barre d'infos du niveau */}
+					<ChallengeToolsBar />
+					{/* Interface de code */}
+					{editMode ? (
+						/* Interface du code avec les tabs */
+						<LineInterface
+							key="edit-mode"
+							hasTabs
 							tabs={[
 								{
-									title: 'Données',
+									title: 'Initial Code',
 									open: true,
+									defaultContent: challenge.initialCode,
+									onChange: content => {
+										challenge.initialCode = content;
+										saveChallengeTimed();
+									},
 								},
 								{
-									title: 'Modèle',
+									title: 'Solution',
 									open: false,
-								},
-								{
-									title: 'Hyperparamètres',
-									open: false,
-								},
-								{
-									title: 'Optimiseur',
-									open: false,
+									defaultContent: challenge.solution,
+									onChange: content => {
+										challenge.solution = content;
+										saveChallengeTimed();
+									},
 								},
 							]}
-							data={activeDataset.current}
-							initData={challenge.dataset}
-							modelType={activeModelType}
-							hyperparams={hyperparams[activeModelType]}
-							ioCodes={ioCodes.current}
-							activeModel={activeModel}
+							handleChange={lineInterfaceContentChanges}
 						/>
-						{/* TODO Code for visual regression ************
+					) : (
+						/* Interface de code sans les tabs */
+						<LineInterface
+							key="play-mode"
+							initialContent={initialCode}
+							handleChange={lineInterfaceContentChanges}
+						/>
+					)}
+				</div>
+
+				{/* Right Side of screen 
+							Contains the graph and the console	
+					*/}
+				<div className="flex flex-col w-1/2">
+					<AIInterface
+						handleHyperparamChange={aiInterfaceHyperparamsChanges}
+						handleModelChange={aiInterfaceModelChange}
+						handleIOChange={aiInterfaceIOChange}
+						tabs={[
+							{
+								title: 'Données',
+								open: true,
+							},
+							{
+								title: 'Modèle',
+								open: false,
+							},
+							{
+								title: 'Hyperparamètres',
+								open: false,
+							},
+							{
+								title: 'Optimiseur',
+								open: false,
+							},
+						]}
+						data={activeDataset.current}
+						initData={challenge.dataset}
+						modelType={modelType}
+						hyperparams={hyperparams[modelType]}
+						ioCodes={ioCodes.current}
+						activeModel={activeModel}
+					/>
+					{/* TODO Code for visual regression ************
 							<div className="w-1/3 h-full">
 								<ChallengeTable
 									data={data}
@@ -734,13 +783,12 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 								/>
 							</div>
 						*/}
-						<div className="h-2/5 flex-1 command">
-							<Cmd ref={cmdRef}></Cmd>
-						</div>
+					<div className="h-2/5 flex-1 command">
+						<Cmd ref={cmdRef}></Cmd>
 					</div>
 				</div>
-			</StyledAliveChallenge>
-		</>
+			</div>
+		</div>
 	);
 };
 

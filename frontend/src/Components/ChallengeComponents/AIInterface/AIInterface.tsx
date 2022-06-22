@@ -26,6 +26,7 @@ import GradientDescentScheme from "./AIOptimizers/GradientDescent/GradientDescen
  * @param data the current dataset used for the challenge.
  * @param initData the dataset linked to this challenge in the backend.
  * @param modelType the current model type of the challenge.
+ * @param activeModel the model type if the model is created, otherwise undefined.
  *
  * @author Félix Jobin
  */
@@ -81,21 +82,19 @@ const AIInterface = ({
 	};
 
 	function showModel() {
-		return (
-			<AICanvas
-				filter={0}
-				maxNeuronPerLayer={10}
-				spacing={20}
-				hyperparameters={hyperparams as NNHyperparameters}
-			/>
-		);
-		//
-		// switch (activeModel) {
-		// 	case MODEL_TYPES.NEURAL_NETWORK:
-		// 		return <AICanvas filter={0} maxNeuronPerLayer={10} spacing={20} topology={[5, 6, 20, 60, 5]}/>;
-		// 	default:
-		// 		break;
-		// }
+		switch (activeModel) {
+			case MODEL_TYPES.NEURAL_NETWORK:
+				return (
+					<AICanvas
+						filter={0}
+						maxNeuronPerLayer={10}
+						spacing={35}
+						hyperparameters={hyperparams as NNHyperparameters}
+					/>
+				);
+			default:
+				break;
+		}
 	}
 
 	return (

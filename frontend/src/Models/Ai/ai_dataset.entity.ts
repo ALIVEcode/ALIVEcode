@@ -52,7 +52,7 @@ export class AIDataset {
 	 * @param param the parameter's name to replace.
 	 * @returns a boolean indicating if the replacement has been made.
 	 */
-	 public createOneHot(param: string): boolean {
+	public createOneHot(param: string): boolean {
 		let iterator: number = 0;
 		let posValues: string[] = [];
 
@@ -87,7 +87,7 @@ export class AIDataset {
 
 		//Remove the parameter to replace of the array of parameters
 		this.paramNames.forEach((value, index) => {
-			if (value == param) this.paramNames.splice(index, 1);
+			if (value === param) this.paramNames.splice(index, 1);
 		});
 
 		//Addind the new prarameter to the array of parameters
@@ -98,7 +98,6 @@ export class AIDataset {
 
 		return true;
 	}
-
 
 	/**
 	 * Replace the parameter with the given name by other one-hot parameters.
@@ -111,11 +110,15 @@ export class AIDataset {
 	 * @param posValues One-hot parameter
 	 * @returns a boolean indicating if the replacement has been made.
 	 */
-	 public createOneHotWithNewParamsOneHot(param: string, posValues: string[]): boolean {
+	public createOneHotWithNewParamsOneHot(
+		param: string,
+		posValues: string[],
+		isother: boolean,
+	): boolean {
 		let iterator: number = 0;
-		let allValue: string[] =[]
-		let autre = 0
-		let autre2= false
+		let allValue: string[] = [];
+		let autre = 0;
+		let autre2 = false;
 
 		// Check if the given name is a parameter in the database
 		while (this.paramNames[iterator] !== param) {
@@ -134,15 +137,18 @@ export class AIDataset {
 			}
 		}
 
-		allValue.every(elem => posValues.indexOf(elem) !== -1)? autre = 0: autre = 1
+		allValue.every(elem => posValues.indexOf(elem) !== -1)
+			? (autre = 0)
+			: (autre = 1);
+		if (!isother) autre = 0;
 
-		const paramOther = 'autre '+ param
-		if (autre ===1) posValues.push(paramOther)
+		const paramOther = 'autre ' + param;
+		if (autre === 1) posValues.push(paramOther);
 		// Create a one-hot parameter for each possible value and remove the original parameter
 		for (let dataNum: number = 0; dataNum < this.data.length; dataNum++) {
 			this.data[dataNum][paramOther] =
-					posValues.indexOf(this.data[dataNum][param])===-1 ? 1 : 0;
-			for (let i: number = 0; i < posValues.length-autre; i++) {
+				posValues.indexOf(this.data[dataNum][param]) === -1 ? 1 : 0;
+			for (let i: number = 0; i < posValues.length - autre; i++) {
 				this.data[dataNum][posValues[i]] =
 					this.data[dataNum][param] === posValues[i] ? 1 : 0;
 			}
@@ -213,31 +219,6 @@ export class AIDataset {
 	}
 
 	/**
-	 * Returns the data as a Matrix object, where each row represents a parameter
-	 * and each column a data.
-	 *
-	 * The Matrix cannot accept strings, meaning that every string parameter should be converted
-	 * as numbers before calling this method.
-	 * @returns a Matrix representing the data.
-	 */
-	public getDataAsMatrix(): Matrix {
-		// Check if a parameter is still a string
-		for (let dataNum: number = 0; dataNum < this.data.length; dataNum++) {
-			for (let i: number = 0; i < this.paramNames.length; i++) {
-				if (typeof this.data[dataNum][this.paramNames[i]] === 'string') {
-					console.log(
-						'Error: Matrix creation failed. Some values are not numbers in the dataset.',
-					);
-					return new Matrix(1, 1);
-				}
-			}
-		}
-
-		// Create and return the Matrix by calling get
-		return new Matrix(this.getDataAsArray());
-	}
-
-	/**
 	 * Creates and returns an array of Matrix objects based on the codes given as
 	 * arguments. The returned array will contain the input Matrix and the output
 	 * Matrix, where each row represents a different parameter of the dataset.
@@ -255,52 +236,50 @@ export class AIDataset {
 	 * Returns an array with the data Matrix only if an error occured in the process.
 	 */
 	public getInputsOutputs(IOCodes: number[]): Matrix[] {
-		const dataMatrix: Matrix = this.getDataAsMatrix();
+		const dataArray: any[][] = this.getDataAsArray();
 		let inputs: Matrix = new Matrix(1, 1);
 		let outputs: Matrix = new Matrix(1, 1);
 		let noInput: boolean = true;
 		let noOutput: boolean = true;
 
-		// Check if the Matrix creation failed
-		if (
-			dataMatrix.getRows() === 1 &&
-			dataMatrix.getColumns() === 1 &&
-			dataMatrix.sumOfAll() === 0
-		) {
-			console.log(
-				'Error: Matrix creation failed. Some values are not numbers in the dataset.',
-			);
-			return [dataMatrix];
-		}
-
 		// Check if there is enough codes in the array
-		if (IOCodes.length !== dataMatrix.getRows()) {
-			console.log(
-				'Error: the inputs/outputs could not be created. The number of IOCodes is not the same as the number of parameters in the dataset.',
-			);
-			return [dataMatrix];
-		}
+		if (this._paramNames) {
+			if (IOCodes.length !== this._paramNames.length) {
+				throw new Error(
+					'Error: the inputs/outputs could not be created. The number of IOCodes is not the same as the number of parameters in the dataset.',
+				);
+			}
+		} else throw new Error('Error: param names are not loaded yet.');
 
 		for (let param: number = 0; param < IOCodes.length; param++) {
 			switch (IOCodes[param]) {
 				// If the selected param is an input
 				case 1:
+					if (typeof this.data[param][0] === 'string')
+						throw new Error(
+							'Error: Matrix creation failed. Some values are not numbers in the dataset.',
+						);
+
 					if (noInput) {
-						inputs = dataMatrix.getMatrixRow(param);
+						inputs = new Matrix([dataArray[param]]);
 						noInput = false;
 					} else {
-						inputs = appendRow(inputs, dataMatrix.getMatrixRow(param));
+						inputs = appendRow(inputs, new Matrix([dataArray[param]]));
 					}
 
 					break;
 
 				// If the selected param is an output
 				case 0:
+					if (typeof this.data[param][0] === 'string')
+						throw new Error(
+							'Error: Matrix creation failed. Some values are not numbers in the dataset.',
+						);
 					if (noOutput) {
-						outputs = dataMatrix.getMatrixRow(param);
+						outputs = new Matrix([dataArray[param]]);
 						noOutput = false;
 					} else {
-						outputs = appendRow(outputs, dataMatrix.getMatrixRow(param));
+						outputs = appendRow(outputs, new Matrix([dataArray[param]]));
 					}
 					break;
 
@@ -317,7 +296,6 @@ export class AIDataset {
 					);
 			}
 		}
-
 		return [inputs, outputs];
 	}
 
@@ -438,7 +416,6 @@ export class AIDataset {
 	 */
 	public normalizeParam(paramName: string): boolean {
 		// Check if the given name is a parameter in the database
-		console.log(this.prepareNormalization(paramName))
 		if (!this.prepareNormalization(paramName)) return false;
 
 		const index: number = this._paramNames!.indexOf(paramName);
@@ -450,7 +427,6 @@ export class AIDataset {
 		);
 
 		this.replaceColumn(paramName, newData);
-		console.log("new data : ", newData)
 		return true;
 	}
 
@@ -530,5 +506,9 @@ export class AIDataset {
 			this.data[dataNum][param] = data[dataNum];
 		}
 		return true;
+	}
+
+	public deleteLine(index: number) {
+		this.data.splice(index, 1);
 	}
 }

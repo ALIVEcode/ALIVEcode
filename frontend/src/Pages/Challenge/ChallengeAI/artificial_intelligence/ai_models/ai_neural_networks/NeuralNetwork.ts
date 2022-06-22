@@ -144,6 +144,7 @@ export class NeuralNetwork extends AIModel {
 	//---- PREDICTION METHODS ----//
 
 	public predict(inputs: Matrix): Matrix {
+		console.log(inputs);
 		if (inputs.getRows() !== this.hyperparameters.nbInputs)
 			throw new Error(
 				"Erreur predire() : la liste entrée ne contient pas autant de valeurs qu'il y a de paramètres d'entrée dans le modèle.",

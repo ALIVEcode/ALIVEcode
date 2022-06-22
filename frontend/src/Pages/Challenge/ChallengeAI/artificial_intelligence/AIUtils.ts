@@ -632,3 +632,34 @@ export function stdDev(data: number[]): number {
 	);
 	return Math.sqrt(summation / data.length);
 }
+
+export function correlationCoeff(x: number[], y: number[]): number {
+	let n: number = 0;
+
+	if (x.length === 0 || y.length === 0) {
+		throw new Error('Erreur : pas de valeur dans une des listes.');
+	}
+
+	if (x.length !== y.length) {
+		throw new Error("Erreur : les deux listes n'ont pas la même longueur.");
+	} else n = x.length;
+
+	let xy: number[] = [];
+	let x2: number[] = [];
+	let y2: number[] = [];
+	for (let i: number = 0; i < n; i++) {
+		xy.push(x[i] * y[i]);
+		x2.push(x[i] * x[i]);
+		y2.push(y[i] * y[i]);
+	}
+
+	let numerator: number = n * sum(xy) - sum(x) * sum(y);
+	let denominator: number =
+		(n * sum(x2) - Math.pow(sum(x), 2)) * (n * sum(y2) - Math.pow(sum(y), 2));
+
+	return numerator / Math.sqrt(denominator);
+}
+
+export function determinationCoeff(x: number[], y: number[]): number {
+	return Math.pow(correlationCoeff(x, y), 2);
+}

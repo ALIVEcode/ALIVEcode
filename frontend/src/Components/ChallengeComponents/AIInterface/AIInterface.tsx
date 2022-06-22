@@ -165,8 +165,8 @@ const AIInterface = ({
 							activeModelType={modelType}
 						/>
 					</div>
-				) : ( null
-					// <GradientDescentScheme />
+				) : (
+					<GradientDescentScheme />
 				)}
 			</div>
 		</StyledAIInterface>

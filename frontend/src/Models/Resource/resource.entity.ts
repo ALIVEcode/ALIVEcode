@@ -15,6 +15,7 @@ import {
 	faFilePdf,
 	faFileWord,
 	faFilePowerpoint,
+	faFileImage,
 } from '@fortawesome/free-solid-svg-icons';
 import { File } from './resources/file.entity';
 
@@ -24,6 +25,16 @@ export const wordMimeTypes = [
 ];
 
 export const pdfMimeTypes = ['application/pdf', 'application/vnd.ms-excel'];
+
+export const imageMimeTypes = [
+	'image/gif',
+	'image/jpeg',
+	'image/jpg',
+	'image/webp',
+	'image/tiff',
+	'image/png',
+	'image/svg+xml',
+];
 
 export const powerpointMimeTypes = [
 	'application/vnd.ms-powerpoint',
@@ -118,6 +129,7 @@ export const getResourceIcon = (
 		if (pdfMimeTypes.includes(mimeType)) return faFilePdf;
 		if (wordMimeTypes.includes(mimeType)) return faFileWord;
 		if (powerpointMimeTypes.includes(mimeType)) return faFilePowerpoint;
+		if (imageMimeTypes.includes(mimeType)) return faFileImage;
 		return faFile;
 	}
 

@@ -19,7 +19,10 @@ export class ActivityPowerPoint extends Activity {
 	resource?: ResourceFile;
 
 	/** Allowed types of resources inside the activity */
-	readonly allowedResources: RESOURCE_TYPE[] = [RESOURCE_TYPE.FILE];
+	readonly allowedResources: [RESOURCE_TYPE, ...Array<string>] = [
+		RESOURCE_TYPE.FILE,
+		'powerpoint',
+	];
 
 	/** Mime types allowed as a resource inside the activity */
 	acceptedMimeTypes = powerpointMimeTypes;

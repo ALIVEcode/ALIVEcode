@@ -89,7 +89,7 @@ export abstract class Activity {
 	abstract resource?: Resource;
 
 	/** Allowed resources types in the activity for the ResourceMenu filters */
-	abstract readonly allowedResources: RESOURCE_TYPE[];
+	abstract readonly allowedResources: [RESOURCE_TYPE, ...Array<string>];
 
 	/** Mime types allowed as a resource inside the activity */
 	acceptedMimeTypes?: string[];

@@ -189,7 +189,7 @@ const api = {
 					plainToClass(Maintenance, d),
 				);
 			},
-			async getUpcoming(): Promise<Maintenance> {
+			async getUpcoming(): Promise<Maintenance | null> {
 				return plainToClass(
 					Maintenance,
 					(await axios.get('maintenances/upcoming')).data,
@@ -214,7 +214,9 @@ const api = {
 						`users/${userId}/resources?${
 							query.name ? `name=${query.name}` : ''
 						}${query.subject ? `&subject=${query.subject}` : ''}${
-							query.types ? `&types=${query.types}` : ''
+							query.resourceTypes ? `&resourceTypes=${query.resourceTypes}` : ''
+						}${
+							query.fileMimeTypes ? `&fileMimeTypes=${query.fileMimeTypes}` : ''
 						}`,
 					)
 				).data.map((r: any) => plainToInstance(Resource, r)) as Resource[];

@@ -57,7 +57,7 @@ export abstract class ActivityEntity {
   @Column({ type: 'uuid', nullable: true })
   resourceId?: string;
 
-  abstract readonly allowedResources: RESOURCE_TYPE[];
+  abstract readonly allowedResources: [RESOURCE_TYPE, ...Array<string>];
 
   /** Reference to the resource linked to the activity */
   @ManyToOne(() => ResourceEntity, res => res.activities, { eager: true, onDelete: 'SET NULL' })

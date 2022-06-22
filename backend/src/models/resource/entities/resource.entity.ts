@@ -19,7 +19,7 @@ import { ActivityEntity } from '../../course/entities/activity.entity';
 import { ResourceFileEntity } from './resources/resource_file.entity';
 import { ResourceTheoryEntity } from './resources/resource_theory.entity';
 import { ResourceVideoEntity } from './resources/resource_video.entity';
-import { FileEntity } from 'src/models/file/entities/file.entity';
+import { FileEntity } from '../../file/entities/file.entity';
 
 /** Enum of all the type of resources */
 export enum RESOURCE_TYPE {
@@ -35,6 +35,28 @@ export type DifferentResources =
   | ResourceFileEntity
   | ResourceTheoryEntity
   | ResourceVideoEntity;
+
+export const wordMimeTypes = [
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+];
+
+export const pdfMimeTypes = ['application/pdf', 'application/vnd.ms-excel'];
+
+export const imageMimeTypes = [
+  'image/gif',
+  'image/jpeg',
+  'image/jpg',
+  'image/webp',
+  'image/tiff',
+  'image/png',
+  'image/svg+xml',
+];
+
+export const powerpointMimeTypes = [
+  'application/vnd.ms-powerpoint',
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+];
 
 /**
  * Generic resource model in the database

@@ -21,7 +21,6 @@ import { ActivityAssignmentEntity } from './entities/activities/activity_assignm
 import { ResourceChallengeEntity } from '../resource/entities/resources/resource_challenge.entity';
 import { ChallengeEntity, CHALLENGE_ACCESS } from '../challenge/entities/challenge.entity';
 import { ActivityWordEntity } from './entities/activities/activity_word.entity';
-import { ResourceFileEntity } from '../resource/entities/resources/resource_file.entity';
 import { ActivityPowerPointEntity } from './entities/activities/activity_powerpoint.entity';
 
 /**

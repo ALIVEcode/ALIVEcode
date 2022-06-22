@@ -853,6 +853,7 @@ const Course = () => {
 				>
 					{t('course.activity.import_challenge_private.msg')}
 				</AlertConfirm>
+				{console.log(tab.openedActivity?.activity)}
 				<ResourceMenu
 					mode="import"
 					filters={tab.openedActivity?.activity.allowedResources}

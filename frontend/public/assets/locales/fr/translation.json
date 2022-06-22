@@ -290,6 +290,11 @@
 		"TH": {
 			"name": "Théorie"
 		},
+		"files": {
+			"pdf": "Pdf",
+			"word": "Word",
+			"img": "Image"
+		},
 		"form": {
 			"create": "Créer une ressource",
 			"update": "Modifier la ressource",

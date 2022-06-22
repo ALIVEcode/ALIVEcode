@@ -28,6 +28,9 @@ import { useNavigate } from 'react-router';
 import useRoutes from '../../state/hooks/useRoutes';
 import { TutorialContext } from '../../state/contexts/TutorialContext';
 import Info from '../../Components/HelpComponents';
+import { fileMimeTypesFilters } from '../../Models/Resource/dto/query_resources.dto';
+
+export type ResourceFilters = string[];
 
 /**
  * ResourceMenu is a page that allows a user to get/create/update/delete its resources.
@@ -44,7 +47,7 @@ const ResourceMenu = ({
 	filters,
 	onSelectResource,
 }: ResourceMenuProps) => {
-	const [selectedFilters, setSelectedFilters] = useState<RESOURCE_TYPE[]>(
+	const [selectedFilters, setSelectedFilters] = useState<string[]>(
 		filters ?? [],
 	);
 	const [selectedSubject, setSelectedSubject] =
@@ -142,7 +145,7 @@ const ResourceMenu = ({
 	 * @returns True if the filter is selected, otherwise false
 	 */
 	const isFilterSelected = useCallback(
-		(filter: RESOURCE_TYPE) => {
+		(filter: string) => {
 			return selectedFilters.find(f => f === filter) != null;
 		},
 		[selectedFilters],
@@ -153,7 +156,7 @@ const ResourceMenu = ({
 	 * @param filter Filter to toggle on or off
 	 */
 	const toggleFilter = useCallback(
-		(filter: RESOURCE_TYPE) => {
+		(filter: string) => {
 			if (isFilterSelected(filter))
 				return setSelectedFilters(selectedFilters.filter(f => f !== filter));
 			setSelectedFilters([...selectedFilters, filter]);
@@ -236,6 +239,13 @@ const ResourceMenu = ({
 									key={entry[0]}
 									name={t(`resources.${entry[1]}.name`)}
 									filter={entry[1]}
+								/>
+							))}
+							{fileMimeTypesFilters.map(fileType => (
+								<ResourceFilter
+									key={fileType}
+									name={t(`resources.files.${fileType}`)}
+									filter={fileType}
 								/>
 							))}
 						</div>

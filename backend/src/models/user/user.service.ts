@@ -1,6 +1,6 @@
 import { Injectable, HttpException, HttpStatus, Scope, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ILike, Repository, In } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { StudentEntity, ProfessorEntity } from './entities/user.entity';
 import { UserEntity } from './entities/user.entity';
 import { compare, hash } from 'bcryptjs';
@@ -206,11 +206,40 @@ export class UserService {
    * @returns The queried resources
    */
   async getResources(user: ProfessorEntity, query?: QueryResources) {
-    const where: any = { creator: user, name: ILike(`%${query?.name ?? ''}%`) };
-    if (query.subject) where.subject = query.subject;
-    if (query.types) where.type = In(query.types);
+    // const where: any = { creator: user, name: ILike(`%${query?.name ?? ''}%`) };
+    // if (query.subject) where.subject = query.subject;
+    // if (query.resourceTypes) where.type = In(query.resourceTypes);
+    // No specific type of files
+    // if (!query.fileMimeTypes) return await this.resourceRepo.find({ where, order: { updateDate: 'DESC' } });
 
-    return await this.resourceRepo.find({ where, order: { updateDate: 'DESC' } });
+    let sql = this.resourceRepo
+      .createQueryBuilder('resource')
+      .leftJoinAndSelect('resource.creator', 'creator')
+      .leftJoinAndSelect('resource.file', 'file')
+      .orderBy('resource.updateDate', 'DESC');
+
+    //FIXME : Problème lorsque sélection d'un filtre ressource + fichier qui cause d'obtenir les ressources même si elles ne t'appartiennent pas
+    if (query.fileMimeTypes && query.resourceTypes) {
+      sql = sql.where('creator.id = :creatorId', { creatorId: user.id });
+      if (query.name) sql = sql.andWhere('resource.name LIKE :name', { name: `%${query.name}%` });
+      if (query.subject) sql = sql.andWhere('resource.subject = :subject', { subject: query.subject });
+      sql = sql
+        .andWhere('resource.type IN (:...resourceTypes)', { resourceTypes: query.resourceTypes })
+        .orWhere('file.mimetype IN (:...mimeTypes)', { mimeTypes: query.fileMimeTypes })
+        .andWhere('creator.id = :creatorId', { creatorId: user.id });
+      if (query.name) sql = sql.andWhere('resource.name LIKE :name', { name: `%${query.name}%` });
+      if (query.subject) sql = sql.andWhere('resource.subject = :subject', { subject: query.subject });
+    } else {
+      sql = sql.where('creator.id = :creatorId', { creatorId: user.id });
+      if (query.name) sql = sql.andWhere('resource.name LIKE :name', { name: `%${query.name}%` });
+      if (query.resourceTypes)
+        sql = sql.andWhere('resource.type IN (:...resourceTypes)', { resourceTypes: query.resourceTypes });
+      if (query.subject) sql = sql.andWhere('resource.subject = :subject', { subject: query.subject });
+      if (query.fileMimeTypes)
+        sql = sql.andWhere('file.mimetype IN (:...mimeTypes)', { mimeTypes: query.fileMimeTypes });
+    }
+
+    return await sql.getMany();
   }
 
   async getIoTProjects(user: UserEntity) {

@@ -657,7 +657,7 @@ export function correlationCoeff(x: number[], y: number[]): number {
 	let denominator: number =
 		(n * sum(x2) - Math.pow(sum(x), 2)) * (n * sum(y2) - Math.pow(sum(y), 2));
 
-	return numerator / denominator;
+	return numerator / Math.sqrt(denominator);
 }
 
 export function determinationCoeff(x: number[], y: number[]): number {

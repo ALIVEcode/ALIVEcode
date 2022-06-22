@@ -64,7 +64,6 @@ optimize the given model.
 					actDev,
 				);
 			}
-
 			// Calculation of dw for each layer
 			dw = matMulConstant(
 				matMul(dz, inputArray[layer].transpose()),

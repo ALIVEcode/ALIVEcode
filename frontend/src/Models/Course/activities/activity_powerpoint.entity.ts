@@ -1,13 +1,16 @@
 import { Type } from 'class-transformer';
-import { RESOURCE_TYPE, pdfMimeTypes } from '../../Resource/resource.entity';
-import { ResourceFile } from '../../Resource/resources/resource_file.entity';
 import { Activity } from '../activity.entity';
+import {
+	RESOURCE_TYPE,
+	powerpointMimeTypes,
+} from '../../Resource/resource.entity';
+import { ResourceFile } from '../../Resource/resources/resource_file.entity';
 
 /**
- * Activity of type Pdf model in the database
- * @author Maxime Gazzé
+ * Activity of type PowerPoint model in the database
+ * @author Enric Solevila
  */
-export class ActivityPdf extends Activity {
+export class ActivityPowerPoint extends Activity {
 	/** Id of the resource of the activity */
 	resourceId?: string;
 
@@ -18,9 +21,9 @@ export class ActivityPdf extends Activity {
 	/** Allowed types of resources inside the activity */
 	readonly allowedResources: [RESOURCE_TYPE, ...Array<string>] = [
 		RESOURCE_TYPE.FILE,
-		'pdf',
+		'powerpoint',
 	];
 
 	/** Mime types allowed as a resource inside the activity */
-	acceptedMimeTypes = pdfMimeTypes;
+	acceptedMimeTypes = powerpointMimeTypes;
 }

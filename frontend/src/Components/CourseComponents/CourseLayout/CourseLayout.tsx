@@ -31,8 +31,11 @@ const CourseLayout = () => {
 	const titleRef = useRef<HTMLDivElement>(null);
 	const goToStudentViewRef = useRef<HTMLDivElement>(null);
 	const { registerTutorial } = useContext(TutorialContext);
+	const openedActivityRef = useRef<HTMLDivElement>(null);
 
 	useLayoutEffect(() => {
+		if (openedActivityRef.current) openedActivityRef.current.scrollIntoView();
+
 		return registerTutorial({
 			name: 'CourseLayout',
 			targets: [
@@ -66,6 +69,21 @@ const CourseLayout = () => {
 
 	return (
 		<div className="w-full h-full overflow-y-auto relative p-6">
+			<div className="absolute l-0">
+				{/*
+				courseElements?.current &&
+					course.elementsOrder.map(
+						id =>
+							id in courseElements.current && (
+								<div key={id} className="course-layout-element">
+									<div>
+										{courseElements.current[id].isSection &&
+											courseElements.current[id].section?.name}
+									</div>
+								</div>
+							),
+										)*/}
+			</div>
 			<div className="sticky z-10 right-6 top-0">
 				<FontAwesomeIcon
 					icon={faUserGraduate}
@@ -138,6 +156,7 @@ const CourseLayout = () => {
 										id in courseElements.current && (
 											<div key={id} className="course-layout-element">
 												<CourseLayoutElement
+													ref={openedActivityRef}
 													element={courseElements.current[id]}
 												/>
 											</div>

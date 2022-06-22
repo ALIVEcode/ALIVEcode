@@ -35,8 +35,6 @@ const ResourceTheoryDocument = ({
 		resource.document ?? [],
 	);
 
-	console.log('RERENDER');
-
 	return (
 		<div>
 			{editMode && (

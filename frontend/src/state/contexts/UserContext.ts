@@ -25,7 +25,7 @@ export type UserContextValues = {
 	getResources: (
 		subject: ResourceMenuSubjects,
 		name?: string | undefined,
-		filters?: RESOURCE_TYPE[],
+		filters?: string[],
 	) => Promise<Resource[]>;
 };
 

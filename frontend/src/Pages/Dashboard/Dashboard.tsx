@@ -320,7 +320,6 @@ const Dashboard = (props: DashboardProps) => {
 	]);
 
 	const courses = user?.courses;
-	console.log(courses);
 
 	return (
 		<StyledDashboard>

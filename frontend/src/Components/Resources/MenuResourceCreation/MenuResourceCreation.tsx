@@ -166,7 +166,7 @@ const MenuResourceCreation = ({
 			case RESOURCE_TYPE.CHALLENGE:
 				return (
 					<>
-						<FormLabel>{t('resources.challenge.form.select')}</FormLabel>
+						<FormLabel>{t('resources.CH.form.select')}</FormLabel>
 						{challenges.length <= 0 ? (
 							<div>
 								<i>{t('dashboard.challenges.empty')}. </i>
@@ -203,7 +203,7 @@ const MenuResourceCreation = ({
 				return updateMode ? (
 					!resourceIsFile && (
 						<InputGroup
-							label={t('resources.video.form.url')}
+							label={t('resources.VI.form.url')}
 							errors={errors.resource?.url}
 							{...register('resource.url', { required: false })}
 						/>
@@ -232,7 +232,7 @@ const MenuResourceCreation = ({
 							<>
 								<InputGroup
 									type="file"
-									label={t('resources.image.form.file')}
+									label={t('resources.IM.form.file')}
 									errors={errors.resource?.url}
 									onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 										e.target.files && setFile(e.target.files[0])
@@ -242,27 +242,11 @@ const MenuResourceCreation = ({
 							</>
 						) : (
 							<InputGroup
-								label={t('resources.video.form.url')}
+								label={t('resources.VI.form.url')}
 								errors={errors.resource?.url}
 								{...register('resource.url', { required: false })}
 							/>
 						)}
-					</>
-				);
-			case RESOURCE_TYPE.PDF:
-				return updateMode ? (
-					<></>
-				) : (
-					<>
-						<InputGroup
-							type="file"
-							label={t('resources.pdf.form.file')}
-							errors={errors.resource?.url}
-							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-								e.target.files && setFile(e.target.files[0])
-							}
-							progress={uploadProgress}
-						/>
 					</>
 				);
 			case RESOURCE_TYPE.FILE:
@@ -272,7 +256,7 @@ const MenuResourceCreation = ({
 					<>
 						<InputGroup
 							type="file"
-							label={t('resources.file.form.file')}
+							label={t('resources.FI.form.file')}
 							errors={errors.resource?.url}
 							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 								e.target.files && setFile(e.target.files[0])
@@ -296,8 +280,8 @@ const MenuResourceCreation = ({
 				{Object.entries(RESOURCE_TYPE).map(([name, _type], idx) => (
 					<TypeCard
 						key={idx}
-						title={t(`resources.${name.toLowerCase()}.name`)}
-						tooltip={t(`help.resource.${name.toLowerCase()}`)}
+						title={t(`resources.${_type}.name`)}
+						tooltip={t(`help.resource.${_type}`)}
 						icon={getResourceIcon(_type)}
 						color={getResourceColor(_type)}
 						onClick={() => onSelectResourceType(_type)}

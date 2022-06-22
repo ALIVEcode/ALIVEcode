@@ -60,6 +60,7 @@ import { MenuCourseCreationDTO } from '../Components/Resources/MenuCourseCreatio
 import { BundleQueryDTO } from './Course/bundles/dto/BundleQuery.dto';
 import { Bundle } from './Course/bundles/bundle.entity';
 import { ClaimBundleDTO } from './Course/bundles/dto/ClaimBundle.dto';
+import { GenericChallengeTransformer } from './Challenge/transformer/GenericChallengeTransformer';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;
@@ -188,7 +189,7 @@ const api = {
 					plainToClass(Maintenance, d),
 				);
 			},
-			async getUpcoming(): Promise<Maintenance> {
+			async getUpcoming(): Promise<Maintenance | null> {
 				return plainToClass(
 					Maintenance,
 					(await axios.get('maintenances/upcoming')).data,
@@ -213,7 +214,9 @@ const api = {
 						`users/${userId}/resources?${
 							query.name ? `name=${query.name}` : ''
 						}${query.subject ? `&subject=${query.subject}` : ''}${
-							query.types ? `&types=${query.types}` : ''
+							query.resourceTypes ? `&resourceTypes=${query.resourceTypes}` : ''
+						}${
+							query.fileMimeTypes ? `&fileMimeTypes=${query.fileMimeTypes}` : ''
 						}`,
 					)
 				).data.map((r: any) => plainToInstance(Resource, r)) as Resource[];
@@ -398,6 +401,17 @@ const api = {
 				const res = (await axios.patch(`courses/${courseId}/moveElement`, dto))
 					.data;
 				return res as ResultPatchMoveElement;
+			},
+			loadChallenge: async (courseId: string, activityId: string) => {
+				return (
+					plainToInstance(GenericChallengeTransformer, {
+						challenge: (
+							await axios.get(
+								`courses/${courseId}/activities/${activityId}/loadChallenge`,
+							)
+						).data,
+					}) as any
+				).challenge;
 			},
 		},
 		resources: {

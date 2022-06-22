@@ -9,6 +9,7 @@ import {
 } from 'react';
 import {
 	IoTProject as ProjectModel,
+	IoTProjectDocument,
 	IOTPROJECT_ACCESS,
 	IOTPROJECT_INTERACT_RIGHTS,
 } from '../../../Models/Iot/IoTproject.entity';
@@ -28,7 +29,6 @@ import IoTProjectPage from '../IoTProjectPage/IoTProjectPage';
 import IoTChallenge from '../../Challenge/ChallengeIoT/ChallengeIoT';
 import { AsScript as AsScriptModel } from '../../../Models/AsScript/as-script.entity';
 import { useNavigate } from 'react-router-dom';
-import { IoTProjectDocument } from '../../../../../backend/src/models/iot/IoTproject/entities/IoTproject.entity';
 import {
 	IoTSocket,
 	IoTActionDoneRequestToWatcher,

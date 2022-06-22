@@ -16,8 +16,12 @@ import { ActivityPdfEntity } from './entities/activities/activity_pdf.entity';
 import { CreateActivityDTO } from './dtos/CreateActivities.dto';
 import { UpdateCourseElementDTO } from './dtos/UpdateCourseElement.dto';
 import { CreateSectionDTO } from './dtos/CreateSection.dto';
-import { ResourceEntity } from '../resource/entities/resource.entity';
+import { ResourceEntity, RESOURCE_TYPE } from '../resource/entities/resource.entity';
 import { ActivityAssignmentEntity } from './entities/activities/activity_assignment.entity';
+import { ResourceChallengeEntity } from '../resource/entities/resources/resource_challenge.entity';
+import { ChallengeEntity, CHALLENGE_ACCESS } from '../challenge/entities/challenge.entity';
+import { ActivityWordEntity } from './entities/activities/activity_word.entity';
+import { ActivityPowerPointEntity } from './entities/activities/activity_powerpoint.entity';
 
 /**
  * All the methods to communicate to the database. To create/update/delete/get
@@ -36,9 +40,12 @@ export class CourseService {
     @InjectRepository(ActivityPdfEntity) private actPdfRepo: Repository<ActivityPdfEntity>,
     @InjectRepository(ActivityAssignmentEntity) private actAssignmentRepo: Repository<ActivityAssignmentEntity>,
     @InjectRepository(ActivityChallengeEntity) private actChallengeRepo: Repository<ActivityChallengeEntity>,
+    @InjectRepository(ActivityWordEntity) private actWordRepo: Repository<ActivityWordEntity>,
+    @InjectRepository(ActivityPowerPointEntity) private actPptxRepo: Repository<ActivityPowerPointEntity>,
     @InjectRepository(ClassroomEntity) private classroomRepo: Repository<ClassroomEntity>,
     @InjectRepository(CourseElementEntity) private courseElRepo: Repository<CourseElementEntity>,
     @InjectRepository(StudentEntity) private studentRepo: Repository<StudentEntity>,
+    @InjectRepository(ChallengeEntity) private challengeRepo: Repository<ChallengeEntity>,
   ) {}
 
   /**
@@ -550,6 +557,10 @@ export class CourseService {
         return await this.actPdfRepo.save(activity);
       case ACTIVITY_TYPE.ASSIGNMENT:
         return await this.actAssignmentRepo.save(activity);
+      case ACTIVITY_TYPE.WORD:
+        return await this.actWordRepo.save(activity);
+      case ACTIVITY_TYPE.POWERPOINT:
+        return await this.actPptxRepo.save(activity);
       default:
         throw new HttpException(`Invalid activity type ${activity.type}`, HttpStatus.BAD_REQUEST);
     }
@@ -594,6 +605,25 @@ export class CourseService {
     // Check if the activity accept this type of resource
     if (!activity.allowedResources.includes(resource.type))
       throw new HttpException('Cannot add this type of resource to this activity', HttpStatus.BAD_REQUEST);
+
+    // Change the visibility of the challenge from private to restricted
+    if (resource instanceof ResourceChallengeEntity) {
+      const challenge = await this.challengeRepo.findOne(resource.challengeId);
+      if (challenge.access === CHALLENGE_ACCESS.PRIVATE) {
+        challenge.access = CHALLENGE_ACCESS.RESTRICTED;
+        await this.challengeRepo.save(challenge);
+      }
+    }
+
+    // Checks if the file resource is of the correct Mime type
+    if (resource.type === RESOURCE_TYPE.FILE && !activity.acceptedMimeTypes.includes(resource.file.mimetype)) {
+      throw new HttpException(
+        `Mime type ${resource.file.mimetype} not accepted. ${activity.acceptedMimeTypes.join(
+          ', ',
+        )} are the only Mime types accepted`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
 
     activity.resource = resource;
     return await this.activityRepository.save(activity);

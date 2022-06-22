@@ -3,41 +3,47 @@
 @tailwind utilities;
 
 body {
-	margin: 0;
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-		sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+@font-face {
+    font-family: "Fira Code";
+    src: url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
 }
 
 html {
-	scroll-behavior: initial !important;
+    scroll-behavior: initial !important;
 }
 
 .order-1 {
-	order: initial !important;
+    order: initial !important;
 }
 
 p {
-	margin-bottom: 0 !important;
+    margin-bottom: 0 !important;
 }
 
 .form-control {
-	appearance: auto !important;
+    appearance: auto !important;
 }
 
 code {
-	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-		monospace;
-	font-size: 87.5% !important;
-	color: #e83e8c !important;
-	word-wrap: break-word !important;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+    font-size: 87.5% !important;
+    color: #e83e8c !important;
+    word-wrap: break-word !important;
 }
 
 #navbar {
-	-webkit-backface-visibility: hidden;
-	backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 /*

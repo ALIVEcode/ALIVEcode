@@ -1,25 +1,49 @@
-import { Exclude } from 'class-transformer';
+import { Exclude, Type } from 'class-transformer';
 import { SUBJECTS } from '../../Types/sharedTypes';
 import { Professor } from '../User/user.entity';
 import { ResourceChallenge } from './resources/resource_challenge.entity';
 import { ResourceTheory } from './resources/resource_theory.entity';
 import { ResourceFile } from './resources/resource_file.entity';
-import { ResourcePdf } from './resources/resource_pdf.entity';
 import { ResourceVideo } from './resources/resource_video.entity';
 import { commonColors } from '../../state/contexts/ThemeContext';
 import {
-	faFilePdf,
 	faFile,
 	faCode,
 	faVideo,
 	faBook,
 	faQuestion,
+	faFilePdf,
+	faFileWord,
+	faFilePowerpoint,
+	faFileImage,
 } from '@fortawesome/free-solid-svg-icons';
+import { File } from './resources/file.entity';
+
+export const wordMimeTypes = [
+	'application/msword',
+	'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+];
+
+export const pdfMimeTypes = ['application/pdf', 'application/vnd.ms-excel'];
+
+export const imageMimeTypes = [
+	'image/gif',
+	'image/jpeg',
+	'image/jpg',
+	'image/webp',
+	'image/tiff',
+	'image/png',
+	'image/svg+xml',
+];
+
+export const powerpointMimeTypes = [
+	'application/vnd.ms-powerpoint',
+	'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+];
 
 /** Enum of all the type of resources */
 export enum RESOURCE_TYPE {
 	THEORY = 'TH',
-	PDF = 'PF',
 	VIDEO = 'VI',
 	CHALLENGE = 'CH',
 	FILE = 'FI',
@@ -30,7 +54,6 @@ export type DifferentResources =
 	| ResourceChallenge
 	| ResourceTheory
 	| ResourceFile
-	| ResourcePdf
 	| ResourceVideo;
 
 /**
@@ -51,6 +74,9 @@ export class Resource {
 	/** Subject of the resource */
 	subject: SUBJECTS;
 
+	@Type(() => File)
+	file?: File;
+
 	/** Creation date of the resource */
 	@Exclude({ toPlainOnly: true })
 	creationDate: Date;
@@ -69,10 +95,16 @@ export class Resource {
 	 */
 
 	getIcon() {
+		if (this.type === RESOURCE_TYPE.FILE && this.file)
+			return getResourceIcon(this.type, this.file.mimetype);
+
 		return getResourceIcon(this.type);
 	}
 
 	get color() {
+		if (this.type === RESOURCE_TYPE.FILE && this.file)
+			return getResourceColor(this.type, this.file.mimetype);
+
 		return getResourceColor(this.type);
 	}
 
@@ -87,12 +119,22 @@ export class Resource {
  * @returns The good display icon
  * @author Enric Soldevila
  */
-export const getResourceIcon = (resourceType: RESOURCE_TYPE) => {
+export const getResourceIcon = (
+	resourceType: RESOURCE_TYPE,
+	mimeType?: string,
+) => {
+	// File icons
+	if (resourceType === RESOURCE_TYPE.FILE) {
+		if (!mimeType) return faFile;
+		if (pdfMimeTypes.includes(mimeType)) return faFilePdf;
+		if (wordMimeTypes.includes(mimeType)) return faFileWord;
+		if (powerpointMimeTypes.includes(mimeType)) return faFilePowerpoint;
+		if (imageMimeTypes.includes(mimeType)) return faFileImage;
+		return faFile;
+	}
+
+	// Other icons
 	switch (resourceType) {
-		case RESOURCE_TYPE.FILE:
-			return faFile;
-		case RESOURCE_TYPE.PDF:
-			return faFilePdf;
 		case RESOURCE_TYPE.CHALLENGE:
 			return faCode;
 		case RESOURCE_TYPE.VIDEO:
@@ -103,7 +145,26 @@ export const getResourceIcon = (resourceType: RESOURCE_TYPE) => {
 	return faQuestion;
 };
 
-export const getResourceColor = (resourceType: RESOURCE_TYPE): string => {
+/**
+ * Gets the color of a resource
+ * @param subject Type of the resource to get the color of
+ * @returns The good display color
+ * @author Enric Soldevila
+ */
+export const getResourceColor = (
+	resourceType: RESOURCE_TYPE,
+	mimeType?: string,
+): string => {
+	// File icons
+	if (resourceType === RESOURCE_TYPE.FILE) {
+		if (!mimeType) return 'var(--fg-shade-four-color)';
+		if (pdfMimeTypes.includes(mimeType)) return commonColors.pdf;
+		if (wordMimeTypes.includes(mimeType)) return commonColors.word;
+		if (powerpointMimeTypes.includes(mimeType)) return commonColors.powerpoint;
+		return 'var(--fg-shade-four-color)';
+	}
+
+	/** Other icons */
 	switch (resourceType) {
 		case RESOURCE_TYPE.CHALLENGE:
 			return commonColors.challenge;
@@ -111,10 +172,6 @@ export const getResourceColor = (resourceType: RESOURCE_TYPE): string => {
 			return commonColors.theory;
 		case RESOURCE_TYPE.VIDEO:
 			return commonColors.video;
-		case RESOURCE_TYPE.PDF:
-			return commonColors.pdf;
-		case RESOURCE_TYPE.FILE:
-			return 'var(--fg-shade-four-color)';
 	}
 	return 'var(--fg-shade-four-color)';
 };

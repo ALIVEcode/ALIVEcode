@@ -16,5 +16,7 @@ export class ActivityChallenge extends Activity {
 	resource: ResourceChallenge;
 
 	/** Allowed types of resources inside the activity */
-	readonly allowedResources: RESOURCE_TYPE[] = [RESOURCE_TYPE.CHALLENGE];
+	readonly allowedResources: [RESOURCE_TYPE, ...Array<string>] = [
+		RESOURCE_TYPE.CHALLENGE,
+	];
 }

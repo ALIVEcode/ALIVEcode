@@ -142,11 +142,12 @@
 		"update_date": "Update date",
 		"see_links": "See links",
 		"activity_type": {
-			"challenge": "Challenge",
-			"video": "Video",
-			"pdf": "Pdf",
-			"assignment": "Assignment",
-			"theory": "Theory"
+			"CH": "Challenge",
+			"VI": "Video",
+			"PF": "Pdf",
+			"AS": "Assignment",
+			"TH": "Theory",
+			"WO": "Word"
 		},
 		"subjects": {
 			"iot": "Internet of Things",
@@ -266,7 +267,7 @@
 			"search": "Search",
 			"bundles": "Acquire resources"
 		},
-		"video": {
+		"VI": {
 			"name": "Video",
 			"form": {
 				"url": "URL of the youtube video",
@@ -274,26 +275,25 @@
 				"file": "Drag and drop a file or insert one"
 			}
 		},
-		"file": {
+		"FI": {
 			"name": "File",
 			"form": {
 				"file": "Drag and drop a file or insert one"
 			}
 		},
-		"pdf": {
-			"name": "Pdf",
-			"form": {
-				"file": "Drag and drop a file or insert one"
-			}
-		},
-		"challenge": {
+		"CH": {
 			"name": "Challenge",
 			"form": {
 				"select": "Select a challenge for the linkage"
 			}
 		},
-		"theory": {
+		"TH": {
 			"name": "Theory"
+		},
+		"files": {
+			"pdf": "Pdf",
+			"word": "Word",
+			"img": "Image"
 		},
 		"form": {
 			"create": "Create a resource",
@@ -342,6 +342,13 @@
 		"deletion_test": "Enter the name of the course to confirm the deletion",
 		"validate_activity": "Confirm changes",
 		"start_writing": "Begin writing here...",
+		"cursed": {
+			"msg1": "An unexpected error occured during your last interaction.",
+			"msg2": "Would you like to send us a report of this error alongside some informations about the current state of your course? This would greatly help us fix this issue quickly. If the issue persists, please contact us at alivecode.developers@gmail.com",
+			"send_report": "Yes, send a bug report.",
+			"no": "No, refresh the page.",
+			"thanks": "Thank you for reporting this issue! We'll try to fix this issue as quickly as we can! The page will now be refreshed..."
+		},
 		"section": {
 			"empty": "This section has no activities.",
 			"new": "Add a Section",
@@ -374,7 +381,12 @@
 				"TH": "Add a text document",
 				"VI": "Add an existing video",
 				"AS": "Add an existing file",
-				"CH": "Add a challenge"
+				"CH": "Add a challenge",
+				"WO": "Add an existing word document"
+			},
+			"import_challenge_private": {
+				"title": "Warning: Your challenge will go from PRIVATE to RESTRICTED.",
+				"msg": "For your challenge to be accessible to your students, it must at least be saved as RESTRICTED. By adding this challenge to your activity, its accessibility will be changed from PRIVATE to RESTRICTED."
 			},
 			"create_resource": {
 				"generic": "Create ",
@@ -384,7 +396,8 @@
 					"upload": "Upload a video from this device",
 					"url": "Add a video from a youtube URL"
 				},
-				"AS": "Upload a file from this device"
+				"AS": "Upload a file from this device",
+				"WO": "Upload a Word document from this device"
 			},
 			"edit_resource": "Edit the resource",
 			"remove_resource": "Remove the resource",
@@ -742,18 +755,18 @@
 			"previous": "Previous"
 		},
 		"activity": {
-			"theory": "Activity that displays some theory for the course in a styled text document.",
-			"pdf": "Activity for viewing a pdf file.",
-			"video": "Activity for viewing a YouTube video or an mp4 video.",
-			"challenge": "Activity challenge to test what the student learned in the course.",
-			"assignment": "Activity allowing a student to download a file that is required for its learning."
+			"TH": "Activity that displays some theory for the course in a styled text document.",
+			"PF": "Activity for viewing a pdf file.",
+			"VI": "Activity for viewing a YouTube video or an mp4 video.",
+			"CH": "Activity challenge to test what the student learned in the course.",
+			"AS": "Activity allowing a student to download a file that is required for its learning.",
+			"WO": "Activity for viewing a Word file."
 		},
 		"resource": {
-			"theory": "A styled text document that can be reused.",
-			"pdf": "A powerpoint presentation file that can be reused.",
-			"video": "A YouTube video or a mp4 video that can be reused.",
-			"challenge": "A challenge that can be reused inside a course.",
-			"file": "Any type of file that can be reused."
+			"TH": "A styled text document that can be reused.",
+			"VI": "A YouTube video or a mp4 video that can be reused.",
+			"CH": "A challenge that can be reused inside a course.",
+			"FI": "Any type of file that can be reused."
 		},
 		"dashboard": {
 			"tabs": {

@@ -35,7 +35,7 @@ const TypeCard = (props: TypeCardProps) => {
 				<div>
 					<FontAwesomeIcon
 						color={props.color ?? theme.color.fg_shade_one}
-						size={view.screenType === 'laptop' ? '4x' : '7x'}
+						size={view.screenType === 'laptop' ? '3x' : '6x'}
 						icon={props.icon}
 					/>
 				</div>

@@ -129,6 +129,8 @@ export const commonColors = {
 	challenge: '#2E75FF',
 	video: '#ff2e2e',
 	theory: '#92B7FF',
+	word: '#1451B5',
+	powerpoint: '#EA3C00',
 };
 /*
 

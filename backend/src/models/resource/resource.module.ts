@@ -21,7 +21,6 @@ import { createMulterOptions } from 'src/utils/upload/MulterConfig.service';
 import { CurrentRequestModule } from 'src/utils/upload/CurrentRequest.module';
 import { FileService } from '../file/file.service';
 import { FileEntity } from '../file/entities/file.entity';
-import { ResourcePdfEntity } from './entities/resources/resource_pdf.entity';
 
 /**
  * Module for the resource nestjs resource
@@ -37,7 +36,6 @@ import { ResourcePdfEntity } from './entities/resources/resource_pdf.entity';
       ResourceFileEntity,
       ResourceTheoryEntity,
       ResourceVideoEntity,
-      ResourcePdfEntity,
       UserEntity,
       ClassroomEntity,
       StudentEntity,

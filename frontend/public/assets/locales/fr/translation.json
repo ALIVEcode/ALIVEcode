@@ -142,11 +142,12 @@
 		"update_date": "Date de modification",
 		"see_links": "Voir les liens",
 		"activity_type": {
-			"challenge": "Défi",
-			"video": "Visionnement",
-			"pdf": "Pdf",
-			"assignment": "Énoncé de travail",
-			"theory": "Théorie"
+			"CH": "Défi",
+			"VI": "Visionnement",
+			"PF": "Pdf",
+			"AS": "Énoncé de travail",
+			"TH": "Théorie",
+			"WO": "Word"
 		},
 		"subjects": {
 			"iot": "Internet des Objets",
@@ -266,7 +267,7 @@
 			"search": "Rechercher",
 			"bundles": "Obtenir des ressources"
 		},
-		"video": {
+		"VI": {
 			"name": "Vidéo",
 			"form": {
 				"url": "URL vers la vidéo",
@@ -274,26 +275,25 @@
 				"file": "Glissez ou sélectionnez un fichier"
 			}
 		},
-		"file": {
+		"FI": {
 			"name": "Fichier",
 			"form": {
 				"file": "Glissez ou sélectionnez un fichier"
 			}
 		},
-		"pdf": {
-			"name": "Pdf",
-			"form": {
-				"file": "Glissez ou sélectionnez un fichier"
-			}
-		},
-		"challenge": {
+		"CH": {
 			"name": "Défi",
 			"form": {
 				"select": "Sélectionnez un défi pour la liaison"
 			}
 		},
-		"theory": {
+		"TH": {
 			"name": "Théorie"
+		},
+		"files": {
+			"pdf": "Pdf",
+			"word": "Word",
+			"img": "Image"
 		},
 		"form": {
 			"create": "Créer une ressource",
@@ -342,6 +342,13 @@
 		"deletion_test": "Écrivez le nom du cours pour confirmer la suppression",
 		"validate_activity": "Confirmer les changements",
 		"start_writing": "Commencez à écrire ici...",
+		"cursed": {
+			"msg1": "Une erreur inattendue s'est produite lors de votre dernière interaction.",
+			"msg2": "Voudriez-vous nous partager un rapport d'erreur ainsi que des informations à propos du contenu de votre cours? Cela nous aiderait beaucoup à corriger cette erreur. Si cette erreur persiste, veuillez s'il vous plaît nous contacter à l'adresse suivante: alivecode.developers@gmail.com",
+			"send_report": "Oui, signaler l'erreur.",
+			"no": "Non, rafraîchir la page.",
+			"thanks": "Merci d'avoir signalé cette erreur! Nous allons essayer de corriger celle-ci au plus vite! La page va maintenant être rafraîchie..."
+		},
 		"section": {
 			"empty": "Cette section ne possède aucune activité",
 			"new": "Ajouter une section",
@@ -374,7 +381,12 @@
 				"TH": "Ajouter un document de théorie existant",
 				"VI": "Ajouter une vidéo existante",
 				"AS": "Ajouter un fichier existant",
-				"CH": "Ajouter un défi"
+				"CH": "Ajouter un défi",
+				"WO": "Ajouter un document Word existant"
+			},
+			"import_challenge_private": {
+				"title": "Attention: Votre défi va passer de PRIVÉ à RESTREINT.",
+				"msg": "Pour que votre défi soit accessible à vos étudiants dans un cours, il faut que son accessibilité soit au moins en mode RESTREINT. En important votre défi dans votre activité, celui-ci passera de PRIVÉ à RESTREINT."
 			},
 			"create_resource": {
 				"generic": "Créer une nouvelle ressource",
@@ -384,7 +396,8 @@
 					"upload": "Téléverser une vidéo depuis cet appareil",
 					"url": "Ajouter une vidéo depuis un URL"
 				},
-				"AS": "Téléverser un fichier depuis cet appareil"
+				"AS": "Téléverser un fichier depuis cet appareil",
+				"WO": "Téléverser un document Word depuis cet appareil"
 			},
 			"edit_resource": "Modifier la ressource",
 			"remove_resource": "Retirer la ressource",
@@ -742,18 +755,18 @@
 			"previous": "Précédent"
 		},
 		"activity": {
-			"theory": "Activité permettant l'affichage de matière théorique sous format d'un fichier texte stylisé.",
-			"pdf": "Activité de visionnement d'un document pdf.",
-			"video": "Activité de visionnement d'une vidéo YouTube ou en format mp4.",
-			"challenge": "Activité défi permettant de mettre en pratique la matière apprise dans le cours.",
-			"assignment": "Activité permettant à un étudiant de télécharger un certain fichier nécessaire à son apprentissage."
+			"TH": "Activité permettant l'affichage de matière théorique sous format d'un fichier texte stylisé.",
+			"PF": "Activité de visionnement d'un document pdf.",
+			"VI": "Activité de visionnement d'une vidéo YouTube ou en format mp4.",
+			"CH": "Activité défi permettant de mettre en pratique la matière apprise dans le cours.",
+			"AS": "Activité permettant à un étudiant de télécharger un certain fichier nécessaire à son apprentissage.",
+			"WO": "Activité de visionnement d'un document Word."
 		},
 		"resource": {
-			"theory": "Un document text stylisé qui peut être réutilisé.",
-			"pdf": "Un fichier de présentation powerpoint qui peut être réutilisé",
-			"video": "Une vidéo YouTube ou une vidéo en format mp4 qui peut être réutilisée.",
-			"challenge": "Un défi qui peut être réutilisé dans un cours.",
-			"file": "Tout type de fichier qui peut être réutilisé."
+			"TH": "Un document text stylisé qui peut être réutilisé.",
+			"VI": "Une vidéo YouTube ou une vidéo en format mp4 qui peut être réutilisée.",
+			"CH": "Un défi qui peut être réutilisé dans un cours.",
+			"FI": "Tout type de fichier qui peut être réutilisé."
 		},
 		"dashboard": {
 			"tabs": {

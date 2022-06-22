@@ -757,14 +757,14 @@
 		"activity": {
 			"TH": "Activity that displays some theory for the course in a styled text document.",
 			"PF": "Activity for viewing a pdf file.",
-			"VI": "Activity for viewing a YouTube video or an mp4 video.",
+			"VI": "Activity for viewing a YouTube video or a video from your computer.",
 			"CH": "Activity challenge to test what the student learned in the course.",
 			"AS": "Activity allowing a student to download a file that is required for its learning.",
 			"WO": "Activity for viewing a Word file."
 		},
 		"resource": {
 			"TH": "A styled text document that can be reused.",
-			"VI": "A YouTube video or a mp4 video that can be reused.",
+			"VI": "A YouTube video or a video from your computer that can be reused.",
 			"CH": "A challenge that can be reused inside a course.",
 			"FI": "Any type of file that can be reused."
 		},

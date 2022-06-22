@@ -351,7 +351,7 @@ export class CourseController {
     if (!range) throw new HttpException('Missing range headers', HttpStatus.BAD_REQUEST);
 
     const activity = await this.courseService.findActivity(id, activityId);
-    const resourceUnknown = await this.courseService.getResourceOfActivity(activity);
+    const resourceUnknown = await this.courseService.getResourceOfActivity(activity, true);
     if (resourceUnknown.type !== RESOURCE_TYPE.VIDEO)
       throw new HttpException(
         "The resource inside the activity is not of type VIDEO, can't download it",
@@ -371,7 +371,7 @@ export class CourseController {
       'Content-Range': `bytes ${start}-${end}/${videoSize}`,
       'Accept-Ranges': 'bytes',
       'Content-Length': contentLength,
-      'Content-Type': 'video/mp4',
+      'Content-Type': resource.file.mimetype,
     };
 
     res.writeHead(206, headers);

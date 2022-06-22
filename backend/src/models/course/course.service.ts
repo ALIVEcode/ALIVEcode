@@ -644,8 +644,10 @@ export class CourseService {
    * @param activity Course found with the id in the url
    * @returns The removal query result
    */
-  async getResourceOfActivity(activity: ActivityEntity) {
-    return (await this.activityRepository.findOne(activity.id, { relations: ['resource'] })).resource;
+  async getResourceOfActivity(activity: ActivityEntity, loadFile = false) {
+    const relations = ['resource'];
+    if (loadFile) relations.push('resource.file');
+    return (await this.activityRepository.findOne(activity.id, { relations })).resource;
   }
 
   /*****-------End of Activity methods-------*****/

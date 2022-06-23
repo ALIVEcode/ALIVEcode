@@ -698,6 +698,17 @@ const Course = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [id, user]);
 
+	const getResourceMenuFilters = (act?: ActivityModel) => {
+		if (!act) return [];
+		if (
+			act.allowedResources.length > 1 &&
+			act.allowedResources.includes(RESOURCE_TYPE.FILE)
+		)
+			return act.allowedResources.filter(s => s !== RESOURCE_TYPE.FILE);
+
+		return act.allowedResources;
+	};
+
 	if (!course.current) return <></>;
 	return (
 		<CourseContext.Provider value={contextValue}>
@@ -878,7 +889,7 @@ const Course = () => {
 				</AlertConfirm>
 				<ResourceMenu
 					mode="import"
-					filters={tab.openedActivity?.activity.allowedResources}
+					filters={getResourceMenuFilters(tab.openedActivity?.activity)}
 					onSelectResource={async resource => {
 						if (
 							!course.current ||

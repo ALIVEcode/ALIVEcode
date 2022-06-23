@@ -297,8 +297,17 @@ export class CourseController {
     @Res() res: Response,
   ) {
     const activity = await this.courseService.findActivity(course.id, activityId);
-    if (activity.type !== ACTIVITY_TYPE.ASSIGNMENT)
-      throw new HttpException('Can only download on Assignment activities', HttpStatus.BAD_REQUEST);
+    const allowedActivitiesToDownloadFrom = [
+      ACTIVITY_TYPE.ASSIGNMENT,
+      ACTIVITY_TYPE.PDF,
+      ACTIVITY_TYPE.POWERPOINT,
+      ACTIVITY_TYPE.WORD,
+    ];
+    if (!allowedActivitiesToDownloadFrom.includes(activity.type))
+      throw new HttpException(
+        `Can only download on activities of type: ${allowedActivitiesToDownloadFrom.join(', ')}`,
+        HttpStatus.BAD_REQUEST,
+      );
     const resourceUnknown = await this.courseService.getResourceOfActivity(activity);
     if (resourceUnknown.type !== RESOURCE_TYPE.FILE)
       throw new HttpException(

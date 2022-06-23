@@ -1,9 +1,15 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import { ActivityPdf as ActivityPdfModel } from '../../../Models/Course/activities/activity_pdf.entity';
 /* import { Document, Page } from 'react-pdf'; */
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import api from '../../../Models/api';
 import FormInput from '../../UtilsComponents/FormInput/FormInput';
+import { useTranslation } from 'react-i18next';
+import IconButton from '../../DashboardComponents/IconButton/IconButton';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
+import { downloadBlob } from '../../../Types/files.type';
+import { CourseContext } from '../../../state/contexts/CourseContext';
+import { useAlert } from 'react-alert';
 
 /**
  * Shows an activity of type Pdf
@@ -15,9 +21,13 @@ const ActivityPdf = ({ activity }: { activity: ActivityPdfModel }) => {
 	const [numPages, setNumPages] = useState<number>(0);
 	const [pageNumber, setPageNumber] = useState<number>(1);
 	const [pdfSrc, setPdfSrc] = useState('');
+	const [downloading, setDownloading] = useState(false);
 	const inputNumberRef = useRef<HTMLInputElement>(null);
 	const pdfRefBox = useRef<HTMLDivElement>(null);
 	const ref = useRef<any>(null);
+	const { t } = useTranslation();
+	const { course } = useContext(CourseContext);
+	const alert = useAlert();
 
 	useEffect(() => {
 		const getSrc = async (
@@ -100,7 +110,7 @@ const ActivityPdf = ({ activity }: { activity: ActivityPdfModel }) => {
 							handlePageChange(Number(e.currentTarget.value));
 					}}
 				/>
-				of {numPages}
+				{t('course.activity.PF.page_of')} {numPages}
 			</p>
 			<FormInput
 				type="range"
@@ -109,6 +119,36 @@ const ActivityPdf = ({ activity }: { activity: ActivityPdfModel }) => {
 				value={pageNumber}
 				onChange={(e: any) => handlePageChange(Number(e.target.value))}
 			/>
+			<div className="w-full flex justify-end">
+				<IconButton
+					icon={faDownload}
+					loading={downloading}
+					title={t('course.activity.PF.download_file')}
+					onClick={async () => {
+						if (!course || !activity.resource) return;
+						setDownloading(true);
+						const response =
+							await api.db.courses.downloadResourceFileInActivity(
+								course,
+								activity,
+								activity.resource.extension,
+							);
+
+						if (!response) {
+							alert.error('Unsupported file type');
+						} else {
+							if (response.status === 200) {
+								downloadBlob(
+									response.data,
+									activity.resource?.name,
+									activity.resource?.extension,
+								);
+							}
+						}
+						setDownloading(false);
+					}}
+				/>
+			</div>
 		</div>
 	);
 };

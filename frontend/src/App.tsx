@@ -287,10 +287,11 @@ const App = () => {
 					if (user) await logout();
 					return Promise.reject(error);
 				}
+				console.log(error.response);
 				if (
 					error.response &&
 					error.response.data.message === 'Not Authenticated' &&
-					error.response.status === 401
+					error.response.data.statusCode === 401
 				) {
 					try {
 						const { accessToken } = (await axios.post('/users/refreshToken'))

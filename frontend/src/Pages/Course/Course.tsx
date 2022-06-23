@@ -51,6 +51,7 @@ import { ResourceChallenge } from '../../Models/Resource/resources/resource_chal
 import { CHALLENGE_ACCESS } from '../../Models/Challenge/challenge.entity';
 import AlertConfirm from '../../Components/UtilsComponents/Alert/AlertConfirm/AlertConfirm';
 import { Resource, RESOURCE_TYPE } from '../../Models/Resource/resource.entity';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 /**
  * Course page that shows the content of a course
@@ -749,29 +750,43 @@ const Course = () => {
 					<div className="text-4xl text-left text-[color:var(--foreground-color)] pl-5 pt-3 pb-3">
 						{isCreator() ? (
 							<div className="flex flex-row justify-between items-center">
-								<div id="course-title">
-									{editTitle ? (
-										<FormInput
-											ref={titleRef}
-											type="text"
-											autoFocus
-											onBlur={async () => {
-												if (!titleRef.current) return;
-												await setTitle(titleRef.current.value);
-												setCourseTitle(titleRef.current.value);
-												setEditTitle(false);
-											}}
-											defaultValue={courseTitle}
-										/>
-									) : (
-										<span
-											style={{ cursor: isCreator() ? 'pointer' : 'auto' }}
-											onClick={() => isCreator() && setEditTitle(true)}
-										>
-											{courseTitle}
-										</span>
-									)}
-								</div>{' '}
+								<div>
+									<FontAwesomeIcon
+										className="mr-3"
+										icon={course.current.getSubjectIcon()}
+									/>
+									<div className="inline" id="course-title">
+										{editTitle ? (
+											<FormInput
+												className="!w-auto"
+												ref={titleRef}
+												type="text"
+												autoFocus
+												onBlur={async () => {
+													if (!titleRef.current) return;
+													await setTitle(titleRef.current.value);
+													setCourseTitle(titleRef.current.value);
+													setEditTitle(false);
+												}}
+												onKeyDown={async (e: KeyboardEvent) => {
+													if (e.keyCode === 13 && titleRef.current) {
+														await setTitle(titleRef.current.value);
+														setCourseTitle(titleRef.current.value);
+														setEditTitle(false);
+													}
+												}}
+												defaultValue={courseTitle}
+											/>
+										) : (
+											<span
+												style={{ cursor: isCreator() ? 'pointer' : 'auto' }}
+												onClick={() => isCreator() && setEditTitle(true)}
+											>
+												{courseTitle}
+											</span>
+										)}
+									</div>
+								</div>
 								<div id="course-view">
 									<label className="px-3 text-2xl opacity-60">
 										{tab.tab === 'layout'
@@ -781,7 +796,15 @@ const Course = () => {
 								</div>
 							</div>
 						) : (
-							courseTitle
+							<>
+								<FontAwesomeIcon
+									className="mr-3"
+									icon={course.current.getSubjectIcon()}
+								/>
+								<div className="inline" id="course-title">
+									{courseTitle}
+								</div>
+							</>
 						)}
 					</div>
 				</div>
@@ -853,7 +876,6 @@ const Course = () => {
 				>
 					{t('course.activity.import_challenge_private.msg')}
 				</AlertConfirm>
-				{console.log(tab.openedActivity?.activity)}
 				<ResourceMenu
 					mode="import"
 					filters={tab.openedActivity?.activity.allowedResources}

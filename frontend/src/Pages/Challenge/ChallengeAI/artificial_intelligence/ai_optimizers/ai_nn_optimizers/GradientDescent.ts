@@ -76,7 +76,6 @@ optimize the given model.
 				matMulConstant(dw, this.learningRate),
 			);
 			this.model.setWeightsByLayer(layer, newWeights);
-
 			// Calculation of db for each layer
 			db = matMulConstant(dz.sumOfAllRows(), 1 / nbData);
 			// Calculation of new biases for each layer

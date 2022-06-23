@@ -13,7 +13,10 @@ import { ChallengeContext } from '../../../state/contexts/ChallengeContext';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import ChallengeToolsBar from '../../../Components/ChallengeComponents/ChallengeToolsBar/ChallengeToolsBar';
 import { NeuralNetwork } from './artificial_intelligence/ai_models/ai_neural_networks/NeuralNetwork';
-import { GenHyperparameters } from './artificial_intelligence/AIUtilsInterfaces';
+import {
+	GenHyperparameters,
+	NNHyperparameters,
+} from './artificial_intelligence/AIUtilsInterfaces';
 import { useAlert } from 'react-alert';
 import {
 	ACTIVATION_FUNCTIONS,
@@ -166,7 +169,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		);
 		(tempHyperparams[modelType] as Hyperparameters) = newHyperparams;
 		setHyperparams(tempHyperparams);
-		console.log('New Hyperparams ', hyperparams);
 	};
 
 	/**
@@ -593,9 +595,15 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			createOptimizer();
 
 			try {
-				console.log('before :', model.current);
+				console.log(
+					'layer before :',
+					(model.current as NeuralNetwork).getWeightsByLayer(0),
+				);
 				model.current = optimizer.current?.optimize(input, real);
-				console.log('after :', model.current);
+				console.log(
+					'layer after :',
+					(model.current as NeuralNetwork).getWeightsByLayer(0),
+				);
 			} catch (e) {
 				if (e instanceof Error) return e.message;
 			}

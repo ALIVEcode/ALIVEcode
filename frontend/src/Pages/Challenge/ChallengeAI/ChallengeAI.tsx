@@ -595,15 +595,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			createOptimizer();
 
 			try {
-				console.log(
-					'layer before :',
-					(model.current as NeuralNetwork).getWeightsByLayer(0),
-				);
 				model.current = optimizer.current?.optimize(input, real);
-				console.log(
-					'layer after :',
-					(model.current as NeuralNetwork).getWeightsByLayer(0),
-				);
 			} catch (e) {
 				if (e instanceof Error) return e.message;
 			}
@@ -621,8 +613,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			for (let i = ioCodes.current.length - 1; i >= 0; i--) {
 				if (ioCodes.current[i] !== -1) ioParams.push(params[i]);
 			}
-			//return ioParams;
-			return activeDataset.current.getParamNames();
+			return ioParams;
+			//return activeDataset.current.getParamNames();
 		}
 		return "Erreur : la base de données n'a pas été chargée.";
 	}

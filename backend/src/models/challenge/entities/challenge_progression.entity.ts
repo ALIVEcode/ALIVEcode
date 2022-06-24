@@ -1,5 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { IsEmpty, IsOptional } from 'class-validator';
+import { GenHyperparameters } from '../../../models/ai/entities/AIUtilsInterfaces';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, JoinColumn, OneToOne } from 'typeorm';
 import { AIModelEntity } from '../../ai/entities/ai_model.entity';
 import { IoTProjectEntity } from '../../iot/IoTproject/entities/IoTproject.entity';
@@ -13,6 +14,8 @@ export type ChallengeAliveProgressionData = {
 
 export type ChallengeAIProgressionData = {
   code?: string;
+  hyperparams: GenHyperparameters;
+  ioCodes: number[];
 };
 
 export type ChallengeCodeProgressionData = {

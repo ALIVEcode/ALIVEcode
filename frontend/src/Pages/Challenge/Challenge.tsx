@@ -211,7 +211,7 @@ const Challenge = ({
 
 	const saveChallengeTimed = useCallback(() => {
 		if (saveTimeout.current) clearTimeout(saveTimeout.current);
-		saveTimeout.current = setTimeout(saveChallenge, 2000);
+		saveTimeout.current = setTimeout(saveChallenge, 1000);
 	}, [saveChallenge]);
 
 	const saveProgression = useCallback(async () => {

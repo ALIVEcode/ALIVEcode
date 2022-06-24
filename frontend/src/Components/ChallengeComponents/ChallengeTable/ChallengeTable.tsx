@@ -34,9 +34,8 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 
 	//Function called after a change on hyperparams.
 	useEffect(() => {
-		if (props.handleHyperparamsChange && currHyperparams)
-			props.handleHyperparamsChange(currHyperparams);
-	}, [currHyperparams]);
+		setCurrHyperparams(props.hyperparams);
+	}, [props.hyperparams]);
 
 	/**
 	 * Callback function called whenever a new value is entered in an input field associated
@@ -56,7 +55,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 		if (!props.handleHyperparamsChange) return;
 
 		let tempHyperparams: Hyperparameters = JSON.parse(
-			JSON.stringify(currHyperparams),
+			JSON.stringify(props.hyperparams),
 		);
 
 		if (props.activeModelType) {
@@ -500,7 +499,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 		}
 		return inputs;
 	}
-
+	console.log('table render');
 	return (
 		<StyledChallengeTable
 			className={

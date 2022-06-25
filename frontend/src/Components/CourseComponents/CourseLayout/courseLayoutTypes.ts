@@ -2,11 +2,10 @@ import styled from 'styled-components';
 import {
 	CourseElement,
 	CourseElementActivity,
+	CourseElementSection,
 } from '../../../Models/Course/course_element.entity';
 import { Section } from '../../../Models/Course/section.entity';
 import { themes } from '../../../state/contexts/ThemeContext';
-import { CourseElementSection } from '../../../Models/Course/course_element.entity';
-import React from 'react';
 
 export type CourseLayoutElementProps = {
 	element: CourseElement;
@@ -30,6 +29,11 @@ export type ButtonAddCourseElementProps = {
 	section?: Section;
 };
 
+export type QuickDropMenuProps = {
+	setOpen: (open: boolean) => void;
+	open: boolean;
+};
+
 export const StyledCourseLayout = styled.div`
 	color: white;
 
@@ -46,7 +50,7 @@ export const StyledCourseLayout = styled.div`
 	${({ theme }) =>
 		theme.name === themes.light.name &&
 		'border-right: 1px solid rgb(161, 161, 161);'}
-	border-top-right-radius: 10px;
+  border-top-right-radius: 10px;
 	border-bottom-right-radius: 10px;
 	transition: all 0.35s;
 	overflow-y: auto;
@@ -58,6 +62,7 @@ export const StyledCourseLayout = styled.div`
 		font-size: 1.2rem;
 		color: var(--foreground-color);
 	}
+
 	.course-edit-button {
 		display: grid;
 		align-items: left;

@@ -7,12 +7,17 @@ import {
 	faPauseCircle,
 	faPencilAlt,
 	faPlayCircle,
+	faQuestionCircle,
+	faTerminal,
 } from '@fortawesome/free-solid-svg-icons';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { ChallengeToolsBarProps } from './challengeToolsBarTypes';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 
-const ChallengeToolsBar = ({ onClickPlay }: ChallengeToolsBarProps) => {
+const ChallengeToolsBar = ({
+	onClickPlay,
+	onClickTerminal,
+}: ChallengeToolsBarProps) => {
 	const { user } = useContext(UserContext);
 	const { challenge, editMode, saving, saved, executor, setOpenSettings } =
 		useContext(ChallengeContext);
@@ -67,7 +72,14 @@ const ChallengeToolsBar = ({ onClickPlay }: ChallengeToolsBarProps) => {
 			{/*
 			TODO: Add hints?
 			<IconButton icon={faQuestionCircle} size="2x" />
-			  */}
+			<IconButton
+				onClick={() => {
+					onClickTerminal && onClickTerminal();
+				}}
+				icon={faTerminal}
+				size="2x"
+			/>
+			{/* Do not change the onClick method!! it MUST be a method that calls the toggleExecution */}
 			<IconButton
 				onClick={() => {
 					if (onClickPlay) return onClickPlay();

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import LineInterface from '../../../Components/ChallengeComponents/LineInterface/LineInterface';
 import { UserContext } from '../../../state/contexts/UserContext';
 import Cmd from '../../../Components/ChallengeComponents/Cmd/Cmd';
@@ -40,6 +40,7 @@ const ChallengeCode = ({ initialCode }: ChallengeCodeProps) => {
 	const forceUpdate = useForceUpdate();
 	const [cmdRef, cmd] = useCmd();
 	const alert = useAlert();
+	const [cmdSize, setCmdSize] = useState(2);
 
 	executor.current = useMemo(
 		() =>
@@ -76,10 +77,14 @@ const ChallengeCode = ({ initialCode }: ChallengeCodeProps) => {
 				{/* Left Side of screen */}
 				<div
 					className={`${
-						showTerminal ? 'w-3/5' : 'w-full'
+						showTerminal ? `w-3/5` : 'w-full'
 					} h-full flex flex-col`}
 				>
-					<ChallengeToolsBar />
+					<ChallengeToolsBar
+						onClickTerminal={() => {
+							setCmdSize(cmdSize === 2 ? 3 : 2);
+						}}
+					/>
 					{editMode ? (
 						<LineInterface
 							className="h-full"
@@ -118,7 +123,7 @@ const ChallengeCode = ({ initialCode }: ChallengeCodeProps) => {
 					)}
 				</div>
 				{showTerminal && (
-					<div className="h-full w-2/5">
+					<div className={`h-full w-2/5`}>
 						<Cmd ref={cmdRef} />
 					</div>
 				)}

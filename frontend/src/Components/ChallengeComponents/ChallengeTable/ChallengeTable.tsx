@@ -499,7 +499,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 		}
 		return inputs;
 	}
-	console.log('table render');
+
 	return (
 		<StyledChallengeTable
 			className={

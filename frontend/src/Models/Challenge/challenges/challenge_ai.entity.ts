@@ -9,7 +9,7 @@ export class ChallengeAI extends Challenge {
 
 	hyperparams: GenHyperparameters;
 
-	ioCodes: object;
+	ioCodes: number[];
 
 	solution?: string;
 

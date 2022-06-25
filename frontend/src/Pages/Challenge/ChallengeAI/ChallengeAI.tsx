@@ -89,8 +89,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	let optimizer = useRef<GenOptimizer>();
 
-	//Active ioCodes and dataset of this challenge
-	const ioCodes = useRef<number[]>([]);
 	const activeDataset = useRef<AIDataset>();
 
 	//Active model type of this challenge
@@ -130,7 +128,13 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			return exec;
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[challenge?.id, user, activeDataset, challenge.hyperparams, ioCodes],
+		[
+			challenge?.id,
+			user,
+			activeDataset,
+			challenge.hyperparams,
+			challenge.ioCodes,
+		],
 	);
 
 	//--------UseEffects-------//
@@ -142,19 +146,16 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			if (challenge.dataset) {
 				activeDataset.current = challenge.dataset.clone();
 				forceUpdate();
-				ioCodes.current = challenge.dataset.getDataAsArray().map(() => -1);
+				if (challenge.ioCodes.length === 0)
+					challenge.ioCodes = challenge.dataset.getDataAsArray().map(() => -1);
 			} else {
 				console.error("Erreur : la table ne s'est pas chargée correctement.");
 			}
 		};
 		getDataset();
-
-		// Setting the hyperparams
-
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	// console.log(challenge.hyperparams);
+	// Set the hyperparams to default if there is no hyperparams value yet.
 	if (Object.keys(challenge.hyperparams).length === 0)
 		challenge.hyperparams = defaultHyperparams;
 
@@ -199,10 +200,12 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @param newIOCodes the new codes for inputs/outputs.
 	 */
 	const aiInterfaceIOChange = (newIOCodes: number[]) => {
-		ioCodes.current = newIOCodes;
+		challenge.ioCodes = newIOCodes;
 		let tempHyperparams: GenHyperparameters = { ...challenge.hyperparams };
-		tempHyperparams.NN.nbInputs = ioCodes.current.filter(e => e === 1).length;
-		tempHyperparams.NN.nbOutputs = ioCodes.current.filter(e => e === 0).length;
+		tempHyperparams.NN.nbInputs = challenge.ioCodes.filter(e => e === 1).length;
+		tempHyperparams.NN.nbOutputs = challenge.ioCodes.filter(
+			e => e === 0,
+		).length;
 		setHyperparams(tempHyperparams);
 		console.log('New Hyperparams ', challenge.hyperparams);
 	};
@@ -240,27 +243,27 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				if (challenge.dataset!.getParamNames().indexOf(header!) === -1) {
 					if (first) {
 						first = false;
-						return ioCodes.current[index];
+						return challenge.ioCodes[index];
 					} else {
 						return -200;
 					}
 				} else {
 					first = true;
-					return ioCodes.current[index];
+					return challenge.ioCodes[index];
 				}
 			});
 			let newIOCodes: number[] = [];
 			array.forEach(e => {
 				if (e !== -200) newIOCodes.push(e);
 			});
-			ioCodes.current = newIOCodes;
-			console.log('current iocodes : ', ioCodes.current);
+			challenge.ioCodes = newIOCodes;
+			console.log('current iocodes : ', challenge.ioCodes);
 
 			//Update some hyperparams
-			challenge.hyperparams.NN.nbInputs = ioCodes.current.filter(
+			challenge.hyperparams.NN.nbInputs = challenge.ioCodes.filter(
 				e => e === 1,
 			).length;
-			challenge.hyperparams.NN.nbOutputs = ioCodes.current.filter(
+			challenge.hyperparams.NN.nbOutputs = challenge.ioCodes.filter(
 				e => e === 0,
 			).length;
 			let indexArray: number[] = [];
@@ -405,8 +408,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		}
 
 		if (activeDataset.current) {
-			let input = activeDataset.current.getInputsOutputs(ioCodes.current)[0];
-			let real = activeDataset.current.getInputsOutputs(ioCodes.current)[1];
+			let input = activeDataset.current.getInputsOutputs(challenge.ioCodes)[0];
+			let real = activeDataset.current.getInputsOutputs(challenge.ioCodes)[1];
 			createOptimizer();
 
 			try {
@@ -508,7 +511,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	): string | void {
 		let index = activeDataset.current!.getParamNames().indexOf(name);
 		const oldNumberParams = activeDataset.current!.getParamNames().length;
-		const valueIO = ioCodes.current.at(index);
+		const valueIO = challenge.ioCodes.at(index);
 
 		if (
 			activeDataset.current!.createOneHotWithNewParamsOneHot(
@@ -520,16 +523,16 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			const numberNewParams =
 				activeDataset.current!.getParamNames().length - oldNumberParams;
 
-			let newIOCodes = ioCodes.current;
+			let newIOCodes = challenge.ioCodes;
 			//Addind the new column to the IOcodes
 			for (let e = 1; e <= numberNewParams; e++) {
 				newIOCodes.splice(index + e, 0, valueIO!);
 			}
-			ioCodes.current = newIOCodes;
-			challenge.hyperparams.NN.nbInputs = ioCodes.current.filter(
+			challenge.ioCodes = newIOCodes;
+			challenge.hyperparams.NN.nbInputs = challenge.ioCodes.filter(
 				e => e === 1,
 			).length;
-			challenge.hyperparams.NN.nbOutputs = ioCodes.current.filter(
+			challenge.hyperparams.NN.nbOutputs = challenge.ioCodes.filter(
 				e => e === 0,
 			).length;
 			forceUpdate();
@@ -610,8 +613,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 */
 	function optimize() {
 		if (activeDataset.current) {
-			let input = activeDataset.current.getInputsOutputs(ioCodes.current)[0];
-			let real = activeDataset.current.getInputsOutputs(ioCodes.current)[1];
+			let input = activeDataset.current.getInputsOutputs(challenge.ioCodes)[0];
+			let real = activeDataset.current.getInputsOutputs(challenge.ioCodes)[1];
 			createOptimizer();
 
 			try {
@@ -630,8 +633,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		if (activeDataset.current) {
 			let params: string[] = activeDataset.current.getParamNames();
 			let ioParams: string[] = [];
-			for (let i = ioCodes.current.length - 1; i >= 0; i--) {
-				if (ioCodes.current[i] !== -1) ioParams.push(params[i]);
+			for (let i = challenge.ioCodes.length - 1; i >= 0; i--) {
+				if (challenge.ioCodes[i] !== -1) ioParams.push(params[i]);
 			}
 			return ioParams;
 			//return activeDataset.current.getParamNames();
@@ -781,7 +784,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 						initData={challenge.dataset}
 						modelType={challenge.modelType}
 						hyperparams={challenge.hyperparams[challenge.modelType]}
-						ioCodes={ioCodes.current}
+						ioCodes={challenge.ioCodes}
 						activeModel={activeModel}
 					/>
 					{/* TODO Code for visual regression ************

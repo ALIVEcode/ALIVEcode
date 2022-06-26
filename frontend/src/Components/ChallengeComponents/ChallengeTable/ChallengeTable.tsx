@@ -96,18 +96,32 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	 */
 	const setIOCode = useCallback(
 		(value: string, index: number) => {
-			let array: number[] = props.ioCodes!;
+			let activeArray: number[] = props.activeIoCodes!;
+
+			//Set up to change the initial iocodes
+			let initParams = props.initData!.getParamNames()
+			let currentParams = props.data!.getParamNames()
+			let columnName = currentParams[index]
+			let i = initParams.indexOf(columnName)
+			let initArray = props.ioCodes!
+			
+
+			//Change the iocodes
 			switch (value) {
 				case '1':
-					array[index] = 1;
+					activeArray[index] = 1;
+					initArray[i] = 1
 					break;
 				case '0':
-					array[index] = 0;
+					activeArray[index] = 0;
+					initArray[i] = 0;
 					break;
 				default:
-					array[index] = -1;
+					activeArray[index] = -1;
+					initArray[i] = -1;
 			}
-			props.handleIOChange && props.handleIOChange(array);
+
+			props.handleIOChange && props.handleIOChange(activeArray, initArray);
 		},
 		[props],
 	);
@@ -152,13 +166,13 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 		let className: string = initialClassName;
 		if (isHeader) {
 			// For header components
-			if (props.ioCodes![index] === 1) className += ' input-header';
-			else if (props.ioCodes![index] === 0) className += ' output-header';
+			if (props.activeIoCodes[index] === 1) className += ' input-header';
+			else if (props.activeIoCodes[index] === 0) className += ' output-header';
 			else className += ' ignore-header';
 		} else {
 			// For data components
-			if (props.ioCodes![index] === 1) className += ' input-data';
-			else if (props.ioCodes![index] === 0) className += ' output-data';
+			if (props.activeIoCodes[index] === 1) className += ' input-data';
+			else if (props.activeIoCodes[index] === 0) className += ' output-data';
 			else className += ' ignore-data';
 		}
 		return className;
@@ -169,7 +183,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	 * @returns the headers in a component.
 	 */
 	function renderTableHeaders() {
-		if (props.data && props.isData && props.ioCodes) {
+		if (props.data && props.isData && props.activeIoCodes) {
 			return (
 				<>
 					<tr>
@@ -191,7 +205,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 											className="inputs"
 											onChange={e => setIOCode(e.target.value, index)}
 											disabled={disableDropdown(index)}
-											value={props.ioCodes[index]}
+											value={props.activeIoCodes[index]}
 										>
 											<option value={-1}>Ignorée</option>
 											<option value={1}>Entrée</option>
@@ -219,7 +233,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	 * @returns the data in a component.
 	 */
 	function renderTableData() {
-		if (props.data && props.isData)
+		if (props.data && props.isData && props.activeIoCodes)
 			return (
 				<>
 					{props.data.getDataForTable().map((dataLine: any, row: number) => {

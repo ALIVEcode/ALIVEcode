@@ -89,8 +89,11 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	let optimizer = useRef<GenOptimizer>();
 
-	//Active ioCodes and dataset of this challenge
+	//Active iocodes of this challenge use for all the calculations
+	const activeIoCodes = useRef<number[]>([]);
+	//Iocodes use to renitiate the activeIocodes
 	const ioCodes = useRef<number[]>([]);
+	//Active dataset of this challenge
 	const activeDataset = useRef<AIDataset>();
 
 	//Active model type of this challenge
@@ -127,7 +130,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				alert,
 			)),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[challenge?.id, user, activeDataset, hyperparams, ioCodes],
+		[challenge?.id, user, activeDataset, hyperparams, ioCodes, activeIoCodes],
 	);
 
 	//--------UseEffects-------//
@@ -138,8 +141,10 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				challenge.dataset = await api.db.ai.getDataset(challenge.datasetId);
 			if (challenge.dataset) {
 				activeDataset.current = challenge.dataset.clone();
-				forceUpdate();
+				activeIoCodes.current = challenge.dataset.getDataAsArray().map(() => -1);
 				ioCodes.current = challenge.dataset.getDataAsArray().map(() => -1);
+				console.log("TESTES",activeIoCodes.current)
+				forceUpdate();
 			} else {
 				console.error("Erreur : la table ne s'est pas chargée correctement.");
 			}
@@ -179,15 +184,17 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	/**
 	 * Callback function called when the inputs or outputs are changed in the interface.
-	 * @param newIOCodes the new codes for inputs/outputs.
+	 * @param newActiveIOCodes the new codes for inputs/outputs for the activeIOCodes.
+	 * @param newIOCodes the new codes for inputs/outputs for the ioCodes.
 	 */
-	const aiInterfaceIOChange = (newIOCodes: number[]) => {
+	const aiInterfaceIOChange = (newActiveIOCodes: number[], newIOCodes: number[]) => {
 		ioCodes.current = newIOCodes;
+		activeIoCodes.current = newActiveIOCodes;
 		let tempHyperparams: GenHyperparameters = JSON.parse(
 			JSON.stringify(hyperparams),
 		);
-		tempHyperparams.NN.nbInputs = ioCodes.current.filter(e => e === 1).length;
-		tempHyperparams.NN.nbOutputs = ioCodes.current.filter(e => e === 0).length;
+		tempHyperparams.NN.nbInputs = activeIoCodes.current.filter(e => e === 1).length;
+		tempHyperparams.NN.nbOutputs = activeIoCodes.current.filter(e => e === 0).length;
 		setHyperparams(tempHyperparams);
 		console.log('New Hyperparams ', hyperparams);
 		forceUpdate();
@@ -219,31 +226,13 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		//If the dataset is loaded
 		if (activeDataset.current) {
 			//Set IOCodes
-			let first = true;
-			let array = activeDataset.current.getDataAsArray().map((val, index) => {
-				const header = activeDataset.current!.getParamNames().at(index);
-				if (challenge.dataset!.getParamNames().indexOf(header!) === -1) {
-					if (first) {
-						first = false;
-						return ioCodes.current[index];
-					} else {
-						return -200;
-					}
-				} else {
-					first = true;
-					return ioCodes.current[index];
-				}
-			});
-			let newIOCodes: number[] = [];
-			array.forEach(e => {
-				if (e !== -200) newIOCodes.push(e);
-			});
-			ioCodes.current = newIOCodes;
-			console.log('current iocodes : ', ioCodes.current);
+			activeIoCodes.current =[]
+			ioCodes.current.forEach(e=>activeIoCodes.current.push(e) )
+			console.log('current iocodes : ', activeIoCodes.current);
 
-			//Update some hyperparams
-			hyperparams.NN.nbInputs = ioCodes.current.filter(e => e === 1).length;
-			hyperparams.NN.nbOutputs = ioCodes.current.filter(e => e === 0).length;
+			//Update inputs and outputs hyperparams
+			hyperparams.NN.nbInputs = activeIoCodes.current!.filter(e => e === 1).length;
+			hyperparams.NN.nbOutputs = activeIoCodes.current!.filter(e => e === 0).length;
 			let indexArray: number[] = [];
 			hyperparams.NN.neuronsByLayer = hyperparams.NN.neuronsByLayer.filter(
 				(e, i) => {
@@ -379,7 +368,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	/**
 	 * Calculates the cost for the current model compared to the dataset of the challenge.
-	 * @returns the calculated cost.
+	 * @returns the calculated cost or error message 
 	 */
 	function costFunction() {
 		if (!model.current) {
@@ -387,8 +376,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		}
 
 		if (activeDataset.current) {
-			let input = activeDataset.current.getInputsOutputs(ioCodes.current)[0];
-			let real = activeDataset.current.getInputsOutputs(ioCodes.current)[1];
+			let input = activeDataset.current.getInputsOutputs(activeIoCodes.current)[0];
+			let real = activeDataset.current.getInputsOutputs(activeIoCodes.current)[1];
 			createOptimizer();
 
 			try {
@@ -482,6 +471,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	/**
 	 * Creats of a one shot associate to the column selected
 	 * @param column the parameter's name to replace.
+	 * @return error message
 	 */
 	function oneHot(
 		name: string,
@@ -490,7 +480,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	): string | void {
 		let index = activeDataset.current!.getParamNames().indexOf(name);
 		const oldNumberParams = activeDataset.current!.getParamNames().length;
-		const valueIO = ioCodes.current.at(index);
+		const valueIO = activeIoCodes.current.at(index);
 
 		if (
 			activeDataset.current!.createOneHotWithNewParamsOneHot(
@@ -502,14 +492,15 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			const numberNewParams =
 				activeDataset.current!.getParamNames().length - oldNumberParams;
 
-			let newIOCodes = ioCodes.current;
+			let newIOCodes = activeIoCodes.current;
 			//Addind the new column to the IOcodes
 			for (let e = 1; e <= numberNewParams; e++) {
 				newIOCodes.splice(index + e, 0, valueIO!);
 			}
-			ioCodes.current = newIOCodes;
-			hyperparams.NN.nbInputs = ioCodes.current.filter(e => e === 1).length;
-			hyperparams.NN.nbOutputs = ioCodes.current.filter(e => e === 0).length;
+			activeIoCodes.current = newIOCodes;
+			hyperparams.NN.nbInputs = activeIoCodes.current.filter(e => e === 1).length;
+			hyperparams.NN.nbOutputs = activeIoCodes.current.filter(e => e === 0).length;
+			console.log("test2", activeDataset.current?.getParamNames)
 			forceUpdate();
 		} else {
 			if (index !== -1)
@@ -522,6 +513,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	/**
 	 * Normalizes the data of the parameter and change the data of the table
 	 * @param column the parameter's name to replace.
+	 * @return error message
 	 */
 	function normalizeColumn(column: string): string | void {
 		if (activeDataset.current) {
@@ -541,7 +533,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	/**
 	 * Normalizes the data of the parameter and change the data of the table
 	 * @param column the parameter's name to replace.
-	 * @param data
+	 * @param data the data to normalize
+	 * @return error message or the value of the data normalize
 	 */
 	function normalize(column: string, data: number): string | number {
 		if (activeDataset.current) {
@@ -560,6 +553,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	/**
 	 * Predicts an array of outputs with the model
 	 * @param input array of inputs
+	 * @return the prediction
 	 */
 	function predict(input: number[]) {
 		let tab: number[][] = [];
@@ -585,11 +579,12 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	/**
 	 * Trains the model
+	 * @return error message
 	 */
 	function optimize() {
 		if (activeDataset.current) {
-			let input = activeDataset.current.getInputsOutputs(ioCodes.current)[0];
-			let real = activeDataset.current.getInputsOutputs(ioCodes.current)[1];
+			let input = activeDataset.current.getInputsOutputs(activeIoCodes.current)[0];
+			let real = activeDataset.current.getInputsOutputs(activeIoCodes.current)[1];
 			createOptimizer();
 
 			try {
@@ -604,14 +599,14 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	/**
 	 * Returns the names of the paraters that are an input or an output
-	 * @returns
+	 * @returns error message or the input and output parameter names
 	 */
 	function getIONames() {
 		if (activeDataset.current) {
 			let params: string[] = activeDataset.current.getParamNames();
 			let ioParams: string[] = [];
-			for (let i = ioCodes.current.length - 1; i >= 0; i--) {
-				if (ioCodes.current[i] !== -1) ioParams.push(params[i]);
+			for (let i = activeIoCodes.current.length - 1; i >= 0; i--) {
+				if (activeIoCodes.current[i] !== -1) ioParams.push(params[i]);
 			}
 			//return ioParams;
 			return activeDataset.current.getParamNames();
@@ -622,6 +617,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	/**
 	 * Delete the line indicated in the dataset
 	 * @param index the index of the line to delete
+	 * @return Error message
 	 */
 	function deleteLine(index: number) {
 		if (activeDataset.current) {
@@ -632,10 +628,23 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		}
 	}
 
+	/**
+	 * Return the corralation coefficient
+	 * @param lst1 First list of number to find the corralation coefficient
+	 * @param list2 Second list of number to find the corralation coefficient
+	 * @returns corralation coefficient
+	 */
 	function coefficientCorrelation(lst1: number[], list2: number[]) {
-		return correlationCoeff(lst1, list2);
+		let i = correlationCoeff(lst1, list2)
+		return i;
 	}
 
+	/**
+	 * Return the determination coefficient
+	 * @param lst1 First list of number to find the determination coefficient
+	 * @param list2 Second list of number to find the determination coefficient
+	 * @returns determination coefficient
+	 */
 	function coefficientDetermination(lst1: number[], list2: number[]) {
 		return determinationCoeff(lst1, list2);
 	}
@@ -763,6 +772,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 						initData={challenge.dataset}
 						modelType={modelType}
 						hyperparams={hyperparams[modelType]}
+						activeIoCodes={activeIoCodes.current}
 						ioCodes={ioCodes.current}
 						activeModel={activeModel}
 					/>

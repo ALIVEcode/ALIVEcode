@@ -40,7 +40,6 @@ export abstract class NNOptimizer extends Optimizer {
 
 		for (let i: number = 0; i < this.epochs; i++) {
 			predictions = this.model.predictReturnAll(inputs);
-			console.log(this.model);
 			this.optimizeOneEpoch(inputs, predictions, real);
 		}
 		return this.model;
@@ -52,5 +51,9 @@ export abstract class NNOptimizer extends Optimizer {
 	 */
 	public getModel(): NeuralNetwork {
 		return this.model;
+	}
+
+	public setModel(newModel: NeuralNetwork) {
+		this.model = newModel;
 	}
 }

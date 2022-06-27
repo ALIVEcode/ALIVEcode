@@ -7,7 +7,9 @@ import { GenHyperparameters } from '../../../Pages/Challenge/ChallengeAI/artific
 export class ChallengeAI extends Challenge {
 	initialCode?: string;
 
-	hyperParams: GenHyperparameters;
+	hyperparams: GenHyperparameters;
+
+	ioCodes: number[];
 
 	solution?: string;
 

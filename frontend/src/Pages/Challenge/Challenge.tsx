@@ -150,6 +150,8 @@ const Challenge = ({
 						{},
 					);
 				}
+				// TODO: Keep an eye for bugs with the progression data saving
+				if (!progression.data) progression.data = {};
 				progression.data.code &&
 					setInitialProgressionCode(progression.data.code);
 				setProgression(progression);
@@ -209,7 +211,7 @@ const Challenge = ({
 
 	const saveChallengeTimed = useCallback(() => {
 		if (saveTimeout.current) clearTimeout(saveTimeout.current);
-		saveTimeout.current = setTimeout(saveChallenge, 2000);
+		saveTimeout.current = setTimeout(saveChallenge, 1000);
 	}, [saveChallenge]);
 
 	const saveProgression = useCallback(async () => {

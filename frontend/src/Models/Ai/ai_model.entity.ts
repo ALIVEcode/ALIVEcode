@@ -1,14 +1,5 @@
-import {
-	NNModelParams,
-	RegModelParams,
-	NNHyperparameters,
-	RegHyperparameters,
-} from '../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
 import { Matrix } from '../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtils';
-import {
-	GenHyperparameters,
-	GenModelParams,
-} from '../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
+import { GenModelParams } from '../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
 
 /**
  * This enum describles all possible types of Cost Function available in AI challenges.
@@ -51,7 +42,7 @@ export enum MODEL_TYPES {
  * This enum describes all possible types of optimizers available for Neural Networks
  * in AI challenges.
  * The current types of Regression available are:
- * - GradientDescent
+ * - GradientDescentScheme.tsx
  */
 export enum NN_OPTIMIZER_TYPES {
 	GradientDescent = 'GD',

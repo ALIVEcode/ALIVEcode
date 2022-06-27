@@ -50,6 +50,7 @@ optimize the given model.
 			if (layer !== nbLayers - 1) {
 				// Calculation of dz for hidden layers
 				dz = matMul(oldWeights[layer + 1].transpose(), dz);
+
 				dz = matMulElementWise(
 					dz,
 					activations[layer].matDerivative(outputArray[layer]),
@@ -59,6 +60,7 @@ optimize the given model.
 				let actDev: Matrix = activations[layer].matDerivative(
 					outputArray[layer],
 				);
+
 				dz = matMulElementWise(
 					this.costFunc.matDerivative(predicted, real),
 					actDev,
@@ -76,7 +78,6 @@ optimize the given model.
 				matMulConstant(dw, this.learningRate),
 			);
 			this.model.setWeightsByLayer(layer, newWeights);
-
 			// Calculation of db for each layer
 			db = matMulConstant(dz.sumOfAllRows(), 1 / nbData);
 			// Calculation of new biases for each layer

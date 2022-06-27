@@ -44,6 +44,10 @@ import {
 	determinationCoeff,
 } from './artificial_intelligence/AIUtils';
 import { GradientDescent } from './artificial_intelligence/ai_optimizers/ai_nn_optimizers/GradientDescent';
+import {
+	ChallengeAIProgressionData,
+	ChallengeProgression,
+} from '../../../Models/Challenge/challenge_progression.entity';
 
 /**
  * Ai challenge page. Contains all the components to display and make the ai challenge functionnal.
@@ -79,7 +83,16 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	const [cmdRef, cmd] = useCmd(); //The console of this inteface
 	const alert = useAlert();
 
-	const code = useRef<string>(); //The code inside the line interface.
+	const currCode = useRef<string>(); //The code inside the line interface.
+
+	//The progression data for the user in this challenge
+	let currHyperparams: GenHyperparameters = editMode
+		? challenge.hyperparams
+		: challenge.hyperparams; //(progression?.data as ChallengeAIProgressionData).hyperparams;
+
+	let currIoCodes: number[] = editMode
+		? challenge.ioCodes
+		: (progression?.data as ChallengeAIProgressionData).ioCodes;
 
 	//Active model object for this challenge
 	const model = useRef<GenAIModel>();
@@ -87,7 +100,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	//Active model type for this challenge
 	const regression = useRef<PolyRegression>();
 
-	let optimizer = useRef<GenOptimizer>();
+	const optimizer = useRef<GenOptimizer>();
 
 	const activeDataset = useRef<AIDataset>();
 
@@ -124,7 +137,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				askForUserInput,
 				alert,
 			);
-			exec.lineInterfaceContent = code.current ?? '';
+			exec.lineInterfaceContent = currCode.current ?? '';
 			return exec;
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -148,6 +161,14 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				forceUpdate();
 				if (challenge.ioCodes.length === 0)
 					challenge.ioCodes = challenge.dataset.getDataAsArray().map(() => -1);
+				if ((progression?.data as ChallengeAIProgressionData).ioCodes)
+					(progression?.data as ChallengeAIProgressionData).ioCodes =
+						challenge.ioCodes;
+
+				//TODO créer l'objet data ICI pour la progression (progression.data = {}), s'inspirer de code?
+				// challenge.ioCodes = editMode
+				// 	? challenge.ioCodes
+				// 	: (progression?.data as ChallengeAIProgressionData).ioCodes;
 			} else {
 				console.error("Erreur : la table ne s'est pas chargée correctement.");
 			}
@@ -155,9 +176,10 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		getDataset();
 	}, []);
 
-	// Set the hyperparams to default if there is no hyperparams value yet.
-	if (Object.keys(challenge.hyperparams).length === 0)
+	// Set the hyperparams to default when the challenge is created and there is no hyperparam value yet.
+	if (Object.keys(challenge.hyperparams).length === 0) {
 		challenge.hyperparams = defaultHyperparams;
+	}
 
 	useEffect(() => {
 		if (!cmd) return forceUpdate();
@@ -171,9 +193,37 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @param newHyperparams the new hyperparameters object.
 	 */
 	const setHyperparams = (newHyperparams: GenHyperparameters) => {
-		challenge.hyperparams = newHyperparams;
-		forceUpdate();
-		saveChallengeTimed();
+		currHyperparams = newHyperparams;
+
+		let indexArray: number[] = [];
+
+		//Update nbinputs and nbOutputs
+		currHyperparams.NN.nbInputs = challenge.ioCodes.filter(e => e === 1).length;
+		currHyperparams.NN.nbOutputs = challenge.ioCodes.filter(
+			e => e === 0,
+		).length;
+
+		//Update neuronsByLayer
+		currHyperparams.NN.neuronsByLayer =
+			currHyperparams.NN.neuronsByLayer.filter((e, i) => {
+				if (e === 0) indexArray.push(1);
+				else return e;
+			});
+		indexArray.forEach(i => {
+			currHyperparams.NN.activationsByLayer.splice(i, 1);
+		});
+
+		//Save new hyperparameters
+		if (editMode) {
+			challenge.hyperparams = currHyperparams;
+			saveChallengeTimed();
+		} else if (progression) {
+			(progression.data as ChallengeAIProgressionData).hyperparams =
+				currHyperparams;
+			const tempProgression: ChallengeProgression = progression;
+			setProgression(tempProgression);
+			saveProgressionTimed();
+		}
 	};
 
 	/**
@@ -201,12 +251,13 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 */
 	const aiInterfaceIOChange = (newIOCodes: number[]) => {
 		challenge.ioCodes = newIOCodes;
-		let tempHyperparams: GenHyperparameters = { ...challenge.hyperparams };
-		tempHyperparams.NN.nbInputs = challenge.ioCodes.filter(e => e === 1).length;
-		tempHyperparams.NN.nbOutputs = challenge.ioCodes.filter(
-			e => e === 0,
-		).length;
-		setHyperparams(tempHyperparams);
+		if (editMode) {
+			challenge.ioCodes = newIOCodes;
+		} else if (progression) {
+			(progression.data as ChallengeAIProgressionData).ioCodes =
+				challenge.ioCodes;
+		}
+		setHyperparams(currHyperparams);
 		console.log('New Hyperparams ', challenge.hyperparams);
 	};
 
@@ -215,7 +266,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @param content the LineInterface's new content.
 	 */
 	const lineInterfaceContentChanges = (content: any) => {
-		code.current = content;
+		currCode.current = content;
 		if (executor.current) executor.current.lineInterfaceContent = content;
 		if (!editMode && progression) {
 			progression.data.code = content;
@@ -234,6 +285,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		//Initialize the ioCodes according to the table
 		console.log('--- User click on run ---');
 
+		// challenge.ioCodes = (
+		// 	progression?.data as ChallengeAIProgressionData
+		// ).ioCodes;
 		//If the dataset is loaded
 		if (activeDataset.current) {
 			//Set IOCodes
@@ -256,31 +310,14 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			array.forEach(e => {
 				if (e !== -200) newIOCodes.push(e);
 			});
-			challenge.ioCodes = newIOCodes;
-			console.log('current iocodes : ', challenge.ioCodes);
-
-			//Update some hyperparams
-			challenge.hyperparams.NN.nbInputs = challenge.ioCodes.filter(
-				e => e === 1,
-			).length;
-			challenge.hyperparams.NN.nbOutputs = challenge.ioCodes.filter(
-				e => e === 0,
-			).length;
-			let indexArray: number[] = [];
-			challenge.hyperparams.NN.neuronsByLayer =
-				challenge.hyperparams.NN.neuronsByLayer.filter((e, i) => {
-					if (e === 0) indexArray.push(1);
-					else return e;
-				});
-			indexArray.forEach(i => {
-				challenge.hyperparams.NN.activationsByLayer.splice(i, 1);
-			});
 
 			//Cloning the initial data
 			activeDataset.current = challenge.dataset!.clone();
 			optimizer.current = undefined;
 			setActiveModel(undefined);
-			forceUpdate();
+
+			//Savings changes to IOCodes and hyperparams
+			aiInterfaceIOChange(newIOCodes);
 		}
 	}
 
@@ -475,6 +512,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				array.push(activeDataset.current!.getDataAsArray().at(index)?.at(i));
 			}
 		}
+		console.log(array);
 		return array;
 	}
 
@@ -492,7 +530,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					},
 				);
 				setActiveModel(MODEL_TYPES.NEURAL_NETWORK);
-				console.log('Current Model', model.current);
 				break;
 			default:
 				break;
@@ -708,6 +745,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		console.log(neuralNet);
 		console.log(neuralNet.getModelParams());
 	}
+
 	// END OF TEST FUNCTION //
 	return (
 		<div className="relative h-full w-full">
@@ -783,7 +821,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 						data={activeDataset.current}
 						initData={challenge.dataset}
 						modelType={challenge.modelType}
-						hyperparams={challenge.hyperparams[challenge.modelType]}
+						hyperparams={currHyperparams[challenge.modelType]}
 						ioCodes={challenge.ioCodes}
 						activeModel={activeModel}
 					/>

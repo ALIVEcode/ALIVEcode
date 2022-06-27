@@ -22,6 +22,7 @@ import GradientDescentScheme from "./AIOptimizers/GradientDescent/GradientDescen
  * @param className the names of optional CSS classes.
  * @param tabs the tab components of the AIInterface.
  * @param ioCodes the inputs and output codes for the data table.
+ * @param activeIoCodes the current inputs and output codes for the data table.
  * @param hyperparams the initial hyperparameter values for the hyperparameters table.
  * @param data the current dataset used for the challenge.
  * @param initData the dataset linked to this challenge in the backend.
@@ -35,6 +36,7 @@ const AIInterface = ({
 	handleModelChange,
 	handleIOChange,
 	ioCodes,
+	activeIoCodes,
 	className,
 	tabs: initialTabs,
 	data,
@@ -136,7 +138,8 @@ const AIInterface = ({
 							data={data}
 							isData={true}
 							initData={initData}
-							ioCodes={ioCodes!}
+							ioCodes={ioCodes}
+							activeIoCodes = {activeIoCodes}
 							handleIOChange={handleIOChange}
 						/>
 					</div>
@@ -161,6 +164,7 @@ const AIInterface = ({
 							hyperparams={hyperparams}
 							handleHyperparamsChange={handleHyperparamChange}
 							ioCodes={ioCodes}
+							activeIoCodes={activeIoCodes}
 							activeModelType={modelType}
 						/>
 					</div>

@@ -90,9 +90,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		? challenge.hyperparams
 		: challenge.hyperparams; //(progression?.data as ChallengeAIProgressionData).hyperparams;
 
-	let currIoCodes: number[] = editMode
-		? challenge.ioCodes
-		: (progression?.data as ChallengeAIProgressionData).ioCodes;
+	let currIoCodes: number[] = editMode ? challenge.ioCodes : challenge.ioCodes;
 
 	//Active model object for this challenge
 	const model = useRef<GenAIModel>();
@@ -102,53 +100,53 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	const optimizer = useRef<GenOptimizer>();
 
+	//Active iocodes of this challenge use for all the calculations
+	const activeIoCodes = useRef<number[]>([]);
+	//Active dataset of this challenge
 	const activeDataset = useRef<AIDataset>();
 
 	//Active model type of this challenge
 	const [activeModel, setActiveModel] = useState<MODEL_TYPES | undefined>();
 
 	// Initializing the LevelAIExecutor
-	executor.current = useMemo(
-		() => {
-			const exec = new ChallengeAIExecutor(
-				{
-					createAndShowReg,
-					initializeDataset,
-					showDataCloud,
-					resetGraph,
-					optimizeRegression,
-					evaluate: (x: number) => evaluate(x),
-					costFunction,
-					showRegression,
-					columnValues,
-					modelCreation,
-					oneHot,
-					normalizeColumn,
-					normalize,
-					predict,
-					optimize,
-					getIONames,
-					deleteLine,
-					coefficientCorrelation,
-					coefficientDetermination,
-					testNeuralNetwork,
-				},
-				challenge.name,
-				askForUserInput,
-				alert,
-			);
-			exec.lineInterfaceContent = currCode.current ?? '';
-			return exec;
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[
-			challenge?.id,
-			user,
-			activeDataset,
-			challenge.hyperparams,
-			challenge.ioCodes,
-		],
-	);
+	executor.current = useMemo(() => {
+		const exec = new ChallengeAIExecutor(
+			{
+				createAndShowReg,
+				initializeDataset,
+				showDataCloud,
+				resetGraph,
+				optimizeRegression,
+				evaluate: (x: number) => evaluate(x),
+				costFunction,
+				showRegression,
+				columnValues,
+				modelCreation,
+				oneHot,
+				normalizeColumn,
+				normalize,
+				predict,
+				optimize,
+				getIONames,
+				deleteLine,
+				coefficientCorrelation,
+				coefficientDetermination,
+				testNeuralNetwork,
+			},
+			challenge.name,
+			askForUserInput,
+			alert,
+		);
+		exec.lineInterfaceContent = currCode.current ?? '';
+		return exec;
+	}, [
+		challenge?.id,
+		user,
+		activeDataset,
+		challenge.hyperparams,
+		challenge.ioCodes,
+		activeIoCodes,
+	]);
 
 	//--------UseEffects-------//
 	// Loading the dataset when first renders
@@ -158,7 +156,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				challenge.dataset = await api.db.ai.getDataset(challenge.datasetId);
 			if (challenge.dataset) {
 				activeDataset.current = challenge.dataset.clone();
-				forceUpdate();
+
 				if (challenge.ioCodes.length === 0)
 					challenge.ioCodes = challenge.dataset.getDataAsArray().map(() => -1);
 				if ((progression?.data as ChallengeAIProgressionData).ioCodes)
@@ -169,6 +167,10 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				// challenge.ioCodes = editMode
 				// 	? challenge.ioCodes
 				// 	: (progression?.data as ChallengeAIProgressionData).ioCodes;
+
+				currIoCodes = [];
+				challenge.ioCodes.forEach(e => currIoCodes.push(e));
+				forceUpdate();
 			} else {
 				console.error("Erreur : la table ne s'est pas chargée correctement.");
 			}
@@ -198,10 +200,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		let indexArray: number[] = [];
 
 		//Update nbinputs and nbOutputs
-		currHyperparams.NN.nbInputs = challenge.ioCodes.filter(e => e === 1).length;
-		currHyperparams.NN.nbOutputs = challenge.ioCodes.filter(
-			e => e === 0,
-		).length;
+		currHyperparams.NN.nbInputs = currIoCodes.filter(e => e === 1).length;
+		currHyperparams.NN.nbOutputs = currIoCodes.filter(e => e === 0).length;
 
 		//Update neuronsByLayer
 		currHyperparams.NN.neuronsByLayer =
@@ -214,16 +214,19 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		});
 
 		//Save new hyperparameters
-		if (editMode) {
-			challenge.hyperparams = currHyperparams;
-			saveChallengeTimed();
-		} else if (progression) {
-			(progression.data as ChallengeAIProgressionData).hyperparams =
-				currHyperparams;
-			const tempProgression: ChallengeProgression = progression;
-			setProgression(tempProgression);
-			saveProgressionTimed();
-		}
+		challenge.hyperparams = currHyperparams;
+		forceUpdate();
+		saveChallengeTimed();
+
+		// TODO Progression part
+		// if (editMode) {
+		// } else if (progression) {
+		// 	(progression.data as ChallengeAIProgressionData).hyperparams =
+		// 		currHyperparams;
+		// 	const tempProgression: ChallengeProgression = progression;
+		// 	setProgression(tempProgression);
+		// 	saveProgressionTimed();
+		// }
 	};
 
 	/**
@@ -247,16 +250,24 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	/**
 	 * Callback function called when the inputs or outputs are changed in the interface.
-	 * @param newIOCodes the new codes for inputs/outputs.
+	 * @param newActiveIOCodes the new codes for inputs/outputs for the activeIOCodes.
+	 * @param newIOCodes the new codes for inputs/outputs for the ioCodes.
 	 */
-	const aiInterfaceIOChange = (newIOCodes: number[]) => {
+	const aiInterfaceIOChange = (
+		newActiveIOCodes: number[],
+		newIOCodes: number[],
+	) => {
 		challenge.ioCodes = newIOCodes;
-		if (editMode) {
-			challenge.ioCodes = newIOCodes;
-		} else if (progression) {
-			(progression.data as ChallengeAIProgressionData).ioCodes =
-				challenge.ioCodes;
-		}
+
+		// TODO Progression part
+		// if (editMode) {
+		// 	challenge.ioCodes = newIOCodes;
+		// } else if (progression) {
+		// 	(progression.data as ChallengeAIProgressionData).ioCodes =
+		// 		challenge.ioCodes;
+		// }
+		currIoCodes = newActiveIOCodes;
+
 		setHyperparams(currHyperparams);
 		console.log('New Hyperparams ', challenge.hyperparams);
 	};
@@ -291,33 +302,32 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		//If the dataset is loaded
 		if (activeDataset.current) {
 			//Set IOCodes
-			let first = true;
-			let array = activeDataset.current.getDataAsArray().map((val, index) => {
-				const header = activeDataset.current!.getParamNames().at(index);
-				if (challenge.dataset!.getParamNames().indexOf(header!) === -1) {
-					if (first) {
-						first = false;
-						return challenge.ioCodes[index];
-					} else {
-						return -200;
-					}
-				} else {
-					first = true;
-					return challenge.ioCodes[index];
-				}
-			});
-			let newIOCodes: number[] = [];
-			array.forEach(e => {
-				if (e !== -200) newIOCodes.push(e);
+			currIoCodes = [];
+			challenge.ioCodes.forEach(e => currIoCodes.push(e));
+			console.log('current iocodes : ', currIoCodes);
+
+			//Update some hyperparams
+			challenge.hyperparams.NN.nbInputs = challenge.ioCodes.filter(
+				e => e === 1,
+			).length;
+			challenge.hyperparams.NN.nbOutputs = challenge.ioCodes.filter(
+				e => e === 0,
+			).length;
+
+			let indexArray: number[] = [];
+			challenge.hyperparams.NN.neuronsByLayer =
+				challenge.hyperparams.NN.neuronsByLayer.filter((e, i) => {
+					if (e === 0) indexArray.push(1);
+					else return e;
+				});
+			indexArray.forEach(i => {
+				challenge.hyperparams.NN.activationsByLayer.splice(i, 1);
 			});
 
 			//Cloning the initial data
 			activeDataset.current = challenge.dataset!.clone();
 			optimizer.current = undefined;
 			setActiveModel(undefined);
-
-			//Savings changes to IOCodes and hyperparams
-			aiInterfaceIOChange(newIOCodes);
 		}
 	}
 
@@ -390,7 +400,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	function createRegression(a: number, b: number, c: number, d: number) {
 		regression.current = new PolyRegression(
 			'1',
-			challenge.hyperparams[challenge.modelType] as RegHyperparameters,
+			currHyperparams[challenge.modelType] as RegHyperparameters,
 		);
 		optimizer.current = new PolyOptimizer(regression.current);
 		model.current = regression.current;
@@ -437,7 +447,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	/**
 	 * Calculates the cost for the current model compared to the dataset of the challenge.
-	 * @returns the calculated cost.
+	 * @returns the calculated cost or error message
 	 */
 	function costFunction() {
 		if (!model.current) {
@@ -445,8 +455,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		}
 
 		if (activeDataset.current) {
-			let input = activeDataset.current.getInputsOutputs(challenge.ioCodes)[0];
-			let real = activeDataset.current.getInputsOutputs(challenge.ioCodes)[1];
+			let input = activeDataset.current.getInputsOutputs(currIoCodes)[0];
+			let real = activeDataset.current.getInputsOutputs(currIoCodes)[1];
+
 			createOptimizer();
 
 			try {
@@ -524,7 +535,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			case MODEL_TYPES.NEURAL_NETWORK:
 				model.current = new NeuralNetwork(
 					'Neural Network Model',
-					challenge.hyperparams[challenge.modelType],
+					currHyperparams[challenge.modelType],
 					{
 						layerParams: [],
 					},
@@ -540,6 +551,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	/**
 	 * Creats of a one shot associate to the column selected
 	 * @param column the parameter's name to replace.
+	 * @return error message
 	 */
 	function oneHot(
 		name: string,
@@ -548,7 +560,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	): string | void {
 		let index = activeDataset.current!.getParamNames().indexOf(name);
 		const oldNumberParams = activeDataset.current!.getParamNames().length;
-		const valueIO = challenge.ioCodes.at(index);
+		const valueIO = currIoCodes.at(index);
 
 		if (
 			activeDataset.current!.createOneHotWithNewParamsOneHot(
@@ -560,16 +572,18 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			const numberNewParams =
 				activeDataset.current!.getParamNames().length - oldNumberParams;
 
-			let newIOCodes = challenge.ioCodes;
+			let newIOCodes = currIoCodes;
+
 			//Addind the new column to the IOcodes
 			for (let e = 1; e <= numberNewParams; e++) {
 				newIOCodes.splice(index + e, 0, valueIO!);
 			}
-			challenge.ioCodes = newIOCodes;
-			challenge.hyperparams.NN.nbInputs = challenge.ioCodes.filter(
+
+			currIoCodes = newIOCodes;
+			challenge.hyperparams.NN.nbInputs = currIoCodes.filter(
 				e => e === 1,
 			).length;
-			challenge.hyperparams.NN.nbOutputs = challenge.ioCodes.filter(
+			challenge.hyperparams.NN.nbOutputs = currIoCodes.filter(
 				e => e === 0,
 			).length;
 			forceUpdate();
@@ -584,6 +598,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	/**
 	 * Normalizes the data of the parameter and change the data of the table
 	 * @param column the parameter's name to replace.
+	 * @return error message
 	 */
 	function normalizeColumn(column: string): string | void {
 		if (activeDataset.current) {
@@ -603,7 +618,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	/**
 	 * Normalizes the data of the parameter and change the data of the table
 	 * @param column the parameter's name to replace.
-	 * @param data
+	 * @param data the data to normalize
+	 * @return error message or the value of the data normalize
 	 */
 	function normalize(column: string, data: number): string | number {
 		if (activeDataset.current) {
@@ -622,6 +638,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	/**
 	 * Predicts an array of outputs with the model
 	 * @param input array of inputs
+	 * @return the prediction
 	 */
 	function predict(input: number[]) {
 		let tab: number[][] = [];
@@ -635,23 +652,29 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		let matInput = new Matrix(tab);
 		let respond;
 		//Prediction
-		try {
-			respond = model.current?.predict(matInput).transpose();
-		} catch (e) {
-			if (e instanceof Error) {
-				return e.message;
+		if (model.current) {
+			try {
+				respond = model.current.predict(matInput).transpose();
+			} catch (e) {
+				if (e instanceof Error) {
+					return e.message;
+				}
 			}
+			return respond?.getValue();
+		} else {
+			return "Error : Le modèle n'a pas encore été créé";
 		}
-		return respond?.getValue();
 	}
 
 	/**
 	 * Trains the model
+	 * @return error message
 	 */
 	function optimize() {
 		if (activeDataset.current) {
-			let input = activeDataset.current.getInputsOutputs(challenge.ioCodes)[0];
-			let real = activeDataset.current.getInputsOutputs(challenge.ioCodes)[1];
+			let input = activeDataset.current.getInputsOutputs(currIoCodes)[0];
+			let real = activeDataset.current.getInputsOutputs(currIoCodes)[1];
+
 			createOptimizer();
 
 			try {
@@ -664,14 +687,14 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	/**
 	 * Returns the names of the paraters that are an input or an output
-	 * @returns
+	 * @returns error message or the input and output parameter names
 	 */
 	function getIONames() {
 		if (activeDataset.current) {
 			let params: string[] = activeDataset.current.getParamNames();
 			let ioParams: string[] = [];
-			for (let i = challenge.ioCodes.length - 1; i >= 0; i--) {
-				if (challenge.ioCodes[i] !== -1) ioParams.push(params[i]);
+			for (let i = currIoCodes.length - 1; i >= 0; i--) {
+				if (currIoCodes[i] !== -1) ioParams.push(params[i]);
 			}
 			return ioParams;
 			//return activeDataset.current.getParamNames();
@@ -682,6 +705,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	/**
 	 * Delete the line indicated in the dataset
 	 * @param index the index of the line to delete
+	 * @return Error message
 	 */
 	function deleteLine(index: number) {
 		if (activeDataset.current) {
@@ -692,10 +716,23 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		}
 	}
 
+	/**
+	 * Return the corralation coefficient
+	 * @param lst1 First list of number to find the corralation coefficient
+	 * @param list2 Second list of number to find the corralation coefficient
+	 * @returns corralation coefficient
+	 */
 	function coefficientCorrelation(lst1: number[], list2: number[]) {
-		return correlationCoeff(lst1, list2);
+		let i = correlationCoeff(lst1, list2);
+		return i;
 	}
 
+	/**
+	 * Return the determination coefficient
+	 * @param lst1 First list of number to find the determination coefficient
+	 * @param list2 Second list of number to find the determination coefficient
+	 * @returns determination coefficient
+	 */
 	function coefficientDetermination(lst1: number[], list2: number[]) {
 		return determinationCoeff(lst1, list2);
 	}
@@ -822,6 +859,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 						initData={challenge.dataset}
 						modelType={challenge.modelType}
 						hyperparams={currHyperparams[challenge.modelType]}
+						activeIoCodes={currIoCodes}
 						ioCodes={challenge.ioCodes}
 						activeModel={activeModel}
 					/>

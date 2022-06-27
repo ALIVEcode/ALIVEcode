@@ -22,10 +22,11 @@ export type ChallengeTableProps = {
 	initData?: AIDataset;
 	isData: boolean;
 	ioCodes: number[];
+	activeIoCodes: number[]
 } & OneOf<
 	{
 		data: AIDataset;
-		handleIOChange: (newIO: number[]) => void;
+		handleIOChange: (activeNewIO: number[],newIO: number[]) => void;
 	},
 	{
 		hyperparams: Hyperparameters;

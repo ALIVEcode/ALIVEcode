@@ -16,10 +16,10 @@ const SearchBar = ({ value, setValue, onSubmit }: SearchBarProps) => {
 	const searchRef = useRef<HTMLInputElement>(null);
 
 	return (
-		<div className="rounded-md bg-[color:var(--background-color)] text-[color:var(--fg-shade-two-color)] border border-[color:var(--bg-shade-four-color)]">
+		<div className="flex relative rounded-md bg-[color:var(--background-color)] text-[color:var(--fg-shade-two-color)] border border-[color:var(--bg-shade-four-color)]">
 			<input
 				ref={searchRef}
-				className="shadow bg-transparent appearance-none py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-[color:var(--fg-shade-two-color)]"
+				className="shadow bg-transparent appearance-none py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-[color:var(--fg-shade-two-color)] border-r border-[color:var(--bg-shade-four-color)]"
 				value={value}
 				onChange={e => setValue(e.target.value)}
 				onBlur={(e: any) => {
@@ -35,7 +35,7 @@ const SearchBar = ({ value, setValue, onSubmit }: SearchBarProps) => {
 				type="text"
 			/>
 			<div
-				className="inline p-3 cursor-pointer"
+				className="flex items-center p-1 cursor-pointer"
 				onClick={() =>
 					onSubmit && searchRef.current && onSubmit(searchRef.current.value)
 				}

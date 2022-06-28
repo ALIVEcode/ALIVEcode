@@ -141,6 +141,8 @@
 		"creation_date": "Creation date",
 		"update_date": "Update date",
 		"see_links": "See links",
+		"copied": "Copied",
+		"id_copied": "Id copied",
 		"activity_type": {
 			"CH": "Challenge",
 			"VI": "Video",
@@ -349,7 +351,7 @@
 		"layout": "Course Layout",
 		"layout_view": "Layout view",
 		"delete": "Delete this course. (It will be removed from all the classrooms it is in)",
-		"deletion_test": "Enter the name of the course to confirm the deletion",
+		"deletion_test": "Enter the name of your course to confirm its deletion.",
 		"validate_activity": "Confirm changes",
 		"start_writing": "Begin writing here...",
 		"cursed": {
@@ -575,6 +577,9 @@
 			"name": "IoT Project",
 			"settings": "Settings",
 			"routes": "Routing",
+			"delete": "Are you sure you want to delete your IoT project?",
+			"delete_test": "Write the name of your IoT project to confirm its deletion.",
+			"delete_success": "IoT project deleted",
 			"documents": {
 				"name": "Documents"
 			},
@@ -724,7 +729,10 @@
 		"object": {
 			"name": "IoT Object",
 			"copy_id": "Copy ID of object",
-			"deleted": "IoT Object Deleted"
+			"delete": "Are you sure you want to delete your IoT object?",
+			"delete_test": "Write the name of your IoT object to confirm its deletion.",
+			"delete_success": "IoT object deleted",
+			"logs": "Logs of the IoT object \"{{name}}\""
 		}
 	},
 	"user": {

@@ -1,4 +1,4 @@
-import { faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faClipboard } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IoTProjectCardProps } from './iotProjectCardTypes';
 import { formatDate } from '../../../Types/formatting';
@@ -6,10 +6,15 @@ import { useTranslation } from 'react-i18next';
 import { classNames } from '../../../Types/utils';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { useNavigate } from 'react-router';
+import { useAlert } from 'react-alert';
 
-const IoTProjectCard = ({ project }: IoTProjectCardProps) => {
+const IoTProjectCard = ({
+	project,
+	handleProjectDeletion,
+}: IoTProjectCardProps) => {
 	const { t } = useTranslation();
 	const { routes } = useRoutes();
+	const alert = useAlert();
 	const navigate = useNavigate();
 
 	return (
@@ -33,12 +38,21 @@ const IoTProjectCard = ({ project }: IoTProjectCardProps) => {
 			</div>
 			<div>
 				<FontAwesomeIcon
-					icon={faPencilAlt}
-					className="mr-2 text-[color:var(--bg-shade-four-color)] hover:text-[color:var(--foreground-color)] transition-all"
+					icon={faClipboard}
+					className="mr-2 text-[color:var(--bg-shade-four-color)] hover:text-[color:var(--logo-color)] transition-all"
+					onClick={e => {
+						e.stopPropagation();
+						navigator.clipboard.writeText(project.id);
+						alert.success(t('msg.id_copied'));
+					}}
 				/>
 				<FontAwesomeIcon
 					icon={faTrash}
 					className="text-[color:var(--bg-shade-four-color)] hover:text-[color:var(--danger-color)] transition-all"
+					onClick={e => {
+						e.stopPropagation();
+						handleProjectDeletion(project);
+					}}
 				/>
 			</div>
 		</div>

@@ -488,7 +488,7 @@ const Dashboard = (props: DashboardProps) => {
 											<CourseSection course={course} className="max-w-[80%]" />
 											<FontAwesomeIcon
 												icon={faTrash}
-												className="cursor-pointer hover:[color:var(--danger-color)] mr-2 mt-1 group-hover:visible invisible"
+												className="cursor-pointer mr-2 mt-1 group-hover:text-[color:var(--bg-shade-four-color)] text-transparent hover:!text-[color:var(--danger-color)] transition-all"
 												title={t('course.delete')}
 												onClick={() => {
 													courseToDeleteRef.current = course;
@@ -549,11 +549,8 @@ const Dashboard = (props: DashboardProps) => {
 					placeholder: courseToDeleteRef.current?.name,
 				}}
 				hideFooter
-			>
-				<p className="text-red-600 pb-2 font-bold text-lg">
-					{t('action.irreversible')}
-				</p>
-			</AlertConfirm>
+				irreversibleText
+			/>
 		</StyledDashboard>
 	);
 };

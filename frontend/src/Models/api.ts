@@ -61,6 +61,8 @@ import { BundleQueryDTO } from './Course/bundles/dto/BundleQuery.dto';
 import { Bundle } from './Course/bundles/bundle.entity';
 import { ClaimBundleDTO } from './Course/bundles/dto/ClaimBundle.dto';
 import { GenericChallengeTransformer } from './Challenge/transformer/GenericChallengeTransformer';
+import { QueryIoTProjects } from './User/dto/query_iotprojects.dto';
+import { QueryIoTObjects } from './User/dto/query_iotobjects';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;
@@ -198,8 +200,26 @@ const api = {
 		},
 		users: {
 			iot: {
-				getProjects: apiGet('users/iot/projects', IoTProject, true),
-				getObjects: apiGet('users/iot/objects', IoTObject, true),
+				getProjects: async (query: QueryIoTProjects) => {
+					return plainToInstance(
+						IoTProject,
+						(
+							await axios.get(
+								`users/iot/projects${query.name ? `?name=${query.name}` : ''}`,
+							)
+						).data,
+					);
+				},
+				getObjects: async (query: QueryIoTObjects) => {
+					return plainToInstance(
+						IoTObject,
+						(
+							await axios.get(
+								`users/iot/objects${query.name ? `?name=${query.name}` : ''}`,
+							)
+						).data,
+					);
+				},
 			},
 			social: {
 				getResults: apiGet('users/quizzes/results', Result, true),
@@ -628,6 +648,8 @@ const api = {
 			},
 			objects: {
 				delete: apiDelete('iot/objects/:id'),
+				update: apiUpdate('iot/objects/:id', IoTObject),
+				get: apiGet('iot/objects/:id', IoTObject, false),
 				async connectObjectToProject(object: IoTObject, project: IoTProject) {
 					return plainToInstance(
 						IoTObject,

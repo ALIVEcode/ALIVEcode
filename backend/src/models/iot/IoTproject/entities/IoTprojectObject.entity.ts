@@ -17,7 +17,7 @@ export class IoTProjectObjectEntity {
   @IsEmpty()
   id: number;
 
-  @ManyToOne(() => IoTProjectEntity, project => project.iotProjectObjects)
+  @ManyToOne(() => IoTProjectEntity, project => project.iotProjectObjects, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'iotProjectId' })
   @Exclude({ toClassOnly: true })
   iotProject: IoTProjectEntity;

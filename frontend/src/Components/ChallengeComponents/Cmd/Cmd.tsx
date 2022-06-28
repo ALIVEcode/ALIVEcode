@@ -41,26 +41,28 @@ const StyledDiv = styled.div`
  *
  * @author Enric Soldevila, Mathis Laroche
  */
-const Cmd = React.forwardRef<HTMLDivElement>((props: CmdProps, ref) => {
-	const { t } = useTranslation();
-	const { theme } = useContext(ThemeContext);
+const Cmd = React.forwardRef<HTMLDivElement, CmdProps>(
+	({ styledDivId }, ref) => {
+		const { t } = useTranslation();
+		const { theme } = useContext(ThemeContext);
 
-	return (
-		<StyledDiv theme={theme}>
-			<Button
-				variant="third"
-				onClick={() => {
-					if (!ref || !('current' in ref) || !ref.current) return;
-					ref.current.innerHTML = '';
-				}}
-				className="btn-clearCmdLines"
-			>
-				{t('cmd.clear')}
-			</Button>
-			<div className="w-full h-[1px] py-1.5 border-b-2 border-[color:var(--bg-shade-one-color)]" />
-			<div ref={ref} />
-		</StyledDiv>
-	);
-});
+		return (
+			<StyledDiv theme={theme} id={styledDivId}>
+				<Button
+					variant="third"
+					onClick={() => {
+						if (!ref || !('current' in ref) || !ref.current) return;
+						ref.current.innerHTML = '';
+					}}
+					className="btn-clearCmdLines"
+				>
+					{t('cmd.clear')}
+				</Button>
+				<div className="w-full h-[1px] py-1.5 border-b-2 border-[color:var(--bg-shade-one-color)]" />
+				<div ref={ref} />
+			</StyledDiv>
+		);
+	},
+);
 
 export default Cmd;

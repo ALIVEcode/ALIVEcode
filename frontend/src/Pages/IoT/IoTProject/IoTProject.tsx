@@ -70,7 +70,7 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 	const [lastSaved, setLastSaved] = useState<number>(Date.now() - 4000);
 
 	const [scriptOpen, setScriptOpen] = useState<AsScriptModel>();
-	const [logsOpen, setLogsOpen] = useState<IoTObject>();
+	const [logsOpened, setLogsOpened] = useState<IoTObject>();
 
 	const saveComponents = useCallback(async () => {
 		if (!canEdit || !project) return;
@@ -343,7 +343,7 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 			disconnectObjectFromProject,
 			createScript,
 			setScriptOpen,
-			setLogsOpen,
+			setLogsOpen: setLogsOpened,
 			setScriptOfObject,
 		};
 	}, [
@@ -394,12 +394,12 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 				)}
 			</Modal>
 			<Modal
-				title="Script"
-				open={logsOpen !== undefined}
-				setOpen={state => !state && setLogsOpen(undefined)}
+				title={t('iot.object.logs', { name: logsOpened?.name })}
+				open={logsOpened !== undefined}
+				setOpen={state => !state && setLogsOpened(undefined)}
 				size="lg"
 			>
-				{logsOpen && <IoTObjectLogs object={logsOpen} />}
+				{logsOpened && <IoTObjectLogs object={logsOpened} />}
 			</Modal>
 		</IoTProjectContext.Provider>
 	);

@@ -4,13 +4,18 @@ import {Canvas} from "@react-three/fiber";
 import {OrbitControls} from "@react-three/drei";
 import {ThreeNeuralNet} from "./AIVisualNeuralNet";
 import {useForceUpdate} from "../../../../../state/hooks/useForceUpdate";
-import {NNHyperparameters} from "../../../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces";
+import {
+    NNHyperparameters,
+    NNModelParams
+} from "../../../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces";
+
 
 type NNProps = {
     hyperparameters: NNHyperparameters
     spacing: number
     filter: number
     maxNeuronPerLayer: number
+    layerParams : NNModelParams
 }
 
 export function AICanvas(props:NNProps) {
@@ -18,7 +23,6 @@ export function AICanvas(props:NNProps) {
     const raycaster = new THREE.Raycaster();
     // @ts-ignore
     raycaster.params.Line.threshold = 0.8;
-
 
     // const [mouse] = useState([0, 0]);;
     //const {} = useContext(ChallengeContext);
@@ -77,6 +81,13 @@ export function AICanvas(props:NNProps) {
         let toClicked : string = ""
         layerClicked = ((+currentPath.current.split(':')[0])-1).toString();
         layerClicked += (layerClicked === "1" ? "re" : "e");
+        console.log(layerClicked)
+        if(layerClicked === "0e") {
+            layerClicked = "Couche d'entr\u00E9e"
+        } else if (layerClicked === topology.length-1 + "e") {
+            layerClicked = "Couche de sortie"
+        }
+
         fromClicked = currentPath.current.split(':')[1]
         if(typeClicked==="Poid") {
             toClicked = currentPath.current.split(':')[2]
@@ -84,60 +95,61 @@ export function AICanvas(props:NNProps) {
 
         const typeHovered = currentHoveredPath.current.split(':').length === 3 ? "Poid": "Neurone";
         let layerHovered: string;
-        let fromHovered : string
-        let toHovered : string = ""
         layerHovered = ((+currentHoveredPath.current.split(':')[0])-1).toString();
-        layerHovered += (layerHovered === "1" ? "re" : "e");
-        fromHovered = currentHoveredPath.current.split(':')[1]
-        if(typeHovered==="Poid") {
-            toHovered = currentHoveredPath.current.split(':')[2]
-        }
 
 
-        return <div className={"absolute right-10 bg-black" + ((currentHoveredPath.current === "" && currentPath.current === "") ? "hidden": "visible" )}>
 
-            {currentPath.current === "" ? null :
-                <div className={"bg-black p-2"}>
-                    {
-                        divider > 1 ? <div>
-                            {(typeClicked === "Neurone" ? "La neurone": "Le poid")
-                            + " sélectionné"+ (typeClicked === "Neurone" ? "e ": "")
-                            + " équivaut à " + divider + " " + typeClicked.toLocaleLowerCase() + "s"}
-                        </div> : null
-                    }
+        return (currentHoveredPath.current === "" && currentPath.current === "") ? null : <div className={"absolute right-0 p-2 " }>
 
-                    {
-                        layerClicked + " couche"
-                    }
-                    <br />
-                    {
-                        (currentPath.current.split(':').length === 3 ? "Poid ": "Neurone ")
-                        + currentPath.current
-                    }
-                </div>
+            {
+                divider > 1 ? <div className={"bg-red-500 flex right-0 p-2 text-right"}>
+                    {(typeClicked === "Neurone" ? "La neurone": "Le poid")
+                        + " sélectionné"+ (typeClicked === "Neurone" ? "e ": "")
+                        + " équivaut à " + divider + " " + typeClicked.toLocaleLowerCase() + "s"}
+                </div> : null
             }
 
-            {currentHoveredPath.current === "" ? null :
-                <div className={"bg-black p-5"}>
-                    {
-                        layerHovered + " couche"
-                    }
-                    <br />
-                    {
-                        (currentHoveredPath.current.split(':').length === 3 ? "Poid ": "Neurone ")
-                        + currentHoveredPath.current
-                    }
-                </div>}
+            {/*<div className={"absolute right-0 p-2 text-right"}>*/}
+                {currentPath.current === "" ? null :
+                    <div className={"bg-gray-500 right-0 p-2"} >
+                                {
+                                    layerClicked === "Couche d'entr\u00E9e" ? layerClicked :
+                                        layerClicked === "Couche de sortie" ?
+                                            layerClicked : layerClicked + " couche"
+                                }
+                                <br />
+                                {
+                                    (currentPath.current.split(':').length === 3 ? "Poid " : " Neurone ")
+                                    + currentPath.current
+                                }
+
+                    </div>
+
+                }
+
+                {
+                    currentHoveredPath.current === "" ? null :
+                    <div className={"bg-gray-400 p-2 absolute text-right right-2 "}>
+                        {
+                            (currentHoveredPath.current.split(':').length === 3 ? "Poid ": "Neurone ")
+                            + currentHoveredPath.current
+                        }
+                    </div>
+                }
+            {/*</div>*/}
+
         </div>
     }
 
     return (
         <>
-            {AAAMenu()}
-            <Canvas raycaster={raycaster} camera={{fov: 75, position: [spacing * -4, 0, 20 * topology.length / 2]}}>
+            {
+                AAAMenu()
+            }
+            <Canvas raycaster={raycaster} camera={{fov: 75, position: [spacing * -2, 0, spacing * ((topology.length-1) / 2)]}}>
                 <pointLight position={[64, 64, 64]}/>
                 <ambientLight intensity={1} color={'#bcd9ff'}/>
-                <OrbitControls target={[0, 0, spacing * topology.length/2 - 5]}/>
+                <OrbitControls target={[0, 0, spacing * ((topology.length-1) / 2)]} />
                 <ThreeNeuralNet topology={topology} spacing={spacing} filter={0} maxNeuronPerLayer={10}
                                 clickedStates={clickedStates} hoveredStates={hoveredStates}
                                 hasInput={hasInput} hasOutput={hasOutput}
@@ -145,6 +157,14 @@ export function AICanvas(props:NNProps) {
                                 currentHoveredPath={currentHoveredPath}
                                 currentPath={currentPath}
                 />
+                {/*<Neuron*/}
+
+                {/* clickedStates={clickedStates} currentHoveredPath={currentHoveredPath}*/}
+                {/* currentPath={currentPath} filledLevel={2}*/}
+                {/* forceUpdate={forceUpdate}*/}
+                {/* full={true}*/}
+                {/* hoveredStates={hoveredStates} index={0} path={""}*/}
+                {/* position={new Vector3(0, 0, spacing * ((topology.length-1) / 2))} radius={2}/>*/}
             </Canvas>
 
         </>

@@ -45,7 +45,11 @@ function Line( props: customLineProps ) {
                    if(!props.clickedStates.current[props.index])
                        props.clickedStates.current[props.clickedStates.current.indexOf(true)] = false;
                    props.clickedStates.current[props.index] = !props.clickedStates.current[props.index]
-                   props.currentPath.current = props.path
+
+                   if(!props.clickedStates.current[props.index])
+                       props.currentPath.current = ""
+                   else
+                       props.currentPath.current = props.path
 
                    props.forceUpdate()
                }}

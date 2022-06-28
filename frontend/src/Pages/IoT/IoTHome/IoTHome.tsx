@@ -1,9 +1,6 @@
 import { iotHomeProps } from './iotHomeTypes';
-import useRoutes from '../../../state/hooks/useRoutes';
 import styled from 'styled-components';
-import { HomeSection } from '../../../Components/MainComponents/HomeSection/HomeSection';
 import InterfaceSlideshow from '../../../assets/images/iot/interface_slideshow.png';
-import DemoProject from '../../../assets/images/iot/demo_project.png';
 import Footer from '../../../Components/MainComponents/Footer/Footer';
 import { HomeButton } from '../../../Components/UtilsComponents/Buttons/HomeButton';
 import { useTranslation } from 'react-i18next';
@@ -49,10 +46,11 @@ const StyledHome = styled.div`
  * @author Enric Soldevila
  */
 const IoTHome = (props: iotHomeProps) => {
-	const { routes } = useRoutes();
 	const getStartedRef = useRef<HTMLDivElement | null>(null);
 	const view = useView();
 	const { t } = useTranslation();
+
+	const paragraphClassName = 'text-center text-lg leading-loose tracking-wider';
 
 	const goToElement = (ref: MutableRefObject<any>) => {
 		ref.current &&
@@ -86,8 +84,49 @@ const IoTHome = (props: iotHomeProps) => {
 					</div>
 				</div>
 			</div>
-			<div className="text-gray-50 relative w-full h-full px-5 tablet:px-10 laptop:px-20">
-				<HomeSection
+			<div className="text-gray-50 relative w-full h-full px-10 tablet:px-18 laptop:px-32">
+				<p className={paragraphClassName + ' mt-32'}>
+					ALIVEIoT est la branche d’ALIVEcode servant à l’apprentissage de
+					l’Internet des Objets, un domaine de l’informatique possédant très peu
+					de ressources au niveau collégial. La branche ALIVEIoT utilise des
+					outils novateurs et conçus dans le but de simplifier l’apprentissage
+					et la recherche scientifique. Ces outils permettent notamment:
+				</p>
+				<ul className="text-center text-gray-300 mt-8 leading-loose tracking-wider mb-32">
+					<li>La visualisation de données en temps réel</li>
+					<li>Le partage de donneés entre objets connectés</li>
+					<li>
+						Le contrôle d’objets connectés à l’aide du langage AliveScript
+					</li>
+				</ul>
+				<div className="text-center">
+					<label className="text-5xl">Projets en vedette</label>
+					<div className="m-auto w-1/2 border-b-2 mt-4 border-[color:var(--fg-shade-two-color)]"></div>
+				</div>
+
+				<div className="tracking-widest mt-8 mb-4 text-2xl">
+					Ville Intelligente
+				</div>
+				<iframe
+					className="m-auto w-full aspect-video mb-16"
+					src={`https://youtube.com/embed/a-wLMgqOz9E`}
+					title="YouTube video player"
+					frameBorder="0"
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+					allowFullScreen
+				/>
+				<div className="text-center">
+					<label className="text-5xl">Commencer à apprendre</label>
+					<div className="m-auto w-1/2 border-b-2 mt-4 border-[color:var(--fg-shade-two-color)]"></div>
+				</div>
+				<p className={paragraphClassName + ' mt-8'}>
+					Apprends la théorie et la pratique de l'IoT. Suis une ou plusieurs
+					formations complètes offertes par ALIVEcode qui t'apprendront tout ce
+					qui t'est requis afin de commencer à développer tes propres projets
+					IoT. L'électronique, les protocoles de communication, les bases de
+					données, l'IA, l'interfaçage, etc.
+				</p>
+				{/*<HomeSection
 					ref={getStartedRef}
 					title={t('home.iot.section.develop.title')}
 					text={t('home.iot.section.develop.desc')}
@@ -106,9 +145,9 @@ const IoTHome = (props: iotHomeProps) => {
 					button={t('home.iot.to_trainings')}
 					to={routes.auth.classroom_browse.path}
 					imgOpacity={0.8}
-				/>
+	/>*/}
 			</div>
-			<Footer className="!mt-20"></Footer>
+			<Footer className="!mt-4"></Footer>
 		</StyledHome>
 	);
 };

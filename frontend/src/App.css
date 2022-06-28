@@ -1,13 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 body,
 html,
 #root,
 .App {
 	height: 100%;
 	font-weight: 400;
-}
-
-.App {
 	text-align: left;
+	font-family: 'Roboto', sans-serif;
 }
 
 .no-cursor {

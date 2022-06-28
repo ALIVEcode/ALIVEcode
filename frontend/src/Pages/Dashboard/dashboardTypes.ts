@@ -20,7 +20,6 @@ export const StyledDashboard = styled.div`
 	width: 100%;
 	box-sizing: border-box;
 	background-color: var(--background-color);
-	font-family: var(--oxygen-font);
 
 	.sidebar {
 		border-right: 1px solid var(--bg-shade-four-color);

@@ -86,13 +86,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	const currCode = useRef<string>(); //The code inside the line interface.
 
 	//The progression data for the user in this challenge
-	const currHyperparams = useRef<GenHyperparameters>(
-		editMode
-			? challenge.hyperparams
-			: progression?.data
-			? (progression.data as ChallengeAIProgressionData).hyperparams
-			: challenge.hyperparams,
-	);
+	const currHyperparams = useRef<GenHyperparameters>(challenge.hyperparams);
+
+	console.log(currHyperparams.current);
 
 	let currIoCodes: number[] = editMode ? challenge.ioCodes : challenge.ioCodes;
 
@@ -163,9 +159,13 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 				if (challenge.ioCodes.length === 0)
 					challenge.ioCodes = challenge.dataset.getDataAsArray().map(() => -1);
-				if ((progression?.data as ChallengeAIProgressionData).ioCodes)
+				if (!(progression?.data as ChallengeAIProgressionData).ioCodes)
 					(progression?.data as ChallengeAIProgressionData).ioCodes =
 						challenge.ioCodes;
+
+				if (!(progression?.data as ChallengeAIProgressionData).hyperparams)
+					(progression?.data as ChallengeAIProgressionData).hyperparams =
+						challenge.hyperparams;
 
 				//TODO créer l'objet data ICI pour la progression (progression.data = {}), s'inspirer de code?
 				// challenge.ioCodes = editMode
@@ -185,8 +185,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	useEffect(() => {
 		currHyperparams.current = editMode
 			? challenge.hyperparams
-			: progression?.data
-			? (progression.data as ChallengeAIProgressionData).hyperparams
+			: (progression!.data as ChallengeAIProgressionData).hyperparams
+			? (progression!.data as ChallengeAIProgressionData).hyperparams
 			: challenge.hyperparams;
 		forceUpdate();
 	}, [challenge.hyperparams, editMode, progression?.data]);

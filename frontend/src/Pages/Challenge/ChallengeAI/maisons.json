@@ -9,7 +9,6 @@
 	{
 		"nombre de pièces": 10,
 		"nombre de chambres": 2,
-		"nombre de salles de bain": 3,
 		"ville": "Gatineau",
 		"prix total": 100
 	},
@@ -37,13 +36,11 @@
 	{
 		"nombre de pièces": 12,
 		"nombre de chambres": 3,
-		"nombre de salles de bain": 4,
 		"ville": "Montréal",
 		"prix total": 150
 	},
 	{
 		"nombre de pièces": 40,
-		"nombre de chambres": 8,
 		"nombre de salles de bain": 6,
 		"ville": "Gatineau",
 		"prix total": 500

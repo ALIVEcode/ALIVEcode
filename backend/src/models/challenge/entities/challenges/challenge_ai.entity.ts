@@ -10,15 +10,19 @@ export class ChallengeAIEntity extends ChallengeEntity {
   @IsOptional()
   initialCode?: string;
 
-  @Column({ type: 'json', nullable: false })
+  @Column({ type: 'json', nullable: false, default: {} })
   @IsOptional()
-  hyperParams: object;
+  hyperparams: object;
+
+  @Column({ type: 'json', nullable: false, default: [] })
+  @IsOptional()
+  ioCodes: object;
 
   @Column({ nullable: true })
   @IsOptional()
   solution?: string;
 
-  @Column({ type: 'enum', enum: MODEL_TYPES, nullable: true, default: MODEL_TYPES.POLY_REGRESSION })
+  @Column({ type: 'enum', enum: MODEL_TYPES, nullable: false, default: MODEL_TYPES.POLY_REGRESSION })
   @IsOptional()
   modelType: MODEL_TYPES;
 

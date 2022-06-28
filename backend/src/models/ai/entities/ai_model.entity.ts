@@ -1,11 +1,50 @@
-import { Column, PrimaryGeneratedColumn, Entity } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 /**
- * Different types of Models (Neural Network, Poly Regression, etc.)
+ * This enum describles all possible types of Cost Function available in AI challenges.
+ * The current types of Cost Function available are:
+ * - MEAN_SQUARED_ERROR
+ * - MEAN_ABSOLUTE_ERROR
+ * - BINARY_CROSS_ENTROPY
+ */
+ export enum COST_FUNCTIONS {
+	MEAN_SQUARED_ERROR = 'MSE',
+	MEAN_ABSOLUTE_ERROR = 'MAE',
+	BINARY_CROSS_ENTROPY = 'BCE',
+}
+
+/**
+ * This enum describles all possible types of Activation Function available in AI challenges.
+ * The current types of Activation Function available are:
+ * - RELU
+ * - SIGMOID
+ * - TANH
+ */
+export enum ACTIVATION_FUNCTIONS {
+	RELU = 'RE',
+	SIGMOID = 'SI',
+	TANH = 'TA',
+}
+
+/**
+ * This enum describes all possible types of Model available in AI challenges.
+ * The current types of Model available are:
+ * - NeuralNetwork
+ * - Regression
  */
 export enum MODEL_TYPES {
-  NEURAL_NETWORK = 'NN',
-  POLY_REGRESSION = 'RP',
+	NEURAL_NETWORK = 'NN',
+	POLY_REGRESSION = 'POLY',
+}
+
+/**
+ * This enum describes all possible types of optimizers available for Neural Networks
+ * in AI challenges.
+ * The current types of Regression available are:
+ * - GradientDescentScheme.tsx
+ */
+export enum NN_OPTIMIZER_TYPES {
+	GradientDescent = 'GD',
 }
 
 /**

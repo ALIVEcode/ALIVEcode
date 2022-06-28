@@ -156,6 +156,7 @@ export class AIDataset {
 		}
 
 		//Remove the parameter to replace of the array of parameters
+		iterator = this.paramNames.indexOf(param)
 		this.paramNames.forEach((value, index) => {
 			if (value == param) this.paramNames.splice(index, 1);
 		});
@@ -165,6 +166,7 @@ export class AIDataset {
 			this.paramNames.splice(iterator, 0, e);
 			iterator++;
 		});
+		console.log(this.getParamNames(), "test")
 
 		return true;
 	}

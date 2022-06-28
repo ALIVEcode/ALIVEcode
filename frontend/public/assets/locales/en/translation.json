@@ -157,6 +157,7 @@
 			"all": "All"
 		},
 		"time": {
+			"last_updated": "Last updated",
 			"format": "{{dayName}}, {{day}} {{monthName}} {{year}} {{hour}}:{{minute}}",
 			"day": {
 				"0": "Sunday",
@@ -241,6 +242,15 @@
 		},
 		"resources": {
 			"title": "My Resources"
+		},
+		"iot": {
+			"title": "IoT Dashboard",
+			"projects": "IoT Projects",
+			"objects": "IoT Objects",
+			"no_object": "You have no IoT Object",
+			"no_project": "You have no IoT Projects",
+			"create_project": "Create a new IoT project",
+			"create_object": "Create a new IoT object"
 		},
 		"classrooms": {
 			"title": "Classrooms",
@@ -561,11 +571,6 @@
 		}
 	},
 	"iot": {
-		"dashboard": {
-			"title": "IoT Dashboard",
-			"no_object": "No IoT Object",
-			"no_project": "No IoT Project"
-		},
 		"project": {
 			"name": "IoT Project",
 			"settings": "Settings",

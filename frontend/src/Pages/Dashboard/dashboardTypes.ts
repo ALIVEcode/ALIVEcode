@@ -5,8 +5,9 @@ export type DashboardProps = {};
 export type DashboardTabs =
 	| 'recents'
 	| 'challenges'
-	| 'classrooms'
-	| 'resources';
+	| 'iot'
+	| 'resources'
+	| 'classrooms';
 
 export type SwitchTabActions = {
 	tab: DashboardTabs;

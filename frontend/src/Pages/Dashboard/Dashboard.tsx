@@ -52,6 +52,8 @@ import AlertConfirm from '../../Components/UtilsComponents/Alert/AlertConfirm/Al
 import Info from '../../Components/HelpComponents';
 import { TutorialContext } from '../../state/contexts/TutorialContext';
 import { useForceUpdate } from '../../state/hooks/useForceUpdate';
+import IoTDashboard from '../IoT/IoTDashboard/IoTDashboard';
+import { faCloudsmith } from '@fortawesome/free-brands-svg-icons';
 
 /**
  * State reducer to change the state of the selected tab
@@ -108,6 +110,7 @@ const Dashboard = (props: DashboardProps) => {
 	const challengesTabRef = useRef<HTMLDivElement>(null);
 	const coursesRef = useRef<HTMLDivElement>(null);
 	const resourceTabRef = useRef<HTMLDivElement>(null);
+	const iotTabRef = useRef<HTMLDivElement>(null);
 	const classroomsRef = useRef<HTMLDivElement>(null);
 	const { registerTutorial } = useContext(TutorialContext);
 	const forceUpdate = useForceUpdate();
@@ -159,6 +162,8 @@ const Dashboard = (props: DashboardProps) => {
 			user?.isProfessor()
 		)
 			setTabSelected({ tab: 'resources' });
+		else if (pathname.endsWith('iot') && tabSelected.tab !== 'iot')
+			setTabSelected({ tab: 'iot' });
 		else if (pathname.includes('classroom')) {
 			const classroomId = query.get('id');
 			if (tabSelected.classroom?.id === classroomId) return;
@@ -199,10 +204,24 @@ const Dashboard = (props: DashboardProps) => {
 		});
 	}, [navigate, query]);
 
+	/**
+	 * Opens the resources tab
+	 */
 	const openResources = useCallback(() => {
 		query.delete('id');
 		navigate({
 			pathname: `/dashboard/resources`,
+			search: query.toString(),
+		});
+	}, [navigate, query]);
+
+	/**
+	 * Opens the recents tab
+	 */
+	const openIoTDashboard = useCallback(() => {
+		query.delete('id');
+		navigate({
+			pathname: `/dashboard/iot`,
 			search: query.toString(),
 		});
 	}, [navigate, query]);
@@ -242,6 +261,11 @@ const Dashboard = (props: DashboardProps) => {
 					position: 'right center',
 				},
 				{
+					ref: iotTabRef.current,
+					infoBox: <Info.Box text={t('help.dashboard.tabs.iot')} />,
+					position: 'right center',
+				},
+				{
 					ref: classroomsRef.current,
 					infoBox: (
 						<Info.Box text={t('help.dashboard.tabs.create_classroom')} />
@@ -267,6 +291,10 @@ const Dashboard = (props: DashboardProps) => {
 				return <DashboardRecents />;
 			case 'challenges':
 				return <DashboardChallenges />;
+			case 'resources':
+				return <ResourceMenu />;
+			case 'iot':
+				return <IoTDashboard />;
 			case 'classrooms':
 				if (!tabSelected.classroom) return;
 				return (
@@ -275,8 +303,6 @@ const Dashboard = (props: DashboardProps) => {
 						classroomProp={tabSelected.classroom}
 					/>
 				);
-			case 'resources':
-				return <ResourceMenu />;
 		}
 	};
 
@@ -367,6 +393,19 @@ const Dashboard = (props: DashboardProps) => {
 								</label>
 							</div>
 						)}
+						<div
+							ref={iotTabRef}
+							className={
+								'sidebar-btn ' +
+								(tabSelected.tab === 'iot' ? 'sidebar-selected' : '')
+							}
+							onClick={openIoTDashboard}
+						>
+							<FontAwesomeIcon className="sidebar-icon" icon={faCloudsmith} />
+							<label className="sidebar-btn-text">
+								{t('dashboard.iot.title')}
+							</label>
+						</div>
 
 						<hr />
 

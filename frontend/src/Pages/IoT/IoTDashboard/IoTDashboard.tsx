@@ -2,28 +2,18 @@ import { iotDashboardProps } from './iotDashboardTypes';
 import { useContext, useEffect, useState } from 'react';
 import api from '../../../Models/api';
 import { IoTProject } from '../../../Models/Iot/IoTproject.entity';
-import useRoutes from '../../../state/hooks/useRoutes';
-import styled from 'styled-components';
-import FillContainer from '../../../Components/UtilsComponents/FillContainer/FillContainer';
-import CardContainer from '../../../Components/UtilsComponents/CardContainer/CardContainer';
-import {
-	faArrowAltCircleLeft,
-	faPlus,
-} from '@fortawesome/free-solid-svg-icons';
 import { IoTObject } from '../../../Models/Iot/IoTobject.entity';
 import IoTObjectCreate from '../../../Components/IoTComponents/IoTObject/IotObjectForm/IoTObjectCreate';
 import FormModal from '../../../Components/UtilsComponents/FormModal/FormModal';
 import { useTranslation } from 'react-i18next';
 import { UserContext } from '../../../state/contexts/UserContext';
-import IoTObjectLargeCard from '../../../Components/IoTComponents/IoTObject/IoTObjectLargeCard/IoTObjectLargeCard';
-import Card from '../../../Components/UtilsComponents/Cards/Card/Card';
-import { useNavigate } from 'react-router-dom';
-import IoTIcon from '../../../assets/images/icons/sandboxblanc.png';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-const StyledDiv = styled(FillContainer)`
-	padding: 2vw;
-`;
+import Info from '../../../Components/HelpComponents';
+import IoTProjectCard from '../../../Components/IoTComponents/IoTProjectCard/IoTProjectCard';
+import IoTObjectCard from '../../../Components/IoTComponents/IoTObjectCard/IoTObjectCard';
+import SearchBar from '../../../Components/MainComponents/BrowsingMenu/SearchBar/SearchBar';
+import Link from '../../../Components/UtilsComponents/Link/Link';
+import useRoutes from '../../../state/hooks/useRoutes';
+import { plainToInstance } from 'class-transformer';
 
 /**
  * IoT dashboard page that contains all the projects, objects and stuff of the user
@@ -32,12 +22,12 @@ const StyledDiv = styled(FillContainer)`
  */
 const IoTDashboard = (props: iotDashboardProps) => {
 	const { user } = useContext(UserContext);
+	const { routes } = useRoutes();
 	const [projects, setProjects] = useState<IoTProject[]>();
 	const [objects, setObjects] = useState<IoTObject[]>();
-	const { routes } = useRoutes();
 	const { t } = useTranslation();
-	const navigate = useNavigate();
-	// TODO: ADD MODAL FORM GENERIC
+	const [searchObject, setSearchObject] = useState('');
+	const [searchProject, setSearchProject] = useState('');
 	const [openObjectCreate, setOpenObjectCreate] = useState(false);
 
 	useEffect(() => {
@@ -52,73 +42,74 @@ const IoTDashboard = (props: iotDashboardProps) => {
 	}, [user]);
 
 	return (
-		<StyledDiv>
-			<div className="flex flex-row gap-2">
-				<FontAwesomeIcon
-					icon={faArrowAltCircleLeft}
-					size="3x"
-					title={t('home.iot.to_home_page')}
-					className="cursor-pointer"
-					onClick={() => navigate(routes.public.iot.path)}
-				/>
-				<div className="text-5xl">{t('iot.dashboard.title')}</div>
+		<div className="h-full p-4">
+			<div className="section-title flex flex-row justify-between w-1/3">
+				{t('dashboard.iot.title')}{' '}
+				<Info.Icon
+					// onClick={() => setTimelineOpen(true)}
+					hoverPopup={{
+						position: 'right center',
+					}}
+				>
+					<Info.Box useDefaultStyle text={t('help.dashboard.views.iot')} />
+				</Info.Icon>
 			</div>
-			<div>
-				<CardContainer
-					asRow
-					icon={faPlus}
-					onIconClick={() => navigate(routes.auth.create_iot_project.path)}
-					height="200px"
-					className="iot-container"
-					title="My projects"
-				>
+			<div className="border-b w-1/3 border-[color:var(--bg-shade-four-color)]" />
+			<div className="w-full h-full py-4">
+				<div className="w-full h-1/2 overflow-y-auto mb-8 bg-[color:var(--background-color)] border rounded-lg border-[color:var(--bg-shade-four-color)]">
+					<div className="flex items-center justify-between px-4 py-2 border-b border-[color:var(--bg-shade-four-color)]">
+						<div>{t('dashboard.iot.projects')}</div>
+						<div className="flex flex-row items-center tracking-wide gap-4">
+							<Link to={routes.auth.create_iot_project.path}>
+								{t('dashboard.iot.create_project')}
+							</Link>
+							<SearchBar
+								value={searchProject}
+								setValue={setSearchProject}
+								onSubmit={() => {}}
+							/>
+						</div>
+					</div>
 					{projects && projects.length > 0 ? (
-						projects.map((p, idx) => (
-							<Card
-								key={idx}
-								title={p.name}
-								to={routes.auth.iot_project.path.replace(':id', p.id)}
-								img={IoTIcon}
-							/>
-						))
+						projects.map((p, idx) => <IoTProjectCard key={idx} project={p} />)
 					) : (
-						<div>{t('iot.dashboard.no_project')}</div>
+						<div className="px-4 py-2 text-[color:var(--fg-shade-four-color)]">
+							{t('dashboard.iot.no_project')}
+						</div>
 					)}
-				</CardContainer>
-				<CardContainer
-					asRow
-					icon={faPlus}
-					onIconClick={() => setOpenObjectCreate(!openObjectCreate)}
-					height="200px"
-					className="iot-container"
-					title="My connected objects"
-				>
-					{objects && objects.length > 0 ? (
-						objects.map((obj, idx) => (
-							<IoTObjectLargeCard
-								onUpdate={(iotObject: IoTObject) => {
-									setObjects(
-										objects.map(o => (o.id === iotObject.id ? iotObject : o)),
-									);
-									//forceUpdate();
-								}}
-								onDelete={(iotObject: IoTObject) => {
-									setObjects(objects.filter(o => o.id !== iotObject.id));
-									//forceUpdate();
-								}}
-								key={idx}
-								object={obj}
+				</div>
+				<div className="w-full h-1/2 overflow-y-auto mb-4 bg-[color:var(--background-color)] border rounded-lg border-[color:var(--bg-shade-four-color)]">
+					<div className="flex items-center justify-between px-4 py-2 border-b border-[color:var(--bg-shade-four-color)]">
+						<div>{t('dashboard.iot.objects')}</div>
+						<div className="flex flex-row items-center tracking-wide gap-4">
+							<Link onClick={() => setOpenObjectCreate(true)}>
+								{t('dashboard.iot.create_object')}
+							</Link>
+							<SearchBar
+								value={searchObject}
+								setValue={setSearchObject}
+								onSubmit={() => {}}
 							/>
-						))
-					) : (
-						<div>{t('iot.dashboard.no_object')}</div>
-					)}
-				</CardContainer>
+						</div>
+					</div>
+					<div>
+						{objects && objects.length > 0 ? (
+							objects.map((o, idx) => <IoTObjectCard key={idx} object={o} />)
+						) : (
+							<div className="px-4 py-2 text-[color:var(--fg-shade-four-color)]">
+								{t('dashboard.iot.no_object')}
+							</div>
+						)}
+					</div>
+				</div>
 			</div>
 			<FormModal
 				onSubmit={res => {
 					if (!objects) return;
-					const newObject: IoTObject = res.data;
+					const newObject: IoTObject = plainToInstance(
+						IoTObject,
+						res.data,
+					) as any as IoTObject;
 					setObjects([...objects, newObject]);
 					setOpenObjectCreate(false);
 				}}
@@ -128,7 +119,7 @@ const IoTDashboard = (props: iotDashboardProps) => {
 			>
 				<IoTObjectCreate />
 			</FormModal>
-		</StyledDiv>
+		</div>
 	);
 };
 

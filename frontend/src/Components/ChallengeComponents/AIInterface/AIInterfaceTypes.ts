@@ -5,6 +5,7 @@ import {
 } from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
 import { Theme } from '../../../state/contexts/ThemeContext';
 import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
+import { NNModelParams } from '../../../../../backend/dist/src/models/ai/entities/AIUtilsInterfaces';
 
 /**
  * This type describes all properties of an AIInterface.
@@ -26,15 +27,16 @@ import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
 export type AIInterfaceProps = {
 	handleHyperparamChange: (newHyperparams: Hyperparameters) => void;
 	handleModelChange: (newModel: MODEL_TYPES) => void;
-	handleIOChange: (activeNewIO: number[],newIO: number[]) => void;
+	handleIOChange: (activeNewIO: number[], newIO: number[]) => void;
 	ioCodes: number[];
-	activeIoCodes:number[];
+	activeIoCodes: number[];
 	className?: string;
 	tabs: AITabModel[];
 	data: any;
 	activeModel: MODEL_TYPES | undefined;
 	hyperparams: Hyperparameters;
 	modelType: MODEL_TYPES;
+	modelParams?: NNModelParams;
 	initData: any;
 };
 

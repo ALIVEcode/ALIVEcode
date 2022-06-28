@@ -10,7 +10,7 @@ import ChallengeTable from '../ChallengeTable/ChallengeTable';
 import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
 import { AICanvas } from './AIVisualModels/AIVisualNeuralNet/AICanvas';
 import { NNHyperparameters } from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
-import GradientDescentScheme from "./AIOptimizers/GradientDescent/GradientDescentScheme"
+import GradientDescentScheme from './AIOptimizers/GradientDescent/GradientDescentScheme';
 /**
  * This component represents the visual interface in every ChallengeAI. It handles the
  * management of all 4 tabs in this component.
@@ -41,6 +41,7 @@ const AIInterface = ({
 	data,
 	initData,
 	modelType,
+	modelParams,
 	hyperparams,
 	activeModel,
 }: AIInterfaceProps) => {
@@ -83,15 +84,16 @@ const AIInterface = ({
 	};
 
 	function showModel() {
-		return (
-			<AICanvas
-				layerParams={}
-				filter={0}
-				maxNeuronPerLayer={10}
-				spacing={40}
-				hyperparameters={hyperparams as NNHyperparameters}
-			/>
-		);
+		if (activeModel && modelParams)
+			return (
+				<AICanvas
+					layerParams={modelParams}
+					filter={0}
+					maxNeuronPerLayer={10}
+					spacing={40}
+					hyperparameters={hyperparams as NNHyperparameters}
+				/>
+			);
 		//
 		// switch (activeModel) {
 		// 	case MODEL_TYPES.NEURAL_NETWORK:
@@ -141,7 +143,7 @@ const AIInterface = ({
 							isData={true}
 							initData={initData}
 							ioCodes={ioCodes}
-							activeIoCodes = {activeIoCodes}
+							activeIoCodes={activeIoCodes}
 							handleIOChange={handleIOChange}
 						/>
 					</div>

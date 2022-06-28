@@ -86,9 +86,13 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	const currCode = useRef<string>(); //The code inside the line interface.
 
 	//The progression data for the user in this challenge
-	let currHyperparams: GenHyperparameters = editMode
-		? challenge.hyperparams
-		: challenge.hyperparams; //(progression?.data as ChallengeAIProgressionData).hyperparams;
+	const currHyperparams = useRef<GenHyperparameters>(
+		editMode
+			? challenge.hyperparams
+			: progression?.data
+			? (progression.data as ChallengeAIProgressionData).hyperparams
+			: challenge.hyperparams,
+	);
 
 	let currIoCodes: number[] = editMode ? challenge.ioCodes : challenge.ioCodes;
 
@@ -178,6 +182,15 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		getDataset();
 	}, []);
 
+	useEffect(() => {
+		currHyperparams.current = editMode
+			? challenge.hyperparams
+			: progression?.data
+			? (progression.data as ChallengeAIProgressionData).hyperparams
+			: challenge.hyperparams;
+		forceUpdate();
+	}, [challenge.hyperparams, editMode, progression?.data]);
+
 	// Set the hyperparams to default when the challenge is created and there is no hyperparam value yet.
 	if (Object.keys(challenge.hyperparams).length === 0) {
 		challenge.hyperparams = defaultHyperparams;
@@ -195,26 +208,38 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @param newHyperparams the new hyperparameters object.
 	 */
 	const setHyperparams = (newHyperparams: GenHyperparameters) => {
-		currHyperparams = newHyperparams;
+		currHyperparams.current = { ...newHyperparams };
 
 		let indexArray: number[] = [];
 
+		//--Corner cases for neural networks--//
 		//Update nbinputs and nbOutputs
-		currHyperparams.NN.nbInputs = currIoCodes.filter(e => e === 1).length;
-		currHyperparams.NN.nbOutputs = currIoCodes.filter(e => e === 0).length;
+		currHyperparams.current.NN.nbInputs = currIoCodes.filter(
+			e => e === 1,
+		).length;
+		currHyperparams.current.NN.nbOutputs = currIoCodes.filter(
+			e => e === 0,
+		).length;
 
 		//Update neuronsByLayer
-		currHyperparams.NN.neuronsByLayer =
-			currHyperparams.NN.neuronsByLayer.filter((e, i) => {
+		currHyperparams.current.NN.neuronsByLayer =
+			currHyperparams.current.NN.neuronsByLayer.filter((e, i) => {
 				if (e === 0) indexArray.push(1);
 				else return e;
 			});
 		indexArray.forEach(i => {
-			currHyperparams.NN.activationsByLayer.splice(i, 1);
+			currHyperparams.current.NN.activationsByLayer.splice(i, 1);
 		});
 
 		//Save new hyperparameters
-		challenge.hyperparams = currHyperparams;
+		if (progression && !editMode)
+			(progression.data as ChallengeAIProgressionData).hyperparams =
+				currHyperparams.current;
+		if (editMode) challenge.hyperparams = currHyperparams.current;
+
+		console.log('progression :', progression);
+		console.log('challenge :', challenge.hyperparams);
+		console.log(editMode);
 		forceUpdate();
 		saveChallengeTimed();
 
@@ -234,7 +259,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @param newHyperparams the new Hyperparams object.
 	 */
 	const aiInterfaceHyperparamsChanges = (newHyperparams: Hyperparameters) => {
-		let tempHyperparams: GenHyperparameters = { ...challenge.hyperparams };
+		let tempHyperparams: GenHyperparameters = { ...currHyperparams.current };
 		(tempHyperparams[challenge.modelType] as Hyperparameters) = newHyperparams;
 		setHyperparams(tempHyperparams);
 	};
@@ -246,6 +271,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	const aiInterfaceModelChange = (newModelType: MODEL_TYPES) => {
 		challenge.modelType = newModelType;
 		forceUpdate();
+		saveChallengeTimed();
 	};
 
 	/**
@@ -268,7 +294,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		// }
 		currIoCodes = newActiveIOCodes;
 
-		setHyperparams(currHyperparams);
+		setHyperparams(currHyperparams.current);
 		console.log('New Hyperparams ', challenge.hyperparams);
 	};
 
@@ -400,7 +426,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	function createRegression(a: number, b: number, c: number, d: number) {
 		regression.current = new PolyRegression(
 			'1',
-			currHyperparams[challenge.modelType] as RegHyperparameters,
+			currHyperparams.current[challenge.modelType] as RegHyperparameters,
 		);
 		optimizer.current = new PolyOptimizer(regression.current);
 		model.current = regression.current;
@@ -535,7 +561,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			case MODEL_TYPES.NEURAL_NETWORK:
 				model.current = new NeuralNetwork(
 					'Neural Network Model',
-					currHyperparams[challenge.modelType],
+					currHyperparams.current[challenge.modelType],
 					{
 						layerParams: [],
 					},
@@ -858,10 +884,15 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 						data={activeDataset.current}
 						initData={challenge.dataset}
 						modelType={challenge.modelType}
-						hyperparams={currHyperparams[challenge.modelType]}
+						hyperparams={currHyperparams.current[challenge.modelType]}
 						activeIoCodes={currIoCodes}
 						ioCodes={challenge.ioCodes}
 						activeModel={activeModel}
+						modelParams={
+							model.current
+								? (model.current as NeuralNetwork).getModelParams()
+								: undefined
+						}
 					/>
 					{/* TODO Code for visual regression ************
 							<div className="w-1/3 h-full">

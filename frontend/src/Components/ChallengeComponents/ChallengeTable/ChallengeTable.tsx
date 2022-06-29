@@ -89,27 +89,27 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	};
 
 	/**
-	 * Sets the IOCodes after a change in the interface.
-	 * @param value the selected value in the interface.
+	 * Sets the IOCodes after a change on the interface.
+	 * @param value the selected value on the interface.
 	 * @param index the index of the column in which the code was changed.
 	 */
 	const setIOCode = useCallback(
 		(value: string, index: number) => {
+			console.log('start');
 			let activeArray: number[] = props.activeIoCodes!;
 
 			//Set up to change the initial iocodes
-			let initParams = props.initData!.getParamNames()
-			let currentParams = props.data!.getParamNames()
-			let columnName = currentParams[index]
-			let i = initParams.indexOf(columnName)
-			let initArray = props.ioCodes!
-			
+			let initParams: string[] = props.initData!.getParamNames();
+			let currentParams: string[] = props.data!.getParamNames();
+			let columnName: string = currentParams[index];
+			let i: number = initParams.indexOf(columnName);
+			let initArray: number[] = props.ioCodes!;
 
 			//Change the iocodes
 			switch (value) {
 				case '1':
 					activeArray[index] = 1;
-					initArray[i] = 1
+					initArray[i] = 1;
 					break;
 				case '0':
 					activeArray[index] = 0;

@@ -85,12 +85,14 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	const currCode = useRef<string>(); //The code inside the line interface.
 
-	//The progression data for the user in this challenge
-	const currHyperparams = useRef<GenHyperparameters>(challenge.hyperparams);
+	//The current hyperparams for the user in this challenge.
+	const currHyperparams = useRef<GenHyperparameters>(setCurrHyperparams());
 
-	console.log(currHyperparams.current);
+	//The current ioCodes for the user in this challenge.
+	const currIoCodes = useRef<number[]>(setCurrIoCodes());
 
-	let currIoCodes: number[] = editMode ? challenge.ioCodes : challenge.ioCodes;
+	//Active iocodes of this challenge use for all the calculations
+	const activeIoCodes = useRef<number[]>([]);
 
 	//Active model object for this challenge
 	const model = useRef<GenAIModel>();
@@ -100,8 +102,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	const optimizer = useRef<GenOptimizer>();
 
-	//Active iocodes of this challenge use for all the calculations
-	const activeIoCodes = useRef<number[]>([]);
 	//Active dataset of this challenge
 	const activeDataset = useRef<AIDataset>();
 
@@ -154,27 +154,39 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		const getDataset = async () => {
 			if (!challenge.dataset)
 				challenge.dataset = await api.db.ai.getDataset(challenge.datasetId);
+
+			// If the dataset is found
 			if (challenge.dataset) {
+				// Update active dataset
 				activeDataset.current = challenge.dataset.clone();
 
+				// Initiate IOCodes of this challenge if not done yet
 				if (challenge.ioCodes.length === 0)
 					challenge.ioCodes = challenge.dataset.getDataAsArray().map(() => -1);
-				if (!(progression?.data as ChallengeAIProgressionData).ioCodes)
-					(progression?.data as ChallengeAIProgressionData).ioCodes =
-						challenge.ioCodes;
 
+				// Initiate IOCodes of this progression if not done yet
+				if (!(progression?.data as ChallengeAIProgressionData).ioCodes)
+					(progression?.data as ChallengeAIProgressionData).ioCodes = [
+						...challenge.ioCodes,
+					];
+
+				// Initiate Hyperparams of this challenge if not done yet
+				if (Object.keys(challenge.hyperparams).length === 0) {
+					challenge.hyperparams = defaultHyperparams;
+				}
+
+				// Initiate Hyperparams of this progression if not done yet
 				if (!(progression?.data as ChallengeAIProgressionData).hyperparams)
 					(progression?.data as ChallengeAIProgressionData).hyperparams =
 						challenge.hyperparams;
 
-				//TODO créer l'objet data ICI pour la progression (progression.data = {}), s'inspirer de code?
-				// challenge.ioCodes = editMode
-				// 	? challenge.ioCodes
-				// 	: (progression?.data as ChallengeAIProgressionData).ioCodes;
+				activeIoCodes.current = [];
+				challenge.ioCodes.forEach(e => activeIoCodes.current.push(e));
 
-				currIoCodes = [];
-				challenge.ioCodes.forEach(e => currIoCodes.push(e));
-				forceUpdate();
+				// Set all hyperparams variables
+				if (Object.keys(currHyperparams.current).length !== 0)
+					setHyperparams(currHyperparams.current);
+				else setHyperparams(challenge.hyperparams);
 			} else {
 				console.error("Erreur : la table ne s'est pas chargée correctement.");
 			}
@@ -182,19 +194,13 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		getDataset();
 	}, []);
 
+	// Updates the current hyperparams and IOCodes when the edit mode is triggered on and off.
 	useEffect(() => {
-		currHyperparams.current = editMode
-			? challenge.hyperparams
-			: (progression!.data as ChallengeAIProgressionData).hyperparams
-			? (progression!.data as ChallengeAIProgressionData).hyperparams
-			: challenge.hyperparams;
+		currHyperparams.current = setCurrHyperparams();
+		currIoCodes.current = setCurrIoCodes();
+		activeIoCodes.current = [...currIoCodes.current];
 		forceUpdate();
-	}, [challenge.hyperparams, editMode, progression?.data]);
-
-	// Set the hyperparams to default when the challenge is created and there is no hyperparam value yet.
-	if (Object.keys(challenge.hyperparams).length === 0) {
-		challenge.hyperparams = defaultHyperparams;
-	}
+	}, [editMode]);
 
 	useEffect(() => {
 		if (!cmd) return forceUpdate();
@@ -214,10 +220,10 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 		//--Corner cases for neural networks--//
 		//Update nbinputs and nbOutputs
-		currHyperparams.current.NN.nbInputs = currIoCodes.filter(
+		currHyperparams.current.NN.nbInputs = activeIoCodes.current.filter(
 			e => e === 1,
 		).length;
-		currHyperparams.current.NN.nbOutputs = currIoCodes.filter(
+		currHyperparams.current.NN.nbOutputs = activeIoCodes.current.filter(
 			e => e === 0,
 		).length;
 
@@ -232,26 +238,22 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		});
 
 		//Save new hyperparameters
-		if (progression && !editMode)
-			(progression.data as ChallengeAIProgressionData).hyperparams =
-				currHyperparams.current;
-		if (editMode) challenge.hyperparams = currHyperparams.current;
+		if (progression && !editMode) {
+			(progression.data as ChallengeAIProgressionData).hyperparams = {
+				...currHyperparams.current,
+			};
+			(progression.data as ChallengeAIProgressionData).ioCodes = [
+				...currIoCodes.current,
+			];
+		}
+		if (editMode) {
+			challenge.hyperparams = { ...currHyperparams.current };
+			challenge.ioCodes = [...currIoCodes.current];
+		}
 
-		console.log('progression :', progression);
-		console.log('challenge :', challenge.hyperparams);
-		console.log(editMode);
 		forceUpdate();
-		saveChallengeTimed();
-
-		// TODO Progression part
-		// if (editMode) {
-		// } else if (progression) {
-		// 	(progression.data as ChallengeAIProgressionData).hyperparams =
-		// 		currHyperparams;
-		// 	const tempProgression: ChallengeProgression = progression;
-		// 	setProgression(tempProgression);
-		// 	saveProgressionTimed();
-		// }
+		if (editMode) saveChallengeTimed();
+		else saveProgressionTimed();
 	};
 
 	/**
@@ -283,7 +285,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		newActiveIOCodes: number[],
 		newIOCodes: number[],
 	) => {
-		challenge.ioCodes = newIOCodes;
+		currIoCodes.current = newIOCodes;
 
 		// TODO Progression part
 		// if (editMode) {
@@ -292,10 +294,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		// 	(progression.data as ChallengeAIProgressionData).ioCodes =
 		// 		challenge.ioCodes;
 		// }
-		currIoCodes = newActiveIOCodes;
+		activeIoCodes.current = newActiveIOCodes;
 
 		setHyperparams(currHyperparams.current);
-		console.log('New Hyperparams ', challenge.hyperparams);
 	};
 
 	/**
@@ -316,6 +317,30 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	//-------END OF CALLBACK FUNCTIONS-------//
 
 	/**
+	 * Sets the current IOCodes based on the state of the challenge (edit mode or not).
+	 * @return the new value of currHyperparams.
+	 */
+	function setCurrIoCodes(): number[] {
+		return editMode
+			? [...challenge.ioCodes]
+			: (progression!.data as ChallengeAIProgressionData).ioCodes
+			? [...(progression!.data as ChallengeAIProgressionData).ioCodes]
+			: [...challenge.ioCodes];
+	}
+
+	/**
+	 * Sets the current hyperparams based on the state of the challenge (edit mode or not).
+	 * @return the new value of currHyperparams.
+	 */
+	function setCurrHyperparams(): GenHyperparameters {
+		return editMode
+			? challenge.hyperparams
+			: (progression!.data as ChallengeAIProgressionData).hyperparams
+			? (progression!.data as ChallengeAIProgressionData).hyperparams
+			: challenge.hyperparams;
+	}
+
+	/**
 	 * Initialies the dataset and the iocodes when the button run is clicked
 	 */
 	function initializeDataset() {
@@ -328,15 +353,15 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		//If the dataset is loaded
 		if (activeDataset.current) {
 			//Set IOCodes
-			currIoCodes = [];
-			challenge.ioCodes.forEach(e => currIoCodes.push(e));
-			console.log('current iocodes : ', currIoCodes);
+			activeIoCodes.current = [];
+			challenge.ioCodes.forEach(e => activeIoCodes.current.push(e));
+			console.log('current iocodes : ', activeIoCodes);
 
 			//Update some hyperparams
-			challenge.hyperparams.NN.nbInputs = challenge.ioCodes.filter(
+			challenge.hyperparams.NN.nbInputs = activeIoCodes.current.filter(
 				e => e === 1,
 			).length;
-			challenge.hyperparams.NN.nbOutputs = challenge.ioCodes.filter(
+			challenge.hyperparams.NN.nbOutputs = activeIoCodes.current.filter(
 				e => e === 0,
 			).length;
 
@@ -481,8 +506,12 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		}
 
 		if (activeDataset.current) {
-			let input = activeDataset.current.getInputsOutputs(currIoCodes)[0];
-			let real = activeDataset.current.getInputsOutputs(currIoCodes)[1];
+			let input = activeDataset.current.getInputsOutputs(
+				activeIoCodes.current,
+			)[0];
+			let real = activeDataset.current.getInputsOutputs(
+				activeIoCodes.current,
+			)[1];
 
 			createOptimizer();
 
@@ -586,7 +615,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	): string | void {
 		let index = activeDataset.current!.getParamNames().indexOf(name);
 		const oldNumberParams = activeDataset.current!.getParamNames().length;
-		const valueIO = currIoCodes.at(index);
+		const valueIO = activeIoCodes.current.at(index);
 
 		if (
 			activeDataset.current!.createOneHotWithNewParamsOneHot(
@@ -598,18 +627,18 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			const numberNewParams =
 				activeDataset.current!.getParamNames().length - oldNumberParams;
 
-			let newIOCodes = currIoCodes;
+			let newIOCodes = activeIoCodes.current;
 
 			//Addind the new column to the IOcodes
 			for (let e = 1; e <= numberNewParams; e++) {
 				newIOCodes.splice(index + e, 0, valueIO!);
 			}
 
-			currIoCodes = newIOCodes;
-			challenge.hyperparams.NN.nbInputs = currIoCodes.filter(
+			activeIoCodes.current = newIOCodes;
+			challenge.hyperparams.NN.nbInputs = activeIoCodes.current.filter(
 				e => e === 1,
 			).length;
-			challenge.hyperparams.NN.nbOutputs = currIoCodes.filter(
+			challenge.hyperparams.NN.nbOutputs = activeIoCodes.current.filter(
 				e => e === 0,
 			).length;
 			forceUpdate();
@@ -698,8 +727,12 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 */
 	function optimize() {
 		if (activeDataset.current) {
-			let input = activeDataset.current.getInputsOutputs(currIoCodes)[0];
-			let real = activeDataset.current.getInputsOutputs(currIoCodes)[1];
+			let input = activeDataset.current.getInputsOutputs(
+				activeIoCodes.current,
+			)[0];
+			let real = activeDataset.current.getInputsOutputs(
+				activeIoCodes.current,
+			)[1];
 
 			createOptimizer();
 
@@ -719,8 +752,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		if (activeDataset.current) {
 			let params: string[] = activeDataset.current.getParamNames();
 			let ioParams: string[] = [];
-			for (let i = currIoCodes.length - 1; i >= 0; i--) {
-				if (currIoCodes[i] !== -1) ioParams.push(params[i]);
+			for (let i = activeIoCodes.current.length - 1; i >= 0; i--) {
+				if (activeIoCodes.current[i] !== -1) ioParams.push(params[i]);
 			}
 			return ioParams;
 			//return activeDataset.current.getParamNames();
@@ -885,8 +918,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 						initData={challenge.dataset}
 						modelType={challenge.modelType}
 						hyperparams={currHyperparams.current[challenge.modelType]}
-						activeIoCodes={currIoCodes}
-						ioCodes={challenge.ioCodes}
+						activeIoCodes={activeIoCodes.current}
+						ioCodes={[...activeIoCodes.current]}
 						activeModel={activeModel}
 						modelParams={
 							model.current

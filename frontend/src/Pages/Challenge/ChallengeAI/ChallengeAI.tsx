@@ -182,7 +182,11 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 				activeIoCodes.current = [];
 				challenge.ioCodes.forEach(e => activeIoCodes.current.push(e));
-				forceUpdate();
+
+				// Set all hyperparams variables
+				if (Object.keys(currHyperparams.current).length !== 0)
+					setHyperparams(currHyperparams.current);
+				else setHyperparams(challenge.hyperparams);
 			} else {
 				console.error("Erreur : la table ne s'est pas chargée correctement.");
 			}
@@ -247,25 +251,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			challenge.ioCodes = [...currIoCodes.current];
 		}
 
-		console.log('Challenge :', challenge.ioCodes);
-		console.log(
-			'Progression :',
-			(progression?.data as ChallengeAIProgressionData).ioCodes,
-		);
-
 		forceUpdate();
 		if (editMode) saveChallengeTimed();
 		else saveProgressionTimed();
-
-		// TODO Progression part
-		// if (editMode) {
-		// } else if (progression) {
-		// 	(progression.data as ChallengeAIProgressionData).hyperparams =
-		// 		currHyperparams;
-		// 	const tempProgression: ChallengeProgression = progression;
-		// 	setProgression(tempProgression);
-		// 	saveProgressionTimed();
-		// }
 	};
 
 	/**
@@ -309,7 +297,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		activeIoCodes.current = newActiveIOCodes;
 
 		setHyperparams(currHyperparams.current);
-		console.log('New Hyperparams ', challenge.hyperparams);
 	};
 
 	/**

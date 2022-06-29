@@ -1,7 +1,9 @@
 import {InputNeuron, Neuron, OutputNeuron} from "./AIVisualNeuron";
 import {Vector3} from "three";
 import {Weight} from "./AIVisualWeight";
-import React, { MutableRefObject } from "react";
+import React, {MutableRefObject} from "react";
+import ChallengeAI from "../../../../../Pages/Challenge/ChallengeAI/ChallengeAI";
+import {useTheme} from "styled-components";
 
 function layerPositions(size: number, alpha: number, depth: number) {
     let positions = [];
@@ -42,6 +44,10 @@ type NNProps = {
 }
 
 export const ThreeNeuralNet = (props : NNProps) => {
+
+    // const theme = useTheme()
+
+    // console.log(theme)
 
     let pos = 0
 

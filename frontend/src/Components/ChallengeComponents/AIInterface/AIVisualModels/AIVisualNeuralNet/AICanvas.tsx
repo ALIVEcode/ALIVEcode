@@ -75,77 +75,128 @@ export function AICanvas(props:NNProps) {
 
     function AAAMenu() {
 
-        const typeClicked = currentPath.current.split(':').length === 3 ? "Poid": "Neurone";
+        const typeClicked = currentPath.current.split(':').length === 3 ? "Poid" : "Neurone";
         let layerClicked: string;
-        let fromClicked : string
-        let toClicked : string = ""
-        layerClicked = ((+currentPath.current.split(':')[0])-1).toString();
+        let fromClicked: string
+        let toClicked: string = ""
+        layerClicked = ((+currentPath.current.split(':')[0]) - 1).toString();
+
+        const layerNum = parseInt(layerClicked) - 1;
+
+        let selections = []
+        if (divider !== 1) {
+            for (let i = 0; i < divider; i++) {
+                selections.push(<option value={i}>Neurone #{i+1}</option>)
+            }
+        }
+
+        const index = parseInt(currentPath.current.split(':')[1]) - 1
+
         layerClicked += (layerClicked === "1" ? "re" : "e");
-        console.log(layerClicked)
-        if(layerClicked === "0e") {
+        //console.log(layerClicked)
+        if (layerClicked === "0e") {
             layerClicked = "Couche d'entr\u00E9e"
-        } else if (layerClicked === topology.length-1 + "e") {
+        } else if (layerClicked === topology.length - 1 + "e") {
             layerClicked = "Couche de sortie"
         }
 
         fromClicked = currentPath.current.split(':')[1]
-        if(typeClicked==="Poid") {
+        if (typeClicked === "Poid") {
             toClicked = currentPath.current.split(':')[2]
         }
 
-        const typeHovered = currentHoveredPath.current.split(':').length === 3 ? "Poid": "Neurone";
+        const typeHovered = currentHoveredPath.current.split(':').length === 3 ? "Poid" : "Neurone";
         let layerHovered: string;
-        layerHovered = ((+currentHoveredPath.current.split(':')[0])-1).toString();
+        layerHovered = ((+currentHoveredPath.current.split(':')[0]) - 1).toString();
 
+        // console.log(props.layerParams.layerParams)
 
-
-        return (currentHoveredPath.current === "" && currentPath.current === "") ? null : <div className={"absolute right-0 p-2 " }>
-
+        // @ts-ignore
+        return (<>
             {
-                divider > 1 ? <div className={"bg-red-500 flex right-0 p-2 text-right"}>
-                    {(typeClicked === "Neurone" ? "La neurone": "Le poid")
-                        + " sélectionné"+ (typeClicked === "Neurone" ? "e ": "")
-                        + " équivaut à " + divider + " " + typeClicked.toLocaleLowerCase() + "s"}
-                </div> : null
+                divider > 1 ?
+                    <div className={"bg-gray-600 absolute top-[7%] left-[50.5%] p-2"}>
+                        {(typeClicked === "Neurone" ? "La neurone" : "Le poid")
+                            + " sélectionné" + (typeClicked === "Neurone" ? "e " : "")
+                            + " équivaut à " + divider + " " + typeClicked.toLocaleLowerCase() + "s"}
+                        <br/>
+                        <div>
+                            <select className={"p-2 p{r}-4"} name={"Neurone choisi"} onChange={(e) => {
+
+                            }}>
+                                {
+                                    selections
+                                }
+                            </select>
+                        </div>
+                    </div> : null
             }
 
-            {/*<div className={"absolute right-0 p-2 text-right"}>*/}
-                {currentPath.current === "" ? null :
-                    <div className={"bg-gray-500 right-0 p-2"} >
+            {
+                (currentHoveredPath.current === "" && currentPath.current === "") ? null :
+                    <> {
+                        currentPath.current === "" ? null :
+                            <div className={"absolute top-[7%] bg-gray-500 right-[0.6%] p-2"}>
                                 {
-                                    layerClicked === "Couche d'entr\u00E9e" ? layerClicked :
-                                        layerClicked === "Couche de sortie" ?
-                                            layerClicked : layerClicked + " couche"
+                                    <>
+                                        Neurone de la {
+                                            layerClicked === "couche d'entr\u00E9e" ? layerClicked :
+                                                layerClicked === "couche de sortie" ?
+                                                    layerClicked : layerClicked + " couche"
+                                        }
+                                    </>
                                 }
-                                <br />
+                                <br/>
+
                                 {
-                                    (currentPath.current.split(':').length === 3 ? "Poid " : " Neurone ")
-                                    + currentPath.current
+                                    (currentPath.current.split(':').length === 3 ?
+                                        <>
+                                            Poid entre la
+                                            couche {layerNum + 1 === 0 ? "d'entr\u00E9e " : "cach\u00E9e #" + (layerNum + 1)}
+                                            et la
+                                            couche {layerNum + 3 === topology.length ? "de sortie " : "cach\u00E9e #" + (layerNum + 2)}
+                                            <br/>
+
+                                            {/*{layerNum+1 } | {parseInt(toClicked)-1} : {index}*/}
+                                            Valeur
+                                            : {props.layerParams.layerParams[layerNum + 1].weights[parseInt(toClicked) - 1][index]}
+                                        </> :
+
+                                        <>
+                                            Neurone #{index + 1}
+                                            <br/>
+                                            {
+                                                layerNum === -1 ? <> Entrée </> :
+                                                    <> Biais
+                                                        : {props.layerParams.layerParams[layerNum].biases[index]} </>
+                                            }
+                                        </>)
                                 }
 
-                    </div>
 
-                }
+                                {/*{*/}
+                                {/*    currentHoveredPath.current === "" ? null :*/}
+                                {/*        <div className={"bg-gray-400 p-2 absolute text-right right-2 "}>*/}
+                                {/*            {*/}
+                                {/*                (currentHoveredPath.current.split(':').length === 3 ? "Poid " : "Neurone ")*/}
+                                {/*                + currentHoveredPath.current*/}
+                                {/*            }*/}
+                                {/*        </div>*/}
+                                {/*}*/}
 
-                {
-                    currentHoveredPath.current === "" ? null :
-                    <div className={"bg-gray-400 p-2 absolute text-right right-2 "}>
-                        {
-                            (currentHoveredPath.current.split(':').length === 3 ? "Poid ": "Neurone ")
-                            + currentHoveredPath.current
+                            </div>
                         }
-                    </div>
-                }
-            {/*</div>*/}
+                        {
 
-        </div>
+                        }
+                        </>
+
+            }
+        </>)
     }
 
     return (
         <>
-            {
-                AAAMenu()
-            }
             <Canvas raycaster={raycaster} camera={{fov: 75, position: [spacing * -2, 0, spacing * ((topology.length-1) / 2)]}}>
                 <pointLight position={[64, 64, 64]}/>
                 <ambientLight intensity={1} color={'#bcd9ff'}/>
@@ -167,7 +218,11 @@ export function AICanvas(props:NNProps) {
                 {/* position={new Vector3(0, 0, spacing * ((topology.length-1) / 2))} radius={2}/>*/}
             </Canvas>
 
+            {
+                AAAMenu()
+            }
+
         </>
 
-    );
+    )
 }

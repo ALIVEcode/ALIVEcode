@@ -1,11 +1,16 @@
 import { iotHomeProps } from './iotHomeTypes';
 import styled from 'styled-components';
 import InterfaceSlideshow from '../../../assets/images/iot/interface_slideshow.png';
+import ConstructionFeux from '../../../assets/images/iot/construction_feux.jpg';
+import CodeAS from '../../../assets/images/iot/ecosysteme_as.png';
+import VilleIntelligenteInterface from '../../../assets/images/iot/ville_intelligente_interface.png';
 import Footer from '../../../Components/MainComponents/Footer/Footer';
 import { HomeButton } from '../../../Components/UtilsComponents/Buttons/HomeButton';
 import { useTranslation } from 'react-i18next';
 import useView from '../../../state/hooks/useView';
-import { MutableRefObject, useRef } from 'react';
+import { forwardRef, MutableRefObject, useRef } from 'react';
+import { classNames } from '../../../Types/utils';
+import CourseContainer from '../../../Components/CourseComponents/CourseContainer/CourseContainer';
 
 const StyledHome = styled.div`
 	.tech-slideshow {
@@ -50,7 +55,8 @@ const IoTHome = (props: iotHomeProps) => {
 	const view = useView();
 	const { t } = useTranslation();
 
-	const paragraphClassName = 'text-center text-lg leading-loose tracking-wider';
+	const paragraphClassName =
+		'text-center text-base tablet:text-lg leading-loose tracking-wider';
 
 	const goToElement = (ref: MutableRefObject<any>) => {
 		ref.current &&
@@ -84,7 +90,8 @@ const IoTHome = (props: iotHomeProps) => {
 					</div>
 				</div>
 			</div>
-			<div className="text-gray-50 relative w-full h-full px-10 tablet:px-18 laptop:px-32">
+
+			<div className="text-gray-50 relative w-full h-full px-10 tablet:px-18 laptop:px-16 desktop:px-32">
 				<p className={paragraphClassName + ' mt-32'}>
 					ALIVEIoT est la branche d’ALIVEcode servant à l’apprentissage de
 					l’Internet des Objets, un domaine de l’informatique possédant très peu
@@ -99,34 +106,111 @@ const IoTHome = (props: iotHomeProps) => {
 						Le contrôle d’objets connectés à l’aide du langage AliveScript
 					</li>
 				</ul>
-				<div className="text-center">
-					<label className="text-5xl">Projets en vedette</label>
-					<div className="m-auto w-1/2 border-b-2 mt-4 border-[color:var(--fg-shade-two-color)]"></div>
+
+				<IoTHomeSeparator title={'Projets en vedette'} />
+				<div className="px-0 tablet:px-4 laptop:px-10 desktop:px-28">
+					<IoTFeaturedProjectBig
+						title="Ville Intelligente"
+						youtubeVideoId="a-wLMgqOz9E"
+					/>
+					<IoTFeaturedProjectBig
+						title="Serre Connectée"
+						youtubeVideoId="a-wLMgqOz9E"
+					/>
 				</div>
 
-				<div className="tracking-widest mt-8 mb-4 text-2xl">
-					Ville Intelligente
-				</div>
-				<iframe
-					className="m-auto w-full aspect-video mb-16"
-					src={`https://youtube.com/embed/a-wLMgqOz9E`}
-					title="YouTube video player"
-					frameBorder="0"
-					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-					allowFullScreen
-				/>
-				<div className="text-center">
-					<label className="text-5xl">Commencer à apprendre</label>
-					<div className="m-auto w-1/2 border-b-2 mt-4 border-[color:var(--fg-shade-two-color)]"></div>
-				</div>
-				<p className={paragraphClassName + ' mt-8'}>
+				<IoTHomeSeparator ref={getStartedRef} title={'Commencer à apprendre'} />
+				<p
+					className={
+						paragraphClassName +
+						' mt-8 px-0 tablet:px-4 laptop:px-10 desktop:px-28'
+					}
+				>
 					Apprends la théorie et la pratique de l'IoT. Suis une ou plusieurs
 					formations complètes offertes par ALIVEcode qui t'apprendront tout ce
 					qui t'est requis afin de commencer à développer tes propres projets
 					IoT. L'électronique, les protocoles de communication, les bases de
 					données, l'IA, l'interfaçage, etc.
 				</p>
-				{/*<HomeSection
+				<CourseContainer
+					className="mt-12"
+					title="Cours offerts par ALIVEcode"
+					featuring="iot"
+					featuringFrom="alivecode"
+					dark
+				/>
+				<CourseContainer
+					className="mt-12 mb-12"
+					title="Cours offerts par la communauté"
+					featuring="iot"
+					featuringFrom="alivecode"
+					dark
+				/>
+				<IoTHomeSeparator title={'Les étapes à suivre'} />
+				<IoTStepSection
+					title={'Conception des objets connectés*'}
+					text={t('home.iot.section.develop.desc')}
+					img={ConstructionFeux}
+					imgAlt="ALIVEcode's internet of things interface"
+				/>
+				<IoTStepSection
+					title={'Connection et visualisation'}
+					text={t('home.iot.section.develop.desc')}
+					img={VilleIntelligenteInterface}
+					imgAlt="ALIVEcode's internet of things interface"
+				/>
+				<IoTStepSection
+					title={'Contrôle de l’écosystème'}
+					text={t('home.iot.section.develop.desc')}
+					img={CodeAS}
+					imgAlt="ALIVEcode's internet of things interface"
+				/>
+				<IoTHomeSeparator title={'Plus de projets'} className="mt-16" />
+			</div>
+			<Footer className="!mt-4"></Footer>
+		</StyledHome>
+	);
+};
+
+export default IoTHome;
+
+const IoTHomeSeparator = forwardRef<
+	HTMLDivElement,
+	{ title: string; className?: string }
+>(({ title, className }, ref) => {
+	return (
+		<div className={'text-center ' + className} ref={ref}>
+			<label className="text-3xl tablet:text-5xl">{title}</label>
+			<div className="m-auto w-1/2 border-b-2 mt-4 border-[color:var(--fg-shade-two-color)]"></div>
+		</div>
+	);
+});
+
+const IoTFeaturedProjectBig = ({
+	title,
+	youtubeVideoId,
+}: {
+	title: string;
+	youtubeVideoId: string;
+}) => {
+	return (
+		<>
+			<div className="tracking-widest mt-8 mb-4 text-xl tablet:text-2xl">
+				{title}
+			</div>
+			<iframe
+				className="m-auto w-full aspect-video mb-16"
+				src={`https://youtube.com/embed/${youtubeVideoId}`}
+				title="YouTube video player"
+				frameBorder="0"
+				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+				allowFullScreen
+			/>
+		</>
+	);
+};
+
+/*<HomeSection
 					ref={getStartedRef}
 					title={t('home.iot.section.develop.title')}
 					text={t('home.iot.section.develop.desc')}
@@ -145,11 +229,88 @@ const IoTHome = (props: iotHomeProps) => {
 					button={t('home.iot.to_trainings')}
 					to={routes.auth.classroom_browse.path}
 					imgOpacity={0.8}
-	/>*/}
-			</div>
-			<Footer className="!mt-4"></Footer>
-		</StyledHome>
-	);
+	/>*/
+
+export type HomeSectionProps = {
+	title: string;
+	text: string;
+	img: string;
+	imgAlt: string;
+	reverse?: boolean;
+	button?: string;
+	onClick?: () => void;
+	imgOpacity?: number;
+	to?: string;
+	important?: boolean;
 };
 
-export default IoTHome;
+const IoTStepSection = forwardRef<HTMLDivElement, HomeSectionProps>(
+	(
+		{
+			title,
+			text,
+			img,
+			imgAlt,
+			reverse,
+			button,
+			imgOpacity,
+			important,
+			...buttonProps
+		},
+		ref,
+	) => {
+		return (
+			<div
+				className={classNames(
+					'w-full h-full flex justify-between flex-col items-center font-normal gap-4 mt-20 rounded-3xl laptop:bg-transparent',
+					'tablet:gap-8',
+					'laptop:gap-16',
+					'desktop:gap-32',
+					reverse ? 'tablet:flex-row-reverse' : 'tablet:flex-row',
+				)}
+				ref={ref}
+			>
+				<div className="tablet:w-3/5 laptop:w-[45%] h-full">
+					<img
+						src={img}
+						alt={imgAlt}
+						className={'w-full h-auto '}
+						style={{ opacity: imgOpacity }}
+					/>
+				</div>
+				<div className="tablet:w-2/5 laptop:w-[55%] flex items-center">
+					<div>
+						<div
+							className={classNames(
+								'tracking-wider',
+								important
+									? 'font-semibold text-4xl tablet:text-3xl laptop:text-4xl desktop:text-5xl mb-6 tablet:mb-7 desktop:mb-10'
+									: 'text-3xl tablet:text-2xl laptop:text-3xl desktop:text-4xl mb-6 tablet:mb-3 desktop:mb-6',
+							)}
+						>
+							{title}
+						</div>
+						<div
+							className={classNames(
+								'tracking-widest tablet:leading-normal desktop:leading-relaxed text-justify text-gray-300',
+								important
+									? 'text-2xl tablet:text-lg laptop:text-2xl desktop:text-3xl'
+									: 'text-xl tablet:text-base laptop:text-xl desktop:text-2xl',
+							)}
+						>
+							{text}
+						</div>
+						{button && (
+							<HomeButton
+								className="mt-5 tracking-wide !text-lg !px-4 !py-2 tablet:!text-base laptop:!text-lg"
+								{...buttonProps}
+							>
+								{button}
+							</HomeButton>
+						)}
+					</div>
+				</div>
+			</div>
+		);
+	},
+);

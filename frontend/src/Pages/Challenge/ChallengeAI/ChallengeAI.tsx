@@ -180,8 +180,14 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					(progression?.data as ChallengeAIProgressionData).hyperparams =
 						challenge.hyperparams;
 
-				activeIoCodes.current = [];
-				challenge.ioCodes.forEach(e => activeIoCodes.current.push(e));
+				activeIoCodes.current = [...currIoCodes.current];
+				//Update nbinputs and nbOutputs
+				(progression?.data as ChallengeAIProgressionData).hyperparams.NN.nbInputs =(progression?.data as ChallengeAIProgressionData).ioCodes.filter(
+					e => e === 1,
+				).length;
+				(progression?.data as ChallengeAIProgressionData).hyperparams.NN.nbOutputs =(progression?.data as ChallengeAIProgressionData).ioCodes.filter(
+					e => e === 0,
+				).length;
 				forceUpdate();
 			} else {
 				console.error("Erreur : la table ne s'est pas chargée correctement.");
@@ -216,6 +222,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 		//--Corner cases for neural networks--//
 		//Update nbinputs and nbOutputs
+		console.log('Test challenge hyperparam : ',currHyperparams.current)
 		currHyperparams.current.NN.nbInputs = activeIoCodes.current.filter(
 			e => e === 1,
 		).length;
@@ -307,7 +314,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		// 		challenge.ioCodes;
 		// }
 		activeIoCodes.current = newActiveIOCodes;
-
+		console.log('')
 		setHyperparams(currHyperparams.current);
 		console.log('New Hyperparams ', challenge.hyperparams);
 	};
@@ -366,8 +373,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		//If the dataset is loaded
 		if (activeDataset.current) {
 			//Set IOCodes
-			activeIoCodes.current = [];
-			challenge.ioCodes.forEach(e => activeIoCodes.current.push(e));
+			activeIoCodes.current = [...currIoCodes.current]
 			console.log('current iocodes : ', activeIoCodes);
 
 			//Update some hyperparams
@@ -391,6 +397,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			//Cloning the initial data
 			activeDataset.current = challenge.dataset!.clone();
 			optimizer.current = undefined;
+			model.current = undefined;
 			setActiveModel(undefined);
 		}
 	}
@@ -527,7 +534,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			)[1];
 
 			createOptimizer();
-
+			console.log('input', input)
+			console.log('output', real)
 			try {
 				if (optimizer.current)
 					return optimizer.current.computeCost(input, real);
@@ -617,7 +625,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	}
 
 	/**
-	 * Creats of a one shot associate to the column selected
+	 * Creats of a one hot associate to the column selected
 	 * @param column the parameter's name to replace.
 	 * @return error message
 	 */
@@ -640,21 +648,16 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			const numberNewParams =
 				activeDataset.current!.getParamNames().length - oldNumberParams;
 
-			let newIOCodes = activeIoCodes.current;
+			let newIOCodes =[...activeIoCodes.current];
 
 			//Addind the new column to the IOcodes
 			for (let e = 1; e <= numberNewParams; e++) {
 				newIOCodes.splice(index + e, 0, valueIO!);
 			}
 
-			activeIoCodes.current = newIOCodes;
-			challenge.hyperparams.NN.nbInputs = activeIoCodes.current.filter(
-				e => e === 1,
-			).length;
-			challenge.hyperparams.NN.nbOutputs = activeIoCodes.current.filter(
-				e => e === 0,
-			).length;
-			forceUpdate();
+			activeIoCodes.current = [...newIOCodes];
+			console.log("Active iocodes",activeIoCodes.current)
+			setHyperparams(currHyperparams.current)
 		} else {
 			if (index !== -1)
 				return 'Erreur : Les éléments de la colonne ne sont pas des chaines de caratères';
@@ -931,8 +934,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 						initData={challenge.dataset}
 						modelType={challenge.modelType}
 						hyperparams={currHyperparams.current[challenge.modelType]}
-						activeIoCodes={activeIoCodes.current}
-						ioCodes={[...activeIoCodes.current]}
+						activeIoCodes={[...activeIoCodes.current]}
+						ioCodes={[...currIoCodes.current]}
 						activeModel={activeModel}
 						modelParams={
 							model.current

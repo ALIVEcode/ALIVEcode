@@ -257,7 +257,7 @@ export class AIDataset {
 			switch (IOCodes[param]) {
 				// If the selected param is an input
 				case 1:
-					if (typeof this.data[param][0] === 'string')
+					if (typeof this.data[0][this.paramNames[param]] === 'string')
 						throw new Error(
 							'Error: Matrix creation failed. Some values are not numbers in the dataset.',
 						);
@@ -273,7 +273,7 @@ export class AIDataset {
 
 				// If the selected param is an output
 				case 0:
-					if (typeof this.data[param][0] === 'string')
+					if (typeof this.data[0][this.paramNames[param]] === 'string')
 						throw new Error(
 							'Error: Matrix creation failed. Some values are not numbers in the dataset.',
 						);

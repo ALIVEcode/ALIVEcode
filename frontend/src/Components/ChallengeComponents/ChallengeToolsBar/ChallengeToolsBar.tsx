@@ -3,12 +3,10 @@ import { ChallengeContext } from '../../../state/contexts/ChallengeContext';
 import IconButton from '../../DashboardComponents/IconButton/IconButton';
 import { UserContext } from '../../../state/contexts/UserContext';
 import {
-	faBookOpen,
 	faCog,
 	faPauseCircle,
 	faPencilAlt,
 	faPlayCircle,
-	faQuestionCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { ChallengeToolsBarProps } from './challengeToolsBarTypes';
@@ -18,7 +16,7 @@ const ChallengeToolsBar = ({ onClickPlay }: ChallengeToolsBarProps) => {
 	const { user } = useContext(UserContext);
 	const { challenge, editMode, saving, saved, executor, setOpenSettings } =
 		useContext(ChallengeContext);
-	const { routes, goToNewTab } = useRoutes();
+	const { routes } = useRoutes();
 	const [editTitle, setEditTitle] = useState(false);
 	const forceUpdate = useForceUpdate();
 
@@ -58,13 +56,18 @@ const ChallengeToolsBar = ({ onClickPlay }: ChallengeToolsBarProps) => {
 					size="2x"
 				/>
 			)}
+			{/*
+			TODO: FIX AS Docs
 			<IconButton
 				onClick={() => goToNewTab(routes.public.asDocs.path)}
 				icon={faBookOpen}
 				size="2x"
 			/>
+			 */}
+			{/*
+			TODO: Add hints?
 			<IconButton icon={faQuestionCircle} size="2x" />
-			{/* Do not change the onClick method!! it MUST be a method that calls the toggleExecution */}
+			  */}
 			<IconButton
 				onClick={() => {
 					if (onClickPlay) return onClickPlay();

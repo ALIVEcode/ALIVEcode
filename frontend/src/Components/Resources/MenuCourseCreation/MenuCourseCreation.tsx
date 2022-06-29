@@ -1,11 +1,11 @@
 import { useForm } from 'react-hook-form';
 import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
 import api from '../../../Models/api';
-import { useState, useContext, useMemo, useEffect } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserContext } from '../../../state/contexts/UserContext';
 import TypeCard from '../../UtilsComponents/Cards/TypeCard/TypeCard';
-import { SUBJECTS, getSubjectIcon } from '../../../Types/sharedTypes';
+import { getSubjectIcon, SUBJECTS } from '../../../Types/sharedTypes';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { instanceToPlain } from 'class-transformer';
 import { useNavigate } from 'react-router-dom';
@@ -13,8 +13,8 @@ import { useAlert } from 'react-alert';
 import { Course, COURSE_ACCESS } from '../../../Models/Course/course.entity';
 import Button from '../../UtilsComponents/Buttons/Button';
 import {
-	MenuCourseCreationProps,
 	MenuCourseCreationDTO,
+	MenuCourseCreationProps,
 } from './menuCourseCreationTypes';
 import Modal from '../../UtilsComponents/Modal/Modal';
 import { CourseTemplate } from '../../../Models/Course/bundles/course_template.entity';
@@ -159,32 +159,36 @@ const MenuCourseCreation = ({
 
 	const renderPageCourseTemplate = () => {
 		return (
-			<div className="tablet:px-8 laptop:px-16 desktop:px-36 flex flex-col text-center">
+			<div className="tablet:px-8 laptop:px-16 desktop:px-36 flex flex-row text-center">
+					{selectedTemplate ? (
+						<div className="flex flex-col w-11/12">
+							<div className="m-auto mb-4 w-full">
+								<CourseTemplateCard template={selectedTemplate} className="!w-full" />
+							</div>
+							<Button
+								variant="danger"
+								onClick={() => setSelectedTemplate(undefined)}
+							>
+								{t('course.template.remove')}
+							</Button>
+						</div>
+					) : (
+						<Button
+							variant="primary"
+							onClick={() => setCourseTemplateOpen(true)}
+							className="w-11/12"
+						>
+							{t('course.template.add')}
+						</Button>
+					)}
 				<Info.Icon
-					className="!inline"
+					className="!inline w-1/12"
 					hoverPopup={{
 						position: 'right center',
 					}}
 				>
 					<Info.Box useDefaultStyle text={t('help.course_template.help')} />
 				</Info.Icon>
-				{selectedTemplate ? (
-					<>
-						<div className="m-auto mb-4">
-							<CourseTemplateCard template={selectedTemplate} />
-						</div>
-						<Button
-							variant="danger"
-							onClick={() => setSelectedTemplate(undefined)}
-						>
-							{t('course.template.remove')}
-						</Button>
-					</>
-				) : (
-					<Button variant="primary" onClick={() => setCourseTemplateOpen(true)}>
-						{t('course.template.add')}
-					</Button>
-				)}
 			</div>
 		);
 	};

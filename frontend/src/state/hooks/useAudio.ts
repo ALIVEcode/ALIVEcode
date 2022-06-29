@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
  * @param url
  */
 const useAudio = (url: string) => {
-	const [audio] = useState(new Audio(url));
+	const [audio] = useState(new Audio(window.location.origin + '/' + url));
 	const [playing, setPlaying] = useState(false);
 
 	const toggle = () => setPlaying(!playing);
@@ -14,7 +14,6 @@ const useAudio = (url: string) => {
 		try {
 			await audio.play();
 			setPlaying(true);
-			console.log('playing');
 		} catch (error) {
 			console.error(error);
 		}

@@ -18,6 +18,21 @@ import { ThemeContext } from '../../../state/contexts/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import api from '../../../Models/api';
 import Modal from '../../UtilsComponents/Modal/Modal';
+import { BrowserTypes } from '../../../Models/sharedTypes';
+
+export const getBrowser = () => {
+	/**
+	 * @link https://codepedia.info/detect-browser-in-javascript
+	 */
+	let userAgent = navigator.userAgent;
+	if (userAgent.match(/chrome|chromium|crios/i)) return BrowserTypes.CHROMIUM;
+	if (userAgent.match(/firefox|fxios/i)) return BrowserTypes.FIREFOX;
+	if (userAgent.match(/safari/i)) return BrowserTypes.SAFARI;
+	if (userAgent.match(/opr\//i)) return BrowserTypes.OPERA;
+	if (userAgent.match(/edg/i)) return BrowserTypes.EDGE;
+
+	return undefined;
+};
 
 const FeedbackModal = ({
 	isOpen,
@@ -50,28 +65,7 @@ const FeedbackModal = ({
 			},
 			browser: {
 				description: t('feedback.info_collected.browser'),
-				getIt: () => {
-					/**
-					 * @link https://codepedia.info/detect-browser-in-javascript
-					 */
-					let userAgent = navigator.userAgent;
-					let browserName: string;
-
-					if (userAgent.match(/chrome|chromium|crios/i)) {
-						browserName = 'chrome';
-					} else if (userAgent.match(/firefox|fxios/i)) {
-						browserName = 'firefox';
-					} else if (userAgent.match(/safari/i)) {
-						browserName = 'safari';
-					} else if (userAgent.match(/opr\//i)) {
-						browserName = 'opera';
-					} else if (userAgent.match(/edg/i)) {
-						browserName = 'edge';
-					} else {
-						browserName = 'No browser detection';
-					}
-					return browserName;
-				},
+				getIt: getBrowser,
 			},
 			theme: {
 				description: t('feedback.info_collected.theme'),

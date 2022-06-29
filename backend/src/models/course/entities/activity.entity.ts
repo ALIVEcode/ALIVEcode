@@ -8,10 +8,12 @@ import { ResourceEntity, RESOURCE_TYPE } from '../../resource/entities/resource.
 /** Enum for all the types of activities */
 export enum ACTIVITY_TYPE {
   THEORY = 'TH',
-  CHALLENGE = 'CH',
-  VIDEO = 'VI',
   PDF = 'PF',
+  VIDEO = 'VI',
+  CHALLENGE = 'CH',
   ASSIGNMENT = 'AS',
+  WORD = 'WO',
+  POWERPOINT = 'PP',
 }
 
 /**
@@ -53,12 +55,15 @@ export abstract class ActivityEntity {
 
   /** Id of the referenced resource */
   @Column({ type: 'uuid', nullable: true })
-  resourceId: string;
+  resourceId?: string;
 
-  abstract readonly allowedResources: RESOURCE_TYPE[];
+  abstract readonly allowedResources: [RESOURCE_TYPE, ...Array<string>];
 
   /** Reference to the resource linked to the activity */
   @ManyToOne(() => ResourceEntity, res => res.activities, { eager: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'resourceId' })
   resource: ResourceEntity;
+
+  /** Mime types allowed as a resource inside the activity */
+  acceptedMimeTypes?: string[];
 }

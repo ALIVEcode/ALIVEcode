@@ -23,6 +23,7 @@ export interface ModalProps {
 	backdropClassName?: string;
 	dialogClassName?: string;
 	contentClassName?: string;
+	onKeyDownEnter?: () => void;
 	icon?: IconProp;
 	onShow?: () => void;
 	topBar?: JSX.Element;

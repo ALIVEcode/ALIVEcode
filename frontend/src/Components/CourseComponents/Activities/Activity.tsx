@@ -10,7 +10,6 @@ import { CourseContext } from '../../../state/contexts/CourseContext';
 import { ACTIVITY_TYPE } from '../../../Models/Course/activity.entity';
 import ActivityChallenge from './ActivityChallenge';
 import RichTextEditor from '../../RichTextComponents/RichTextEditor/RichTextEditor';
-import ButtonAdd from './ButtonAdd';
 import { Descendant } from 'slate';
 import Button from '../../UtilsComponents/Buttons/Button';
 import { useTranslation } from 'react-i18next';
@@ -40,7 +39,11 @@ import api from '../../../Models/api';
 import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
 import Popup from 'reactjs-popup';
 import MenuResourceCreation from '../../Resources/MenuResourceCreation/MenuResourceCreation';
-import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
+import Info from '../../HelpComponents/index';
+import Link from '../../UtilsComponents/Link/Link';
+import AlertConfirm from '../../UtilsComponents/Alert/AlertConfirm/AlertConfirm';
+import ActivityWord from './ActivityWord';
+import { ActivityWord as ActivityWordModel } from '../../../Models/Course/activities/activity_word.entity';
 
 /**
  * Shows the opened activity. Renders different component depending on the type of the activity opened.
@@ -67,6 +70,9 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 
 	const activityRef = useRef(courseElement.activity);
 	const activity = activityRef.current;
+	const [confirmDelete, setConfirmDelete] = useState<
+		'header' | 'footer' | undefined
+	>();
 
 	const { t } = useTranslation();
 	const { createResource } = useContext(UserContext);
@@ -144,6 +150,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					case ACTIVITY_TYPE.PDF:
 					case ACTIVITY_TYPE.VIDEO:
 					case ACTIVITY_TYPE.ASSIGNMENT:
+					case ACTIVITY_TYPE.WORD:
 						createdRes = await createResource({
 							file: selectedFile,
 							type: resourceType,
@@ -228,6 +235,8 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 				return (
 					<ActivityAssignment activity={activity as ActivityAssignmentModel} />
 				);
+			case ACTIVITY_TYPE.WORD:
+				return <ActivityWord activity={activity as ActivityWordModel} />;
 			default:
 				return (
 					<div className="w-full h-full flex justify-center items-center">
@@ -237,13 +246,16 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 		}
 	};
 
+	/**
+	 * Method called when clicking the button to create a new resource. Each activity creates the resource differently
+	 * @param fromVideoUrl If the resource needs to be created from a video url
+	 * @returns Nothing (void)
+	 */
 	const createSpecificResource = async (fromVideoUrl?: boolean) => {
 		if (!course) return;
 		const resourceType = activity.allowedResources[0];
 		switch (resourceType) {
 			case RESOURCE_TYPE.FILE:
-			case RESOURCE_TYPE.PDF:
-			case RESOURCE_TYPE.IMAGE:
 				inputFileRef.current?.click();
 				break;
 			case RESOURCE_TYPE.VIDEO:
@@ -256,8 +268,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					file: null,
 					type: resourceType,
 					resource: {
-						name:
-							activity.name + ' ' + t('resources.theory.name').toLowerCase(),
+						name: activity.name + ' ' + t('resources.TH.name').toLowerCase(),
 						subject: course?.subject,
 					},
 				});
@@ -278,12 +289,9 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 				on="click"
 				position="top center"
 				trigger={
-					<div
-						className="border text-sm p-1 cursor-pointer text-[color:var(--fg-shade-four-color)] border-[color:var(--fg-shade-four-color)]
-										 opacity-75 transition-colors hover:opacity-100 hover:bg-[color:var(--fg-shade-four-color)] hover:text-[color:var(--background-color)]"
-					>
+					<Button variant="primary">
 						{t('course.activity.edit_resource')}
-					</div>
+					</Button>
 				}
 				closeOnDocumentClick
 				closeOnEscape
@@ -308,11 +316,23 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					tab.tab === 'view' ? 'py-8' : 'py-0',
 				)}
 			>
+				<Info.Icon
+					hoverPopup={{
+						position: 'left center',
+					}}
+					className="text-base absolute top-2 right-2"
+				>
+					<Info.Box
+						useDefaultStyle
+						text={t(`help.activity.${activity.type}`)}
+					/>
+				</Info.Icon>
 				<div className="text-4xl bg-[color:var(--background-color)] mb-6 w-full border-[color:var(--bg-shade-four-color)]">
 					<div className="flex items-center">
 						<FontAwesomeIcon
 							icon={activity.icon}
-							className="m-0 mr-4 text-[color:var(--bg-shade-four-color)]"
+							style={{ color: activity.color }}
+							className="m-0 mr-4"
 						/>
 						{isRenaming && editMode ? (
 							<FormInput
@@ -339,7 +359,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 						)}
 					</div>
 				</div>
-				{activity.header !== null ? (
+				{activity.header ? (
 					<div className="flex justify-center items-center pb-5">
 						<div className="flex flex-row gap-2 text-sm w-full">
 							<div className="w-full">
@@ -351,12 +371,9 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 							</div>
 							{editMode && (
 								<FontAwesomeIcon
+									title={t('course.activity.remove_header')}
 									icon={faMinusCircle}
-									onClick={async () => {
-										// eslint-disable-next-line no-restricted-globals
-										if (confirm(t('course.activity.remove_header_confirm')))
-											await updateActivity(activity, { header: null });
-									}}
+									onClick={() => setConfirmDelete('header')}
 									size="2x"
 									className="p-1 mb-2 border cursor-pointer text-red-600
 									border-red-600 opacity-75 transition-colors hover:opacity-100 hover:bg-red-600 hover:text-white"
@@ -366,7 +383,30 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					</div>
 				) : (
 					editMode && (
-						<ButtonAdd className="mb-5" what="header" activity={activity} />
+						<div className="border-t border-b my-6 py-2 border-[color:var(--fg-shade-four-color)]">
+							<div
+								className="w-full hover:bg-[color:rgb(var(--bg-shade-two-color-rgb),0.5)] transition-all
+								py-2 px-1 cursor-pointer hover:underline"
+								onClick={async () => {
+									if (!activity) return;
+									const value = [
+										{
+											type: 'paragraph',
+											children: [
+												{
+													text: '',
+												},
+											],
+										},
+									];
+									await updateActivity(activity, { header: value });
+								}}
+							>
+								<Link className="mb-5 opacity-70 w-full pl-3 !text-[color:var(--fg-shade-four-color)]">
+									{t('course.activity.add_header') + '...'}
+								</Link>
+							</div>
+						</div>
 					)
 				)}
 				<div>
@@ -376,12 +416,12 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 							{editMode && (
 								<div className="flex flex-row items-end gap-2">
 									<EditResource resource={activity.resource} />
-									<div
+									<Button
+										variant="danger"
 										onClick={() => removeResourceFromActivity(activity)}
-										className="border text-sm p-1 cursor-pointer text-red-600 border-red-600 opacity-75 transition-colors hover:opacity-100 hover:bg-red-600 hover:text-white"
 									>
 										{t('course.activity.remove_resource')}
-									</div>
+									</Button>
 								</div>
 							)}
 						</div>
@@ -439,7 +479,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 												}
 												errors={isInvalidURL ? { type: 'pattern' } : undefined}
 												messages={{
-													pattern: t('resources.video.form.invalid_url'),
+													pattern: t('resources.VI.form.invalid_url'),
 												}}
 											/>
 										))}
@@ -450,7 +490,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 						</div>
 					)}
 				</div>
-				{activity.footer !== null ? (
+				{activity.footer ? (
 					<div className="flex justify-center items-center pt-5">
 						<div className="flex flex-row gap-2 text-sm w-full">
 							<div className="w-full">
@@ -462,12 +502,9 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 							</div>
 							{editMode && (
 								<FontAwesomeIcon
+									title={t('course.activity.remove_footer')}
 									icon={faMinusCircle}
-									onClick={async () => {
-										// eslint-disable-next-line no-restricted-globals
-										if (confirm(t('course.activity.remove_footer_confirm')))
-											await updateActivity(activity, { footer: null });
-									}}
+									onClick={() => setConfirmDelete('footer')}
 									size="2x"
 									className="p-1 mb-2 border cursor-pointer text-red-600
 									border-red-600 opacity-75 transition-colors hover:opacity-100 hover:bg-red-600 hover:text-white"
@@ -477,8 +514,42 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					</div>
 				) : (
 					editMode && (
-						<ButtonAdd className="mt-5" what="footer" activity={activity} />
+						<div className="border-t border-b my-6 py-2 border-[color:var(--fg-shade-four-color)]">
+							<div
+								className="w-full hover:bg-[color:rgb(var(--bg-shade-two-color-rgb),0.5)] transition-all
+								py-2 px-1 cursor-pointer hover:underline"
+								onClick={async () => {
+									if (!activity) return;
+									const value = [
+										{
+											type: 'paragraph',
+											children: [
+												{
+													text: '',
+												},
+											],
+										},
+									];
+									await updateActivity(activity, { footer: value });
+								}}
+							>
+								<Link className="mb-5 opacity-70 w-full pl-3 !text-[color:var(--fg-shade-four-color)]">
+									{t('course.activity.add_footer') + '...'}
+								</Link>
+							</div>
+						</div>
 					)
+				)}
+				{editMode && (
+					<div className="mt-5 flex">
+						<Button
+							variant="primary"
+							className="m-auto !bg-[color:var(--logo-color)] hover:!bg-[color:var(--secondary-color)]"
+							onClick={() => setTab({ openedActivity: null })}
+						>
+							{t('course.validate_activity')}
+						</Button>
+					</div>
 				)}
 				<div className="flex flex-row items-center justify-evenly py-12">
 					<button
@@ -510,12 +581,29 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					id="file-upload"
 					name="file-upload"
 					type="file"
+					accept={activity.acceptedMimeTypes?.join(',')}
 					className="hidden"
 					ref={inputFileRef}
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						e.target.files && setSelectedFile(e.target.files[0])
 					}
 				/>
+				<AlertConfirm
+					open={confirmDelete !== undefined}
+					setOpen={value => setConfirmDelete(value ? 'header' : undefined)}
+					title={
+						confirmDelete &&
+						t(`course.activity.remove_${confirmDelete}_confirm`)
+					}
+					onConfirm={async () => {
+						if (!confirmDelete) return;
+						await updateActivity(activity, { [confirmDelete]: null });
+					}}
+				>
+					<p className="text-red-600 pb-5 font-bold text-lg">
+						{t('action.irreversible')}
+					</p>
+				</AlertConfirm>
 			</div>
 		)
 	);

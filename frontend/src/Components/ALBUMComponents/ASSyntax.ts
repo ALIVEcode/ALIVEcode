@@ -1,6 +1,6 @@
 import { Syntax } from 'refractor/lib/core';
 import { LinterFormatType } from '../ChallengeComponents/LineInterface/mode-alivescript';
-import cacheLintInfo from '../ChallengeComponents/LineInterface/cache_lintinfo.json';
+import cacheLintInfo from '../ChallengeComponents/LineInterface/cache_lintinfo_fr.json';
 import axios from 'axios';
 
 async function define() {

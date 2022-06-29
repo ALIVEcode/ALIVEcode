@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
  * @param {any} children Body content of the modal
  * @param {string} title Title shown in the header of the modal
  * @param {callback} onClose Callback called on close
+ * @param {callback} onKeyDownEnter Callback called on key down enter
  * Button props
  * @param {string} buttonVariant Show the closeButtons on the top right
  * @param {string} submitText Text of the submit button
@@ -48,6 +49,7 @@ const Modal = (props: ModalProps) => {
 		backdropClassName,
 		contentClassName,
 		dialogClassName,
+		onKeyDownEnter,
 		icon,
 		onShow,
 		topBar,
@@ -58,9 +60,24 @@ const Modal = (props: ModalProps) => {
 	const { t } = useTranslation();
 
 	useEffect(() => {
-		if (open) onShow && onShow();
+		if (open) {
+			onShow && onShow();
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [open]);
+
+	useEffect(() => {
+		if (open && onKeyDownEnter) {
+			const onKeyDownHandler = (e: KeyboardEvent) =>
+				onKeyDownEnter &&
+				e.key &&
+				e.key.toLowerCase() === 'enter' &&
+				onKeyDownEnter();
+
+			window.addEventListener('keydown', onKeyDownHandler);
+			return () => window.removeEventListener('keydown', onKeyDownHandler);
+		}
+	});
 
 	return (
 		<Transition appear show={open} as={Fragment}>

@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
+import { RESOURCE_TYPE, pdfMimeTypes } from '../../Resource/resource.entity';
+import { ResourceFile } from '../../Resource/resources/resource_file.entity';
 import { Activity } from '../activity.entity';
-import { ResourcePdf } from '../../Resource/resources/resource_pdf.entity';
-import { RESOURCE_TYPE } from '../../Resource/resource.entity';
 
 /**
  * Activity of type Pdf model in the database
@@ -12,9 +12,15 @@ export class ActivityPdf extends Activity {
 	resourceId?: string;
 
 	/** Resource of the activity */
-	@Type(() => ResourcePdf)
-	resource?: ResourcePdf;
+	@Type(() => ResourceFile)
+	resource?: ResourceFile;
 
 	/** Allowed types of resources inside the activity */
-	readonly allowedResources: RESOURCE_TYPE[] = [RESOURCE_TYPE.PDF];
+	readonly allowedResources: [RESOURCE_TYPE, ...Array<string>] = [
+		RESOURCE_TYPE.FILE,
+		'pdf',
+	];
+
+	/** Mime types allowed as a resource inside the activity */
+	acceptedMimeTypes = pdfMimeTypes;
 }

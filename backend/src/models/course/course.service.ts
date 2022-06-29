@@ -16,8 +16,12 @@ import { ActivityPdfEntity } from './entities/activities/activity_pdf.entity';
 import { CreateActivityDTO } from './dtos/CreateActivities.dto';
 import { UpdateCourseElementDTO } from './dtos/UpdateCourseElement.dto';
 import { CreateSectionDTO } from './dtos/CreateSection.dto';
-import { ResourceEntity } from '../resource/entities/resource.entity';
+import { ResourceEntity, RESOURCE_TYPE } from '../resource/entities/resource.entity';
 import { ActivityAssignmentEntity } from './entities/activities/activity_assignment.entity';
+import { ResourceChallengeEntity } from '../resource/entities/resources/resource_challenge.entity';
+import { ChallengeEntity, CHALLENGE_ACCESS } from '../challenge/entities/challenge.entity';
+import { ActivityWordEntity } from './entities/activities/activity_word.entity';
+import { ActivityPowerPointEntity } from './entities/activities/activity_powerpoint.entity';
 
 /**
  * All the methods to communicate to the database. To create/update/delete/get
@@ -36,9 +40,12 @@ export class CourseService {
     @InjectRepository(ActivityPdfEntity) private actPdfRepo: Repository<ActivityPdfEntity>,
     @InjectRepository(ActivityAssignmentEntity) private actAssignmentRepo: Repository<ActivityAssignmentEntity>,
     @InjectRepository(ActivityChallengeEntity) private actChallengeRepo: Repository<ActivityChallengeEntity>,
+    @InjectRepository(ActivityWordEntity) private actWordRepo: Repository<ActivityWordEntity>,
+    @InjectRepository(ActivityPowerPointEntity) private actPptxRepo: Repository<ActivityPowerPointEntity>,
     @InjectRepository(ClassroomEntity) private classroomRepo: Repository<ClassroomEntity>,
     @InjectRepository(CourseElementEntity) private courseElRepo: Repository<CourseElementEntity>,
     @InjectRepository(StudentEntity) private studentRepo: Repository<StudentEntity>,
+    @InjectRepository(ChallengeEntity) private challengeRepo: Repository<ChallengeEntity>,
   ) {}
 
   /**
@@ -60,12 +67,23 @@ export class CourseService {
     course = await this.courseRepository.save(course);
 
     // If a classroom is specified, add the course to the classroom
-    if (createCourseDto.classId) {
-      const classroom = await this.classroomRepo.findOne(createCourseDto.classId, { relations: ['courses'] });
-      if (!classroom) throw new HttpException('Classroom not found', HttpStatus.NOT_FOUND);
-      classroom.courses.push(course);
-      await this.classroomRepo.save(classroom);
-    }
+    if (createCourseDto.classId) await this.addCourseInClassroom(course, createCourseDto.classId);
+
+    return course;
+  }
+
+  /**
+   * Adds a course inside a classroom
+   * @param course Course to add inside the classroom
+   * @param classroomId Id of the classroom to add the course in
+   * @returns The updated course
+   */
+  async addCourseInClassroom(course: CourseEntity, classroomId: string) {
+    // If a classroom is specified, add the course to the classroom
+    const classroom = await this.classroomRepo.findOne(classroomId, { relations: ['courses'] });
+    if (!classroom) throw new HttpException('Classroom not found', HttpStatus.NOT_FOUND);
+    classroom.courses.push(course);
+    await this.classroomRepo.save(classroom);
     return course;
   }
 
@@ -130,6 +148,8 @@ export class CourseService {
       creator: newProfessor,
       code: newCode,
       id: undefined,
+      elements: undefined,
+      classrooms: undefined,
     });
 
     const cloneElements = async (
@@ -210,10 +230,6 @@ export class CourseService {
       .where('course.id = :courseId', { courseId })
       .andWhere('elements.sectionParentId IS NULL')
       .getOne();
-    /*const course = await this.courseRepository.findOne(courseId, {
-			where: { 'elements.section': null },
-			relations: ['elements'],
-		});*/
     if (!course) throw new HttpException('Course not found', HttpStatus.NOT_FOUND);
     course.elements.forEach(element => (element.courseId = course.id));
     return course;
@@ -541,6 +557,10 @@ export class CourseService {
         return await this.actPdfRepo.save(activity);
       case ACTIVITY_TYPE.ASSIGNMENT:
         return await this.actAssignmentRepo.save(activity);
+      case ACTIVITY_TYPE.WORD:
+        return await this.actWordRepo.save(activity);
+      case ACTIVITY_TYPE.POWERPOINT:
+        return await this.actPptxRepo.save(activity);
       default:
         throw new HttpException(`Invalid activity type ${activity.type}`, HttpStatus.BAD_REQUEST);
     }
@@ -586,6 +606,25 @@ export class CourseService {
     if (!activity.allowedResources.includes(resource.type))
       throw new HttpException('Cannot add this type of resource to this activity', HttpStatus.BAD_REQUEST);
 
+    // Change the visibility of the challenge from private to restricted
+    if (resource instanceof ResourceChallengeEntity) {
+      const challenge = await this.challengeRepo.findOne(resource.challengeId);
+      if (challenge.access === CHALLENGE_ACCESS.PRIVATE) {
+        challenge.access = CHALLENGE_ACCESS.RESTRICTED;
+        await this.challengeRepo.save(challenge);
+      }
+    }
+
+    // Checks if the file resource is of the correct Mime type
+    if (resource.type === RESOURCE_TYPE.FILE && !activity.acceptedMimeTypes.includes(resource.file.mimetype)) {
+      throw new HttpException(
+        `Mime type ${resource.file.mimetype} not accepted. ${activity.acceptedMimeTypes.join(
+          ', ',
+        )} are the only Mime types accepted`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     activity.resource = resource;
     return await this.activityRepository.save(activity);
   }
@@ -605,8 +644,10 @@ export class CourseService {
    * @param activity Course found with the id in the url
    * @returns The removal query result
    */
-  async getResourceOfActivity(activity: ActivityEntity) {
-    return (await this.activityRepository.findOne(activity.id, { relations: ['resource'] })).resource;
+  async getResourceOfActivity(activity: ActivityEntity, loadFile = false) {
+    const relations = ['resource'];
+    if (loadFile) relations.push('resource.file');
+    return (await this.activityRepository.findOne(activity.id, { relations })).resource;
   }
 
   /*****-------End of Activity methods-------*****/

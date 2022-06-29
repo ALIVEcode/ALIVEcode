@@ -11,7 +11,7 @@ import ace from 'ace-builds';
 import AceEditor from 'react-ace';
 import 'ace-builds/webpack-resolver';
 import './mode-alivescript';
-import { setup, setLintInfo } from './mode-alivescript';
+
 import { faCog } from '@fortawesome/free-solid-svg-icons';
 import IconButton from '../../DashboardComponents/IconButton/IconButton';
 import Modal from '../../UtilsComponents/Modal/Modal';
@@ -20,7 +20,6 @@ import { FORM_ACTION } from '../../UtilsComponents/Form/formTypes';
 import { useTranslation } from 'react-i18next';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import brace from 'brace';
 import 'brace/theme/cobalt';
 import 'brace/theme/dracula';
 import 'brace/theme/github';
@@ -28,8 +27,8 @@ import 'brace/theme/twilight';
 import 'brace/theme/solarized_dark';
 import 'brace/theme/xcode';
 import 'brace/ext/language_tools';
+import { SUPPORTED_LANG } from '../../../Models/Challenge/challenge.entity';
 import api from '../../../Models/api';
-import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 
 enum FontSize {
 	SMALL = 'small',
@@ -44,6 +43,11 @@ enum Theme {
 	TWILIGHT = 'twilight',
 	SOLARIZED_DARK = 'solarized_dark',
 	XCODE = 'xcode',
+}
+
+enum InterfaceFont {
+	FIRA_CODE = "font-['Fira_Code'] [font-variant-ligatures:normal]",
+	MONO = 'font-mono',
 }
 
 /**
@@ -83,10 +87,12 @@ const LineInterface = memo(
 		const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large'>(
 			'medium',
 		);
+		const [fontFamily, setFontFamily] = useState<InterfaceFont>(
+			InterfaceFont.FIRA_CODE,
+		);
 		const [codeTheme, setCodeTheme] = useState<Theme>(Theme.COBALT);
 		const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
 		const [reloadRequired, setReloadRequired] = useState(false);
-		const [loaded, setLoaded] = useState(false);
 
 		useEffect(() => {
 			setCodeTheme(theme.name === 'light' ? Theme.XCODE : Theme.COBALT);
@@ -110,7 +116,7 @@ const LineInterface = memo(
 			tab && tab.onChange && tab.onChange(content);
 			handleChange(content);
 		};
-
+		/*
 		useEffect(() => {
 			(async () => {
 				// setLoaded(false);
@@ -127,7 +133,7 @@ const LineInterface = memo(
 				}
 			})();
 		}, [lang]);
-
+		*/
 		return (
 			<StyledLineInterface
 				theme={theme}
@@ -137,7 +143,7 @@ const LineInterface = memo(
 					<div className="editors-tab w-full">
 						{hasTabs &&
 							tabs.map((t, idx) => (
-								<div className="w-fit">
+								<div className="w-fit" key={idx}>
 									<EditorTab
 										key={idx}
 										tab={t}
@@ -174,64 +180,63 @@ const LineInterface = memo(
 					<>
 						{tabs.map((t, idx) => {
 							return (
-								<>
-									{loaded && (
-										<AceEditor
-											onInput={(event: KeyboardEvent) => {
-												if (event.key === 'Escape') {
-													event.preventDefault();
-												}
-											}}
-											key={idx}
-											ref={el => {
-												if (el) refList.current[idx] = el;
-											}}
-											className={
-												'ace-editor relative ' +
-												(!t.open && t.loaded ? 'hidden-editor ' : '') +
-												(t.open ? 'opened-editor ' : '')
-											}
-											defaultValue={t.defaultContent}
-											value={t.content}
-											mode="alivescript"
-											theme={codeTheme}
-											showGutter
-											showPrintMargin
-											onLoad={async () => {
-												// To only hide the tab editor once it loaded
-												setTimeout(() => {
-													// Set default content in parent prop
-													if (t.open) handleChange(t.defaultContent);
-													tabs[idx].content = t.defaultContent;
-													tabs[idx].loaded = true;
-													setTabs([...tabs]);
-													refList.current.forEach(el => el.editor.resize());
-												}, 100);
-												const editor = ace.edit('1nt3rf4c3');
-												setAutocomplete(editor, lang);
-												editor.keyBinding.addKeyboardHandler(
-													new Autocomplete(),
-													0,
-												);
-											}}
-											onChange={content => {
-												onEditorChange(content, t);
-												tabs[idx].content = content;
-												setTabs([...tabs]);
-											}}
-											fontSize={fontSize}
-											name="1nt3rf4c3" //"UNIQUE_ID_OF_DIV"
-											editorProps={{ $blockScrolling: Infinity }}
-											setOptions={{
-												enableBasicAutocompletion: true,
-												enableSnippets: true,
-												enableLiveAutocompletion: true,
-												scrollPastEnd: true,
-												vScrollBarAlwaysVisible: true,
-											}}
-										/>
-									)}
-								</>
+								<AceEditor
+									onInput={(event: KeyboardEvent) => {
+										if (event.key === 'Escape') {
+											event.preventDefault();
+										}
+									}}
+									key={idx}
+									ref={el => {
+										if (el) refList.current[idx] = el;
+									}}
+									className={
+										'ace-editor relative ' +
+										(!t.open && t.loaded ? 'hidden-editor ' : '') +
+										(t.open ? 'opened-editor ' : '') +
+										' ' +
+										fontFamily
+									}
+									defaultValue={t.defaultContent}
+									value={t.content}
+									mode={
+										lang === SUPPORTED_LANG.EN
+											? 'alivescript_en'
+											: 'alivescript_fr'
+									}
+									theme={codeTheme}
+									showGutter
+									showPrintMargin
+									onLoad={async () => {
+										// To only hide the tab editor once it loaded
+										setTimeout(() => {
+											// Set default content in parent prop
+											if (t.open) handleChange(t.defaultContent);
+											tabs[idx].content = t.defaultContent;
+											tabs[idx].loaded = true;
+											setTabs([...tabs]);
+											refList.current.forEach(el => el.editor.resize());
+										}, 100);
+										const editor = ace.edit('1nt3rf4c3');
+										setAutocomplete(editor, lang);
+										editor.keyBinding.addKeyboardHandler(new Autocomplete(), 0);
+									}}
+									onChange={content => {
+										onEditorChange(content, t);
+										tabs[idx].content = content;
+										setTabs([...tabs]);
+									}}
+									fontSize={fontSize}
+									name="1nt3rf4c3" //"UNIQUE_ID_OF_DIV"
+									editorProps={{ $blockScrolling: Infinity }}
+									setOptions={{
+										enableBasicAutocompletion: true,
+										enableSnippets: true,
+										enableLiveAutocompletion: true,
+										scrollPastEnd: true,
+										vScrollBarAlwaysVisible: true,
+									}}
+								/>
 							);
 						})}
 					</>
@@ -243,7 +248,7 @@ const LineInterface = memo(
 								event.preventDefault();
 							}
 						}}
-						className="ace-editor relative"
+						className={'ace-editor relative ' + fontFamily}
 						mode="alivescript"
 						theme={codeTheme}
 						defaultValue={initialContent}
@@ -289,6 +294,13 @@ const LineInterface = memo(
 								selectOptions: FontSize,
 							},
 							{
+								name: 'fontFamily',
+								inputType: 'select',
+								default: fontFamily,
+								required: true,
+								selectOptions: InterfaceFont,
+							},
+							{
 								name: 'codeTheme',
 								inputType: 'select',
 								default: codeTheme,
@@ -300,6 +312,7 @@ const LineInterface = memo(
 							setSettingsOpen(false);
 							setFontSize(value.fontSize);
 							setCodeTheme(value.codeTheme);
+							setFontFamily(value.fontFamily);
 						}}
 					/>
 				</Modal>

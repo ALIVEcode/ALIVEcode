@@ -5,6 +5,7 @@ import { useMemo, useState } from 'react';
 import RichTextToolBar from './RichTextToolBar';
 import { RichTextEditorProps } from './richTextToolBarTypes';
 import { classNames } from '../../../Types/utils';
+import { useTranslation } from 'react-i18next';
 import {
 	renderElement,
 	renderLeaf,
@@ -28,6 +29,7 @@ const RichTextEditor = ({
 	// @ts-ignore
 	const editor = useMemo(() => withReact(withHistory(createEditor())), []);
 	const [editMode, setEditMode] = useState(false);
+	const { t } = useTranslation();
 
 	const [value, setValue] = useState<Descendant[]>(
 		defaultText ?? [
@@ -56,7 +58,7 @@ const RichTextEditor = ({
 				<RichTextToolBar />
 				<Editable
 					readOnly={readOnly}
-					placeholder={!readOnly ? 'Commencer à écrire...' : undefined}
+					placeholder={!readOnly ? t('course.start_writing') : undefined}
 					className={classNames(
 						'rounded-sm pl-2 bg-[color:var(--background-color)] cursor-text border border-[color:var(--bg-shade-two-color)] py-3 w-full h-full transition-all',
 						editMode && !readOnly && 'drop-shadow-md',

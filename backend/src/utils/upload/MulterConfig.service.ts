@@ -5,6 +5,7 @@ import { extname } from 'path';
 import { RESOURCE_TYPE } from 'src/models/resource/entities/resource.entity';
 import { MyRequest } from '../guards/auth.guard';
 import { nanoid } from 'nanoid';
+import { acceptedVideoMimeTypes } from '../../models/course/entities/activities/activity_video.entity';
 
 export const createMulterOptions = (injected: any): MulterModuleOptions => {
   const req: MyRequest = injected.req;
@@ -26,17 +27,8 @@ export const createMulterOptions = (injected: any): MulterModuleOptions => {
       if (!type) callback(new HttpException('Missing type', HttpStatus.BAD_REQUEST), null);
 
       let acceptedMimetypes = [];
-      switch (type) {
-        case RESOURCE_TYPE.IMAGE:
-          acceptedMimetypes = ['image/jpeg', 'image/jpg', 'image/png'];
-          break;
-        case RESOURCE_TYPE.VIDEO:
-          acceptedMimetypes = ['video/mp4', 'video/mpeg', 'video/ogg', 'video/mp2t'];
-          break;
-        case RESOURCE_TYPE.PDF:
-          acceptedMimetypes = ['application/pdf'];
-          break;
-      }
+
+      if (type == RESOURCE_TYPE.VIDEO) acceptedMimetypes = acceptedVideoMimeTypes;
 
       if (type !== RESOURCE_TYPE.FILE && !acceptedMimetypes.includes(file.mimetype)) {
         return callback(

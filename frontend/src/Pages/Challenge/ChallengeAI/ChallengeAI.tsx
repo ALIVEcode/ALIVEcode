@@ -367,7 +367,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 			let indexArray: number[] = [];
 			challenge.hyperparams.NN.neuronsByLayer =
-				challenge.hyperparams.NN.neuronsByLayer.filter((e, i) => {
+				challenge.hyperparams.NN.neuronsByLayer.filter((e: any, i: any) => {
 					if (e === 0) indexArray.push(1);
 					else return e;
 				});

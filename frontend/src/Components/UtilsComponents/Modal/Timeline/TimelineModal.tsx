@@ -13,6 +13,12 @@ import { Transition } from '@headlessui/react';
 import { classNames } from '../../../../Types/utils';
 import { useAlert } from 'react-alert';
 
+function hasMultipleChildren(
+	children: React.ReactNode | React.ReactNode[],
+): children is Array<JSX.Element> {
+	return Array.isArray(children) && children.filter(Boolean).length > 1;
+}
+
 /**
  * TimelineModal component for displaying a modal with a timeline
  * @param children - children of the modal
@@ -48,7 +54,7 @@ const TimelineModal = ({
 	const alert = useAlert();
 
 	const numberOfPages = useMemo(
-		() => (Array.isArray(children) ? children.length : 0),
+		() => (hasMultipleChildren(children) ? children.length : 1),
 		[children],
 	);
 
@@ -105,57 +111,66 @@ const TimelineModal = ({
 	// }, [autoNext, canGoNext, currentPage, nextPageOrClose, numberOfPages]);
 
 	const MultipleSlides = () => {
-		if (!Array.isArray(children)) {
-			return null;
-		}
 		return (
 			<div className="flex flex-col transition-all">
-				{children.map((child, index) => {
-					return (
-						<Transition
-							// enter="transition ease-in-out duration-200 transform"
-							// enterFrom="translate-x-full"
-							// enterTo="translate-x-0"
-							// leave="transition ease-in-out duration-200 transform"
-							// leaveFrom="translate-x-0"
-							// leaveTo="-translate-x-full"
-							show={currentPage === index}
-							// appear
-						>
-							<div className={defaultSlideClassName}>{child}</div>
-						</Transition>
-					);
-				})}
+				{hasMultipleChildren(children) ? (
+					children.map((child, index) => {
+						return (
+							<Transition
+								// enter="transition ease-in-out duration-200 transform"
+								// enterFrom="translate-x-full"
+								// enterTo="translate-x-0"
+								// leave="transition ease-in-out duration-200 transform"
+								// leaveFrom="translate-x-0"
+								// leaveTo="-translate-x-full"
+								show={currentPage === index}
+								// appear
+							>
+								<div className={defaultSlideClassName}>{child}</div>
+							</Transition>
+						);
+					})
+				) : (
+					<Transition show>
+						<div className={defaultSlideClassName}>{children}</div>
+					</Transition>
+				)}
 				<div className="flex flex-row justify-evenly align-middle pt-12">
-					<button
-						className="flex items-center gap-4 cursor-pointer disabled:cursor-auto disabled:opacity-40"
-						disabled={currentPage === 0}
-						onClick={previousPage}
-					>
-						<FontAwesomeIcon size="1x" icon={faChevronLeft} />
-						<span>{t('help.slides.previous')}</span>
-					</button>
-					<div className="flex flex-row gap-4 justify-between py-1 px-2">
-						{children.map((child, idx) => (
-							<FontAwesomeIcon
-								key={idx}
-								icon={faCircle}
-								size="xs"
-								className={classNames(
-									idx === currentPage && 'text-[color:var(--foreground-color)]',
-									idx !== currentPage &&
-										(canGoNext()
-											? 'text-[color:var(--fg-shade-three-color)] opacity-50 cursor-pointer'
-											: 'text-[color:var(--fg-shade-three-color)] opacity-10 cursor-not-allowed'),
-								)}
-								onClick={() => {
-									if (!canGoNext() && idx > currentPage) return;
-									setCurrentPage(idx);
-									forceUpdate();
-								}}
-							/>
-						))}
-					</div>
+					{hasMultipleChildren(children) && (
+						<>
+							<button
+								className="flex items-center gap-4 cursor-pointer disabled:cursor-auto disabled:opacity-40"
+								disabled={currentPage === 0}
+								onClick={previousPage}
+							>
+								<FontAwesomeIcon size="1x" icon={faChevronLeft} />
+								<span>{t('help.slides.previous')}</span>
+							</button>
+
+							<div className="flex flex-row gap-4 justify-between py-1 px-2">
+								{children.map((child, idx) => (
+									<FontAwesomeIcon
+										key={idx}
+										icon={faCircle}
+										size="xs"
+										className={classNames(
+											idx === currentPage &&
+												'text-[color:var(--foreground-color)]',
+											idx !== currentPage &&
+												(canGoNext()
+													? 'text-[color:var(--fg-shade-three-color)] opacity-50 cursor-pointer'
+													: 'text-[color:var(--fg-shade-three-color)] opacity-10 cursor-not-allowed'),
+										)}
+										onClick={() => {
+											if (!canGoNext() && idx > currentPage) return;
+											setCurrentPage(idx);
+											forceUpdate();
+										}}
+									/>
+								))}
+							</div>
+						</>
+					)}
 					{currentPage === numberOfPages - 1 ? (
 						<button
 							className="flex items-center gap-4 cursor-pointer disabled:cursor-auto"
@@ -207,12 +222,16 @@ const TimelineModal = ({
 			hideFooter
 			hideSubmitButton
 			title={title}
+			onKeyDownEnter={() => {
+				console.log(canGoNext());
+				canGoNext() && nextPageOrClose();
+			}}
 			onShow={() => {
 				setCurrentPage(0);
 				modalProps.onShow && modalProps.onShow();
 			}}
 			topBar={
-				Array.isArray(children) ? (
+				hasMultipleChildren(children) ? (
 					<label className={'w-full flex justify-end pr-4 pt-4 absolute'}>
 						{currentPage + 1} / {numberOfPages}
 					</label>
@@ -221,11 +240,7 @@ const TimelineModal = ({
 			size={size}
 			{...modalProps}
 		>
-			{Array.isArray(children) ? (
-				<MultipleSlides />
-			) : (
-				<div className={defaultSlideClassName}>{children}</div>
-			)}
+			<MultipleSlides />
 		</Modal>
 	);
 };

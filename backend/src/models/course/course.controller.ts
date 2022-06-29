@@ -46,6 +46,9 @@ import { ResourceVideoEntity } from '../resource/entities/resources/resource_vid
 import { MoveElementDTO } from './dtos/MoveElement.dto';
 import { isUUID } from 'class-validator';
 import { SectionEntity } from './entities/section.entity';
+import { AddCourseInClassroomDTO } from './dtos/AddCourseInClassroom';
+import { ChallengeService } from '../challenge/challenge.service';
+import { ResourceChallengeEntity } from '../resource/entities/resources/resource_challenge.entity';
 
 /**
  * All the routes to create/update/delete/get a course or it's content (CourseElements)
@@ -59,6 +62,7 @@ export class CourseController {
     private readonly courseService: CourseService,
     private readonly userService: UserService,
     private readonly resourceService: ResourceService,
+    private readonly challengeService: ChallengeService,
   ) {}
 
   /**
@@ -106,6 +110,19 @@ export class CourseController {
   @UseGuards(CourseProfessor)
   async update(@Course() course: CourseEntity, @Body() updateCourseDto: CourseEntity) {
     return await this.courseService.update(course.id, updateCourseDto);
+  }
+
+  /**
+   * Route to add a course inside a classroom
+   * @param course Course to add inside the classroom
+   * @param dto DTO to add a course inside a classroom
+   * @returns The updated course
+   */
+  @Post(':id')
+  @Auth()
+  @UseGuards(CourseAccess)
+  async addCourseInClassroom(@Body() dto: AddCourseInClassroomDTO, @Course() course: CourseEntity) {
+    return await this.courseService.addCourseInClassroom(course, dto.classId);
   }
 
   /**
@@ -280,8 +297,17 @@ export class CourseController {
     @Res() res: Response,
   ) {
     const activity = await this.courseService.findActivity(course.id, activityId);
-    if (activity.type !== ACTIVITY_TYPE.ASSIGNMENT)
-      throw new HttpException('Can only download on Assignment activities', HttpStatus.BAD_REQUEST);
+    const allowedActivitiesToDownloadFrom = [
+      ACTIVITY_TYPE.ASSIGNMENT,
+      ACTIVITY_TYPE.PDF,
+      ACTIVITY_TYPE.POWERPOINT,
+      ACTIVITY_TYPE.WORD,
+    ];
+    if (!allowedActivitiesToDownloadFrom.includes(activity.type))
+      throw new HttpException(
+        `Can only download on activities of type: ${allowedActivitiesToDownloadFrom.join(', ')}`,
+        HttpStatus.BAD_REQUEST,
+      );
     const resourceUnknown = await this.courseService.getResourceOfActivity(activity);
     if (resourceUnknown.type !== RESOURCE_TYPE.FILE)
       throw new HttpException(
@@ -306,7 +332,7 @@ export class CourseController {
     @Res() res: Response,
   ) {
     const activity = await this.courseService.findActivity(course.id, activityId);
-    const acceptedActivityTypes = [ACTIVITY_TYPE.CHALLENGE, ACTIVITY_TYPE.PDF];
+    const acceptedActivityTypes = [ACTIVITY_TYPE.PDF, ACTIVITY_TYPE.WORD];
     if (!acceptedActivityTypes.includes(activity.type))
       throw new HttpException(
         `Can only get the file on activities of type ${acceptedActivityTypes.join(', ')}`,
@@ -334,7 +360,7 @@ export class CourseController {
     if (!range) throw new HttpException('Missing range headers', HttpStatus.BAD_REQUEST);
 
     const activity = await this.courseService.findActivity(id, activityId);
-    const resourceUnknown = await this.courseService.getResourceOfActivity(activity);
+    const resourceUnknown = await this.courseService.getResourceOfActivity(activity, true);
     if (resourceUnknown.type !== RESOURCE_TYPE.VIDEO)
       throw new HttpException(
         "The resource inside the activity is not of type VIDEO, can't download it",
@@ -354,7 +380,7 @@ export class CourseController {
       'Content-Range': `bytes ${start}-${end}/${videoSize}`,
       'Accept-Ranges': 'bytes',
       'Content-Length': contentLength,
-      'Content-Type': 'video/mp4',
+      'Content-Type': resource.file.mimetype,
     };
 
     res.writeHead(206, headers);
@@ -382,6 +408,25 @@ export class CourseController {
     const resource = await this.resourceService.findOne(addResourceDTO.resourceId);
     if (resource.creator.id !== professor.id) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     return await this.courseService.addResourceToActivity(activity, resource);
+  }
+
+  /**
+   * Loads the challenge inside an activity
+   * @param id Id of the course
+   * @param activityId Id of the activity to load the challenge from
+   * @returns Challenge
+   */
+  @Get(':id/activities/:activityId/loadChallenge')
+  @Auth()
+  @UseGuards(CourseAccess)
+  async loadChallengeInActivity(@Param('id') id: string, @Param('activityId') activityId: string) {
+    const act = await this.courseService.findActivity(id, activityId);
+    if (act.type !== ACTIVITY_TYPE.CHALLENGE || !act.resourceId)
+      throw new HttpException('Activity is not of type challenge or has no resource', HttpStatus.BAD_REQUEST);
+    const res = await this.resourceService.findOne(act.resourceId);
+    if (res.type !== RESOURCE_TYPE.CHALLENGE)
+      throw new HttpException('Resource has no challenge', HttpStatus.BAD_REQUEST);
+    return await this.challengeService.findOne((res as any as ResourceChallengeEntity).challengeId);
   }
 
   /**

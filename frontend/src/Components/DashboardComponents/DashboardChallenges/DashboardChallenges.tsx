@@ -34,7 +34,7 @@ export const DashboardChallenges = () => {
 				</Button>
 				<Button
 					className="w-full tablet:w-[20rem]"
-					variant="secondary"
+					variant="primary"
 					to={routes.auth.challenge_create.path}
 				>
 					{t('dashboard.challenges.create_challenge')}

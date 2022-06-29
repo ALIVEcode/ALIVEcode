@@ -28,6 +28,7 @@ import 'brace/theme/solarized_dark';
 import 'brace/theme/xcode';
 import 'brace/ext/language_tools';
 import { SUPPORTED_LANG } from '../../../Models/Challenge/challenge.entity';
+import api from '../../../Models/api';
 
 enum FontSize {
 	SMALL = 'small',
@@ -115,7 +116,24 @@ const LineInterface = memo(
 			tab && tab.onChange && tab.onChange(content);
 			handleChange(content);
 		};
-
+		/*
+		useEffect(() => {
+			(async () => {
+				// setLoaded(false);
+				try {
+					const lintInfo = await api.as.getLintInfo(lang);
+					setLintInfo(lintInfo);
+					if (loaded) {
+						setReloadRequired(true);
+					}
+				} catch {
+					setLintInfo(null);
+				} finally {
+					setLoaded(true);
+				}
+			})();
+		}, [lang]);
+		*/
 		return (
 			<StyledLineInterface
 				theme={theme}

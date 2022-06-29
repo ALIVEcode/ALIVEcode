@@ -39,7 +39,11 @@ export type Theme = {
 		foreground_rgb: string;
 		tableback: string;
 		databack: string;
-		headerAIBack: string;
+		input_header: string;
+		output_header: string;
+		input_data: string;
+		output_data: string;
+		header_ai_back: string;
 	};
 	background: string;
 	name: string;
@@ -81,7 +85,11 @@ export const themes: { light: Theme; dark: Theme } = {
 			...{
 				tableback: '#9ecbff',
 				databack: '#f2f2f2',
-				headerAIBack: 'linear-gradient(90deg, #2E75FF 0%, #04dbe6 100%)',
+				input_header: '#6EC68C',
+				input_data: '#ABE6BF',
+				output_header: '#FF9432',
+				output_data: '#FFC785',
+				header_ai_back: 'linear-gradient(90deg, #2E75FF 0%, #04dbe6 100%)',
 			},
 		},
 		background: '#ffffff',
@@ -111,7 +119,11 @@ export const themes: { light: Theme; dark: Theme } = {
 			...{
 				tableback: '#25496f',
 				databack: '#b0b0b0',
-				headerAIBack:
+				input_header: '#083700',
+				input_data: '#1A4019',
+				output_header: '#562400',
+				output_data: '#772B00',
+				header_ai_back:
 					'linear-gradient(90deg, #02111D 0%, rgba(0,49,130,1) 100%)',
 			},
 		},

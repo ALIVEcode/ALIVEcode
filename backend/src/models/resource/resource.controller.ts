@@ -12,7 +12,7 @@ import {
   UploadedFile,
 } from '@nestjs/common';
 import { ResourceService } from './resource.service';
-import { ResourceEntity, RESOURCE_TYPE } from './entities/resource.entity';
+import { ResourceEntity } from './entities/resource.entity';
 import { Auth } from '../../utils/decorators/auth.decorator';
 import { Role } from '../../utils/types/roles.types';
 import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';

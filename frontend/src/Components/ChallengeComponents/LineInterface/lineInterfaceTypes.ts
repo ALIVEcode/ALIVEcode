@@ -8,9 +8,13 @@ export type LineInterfaceProps = {
 	tabs?: EditorTabModel[];
 	initialContent?: string;
 	className?: string;
-	lang?: SUPPORTED_LANG
+	lang?: SUPPORTED_LANG;
 };
 
+/**
+ * This type represents the properties of a tab from the editor
+ * interface and the AI interface
+ */
 export type EditorTabModel = {
 	title: string;
 	open: boolean;

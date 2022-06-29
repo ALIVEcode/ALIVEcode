@@ -8,6 +8,7 @@
  */
 export interface ChallengeGraphProps {
 	data: any;
+	className?: string;
 	title: string;
 	xAxis: string;
 	yAxis: string;

@@ -95,7 +95,6 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	 */
 	const setIOCode = useCallback(
 		(value: string, index: number) => {
-			console.log('start');
 			let activeArray: number[] = props.activeIoCodes!;
 
 			//Set up to change the initial iocodes

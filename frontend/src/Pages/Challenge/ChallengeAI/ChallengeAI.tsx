@@ -180,15 +180,24 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					(progression?.data as ChallengeAIProgressionData).hyperparams =
 						challenge.hyperparams;
 
-				activeIoCodes.current = [...currIoCodes.current];
-				//Update nbinputs and nbOutputs
-				(progression?.data as ChallengeAIProgressionData).hyperparams.NN.nbInputs =(progression?.data as ChallengeAIProgressionData).ioCodes.filter(
+				// Set all hyperparams variables
+				activeIoCodes.current = [...challenge.ioCodes];
+				if (Object.keys(currHyperparams.current).length !== 0){
+					setHyperparams(currHyperparams.current);
+				}
+				else {
+					setHyperparams(challenge.hyperparams)
+				}
+
+				currHyperparams.current.NN.nbInputs = activeIoCodes.current.filter(
 					e => e === 1,
 				).length;
-				(progression?.data as ChallengeAIProgressionData).hyperparams.NN.nbOutputs =(progression?.data as ChallengeAIProgressionData).ioCodes.filter(
-					e => e === 0,
+				currHyperparams.current.NN.nbInputs = activeIoCodes.current.filter(
+					e => e === 1,
 				).length;
-				forceUpdate();
+
+				console.log("test", activeIoCodes.current)
+
 			} else {
 				console.error("Erreur : la table ne s'est pas chargée correctement.");
 			}
@@ -254,25 +263,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			challenge.ioCodes = [...currIoCodes.current];
 		}
 
-		console.log('Challenge :', challenge.ioCodes);
-		console.log(
-			'Progression :',
-			(progression?.data as ChallengeAIProgressionData).ioCodes,
-		);
-
 		forceUpdate();
 		if (editMode) saveChallengeTimed();
 		else saveProgressionTimed();
-
-		// TODO Progression part
-		// if (editMode) {
-		// } else if (progression) {
-		// 	(progression.data as ChallengeAIProgressionData).hyperparams =
-		// 		currHyperparams;
-		// 	const tempProgression: ChallengeProgression = progression;
-		// 	setProgression(tempProgression);
-		// 	saveProgressionTimed();
-		// }
 	};
 
 	/**
@@ -316,7 +309,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		activeIoCodes.current = newActiveIOCodes;
 		console.log('')
 		setHyperparams(currHyperparams.current);
-		console.log('New Hyperparams ', challenge.hyperparams);
 	};
 
 	/**
@@ -377,12 +369,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			console.log('current iocodes : ', activeIoCodes);
 
 			//Update some hyperparams
-			challenge.hyperparams.NN.nbInputs = activeIoCodes.current.filter(
-				e => e === 1,
-			).length;
-			challenge.hyperparams.NN.nbOutputs = activeIoCodes.current.filter(
-				e => e === 0,
-			).length;
+			setHyperparams(currHyperparams.current)
 
 			let indexArray: number[] = [];
 			challenge.hyperparams.NN.neuronsByLayer =

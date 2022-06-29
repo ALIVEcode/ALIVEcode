@@ -181,7 +181,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 						challenge.hyperparams;
 
 				// Set all hyperparams variables
-				activeIoCodes.current = [...challenge.ioCodes];
 				if (Object.keys(currHyperparams.current).length !== 0){
 					setHyperparams(currHyperparams.current);
 				}
@@ -195,8 +194,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				currHyperparams.current.NN.nbInputs = activeIoCodes.current.filter(
 					e => e === 1,
 				).length;
-
-				console.log("test", activeIoCodes.current)
+				activeIoCodes.current = [...challenge.ioCodes];
 
 			} else {
 				console.error("Erreur : la table ne s'est pas chargée correctement.");
@@ -231,7 +229,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 		//--Corner cases for neural networks--//
 		//Update nbinputs and nbOutputs
-		console.log('Test challenge hyperparam : ',currHyperparams.current)
 		currHyperparams.current.NN.nbInputs = activeIoCodes.current.filter(
 			e => e === 1,
 		).length;
@@ -261,6 +258,13 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		if (editMode) {
 			challenge.hyperparams = { ...currHyperparams.current };
 			challenge.ioCodes = [...currIoCodes.current];
+			/* Resolve a corrupt iocodes in a challenge
+			if(challenge.ioCodes.length !== challenge.dataset!.getParamNames().length){
+				const array:number[] = []
+				activeDataset.current?.getParamNames().forEach(e=> array.push(-1))
+				challenge.ioCodes = array;
+				console.log("Erreur avec le iocodes", challenge.ioCodes)
+			}*/
 		}
 
 		forceUpdate();
@@ -521,8 +525,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			)[1];
 
 			createOptimizer();
-			console.log('input', input)
-			console.log('output', real)
 			try {
 				if (optimizer.current)
 					return optimizer.current.computeCost(input, real);

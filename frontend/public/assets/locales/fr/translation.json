@@ -125,6 +125,7 @@
 		"cancel": "Annuler"
 	},
 	"msg": {
+		"language": "Langage",
 		"courseTemplate": "modèle de cours",
 		"bundle": "trousse pédagogique",
 		"resource": "ressource",
@@ -141,11 +142,12 @@
 		"update_date": "Date de modification",
 		"see_links": "Voir les liens",
 		"activity_type": {
-			"challenge": "Défi",
-			"video": "Visionnement",
-			"pdf": "Pdf",
-			"assignment": "Énoncé de travail",
-			"theory": "Théorie"
+			"CH": "Défi",
+			"VI": "Visionnement",
+			"PF": "Pdf",
+			"AS": "Énoncé de travail",
+			"TH": "Théorie",
+			"WO": "Word"
 		},
 		"subjects": {
 			"iot": "Internet des Objets",
@@ -191,7 +193,7 @@
 			"signup_professor": "Compte professeur",
 			"signup_student": "Compte étudiant",
 			"signout": "Se déconnecter",
-			"already_registered": "Tu as déjà un compte ?",
+			"already_registered": "Vous avez déjà un compte ?",
 			"account_required": "Il te faut un compte pour faire ça",
 			"name_migration": {
 				"title": "Changement de la façon dont les étudiants sont identifiés",
@@ -227,15 +229,15 @@
 		"recents": {
 			"title": "Cours Récents",
 			"empty": {
-				"student": "Tu n'as pas d'activité récente. Rejoins une classe publique ou privée pour commencer à apprendre",
-				"professor": "Tu n'as pas d'activité récente. Crée une classe pour commencer"
+				"student": "Vous n'avez pas d'activité récente. Rejoinez une classe publique ou privée pour commencer à apprendre",
+				"professor": "Vous n'avez pas d'activité récente. Créez une classe pour commencer"
 			}
 		},
 		"challenges": {
 			"title": "Défis",
 			"browse_challenges": "Explorer les défis de la communauté",
 			"create_challenge": "Créer un défi",
-			"empty": "Tu ne possèdes aucun défi"
+			"empty": "Vous ne possèdez aucun défi"
 		},
 		"resources": {
 			"title": "Mes Ressources"
@@ -246,7 +248,7 @@
 			"browse_public": "Explorer les classes publiques",
 			"empty": {
 				"student": "Tu ne fais parti d'aucune classe",
-				"professor": "Tu ne possèdes aucune classe"
+				"professor": "Vous ne possédez aucune classe"
 			},
 			"add": {
 				"student": "Rejoindre une classe",
@@ -256,7 +258,7 @@
 		"courses": {
 			"title": "Vos cours",
 			"add": "Créer un cours",
-			"empty": "Tu ne possèdes aucun cours"
+			"empty": "Vous ne possédez aucun cours"
 		}
 	},
 	"resources": {
@@ -265,7 +267,7 @@
 			"search": "Rechercher",
 			"bundles": "Obtenir des ressources"
 		},
-		"video": {
+		"VI": {
 			"name": "Vidéo",
 			"form": {
 				"url": "URL vers la vidéo",
@@ -273,33 +275,25 @@
 				"file": "Glissez ou sélectionnez un fichier"
 			}
 		},
-		"file": {
+		"FI": {
 			"name": "Fichier",
 			"form": {
 				"file": "Glissez ou sélectionnez un fichier"
 			}
 		},
-		"pdf": {
-			"name": "Pdf",
-			"form": {
-				"file": "Glissez ou sélectionnez un fichier"
-			}
-		},
-		"image": {
-			"name": "Image",
-			"form": {
-				"url": "URL vers l'image",
-				"file": "Glissez ou sélectionnez un fichier"
-			}
-		},
-		"challenge": {
+		"CH": {
 			"name": "Défi",
 			"form": {
 				"select": "Sélectionnez un défi pour la liaison"
 			}
 		},
-		"theory": {
+		"TH": {
 			"name": "Théorie"
+		},
+		"files": {
+			"pdf": "Pdf",
+			"word": "Word",
+			"img": "Image"
 		},
 		"form": {
 			"create": "Créer une ressource",
@@ -316,6 +310,7 @@
 		"delete": "Supprimer la classe",
 		"leave": "Quitter la classe",
 		"already_in": "Déjà dans la classe",
+		"import_course": "Ajouter un de vos cours dans votre classe",
 		"container": {
 			"courses": {
 				"title": "Cours",
@@ -341,10 +336,19 @@
 		"subject": "Matière du cours",
 		"empty": "Ce cours est vide.",
 		"student_view": "Vue étudiant",
-		"layout": "Agencement du cours",
+		"layout": "Structure du cours",
 		"layout_view": "Vue professeur",
 		"delete": "Supprimer le cours. (Il sera retiré de toutes les classes où il est présent)",
 		"deletion_test": "Écrivez le nom du cours pour confirmer la suppression",
+		"validate_activity": "Confirmer les changements",
+		"start_writing": "Commencez à écrire ici...",
+		"cursed": {
+			"msg1": "Une erreur inattendue s'est produite lors de votre dernière interaction.",
+			"msg2": "Voudriez-vous nous partager un rapport d'erreur ainsi que des informations à propos du contenu de votre cours? Cela nous aiderait beaucoup à corriger cette erreur. Si cette erreur persiste, veuillez s'il vous plaît nous contacter à l'adresse suivante: alivecode.developers@gmail.com",
+			"send_report": "Oui, signaler l'erreur.",
+			"no": "Non, rafraîchir la page.",
+			"thanks": "Merci d'avoir signalé cette erreur! Nous allons essayer de corriger celle-ci au plus vite! La page va maintenant être rafraîchie..."
+		},
 		"section": {
 			"empty": "Cette section ne possède aucune activité",
 			"new": "Ajouter une section",
@@ -357,19 +361,32 @@
 		},
 		"activity": {
 			"open": "Ouvrir",
-			"open_in_student_view": "Ouvrir dans la vue étudiant",
+			"open_in_student_view": "Ouvrir dans la vue étudiante",
 			"edit_in_layout_view": "Modifier dans la vue professeur",
 			"empty": "Cette activité est vide.",
 			"no_activity": "Ouvre une activité pour commencer",
 			"new": "Ajouter une activité",
 			"new_name": "Activité #{{num}}",
+			"remove_header": "Retirer le texte en entête.",
+			"remove_footer": "Retirer le texte en bas de page.",
+			"remove_header_confirm": "Êtes-vous certain de vouloir retirer le texte en entête de cette activité?",
+			"remove_footer_confirm": "Êtes-vous certain de vouloir retirer le texte en bas de page de cette activité?",
+			"add_header": "Ajouter du texte en entête à cette activité",
+			"add_footer": "Ajouter du texte en bas de page à cette activité",
+			"download_file": "Télécharger le fichier",
+			"no_download": "Il n'y a aucun fichier à télécharger ici.",
 			"import_resource": {
 				"generic": "Ajouter une ressource existante",
 				"PF": "Ajouter un pdf existant",
 				"TH": "Ajouter un document de théorie existant",
 				"VI": "Ajouter une vidéo existante",
 				"AS": "Ajouter un fichier existant",
-				"CH": "Ajouter un défi"
+				"CH": "Ajouter un défi",
+				"WO": "Ajouter un document Word existant"
+			},
+			"import_challenge_private": {
+				"title": "Attention: Votre défi va passer de PRIVÉ à RESTREINT.",
+				"msg": "Pour que votre défi soit accessible à vos étudiants dans un cours, il faut que son accessibilité soit au moins en mode RESTREINT. En important votre défi dans votre activité, celui-ci passera de PRIVÉ à RESTREINT."
 			},
 			"create_resource": {
 				"generic": "Créer une nouvelle ressource",
@@ -379,12 +396,21 @@
 					"upload": "Téléverser une vidéo depuis cet appareil",
 					"url": "Ajouter une vidéo depuis un URL"
 				},
-				"AS": "Téléverser un fichier depuis cet appareil"
+				"AS": "Téléverser un fichier depuis cet appareil",
+				"WO": "Téléverser un document Word depuis cet appareil"
 			},
+			"edit_resource": "Modifier la ressource",
 			"remove_resource": "Retirer la ressource",
 			"next": "Activité suivante",
 			"previous": "Activité précédente",
-			"delete": "Êtes-vous sûr de vouloir supprimer cette activité? Les ressources comprises à l'intérieur de celle-ci ne seront pas supprimées."
+			"delete": "Êtes-vous sûr de vouloir supprimer cette activité? Les ressources comprises à l'intérieur de celle-ci ne seront pas supprimées.",
+			"PF": {
+				"download_file": "Télécharger le PDF",
+				"page_of": "sur"
+			},
+			"WO": {
+				"download_file": "Télécharger le Word"
+			}
 		},
 		"form": {
 			"create": "Créer un cours",
@@ -400,6 +426,7 @@
 	},
 	"bundle": {
 		"courseTemplate": {
+			"name": "Modèle de cours",
 			"content": "Contient"
 		},
 		"browse": {
@@ -430,6 +457,7 @@
 		"news": "Nouvelles",
 		"iot": {
 			"desc": "L'IoT n'a jamais été aussi facile",
+			"to_home_page": "Aller à la page d'accueil d'ALIVEIoT",
 			"to_dashboard": "Accéder au Tableau de Bord",
 			"to_trainings": "Accéder aux Formations",
 			"section": {
@@ -733,22 +761,38 @@
 			"next": "Suivant",
 			"previous": "Précédent"
 		},
+		"activity": {
+			"TH": "Activité permettant l'affichage de matière théorique sous format d'un fichier texte stylisé.",
+			"PF": "Activité de visionnement d'un document pdf.",
+			"VI": "Activité de visionnement d'une vidéo YouTube ou d'une vidéo de votre ordinateur.",
+			"CH": "Activité défi permettant de mettre en pratique la matière apprise dans le cours.",
+			"AS": "Activité permettant à un étudiant de télécharger un certain fichier nécessaire à son apprentissage.",
+			"WO": "Activité de visionnement d'un document Word."
+		},
+		"resource": {
+			"TH": "Un document text stylisé qui peut être réutilisé.",
+			"VI": "Une vidéo YouTube ou une vidéo de votre ordinateur qui peut être réutilisée.",
+			"CH": "Un défi qui peut être réutilisé dans un cours.",
+			"FI": "Tout type de fichier qui peut être réutilisé."
+		},
 		"dashboard": {
 			"tabs": {
 				"recent_courses": "Voici l'endroit où se retrouve vos cours récemment visité",
 				"challenges": "Voici l'endroit où se retrouve vos défis",
-				"resources": "Voici l'endroit où se retrouve vos ressources",
+				"resources": "Voici l'endroit où vous pouvez voir, modifier, supprimer et créer vos ressources",
 				"create_classroom": "Voici l'endroit où se retrouve vos classes",
 				"create_course": "Voici l'endroit où se retrouve les cours que vous avez créés"
 			},
 			"views": {
 				"recent_courses": "Cette vue vous permet de reprendre rapidement là où vous vous êtes arrêté en classant vos cours du plus récemment ouverts au moins récemment ouverts.",
-				"challenges": "Cette vue représente votre bibliothèque de défis. En plus d'y retrouvez tous les défis que vous avez, c'est ici que vous pourrez en créer de nouveaux, éditer ceux qui existent déjà et supprimer ceux que vous ne voulez plus.",
-				"my_resources": "",
-				"classroom": {
-					"create_course": ""
-				}
+				"challenges": "Cette vue représente votre bibliothèque de défis. En plus d'y retrouvez tous les défis que vous avez, c'est ici que vous pourrez en créer de nouveaux, éditer ceux qui existent déjà et supprimer ceux que vous ne voulez plus."
 			}
+		},
+		"course_layout": {
+			"welcome": "Bienvenue dans votre éditeur de cours. Ici vous pourrez modifier votre cours à votre guise. C'est-à-dire, créer des sections ou activités, modifier leur contenu, les supprimer, les cacher, les déplacer, etc.",
+			"edit_title": "Vous pouvez modifier le titre de votre cours en cliquant sur celui-ci.",
+			"see_student_view": "Vous pouvez basculer en vue élève à tout moment afin de visualiser le cours comme un élève le verrait en cliquant sur ce bouton.",
+			"see_view": "Vous pouvez voir à tout moment dans quel vue vous êtes grâce à cet indicateur ici."
 		},
 		"navigation": {
 			"explanation": "Ceci est la vue étudiante du cours.",

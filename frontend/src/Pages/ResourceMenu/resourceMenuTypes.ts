@@ -1,4 +1,4 @@
-import { Resource, RESOURCE_TYPE } from '../../Models/Resource/resource.entity';
+import { Resource } from '../../Models/Resource/resource.entity';
 import { SUBJECTS } from '../../Types/sharedTypes';
 
 /** The possible ResourceMenu's subjects */
@@ -10,6 +10,6 @@ export type ResourceMenuMode = 'default' | 'import';
 /** Props of the ResourceMenu component */
 export type ResourceMenuProps = {
 	mode?: ResourceMenuMode;
-	filters?: RESOURCE_TYPE[];
+	filters?: string[];
 	onSelectResource?: (resource: Resource) => void;
 };

@@ -14,7 +14,6 @@ import { ChallengeEntity } from '../challenge/entities/challenge.entity';
 import { CourseHistoryEntity } from '../course/entities/course_history.entity';
 import { ResourceChallengeEntity } from './entities/resources/resource_challenge.entity';
 import { ResourceFileEntity } from './entities/resources/resource_file.entity';
-import { ResourceImageEntity } from './entities/resources/resource_image.entity';
 import { ResourceTheoryEntity } from './entities/resources/resource_theory.entity';
 import { ResourceVideoEntity } from './entities/resources/resource_video.entity';
 import { MulterModule } from '@nestjs/platform-express';
@@ -22,7 +21,6 @@ import { createMulterOptions } from 'src/utils/upload/MulterConfig.service';
 import { CurrentRequestModule } from 'src/utils/upload/CurrentRequest.module';
 import { FileService } from '../file/file.service';
 import { FileEntity } from '../file/entities/file.entity';
-import { ResourcePdfEntity } from './entities/resources/resource_pdf.entity';
 
 /**
  * Module for the resource nestjs resource
@@ -36,10 +34,8 @@ import { ResourcePdfEntity } from './entities/resources/resource_pdf.entity';
       ResourceEntity,
       ResourceChallengeEntity,
       ResourceFileEntity,
-      ResourceImageEntity,
       ResourceTheoryEntity,
       ResourceVideoEntity,
-      ResourcePdfEntity,
       UserEntity,
       ClassroomEntity,
       StudentEntity,

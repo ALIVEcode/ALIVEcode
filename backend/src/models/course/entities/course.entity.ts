@@ -68,6 +68,6 @@ export class CourseEntity extends CreatedByUser {
 
   /** Classes that the course is in */
   @Exclude({ toClassOnly: true })
-  @ManyToMany(() => ClassroomEntity, classroom => classroom.courses)
+  @ManyToMany(() => ClassroomEntity, classroom => classroom.courses, { onDelete: 'CASCADE' })
   classrooms: ClassroomEntity[];
 }

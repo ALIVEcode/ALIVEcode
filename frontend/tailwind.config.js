@@ -2,6 +2,9 @@ module.exports = {
 	content: ['./src/**/*.{js,jsx,ts,tsx}'],
 	mode: 'jit',
 	theme: {
+		fontFamily: {
+			code: ['"Fira Code"', ''],
+		},
 		extend: {},
 		screens: {
 			xs: '480px',

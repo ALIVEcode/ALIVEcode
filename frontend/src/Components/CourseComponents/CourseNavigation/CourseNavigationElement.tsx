@@ -6,6 +6,7 @@ import CourseNavigationSection from './CourseNavigationSection';
 import CourseNavigationActivity from './CourseNavigationActivity';
 import { CourseElementSection } from '../../../Models/Course/course_element.entity';
 import { classNames } from '../../../Types/utils';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Activity element appearing in the navigation menu.
@@ -15,6 +16,8 @@ import { classNames } from '../../../Types/utils';
  * @author Enric Soldevila
  */
 const CourseNavigationElement = ({ element }: { element: CourseElement }) => {
+	const { t } = useTranslation();
+
 	return (
 		<div className={classNames('w-full', !element.isVisible && 'opacity-50')}>
 			{element?.section ? (
@@ -22,7 +25,7 @@ const CourseNavigationElement = ({ element }: { element: CourseElement }) => {
 			) : element?.activity ? (
 				<CourseNavigationActivity element={element as CourseElementActivity} />
 			) : (
-				<div>ERREUR</div>
+				<div>{t('error.unknown')}</div>
 			)}
 		</div>
 	);

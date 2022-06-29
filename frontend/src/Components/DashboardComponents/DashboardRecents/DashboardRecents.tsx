@@ -9,14 +9,15 @@ import useRoutes from '../../../state/hooks/useRoutes';
 import Info from '../../HelpComponents';
 
 export const DashboardRecents = () => {
-	const { getCourses, setFormJoinClassOpen, setOpenFormCreateCourse } =
-		useContext(DashboardContext);
+	const {
+		courses: recentCourses,
+		setFormJoinClassOpen,
+		setOpenFormCreateCourse,
+	} = useContext(DashboardContext);
 	const { t } = useTranslation();
 	const { user } = useContext(UserContext);
 	const { routes } = useRoutes();
 	const navigate = useNavigate();
-
-	const courses = getCourses();
 
 	const [timelineOpen, setTimelineOpen] = useState(false);
 
@@ -37,7 +38,7 @@ export const DashboardRecents = () => {
 				</Info.Icon>
 			</div>
 			<div className="border-b w-1/3 border-[color:var(--bg-shade-four-color)]" />
-			{courses.length > 0 ? (
+			{recentCourses && recentCourses.length > 0 ? (
 				<>
 					{user?.isProfessor() && (
 						<Button
@@ -48,7 +49,7 @@ export const DashboardRecents = () => {
 							{t('dashboard.courses.add')}
 						</Button>
 					)}
-					<CourseContainer courses={getCourses()} />
+					<CourseContainer courses={recentCourses} />
 				</>
 			) : (
 				<div className="w-full h-[calc(100%-2rem)] text-[color:var(--fg-shade-four-color)] text-center flex flex-col items-center justify-center">

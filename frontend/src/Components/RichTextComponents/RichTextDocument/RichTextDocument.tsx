@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react';
 import { Editable, Slate, withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
-import { createEditor, Descendant } from 'slate';
+import { createEditor } from 'slate';
 import RichTextDocumentToolBar from './RichTextDocumentToolBar';
 import { RichTextDocumentProps } from './richTextDocumentTypes';
+import { useTranslation } from 'react-i18next';
 import {
 	renderElement,
 	renderLeaf,
@@ -19,15 +20,15 @@ import {
  * @constructor
  */
 const RichTextDocument = ({
-	defaultText,
 	onChange,
 	readOnly = false,
+	value,
 }: RichTextDocumentProps) => {
 	// @ts-ignore
 	const editor = useMemo(() => withReact(withHistory(createEditor())), []);
 	const [editMode, setEditMode] = useState(false); // The flag to determine if the editor is in edit mode or not.
 
-	const [value, setValue] = useState<Descendant[]>(defaultText); // The value of the editor.
+	const { t } = useTranslation();
 
 	return (
 		<div className={`flex bg-[color:var(--background-color)] `}>
@@ -35,15 +36,14 @@ const RichTextDocument = ({
 				editor={editor}
 				value={value}
 				onChange={value => {
-					setValue(value);
-					onChange(value);
+					onChange([...value]);
 				}}
 			>
 				{/*page*/}
 				<div className="rounded-sm pl-2 bg-[color:var(--background-color)] cursor-text border border-[color:var(--bg-shade-two-color)] py-3 w-full h-full drop-shadow-md">
 					{!readOnly && <RichTextDocumentToolBar />}
 					<Editable
-						placeholder="Commencer à écrire..."
+						placeholder={t('course.start_writing')}
 						readOnly={readOnly}
 						renderElement={props => renderElement(props as any)}
 						// @ts-ignore - The type of the renderLeaf function is not correct.
@@ -53,7 +53,7 @@ const RichTextDocument = ({
 								? !readOnly && renderLeaf(props as any)
 								: renderLeaf(props as any)
 						}
-						onKeyDown={event => {}}
+						onKeyDown={event => event.stopPropagation()}
 						onSelect={() => setEditMode(true)}
 						onBlur={() => setEditMode(false)}
 						aria-expanded

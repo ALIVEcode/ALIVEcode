@@ -5,7 +5,6 @@ import {
 	DifferentResources,
 } from '../resource.entity';
 import { ResourceFile } from '../resources/resource_file.entity';
-import { ResourceImage } from '../resources/resource_image.entity';
 import { ResourceTheory } from '../resources/resource_theory.entity';
 import { ResourceVideo } from '../resources/resource_video.entity';
 import { ResourceChallenge } from '../resources/resource_challenge.entity';
@@ -18,8 +17,6 @@ export class GenericResourceTransformer {
 		switch (obj?.object.resource.type) {
 			case RESOURCE_TYPE.FILE:
 				return ResourceFile;
-			case RESOURCE_TYPE.IMAGE:
-				return ResourceImage;
 			case RESOURCE_TYPE.THEORY:
 				return ResourceTheory;
 			case RESOURCE_TYPE.VIDEO:

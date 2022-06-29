@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import Challenge from '../../../Pages/Challenge/Challenge';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import { ActivityChallenge as ActivityChallengeModel } from '../../../Models/Course/activities/activity_challenge.entity';
 import api from '../../../Models/api';
 import { ActivityProps } from './activityTypes';
+import { CourseContext } from '../../../state/contexts/CourseContext';
 
 /**
  * Shows an activity of type Challenge
@@ -14,6 +15,7 @@ import { ActivityProps } from './activityTypes';
  */
 const ActivityChallenge = ({ courseElement, editMode }: ActivityProps) => {
 	const forceUpdate = useForceUpdate();
+	const { course } = useContext(CourseContext);
 	const activity = courseElement.activity as ActivityChallengeModel;
 
 	useEffect(() => {
@@ -22,10 +24,11 @@ const ActivityChallenge = ({ courseElement, editMode }: ActivityProps) => {
 		 * @returns void
 		 */
 		const loadChallenge = async () => {
-			if (!activity?.resource) return;
-			activity.resource.challenge = await api.db.challenges.get({
-				id: activity.resource.challengeId,
-			});
+			if (!activity?.resource || !course?.id) return;
+			activity.resource.challenge = (await api.db.courses.loadChallenge(
+				course?.id,
+				activity.id.toString(),
+			)) as any;
 			forceUpdate();
 		};
 		loadChallenge();

@@ -269,7 +269,7 @@ const ALIVENavbar = ({ handleLogout, setFeedbackModalOpen }: NavbarProps) => {
 														className="cursor-pointer block px-4 py-2 text-sm text-[color:var(--foreground-color)] hover:text-[color:var(--foreground-color)]
 														hover:bg-[color:var(--bg-shade-two-color)]"
 													>
-														Language
+														{t('msg.language')}
 													</div>
 												}
 												onOpen={() => setIsNested(false)}
@@ -390,7 +390,7 @@ const ALIVENavbar = ({ handleLogout, setFeedbackModalOpen }: NavbarProps) => {
 									ring-1 ring-[color:var(--bg-shade-three-color)] ring-opacity-5 divide-y divide-[color:var(--bg-shade-three-color)] focus:outline-none"
 									>
 										<div className="py-1 divide-y divide-[color:var(--bg-shade-three-color)] focus:outline-none">
-											<Menu.Item>
+											{/*<Menu.Item>
 												<div
 													className="cursor-pointer block px-4 py-2 text-sm text-[color:var(--foreground-color)] hover:text-[color:var(--foreground-color)]
 														hover:bg-[color:var(--bg-shade-two-color)]"
@@ -398,6 +398,7 @@ const ALIVENavbar = ({ handleLogout, setFeedbackModalOpen }: NavbarProps) => {
 													Informations
 												</div>
 											</Menu.Item>
+											*/}
 											<Menu.Item>
 												<button
 													className="cursor-pointer block px-4 py-2 text-sm text-[color:var(--foreground-color)] hover:text-[color:var(--foreground-color)]

@@ -44,9 +44,11 @@ export class User {
 
 	collabIoTProjects?: IoTProject[];
 
-	private classrooms?: Classroom[];
+	classrooms?: Classroom[];
 
-	private courses?: Course[];
+	courses?: Course[];
+
+	recentCourses?: Course[];
 
 	public getDisplayName(): string {
 		return `${this.firstName} ${this.lastName}`;
@@ -80,6 +82,16 @@ export class User {
 		return this.courses;
 	}
 
+	public async getRecentCourses() {
+		if (!this.recentCourses) {
+			const fetchedCourses: Course[] =
+				(await api.db.users.getRecentCourses({ id: this.id })) ?? [];
+			this.recentCourses = fetchedCourses;
+			return fetchedCourses;
+		}
+		return this.recentCourses;
+	}
+
 	public async addClassroom(classroom: Classroom) {
 		(await this.getClassrooms()).push(classroom);
 	}
@@ -88,10 +100,16 @@ export class User {
 		(await this.getCourses()).push(course);
 	}
 
-	public async removeClassroom(classroom: Classroom) {
-		this.classrooms = (await this.getClassrooms()).filter(
-			c => c.id !== classroom.id,
-		);
+	public removeClassroom(classroom: Classroom) {
+		if (!this.classrooms) return;
+		this.classrooms = this.classrooms.filter(c => c.id !== classroom.id);
+	}
+
+	public removeCourse(course: Course) {
+		if (this.courses)
+			this.courses = this.courses.filter(c => c.id !== course.id);
+		if (this.recentCourses)
+			this.recentCourses = this.recentCourses.filter(c => c.id !== course.id);
 	}
 
 	static async loadUser() {

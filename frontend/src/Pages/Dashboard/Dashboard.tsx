@@ -4,7 +4,7 @@ import {
 	StyledDashboard,
 	SwitchTabActions,
 } from './dashboardTypes';
-import React, {
+import {
 	useContext,
 	useState,
 	useEffect,
@@ -51,12 +51,15 @@ import MenuCourseCreation from '../../Components/Resources/MenuCourseCreation/Me
 import AlertConfirm from '../../Components/UtilsComponents/Alert/AlertConfirm/AlertConfirm';
 import Info from '../../Components/HelpComponents';
 import { TutorialContext } from '../../state/contexts/TutorialContext';
+import { useForceUpdate } from '../../state/hooks/useForceUpdate';
 
 /**
  * State reducer to change the state of the selected tab
  * @param state Current state of the reducer
  * @param action Action parameters to change the state of the reducer
  * @returns The new state of the reducer
+ *
+ * @author Enric Soldevila
  */
 const SwitchTabReducer = (
 	state: { tab: DashboardTabs; classroom?: ClassroomModel },
@@ -87,8 +90,6 @@ const Dashboard = (props: DashboardProps) => {
 	const { user } = useContext(UserContext);
 	const { t } = useTranslation();
 	const { routes } = useRoutes();
-	const [classrooms, setClassrooms] = useState<ClassroomModel[]>([]);
-	const [courses, setCourses] = useState<Course[]>([]);
 	const [openFormCreateCourse, setOpenFormCreateCourse] = useState(false);
 	const [classroomForCourse, setClassroomForCourse] =
 		useState<ClassroomModel>();
@@ -100,7 +101,6 @@ const Dashboard = (props: DashboardProps) => {
 	const [tabSelected, setTabSelected] = useReducer(SwitchTabReducer, {
 		tab: 'recents',
 	});
-	const [recentCourses, setRecentCourses] = useState<Course[]>();
 	const [challenges, setChallenges] = useState<Challenge[]>();
 	const [confirmDeleteCourse, setConfirmDeleteCourse] = useState(false);
 	const courseToDeleteRef = useRef<Course>();
@@ -110,8 +110,42 @@ const Dashboard = (props: DashboardProps) => {
 	const resourceTabRef = useRef<HTMLDivElement>(null);
 	const classroomsRef = useRef<HTMLDivElement>(null);
 	const { registerTutorial } = useContext(TutorialContext);
+	const forceUpdate = useForceUpdate();
 
+	/*
+	 * Loads the classrooms of the user from the database
+	 */
+	const loadClassrooms = async () => {
+		if (!user) return;
+		await user.getClassrooms();
+		forceUpdate();
+	};
+
+	/*
+	 * Loads the courses of the user from the database
+	 */
+	const loadCourses = async () => {
+		if (!user) return;
+		if (user.isProfessor()) {
+			await user.getCourses();
+			forceUpdate();
+		}
+	};
+
+	/*
+	 * Loads the recents courses of the user from the database
+	 */
+	const loadRecentCourses = async () => {
+		if (!user) return;
+		if (user.isProfessor()) {
+			await user.getRecentCourses();
+			forceUpdate();
+		}
+	};
+
+	/** Used to keep track of page state using the query parameters */
 	useEffect(() => {
+		if (!user) return;
 		if (pathname.endsWith('recents') && tabSelected.tab !== 'recents')
 			setTabSelected({ tab: 'recents' });
 		else if (
@@ -128,28 +162,18 @@ const Dashboard = (props: DashboardProps) => {
 		else if (pathname.includes('classroom')) {
 			const classroomId = query.get('id');
 			if (tabSelected.classroom?.id === classroomId) return;
-			const classroom = classrooms.find(c => c.id === classroomId);
+			const classroom = user.classrooms?.find(c => c.id === classroomId);
 			if (!classroom) return;
 			setTabSelected({ tab: 'classrooms', classroom });
 		}
-	}, [
-		classrooms,
-		pathname,
-		query,
-		tabSelected.classroom?.id,
-		tabSelected.tab,
-		user,
-	]);
+	}, [pathname, query, tabSelected.classroom?.id, tabSelected.tab, user]);
 
+	/** First render of the app that is used to fetch data */
 	useEffect(() => {
 		if (!user) return;
-		const getClassrooms = async () => {
-			setClassrooms(await user.getClassrooms());
-			if (user.isProfessor()) {
-				setCourses(await user.getCourses());
-			}
-		};
-		getClassrooms();
+		loadClassrooms();
+		loadCourses();
+		loadRecentCourses();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -194,6 +218,7 @@ const Dashboard = (props: DashboardProps) => {
 		});
 	};
 
+	/** Registering the page tutorial */
 	useLayoutEffect(() => {
 		return registerTutorial({
 			name: 'DashboardTabs',
@@ -256,15 +281,6 @@ const Dashboard = (props: DashboardProps) => {
 	};
 
 	/**
-	 * Loads the courses of the user from the database
-	 */
-	const loadRecentCourses = useCallback(async () => {
-		if (!user) return;
-		const courses = await api.db.users.getRecentCourses({ id: user.id });
-		setRecentCourses(courses);
-	}, [user]);
-
-	/**
 	 * Loads the current challenges of the user from the database
 	 */
 	const loadChallenges = useCallback(async () => {
@@ -279,16 +295,9 @@ const Dashboard = (props: DashboardProps) => {
 	 */
 	const ctx: DashboardContextValues = useMemo(() => {
 		return {
-			getCourses: () => {
-				if (!recentCourses) {
-					loadRecentCourses();
-					return [];
-				}
-				return recentCourses;
-			},
-			getClassrooms: () => {
-				return classrooms;
-			},
+			courses: user?.courses,
+			recentCourses: user?.recentCourses,
+			classrooms: user?.classrooms,
 			getChallenges: () => {
 				if (!challenges) {
 					loadChallenges();
@@ -303,12 +312,14 @@ const Dashboard = (props: DashboardProps) => {
 			},
 		};
 	}, [
-		classrooms,
-		recentCourses,
+		user?.courses,
+		user?.recentCourses,
+		user?.classrooms,
 		challenges,
-		loadRecentCourses,
 		loadChallenges,
 	]);
+
+	const courses = user?.courses;
 
 	return (
 		<StyledDashboard>
@@ -380,8 +391,8 @@ const Dashboard = (props: DashboardProps) => {
 
 						<hr />
 
-						{classrooms.length > 0 ? (
-							classrooms.map((classroom, idx) => (
+						{user?.classrooms && user.classrooms.length > 0 ? (
+							user.classrooms.map((classroom, idx) => (
 								<ClassroomSection
 									key={idx}
 									selected={tabSelected.classroom?.id === classroom.id}
@@ -419,22 +430,20 @@ const Dashboard = (props: DashboardProps) => {
 									<label className="sidebar-header-text">
 										{t('dashboard.courses.title')}
 									</label>
-									{/*{hoveringCourse && (*/}
 									<FontAwesomeIcon
 										onClick={() => setOpenFormCreateCourse(true)}
 										className="sidebar-icon-right cursor-pointer ml-4"
 										title={t('dashboard.courses.add')}
 										icon={faPlus}
 									/>
-									{/*)}*/}
 								</div>
 
 								<hr />
 
-								{courses.length > 0 ? (
-									courses.map((course, idx) => (
+								{courses && courses.length > 0 ? (
+									courses.map(course => (
 										<div
-											key={idx}
+											key={course.id}
 											className="flex flex-row border-b justify-between px-[10px] py-[15px] group"
 										>
 											<CourseSection course={course} className="max-w-[80%]" />
@@ -490,6 +499,9 @@ const Dashboard = (props: DashboardProps) => {
 					await api.db.courses.delete({
 						id: courseToDeleteRef.current.id,
 					});
+					user?.removeCourse(courseToDeleteRef.current);
+					setConfirmDeleteCourse(false);
+					forceUpdate();
 				}}
 				secureConfirmation={{
 					type: 'text',

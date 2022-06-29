@@ -3,14 +3,60 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 const StyledButton = styled.button`
-	background-color: var(--third-color);
+	background-color: var(--primary-color);
 	border: none;
-	border-radius: 10px;
+	border-radius: 5px;
 	color: white;
 	padding: 5px 5px;
 	transition: 0.2s;
+	width: 40px;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	${({ loading }: { loading: boolean }) => {
+		if (loading)
+			return `
+		@-webkit-keyframes rotating /* Safari and Chrome */ {
+		from {
+			-webkit-transform: rotate(0deg);
+			-o-transform: rotate(0deg);
+			transform: rotate(0deg);
+		}
+		to {
+			-webkit-transform: rotate(360deg);
+			-o-transform: rotate(360deg);
+			transform: rotate(360deg);
+		}
+	}
+	@keyframes rotating {
+		from {
+			-ms-transform: rotate(0deg);
+			-moz-transform: rotate(0deg);
+			-webkit-transform: rotate(0deg);
+			-o-transform: rotate(0deg);
+			transform: rotate(0deg);
+		}
+		to {
+			-ms-transform: rotate(360deg);
+			-moz-transform: rotate(360deg);
+			-webkit-transform: rotate(360deg);
+			-o-transform: rotate(360deg);
+			transform: rotate(360deg);
+		}
+	}
+	.button-fa-icon {
+		-webkit-animation: rotating 1s linear infinite;
+		-moz-animation: rotating 1s linear infinite;
+		-ms-animation: rotating 1s linear infinite;
+		-o-animation: rotating 1s linear infinite;
+		animation: rotating 1s linear infinite;
+	}`;
+	}}
 
 	&:hover {
 		background-color: var(--contrast-color);
@@ -28,7 +74,7 @@ const StyledButton = styled.button`
  */
 const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
 	(props, ref) => {
-		const { onClick, to, ...other } = props;
+		const { onClick, to, loading, ...other } = props;
 		const navigate = useNavigate();
 		return (
 			<StyledButton
@@ -36,7 +82,9 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
 					onClick && onClick();
 					to && navigate(to);
 				}}
+				title={other.title}
 				className="icon-button"
+				loading={loading ?? false}
 				ref={ref}
 			>
 				{props.children && (
@@ -47,7 +95,12 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
 						{props.children}
 					</label>
 				)}
-				<FontAwesomeIcon fixedWidth {...other} />
+				<FontAwesomeIcon
+					className="button-fa-icon"
+					fixedWidth
+					{...other}
+					icon={loading ? faSpinner : other.icon}
+				/>
 			</StyledButton>
 		);
 	},

@@ -9,7 +9,7 @@ import { Resource } from '../resource.entity';
 export class ResourceChallenge extends Resource {
 	/** Reference to the challenge to display */
 	@Type(() => Challenge)
-	challenge: Challenge;
+	challenge?: Challenge;
 
 	/** Id of the challenge */
 	challengeId: string;

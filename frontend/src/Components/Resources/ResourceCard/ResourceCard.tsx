@@ -34,7 +34,7 @@ const ResourceCard = ({
 			>
 				<div>
 					<FontAwesomeIcon
-						className="text-[color:var(--fg-shade-four-color)]"
+						color={resource.color}
 						size="2x"
 						icon={resource.getIcon()}
 					/>

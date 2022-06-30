@@ -63,6 +63,7 @@ import { ClaimBundleDTO } from './Course/bundles/dto/ClaimBundle.dto';
 import { GenericChallengeTransformer } from './Challenge/transformer/GenericChallengeTransformer';
 import { QueryIoTProjects } from './User/dto/query_iotprojects.dto';
 import { QueryIoTObjects } from './User/dto/query_iotobjects';
+import { FeaturingQueryDTO } from './Course/dto/FeaturingQuery.dto';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;
@@ -285,6 +286,22 @@ const api = {
 		courses: {
 			create: apiCreate('/courses', Course),
 			get: apiGet('courses/:id', Course, false),
+			getFeaturing: async (query: FeaturingQueryDTO) => {
+				return plainToInstance(
+					Course,
+					(
+						await axios.get(
+							`courses/featuring?${
+								query.featuring ? `featuring=${query.featuring}` : ''
+							}${
+								query.featuringFrom
+									? `&featuringFrom=${query.featuringFrom}`
+									: ''
+							}`,
+						)
+					).data,
+				);
+			},
 			update: apiUpdate('courses/:id', Course),
 			getSections: apiGet('courses/:id/sections', Section, true),
 			deleteSection: apiDelete('courses/:courseId/sections/:sectionId'),

@@ -2,26 +2,36 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CourseContainerProps } from './courseContainerTypes';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Link from '../../UtilsComponents/Link/Link';
-import { useContext, useEffect } from 'react';
-import { UserContext } from '../../../state/contexts/UserContext';
 import CourseCard from '../CourseCard/CourseCard';
 import { classNames } from '../../../Types/utils';
+import api from '../../../Models/api';
+import { useEffect, useState } from 'react';
+import { Course } from '../../../Models/Course/course.entity';
+import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
+
 const CourseContainer = ({
 	title,
-	courses,
 	featuring,
 	featuringFrom,
 	dark,
 	className,
+	...props
 }: CourseContainerProps) => {
-	const { user } = useContext(UserContext);
+	const [fetchedCourses, setFetchedCourses] = useState<Course[]>();
 
 	useEffect(() => {
+		if (props.courses || !featuringFrom) return;
 		const getCourses = async () => {
-			await user?.getCourses();
+			const courses = await api.db.courses.getFeaturing({
+				featuring,
+				featuringFrom,
+			});
+			setFetchedCourses(courses);
 		};
 		getCourses();
-	}, []);
+	}, [featuring, featuringFrom, props.courses]);
+
+	const courses = props.courses ?? fetchedCourses;
 
 	return (
 		<div
@@ -42,9 +52,13 @@ const CourseContainer = ({
 				</div>
 			</div>
 			<div className="p-2 flex w-full overflow-x-auto">
-				{user?.courses?.map((c, idx) => (
-					<CourseCard className="!mr-4" course={c} key={idx} />
-				))}
+				{courses ? (
+					courses.map((c, idx) => (
+						<CourseCard className="!mr-4" course={c} key={idx} />
+					))
+				) : (
+					<LoadingScreen></LoadingScreen>
+				)}
 			</div>
 		</div>
 	);

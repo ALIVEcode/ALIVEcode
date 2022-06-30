@@ -11,6 +11,7 @@ import useView from '../../../state/hooks/useView';
 import { forwardRef, MutableRefObject, useRef } from 'react';
 import { classNames } from '../../../Types/utils';
 import CourseContainer from '../../../Components/CourseComponents/CourseContainer/CourseContainer';
+import { SUBJECTS } from '../../../Types/sharedTypes';
 
 const StyledHome = styled.div`
 	.tech-slideshow {
@@ -135,15 +136,15 @@ const IoTHome = (props: iotHomeProps) => {
 				<CourseContainer
 					className="mt-12"
 					title="Cours offerts par ALIVEcode"
-					featuring="iot"
+					featuring={SUBJECTS.IOT}
 					featuringFrom="alivecode"
 					dark
 				/>
 				<CourseContainer
 					className="mt-12 mb-12"
 					title="Cours offerts par la communauté"
-					featuring="iot"
-					featuringFrom="alivecode"
+					featuring={SUBJECTS.IOT}
+					featuringFrom="public"
 					dark
 				/>
 				<IoTHomeSeparator title={'Les étapes à suivre'} />

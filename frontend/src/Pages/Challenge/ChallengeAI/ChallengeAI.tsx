@@ -194,7 +194,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				currHyperparams.current.NN.nbInputs = activeIoCodes.current.filter(
 					e => e === 1,
 				).length;
-				activeIoCodes.current = [...challenge.ioCodes];
+				activeIoCodes.current = [...currIoCodes.current];
 
 			} else {
 				console.error("Erreur : la table ne s'est pas chargée correctement.");
@@ -798,6 +798,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @returns determination coefficient
 	 */
 	function coefficientDetermination(lst1: number[], list2: number[]) {
+		console.log(determinationCoeff(lst1, list2))
 		return determinationCoeff(lst1, list2);
 	}
 

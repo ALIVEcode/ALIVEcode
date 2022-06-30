@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import useView from '../../../state/hooks/useView';
 import { forwardRef, MutableRefObject, useRef } from 'react';
 import { classNames } from '../../../Types/utils';
-import CourseContainer from '../../../Components/CourseComponents/CourseContainer/CourseContainer';
+import FeaturedCourseContainer from '../../../Components/CourseComponents/CourseContainer/CourseContainer';
 import { SUBJECTS } from '../../../Types/sharedTypes';
 
 const StyledHome = styled.div`
@@ -133,14 +133,15 @@ const IoTHome = (props: iotHomeProps) => {
 					IoT. L'électronique, les protocoles de communication, les bases de
 					données, l'IA, l'interfaçage, etc.
 				</p>
-				<CourseContainer
+
+				<FeaturedCourseContainer
 					className="mt-12"
 					title="Cours offerts par ALIVEcode"
 					featuring={SUBJECTS.IOT}
 					featuringFrom="alivecode"
 					dark
 				/>
-				<CourseContainer
+				<FeaturedCourseContainer
 					className="mt-12 mb-12"
 					title="Cours offerts par la communauté"
 					featuring={SUBJECTS.IOT}

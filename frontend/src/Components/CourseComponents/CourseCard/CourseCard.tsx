@@ -28,7 +28,10 @@ const CourseCard = ({ course, onSelect, className }: CourseCardProps) => {
 								(user?.id === course.creator?.id ? '/layout' : '/view'),
 					  )
 			}
-			className={'shadow-lg text-[color:var(--foreground-color)] ' + className}
+			className={
+				'shadow-lg text-[color:var(--foreground-color)] inline-block ' +
+				className
+			}
 			theme={theme}
 		>
 			<div className="top-card">

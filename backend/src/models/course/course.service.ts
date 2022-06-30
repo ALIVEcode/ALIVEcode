@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { generate } from 'randomstring';
 import { Not, Repository } from 'typeorm';
 import { ClassroomEntity } from '../classroom/entities/classroom.entity';
-import { ProfessorEntity, StudentEntity } from '../user/entities/user.entity';
+import { ProfessorEntity } from '../user/entities/user.entity';
 import { CreateCourseDTO } from './dtos/CreateCourse.dto';
 import { ActivityChallengeEntity } from './entities/activities/activity_challenge.entity';
 import { ActivityTheoryEntity } from './entities/activities/activity_theory.entity';

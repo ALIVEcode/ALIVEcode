@@ -8,4 +8,9 @@ export type CourseContainerProps = {
 	title: string;
 	dark?: boolean;
 	className?: string;
+	dismiss?: boolean;
+	link?: {
+		to: string;
+		title: string;
+	};
 } & OneOf<{ courses: Course[] }, FeaturingQueryDTO>;

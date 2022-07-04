@@ -191,9 +191,12 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				currHyperparams.current.NN.nbInputs = activeIoCodes.current.filter(
 					e => e === 1,
 				).length;
-				currHyperparams.current.NN.nbInputs = activeIoCodes.current.filter(
-					e => e === 1,
+				currHyperparams.current.NN.nbOutputs = activeIoCodes.current.filter(
+					e => e === 0,
 				).length;
+				currHyperparams.current.PERC.nbInputs = currHyperparams.current.NN.nbInputs
+				currHyperparams.current.PERC.nbOutputs = currHyperparams.current.NN.nbOutputs
+
 				activeIoCodes.current = [...currIoCodes.current];
 
 			} else {
@@ -236,6 +239,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			e => e === 0,
 		).length;
 
+		currHyperparams.current.PERC.nbInputs = currHyperparams.current.NN.nbInputs
+		currHyperparams.current.PERC.nbOutputs = currHyperparams.current.NN.nbOutputs
+
 		//Update neuronsByLayer
 		currHyperparams.current.NN.neuronsByLayer =
 			currHyperparams.current.NN.neuronsByLayer.filter((e, i) => {
@@ -267,6 +273,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			}*/
 		}
 
+
 		forceUpdate();
 		if (editMode) saveChallengeTimed();
 		else saveProgressionTimed();
@@ -288,6 +295,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 */
 	const aiInterfaceModelChange = (newModelType: MODEL_TYPES) => {
 		challenge.modelType = newModelType;
+		setActiveModel(undefined)
 		forceUpdate();
 		saveChallengeTimed();
 	};
@@ -349,7 +357,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @return the new value of currHyperparams.
 	 */
 	function setCurrHyperparams(): GenHyperparameters {
-		return editMode
+		return  editMode
 			? challenge.hyperparams
 			: (progression!.data as ChallengeAIProgressionData).hyperparams
 			? (progression!.data as ChallengeAIProgressionData).hyperparams
@@ -607,6 +615,29 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				);
 				setActiveModel(MODEL_TYPES.NEURAL_NETWORK);
 				break;
+			case MODEL_TYPES.PERCEPTRON:
+				
+				//Setting the percetron hyperparameters
+				let nnHyperparam:NNHyperparameters = {
+					nbInputs: currHyperparams.current.PERC.nbInputs,
+					nbOutputs: currHyperparams.current.PERC.nbOutputs,
+					neuronsByLayer: [],
+					activationsByLayer: [currHyperparams.current.PERC.activation],
+					costFunction: currHyperparams.current.PERC.costFunction,
+					learningRate: currHyperparams.current.PERC.learningRate,
+					epochs: currHyperparams.current.PERC.epochs,
+					type: currHyperparams.current.PERC.type,
+				}
+				model.current = new NeuralNetwork(
+					'Neural Network Model',
+					nnHyperparam,
+					{
+						layerParams: [],
+					},
+				)
+				
+				setActiveModel(MODEL_TYPES.PERCEPTRON);
+				break
 			default:
 				break;
 		}

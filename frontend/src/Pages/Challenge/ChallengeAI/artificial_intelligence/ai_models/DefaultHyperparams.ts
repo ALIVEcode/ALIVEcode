@@ -29,6 +29,15 @@ export const defaultHyperparams: GenHyperparameters = {
 		learningRate: 0.1,
 		epochs: 3000,
 	},
+	PERC:{
+		nbInputs: 0,
+		nbOutputs: 0,
+		activation: ACTIVATION_FUNCTIONS.RELU,
+		costFunction: COST_FUNCTIONS.MEAN_SQUARED_ERROR,
+		learningRate: 0.1,
+		epochs: 1000,
+		type: NN_OPTIMIZER_TYPES.GradientDescent,
+	}
 };
 
 export const defaultModelType: MODEL_TYPES = MODEL_TYPES.NEURAL_NETWORK;

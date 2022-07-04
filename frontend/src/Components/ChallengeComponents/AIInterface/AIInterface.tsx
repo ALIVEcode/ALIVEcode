@@ -9,8 +9,9 @@ import AITab from './AITab';
 import ChallengeTable from '../ChallengeTable/ChallengeTable';
 import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
 import { AICanvas } from './AIVisualModels/AIVisualNeuralNet/AICanvas';
-import { NNHyperparameters } from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
+import { NNHyperparameters, PERCHyperparameters } from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
 import GradientDescentScheme from './AIOptimizers/GradientDescent/GradientDescentScheme';
+import { GenHyperparameters } from '../../../../../backend/dist/src/models/ai/entities/AIUtilsInterfaces';
 /**
  * This component represents the visual interface in every ChallengeAI. It handles the
  * management of all 4 tabs in this component.
@@ -84,16 +85,43 @@ const AIInterface = ({
 	};
 
 	function showModel() {
-		if (activeModel && modelParams)
-			return (
-				<AICanvas
-					layerParams={modelParams}
-					filter={0}
-					maxNeuronPerLayer={10}
-					spacing={40}
-					hyperparameters={hyperparams as NNHyperparameters}
-				/>
-			);
+		if (activeModel&& modelParams){
+			switch (activeModel) {
+				case MODEL_TYPES.NEURAL_NETWORK:
+					return (
+						<AICanvas
+							layerParams={modelParams}
+							filter={0}
+							maxNeuronPerLayer={10}
+							spacing={40}
+							hyperparameters={hyperparams as NNHyperparameters}
+						/>
+					);
+				case MODEL_TYPES.PERCEPTRON:
+					let hyperparamPerc = hyperparams as PERCHyperparameters
+					let nnHyperparam:NNHyperparameters = {
+							nbInputs: hyperparamPerc.nbInputs,
+							nbOutputs: hyperparamPerc.nbOutputs,
+							neuronsByLayer: [],
+							activationsByLayer: [hyperparamPerc.activation],
+							costFunction: hyperparamPerc.costFunction,
+							learningRate: hyperparamPerc.learningRate,
+							epochs: hyperparamPerc.epochs,
+							type: hyperparamPerc.type,
+					}
+					return (
+						<AICanvas
+							layerParams={modelParams}
+							filter={0}
+							maxNeuronPerLayer={10}
+							spacing={40}
+							hyperparameters={nnHyperparam}
+						/>
+					);
+				default:
+					break;
+			}
+		}	
 		//
 		// switch (activeModel) {
 		// 	case MODEL_TYPES.NEURAL_NETWORK:
@@ -124,6 +152,7 @@ const AIInterface = ({
 								Réseau de neurones
 							</option>
 							<option value={MODEL_TYPES.POLY_REGRESSION}>Régression</option>
+							<option value={MODEL_TYPES.PERCEPTRON}>Perceptron</option>
 						</select>
 					</div>
 					{tabs.map((tab, index) => (

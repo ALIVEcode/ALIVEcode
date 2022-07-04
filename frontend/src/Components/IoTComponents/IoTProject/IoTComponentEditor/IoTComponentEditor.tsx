@@ -357,7 +357,6 @@ const IoTComponentEditor = ({
 							'iot.project.interface.components_form.button.action_id.placeholder',
 						)}
 						className="mb-2"
-						type="number"
 						value={component.getActionId()}
 						onChange={(e: any) => component.setActionId(e.target.value)}
 						disabled={!canEdit}

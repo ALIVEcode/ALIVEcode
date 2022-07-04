@@ -28,7 +28,6 @@ import 'brace/theme/solarized_dark';
 import 'brace/theme/xcode';
 import 'brace/ext/language_tools';
 import { SUPPORTED_LANG } from '../../../Models/Challenge/challenge.entity';
-import api from '../../../Models/api';
 
 enum FontSize {
 	SMALL = 'small',
@@ -81,6 +80,7 @@ const LineInterface = memo(
 				]
 			);
 		});
+
 		/* Content for a single tab interface */
 		const [content, setContent] = useState<string>(initialContent ?? '');
 		const { theme } = useContext(ThemeContext);
@@ -90,13 +90,10 @@ const LineInterface = memo(
 		const [fontFamily, setFontFamily] = useState<InterfaceFont>(
 			InterfaceFont.FIRA_CODE,
 		);
-		const [codeTheme, setCodeTheme] = useState<Theme>(Theme.COBALT);
+		const [codeTheme, setCodeTheme] = useState<Theme | undefined>(
+			theme.name === 'light' ? Theme.XCODE : Theme.COBALT,
+		);
 		const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
-		const [reloadRequired, setReloadRequired] = useState(false);
-
-		useEffect(() => {
-			setCodeTheme(theme.name === 'light' ? Theme.XCODE : Theme.COBALT);
-		}, [theme]);
 
 		const ref = useRef<AceEditor | null>(null);
 		const refList = useRef<AceEditor[]>([]);
@@ -109,6 +106,11 @@ const LineInterface = memo(
 				t.open = i === idx;
 				return t;
 			});
+			const oldCodeTheme = codeTheme;
+			setCodeTheme(undefined);
+			setTimeout(() => {
+				setCodeTheme(oldCodeTheme);
+			}, 10);
 			setTabs(updatedTabs);
 		};
 
@@ -116,6 +118,11 @@ const LineInterface = memo(
 			tab && tab.onChange && tab.onChange(content);
 			handleChange(content);
 		};
+
+		useEffect(() => {
+			setCodeTheme(theme.name === 'light' ? Theme.XCODE : Theme.COBALT);
+		}, [theme]);
+
 		/*
 		useEffect(() => {
 			(async () => {
@@ -151,22 +158,6 @@ const LineInterface = memo(
 									/>
 								</div>
 							))}
-						{reloadRequired && (
-							<span className="text-red-600 w-full">*Reload Required*</span>
-						)}
-						{/* GitHub copilot suggestion XD */}
-						{/*<FontAwesomeIcon
-							icon={faPlus}
-							onClick={() => {
-								setTabs([
-									...tabs,
-									{
-										title: 'New tab',
-										open: true,
-									},
-								]);
-							}}
-						/>*/}
 						<div className="w-full flex justify-end">
 							<IconButton
 								onClick={() => setSettingsOpen(true)}
@@ -311,8 +302,8 @@ const LineInterface = memo(
 						customSubmit={value => {
 							setSettingsOpen(false);
 							setFontSize(value.fontSize);
-							setCodeTheme(value.codeTheme);
 							setFontFamily(value.fontFamily);
+							setCodeTheme(value.codeTheme);
 						}}
 					/>
 				</Modal>

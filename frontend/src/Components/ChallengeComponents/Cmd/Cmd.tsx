@@ -1,10 +1,11 @@
 import { CmdProps } from './cmdTypes';
 import styled from 'styled-components';
-import React from 'react';
+import React, { useContext } from 'react';
 import Button from '../../UtilsComponents/Buttons/Button';
 import { useTranslation } from 'react-i18next';
-import { useContext } from 'react';
 import { ThemeContext } from '../../../state/contexts/ThemeContext';
+import useComplexState from '../../../state/hooks/useComplexState';
+import { classNames } from '../../../Types/utils';
 
 const StyledDiv = styled.div`
 	background-color: ${({ theme }) =>
@@ -25,6 +26,8 @@ const StyledDiv = styled.div`
 		font-size: large;
 		color: var(--foreground-color);
 		line-height: 2rem;
+		word-wrap: break-word;
+		max-width: 50px;
 	}
 
 	a {
@@ -32,7 +35,7 @@ const StyledDiv = styled.div`
 	}
 
 	.btn-clearCmdLines {
-		right: 0%;
+		right: 0;
 	}
 `;
 

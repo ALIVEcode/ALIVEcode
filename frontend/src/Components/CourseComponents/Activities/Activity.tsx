@@ -599,11 +599,8 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 						if (!confirmDelete) return;
 						await updateActivity(activity, { [confirmDelete]: null });
 					}}
-				>
-					<p className="text-red-600 pb-5 font-bold text-lg">
-						{t('action.irreversible')}
-					</p>
-				</AlertConfirm>
+					irreversibleText
+				/>
 			</div>
 		)
 	);

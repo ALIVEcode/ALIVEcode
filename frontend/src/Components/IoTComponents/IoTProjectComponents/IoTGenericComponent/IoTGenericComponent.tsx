@@ -88,7 +88,7 @@ const IoTGenericComponent = ({
 						onClick={() => {
 							if (!component.id) return alert.error('The component has no id');
 							navigator.clipboard.writeText(component.id);
-							alert.success('Copied');
+							alert.success(t('msg.id_copied'));
 						}}
 						className="component-btn copyid-component-btn"
 						icon={faClipboard}

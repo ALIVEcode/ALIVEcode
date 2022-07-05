@@ -142,7 +142,7 @@ export class IoTSocket {
 
 	public sendAction(
 		targetId: string,
-		actionId: number,
+		actionId: string,
 		data: string | JsonObj,
 	) {
 		if (this.socket.OPEN) {
@@ -162,7 +162,7 @@ export class IoTSocket {
 					event: IOT_EVENT.SEND_ACTION,
 					data: {
 						targetId,
-						actionId: Number(actionId),
+						actionId,
 						value,
 					},
 				}),

@@ -44,28 +44,13 @@ const StyledDiv = styled.div`
  *
  * @author Enric Soldevila, Mathis Laroche
  */
-const Cmd = React.forwardRef<HTMLDivElement>((props: CmdProps, ref) => {
-	const { t } = useTranslation();
-	const { theme } = useContext(ThemeContext);
+const Cmd = React.forwardRef<HTMLDivElement, CmdProps>(
+	({ styledDivId }, ref) => {
+		const { t } = useTranslation();
+		const { theme } = useContext(ThemeContext);
 
-	const [settings, setSettings] = useComplexState({
-		softWrap: false,
-	});
-
-	return (
-		// <StyledDiv theme={theme}>
-		<div
-			className={classNames(
-				'border-l border-[color:var(--bg-shade-three-color)]',
-				'text-[color:var(--foreground-color)]',
-				'w-full h-full',
-				'overflow-y-auto',
-				theme.name === 'light'
-					? 'bg-[color:var(--bg-shade-two-color)]'
-					: 'bg-[color:var(--almost-black-color)]',
-			)}
-		>
-			<div className="flex flex-row gap-2 pt-2 pl-2">
+		return (
+			<StyledDiv theme={theme} id={styledDivId}>
 				<Button
 					variant="third"
 					onClick={() => {
@@ -76,23 +61,11 @@ const Cmd = React.forwardRef<HTMLDivElement>((props: CmdProps, ref) => {
 				>
 					{t('cmd.clear')}
 				</Button>
-				<Button
-					variant="third"
-					onClick={() => {
-						if (!ref || !('current' in ref) || !ref.current) return;
-						settings.softWrap = !settings.softWrap;
-						setSettings(settings);
-					}}
-					className="btn-clearCmdLines"
-				>
-					{t('cmd.clear')}
-				</Button>
-			</div>
-			<div className="w-full h-[1px] py-1.5 border-b-2 border-[color:var(--bg-shade-one-color)]" />
-			<div ref={ref} />
-			{/*</StyledDiv>*/}
-		</div>
-	);
-});
+				<div className="w-full h-[1px] py-1.5 border-b-2 border-[color:var(--bg-shade-one-color)]" />
+				<div ref={ref} />
+			</StyledDiv>
+		);
+	},
+);
 
 export default Cmd;

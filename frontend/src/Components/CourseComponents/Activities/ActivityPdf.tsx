@@ -1,8 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import { ActivityPdf as ActivityPdfModel } from '../../../Models/Course/activities/activity_pdf.entity';
 /* import { Document, Page } from 'react-pdf'; */
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import api from '../../../Models/api';
+import FormInput from '../../UtilsComponents/FormInput/FormInput';
+import { useTranslation } from 'react-i18next';
+import IconButton from '../../DashboardComponents/IconButton/IconButton';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
+import { downloadBlob } from '../../../Types/files.type';
+import { CourseContext } from '../../../state/contexts/CourseContext';
+import { useAlert } from 'react-alert';
 
 /**
  * Shows an activity of type Pdf
@@ -14,6 +21,13 @@ const ActivityPdf = ({ activity }: { activity: ActivityPdfModel }) => {
 	const [numPages, setNumPages] = useState<number>(0);
 	const [pageNumber, setPageNumber] = useState<number>(1);
 	const [pdfSrc, setPdfSrc] = useState('');
+	const [downloading, setDownloading] = useState(false);
+	const inputNumberRef = useRef<HTMLInputElement>(null);
+	const pdfRefBox = useRef<HTMLDivElement>(null);
+	const ref = useRef<any>(null);
+	const { t } = useTranslation();
+	const { course } = useContext(CourseContext);
+	const alert = useAlert();
 
 	useEffect(() => {
 		const getSrc = async (
@@ -28,6 +42,22 @@ const ActivityPdf = ({ activity }: { activity: ActivityPdfModel }) => {
 		getSrc(setPdfSrc);
 	}, [activity]);
 
+	const handlePageChange = (newPageNumber: number) => {
+		// Boundaries
+		if (newPageNumber < 1) newPageNumber = 1;
+		if (newPageNumber > numPages) newPageNumber = numPages;
+
+		// Changing input number
+		if (inputNumberRef.current)
+			inputNumberRef.current.value = String(newPageNumber);
+		// Setting min-width of container to prevent display bugs
+		if (pdfRefBox.current)
+			pdfRefBox.current.style.minHeight = pdfRefBox.current.clientHeight + 'px';
+
+		// Updating state
+		setPageNumber(newPageNumber);
+	};
+
 	const onDocumentLoadSuccess = ({ numPages }: any) => {
 		setNumPages(numPages);
 	};
@@ -35,36 +65,90 @@ const ActivityPdf = ({ activity }: { activity: ActivityPdfModel }) => {
 	const gotoPrev = () => {
 		const index = pageNumber - 1;
 		if (index < 1) return;
-		setPageNumber(index);
+		handlePageChange(index);
 	};
 
 	const gotoNext = () => {
 		const index = pageNumber + 1;
 		if (numPages < index) return;
-		setPageNumber(index);
+		handlePageChange(index);
 	};
 
 	return (
 		<div className="w-full desktop:px-16">
-			<Document
-				className="w-full  flex justify-center"
-				file={pdfSrc}
-				onLoadSuccess={onDocumentLoadSuccess}
-			>
-				<Page className="inline-block relative" pageNumber={pageNumber}>
-					<div
-						className="absolute left-0 top-0 z-1 h-full w-[50%]"
-						onClick={gotoPrev}
-					></div>
-					<div
-						className="absolute right-0 top-0 z-1 h-full w-[50%]"
-						onClick={gotoNext}
-					></div>
-				</Page>
-			</Document>
+			<div ref={pdfRefBox}>
+				<Document
+					className="w-full flex justify-center"
+					file={pdfSrc}
+					onLoadSuccess={onDocumentLoadSuccess}
+					ref={ref}
+				>
+					<Page className="inline-block relative" pageNumber={pageNumber}>
+						<div
+							className="absolute left-0 top-0 z-1 h-full w-[50%]"
+							onClick={gotoPrev}
+						></div>
+						<div
+							className="absolute right-0 top-0 z-1 h-full w-[50%]"
+							onClick={gotoNext}
+						></div>
+					</Page>
+				</Document>
+			</div>
 			<p className="mt-2 w-full text-center">
-				Page {pageNumber} of {numPages}
+				Page
+				<input
+					type="number"
+					min={1}
+					max={numPages}
+					className="mx-2 text-center border border-[color:var(--bg-shade-four-color)]"
+					defaultValue={pageNumber}
+					ref={inputNumberRef}
+					onBlur={(e: any) => handlePageChange(Number(e.target.value))}
+					onKeyDown={e => {
+						if (e.keyCode === 13)
+							handlePageChange(Number(e.currentTarget.value));
+					}}
+				/>
+				{t('course.activity.PF.page_of')} {numPages}
 			</p>
+			<FormInput
+				type="range"
+				min={1}
+				max={numPages}
+				value={pageNumber}
+				onChange={(e: any) => handlePageChange(Number(e.target.value))}
+			/>
+			<div className="w-full flex justify-end">
+				<IconButton
+					icon={faDownload}
+					loading={downloading}
+					title={t('course.activity.PF.download_file')}
+					onClick={async () => {
+						if (!course || !activity.resource) return;
+						setDownloading(true);
+						const response =
+							await api.db.courses.downloadResourceFileInActivity(
+								course,
+								activity,
+								activity.resource.extension,
+							);
+
+						if (!response) {
+							alert.error('Unsupported file type');
+						} else {
+							if (response.status === 200) {
+								downloadBlob(
+									response.data,
+									activity.resource?.name,
+									activity.resource?.extension,
+								);
+							}
+						}
+						setDownloading(false);
+					}}
+				/>
+			</div>
 		</div>
 	);
 };

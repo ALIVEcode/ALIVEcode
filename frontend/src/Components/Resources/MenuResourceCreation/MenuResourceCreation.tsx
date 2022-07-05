@@ -232,6 +232,7 @@ const MenuResourceCreation = ({
 							<>
 								<InputGroup
 									type="file"
+									inputClassName="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
 									label={t('resources.IM.form.file')}
 									errors={errors.resource?.url}
 									onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -256,6 +257,7 @@ const MenuResourceCreation = ({
 					<>
 						<InputGroup
 							type="file"
+							inputClassName="block w-full text-sm text-slate-500 file:cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[color:var(bg-shade-one-color)] file:text-[color:var(--logo-color)] hover:file:bg-[color:var(--bg-shade-two-color)]"
 							label={t('resources.FI.form.file')}
 							errors={errors.resource?.url}
 							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

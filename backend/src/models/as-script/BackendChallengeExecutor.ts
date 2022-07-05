@@ -81,6 +81,7 @@ export class BackendChallengeExecutor {
     return this.actionsResponse;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private async executeNext(res: string[], firstTime = false) {
     /*const data = await this.asScriptService.sendDataToAsServer(
       firstTime

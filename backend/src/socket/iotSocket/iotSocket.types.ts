@@ -63,9 +63,9 @@ export enum IOT_EVENT {
   RECEIVE_ACTION_DONE = 'receive_action_done',
   /** A route of the project is triggered */
   SEND_ROUTE = 'send_route',
-  /** Update the interface of an interface */
+  /** Update the interface of a project */
   UPDATE_INTERFACE = 'update_interface',
-  /** Receiveds an updated interface request */
+  /** Receives an updated interface request */
   RECEIVE_INTERFACE = 'receive_interface',
 
   /*---- Deprecated events ----*/

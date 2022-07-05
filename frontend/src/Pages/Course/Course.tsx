@@ -6,6 +6,7 @@ import {
 	useState,
 	useCallback,
 } from 'react';
+import { inspect } from 'util';
 import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
 import { useParams, useLocation } from 'react-router';
@@ -18,7 +19,7 @@ import FormInput from '../../Components/UtilsComponents/FormInput/FormInput';
 import LoadingScreen from '../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
 import Modal from '../../Components/UtilsComponents/Modal/Modal';
 import api from '../../Models/api';
-import { Activity } from '../../Models/Course/activity.entity';
+import { Activity as ActivityModel } from '../../Models/Course/activity.entity';
 import { Course as CourseModel } from '../../Models/Course/course.entity';
 import {
 	CourseContent,
@@ -41,8 +42,16 @@ import {
 	CourseElementActivity,
 	CourseElementSection,
 } from '../../Models/Course/course_element.entity';
+import Button from '../../Components/UtilsComponents/Buttons/Button';
+import { FeedBackTypes } from '../../Models/Feedbacks/entities/feedback.entity';
+import { getBrowser } from '../../Components/MainComponents/FeedbackMenu/FeedbackModal';
+import { ThemeContext } from '../../state/contexts/ThemeContext';
+import { ThemeTypes } from '../../Models/sharedTypes';
+import { ResourceChallenge } from '../../Models/Resource/resources/resource_challenge.entity';
+import { CHALLENGE_ACCESS } from '../../Models/Challenge/challenge.entity';
+import AlertConfirm from '../../Components/UtilsComponents/Alert/AlertConfirm/AlertConfirm';
+import { Resource, RESOURCE_TYPE } from '../../Models/Resource/resource.entity';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSkull } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Course page that shows the content of a course
@@ -63,6 +72,7 @@ const Course = () => {
 	const { id } = useParams<{ id: string }>();
 	const [loading, setLoading] = useState(true);
 	const { t } = useTranslation();
+	const { theme } = useContext(ThemeContext);
 	const alert = useAlert();
 	const navigate = useNavigate();
 	const forceUpdate = useForceUpdate();
@@ -73,7 +83,9 @@ const Course = () => {
 	const [courseTitle, setCourseTitle] = useState(course.current?.name);
 	const [editTitle, setEditTitle] = useState(false);
 	const [courseNavigationOpen, setCourseNavigationOpen] = useState(true);
-	const [isCursed, setIsCursed] = useState(false);
+	const [cursedError, setCursedError] = useState<Error>();
+	const [modalChallengePrivateOpen, setModalChallengePrivateOpen] =
+		useState<Resource>();
 
 	/**
 	 * Check if the current logged in user is the creator of the course
@@ -379,7 +391,7 @@ const Course = () => {
 	};
 
 	/**
-	 * Adds a new content ({@link Activity} or {@link Section}) to the course.
+	 * Adds a new content ({@link ActivityModel} or {@link Section}) to the course.
 	 *
 	 * @param content the content to add to the course
 	 * @param name the name of the acitivity
@@ -395,7 +407,7 @@ const Course = () => {
 		const { courseElement, newOrder } = await api.db.courses
 			.addContent(course.current.id, content, name, sectionParent?.id)
 			.catch(e => {
-				setIsCursed(true);
+				setCursedError(e);
 				throw e;
 			});
 
@@ -473,7 +485,7 @@ const Course = () => {
 	};
 
 	type keyofActivity = {
-		[name in keyof Activity]?: Activity[name];
+		[name in keyof ActivityModel]?: ActivityModel[name];
 	};
 
 	/**
@@ -482,7 +494,10 @@ const Course = () => {
 	 * @param fields Fields to update the activity with
 	 */
 
-	const updateActivity = async (activity: Activity, fields: keyofActivity) => {
+	const updateActivity = async (
+		activity: ActivityModel,
+		fields: keyofActivity,
+	) => {
 		if (!activity || !course.current) return;
 		await api.db.courses.updateActivity(
 			{
@@ -533,7 +548,7 @@ const Course = () => {
 	 * @returns void
 	 * @author Enric Soldevila
 	 */
-	const removeResourceFromActivity = async (activity: Activity) => {
+	const removeResourceFromActivity = async (activity: ActivityModel) => {
 		if (!course.current) return;
 		await api.db.courses.removeResourceFromActivity({
 			id: course.current.id,
@@ -550,7 +565,7 @@ const Course = () => {
 	 * @returns The activity contained inside the activity
 	 * @author Enric Soldevila
 	 */
-	const loadActivityResource = async (activity: Activity) => {
+	const loadActivityResource = async (activity: ActivityModel) => {
 		if (!course.current) return;
 		activity.resource = await api.db.courses.getActivityResource({
 			courseId: course.current.id,
@@ -662,6 +677,13 @@ const Course = () => {
 					if (firstActivity) setTab({ openedActivity: firstActivity });
 				}
 
+				// Updating the global state of a user
+				if (user?.courses) {
+					user.courses = user.courses.map(c =>
+						c.id === course.current?.id ? course.current : c,
+					);
+				}
+
 				// Updating the state
 				course.current.elements = elements;
 				setCourseTitle(course.current.name);
@@ -676,43 +698,106 @@ const Course = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [id, user]);
 
+	const getResourceMenuFilters = (act?: ActivityModel) => {
+		if (!act) return [];
+		if (
+			act.allowedResources.length > 1 &&
+			act.allowedResources.includes(RESOURCE_TYPE.FILE)
+		)
+			return act.allowedResources.filter(s => s !== RESOURCE_TYPE.FILE);
+
+		return act.allowedResources;
+	};
+
 	if (!course.current) return <></>;
 	return (
 		<CourseContext.Provider value={contextValue}>
-			{isCursed && (
-				<div className="flex flex-row bg-red-600 text-white text-center justify-center">
-					<h2 className="text-2xl">Your course is cursed</h2>
-					<FontAwesomeIcon icon={faSkull} className="ml-2 text-white mt-2" />
+			{cursedError && (
+				<div className="w-full z-30 fixed p-4 bg-red-600 text-white text-center justify-center">
+					<div className="text-lg font-semibold">{t('course.cursed.msg1')}</div>
+					<div>{t('course.cursed.msg2')}</div>
+					<div className="mt-2">
+						<Button
+							variant="primary"
+							autoFocus
+							className="w-[200px] mr-0 mb-2 phone:mr-2 phone:mb-0"
+							onClick={async () => {
+								await api.db.feedback.create({
+									feedbackType: FeedBackTypes.Bug,
+									feedbackMessage:
+										'Error: \n\n' +
+										cursedError +
+										'\n\nCourse state: \n\n' +
+										inspect(course.current, true, null),
+									language: t('lang'),
+									browser: getBrowser(),
+									url: window.location.href,
+									theme: theme.name as ThemeTypes,
+								});
+								alert.success(t('course.cursed.thanks'));
+								setTimeout(() => window.location.reload(), 5000);
+							}}
+						>
+							{t('course.cursed.send_report')}
+						</Button>
+						<Button
+							variant="secondary"
+							className="w-[200px]"
+							onClick={() => window.location.reload()}
+						>
+							{t('course.cursed.no')}
+						</Button>
+					</div>
 				</div>
 			)}
 			<div className="w-full h-full flex flex-col bg-[color:var(--background-color)] text-[color:var(--foreground-color)]">
+				{/*previousActivity && (
+					<div className="absolute left-0 right-0">
+						{console.log(previ)}
+						<Activity courseElement={previousActivity}></Activity>
+					</div>
+				)*/}
 				<div className="border-b border-[color:var(--bg-shade-four-color)]">
 					<div className="text-4xl text-left text-[color:var(--foreground-color)] pl-5 pt-3 pb-3">
 						{isCreator() ? (
 							<div className="flex flex-row justify-between items-center">
-								<div id="course-title">
-									{editTitle ? (
-										<FormInput
-											ref={titleRef}
-											type="text"
-											autoFocus
-											onBlur={async () => {
-												if (!titleRef.current) return;
-												await setTitle(titleRef.current.value);
-												setCourseTitle(titleRef.current.value);
-												setEditTitle(false);
-											}}
-											defaultValue={courseTitle}
-										/>
-									) : (
-										<span
-											style={{ cursor: isCreator() ? 'pointer' : 'auto' }}
-											onClick={() => isCreator() && setEditTitle(true)}
-										>
-											{courseTitle}
-										</span>
-									)}
-								</div>{' '}
+								<div>
+									<FontAwesomeIcon
+										className="mr-3"
+										icon={course.current.getSubjectIcon()}
+									/>
+									<div className="inline" id="course-title">
+										{editTitle ? (
+											<FormInput
+												className="!w-auto"
+												ref={titleRef}
+												type="text"
+												autoFocus
+												onBlur={async () => {
+													if (!titleRef.current) return;
+													await setTitle(titleRef.current.value);
+													setCourseTitle(titleRef.current.value);
+													setEditTitle(false);
+												}}
+												onKeyDown={async (e: KeyboardEvent) => {
+													if (e.keyCode === 13 && titleRef.current) {
+														await setTitle(titleRef.current.value);
+														setCourseTitle(titleRef.current.value);
+														setEditTitle(false);
+													}
+												}}
+												defaultValue={courseTitle}
+											/>
+										) : (
+											<span
+												style={{ cursor: isCreator() ? 'pointer' : 'auto' }}
+												onClick={() => isCreator() && setEditTitle(true)}
+											>
+												{courseTitle}
+											</span>
+										)}
+									</div>
+								</div>
 								<div id="course-view">
 									<label className="px-3 text-2xl opacity-60">
 										{tab.tab === 'layout'
@@ -722,7 +807,15 @@ const Course = () => {
 								</div>
 							</div>
 						) : (
-							courseTitle
+							<>
+								<FontAwesomeIcon
+									className="mr-3"
+									icon={course.current.getSubjectIcon()}
+								/>
+								<div className="inline" id="course-title">
+									{courseTitle}
+								</div>
+							</>
 						)}
 					</div>
 				</div>
@@ -770,9 +863,33 @@ const Course = () => {
 				setOpen={setOpenModalImportResource}
 				open={openModalImportResource}
 			>
+				<AlertConfirm
+					title={t('course.activity.import_challenge_private.title')}
+					open={modalChallengePrivateOpen != null}
+					setOpen={bool => !bool && setModalChallengePrivateOpen(undefined)}
+					onConfirm={async () => {
+						if (
+							!course.current ||
+							!tab.openedActivity ||
+							!tab.openedActivity.activity ||
+							!modalChallengePrivateOpen
+						)
+							return;
+						await api.db.courses.addResourceInActivity(
+							course.current,
+							tab.openedActivity.activity,
+							modalChallengePrivateOpen,
+						);
+						(tab.openedActivity.activity as ActivityModel).resource =
+							modalChallengePrivateOpen;
+						setOpenModalImportResource(false);
+					}}
+				>
+					{t('course.activity.import_challenge_private.msg')}
+				</AlertConfirm>
 				<ResourceMenu
 					mode="import"
-					filters={tab.openedActivity?.activity.allowedResources}
+					filters={getResourceMenuFilters(tab.openedActivity?.activity)}
 					onSelectResource={async resource => {
 						if (
 							!course.current ||
@@ -780,12 +897,21 @@ const Course = () => {
 							!tab.openedActivity.activity
 						)
 							return;
+						if (resource.type === RESOURCE_TYPE.CHALLENGE) {
+							const resChallenge = resource as ResourceChallenge;
+							if (!resChallenge.challenge)
+								resChallenge.challenge = await api.db.challenges.get({
+									id: resChallenge.challengeId,
+								});
+							if (resChallenge.challenge.access === CHALLENGE_ACCESS.PRIVATE)
+								return setModalChallengePrivateOpen(resource);
+						}
 						await api.db.courses.addResourceInActivity(
 							course.current,
 							tab.openedActivity.activity,
 							resource,
 						);
-						(tab.openedActivity.activity as Activity).resource = resource;
+						(tab.openedActivity.activity as ActivityModel).resource = resource;
 						setOpenModalImportResource(false);
 					}}
 				/>

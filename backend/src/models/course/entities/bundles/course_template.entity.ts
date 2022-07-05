@@ -27,6 +27,6 @@ export class CourseTemplateEntity {
   @Column({ name: 'courseId', type: 'varchar', nullable: false })
   courseId: string;
 
-  @ManyToMany(() => ProfessorEntity, prof => prof.courseTemplates)
+  @ManyToMany(() => ProfessorEntity, prof => prof.courseTemplates, { onDelete: 'CASCADE' })
   owners: ProfessorEntity[];
 }

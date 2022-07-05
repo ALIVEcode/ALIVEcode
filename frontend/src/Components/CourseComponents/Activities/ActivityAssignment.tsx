@@ -5,6 +5,7 @@ import { CourseContext } from '../../../state/contexts/CourseContext';
 import { ActivityAssignment as ActivityAssignmentModel } from '../../../Models/Course/activities/activity_assignment.entity';
 import { downloadBlob } from '../../../Types/files.type';
 import { useAlert } from 'react-alert';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Shows an activity of type Video
@@ -18,6 +19,7 @@ const ActivityAssignment = ({
 	activity: ActivityAssignmentModel;
 }) => {
 	const { course } = useContext(CourseContext);
+	const { t } = useTranslation();
 	const alert = useAlert();
 
 	const handleDownload = async () => {
@@ -49,11 +51,11 @@ const ActivityAssignment = ({
 					<div className="text-lg">{activity.resource.name}</div>
 					<div className="text-xs mb-2">{activity.resource.url}</div>
 					<Button variant="primary" onClick={handleDownload}>
-						Download
+						{t('course.activity.download_file')}
 					</Button>
 				</>
 			) : (
-				<label>Nothing to download</label>
+				<label>{t('course.activity.no_download')}</label>
 			)}
 		</div>
 	);

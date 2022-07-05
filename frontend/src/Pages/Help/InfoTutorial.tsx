@@ -1,5 +1,3 @@
-import { useTranslation } from 'react-i18next';
-import { useForceUpdate } from '../../state/hooks/useForceUpdate';
 import React, {
 	forwardRef,
 	useCallback,
@@ -203,6 +201,7 @@ const Tutorial = ({
 	children: React.ReactNode | React.ReactNode[];
 }) => {
 	const tutorialsRef = useRef<{ [name: string]: InfoTutorialProps }>({});
+	const tutorialStack = useRef<Array<InfoTutorialProps>>([]);
 
 	const [currentTutorial, setCurrentTutorial] =
 		useComplexState<InfoTutorialProps | null>(null);
@@ -215,15 +214,26 @@ const Tutorial = ({
 		},
 
 		unregisterTutorial(name: string) {
-			if (currentTutorial?.name === name) setCurrentTutorial(null);
+			tutorialStack.current = tutorialStack.current.filter(
+				value => value.name !== name,
+			);
+			if (currentTutorial?.name === name) {
+				setCurrentTutorial(tutorialStack.current.at(-1) ?? null);
+			}
 			// if (name in tutorialsRef.current) delete tutorialsRef.current[name];
 			// forceUpdate();
 		},
 
 		registerTutorial(tutorial: InfoTutorialProps) {
 			// tutorialsRef.current[tutorial.name] = tutorial;
+			tutorialStack.current.push(tutorial);
 			setCurrentTutorial(tutorial);
-			return () => setCurrentTutorial(null);
+			return () => {
+				tutorialStack.current = tutorialStack.current.filter(
+					value => value.name !== tutorial.name,
+				);
+				setCurrentTutorial(tutorialStack.current.at(-1) ?? null);
+			};
 		},
 
 		setCurrentTutorial(name: string) {

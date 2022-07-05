@@ -165,8 +165,8 @@ const ClassroomHeader: React.FC<
 				onConfirm={async () => {
 					user?.isProfessor()
 						? await api.db.classrooms.delete({ id: classroom.id })
-						: leaveClassroom();
-					await user?.removeClassroom(classroom);
+						: await leaveClassroom();
+					user?.removeClassroom(classroom);
 					navigate(routes.auth.dashboard.path + '/recents');
 				}}
 			/>

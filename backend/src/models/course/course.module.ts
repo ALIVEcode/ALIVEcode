@@ -24,7 +24,6 @@ import { ResourceChallengeEntity } from '../resource/entities/resources/resource
 import { ActivityAssignmentEntity } from './entities/activities/activity_assignment.entity';
 import { ResourceVideoEntity } from '../resource/entities/resources/resource_video.entity';
 import { ResourceFileEntity } from '../resource/entities/resources/resource_file.entity';
-import { ResourceImageEntity } from '../resource/entities/resources/resource_image.entity';
 import { ResourceTheoryEntity } from '../resource/entities/resources/resource_theory.entity';
 import { BundleController } from './bundle.controller';
 import { BundleEntity } from './entities/bundles/bundle.entity';
@@ -32,8 +31,15 @@ import { CourseTemplateEntity } from './entities/bundles/course_template.entity'
 import { FileEntity } from '../file/entities/file.entity';
 import { FileService } from '../file/file.service';
 import { ActivityPdfEntity } from './entities/activities/activity_pdf.entity';
-import { ResourcePdfEntity } from '../resource/entities/resources/resource_pdf.entity';
 import { BundleService } from './bundle.service';
+import { ChallengeService } from '../challenge/challenge.service';
+import { ChallengeAliveEntity } from '../challenge/entities/challenges/challenge_alive.entity';
+import { ChallengeCodeEntity } from '../challenge/entities/challenges/challenge_code.entity';
+import { ChallengeProgressionEntity } from '../challenge/entities/challenge_progression.entity';
+import { ChallengeAIEntity } from '../challenge/entities/challenges/challenge_ai.entity';
+import { ChallengeIoTEntity } from '../challenge/entities/challenges/challenge_iot.entity';
+import { ActivityWordEntity } from './entities/activities/activity_word.entity';
+import { ActivityPowerPointEntity } from './entities/activities/activity_powerpoint.entity';
 
 /**
  * Module for the course nestjs resource
@@ -51,6 +57,8 @@ import { BundleService } from './bundle.service';
       ActivityPdfEntity,
       ActivityAssignmentEntity,
       ActivityChallengeEntity,
+      ActivityWordEntity,
+      ActivityPowerPointEntity,
       ResourceEntity,
       UserEntity,
       ClassroomEntity,
@@ -62,16 +70,19 @@ import { BundleService } from './bundle.service';
       ChallengeEntity,
       ResourceChallengeEntity,
       ResourceVideoEntity,
-      ResourcePdfEntity,
       ResourceFileEntity,
-      ResourceImageEntity,
       ResourceTheoryEntity,
       BundleEntity,
       CourseTemplateEntity,
       FileEntity,
+      ChallengeAliveEntity,
+      ChallengeCodeEntity,
+      ChallengeProgressionEntity,
+      ChallengeAIEntity,
+      ChallengeIoTEntity,
     ]),
   ],
   controllers: [CourseController, BundleController],
-  providers: [CourseService, UserService, ResourceService, FileService, BundleService],
+  providers: [CourseService, UserService, ChallengeService, ResourceService, FileService, BundleService],
 })
 export class CourseModule {}

@@ -1,7 +1,10 @@
 import { Transform } from "class-transformer";
 import { IsEnum, IsOptional} from 'class-validator';
 import { SUBJECTS } from '../../../generics/types/sharedTypes';
-import { RESOURCE_TYPE } from '../../resource/entities/resource.entity';
+import { RESOURCE_TYPE, pdfMimeTypes, wordMimeTypes, imageMimeTypes } from '../../resource/entities/resource.entity';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const fileMimeTypesFilters = ['img', 'pdf', 'word'];
 
 export class QueryResources {
   @IsOptional()
@@ -21,7 +24,28 @@ export class QueryResources {
     }
     return undefined;
   })
-  types?: RESOURCE_TYPE[];
+  resourceTypes?: RESOURCE_TYPE[];
+
+  @IsOptional()
+  @Transform(({ value: typesStr }) => {
+    if (typeof typesStr === 'string') {
+      const types = typesStr.split(',');
+      const mimeTypes: string[] = [];
+      types.forEach(file => {
+        switch (file) {
+          case 'img':
+            return mimeTypes.push(...imageMimeTypes);
+          case 'pdf':
+            return mimeTypes.push(...pdfMimeTypes);
+          case 'word':
+            return mimeTypes.push(...wordMimeTypes);
+        }
+      });
+      return mimeTypes;
+    }
+    return undefined;
+  })
+  fileMimeTypes?: string[];
 
   @IsOptional()
   @IsEnum(SUBJECTS)

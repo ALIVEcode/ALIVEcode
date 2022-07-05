@@ -31,15 +31,15 @@ import { hot } from 'react-hot-loader/root';
 import Modal from './Components/UtilsComponents/Modal/Modal';
 import NameMigrationForm from './Components/SiteStatusComponents/NameMigrationForm/NameMigrationForm';
 import { useForceUpdate } from './state/hooks/useForceUpdate';
-import { Resource } from './Models/Resource/resource.entity';
+import { Resource, RESOURCE_TYPE } from './Models/Resource/resource.entity';
 import FeedbackModal from './Components/MainComponents/FeedbackMenu/FeedbackModal';
 import Confetti from 'react-confetti';
 import useAudio from './state/hooks/useAudio';
 import Tutorial from './Pages/Help/InfoTutorial';
 import MenuResourceCreation from './Components/Resources/MenuResourceCreation/MenuResourceCreation';
 import { ResourceMenuSubjects } from './Pages/ResourceMenu/resourceMenuTypes';
-import { RESOURCE_TYPE } from '../../backend/src/models/resource/entities/resource.entity';
 import { MenuResourceCreationDTO } from './Components/Resources/MenuResourceCreation/menuResourceCreationTypes';
+import { ResourceFilters } from './Pages/ResourceMenu/ResourceMenu';
 
 type GlobalStyleProps = {
 	theme: Theme;
@@ -135,13 +135,23 @@ const App = () => {
 		async (
 			subject: ResourceMenuSubjects,
 			name?: string | undefined,
-			filters?: RESOURCE_TYPE[],
+			filters?: ResourceFilters,
 		) => {
 			if (!user)
 				throw new Error('User is not loaded when trying to get the resources');
+			const resourceTypeFilters: RESOURCE_TYPE[] = [];
+			const mimeFileTypeFilters: string[] = [];
+			filters?.forEach(val => {
+				if (Object.values(RESOURCE_TYPE).includes(val as any))
+					resourceTypeFilters.push(val as RESOURCE_TYPE);
+				else mimeFileTypeFilters.push(val);
+			});
 			const loadedRes = await api.db.users.getResources(user.id, {
 				subject: subject !== 'all' ? subject : undefined,
-				types: filters && filters.length > 0 ? filters : undefined,
+				resourceTypes:
+					resourceTypeFilters.length > 0 ? resourceTypeFilters : undefined,
+				fileMimeTypes:
+					mimeFileTypeFilters.length > 0 ? mimeFileTypeFilters : undefined,
 				name,
 			});
 			setResources(loadedRes);
@@ -254,7 +264,7 @@ const App = () => {
 				const loadedTheme = loadThemeFromCookies();
 				if (loadedTheme && loadedTheme !== theme) setTheme(loadedTheme);
 				setUser(loadedUser);
-				await api.db.maintenances.getUpcoming();
+				//await api.db.maintenances.getUpcoming();
 			} catch {
 				const loadedTheme = loadThemeFromCookies();
 				if (loadedTheme && loadedTheme !== theme) setTheme(loadedTheme);
@@ -277,10 +287,11 @@ const App = () => {
 					if (user) await logout();
 					return Promise.reject(error);
 				}
+				console.log(error.response);
 				if (
 					error.response &&
 					error.response.data.message === 'Not Authenticated' &&
-					error.response.status === 401
+					error.response.data.statusCode === 401
 				) {
 					try {
 						const { accessToken } = (await axios.post('/users/refreshToken'))

@@ -65,6 +65,7 @@ export class NeuralNetwork extends AIModel {
 		else this.loadModel();
 	}
 
+
 	protected loadModel() {
 		let nbLayers: number = this.hyperparameters.neuronsByLayer.length + 1;
 

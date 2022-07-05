@@ -1,5 +1,9 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { RESOURCE_TYPE } from '../../../Models/Resource/resource.entity';
+import {
+	getResourceColor,
+	getResourceIcon,
+	RESOURCE_TYPE,
+} from '../../../Models/Resource/resource.entity';
 import { Challenge } from '../../../Models/Challenge/challenge.entity';
 import { useTranslation } from 'react-i18next';
 import { UserContext } from '../../../state/contexts/UserContext';
@@ -16,12 +20,12 @@ import Link from '../../UtilsComponents/Link/Link';
 import FormInput from '../../UtilsComponents/FormInput/FormInput';
 import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
 import TypeCard from '../../UtilsComponents/Cards/TypeCard/TypeCard';
-import { getResourceIcon, SUBJECTS } from '../../../Types/sharedTypes';
-import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
-import MenuCreation from '../../UtilsComponents/MenuCreation/MenuCreation';
+import { SUBJECTS } from '../../../Types/sharedTypes';
 import Button from '../../UtilsComponents/Buttons/Button';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import useComplexState from '../../../state/hooks/useComplexState';
+import Timeline from '../../UtilsComponents/Modal/Timeline';
+import ResourceTheoryDocument from '../ResourceTheoryDocument/ResourceTheoryDocument';
 
 /**
  * @description renders the menu for creating a resource of the given type
@@ -162,7 +166,7 @@ const MenuResourceCreation = ({
 			case RESOURCE_TYPE.CHALLENGE:
 				return (
 					<>
-						<FormLabel>{t('resources.challenge.form.select')}</FormLabel>
+						<FormLabel>{t('resources.CH.form.select')}</FormLabel>
 						{challenges.length <= 0 ? (
 							<div>
 								<i>{t('dashboard.challenges.empty')}. </i>
@@ -187,9 +191,24 @@ const MenuResourceCreation = ({
 					</>
 				);
 			case RESOURCE_TYPE.THEORY:
+				if (updateMode && defaultResource)
+					return (
+						<ResourceTheoryDocument
+							resource={defaultResource}
+							editMode={true}
+						/>
+					);
 				return <></>;
 			case RESOURCE_TYPE.VIDEO:
-				return (
+				return updateMode ? (
+					!resourceIsFile && (
+						<InputGroup
+							label={t('resources.VI.form.url')}
+							errors={errors.resource?.url}
+							{...register('resource.url', { required: false })}
+						/>
+					)
+				) : (
 					<>
 						<div onChange={onChangeRadio}>
 							<input
@@ -213,7 +232,7 @@ const MenuResourceCreation = ({
 							<>
 								<InputGroup
 									type="file"
-									label={t('resources.image.form.file')}
+									label={t('resources.IM.form.file')}
 									errors={errors.resource?.url}
 									onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 										e.target.files && setFile(e.target.files[0])
@@ -223,76 +242,21 @@ const MenuResourceCreation = ({
 							</>
 						) : (
 							<InputGroup
-								label={t('resources.video.form.url')}
+								label={t('resources.VI.form.url')}
 								errors={errors.resource?.url}
 								{...register('resource.url', { required: false })}
 							/>
 						)}
-					</>
-				);
-			case RESOURCE_TYPE.IMAGE:
-				return (
-					<>
-						<div onChange={onChangeRadio}>
-							<input
-								type="radio"
-								name="resource"
-								value="file"
-								checked={resourceIsFile}
-								id="file"
-							/>
-							<label htmlFor="file">file</label>
-							<input
-								type="radio"
-								name="resource"
-								value="url"
-								defaultChecked
-								checked={!resourceIsFile}
-								id="url"
-							/>
-							<label htmlFor="url">url</label>
-						</div>
-						{resourceIsFile ? (
-							<>
-								<InputGroup
-									type="file"
-									label={t('resources.image.form.file')}
-									errors={errors.resource?.url}
-									onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-										e.target.files && setFile(e.target.files[0])
-									}
-									progress={uploadProgress}
-								/>
-							</>
-						) : (
-							<InputGroup
-								label={t('resources.image.form.url')}
-								errors={errors.resource?.url}
-								{...register('resource.url', { required: false })}
-							/>
-						)}
-					</>
-				);
-			case RESOURCE_TYPE.PDF:
-				return (
-					<>
-						<InputGroup
-							type="file"
-							label={t('resources.pdf.form.file')}
-							errors={errors.resource?.url}
-							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-								e.target.files && setFile(e.target.files[0])
-							}
-							progress={uploadProgress}
-						/>
 					</>
 				);
 			case RESOURCE_TYPE.FILE:
-				return (
+				return updateMode ? (
+					<></>
+				) : (
 					<>
 						<InputGroup
 							type="file"
-							label={t('resources.file.form.file')}
+							label={t('resources.FI.form.file')}
 							errors={errors.resource?.url}
 							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 								e.target.files && setFile(e.target.files[0])
@@ -316,8 +280,10 @@ const MenuResourceCreation = ({
 				{Object.entries(RESOURCE_TYPE).map(([name, _type], idx) => (
 					<TypeCard
 						key={idx}
-						title={t(`resources.${name.toLowerCase()}.name`)}
+						title={t(`resources.${_type}.name`)}
+						tooltip={t(`help.resource.${_type}`)}
 						icon={getResourceIcon(_type)}
+						color={getResourceColor(_type)}
 						onClick={() => onSelectResourceType(_type)}
 						selected={type === _type}
 					/>
@@ -360,7 +326,36 @@ const MenuResourceCreation = ({
 	return (
 		<>
 			{mode === 'modal' ? (
-				<MenuCreation
+				<Timeline.Modal
+					title={
+						updateMode ? t('resources.form.update') : t('resources.form.create')
+					}
+					open={open!}
+					setOpen={setOpen!}
+					onSubmit={async () => {
+						try {
+							let r = true;
+							const func = handleSubmit(onSubmit, () => {
+								r = false;
+							});
+							await func();
+							return r;
+						} catch {
+							return false;
+						}
+					}}
+					submitText={
+						updateMode ? t('resources.form.update') : t('resources.form.create')
+					}
+					submitButtonVariant="primary"
+				>
+					{!updateMode && (
+						<Timeline.Page>{renderPageResourceType()}</Timeline.Page>
+					)}
+					<Timeline.Page>{renderPageResourceInfos()}</Timeline.Page>
+				</Timeline.Modal>
+			) : (
+				/*<MenuCreation
 					title={
 						updateMode ? t('resources.form.update') : t('resources.form.create')
 					}
@@ -372,8 +367,7 @@ const MenuResourceCreation = ({
 				>
 					{!updateMode && renderPageResourceType()}
 					{renderPageResourceInfos()}
-				</MenuCreation>
-			) : (
+				</MenuCreation>*/
 				<div className="flex flex-col justify-items-center">
 					{!updateMode && renderPageResourceType()}
 					{renderPageResourceInfos()}

@@ -17,6 +17,17 @@ export type InfoIconProps = {
 	iconSize?: FontAwesomeIconProps['size'];
 };
 
+export type TutorialIconProps = {
+	tooltip?: string;
+	noTooltip?: boolean;
+	onClick?: () => void;
+	className?: string;
+	iconClassName?: string;
+	ignoreDefaultIconStyle?: boolean;
+	iconSize?: FontAwesomeIconProps['size'];
+};
+
+
 export type InfoBoxProps = {
 	title?: string;
 	className?: string;

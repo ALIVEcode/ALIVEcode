@@ -24,7 +24,7 @@ const ActivityVideo = ({ activity }: { activity: ActivityVideoModel }) => {
 	);
 
 	if (!activity.resource?.isFile() && !matches)
-		return <i>{t('resources.video.form.invalid_url')}</i>;
+		return <i>{t('resources.VI.form.invalid_url')}</i>;
 
 	const videoId = matches && matches[6];
 

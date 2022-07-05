@@ -1,12 +1,15 @@
 import { iotDashboardProps } from './iotDashboardTypes';
-import { useEffect, useState, useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import api from '../../../Models/api';
 import { IoTProject } from '../../../Models/Iot/IoTproject.entity';
 import useRoutes from '../../../state/hooks/useRoutes';
 import styled from 'styled-components';
 import FillContainer from '../../../Components/UtilsComponents/FillContainer/FillContainer';
 import CardContainer from '../../../Components/UtilsComponents/CardContainer/CardContainer';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import {
+	faArrowAltCircleLeft,
+	faPlus,
+} from '@fortawesome/free-solid-svg-icons';
 import { IoTObject } from '../../../Models/Iot/IoTobject.entity';
 import IoTObjectCreate from '../../../Components/IoTComponents/IoTObject/IotObjectForm/IoTObjectCreate';
 import FormModal from '../../../Components/UtilsComponents/FormModal/FormModal';
@@ -16,6 +19,7 @@ import IoTObjectLargeCard from '../../../Components/IoTComponents/IoTObject/IoTO
 import Card from '../../../Components/UtilsComponents/Cards/Card/Card';
 import { useNavigate } from 'react-router-dom';
 import IoTIcon from '../../../assets/images/icons/sandboxblanc.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const StyledDiv = styled(FillContainer)`
 	padding: 2vw;
@@ -49,7 +53,14 @@ const IoTDashboard = (props: iotDashboardProps) => {
 
 	return (
 		<StyledDiv>
-			<div>
+			<div className="flex flex-row gap-2">
+				<FontAwesomeIcon
+					icon={faArrowAltCircleLeft}
+					size="3x"
+					title={t('home.iot.to_home_page')}
+					className="cursor-pointer"
+					onClick={() => navigate(routes.public.iot.path)}
+				/>
 				<div className="text-5xl">{t('iot.dashboard.title')}</div>
 			</div>
 			<div>

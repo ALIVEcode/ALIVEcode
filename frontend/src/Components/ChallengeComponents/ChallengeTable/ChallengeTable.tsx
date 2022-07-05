@@ -75,15 +75,15 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 					const array = obj as number[];
 					array[index!] = newNumValue;
 					break;
-				case 'ACTIVATION_FUNCTIONS':
+				case 'multiple ACTIVATION_FUNCTIONS':
 					const obj2 = tempHyperparams[key] as Object;
 					const array2 = obj2 as string[];
 					array2[index!] = newValue;
 					break;
 				default:
+					
 					(tempHyperparams[key] as string) = newValue;
 			}
-
 			setCurrHyperparams(tempHyperparams);
 		}
 	};
@@ -433,7 +433,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 		let inputs: any[] = [];
 		var obj: Object;
 		let array: number[] = [];
-		let dropboxdNb = 1;
+		let dropboxdNb = undefined;
 
 		switch (HyperparamTranslator![key]['componant']) {
 			case 'NN_OPTIMIZER_TYPES': {
@@ -444,9 +444,15 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 			case 'ACTIVATION_FUNCTIONS': {
 				values = Object.values(ACTIVATION_FUNCTIONS);
 				keys = Object.keys(ACTIVATION_FUNCTIONS);
+				break;
+			}
+			case 'multiple ACTIVATION_FUNCTIONS': {
+				values = Object.values(ACTIVATION_FUNCTIONS);
+				keys = Object.keys(ACTIVATION_FUNCTIONS);
 				obj = currHyperparams![key] as Object;
 				array = obj as number[];
 				dropboxdNb = array.length;
+				
 				break;
 			}
 			case 'MODEL_TYPES': {
@@ -459,13 +465,13 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 				keys = Object.keys(COST_FUNCTIONS);
 			}
 		}
-		if (dropboxdNb === 1) {
+		if (dropboxdNb === undefined) {
 			//Creat one dropdown
 
 			inputs.push(
 				<select
 					className="inputs"
-					value={currHyperparams?.costFunction}
+					value={currHyperparams![key]}
 					onChange={e => updateHyperparams(e.target.value, key)}
 					onBlur={e => {
 						props.handleHyperparamsChange!(currHyperparams!);

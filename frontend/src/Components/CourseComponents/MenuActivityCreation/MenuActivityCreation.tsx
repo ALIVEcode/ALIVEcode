@@ -14,6 +14,9 @@ import { ActivityVideo } from '../../../Models/Course/activities/activity_video.
 import { ActivityPdf } from '../../../Models/Course/activities/activity_pdf.entity';
 import { ActivityAssignment } from '../../../Models/Course/activities/activity_assignment.entity';
 import { CourseElementActivity } from '../../../Models/Course/course_element.entity';
+import { getActivityColor } from '../../../Models/Course/activity.entity';
+import { ActivityWord } from '../../../Models/Course/activities/activity_word.entity';
+import { ActivityPowerPoint } from '../../../Models/Course/activities/activity_powerpoint.entity';
 
 /**
  * Creation Menu for an activity
@@ -59,6 +62,12 @@ const MenuActivityCreation = ({
 			case ACTIVITY_TYPE.ASSIGNMENT:
 				activity = new ActivityAssignment();
 				break;
+			case ACTIVITY_TYPE.WORD:
+				activity = new ActivityWord();
+				break;
+			// case ACTIVITY_TYPE.POWERPOINT:
+			// 	activity = new ActivityPowerPoint();
+			// 	break;
 		}
 		activity.type = type;
 
@@ -86,31 +95,16 @@ const MenuActivityCreation = ({
 			closeCross
 		>
 			<div className="bg-[color:var(--background-color)] gap-8 grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3">
-				<TypeCard
-					title={t('msg.activity_type.challenge')}
-					icon={getActivityIcon(ACTIVITY_TYPE.CHALLENGE)}
-					onClick={() => onSelect(ACTIVITY_TYPE.CHALLENGE)}
-				/>
-				<TypeCard
-					title={t('msg.activity_type.video')}
-					icon={getActivityIcon(ACTIVITY_TYPE.VIDEO)}
-					onClick={() => onSelect(ACTIVITY_TYPE.VIDEO)}
-				/>
-				<TypeCard
-					title={t('msg.activity_type.pdf')}
-					icon={getActivityIcon(ACTIVITY_TYPE.PDF)}
-					onClick={() => onSelect(ACTIVITY_TYPE.PDF)}
-				/>
-				<TypeCard
-					title={t('msg.activity_type.theory')}
-					icon={getActivityIcon(ACTIVITY_TYPE.THEORY)}
-					onClick={() => onSelect(ACTIVITY_TYPE.THEORY)}
-				/>
-				<TypeCard
-					title={t('msg.activity_type.assignment')}
-					icon={getActivityIcon(ACTIVITY_TYPE.ASSIGNMENT)}
-					onClick={() => onSelect(ACTIVITY_TYPE.ASSIGNMENT)}
-				/>
+				{Object.entries(ACTIVITY_TYPE).map(entry => (
+					<TypeCard
+						key={entry[1].toLowerCase()}
+						title={t(`msg.activity_type.${entry[1]}`)}
+						tooltip={t(`help.activity.${entry[1]}`)}
+						color={getActivityColor(entry[1])}
+						icon={getActivityIcon(entry[1])}
+						onClick={() => onSelect(entry[1])}
+					/>
+				))}
 			</div>
 		</Modal>
 	);

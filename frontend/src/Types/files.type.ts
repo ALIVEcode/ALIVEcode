@@ -81,6 +81,8 @@ export const GetMimeType = (extension: string) => {
 			return 'application/vnd.ms-excel.addin.macroEnabled.12';
 		case 'xlsb':
 			return 'application/vnd.ms-excel.sheet.binary.macroEnabled.12';
+		case 'pdf':
+			return 'application/pdf';
 		case 'ppt ':
 			return 'application/vnd.ms-powerpoint';
 		case 'pot ':

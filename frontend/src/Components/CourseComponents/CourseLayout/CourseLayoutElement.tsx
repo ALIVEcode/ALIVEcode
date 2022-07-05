@@ -6,7 +6,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, {
-	RefObject,
+	ForwardedRef,
 	useCallback,
 	useContext,
 	useRef,
@@ -24,7 +24,6 @@ import {
 	CourseElementSection,
 } from '../../../Models/Course/course_element.entity';
 import { classNames } from '../../../Types/utils';
-import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 
 /**
  * Component that wraps a CourseElement to show it properly on the layout view
@@ -33,231 +32,238 @@ import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
  *
  * @author Mathis Laroche
  */
-const CourseLayoutElement = ({ element }: CourseLayoutElementProps) => {
-	const {
-		renameElement,
-		deleteElement,
-		isNewCourseElement,
-		setCourseElementNotNew,
-		courseElements,
-		moveElement,
-		setIsElementVisible,
-	} = useContext(CourseContext);
-	const { t } = useTranslation();
-	const [confirmDelete, setConfirmDelete] = useState(false);
-	const [isRenaming, setIsRenaming] = useState(false);
-	const inputRef = useRef<HTMLInputElement>();
-	const courseLayoutElementRef = useRef<HTMLDivElement>(null);
+const CourseLayoutElement = React.forwardRef(
+	(
+		{ element }: CourseLayoutElementProps,
+		openedActivityRef: ForwardedRef<HTMLDivElement>,
+	) => {
+		const {
+			renameElement,
+			deleteElement,
+			isNewCourseElement,
+			setCourseElementNotNew,
+			courseElements,
+			moveElement,
+			setIsElementVisible,
+			tab,
+		} = useContext(CourseContext);
+		const { t } = useTranslation();
+		const [confirmDelete, setConfirmDelete] = useState(false);
+		const [isRenaming, setIsRenaming] = useState(false);
+		const inputRef = useRef<HTMLInputElement>();
+		const courseLayoutElementRef = useRef<HTMLDivElement>(null);
 
-	const getParent = useCallback((target: HTMLElement) => {
-		let parent: HTMLElement | null | undefined = target.parentElement;
-		do {
-			if (parent?.className === 'course-layout-element') {
-				return parent;
+		/**
+		 * Handles the renaming of an element
+		 *
+		 * @author Mathis Laroche
+		 */
+		const rename = async () => {
+			if (isNewCourseElement(element)) {
+				setCourseElementNotNew(element);
 			}
-		} while ((parent = parent?.parentElement) != null);
-		return null;
-	}, []);
+			if (isRenaming) {
+				setIsRenaming(false);
+			}
+			if (
+				inputRef.current?.value &&
+				inputRef.current.value.trim() !== element.name
+			) {
+				await renameElement(element, inputRef.current.value.trim());
+			}
+		};
 
-	/**
-	 * Handles the renaming of an element
-	 *
-	 * @author Mathis Laroche
-	 */
-	const rename = async () => {
-		if (isNewCourseElement(element)) {
-			setCourseElementNotNew(element);
-		}
-		if (isRenaming) {
-			setIsRenaming(false);
-		}
-		if (
-			inputRef.current?.value &&
-			inputRef.current.value.trim() !== element.name
-		) {
-			await renameElement(element, inputRef.current.value.trim());
-		}
-	};
+		const onDragStart = useCallback(
+			(event: React.DragEvent<HTMLDivElement>) => {
+				event.dataTransfer.setData('text/plain', element.id.toString());
+				if (!courseLayoutElementRef.current) {
+					return;
+				}
+				courseLayoutElementRef.current.style.opacity = '0.5';
+				event.dataTransfer.setDragImage(courseLayoutElementRef.current, 25, 40);
+				console.log('drag start');
+			},
+			[element],
+		);
 
-	const onDragStart = useCallback(
-		(event: React.DragEvent<HTMLDivElement>) => {
-			event.dataTransfer.setData('text/plain', element.id.toString());
+		const onDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
+			e.preventDefault();
 			if (!courseLayoutElementRef.current) {
 				return;
 			}
-			courseLayoutElementRef.current.style.opacity = '0.5';
-			event.dataTransfer.setDragImage(courseLayoutElementRef.current, 25, 40);
-			console.log('drag start');
-		},
-		[element],
-	);
+			courseLayoutElementRef.current.style.opacity = '1';
+		};
 
-	const onDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
-		e.preventDefault();
-		if (!courseLayoutElementRef.current) {
-			return;
-		}
-		courseLayoutElementRef.current.style.opacity = '1';
-	};
-
-	const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
-		event.preventDefault();
-	}, []);
-
-	const onDrop = useCallback(
-		async (event: React.DragEvent<HTMLDivElement>) => {
+		const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
 			event.preventDefault();
-			const data = event.dataTransfer.getData('text/plain');
-			if (data === '') return;
-			if (!courseElements?.current) return;
-			if (!(data in courseElements.current)) return;
+		}, []);
 
-			const id = Number(data);
-			if (id === element.id) return;
+		const onDrop = useCallback(
+			async (event: React.DragEvent<HTMLDivElement>) => {
+				event.preventDefault();
+				const data = event.dataTransfer.getData('text/plain');
+				if (data === '') return;
+				if (!courseElements?.current) return;
+				if (!(data in courseElements.current)) return;
 
-			const draggedElement = courseElements.current[id];
+				const id = Number(data);
+				if (id === element.id) return;
 
-			await moveElement(
-				draggedElement,
-				element.parent.elementsOrder.findIndex(id => id === element.id),
-				element.parent,
-			);
-		},
-		[courseElements, element, moveElement],
-	);
+				const draggedElement = courseElements.current[id];
 
-	const onDragEnter = (event: React.DragEvent<HTMLDivElement>) => {
-		// const target = event.target as HTMLElement;
-		// const parent = getParent(target);
-		// if (!parent) return;
-		// event.preventDefault();
-		// event.stopPropagation();
-		// parent.style.borderBottom = '2px solid cyan';
-	};
+				await moveElement(
+					draggedElement,
+					element.parent.elementsOrder.findIndex(id => id === element.id),
+					element.parent,
+				);
+			},
+			[courseElements, element, moveElement],
+		);
 
-	const onDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
-		// const target = event.target as HTMLElement;
-		// const parent = getParent(target);
-		// if (!parent) return;
-		// event.preventDefault();
-		// event.stopPropagation();
-		// parent.style.borderBottom = '';
-	};
+		const onDragEnter = (event: React.DragEvent<HTMLDivElement>) => {
+			// const target = event.target as HTMLElement;
+			// const parent = getParent(target);
+			// if (!parent) return;
+			// event.preventDefault();
+			// event.stopPropagation();
+			// parent.style.borderBottom = '2px solid cyan';
+		};
 
-	return (
-		<div
-			className={classNames(
-				'py-2 pl-2 laptop:pl-3 desktop:pl-4',
-				!element.isVisible && 'opacity-50',
-			)}
-			ref={courseLayoutElementRef}
-			onDrop={async e => {
-				e.preventDefault();
-				e.stopPropagation();
-				await onDrop(e);
-			}}
-			onDragEnter={e => onDragEnter(e)}
-			onDragLeave={e => onDragLeave(e)}
-			onDragOver={e => onDragOver(e)}
-			onDragEnd={e => onDragEnd(e)}
-		>
-			<div className="group text-base flex items-center" onClick={() => {}}>
-				<div draggable onDragStart={e => onDragStart(e)}>
-					<FontAwesomeIcon
-						icon={faBars}
-						size="lg"
-						className="text-[color:var(--foreground-color)] transition-all duration-75
+		const onDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
+			// const target = event.target as HTMLElement;
+			// const parent = getParent(target);
+			// if (!parent) return;
+			// event.preventDefault();
+			// event.stopPropagation();
+			// parent.style.borderBottom = '';
+		};
+
+		return (
+			<div
+				className={classNames(
+					'py-2 pl-2 laptop:pl-3 desktop:pl-4',
+					!element.isVisible && 'opacity-50',
+				)}
+				ref={courseLayoutElementRef}
+				onDrop={async e => {
+					e.preventDefault();
+					e.stopPropagation();
+					await onDrop(e);
+				}}
+				onDragEnter={e => onDragEnter(e)}
+				onDragLeave={e => onDragLeave(e)}
+				onDragOver={e => onDragOver(e)}
+				onDragEnd={e => onDragEnd(e)}
+			>
+				<div className="group text-base flex items-center" onClick={() => {}}>
+					<div draggable onDragStart={e => onDragStart(e)}>
+						<FontAwesomeIcon
+							icon={faBars}
+							size="lg"
+							className="text-[color:var(--foreground-color)] transition-all duration-75
 					group-hover:cursor-grab group-hover:opacity-50 opacity-0"
-					/>
-				</div>
-				<div
-					className="ml-2 py-3 rounded-sm border p-[0.2rem]
+						/>
+					</div>
+					<div
+						className="ml-2 py-3 rounded-sm border p-[0.2rem]
 				border-[color:var(--bg-shade-four-color)] text-[color:var(--foreground-color)]
 				flex items-center w-full justify-between"
-				>
-					<div className="flex flex-row">
-						{element?.activity && element?.icon ? (
+					>
+						<div className="flex flex-row">
+							{element?.activity && element?.icon ? (
+								<FontAwesomeIcon
+									icon={element.icon}
+									style={{
+										color: element.activity.color,
+									}}
+									className="mr-3 ml-2 mt-1"
+								/>
+							) : (
+								<span className="invisible pl-3" />
+							)}
+							{isRenaming || isNewCourseElement(element) ? (
+								<FormInput
+									ref={inputRef as any}
+									type="text"
+									autoFocus
+									onKeyPress={(event: KeyboardEvent) =>
+										event.key.toLowerCase() === 'enter' && rename()
+									}
+									onFocus={() => {
+										setIsRenaming(true);
+									}}
+									onBlur={rename}
+									className="bg-[color:var(--background-color)] w-full"
+									defaultValue={element.name}
+								/>
+							) : (
+								<div className="flex flex-row">
+									<span
+										onClick={() => setIsRenaming(true)}
+										className={'cursor-pointer'}
+									>
+										{element.name}
+									</span>
+									{element.activity && (
+										<div className="invisible group-hover:visible">
+											<CourseLayoutActivity
+												ref={
+													element.id === tab.openedActivity?.id
+														? openedActivityRef
+														: null
+												}
+												courseElement={element as CourseElementActivity}
+											/>
+										</div>
+									)}
+								</div>
+							)}
+						</div>
+						<div className="flex flex-row">
 							<FontAwesomeIcon
-								icon={element.icon}
-								className="[color:var(--bg-shade-four-color)] mr-3 ml-2 mt-1"
-							/>
-						) : (
-							<span className="invisible pl-3" />
-						)}
-						{isRenaming || isNewCourseElement(element) ? (
-							<FormInput
-								ref={inputRef as any}
-								type="text"
-								autoFocus
-								onKeyPress={(event: KeyboardEvent) =>
-									event.key.toLowerCase() === 'enter' && rename()
-								}
-								onFocus={() => {
-									setIsRenaming(true);
-								}}
-								onBlur={rename}
-								className="bg-[color:var(--background-color)] w-full"
-								defaultValue={element.name}
-							/>
-						) : (
-							<div className="flex flex-row">
-								<span
-									onClick={() => setIsRenaming(true)}
-									className={'cursor-pointer'}
-								>
-									{element.name}
-								</span>
-								{element.activity && (
-									<div className="invisible group-hover:visible">
-										<CourseLayoutActivity
-											courseElement={element as CourseElementActivity}
-										/>
-									</div>
-								)}
-							</div>
-						)}
-					</div>
-					<div className="flex flex-row">
-						<FontAwesomeIcon
-							icon={element.isVisible ? faEye : faEyeSlash}
-							size="lg"
-							className="[color:var(--bg-shade-four-color)] mr-4 hover:[color:var(--fg-shade-one-color)]
+								icon={element.isVisible ? faEye : faEyeSlash}
+								size="lg"
+								className="[color:var(--bg-shade-four-color)] mr-4 hover:[color:var(--fg-shade-one-color)]
 							cursor-pointer invisible group-hover:visible transition-all duration-75 ease-in"
-							onClick={() => setIsElementVisible(element, !element.isVisible)}
-						/>
-						<FontAwesomeIcon
-							icon={faTrash}
-							size="lg"
-							className="[color:var(--bg-shade-four-color)] mr-2 hover:[color:red]
+								onClick={() => setIsElementVisible(element, !element.isVisible)}
+							/>
+							<FontAwesomeIcon
+								icon={faTrash}
+								size="lg"
+								className="[color:var(--bg-shade-four-color)] mr-2 hover:[color:red]
 							cursor-pointer invisible group-hover:visible transition-all duration-75 ease-in"
-							onClick={() => setConfirmDelete(true)}
-						/>
+								onClick={() => setConfirmDelete(true)}
+							/>
+						</div>
 					</div>
 				</div>
-			</div>
-			{element.section && (
-				<CourseLayoutSection courseElement={element as CourseElementSection} />
-			)}
+				{element.section && (
+					<CourseLayoutSection
+						ref={openedActivityRef}
+						courseElement={element as CourseElementSection}
+					/>
+				)}
 
-			<AlertConfirm
-				open={confirmDelete}
-				title={
-					element.isActivity
-						? t('course.activity.delete')
-						: t('course.section.delete')
-				}
-				setOpen={setConfirmDelete}
-				onConfirm={async () => {
-					await deleteElement(element);
-				}}
-				hideFooter
-			>
-				<p className="text-red-600 pb-5 font-bold text-lg">
-					{t('action.irreversible')}
-				</p>
-			</AlertConfirm>
-		</div>
-	);
-};
+				<AlertConfirm
+					open={confirmDelete}
+					title={
+						element.isActivity
+							? t('course.activity.delete')
+							: t('course.section.delete')
+					}
+					setOpen={setConfirmDelete}
+					onConfirm={async () => {
+						await deleteElement(element);
+					}}
+					hideFooter
+				>
+					<p className="text-red-600 pb-5 font-bold text-lg">
+						{t('action.irreversible')}
+					</p>
+				</AlertConfirm>
+			</div>
+		);
+	},
+);
 
 export default CourseLayoutElement;

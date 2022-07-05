@@ -34,8 +34,9 @@ const CourseNavigationActivity = ({
 		>
 			{activity.icon && (
 				<FontAwesomeIcon
+					color={activity.color}
 					icon={activity.icon}
-					className="[color:var(--bg-shade-four-color)] mr-3 ml-2 mt-1"
+					className="mr-3 ml-2 mt-1"
 				/>
 			)}
 			<span>{element.name}</span>

@@ -9,5 +9,5 @@ import { RESOURCE_TYPE } from '../../../resource/entities/resource.entity';
 @ChildEntity(ACTIVITY_TYPE.THEORY)
 export class ActivityTheoryEntity extends ActivityEntity {
   /** Allowed types of resources inside the activity */
-  readonly allowedResources: RESOURCE_TYPE[] = [RESOURCE_TYPE.THEORY];
+  readonly allowedResources: [RESOURCE_TYPE, ...Array<string>] = [RESOURCE_TYPE.THEORY];
 }

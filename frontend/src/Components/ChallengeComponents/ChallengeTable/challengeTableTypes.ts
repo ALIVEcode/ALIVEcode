@@ -48,12 +48,12 @@ export const HyperparamID: any = {
 		componant: 'disable integer input',
 	}, //
 	neuronsByLayer: {
-		name: 'Nombre de neuronnes par couche',
+		name: 'Nombre de neurones par couche',
 		componant: 'multiple inputs',
 	},
 	activationsByLayer: {
-		name: "Fonction d'activation par couches",
-		componant: 'ACTIVATION_FUNCTIONS',
+		name: "Fonction d'activation par couche",
+		componant: 'multiple ACTIVATION_FUNCTIONS',
 	},
 	costFunction: {
 		name: 'Fonction de coût',
@@ -72,6 +72,10 @@ export const HyperparamID: any = {
 		name: 'Paramètres du modèle',
 		componant: 'input',
 	},
+	activation:{
+		name: "Fonction d'activation",
+		componant: 'ACTIVATION_FUNCTIONS',
+	}
 };
 
 /**

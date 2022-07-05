@@ -28,7 +28,7 @@ export interface UserInterface {
 export type BackendUser = {
 	id: string;
 	email: string;
-	name: string;
+	oldStudentName: string;
 	scholarity: GRADES;
 	firstName: string;
 	lastName: string;

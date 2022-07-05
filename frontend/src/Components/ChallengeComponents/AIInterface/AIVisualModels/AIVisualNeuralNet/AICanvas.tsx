@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import React, { useRef } from "react";
+import React, {useContext, useRef} from "react";
 import {Canvas} from "@react-three/fiber";
 import {OrbitControls} from "@react-three/drei";
 import {ThreeNeuralNet} from "./AIVisualNeuralNet";
@@ -8,6 +8,7 @@ import {
     NNHyperparameters,
     NNModelParams
 } from "../../../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces";
+import {ThemeContext} from "../../../../../state/contexts/ThemeContext";
 
 
 type NNProps = {
@@ -19,6 +20,8 @@ type NNProps = {
 }
 
 export function AICanvas(props:NNProps) {
+
+    //const test = useContext(ThemeContext)
 
     const raycaster = new THREE.Raycaster();
     // @ts-ignore
@@ -83,6 +86,8 @@ export function AICanvas(props:NNProps) {
 
         const layerNum = parseInt(layerClicked) - 1;
 
+        const SpecificSelector = useRef(0);
+
         let selections = []
         if (divider !== 1) {
             for (let i = 0; i < divider; i++) {
@@ -90,14 +95,15 @@ export function AICanvas(props:NNProps) {
             }
         }
 
-        const index = parseInt(currentPath.current.split(':')[1]) - 1
+        const index = (parseInt(currentPath.current.split(':')[1]) - 1) * divider + SpecificSelector.current
 
-        layerClicked += (layerClicked === "1" ? "re" : "e");
+
+        layerClicked += (layerClicked === "1" ? "\u02B3\u1D49" : "\u1D49");
         //console.log(layerClicked)
-        if (layerClicked === "0e") {
-            layerClicked = "Couche d'entr\u00E9e"
-        } else if (layerClicked === topology.length - 1 + "e") {
-            layerClicked = "Couche de sortie"
+        if (layerClicked === "0\u1D49") {
+            layerClicked = "couche d'entr\u00E9e"
+        } else if (layerClicked === topology.length - 1 + "\u1D49") {
+            layerClicked = "couche de sortie"
         }
 
         fromClicked = currentPath.current.split(':')[1]
@@ -121,8 +127,11 @@ export function AICanvas(props:NNProps) {
                             + " équivaut à " + divider + " " + typeClicked.toLocaleLowerCase() + "s"}
                         <br/>
                         <div>
-                            <select className={"p-2 p{r}-4"} name={"Neurone choisi"} onChange={(e) => {
+                            <select className={"p-2 p{r}-4 bg-gray-500 rounded-lg"} name={"Neurone choisi"} onChange={(e) => {
+                                // SpecificSelector.current = e.currentTarget.;
 
+                                SpecificSelector.current = parseInt(e.currentTarget.value)
+                                forceUpdate()
                             }}>
                                 {
                                     selections
@@ -137,33 +146,44 @@ export function AICanvas(props:NNProps) {
                     <> {
                         currentPath.current === "" ? null :
                             <div className={"absolute top-[7%] bg-gray-500 right-[0.6%] p-2"}>
-                                {
-                                    <>
-                                        Neurone de la {
-                                            layerClicked === "couche d'entr\u00E9e" ? layerClicked :
-                                                layerClicked === "couche de sortie" ?
-                                                    layerClicked : layerClicked + " couche"
-                                        }
-                                    </>
-                                }
-                                <br/>
 
                                 {
                                     (currentPath.current.split(':').length === 3 ?
                                         <>
-                                            Poid entre la
-                                            couche {layerNum + 1 === 0 ? "d'entr\u00E9e " : "cach\u00E9e #" + (layerNum + 1)}
-                                            et la
-                                            couche {layerNum + 3 === topology.length ? "de sortie " : "cach\u00E9e #" + (layerNum + 2)}
+                                            Poid entre la { layerClicked === "couche d'entr\u00E9e" ?
+                                                layerClicked :
+                                                (layerClicked + " couche")
+                                            }
+                                            <br/>
+                                            et la { parseInt(layerClicked)+1 === props.layerParams.layerParams.length ?
+                                            "couche de sortie" : (layerClicked === "couche d'entr\u00E9e" ? "1\u02B3\u1D49" : (parseInt(layerClicked)+1) + "\u1D49") + " couche"
+                                        }
                                             <br/>
 
-                                            {/*{layerNum+1 } | {parseInt(toClicked)-1} : {index}*/}
-                                            Valeur
-                                            : {props.layerParams.layerParams[layerNum + 1].weights[parseInt(toClicked) - 1][index]}
+                                            Poid entre la neurone #{
+                                                layerClicked === "couche d'entr\u00E9e" ? (props.hyperparameters.nbInputs < index+1 ? props.hyperparameters.nbInputs : index+1)
+                                                    : props.layerParams.layerParams[layerNum+1].biases.length < index+1 ?
+                                                    props.layerParams.layerParams[layerNum+1].biases.length : index+1
+
+                                            } <br/> et la neurone #{props.layerParams.layerParams[layerNum+1].biases.length < ((parseInt(toClicked)-1)*divider)+SpecificSelector.current+1 ? props.layerParams.layerParams[layerNum+1].biases.length : ((parseInt(toClicked)-1)*divider)+SpecificSelector.current+1 }  <br/> de la couche suivante
+                                            <br/>
+
+                                            Valeur : {props.layerParams.layerParams[layerNum + 1]
+                                            .weights[parseInt(toClicked) - 1][index]}
                                         </> :
 
                                         <>
-                                            Neurone #{index + 1}
+                                            Neurone de la {
+                                            layerClicked === "couche d'entr\u00E9e" ? layerClicked :
+                                                layerClicked === "couche de sortie" ?
+                                                    layerClicked : (layerClicked + " couche")
+                                            }
+                                            <br/>
+
+                                            Neurone #{
+                                            layerClicked === "couche d'entr\u00E9e" ? (props.hyperparameters.nbInputs < index+1 ? props.hyperparameters.nbInputs : index+1) :
+                                                props.layerParams.layerParams[layerNum].biases.length < index+1 ? props.layerParams.layerParams[layerNum].biases.length : index+1
+                                            }
                                             <br/>
                                             {
                                                 layerNum === -1 ? <> Entrée </> :

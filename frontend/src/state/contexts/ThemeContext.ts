@@ -62,6 +62,7 @@ const addHexColors = (colors: { [key: string]: string }) => {
 // Throws errors because of typing but works
 export const themes: { light: Theme; dark: Theme } = {
 	light: {
+		//@ts-ignore
 		color: {
 			...addHexColors({
 				primary: '#2E75FF',
@@ -96,6 +97,7 @@ export const themes: { light: Theme; dark: Theme } = {
 		name: 'light',
 	},
 	dark: {
+		//@ts-ignore
 		color: {
 			...addHexColors({
 				primary: '#02111D',

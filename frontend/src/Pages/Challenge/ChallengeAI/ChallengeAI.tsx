@@ -180,7 +180,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					(progression?.data as ChallengeAIProgressionData).hyperparams =
 						challenge.hyperparams;
 
-				// Adding Perceptron hyperparams to current progressions and challenges
+				// Adding Perceptron hyperparams to current progressions and challenges.
+				// Consider adding a new function if the same error happens with other new models.
 				if (!challenge.hyperparams.PERC)
 					challenge.hyperparams.PERC = defaultHyperparams.PERC;
 

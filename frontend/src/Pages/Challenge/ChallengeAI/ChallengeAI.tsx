@@ -247,8 +247,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		currHyperparams.current.NN.nbOutputs = activeIoCodes.current.filter(
 			e => e === 0,
 		).length;
-		console.log(currHyperparams.current.PERC);
-		console.log(currHyperparams);
+
 		currHyperparams.current.PERC.nbInputs = currHyperparams.current.NN.nbInputs;
 		currHyperparams.current.PERC.nbOutputs =
 			currHyperparams.current.NN.nbOutputs;
@@ -606,7 +605,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				array.push(activeDataset.current!.getDataAsArray().at(index)?.at(i));
 			}
 		}
-		console.log(array);
 		return array;
 	}
 
@@ -838,7 +836,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @returns determination coefficient
 	 */
 	function coefficientDetermination(lst1: number[], list2: number[]) {
-		console.log(determinationCoeff(lst1, list2));
 		return determinationCoeff(lst1, list2);
 	}
 

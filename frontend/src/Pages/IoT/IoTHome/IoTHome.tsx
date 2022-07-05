@@ -12,6 +12,8 @@ import { forwardRef, MutableRefObject, useRef } from 'react';
 import { classNames } from '../../../Types/utils';
 import FeaturedCourseContainer from '../../../Components/CourseComponents/CourseContainer/CourseContainer';
 import { SUBJECTS } from '../../../Types/sharedTypes';
+import { HomeSection } from '../../../Components/MainComponents/HomeSection/HomeSection';
+import useRoutes from '../../../state/hooks/useRoutes';
 
 const StyledHome = styled.div`
 	.tech-slideshow {
@@ -55,6 +57,7 @@ const IoTHome = (props: iotHomeProps) => {
 	const getStartedRef = useRef<HTMLDivElement | null>(null);
 	const view = useView();
 	const { t } = useTranslation();
+	const { routes } = useRoutes();
 
 	const paragraphClassName =
 		'text-center text-base tablet:text-lg leading-loose tracking-wider';
@@ -93,6 +96,8 @@ const IoTHome = (props: iotHomeProps) => {
 			</div>
 
 			<div className="text-gray-50 relative w-full h-full px-10 tablet:px-18 laptop:px-16 desktop:px-32">
+				{/*
+
 				<p className={paragraphClassName + ' mt-32'}>
 					ALIVEIoT est la branche d’ALIVEcode servant à l’apprentissage de
 					l’Internet des Objets, un domaine de l’informatique possédant très peu
@@ -168,6 +173,27 @@ const IoTHome = (props: iotHomeProps) => {
 					imgAlt="ALIVEcode's internet of things interface"
 				/>
 				<IoTHomeSeparator title={'Plus de projets'} className="mt-16" />
+*/}
+				<HomeSection
+					ref={getStartedRef}
+					title={t('home.iot.section.develop.title')}
+					text={t('home.iot.section.develop.desc')}
+					img={VilleIntelligenteInterface}
+					imgAlt="ALIVEcode's internet of things interface"
+					button={t('home.iot.to_dashboard')}
+					to={routes.auth.dashboard.path + '/iot'}
+					imgOpacity={0.8}
+				/>
+				<HomeSection
+					reverse
+					title={t('home.iot.section.learn.title')}
+					text={t('home.iot.section.learn.desc')}
+					img={ConstructionFeux}
+					imgAlt="ALIVEcode's internet of things interface"
+					button={t('home.iot.to_trainings')}
+					to={routes.auth.classroom_browse.path}
+					imgOpacity={0.8}
+				/>
 			</div>
 			<Footer className="!mt-4"></Footer>
 		</StyledHome>
@@ -211,27 +237,6 @@ const IoTFeaturedProjectBig = ({
 		</>
 	);
 };
-
-/*<HomeSection
-					ref={getStartedRef}
-					title={t('home.iot.section.develop.title')}
-					text={t('home.iot.section.develop.desc')}
-					img={DemoProject}
-					imgAlt="ALIVEcode's internet of things interface"
-					button={t('home.iot.to_dashboard')}
-					to={routes.auth.dashboard.path + '/iot'}
-					imgOpacity={0.8}
-				/>
-				<HomeSection
-					reverse
-					title={t('home.iot.section.learn.title')}
-					text={t('home.iot.section.learn.desc')}
-					img={DemoProject}
-					imgAlt="ALIVEcode's internet of things interface"
-					button={t('home.iot.to_trainings')}
-					to={routes.auth.classroom_browse.path}
-					imgOpacity={0.8}
-	/>*/
 
 export type HomeSectionProps = {
 	title: string;

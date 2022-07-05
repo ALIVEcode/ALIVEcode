@@ -50,7 +50,7 @@ const ALIVENavbar = ({ handleLogout, setFeedbackModalOpen }: NavbarProps) => {
 			active: location.pathname.startsWith('/ai'),
 		},
 		{
-			path: user ? routes.auth.iot_dashboard.path : routes.public.iot.path,
+			path: routes.public.iot.path,
 			name: t('home.navbar.section.iot'),
 			active: location.pathname.startsWith('/iot'),
 		},

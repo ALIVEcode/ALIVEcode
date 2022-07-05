@@ -94,7 +94,7 @@ export class IoTProjectService {
     return await this.projectRepository.delete(id);
   }
 
-  async updateLayout(id: string, layout: IoTProjectLayout, issuer?: WatcherClient) {
+  async updateInterface(id: string, layout: IoTProjectLayout, issuer?: WatcherClient) {
     const project = await this.findOne(id);
 
     layout.components = layout.components.filter((c: any) => c != null && JSON.stringify(c) != '{}');

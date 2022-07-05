@@ -21,6 +21,7 @@ const AlertConfirm = ({
 	onCancel,
 	children,
 	secureConfirmation,
+	irreversibleText,
 	...other
 }: AlertConfirmProps) => {
 	const { t } = useTranslation();
@@ -98,6 +99,11 @@ const AlertConfirm = ({
 			closeCross
 			{...other}
 		>
+			{irreversibleText && (
+				<p className="text-red-600 pb-2 font-bold text-lg">
+					{t('action.irreversible')}
+				</p>
+			)}
 			{children}
 			{SecureConfirmationComponent()}
 

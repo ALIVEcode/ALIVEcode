@@ -149,8 +149,9 @@ const Classroom = ({ classroomProp, ...props }: ClassroomProps) => {
 				{courses && courses.length > 0 ? (
 					courses
 						.filter(c => !classroom.courses?.some(course => course.id === c.id))
-						.map(c => (
+						.map((c, idx) => (
 							<CourseCard
+								key={idx}
 								onSelect={async () => {
 									await api.db.courses.addCourseInsideClassroom(
 										c,

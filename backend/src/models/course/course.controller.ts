@@ -12,6 +12,7 @@ import {
   HttpStatus,
   Res,
   Req,
+  Query,
 } from '@nestjs/common';
 import { statSync, createReadStream } from 'fs';
 import { Request, Response } from 'express';
@@ -49,6 +50,7 @@ import { SectionEntity } from './entities/section.entity';
 import { AddCourseInClassroomDTO } from './dtos/AddCourseInClassroom';
 import { ChallengeService } from '../challenge/challenge.service';
 import { ResourceChallengeEntity } from '../resource/entities/resources/resource_challenge.entity';
+import { FeaturingQueryDTO } from './dtos/FeaturingQuery.dto';
 
 /**
  * All the routes to create/update/delete/get a course or it's content (CourseElements)
@@ -85,6 +87,12 @@ export class CourseController {
   @Auth(Role.STAFF)
   async findAll() {
     return await this.courseService.findAll();
+  }
+
+  @Get('featuring')
+  @Auth()
+  async findFeaturing(@Query() query: FeaturingQueryDTO) {
+    return await this.courseService.findFeaturing(query);
   }
 
   /**
@@ -297,8 +305,17 @@ export class CourseController {
     @Res() res: Response,
   ) {
     const activity = await this.courseService.findActivity(course.id, activityId);
-    if (activity.type !== ACTIVITY_TYPE.ASSIGNMENT)
-      throw new HttpException('Can only download on Assignment activities', HttpStatus.BAD_REQUEST);
+    const allowedActivitiesToDownloadFrom = [
+      ACTIVITY_TYPE.ASSIGNMENT,
+      ACTIVITY_TYPE.PDF,
+      ACTIVITY_TYPE.POWERPOINT,
+      ACTIVITY_TYPE.WORD,
+    ];
+    if (!allowedActivitiesToDownloadFrom.includes(activity.type))
+      throw new HttpException(
+        `Can only download on activities of type: ${allowedActivitiesToDownloadFrom.join(', ')}`,
+        HttpStatus.BAD_REQUEST,
+      );
     const resourceUnknown = await this.courseService.getResourceOfActivity(activity);
     if (resourceUnknown.type !== RESOURCE_TYPE.FILE)
       throw new HttpException(

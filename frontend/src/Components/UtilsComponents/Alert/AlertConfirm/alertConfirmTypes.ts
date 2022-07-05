@@ -9,4 +9,5 @@ export interface AlertConfirmProps extends ModalProps {
 		placeholder?: string;
 		title: string;
 	};
+	irreversibleText?: boolean;
 }

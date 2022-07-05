@@ -5,6 +5,7 @@ import CourseCardImage from '../../../assets/images/bg/courseCardBg.png';
 export type CourseCardProps = {
 	course: Course;
 	onSelect?: (course: Course) => {};
+	className?: string;
 };
 
 export const StyledCourseCard = styled.div`

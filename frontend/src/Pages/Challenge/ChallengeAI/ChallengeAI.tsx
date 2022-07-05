@@ -180,22 +180,34 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					(progression?.data as ChallengeAIProgressionData).hyperparams =
 						challenge.hyperparams;
 
+				// Adding Perceptron hyperparams to current progressions and challenges.
+				// Consider adding a new function if the same error happens with other new models.
+				if (!challenge.hyperparams.PERC)
+					challenge.hyperparams.PERC = defaultHyperparams.PERC;
+
+				if (!(progression!.data as ChallengeAIProgressionData).hyperparams.PERC)
+					(progression!.data as ChallengeAIProgressionData).hyperparams.PERC =
+						defaultHyperparams.PERC;
+
 				// Set all hyperparams variables
-				if (Object.keys(currHyperparams.current).length !== 0){
+				if (Object.keys(currHyperparams.current).length !== 0) {
 					setHyperparams(currHyperparams.current);
-				}
-				else {
-					setHyperparams(challenge.hyperparams)
+				} else {
+					setHyperparams(challenge.hyperparams);
 				}
 
 				currHyperparams.current.NN.nbInputs = activeIoCodes.current.filter(
 					e => e === 1,
 				).length;
-				currHyperparams.current.NN.nbInputs = activeIoCodes.current.filter(
-					e => e === 1,
+				currHyperparams.current.NN.nbOutputs = activeIoCodes.current.filter(
+					e => e === 0,
 				).length;
+				currHyperparams.current.PERC.nbInputs =
+					currHyperparams.current.NN.nbInputs;
+				currHyperparams.current.PERC.nbOutputs =
+					currHyperparams.current.NN.nbOutputs;
+
 				activeIoCodes.current = [...currIoCodes.current];
-
 			} else {
 				console.error("Erreur : la table ne s'est pas chargée correctement.");
 			}
@@ -235,6 +247,11 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		currHyperparams.current.NN.nbOutputs = activeIoCodes.current.filter(
 			e => e === 0,
 		).length;
+		console.log(currHyperparams.current.PERC);
+		console.log(currHyperparams);
+		currHyperparams.current.PERC.nbInputs = currHyperparams.current.NN.nbInputs;
+		currHyperparams.current.PERC.nbOutputs =
+			currHyperparams.current.NN.nbOutputs;
 
 		//Update neuronsByLayer
 		currHyperparams.current.NN.neuronsByLayer =
@@ -288,6 +305,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 */
 	const aiInterfaceModelChange = (newModelType: MODEL_TYPES) => {
 		challenge.modelType = newModelType;
+		setActiveModel(undefined);
 		forceUpdate();
 		saveChallengeTimed();
 	};
@@ -311,7 +329,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		// 		challenge.ioCodes;
 		// }
 		activeIoCodes.current = newActiveIOCodes;
-		console.log('')
+		console.log('');
 		setHyperparams(currHyperparams.current);
 	};
 
@@ -369,11 +387,11 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		//If the dataset is loaded
 		if (activeDataset.current) {
 			//Set IOCodes
-			activeIoCodes.current = [...currIoCodes.current]
+			activeIoCodes.current = [...currIoCodes.current];
 			console.log('current iocodes : ', activeIoCodes);
 
 			//Update some hyperparams
-			setHyperparams(currHyperparams.current)
+			setHyperparams(currHyperparams.current);
 
 			let indexArray: number[] = [];
 			challenge.hyperparams.NN.neuronsByLayer =
@@ -607,6 +625,28 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				);
 				setActiveModel(MODEL_TYPES.NEURAL_NETWORK);
 				break;
+			case MODEL_TYPES.PERCEPTRON:
+				//Setting the percetron hyperparameters
+				let nnHyperparam: NNHyperparameters = {
+					nbInputs: currHyperparams.current.PERC.nbInputs,
+					nbOutputs: currHyperparams.current.PERC.nbOutputs,
+					neuronsByLayer: [],
+					activationsByLayer: [currHyperparams.current.PERC.activation],
+					costFunction: currHyperparams.current.PERC.costFunction,
+					learningRate: currHyperparams.current.PERC.learningRate,
+					epochs: currHyperparams.current.PERC.epochs,
+					type: currHyperparams.current.PERC.type,
+				};
+				model.current = new NeuralNetwork(
+					'Neural Network Model',
+					nnHyperparam,
+					{
+						layerParams: [],
+					},
+				);
+
+				setActiveModel(MODEL_TYPES.PERCEPTRON);
+				break;
 			default:
 				break;
 		}
@@ -637,7 +677,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			const numberNewParams =
 				activeDataset.current!.getParamNames().length - oldNumberParams;
 
-			let newIOCodes =[...activeIoCodes.current];
+			let newIOCodes = [...activeIoCodes.current];
 
 			//Addind the new column to the IOcodes
 			for (let e = 1; e <= numberNewParams; e++) {
@@ -645,8 +685,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			}
 
 			activeIoCodes.current = [...newIOCodes];
-			console.log("Active iocodes",activeIoCodes.current)
-			setHyperparams(currHyperparams.current)
+			console.log('Active iocodes', activeIoCodes.current);
+			setHyperparams(currHyperparams.current);
 		} else {
 			if (index !== -1)
 				return 'Erreur : Les éléments de la colonne ne sont pas des chaines de caratères';
@@ -798,7 +838,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @returns determination coefficient
 	 */
 	function coefficientDetermination(lst1: number[], list2: number[]) {
-		console.log(determinationCoeff(lst1, list2))
+		console.log(determinationCoeff(lst1, list2));
 		return determinationCoeff(lst1, list2);
 	}
 

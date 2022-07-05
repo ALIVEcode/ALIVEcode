@@ -36,6 +36,7 @@ export enum ACTIVATION_FUNCTIONS {
 export enum MODEL_TYPES {
 	NEURAL_NETWORK = 'NN',
 	POLY_REGRESSION = 'POLY',
+	PERCEPTRON = 'PERC'
 }
 
 /**

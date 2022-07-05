@@ -1,7 +1,7 @@
 import {InputNeuron, Neuron, OutputNeuron} from "./AIVisualNeuron";
 import {Vector3} from "three";
 import {Weight} from "./AIVisualWeight";
-import React, { MutableRefObject } from "react";
+import React, {MutableRefObject} from "react";
 
 function layerPositions(size: number, alpha: number, depth: number) {
     let positions = [];
@@ -165,7 +165,6 @@ export const ThreeNeuralNet = (props : NNProps) => {
                                      index={pos++} start={neuronCoords[j]} end={neuronCoords[k]}
                                      path={neuronCoords[j][3] + ":" + String(neuronCoords[k][3]).split(":")[1]}/>)
             }
-
     }
 
     return <>

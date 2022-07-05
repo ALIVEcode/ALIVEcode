@@ -34,6 +34,20 @@ export interface NNHyperparameters {
 
 /**
  * This interface describes the json object containing all hyperparameters of
+ * a Perceptron Model.
+ */
+export interface PERCHyperparameters {
+	nbInputs: number; // number of inputs
+	nbOutputs: number; // number of outputs
+	activation: ACTIVATION_FUNCTIONS;
+	costFunction: COST_FUNCTIONS;
+	learningRate: number;
+	epochs: number;
+	type: NN_OPTIMIZER_TYPES.GradientDescent;
+}
+
+/**
+ * This interface describes the json object containing all hyperparameters of
  * a Regression Model.
  */
 export interface RegHyperparameters {
@@ -47,6 +61,7 @@ export interface RegHyperparameters {
 export interface GenHyperparameters {
 	NN: NNHyperparameters;
 	POLY: RegHyperparameters;
+	PERC : PERCHyperparameters;
 }
 
 export type Hyperparameters = GenHyperparameters[keyof GenHyperparameters];

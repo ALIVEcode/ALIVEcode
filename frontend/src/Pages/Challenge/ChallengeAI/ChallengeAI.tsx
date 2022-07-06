@@ -512,7 +512,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		if (model.current && !optimizer.current) {
 			switch (challenge.modelType) {
 				case MODEL_TYPES.NEURAL_NETWORK:
-					let modelTemp = model.current as NeuralNetwork;
+				case MODEL_TYPES.PERCEPTRON:
+					const modelTemp = model.current as NeuralNetwork;
 					optimizer.current = new GradientDescent(modelTemp);
 					break;
 				case MODEL_TYPES.POLY_REGRESSION:
@@ -629,7 +630,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				break;
 			case MODEL_TYPES.PERCEPTRON:
 				//Setting the percetron hyperparameters
-				let nnHyperparam: NNHyperparameters = {
+				const nnHyperparam: NNHyperparameters = {
 					nbInputs: currHyperparams.current.PERC.nbInputs,
 					nbOutputs: currHyperparams.current.PERC.nbOutputs,
 					neuronsByLayer: [],
@@ -639,6 +640,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					epochs: currHyperparams.current.PERC.epochs,
 					type: currHyperparams.current.PERC.type,
 				};
+
 				model.current = new NeuralNetwork(
 					'Neural Network Model',
 					nnHyperparam,

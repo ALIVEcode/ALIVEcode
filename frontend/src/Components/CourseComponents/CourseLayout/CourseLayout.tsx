@@ -1,6 +1,6 @@
 import { faUserGraduate } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useContext, useLayoutEffect, useRef } from 'react';
+import { useContext, useLayoutEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import useRoutes from '../../../state/hooks/useRoutes';
@@ -11,6 +11,7 @@ import { plainToClass } from 'class-transformer';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import Info from '../../HelpComponents';
 import { TutorialContext } from '../../../state/contexts/TutorialContext';
+import QuickDropMenu from './QuickDrop/QuickDropMenu';
 
 /**
  * Component that handles the layout view of a course
@@ -32,6 +33,7 @@ const CourseLayout = () => {
 	const goToStudentViewRef = useRef<HTMLDivElement>(null);
 	const { registerTutorial } = useContext(TutorialContext);
 	const openedActivityRef = useRef<HTMLDivElement>(null);
+	const [quickDropMenuOpen, setQuickDropMenuOpen] = useState(false);
 
 	useLayoutEffect(() => {
 		if (openedActivityRef.current) openedActivityRef.current.scrollIntoView();
@@ -99,6 +101,10 @@ const CourseLayout = () => {
 				<div className="text-center text-2xl mb-4" ref={titleRef}>
 					{t('course.layout')}
 				</div>
+				<QuickDropMenu
+					setOpen={setQuickDropMenuOpen}
+					open={quickDropMenuOpen}
+				/>
 				{!courseElements?.current ? (
 					<LoadingScreen />
 				) : Object.keys(courseElements.current).length === 0 ? (

@@ -62,6 +62,9 @@ import { Bundle } from './Course/bundles/bundle.entity';
 import { ClaimBundleDTO } from './Course/bundles/dto/ClaimBundle.dto';
 import { GenericChallengeTransformer } from './Challenge/transformer/GenericChallengeTransformer';
 import { AIDataset } from './Ai/ai_dataset.entity';
+import { QueryIoTProjects } from './User/dto/query_iotprojects.dto';
+import { QueryIoTObjects } from './User/dto/query_iotobjects';
+import { FeaturingQueryDTO } from './Course/dto/FeaturingQuery.dto';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;
@@ -199,8 +202,26 @@ const api = {
 		},
 		users: {
 			iot: {
-				getProjects: apiGet('users/iot/projects', IoTProject, true),
-				getObjects: apiGet('users/iot/objects', IoTObject, true),
+				getProjects: async (query: QueryIoTProjects) => {
+					return plainToInstance(
+						IoTProject,
+						(
+							await axios.get(
+								`users/iot/projects${query.name ? `?name=${query.name}` : ''}`,
+							)
+						).data,
+					);
+				},
+				getObjects: async (query: QueryIoTObjects) => {
+					return plainToInstance(
+						IoTObject,
+						(
+							await axios.get(
+								`users/iot/objects${query.name ? `?name=${query.name}` : ''}`,
+							)
+						).data,
+					);
+				},
 			},
 			social: {
 				getResults: apiGet('users/quizzes/results', Result, true),
@@ -268,6 +289,22 @@ const api = {
 		courses: {
 			create: apiCreate('/courses', Course),
 			get: apiGet('courses/:id', Course, false),
+			getFeaturing: async (query: FeaturingQueryDTO) => {
+				return plainToInstance(
+					Course,
+					(
+						await axios.get(
+							`courses/featuring?${
+								query.featuring ? `featuring=${query.featuring}` : ''
+							}${
+								query.featuringFrom
+									? `&featuringFrom=${query.featuringFrom}`
+									: ''
+							}`,
+						)
+					).data,
+				);
+			},
 			update: apiUpdate('courses/:id', Course),
 			getSections: apiGet('courses/:id/sections', Section, true),
 			deleteSection: apiDelete('courses/:courseId/sections/:sectionId'),
@@ -640,6 +677,8 @@ const api = {
 			},
 			objects: {
 				delete: apiDelete('iot/objects/:id'),
+				update: apiUpdate('iot/objects/:id', IoTObject),
+				get: apiGet('iot/objects/:id', IoTObject, false),
 				async connectObjectToProject(object: IoTObject, project: IoTProject) {
 					return plainToInstance(
 						IoTObject,

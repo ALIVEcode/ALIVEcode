@@ -81,7 +81,6 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 					array2[index!] = newValue;
 					break;
 				default:
-					
 					(tempHyperparams[key] as string) = newValue;
 			}
 			setCurrHyperparams(tempHyperparams);
@@ -452,7 +451,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 				obj = currHyperparams![key] as Object;
 				array = obj as number[];
 				dropboxdNb = array.length;
-				
+
 				break;
 			}
 			case 'MODEL_TYPES': {

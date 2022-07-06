@@ -1,7 +1,6 @@
-
 export type CmdProps = {
-    
-}
+	styledDivId?: string;
+};
 
 export type CMD = {
 	print: (msg: string) => void;

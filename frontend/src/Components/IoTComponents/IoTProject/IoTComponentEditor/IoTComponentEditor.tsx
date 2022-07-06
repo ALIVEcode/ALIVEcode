@@ -357,7 +357,6 @@ const IoTComponentEditor = ({
 							'iot.project.interface.components_form.button.action_id.placeholder',
 						)}
 						className="mb-2"
-						type="number"
 						value={component.getActionId()}
 						onChange={(e: any) => component.setActionId(e.target.value)}
 						disabled={!canEdit}
@@ -508,13 +507,11 @@ const IoTComponentEditor = ({
 				setOpen={setOpenDeleteMenu}
 				onConfirm={removeComponent}
 				onCancel={() => setOpenDeleteMenu(false)}
+				irreversibleText
 			>
 				<div className="mb-2">
 					{t('iot.project.interface.delete_component_confirm')} "
 					<i>{component.name}</i>"?
-					<div className="font-semibold text-[color:var(--danger-color)]">
-						{t('action.irreversible')}
-					</div>
 				</div>
 			</AlertConfirm>
 		</div>

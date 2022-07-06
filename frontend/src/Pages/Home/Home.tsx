@@ -123,6 +123,7 @@ const Home = (props: HomeProps) => {
 								startWithText
 							/>
 						</label>
+						
 					</div>
 					<div className="relative mb-8 mt-4 tablet:mt-[-5px] laptop:mt-[-15px] text-[25px] tablet:text-[20px] laptop:text-[27px] desktop:text-[35px]">
 						{t('home.desc')}

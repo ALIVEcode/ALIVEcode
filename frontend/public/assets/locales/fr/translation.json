@@ -141,6 +141,8 @@
 		"creation_date": "Date de création",
 		"update_date": "Date de modification",
 		"see_links": "Voir les liens",
+		"copied": "Copié",
+		"id_copied": "Id copié",
 		"activity_type": {
 			"CH": "Défi",
 			"VI": "Visionnement",
@@ -157,6 +159,7 @@
 			"all": "Tout"
 		},
 		"time": {
+			"last_updated": "Dernière modification",
 			"format": "{{dayName}}, {{day}} {{monthName}} {{year}} - {{hour}}:{{minute}}",
 			"day": {
 				"0": "Dimanche",
@@ -241,6 +244,15 @@
 		},
 		"resources": {
 			"title": "Mes Ressources"
+		},
+		"iot": {
+			"title": "Tableau de bord IoT",
+			"projects": "Projets IoT",
+			"objects": "Objets IoT",
+			"no_object": "Vous ne possédez aucun objet IoT",
+			"no_project": "Vous ne possédez aucun projet IoT",
+			"create_project": "Créer un nouveau projet IoT",
+			"create_object": "Créer un nouvel objet IoT"
 		},
 		"classrooms": {
 			"title": "Classes",
@@ -339,7 +351,7 @@
 		"layout": "Structure du cours",
 		"layout_view": "Vue professeur",
 		"delete": "Supprimer le cours. (Il sera retiré de toutes les classes où il est présent)",
-		"deletion_test": "Écrivez le nom du cours pour confirmer la suppression",
+		"deletion_test": "Écrivez le nom du cours pour confirmer sa suppression",
 		"validate_activity": "Confirmer les changements",
 		"start_writing": "Commencez à écrire ici...",
 		"cursed": {
@@ -561,15 +573,13 @@
 		}
 	},
 	"iot": {
-		"dashboard": {
-			"title": "Tableau de bord IoT",
-			"no_object": "Aucun objet IoT",
-			"no_project": "Aucun projet IoT"
-		},
 		"project": {
 			"name": "Projet IoT",
 			"settings": "Paramètres",
 			"routes": "Routage",
+			"delete": "Êtes-vous sûr de vouloir supprimer votre projet IoT?",
+			"delete_test": "Écrivez le nom de votre projet IoT pour confirmer sa suppresion.",
+			"delete_success": "Projet IoT supprimé",
 			"documents": {
 				"name": "Documents"
 			},
@@ -719,7 +729,10 @@
 		"object": {
 			"name": "Objet IoT",
 			"copy_id": "Copier l'ID de l'objet",
-			"deleted": "Objet IoT supprimé"
+			"delete": "Êtes-vous sûr de vouloir supprimer votre objet IoT?",
+			"delete_test": "Écrivez le nom de votre objet IoT pour confirmer sa suppresion.",
+			"delete_success": "Objet IoT supprimé",
+			"logs": "Journaux de l'objet IoT \"{{name}}\""
 		}
 	},
 	"user": {

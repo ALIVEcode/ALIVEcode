@@ -5,8 +5,9 @@ export type DashboardProps = {};
 export type DashboardTabs =
 	| 'recents'
 	| 'challenges'
-	| 'classrooms'
-	| 'resources';
+	| 'iot'
+	| 'resources'
+	| 'classrooms';
 
 export type SwitchTabActions = {
 	tab: DashboardTabs;
@@ -19,7 +20,6 @@ export const StyledDashboard = styled.div`
 	width: 100%;
 	box-sizing: border-box;
 	background-color: var(--background-color);
-	font-family: var(--oxygen-font);
 
 	.sidebar {
 		border-right: 1px solid var(--bg-shade-four-color);

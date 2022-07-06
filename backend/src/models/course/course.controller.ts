@@ -12,6 +12,7 @@ import {
   HttpStatus,
   Res,
   Req,
+  Query,
 } from '@nestjs/common';
 import { statSync, createReadStream } from 'fs';
 import { Request, Response } from 'express';
@@ -49,6 +50,7 @@ import { SectionEntity } from './entities/section.entity';
 import { AddCourseInClassroomDTO } from './dtos/AddCourseInClassroom';
 import { ChallengeService } from '../challenge/challenge.service';
 import { ResourceChallengeEntity } from '../resource/entities/resources/resource_challenge.entity';
+import { FeaturingQueryDTO } from './dtos/FeaturingQuery.dto';
 
 /**
  * All the routes to create/update/delete/get a course or it's content (CourseElements)
@@ -85,6 +87,11 @@ export class CourseController {
   @Auth(Role.STAFF)
   async findAll() {
     return await this.courseService.findAll();
+  }
+
+  @Get('featuring')
+  async findFeaturing(@Query() query: FeaturingQueryDTO) {
+    return await this.courseService.findFeaturing(query);
   }
 
   /**

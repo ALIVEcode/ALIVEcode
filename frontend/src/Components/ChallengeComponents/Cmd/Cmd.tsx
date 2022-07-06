@@ -1,10 +1,11 @@
 import { CmdProps } from './cmdTypes';
 import styled from 'styled-components';
-import React from 'react';
+import React, { useContext } from 'react';
 import Button from '../../UtilsComponents/Buttons/Button';
 import { useTranslation } from 'react-i18next';
-import { useContext } from 'react';
 import { ThemeContext } from '../../../state/contexts/ThemeContext';
+import useComplexState from '../../../state/hooks/useComplexState';
+import { classNames } from '../../../Types/utils';
 
 const StyledDiv = styled.div`
 	background-color: ${({ theme }) =>
@@ -25,6 +26,8 @@ const StyledDiv = styled.div`
 		font-size: large;
 		color: var(--foreground-color);
 		line-height: 2rem;
+		word-wrap: break-word;
+		max-width: 50px;
 	}
 
 	a {
@@ -32,7 +35,7 @@ const StyledDiv = styled.div`
 	}
 
 	.btn-clearCmdLines {
-		right: 0%;
+		right: 0;
 	}
 `;
 
@@ -41,26 +44,28 @@ const StyledDiv = styled.div`
  *
  * @author Enric Soldevila, Mathis Laroche
  */
-const Cmd = React.forwardRef<HTMLDivElement>((props: CmdProps, ref) => {
-	const { t } = useTranslation();
-	const { theme } = useContext(ThemeContext);
+const Cmd = React.forwardRef<HTMLDivElement, CmdProps>(
+	({ styledDivId }, ref) => {
+		const { t } = useTranslation();
+		const { theme } = useContext(ThemeContext);
 
-	return (
-		<StyledDiv theme={theme}>
-			<Button
-				variant="third"
-				onClick={() => {
-					if (!ref || !('current' in ref) || !ref.current) return;
-					ref.current.innerHTML = '';
-				}}
-				className="btn-clearCmdLines"
-			>
-				{t('cmd.clear')}
-			</Button>
-			<div className="w-full h-[1px] py-1.5 border-b-2 border-[color:var(--bg-shade-one-color)]" />
-			<div ref={ref} />
-		</StyledDiv>
-	);
-});
+		return (
+			<StyledDiv theme={theme} id={styledDivId}>
+				<Button
+					variant="third"
+					onClick={() => {
+						if (!ref || !('current' in ref) || !ref.current) return;
+						ref.current.innerHTML = '';
+					}}
+					className="btn-clearCmdLines"
+				>
+					{t('cmd.clear')}
+				</Button>
+				<div className="w-full h-[1px] py-1.5 border-b-2 border-[color:var(--bg-shade-one-color)]" />
+				<div ref={ref} />
+			</StyledDiv>
+		);
+	},
+);
 
 export default Cmd;

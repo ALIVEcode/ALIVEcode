@@ -1,6 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { IsEmpty, IsNotEmpty, ValidateIf } from 'class-validator';
-import { Column, Entity, ManyToOne, OneToMany, ManyToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, ManyToMany, JoinColumn } from 'typeorm';
 import { CreatedByUser } from '../../../generics/entities/createdByUser.entity';
 import { SUBJECTS } from '../../../generics/types/sharedTypes';
 import { ClassroomEntity } from '../../classroom/entities/classroom.entity';
@@ -35,8 +35,16 @@ export type CourseContent = ActivityEntity | SectionEntity;
 export class CourseEntity extends CreatedByUser {
   /** Creator of the course (Professor) */
   @Exclude({ toClassOnly: true })
-  @ManyToOne(() => ProfessorEntity, professor => professor.courses, { eager: true, onDelete: 'SET NULL' })
+  @ManyToOne(() => ProfessorEntity, professor => professor.courses, {
+    eager: true,
+    nullable: false,
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn({ name: 'creatorId' })
   creator: ProfessorEntity;
+
+  @Column({ name: 'creatorId', type: 'string', nullable: false })
+  creatorId: string;
 
   // TODO : maybe hide the code
   /** Code to join the course (NOT USED YET) */
@@ -70,4 +78,8 @@ export class CourseEntity extends CreatedByUser {
   @Exclude({ toClassOnly: true })
   @ManyToMany(() => ClassroomEntity, classroom => classroom.courses, { onDelete: 'CASCADE' })
   classrooms: ClassroomEntity[];
+
+  @Column({ default: 0, nullable: false })
+  @Exclude()
+  featuringScore: number;
 }

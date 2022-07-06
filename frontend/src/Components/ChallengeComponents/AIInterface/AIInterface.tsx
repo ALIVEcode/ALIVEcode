@@ -9,7 +9,10 @@ import AITab from './AITab';
 import ChallengeTable from '../ChallengeTable/ChallengeTable';
 import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
 import { AICanvas } from './AIVisualModels/AIVisualNeuralNet/AICanvas';
-import { NNHyperparameters, PERCHyperparameters } from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
+import {
+	NNHyperparameters,
+	PERCHyperparameters,
+} from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
 import GradientDescentScheme from './AIOptimizers/GradientDescent/GradientDescentScheme';
 import { GenHyperparameters } from '../../../../../backend/dist/src/models/ai/entities/AIUtilsInterfaces';
 /**
@@ -85,7 +88,7 @@ const AIInterface = ({
 	};
 
 	function showModel() {
-		if (activeModel&& modelParams){
+		if (activeModel && modelParams) {
 			switch (activeModel) {
 				case MODEL_TYPES.NEURAL_NETWORK:
 					return (
@@ -98,17 +101,17 @@ const AIInterface = ({
 						/>
 					);
 				case MODEL_TYPES.PERCEPTRON:
-					let hyperparamPerc = hyperparams as PERCHyperparameters
-					let nnHyperparam:NNHyperparameters = {
-							nbInputs: hyperparamPerc.nbInputs,
-							nbOutputs: hyperparamPerc.nbOutputs,
-							neuronsByLayer: [],
-							activationsByLayer: [hyperparamPerc.activation],
-							costFunction: hyperparamPerc.costFunction,
-							learningRate: hyperparamPerc.learningRate,
-							epochs: hyperparamPerc.epochs,
-							type: hyperparamPerc.type,
-					}
+					let hyperparamPerc = hyperparams as PERCHyperparameters;
+					let nnHyperparam: NNHyperparameters = {
+						nbInputs: hyperparamPerc.nbInputs,
+						nbOutputs: hyperparamPerc.nbOutputs,
+						neuronsByLayer: [],
+						activationsByLayer: [hyperparamPerc.activation],
+						costFunction: hyperparamPerc.costFunction,
+						learningRate: hyperparamPerc.learningRate,
+						epochs: hyperparamPerc.epochs,
+						type: hyperparamPerc.type,
+					};
 					return (
 						<AICanvas
 							layerParams={modelParams}
@@ -172,21 +175,13 @@ const AIInterface = ({
 							isData={true}
 							initData={initData}
 							ioCodes={ioCodes}
-							activeIoCodes = {activeIoCodes}
+							activeIoCodes={activeIoCodes}
 							handleIOChange={handleIOChange}
 						/>
 					</div>
 				) : tabs[1].open ? (
 					<div className="ai-display w-full overflow-auto right-200">
 						{showModel()}
-						<div
-							className={
-								'absolute top-[9%] right-[2%] bg-black text-base p-5 hidden'
-							}
-							id={'SelectedValue'}
-						>
-							Content
-						</div>
 					</div>
 				) : tabs[2].open ? (
 					<div className="ai-display flex flex-col">

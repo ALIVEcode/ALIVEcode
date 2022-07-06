@@ -1,5 +1,6 @@
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useRef } from 'react';
 import { SearchBarProps } from './searchBarTypes';
 
 /**
@@ -12,13 +13,13 @@ import { SearchBarProps } from './searchBarTypes';
  * @author Enric Soldevila
  */
 const SearchBar = ({ value, setValue, onSubmit }: SearchBarProps) => {
+	const searchRef = useRef<HTMLInputElement>(null);
+
 	return (
-		<div className="rounded-md bg-[color:var(--background-color)] text-[color:var(--fg-shade-two-color)]">
-			<div className="inline p-3">
-				<FontAwesomeIcon icon={faSearch} />
-			</div>
+		<div className="flex relative rounded-md bg-[color:var(--background-color)] text-[color:var(--fg-shade-two-color)] border border-[color:var(--bg-shade-four-color)]">
 			<input
-				className="shadow appearance-none border rounded py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-[color:var(--fg-shade-two-color)] bg-[color:var(--background-color)] border-[color:var(--bg-shade-four-color)]"
+				ref={searchRef}
+				className="shadow bg-transparent appearance-none py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-[color:var(--fg-shade-two-color)] border-r border-[color:var(--bg-shade-four-color)]"
 				value={value}
 				onChange={e => setValue(e.target.value)}
 				onBlur={(e: any) => {
@@ -33,6 +34,14 @@ const SearchBar = ({ value, setValue, onSubmit }: SearchBarProps) => {
 				}}
 				type="text"
 			/>
+			<div
+				className="flex items-center p-1 cursor-pointer"
+				onClick={() =>
+					onSubmit && searchRef.current && onSubmit(searchRef.current.value)
+				}
+			>
+				<FontAwesomeIcon icon={faSearch} />
+			</div>
 		</div>
 	);
 };

@@ -519,6 +519,10 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					regression.current = model.current as PolyRegression;
 					optimizer.current = new PolyOptimizer(regression.current);
 					break;
+				case MODEL_TYPES.PERCEPTRON:
+					let modelPerc = model.current as NeuralNetwork;
+					optimizer.current = new GradientDescent(modelPerc);
+					break;
 			}
 			console.log('Current Optimizer : ', optimizer.current);
 		}
@@ -780,6 +784,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			createOptimizer();
 
 			try {
+				console.log(activeDataset.current)
 				model.current = optimizer.current?.optimize(input, real);
 			} catch (e) {
 				if (e instanceof Error) return e.message;

@@ -12,8 +12,8 @@ import { forwardRef, MutableRefObject, useRef } from 'react';
 import { classNames } from '../../../Types/utils';
 import FeaturedCourseContainer from '../../../Components/CourseComponents/CourseContainer/CourseContainer';
 import { SUBJECTS } from '../../../Types/sharedTypes';
-import { HomeSection } from '../../../Components/MainComponents/HomeSection/HomeSection';
 import useRoutes from '../../../state/hooks/useRoutes';
+import Link from '../../../Components/UtilsComponents/Link/Link';
 
 const StyledHome = styled.div`
 	.tech-slideshow {
@@ -193,6 +193,45 @@ const IoTHome = (props: iotHomeProps) => {
 					imgOpacity={0.8}
 				/>
 				*/}
+				<div
+					className={classNames(
+						'grid gap-10 mt-12',
+						'grid-cols-1',
+						'tablet:grid-cols-2',
+						'laptop:grid-cols-3',
+					)}
+				>
+					<IoTProjectShowcase
+						name="Ville Intelligente"
+						description="In the world, many people and especially kids have the tendency to lose focus in class or show a lack of attention. In schools, it can happen in various situations and because of many different reasons, that is why..."
+						img={VilleIntelligenteInterface}
+					/>
+					<IoTProjectShowcase
+						name="Ville Intelligente"
+						description=""
+						img={VilleIntelligenteInterface}
+					/>
+					<IoTProjectShowcase
+						name="Ville Intelligente"
+						description=""
+						img={VilleIntelligenteInterface}
+					/>
+					<IoTProjectShowcase
+						name="Ville Intelligente"
+						description=""
+						img={VilleIntelligenteInterface}
+					/>
+					<IoTProjectShowcase
+						name="Ville Intelligente"
+						description=""
+						img={VilleIntelligenteInterface}
+					/>
+					<IoTProjectShowcase
+						name="Ville Intelligente"
+						description=""
+						img={VilleIntelligenteInterface}
+					/>
+				</div>
 			</div>
 			<Footer className="!mt-4"></Footer>
 		</StyledHome>
@@ -234,6 +273,34 @@ const IoTFeaturedProjectBig = ({
 				allowFullScreen
 			/>
 		</>
+	);
+};
+
+type IoTProjectShowcaseProps = {
+	name: string;
+	description: string;
+	img: string;
+};
+
+const IoTProjectShowcase = ({
+	name,
+	description,
+	img,
+}: IoTProjectShowcaseProps) => {
+	return (
+		<div className="w-80 h-64 relative">
+			<img src={img} alt={`project-${name}`} className="w-full h-full" />
+			<div className="group absolute top-0 right-0 bottom-0 left-0 cursor-pointer">
+				<div className="absolute top-0 w-full h-full bg-black opacity-0 group-hover:opacity-60 duration-500 transition-opacity"></div>
+				<div className="relative w-full h-full opacity-0 group-hover:opacity-100 duration-500 transition-opacity p-4">
+					<div className="text-2xl tracking-wide h-10 mb-1">{name}</div>
+					<div className="text-lg text-gray-300 h-36 text-ellipsis overflow-hidden mb-1">
+						{description}
+					</div>
+					<Link to="">Continue Reading</Link>
+				</div>
+			</div>
+		</div>
 	);
 };
 

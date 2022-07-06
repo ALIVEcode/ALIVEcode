@@ -11,7 +11,7 @@ const GOlDEN_RATIO = 1.6180339887498948482045868343656;
 
 const ARROW_MARKER_WIDTH = 10;
 const ARROW_MARKER_HEIGHT = 7;
-const ARROW_SPACING = 2;
+const ARROW_SPACING = 3;
 
 // TODO: Implement this better.
 const BUTTON_HEIGHT = 15; // Same as in CSS.

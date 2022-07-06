@@ -90,7 +90,6 @@ export class CourseController {
   }
 
   @Get('featuring')
-  @Auth()
   async findFeaturing(@Query() query: FeaturingQueryDTO) {
     return await this.courseService.findFeaturing(query);
   }

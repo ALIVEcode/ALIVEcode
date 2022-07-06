@@ -13,6 +13,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Course } from '../../../Models/Course/course.entity';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import Carousel from 'react-elastic-carousel';
+import useView from '../../../state/hooks/useView';
 
 const FeaturedCourseContainer = ({
 	title,
@@ -26,6 +27,7 @@ const FeaturedCourseContainer = ({
 }: CourseContainerProps) => {
 	const [fetchedCourses, setFetchedCourses] = useState<Course[]>();
 	const carouselRef = useRef<Carousel>(null);
+	const view = useView();
 
 	useEffect(() => {
 		if (props.courses || !featuringFrom) return;
@@ -40,6 +42,19 @@ const FeaturedCourseContainer = ({
 	}, [featuring, featuringFrom, props.courses]);
 
 	const courses = props.courses ?? fetchedCourses;
+
+	const getNbItemsInCarousel = () => {
+		switch (view.screenType) {
+			case 'desktop':
+				return 5;
+			case 'laptop':
+				return 4;
+			case 'tablet':
+				return 3;
+			case 'phone':
+				return 1;
+		}
+	};
 
 	return (
 		<div
@@ -65,32 +80,52 @@ const FeaturedCourseContainer = ({
 				{courses ? (
 					<Carousel
 						ref={carouselRef}
-						itemsToShow={4}
-						itemsToScroll={4}
+						itemsToShow={getNbItemsInCarousel()}
+						itemsToScroll={getNbItemsInCarousel()}
 						isRTL={false}
 						pagination={false}
-						renderArrow={props =>
+						renderArrow={(props: any) =>
 							props.type === 'NEXT' ? (
-								<FontAwesomeIcon
-									icon={faArrowRight}
-									onClick={() => {
-										console.log(carouselRef.current);
-										(carouselRef.current as any).slideNext();
-									}}
-								/>
+								<div
+									className={classNames(
+										'h-full flex items-center',
+										dark
+											? props.isEdge
+												? 'text-gray-500 cursor-not-allowed'
+												: 'text-white cursor-pointer'
+											: props.isEdge
+											? 'text-[color:var(--fg-shade-four-color)] cursor-not-allowed'
+											: 'text-[color:var(--foreground-color)] cursor-pointer',
+									)}
+									onClick={() =>
+										!props.isEdge && (carouselRef.current as any).slideNext()
+									}
+								>
+									<FontAwesomeIcon icon={faArrowRight} />
+								</div>
 							) : (
-								<FontAwesomeIcon
-									icon={faArrowLeft}
-									onClick={() => {
-										console.log(carouselRef.current);
-										(carouselRef.current as any).slidePrev();
-									}}
-								/>
+								<div
+									className={classNames(
+										'h-full flex items-center',
+										dark
+											? props.isEdge
+												? 'text-gray-500 cursor-not-allowed'
+												: 'text-white cursor-pointer'
+											: props.isEdge
+											? 'text-[color:var(--fg-shade-four-color)] cursor-not-allowed'
+											: 'text-[color:var(--foreground-color)] cursor-pointer',
+									)}
+									onClick={() =>
+										!props.isEdge && (carouselRef.current as any).slidePrev()
+									}
+								>
+									<FontAwesomeIcon icon={faArrowLeft} />
+								</div>
 							)
 						}
 					>
 						{courses.map((c, idx) => (
-							<CourseCard className="!mr-4" course={c} key={idx} />
+							<CourseCard course={c} key={idx} />
 						))}
 					</Carousel>
 				) : (

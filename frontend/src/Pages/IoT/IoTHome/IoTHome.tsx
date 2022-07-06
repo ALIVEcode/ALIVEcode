@@ -96,8 +96,6 @@ const IoTHome = (props: iotHomeProps) => {
 			</div>
 
 			<div className="text-gray-50 relative w-full h-full px-10 tablet:px-18 laptop:px-16 desktop:px-32">
-				{/*
-
 				<p className={paragraphClassName + ' mt-32'}>
 					ALIVEIoT est la branche d’ALIVEcode servant à l’apprentissage de
 					l’Internet des Objets, un domaine de l’informatique possédant très peu
@@ -173,7 +171,7 @@ const IoTHome = (props: iotHomeProps) => {
 					imgAlt="ALIVEcode's internet of things interface"
 				/>
 				<IoTHomeSeparator title={'Plus de projets'} className="mt-16" />
-*/}
+				{/*
 				<HomeSection
 					ref={getStartedRef}
 					title={t('home.iot.section.develop.title')}
@@ -194,6 +192,7 @@ const IoTHome = (props: iotHomeProps) => {
 					to={routes.auth.classroom_browse.path}
 					imgOpacity={0.8}
 				/>
+				*/}
 			</div>
 			<Footer className="!mt-4"></Footer>
 		</StyledHome>

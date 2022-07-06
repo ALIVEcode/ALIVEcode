@@ -81,7 +81,6 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 					array2[index!] = newValue;
 					break;
 				default:
-					
 					(tempHyperparams[key] as string) = newValue;
 			}
 			setCurrHyperparams(tempHyperparams);
@@ -140,12 +139,15 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	 * @returns If the dropdown is disable or not
 	 */
 	function disableDropdown(index: number) {
-		const header = props.data?.getParamNames().at(index);
-		if (props.initData!.getParamNames().indexOf(header!) === -1) {
-			return true;
-		} else {
-			return false;
+		if (props.data && props.initData) {
+			const header = props.data.getParamNames().at(index);
+			if (props.initData.getParamNames().indexOf(header!) === -1) {
+				return true;
+			} else {
+				return false;
+			}
 		}
+		return false;
 	}
 
 	/**
@@ -452,7 +454,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 				obj = currHyperparams![key] as Object;
 				array = obj as number[];
 				dropboxdNb = array.length;
-				
+
 				break;
 			}
 			case 'MODEL_TYPES': {

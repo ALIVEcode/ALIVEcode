@@ -1,4 +1,4 @@
 export type GradientDescentSchemeProps = {
   layerCount: number;
-  epochCount: number;
+  epochCount: numbe;
 }

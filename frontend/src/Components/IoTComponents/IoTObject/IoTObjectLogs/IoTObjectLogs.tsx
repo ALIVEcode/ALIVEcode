@@ -9,6 +9,7 @@ import {
 	orangeLogs,
 	successLogs,
 } from '../../../../Models/Iot/IoTProjectClasses/IoTTypes';
+import api from '../../../../Models/api';
 
 const IoTObjectLogs = ({ object }: { object: IoTObject }) => {
 	const cmd = useRef<HTMLDivElement>(null);
@@ -19,6 +20,7 @@ const IoTObjectLogs = ({ object }: { object: IoTObject }) => {
 	const printLog = ({ event, date, text }: IoTLog) => {
 		if (!cmd.current) return;
 		const $cmd = $(cmd.current);
+		const $scrollDiv = $(`#cmd-${object.id}`);
 
 		const hours = ('0' + date.getHours()).slice(-2);
 		const minutes = ('0' + date.getMinutes()).slice(-2);
@@ -39,7 +41,9 @@ const IoTObjectLogs = ({ object }: { object: IoTObject }) => {
 		$cmd.append(
 			`<div style="color:${getLogColor()}"><u><i>${hours}:${minutes}:${seconds}:</i></u><strong> ${eventStr}</strong></div><div style="margin-bottom:0.40rem">${text}</div>`,
 		);
-		$cmd.scrollTop(cmd.current.scrollHeight);
+		setTimeout(() => {
+			if (cmd.current) $scrollDiv[0].scrollTop = cmd.current.scrollHeight;
+		}, 50);
 	};
 
 	/*const error = (msg: string, line: number) => {
@@ -64,15 +68,20 @@ const IoTObjectLogs = ({ object }: { object: IoTObject }) => {
 	};*/
 
 	useEffect(() => {
-		object.logs.forEach(log => {
-			printLog(log);
-		});
+		const getLogs = async () => {
+			const freshObject = await api.db.iot.objects.get({ id: object.id });
+			Object.assign(object, freshObject);
+			object.logs.forEach(log => {
+				printLog(log);
+			});
+		};
+		getLogs();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [cmd]);
 
 	return (
 		<div className="h-[500px]">
-			<Cmd ref={cmd} />;
+			<Cmd styledDivId={`cmd-${object.id}`} ref={cmd} />;
 		</div>
 	);
 };

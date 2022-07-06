@@ -13,7 +13,7 @@ import { UserContext } from '../../../state/contexts/UserContext';
  *
  * @author Enric Soldevila
  */
-const CourseCard = ({ course, onSelect }: CourseCardProps) => {
+const CourseCard = ({ course, onSelect, className }: CourseCardProps) => {
 	const { routes, goTo } = useRoutes();
 	const { theme } = useContext(ThemeContext);
 	const { user } = useContext(UserContext);
@@ -28,7 +28,10 @@ const CourseCard = ({ course, onSelect }: CourseCardProps) => {
 								(user?.id === course.creator?.id ? '/layout' : '/view'),
 					  )
 			}
-			className="shadow-lg"
+			className={
+				'shadow-lg text-[color:var(--foreground-color)] inline-block ' +
+				className
+			}
 			theme={theme}
 		>
 			<div className="top-card">

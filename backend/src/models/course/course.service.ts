@@ -1,14 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { generate } from 'randomstring';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { ClassroomEntity } from '../classroom/entities/classroom.entity';
-import { ProfessorEntity, StudentEntity } from '../user/entities/user.entity';
+import { ProfessorEntity } from '../user/entities/user.entity';
 import { CreateCourseDTO } from './dtos/CreateCourse.dto';
 import { ActivityChallengeEntity } from './entities/activities/activity_challenge.entity';
 import { ActivityTheoryEntity } from './entities/activities/activity_theory.entity';
 import { ActivityEntity, ACTIVITY_TYPE } from './entities/activity.entity';
-import { CourseEntity } from './entities/course.entity';
+import { CourseEntity, COURSE_ACCESS } from './entities/course.entity';
 import { CourseElementEntity } from './entities/course_element.entity';
 import { SectionEntity } from './entities/section.entity';
 import { ActivityVideoEntity } from './entities/activities/activity_video.entity';
@@ -22,6 +22,7 @@ import { ResourceChallengeEntity } from '../resource/entities/resources/resource
 import { ChallengeEntity, CHALLENGE_ACCESS } from '../challenge/entities/challenge.entity';
 import { ActivityWordEntity } from './entities/activities/activity_word.entity';
 import { ActivityPowerPointEntity } from './entities/activities/activity_powerpoint.entity';
+import { FeaturingQueryDTO } from './dtos/FeaturingQuery.dto';
 
 /**
  * All the methods to communicate to the database. To create/update/delete/get
@@ -44,7 +45,7 @@ export class CourseService {
     @InjectRepository(ActivityPowerPointEntity) private actPptxRepo: Repository<ActivityPowerPointEntity>,
     @InjectRepository(ClassroomEntity) private classroomRepo: Repository<ClassroomEntity>,
     @InjectRepository(CourseElementEntity) private courseElRepo: Repository<CourseElementEntity>,
-    @InjectRepository(StudentEntity) private studentRepo: Repository<StudentEntity>,
+    @InjectRepository(ProfessorEntity) private profRepo: Repository<ProfessorEntity>,
     @InjectRepository(ChallengeEntity) private challengeRepo: Repository<ChallengeEntity>,
   ) {}
 
@@ -93,6 +94,44 @@ export class CourseService {
    */
   async findAll() {
     return await this.courseRepository.find();
+  }
+
+  /**
+   * Method that returns all the courses in the database
+   * @returns All the courses in the database
+   */
+  async findFeaturing(query: FeaturingQueryDTO) {
+    const where = {
+      access: COURSE_ACCESS.PUBLIC,
+    };
+
+    if (query.featuring) where['subject'] = query.featuring;
+
+    if (query.featuringFrom === 'alivecode' || query.featuringFrom === 'public') {
+      const alivecode_email = process.env.ALIVECODE_EMAIL;
+      if (!alivecode_email) throw new Error('ALIVECODE_EMAIL not set inside .env file.');
+
+      const alivecodeAccount = await this.profRepo.findOne({ where: { email: alivecode_email } });
+      if (!alivecodeAccount)
+        throw new Error(
+          'ALIVEcode account was not found. Be sure to have a registered account with the email address specified in the ALIVECODE_EMAIL .env variable',
+        );
+
+      if (query.featuringFrom === 'alivecode') {
+        where['creatorId'] = alivecodeAccount.id;
+      } else {
+        where['creatorId'] = Not(alivecodeAccount.id);
+      }
+    }
+
+    return await this.courseRepository.find({
+      where,
+      order: {
+        featuringScore: 'DESC',
+        creationDate: 'DESC',
+      },
+      take: 20,
+    });
   }
 
   /**

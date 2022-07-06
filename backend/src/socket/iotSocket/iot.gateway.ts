@@ -39,8 +39,13 @@ import {
   IoTBroadcastRequestFromBoth,
 } from './iotSocket.types';
 
+const gatewayPort = Number(process.env.IOT_GATEWAY_PORT);
+if (gatewayPort == NaN || !gatewayPort) {
+  throw new Error('IOT_GATEWAY_PORT was not set in .env (8881 should be the default)');
+}
+
 @UseInterceptors(DTOInterceptor)
-@WebSocketGateway(8881)
+@WebSocketGateway(gatewayPort)
 @Controller('iot/aliot')
 export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnGatewayInit {
   private logger: Logger = new Logger('IoTGateway');
@@ -141,7 +146,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
 
     await this.iotObjectService.addIoTObjectLog(iotObject, IOT_EVENT.CONNECT_SUCCESS, 'Connected to ALIVEcode');
 
-    client.sendEvent(IOT_EVENT.CONNECT_SUCCESS, null);
+    client.sendEvent(IOT_EVENT.CONNECT_SUCCESS, 'Object connected');
   }
 
   @UseFilters(new IoTExceptionFilter())
@@ -213,7 +218,8 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     if (!client) throw new WsException('Forbidden');
 
     const object = await this.iotObjectService.findOneWithLoadedProject(payload.targetId);
-    if (object.currentIotProject?.id !== client.projectId) throw new WsException('Not in the same project');
+    if (object.currentIotProject?.id !== client.projectId)
+      throw new WsException(`The targetted object with id "${payload.targetId}" is not connected to the same project`);
 
     await this.iotObjectService.sendAction(object, payload.actionId, payload.value);
   }

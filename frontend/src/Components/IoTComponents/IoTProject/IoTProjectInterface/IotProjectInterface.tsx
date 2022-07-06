@@ -40,7 +40,7 @@ const IoTProjectInterface = ({ noTopRow }: { noTopRow?: boolean }) => {
 						variant="third"
 						onClick={() => {
 							navigator.clipboard.writeText(updateId);
-							alert.success('Copied');
+							alert.success(t('msg.id_copied'));
 						}}
 						icon={faClipboard}
 					>

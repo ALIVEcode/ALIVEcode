@@ -23,6 +23,7 @@ import { User } from '../../utils/decorators/user.decorator';
 import { Role } from '../../utils/types/roles.types';
 import { NameMigrationDTO } from './dto/name_migration.dto';
 import { QueryResources } from './dto/query_resources.dto';
+import { QueryIoTProjects } from './dto/query_iotprojects.dto';
 
 /**
  * All the routes of the api regarding operations on users.
@@ -105,14 +106,14 @@ export class UserController {
 
   @Get('iot/projects')
   @Auth()
-  async getProjects(@User() user: UserEntity) {
-    return await this.userService.getIoTProjects(user);
+  async getProjects(@User() user: UserEntity, @Query() query: QueryIoTProjects) {
+    return await this.userService.getIoTProjects(user, query);
   }
 
   @Get('iot/objects')
   @Auth()
-  async getObjects(@User() user: UserEntity) {
-    return await this.userService.getIoTObjects(user);
+  async getObjects(@User() user: UserEntity, @Query() query: QueryIoTProjects) {
+    return await this.userService.getIoTObjects(user, query);
   }
   @Get('quizzes/results')
   @Auth()

@@ -19,6 +19,8 @@ import { CourseHistoryEntity } from '../course/entities/course_history.entity';
 import { NameMigrationDTO } from './dto/name_migration.dto';
 import { QueryResources } from './dto/query_resources.dto';
 import { ResourceEntity } from '../resource/entities/resource.entity';
+import { QueryIoTProjects } from './dto/query_iotprojects.dto';
+import { QueryIoTObjects } from './dto/query_iotobjects';
 
 /**
  * All the methods to communicate to the database regarding users.
@@ -242,12 +244,16 @@ export class UserService {
     return await sql.getMany();
   }
 
-  async getIoTProjects(user: UserEntity) {
-    return await this.iotProjectRepository.find({ where: { creator: user } });
+  async getIoTProjects(user: UserEntity, query: QueryIoTProjects) {
+    const where = { creator: user };
+    if (query.name) where['name'] = ILike(`%${query.name}%`);
+    return await this.iotProjectRepository.find({ where, order: { updateDate: 'DESC' } });
   }
 
-  async getIoTObjects(user: UserEntity) {
-    return await this.iotObjectRepository.find({ where: { creator: user } });
+  async getIoTObjects(user: UserEntity, query: QueryIoTObjects) {
+    const where = { creator: user };
+    if (query.name) where['name'] = ILike(`%${query.name}%`);
+    return await this.iotObjectRepository.find({ where, order: { updateDate: 'DESC' } });
   }
 
   async getResults(user: UserEntity) {

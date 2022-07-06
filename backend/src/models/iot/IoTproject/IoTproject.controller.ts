@@ -83,8 +83,8 @@ export class IoTProjectController {
   @Patch(':id/layout')
   @Auth()
   @UseGuards(IoTProjectCreator)
-  async updateLayout(@Param('id') id: string, @Body() layout: IoTProjectLayout) {
-    return await this.projectService.updateLayout(id, layout);
+  async updateInterface(@Param('id') id: string, @Body() layout: IoTProjectLayout) {
+    return await this.projectService.updateInterface(id, layout);
   }
 
   @Patch(':id/document')

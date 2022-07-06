@@ -21,7 +21,7 @@ import { IoTBuzzer } from './IoTProjectClasses/Components/IoTBuzzer';
 import { isArray } from 'tone';
 import { IoTTrafficLight } from './IoTProjectClasses/Components/IoTTrafficLight';
 import { IoTProjectObject } from './IoTprojectObject.entity';
-import { ChallengeProgression } from '../Challenge/challengeProgression';
+import { ChallengeProgression } from '../Challenge/challenge_progression.entity';
 import { AsScript } from '../AsScript/as-script.entity';
 
 export enum IOTPROJECT_INTERACT_RIGHTS {

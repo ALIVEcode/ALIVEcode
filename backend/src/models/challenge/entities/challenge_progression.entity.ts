@@ -1,6 +1,8 @@
 import { Exclude } from 'class-transformer';
 import { IsEmpty, IsOptional } from 'class-validator';
+import { GenHyperparameters } from '../../../models/ai/entities/AIUtilsInterfaces';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, JoinColumn, OneToOne } from 'typeorm';
+import { AIModelEntity } from '../../ai/entities/ai_model.entity';
 import { IoTProjectEntity } from '../../iot/IoTproject/entities/IoTproject.entity';
 import { IoTLayoutManager } from '../../iot/IoTproject/IoTLayoutManager';
 import { UserEntity } from '../../user/entities/user.entity';
@@ -12,6 +14,8 @@ export type ChallengeAliveProgressionData = {
 
 export type ChallengeAIProgressionData = {
   code?: string;
+  hyperparams: GenHyperparameters;
+  ioCodes: number[];
 };
 
 export type ChallengeCodeProgressionData = {
@@ -54,6 +58,13 @@ export class ChallengeProgressionEntity {
   @Column({ type: 'json', default: () => "'{}'" })
   @IsOptional()
   data: ChallengeProgressionData;
+
+  @OneToOne(() => AIModelEntity, { nullable: true, eager: true })
+  @JoinColumn({ name: 'aiModelId' })
+  aiModel: AIModelEntity;
+
+  @Column({ name: 'aiModelId', type: 'varchar', nullable: true })
+  aiModelId: string;
 
   @ManyToOne(() => UserEntity, user => user.challengeProgressions, { onDelete: 'CASCADE' })
   user: UserEntity;

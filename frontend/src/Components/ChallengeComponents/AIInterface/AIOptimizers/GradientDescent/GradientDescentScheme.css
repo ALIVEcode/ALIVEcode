@@ -1,0 +1,13 @@
+.scheme {
+  width: 100%;
+  height: 100%;
+}
+
+.rectText {
+  display: table-cell;
+  padding: 2px;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 6px;
+  border-spacing: 2px;
+}

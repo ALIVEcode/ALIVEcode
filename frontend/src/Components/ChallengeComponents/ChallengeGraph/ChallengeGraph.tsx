@@ -22,7 +22,7 @@ const ChallengeGraph = memo((props: ChallengeGraphProps) => {
 		<div className="w-full h-full flex items-center justify-center p-4 pl-0">
 			<Scatter
 				color="black"
-				className="graph"
+				className={'graph ' + props.className}
 				data={props.data}
 				options={{
 					responsive: true,

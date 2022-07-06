@@ -1,7 +1,6 @@
 
 
-export default class MLAlgorithm {
-
+export class MLAlgorithm {
 
 
 }

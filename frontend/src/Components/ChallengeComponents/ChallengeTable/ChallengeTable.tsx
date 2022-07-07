@@ -232,6 +232,8 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	function renderTableData() {
 		if (props.data && props.isData && props.activeIoCodes)
 			return (
+
+				
 				<>
 					{props.data.getDataForTable().map((dataLine: any, row: number) => {
 						return (

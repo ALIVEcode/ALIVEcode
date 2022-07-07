@@ -87,14 +87,16 @@ export const StyledChallengeTable = styled.div`
 	.body {
 		font-size: 11px;
 		border-style: none;
-		color: var(--foreground-color);
+		color: #318ce7;
 		text-align: center;
 		margin-bottom: 0;
 		width: 100%;
+		border-color:#4EC5F1
+
 	}
 
 	.titles {
-		background-color: var(--secondary-color);
+		/*background-color: var(--secondary-color);*/
 		border-left: 0.1vh solid var(--bg-shade-one-color);
 		border-right: 0.1vh solid var(--bg-shade-one-color);
 		padding: 5px;
@@ -113,10 +115,14 @@ export const StyledChallengeTable = styled.div`
 		font-weight: bolder;
 	}
 
+	.titles hyperparam-header {
+		color:#4EC5F1
+	}
 	.hyperparam-header {
 		height: 40px;
 		font-size: 20px;
 		font-weight: bolder;
+	
 	}
 
 	.data {
@@ -156,7 +162,7 @@ export const StyledChallengeTable = styled.div`
 	}
 
 	.input-header {
-		background-color: var(--input-header-color);
+		background-color: cyan;
 	}
 
 	.input-data {
@@ -166,7 +172,10 @@ export const StyledChallengeTable = styled.div`
 	.output-data {
 		background-color: var(--output-data-color);
 	}
+	.input-container.rounded-md {
+		border-radius: 15px 50px; 
 
+	}
 	.output-header {
 		background-color: var(--output-header-color);
 	}

@@ -4,19 +4,30 @@ import {GradientDescentSchemeProps} from "./GradientDescentSchemeProps"
 import "./GradientDescentScheme.css"
 import React from "react";
 
+import "katex/dist/katex.css"
+let Latex = require("react-latex");
+
 const GOlDEN_RATIO = 1.6180339887498948482045868343656;
 
 const ARROW_MARKER_WIDTH = 10;
 const ARROW_MARKER_HEIGHT = 7;
 const ARROW_SPACING = 3;
 
-namespace COLOR {
-  export const BLACK = "#000000";
-  export const BLUE = "#4472C4";
-  export const GREEN = "#70AD47";
-  export const YELLOW = "#FFC000";
-  export const ORANGE = "#ED7D31";
+// TODO: Implement this better.
+const BUTTON_HEIGHT = 15; // Same as in CSS.
+
+let currentLayer: number;
+let maxLayer: number;
+
+function dZdJCommonText(currentLayer: number, msg:string): string {
+  return "Évaluer la dérivée de la fonction de coût par rapport aux sorties brutes de la couche " + msg + " (" + currentLayer + ")";
 }
+
+const COLOR_BLACK = "#000000";
+const COLOR_BLUE = "#4472C4";
+const COLOR_GREEN = "#70AD47";
+const COLOR_YELLOW = "#FFC000";
+const COLOR_ORANGE = "#ED7D31";
 
 enum DrawPosition {
   TOP_LEFT,
@@ -52,7 +63,23 @@ function alignDrawPosition(width: number, height: number, drawPos: DrawPosition)
   return [xAdjust, yAdjust];
 }
 
-const makeRect = (x: number, y: number, color: string, msg: string, width:number=65, widthToHeightRatio:number=GOlDEN_RATIO, drawPos:DrawPosition=DrawPosition.CENTER_CENTER, rx:number=5): JSX.Element => {
+const makeRectP = (text: string): JSX.Element => {
+  return (
+    <p className="gradient-descent-scheme-p gradient-descent-scheme-text">{text}</p>
+  );
+}
+
+const makeRectEquation = (eqLatex: string): JSX.Element => {
+  return (
+    <div className="gradient-descent-scheme-eq" style={{display: "none" }}>
+      <Latex>
+        {eqLatex}
+      </Latex>
+    </div>
+  );
+}
+
+const makeRect = (x: number, y: number, color: string, text: string, eqLatex: string, width:number=65, widthToHeightRatio:number=GOlDEN_RATIO, className:string|undefined=undefined, drawPos:DrawPosition=DrawPosition.CENTER_CENTER, rx:number=5): JSX.Element => {
   let height = width / widthToHeightRatio;
 
   const [xAdjust, yAdjust] = alignDrawPosition(width, height, drawPos)
@@ -61,12 +88,13 @@ const makeRect = (x: number, y: number, color: string, msg: string, width:number
 
   return (
     <g>
-      <rect x={x} y={y} width={width} height={height} rx={rx} style={{ fill: color }}></rect>
-      <foreignObject x={x} y={y} width={width} height={height}>
-        <p className="rectText" style={{ width: width, height: height }}>{msg}</p>
+      <rect className={className} x={x} y={y} width={width} height={height} rx={rx} style={{ fill: color }}></rect>
+      <foreignObject className={className} x={x} y={y} width={width} height={height}>
+        {makeRectP(text)}
+        {makeRectEquation(eqLatex)}
       </foreignObject>
     </g>
-  )
+  );
 }
 
 const makeArrow = (x1: number, y1: number, x2: number, y2: number): React.SVGProps<SVGLineElement> => {
@@ -107,52 +135,131 @@ const makeArrowTieRects = (rect1: any, endPointPos1: DrawPosition, rect2: any,  
   return makeArrow(x1, y1, x2 + xCorrection, y2 + yCorrection);
 }
 
-const GradientDescentScheme = (props: GradientDescentSchemeProps) => {
-  const J = makeRect(350, 30, COLOR.BLUE, "Fonction de coût")
-  const dJdZ = makeRect(350, 100, COLOR.BLUE, "Évaluer la dérivée de la fonction de coût par rapport aux sorties brutes de la couche actuelle",80, 2);
-  const dJdW = makeRect(250, 30, COLOR.GREEN, "Évaluer la dérivée de la fonction de coût par rapport aux poids");
-  const dJdB = makeRect(250, 170, COLOR.ORANGE, "Évaluer la dérivée de la fonction de coût par rapport aux poids");
-  const adjustW = makeRect(150, 30, COLOR.GREEN, "Ajustement des poids");
-  const adjustB = makeRect(150, 170, COLOR.ORANGE, "Ajustement des biais");
-  const dJdZMinus1 = makeRect(50, 100, COLOR.YELLOW, "Évaluer la dérivée de la fonction de coût par rapport aux sorties brutes de la couche précédente",80, 2);
-
-  const alpha = makeRect(150, 100, COLOR.BLACK, "Taux d'apprentissage", 50);
-  const aMinus1 = makeRect(250, 100, COLOR.BLACK, "Activations de la couche précédente", 50);
+const makeButton = (x: number, y: number, text: string, onClick:React.MouseEventHandler<HTMLButtonElement>|undefined=undefined, drawPos: DrawPosition = DrawPosition.TOP_LEFT) => {
+  // TODO: Implement other cases.
+  switch (drawPos) {
+  case DrawPosition.TOP_LEFT: {
+    y++;
+    break
+  } case DrawPosition.BOTTOM_LEFT: {
+    y -= BUTTON_HEIGHT;
+    break;
+  }}
 
   return (
-    <div className="scheme">
-      <svg className="scheme" viewBox="0 0 400 200">
-        {/* For designing purposes */}
-        <rect width="400" height="200" style={{ fill:"none", strokeWidth:1, stroke:"black" }} />
+    <foreignObject x={x} y={y} width="100" height="50">
+      <button type="button" className="gradient-descent-scheme-text gradient-descent-scheme-button" onClick={onClick}>{text}</button>
+    </foreignObject>
+  )
+}
 
-        <defs>
-          <marker id="arrowHead" markerWidth={ARROW_MARKER_WIDTH} markerHeight={ARROW_MARKER_HEIGHT} refX="0" refY="3.5" orient="auto">
-            <polygon points={`0 0, ${ARROW_MARKER_WIDTH} ${ARROW_MARKER_HEIGHT / 2}, 0 ${ARROW_MARKER_HEIGHT}`} />
-          </marker>
-        </defs>
+function updatedJdZCommonText() {
+  document.getElementsByClassName("gradient-descent-scheme-dJdZ")[1].getElementsByTagName("p")[0].innerHTML = dZdJCommonText(currentLayer, "actuelle");
+  document.getElementsByClassName("gradient-descent-scheme-dJdZMinus1")[1].getElementsByTagName("p")[0].innerHTML = dZdJCommonText(currentLayer - 1,"précédente");
+}
 
-        {J}
-        {dJdZ}
-        {dJdW}
-        {dJdB}
-        {adjustW}
-        {adjustB}
-        {dJdZMinus1}
+let textModeOn = true;
+function toggleMathMode() {
+  textModeOn = !textModeOn;
 
-        {alpha}
-        {aMinus1}
+  let ps = document.getElementsByClassName("gradient-descent-scheme-p") as HTMLCollectionOf<HTMLElement>;
+  let eqs = document.getElementsByClassName("gradient-descent-scheme-eq") as HTMLCollectionOf<HTMLElement>;
 
-        {makeArrowTieRects(J, DrawPosition.BOTTOM_CENTER, dJdZ, DrawPosition.TOP_CENTER)}
-        {makeArrowTieRects(dJdZ, DrawPosition.TOP_LEFT, dJdW, DrawPosition.BOTTOM_RIGHT)}
-        {makeArrowTieRects(dJdZ, DrawPosition.BOTTOM_LEFT, dJdB, DrawPosition.TOP_RIGHT)}
-        {makeArrowTieRects(dJdW, DrawPosition.CENTER_LEFT, adjustW, DrawPosition.CENTER_RIGHT)}
-        {makeArrowTieRects(dJdB, DrawPosition.CENTER_LEFT, adjustB, DrawPosition.CENTER_RIGHT)}
-        {makeArrowTieRects(adjustW, DrawPosition.BOTTOM_LEFT, dJdZMinus1, DrawPosition.TOP_RIGHT)}
-        {makeArrowTieRects(adjustB, DrawPosition.TOP_LEFT, dJdZMinus1, DrawPosition.BOTTOM_RIGHT)}
+  let pDisplay: string;
+  let eqDisplay: string;
+  if (textModeOn) {
+    pDisplay = "table-cell";
+    eqDisplay = "none";
+  } else {
+    pDisplay = "none";
+    eqDisplay = "inline";
+  }
 
-        {makeArrowTieRects(alpha, DrawPosition.TOP_CENTER, adjustW, DrawPosition.BOTTOM_CENTER)}
-        {makeArrowTieRects(alpha, DrawPosition.BOTTOM_CENTER, adjustB, DrawPosition.TOP_CENTER)}
-        {makeArrowTieRects(aMinus1, DrawPosition.TOP_CENTER, dJdW, DrawPosition.BOTTOM_CENTER)}
+  for (let i = 0; i < ps.length; i++) { // ps.length === eqs.length
+    ps[i].style.display = pDisplay;
+    eqs[i].style.display = eqDisplay;
+  }
+}
+
+function transitionToNextLayer() {
+  if (currentLayer === maxLayer) return;
+
+  currentLayer++;
+
+  //let dJdZMinus1Children = document.getElementsByClassName("gradient-descent-scheme-dJdZminus1");
+  updatedJdZCommonText();
+}
+
+function transitionToPreviousLayer() {
+  if (currentLayer === 0) return;
+
+  currentLayer--;
+
+  //let dJdZMinus1Children = document.getElementsByClassName("gradient-descent-scheme-dJdZminus1");
+  updatedJdZCommonText();
+}
+
+const GradientDescentScheme = (props: GradientDescentSchemeProps) => {
+  maxLayer = props.layerCount - 1;
+  currentLayer = maxLayer;
+
+  const J = makeRect(350, 30, COLOR_BLUE, "Fonction de coût", "$$J(W, B)$$")
+  const dJdZ = makeRect(350, 100, COLOR_BLUE, dZdJCommonText(currentLayer, "actuelle"), `$$\\frac{\\partial J}{\\partial W_${currentLayer}} = \\hat{Y} - Y$$`, 86, 2, "gradient-descent-scheme-dJdZ");
+  const dJdW = makeRect(250, 30, COLOR_GREEN, "Évaluer la dérivée de la fonction de coût par rapport aux poids", `$$J(W, B)$$`);
+  const dJdB = makeRect(250, 170, COLOR_ORANGE, "Évaluer la dérivée de la fonction de coût par rapport aux biais", `$$J(W, B)$$`);
+  const adjustW = makeRect(150, 30, COLOR_GREEN, "Ajustement des poids", `$$J(W, B)$$`);
+  const adjustB = makeRect(150, 170, COLOR_ORANGE, "Ajustement des biais", `$$J(W, B)$$`);
+  const dJdZMinus1 = makeRect(50, 100, COLOR_YELLOW, dZdJCommonText(currentLayer - 1, "précédente"), `$$J(W, B)$$`, 86, 2, "gradient-descent-scheme-dJdZMinus1");
+
+  const alpha = makeRect(150, 100, COLOR_BLACK, "Taux d'apprentissage",`$$J(W, B)$$`, 50);
+  const aMinus1 = makeRect(250, 100, COLOR_BLACK, "Activations de la couche précédente",`$$J(W, B)$$`, 50);
+  const activationF = makeRect(50, 50, COLOR_BLACK, "Fonction d'activation",`$$J(W, B)$$`, 40);
+
+  const dJdZMinus1X = getRectProps(dJdZMinus1).x;
+  const lowerButtonProps = getRectProps(adjustB)
+  const lowerButtonsY = lowerButtonProps.y + lowerButtonProps.height;
+  const dJdZProps = getRectProps(dJdZ);
+
+  return (
+    <div className="gradient-descent-scheme">
+      <svg className="gradient-descent-scheme" viewBox="0 0 400 200">
+        <>
+          <defs>
+            <marker id="arrowHead" markerWidth={ARROW_MARKER_WIDTH} markerHeight={ARROW_MARKER_HEIGHT} refX="0" refY="3.5" orient="auto">
+              <polygon points={`0 0, ${ARROW_MARKER_WIDTH} ${ARROW_MARKER_HEIGHT / 2}, 0 ${ARROW_MARKER_HEIGHT}`} />
+            </marker>
+          </defs>
+
+          {J}
+          {dJdZ}
+          {dJdW}
+          {dJdB}
+          {adjustW}
+          {adjustB}
+          {dJdZMinus1}
+
+          {alpha}
+          {aMinus1}
+          {activationF}
+
+          {makeArrowTieRects(J, DrawPosition.BOTTOM_CENTER, dJdZ, DrawPosition.TOP_CENTER)}
+          {makeArrowTieRects(dJdZ, DrawPosition.TOP_LEFT, dJdW, DrawPosition.BOTTOM_RIGHT)}
+          {makeArrowTieRects(dJdZ, DrawPosition.BOTTOM_LEFT, dJdB, DrawPosition.TOP_RIGHT)}
+          {makeArrowTieRects(dJdW, DrawPosition.CENTER_LEFT, adjustW, DrawPosition.CENTER_RIGHT)}
+          {makeArrowTieRects(dJdB, DrawPosition.CENTER_LEFT, adjustB, DrawPosition.CENTER_RIGHT)}
+          {makeArrowTieRects(adjustW, DrawPosition.BOTTOM_LEFT, dJdZMinus1, DrawPosition.TOP_RIGHT)}
+          {makeArrowTieRects(adjustB, DrawPosition.TOP_LEFT, dJdZMinus1, DrawPosition.BOTTOM_RIGHT)}
+
+          {makeArrowTieRects(alpha, DrawPosition.TOP_CENTER, adjustW, DrawPosition.BOTTOM_CENTER)}
+          {makeArrowTieRects(alpha, DrawPosition.BOTTOM_CENTER, adjustB, DrawPosition.TOP_CENTER)}
+          {makeArrowTieRects(aMinus1, DrawPosition.TOP_CENTER, dJdW, DrawPosition.BOTTOM_CENTER)}
+          {makeArrowTieRects(activationF, DrawPosition.BOTTOM_CENTER, dJdZMinus1, DrawPosition.TOP_CENTER)}
+
+          {makeButton(dJdZMinus1X, getRectProps(adjustW).y, "Mode mathématique", toggleMathMode)}
+          {makeButton(dJdZMinus1X, lowerButtonsY, "< Couche précédente", transitionToPreviousLayer, DrawPosition.BOTTOM_LEFT)}
+          {/* TODO: Find a way to get the width of the button other than hard coding it. */}
+          {makeButton(dJdZProps.x + dJdZProps.width - 57.9224, lowerButtonsY, "Couche suivante >", transitionToNextLayer, DrawPosition.BOTTOM_LEFT)}
+        </>
       </svg>
     </div>
   );

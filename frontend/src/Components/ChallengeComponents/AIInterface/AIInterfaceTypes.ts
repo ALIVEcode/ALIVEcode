@@ -78,6 +78,9 @@ export const StyledAIInterface = styled.div`
 
 	.ai-display {
 		height: 90%;
+		background-color: #2c75ff; /* color of the background */
+  		
+  
 	}
 
 	.header {
@@ -85,8 +88,9 @@ export const StyledAIInterface = styled.div`
 		font-size: 25px;
 		padding: 10px;
 		font-weight: bold;
-		color: var(--foreground-color);
+		color: #2c75ff;
 	}
+	
 
 	.dropdown-menu {
 		display: flex;

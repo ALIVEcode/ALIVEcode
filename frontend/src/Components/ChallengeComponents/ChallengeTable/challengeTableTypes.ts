@@ -91,17 +91,20 @@ export const StyledChallengeTable = styled.div`
 		text-align: center;
 		margin-bottom: 0;
 		width: 100%;
-		border-color:#4EC5F1
+		
 
 	}
 
 	.titles {
-		/*background-color: var(--secondary-color);*/
-		border-left: 0.1vh solid var(--bg-shade-one-color);
-		border-right: 0.1vh solid var(--bg-shade-one-color);
+		background-color: whitesmoke;
+		border-left: 0.1vh solid ;
+		border-right: 0.1vh solid ;
+		border-top: 0.1vh solid;
 		padding: 5px;
 		position: sticky;
 		top: 0;
+		border-color: #318ce7;
+		
 	}
 
 	.data-header {
@@ -127,13 +130,21 @@ export const StyledChallengeTable = styled.div`
 
 	.data {
 		background-color: var(--tableback-color);
-		border: 0.1vh solid var(--databack-color);
+		/*border: 0.1vh solid var(--databack-color);*/
+		border-left: 0.1vh solid ;
+		border-right: 0.1vh solid ;
+		border-top: 0.1vh solid;
 		font-size: 12px;
 		max-width: 10vw;
+		border-color: #318ce7;
 	}
 
 	.hyperparam-data {
-		border-top: 0.1vh solid var(--databack-color);
+		/*border-top: 0.1vh solid var(--databack-color);*/
+		border-color: #318ce7;
+		border-left: 0.1vh solid ;
+		border-right: 0.1vh solid ;
+		border-top: 0.1vh solid;
 	}
 
 	.data-number {
@@ -172,8 +183,21 @@ export const StyledChallengeTable = styled.div`
 	.output-data {
 		background-color: var(--output-data-color);
 	}
-	.input-container.rounded-md {
-		border-radius: 15px 50px; 
+	.button1 {
+	width: 41.666667%;
+	border-radius: 15px 50px; 
+ 	font-size:  16px ;
+    line-height:  24px ;
+    color: rgb(255 255 255 / var(--tw-text-opacity));
+    font-weight: 500;
+    font-size:  16px ;
+    line-height:  24px ;
+	font-weight: 500;
+  	transition-property: color, 
+	background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+	background-color: var(--contrast-color);
 
 	}
 	.output-header {

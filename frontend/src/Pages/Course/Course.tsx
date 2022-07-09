@@ -52,6 +52,7 @@ import { CHALLENGE_ACCESS } from '../../Models/Challenge/challenge.entity';
 import AlertConfirm from '../../Components/UtilsComponents/Alert/AlertConfirm/AlertConfirm';
 import { Resource, RESOURCE_TYPE } from '../../Models/Resource/resource.entity';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { AxiosError } from 'axios';
 
 /**
  * Course page that shows the content of a course
@@ -407,6 +408,9 @@ const Course = () => {
 		const { courseElement, newOrder } = await api.db.courses
 			.addContent(course.current.id, content, name, sectionParent?.id)
 			.catch(e => {
+				const axiosErr = e as AxiosError;
+				if (axiosErr.response?.status === 401) throw e;
+
 				setCursedError(e);
 				throw e;
 			});

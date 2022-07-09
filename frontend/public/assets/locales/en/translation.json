@@ -126,6 +126,8 @@
 	},
 	"msg": {
 		"language": "Language",
+		"continue_reading": "Continue reading",
+		"showcase_project": "Showcased project",
 		"courseTemplate": "course template",
 		"bundle": "bundle",
 		"resource": "resource",

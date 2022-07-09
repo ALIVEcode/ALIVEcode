@@ -126,6 +126,8 @@
 	},
 	"msg": {
 		"language": "Langage",
+		"continue_reading": "Continuer à lire",
+		"showcase_project": "Projet en vedette",
 		"courseTemplate": "modèle de cours",
 		"bundle": "trousse pédagogique",
 		"resource": "ressource",

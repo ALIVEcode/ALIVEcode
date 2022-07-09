@@ -65,6 +65,9 @@ import { AIDataset } from './Ai/ai_dataset.entity';
 import { QueryIoTProjects } from './User/dto/query_iotprojects.dto';
 import { QueryIoTObjects } from './User/dto/query_iotobjects';
 import { FeaturingQueryDTO } from './Course/dto/FeaturingQuery.dto';
+import { ShowcaseProject } from './Showcase-Project/showcase-project.entity';
+import { SUBJECTS } from '../Types/sharedTypes';
+import { ShowcaseProjectGalleryGetDTO } from './Showcase-Project/dto/ShowcaseProjectGalleryGet.dto';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;
@@ -773,6 +776,19 @@ const api = {
 			create: apiCreate('results', Result),
 			delete: apiDelete('results/:id'),
 			getresultuser: apiGet('results/user', Result, true),
+		},
+		showcase_projects: {
+			get: apiGet('showcase-project/:name', ShowcaseProject, false),
+			async getGallery({ subject, nbItems }: ShowcaseProjectGalleryGetDTO) {
+				return plainToInstance(
+					ShowcaseProject,
+					(
+						await axios.get(
+							`showcase-project/gallery?subject=${subject}&nbItems=${nbItems}`,
+						)
+					).data,
+				) as any as ShowcaseProject[];
+			},
 		},
 	},
 	as: {

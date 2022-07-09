@@ -1,5 +1,6 @@
 import { Column, PrimaryColumn, Entity } from 'typeorm';
 import { SUBJECTS } from '../../../generics/types/sharedTypes';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class ShowcaseProjectEntity {
@@ -29,4 +30,8 @@ export class ShowcaseProjectEntity {
 
   @Column({ type: 'timestamp', nullable: true })
   finishDate?: Date;
+
+  @Column({ default: 0, nullable: false })
+  @Exclude()
+  featuringScore: number;
 }

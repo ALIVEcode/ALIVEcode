@@ -15,7 +15,11 @@ export class ShowcaseProjectService {
   }
 
   async getGallery(query: ShowcaseProjectGalleryGetDTO) {
-    return await this.projectRepo.find({ where: { subject: query.subject }, take: query.nbItems });
+    return await this.projectRepo.find({
+      where: { subject: query.subject },
+      take: query.nbItems,
+      order: { featuringScore: 'DESC' },
+    });
   }
 
   async findOne(name: string) {

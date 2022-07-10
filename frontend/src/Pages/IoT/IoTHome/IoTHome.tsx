@@ -136,12 +136,13 @@ const IoTHome = (props: iotHomeProps) => {
 				</p>
 
 				<FeaturedCourseContainer
-					className="mt-12"
+					className="my-12"
 					title="Cours offerts par ALIVEcode"
 					featuring={SUBJECTS.IOT}
 					featuringFrom="alivecode"
 					dark
 				/>
+				{/*
 				<FeaturedCourseContainer
 					className="mt-12 mb-12"
 					title="Cours offerts par la communauté"
@@ -149,6 +150,7 @@ const IoTHome = (props: iotHomeProps) => {
 					featuringFrom="public"
 					dark
 				/>
+				 */}
 				<IoTHomeSeparator title={'Les étapes à suivre'} />
 				<IoTStepSection
 					title={'Conception des objets connectés*'}
@@ -169,28 +171,6 @@ const IoTHome = (props: iotHomeProps) => {
 					imgAlt="ALIVEcode's internet of things interface"
 				/>
 				<IoTHomeSeparator title={'Plus de projets'} className="mt-16" />
-				{/*
-				<HomeSection
-					ref={getStartedRef}
-					title={t('home.iot.section.develop.title')}
-					text={t('home.iot.section.develop.desc')}
-					img={VilleIntelligenteInterface}
-					imgAlt="ALIVEcode's internet of things interface"
-					button={t('home.iot.to_dashboard')}
-					to={routes.auth.dashboard.path + '/iot'}
-					imgOpacity={0.8}
-				/>
-				<HomeSection
-					reverse
-					title={t('home.iot.section.learn.title')}
-					text={t('home.iot.section.learn.desc')}
-					img={ConstructionFeux}
-					imgAlt="ALIVEcode's internet of things interface"
-					button={t('home.iot.to_trainings')}
-					to={routes.auth.classroom_browse.path}
-					imgOpacity={0.8}
-				/>
-				*/}
 				<ShowcaseProjectGallery nbItems={6} subject={SUBJECTS.IOT} />
 			</div>
 			<Footer className="!mt-4"></Footer>

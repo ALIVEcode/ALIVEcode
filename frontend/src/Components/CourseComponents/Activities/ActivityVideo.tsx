@@ -1,12 +1,7 @@
 import { ActivityVideo as ActivityVideoModel } from '../../../Models/Course/activities/activity_video.entity';
 import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
-
-export const parseVideoURL = (url: string) => {
-	return url.match(
-		/^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w-]+\?v=|embed\/|v\/)?)([\w-]+)(\S+)?$/,
-	);
-};
+import { parseVideoURL } from '../../UtilsComponents/EmbeddedVideo/EmbeddedVideo';
 
 /**
  * Shows an activity of type Video

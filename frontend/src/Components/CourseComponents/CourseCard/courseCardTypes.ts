@@ -18,8 +18,6 @@ export const StyledCourseCard = styled.div`
 			? 'var(--background-color);'
 			: 'var(--bg-shade-one-color);'};
 	border-radius: 10px;
-	margin-left: auto;
-	margin-right: auto;
 	cursor: pointer;
 
 	.top-card {

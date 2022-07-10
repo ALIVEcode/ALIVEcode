@@ -28,7 +28,7 @@ const ShowcaseProjectGallery = ({
 	return (
 		<div
 			className={classNames(
-				'grid gap-10 mt-12',
+				'grid gap-10 mt-12 place-items-center',
 				'grid-cols-1',
 				'tablet:grid-cols-2',
 				'laptop:grid-cols-3',

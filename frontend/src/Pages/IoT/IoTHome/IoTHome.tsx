@@ -12,8 +12,6 @@ import { forwardRef, MutableRefObject, useRef } from 'react';
 import { classNames } from '../../../Types/utils';
 import FeaturedCourseContainer from '../../../Components/CourseComponents/CourseContainer/CourseContainer';
 import { SUBJECTS } from '../../../Types/sharedTypes';
-import useRoutes from '../../../state/hooks/useRoutes';
-import ShowcaseProjectCard from '../../../Components/MainComponents/ShowcaseProjectCard/ShowcaseProjectCard';
 import ShowcaseProjectGallery from '../../../Components/MainComponents/ShowcaseProjectGallery/ShowcaseProjectGallery';
 
 const StyledHome = styled.div`

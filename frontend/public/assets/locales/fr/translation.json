@@ -126,6 +126,8 @@
 	},
 	"msg": {
 		"language": "Langage",
+		"by": "Par",
+		"learn_more": "En savoir plus",
 		"continue_reading": "Continuer à lire",
 		"showcase_project": "Projet en vedette",
 		"courseTemplate": "modèle de cours",
@@ -161,8 +163,12 @@
 			"all": "Tout"
 		},
 		"time": {
+			"today": "Aujourd'hui",
 			"last_updated": "Dernière modification",
 			"format": "{{dayName}}, {{day}} {{monthName}} {{year}} - {{hour}}:{{minute}}",
+			"format_no_time": "{{dayName}}, {{day}} {{monthName}} {{year}}",
+			"format_no_day": "{{day}} {{monthName}} {{year}} - {{hour}}:{{minute}}",
+			"format_no_time_and_day": "{{day}} {{monthName}} {{year}}",
 			"day": {
 				"0": "Dimanche",
 				"1": "Lundi",
@@ -735,6 +741,12 @@
 			"delete_test": "Écrivez le nom de votre objet IoT pour confirmer sa suppresion.",
 			"delete_success": "Objet IoT supprimé",
 			"logs": "Journaux de l'objet IoT \"{{name}}\""
+		}
+	},
+	"showcase": {
+		"project": {
+			"no_description": "Aucune description disponible.",
+			"no_name": "Erreur d'affichage du nom."
 		}
 	},
 	"user": {

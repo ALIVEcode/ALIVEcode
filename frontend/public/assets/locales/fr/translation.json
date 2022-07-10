@@ -478,6 +478,7 @@
 		"iot": {
 			"desc": "L'IoT n'a jamais été aussi facile",
 			"to_home_page": "Aller à la page d'accueil d'ALIVEIoT",
+			"to_more_projects": "Voir plus de projets en vedette",
 			"to_dashboard": "Accéder au Tableau de Bord",
 			"to_trainings": "Accéder aux Formations",
 			"section": {

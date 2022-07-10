@@ -13,6 +13,7 @@ import { classNames } from '../../../Types/utils';
 import FeaturedCourseContainer from '../../../Components/CourseComponents/CourseContainer/CourseContainer';
 import { SUBJECTS } from '../../../Types/sharedTypes';
 import ShowcaseProjectGallery from '../../../Components/MainComponents/ShowcaseProjectGallery/ShowcaseProjectGallery';
+import ShowcaseProjectLargeCard from '../../../Components/MainComponents/ShowcaseProjectLargeCard/ShowcaseProjectLargeCard';
 
 const StyledHome = styled.div`
 	.tech-slideshow {
@@ -54,6 +55,7 @@ const StyledHome = styled.div`
  */
 const IoTHome = (props: iotHomeProps) => {
 	const getStartedRef = useRef<HTMLDivElement | null>(null);
+	const moreProjectsRef = useRef<HTMLDivElement | null>(null);
 	const view = useView();
 	const { t } = useTranslation();
 
@@ -111,14 +113,13 @@ const IoTHome = (props: iotHomeProps) => {
 
 				<IoTHomeSeparator title={'Projets en vedette'} />
 				<div className="px-0 tablet:px-4 laptop:px-10 desktop:px-28">
-					<IoTFeaturedProjectBig
-						title="Ville Intelligente"
-						youtubeVideoId="a-wLMgqOz9E"
-					/>
-					<IoTFeaturedProjectBig
-						title="Serre Connectée"
-						youtubeVideoId="a-wLMgqOz9E"
-					/>
+					<ShowcaseProjectLargeCard projectName="SmartCity"></ShowcaseProjectLargeCard>
+					<ShowcaseProjectLargeCard projectName="ALIVEmind"></ShowcaseProjectLargeCard>
+					<div className="mt-8 flex justify-center">
+						<HomeButton onClick={() => goToElement(moreProjectsRef)}>
+							{t('home.iot.to_more_projects')}
+						</HomeButton>
+					</div>
 				</div>
 
 				<IoTHomeSeparator ref={getStartedRef} title={'Commencer à apprendre'} />
@@ -170,7 +171,7 @@ const IoTHome = (props: iotHomeProps) => {
 					img={CodeAS}
 					imgAlt="ALIVEcode's internet of things interface"
 				/>
-				<IoTHomeSeparator title={'Plus de projets'} className="mt-16" />
+				<IoTHomeSeparator title={'Plus de projets'} ref={moreProjectsRef} />
 				<ShowcaseProjectGallery nbItems={6} subject={SUBJECTS.IOT} />
 			</div>
 			<Footer className="!mt-4"></Footer>
@@ -185,36 +186,12 @@ const IoTHomeSeparator = forwardRef<
 	{ title: string; className?: string }
 >(({ title, className }, ref) => {
 	return (
-		<div className={'text-center ' + className} ref={ref}>
+		<div className={'text-center mt-32 ' + className} ref={ref}>
 			<label className="text-3xl tablet:text-5xl">{title}</label>
 			<div className="m-auto w-1/2 border-b-2 mt-4 border-[color:var(--fg-shade-two-color)]"></div>
 		</div>
 	);
 });
-
-const IoTFeaturedProjectBig = ({
-	title,
-	youtubeVideoId,
-}: {
-	title: string;
-	youtubeVideoId: string;
-}) => {
-	return (
-		<>
-			<div className="tracking-widest mt-8 mb-4 text-xl tablet:text-2xl">
-				{title}
-			</div>
-			<iframe
-				className="m-auto w-full aspect-video mb-16"
-				src={`https://youtube.com/embed/${youtubeVideoId}`}
-				title="YouTube video player"
-				frameBorder="0"
-				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-				allowFullScreen
-			/>
-		</>
-	);
-};
 
 export type HomeSectionProps = {
 	title: string;

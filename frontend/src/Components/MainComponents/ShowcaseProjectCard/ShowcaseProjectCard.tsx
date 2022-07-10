@@ -24,7 +24,7 @@ const ShowcaseProjectCard = ({ project }: ShowcaseProjectProps) => {
 				className="group absolute top-0 right-0 bottom-0 left-0 cursor-pointer"
 				onClick={goToProject}
 			>
-				<div className="absolute top-0 w-full h-full bg-black opacity-0 group-hover:opacity-60 duration-500 transition-opacity"></div>
+				<div className="absolute top-0 w-full h-full bg-black opacity-0 group-hover:opacity-70 duration-500 transition-opacity"></div>
 				<div className="relative w-full h-full opacity-0 group-hover:opacity-100 duration-500 transition-opacity p-4">
 					<div className="text-2xl tracking-wide h-10">
 						{project.getName(t)}

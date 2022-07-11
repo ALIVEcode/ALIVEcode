@@ -21,7 +21,7 @@ export class ResourceCreator implements CanActivate {
     if (!resourceId) throw new HttpException('Bad payload', HttpStatus.BAD_REQUEST);
 
     const user = this.req.user;
-    if (!user) throw new HttpException('You are not logged in', HttpStatus.UNAUTHORIZED);
+    if (!user) throw new HttpException('Not Authenticated', HttpStatus.UNAUTHORIZED);
 
     const resource = await this.resourceService.findOne(resourceId);
 

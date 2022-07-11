@@ -108,7 +108,7 @@ export class UserService {
     if (!payload) throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
 
     const user = await this.findById(payload.id);
-    if (!user) throw new HttpException('', HttpStatus.UNAUTHORIZED);
+    if (!user) throw new HttpException('No user found with given id', HttpStatus.UNAUTHORIZED);
 
     setRefreshToken(res, createRefreshToken(user));
 

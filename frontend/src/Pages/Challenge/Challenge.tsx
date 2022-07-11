@@ -45,7 +45,7 @@ import Form from '../../Components/UtilsComponents/Form/Form';
 import { ChallengeExecutor } from './AbstractChallengeExecutor';
 import { useForceUpdate } from '../../state/hooks/useForceUpdate';
 import { FORM_ACTION } from '../../Components/UtilsComponents/Form/formTypes';
-import { ChallengeIoT as ChallengeIoTModel } from '../../Models/Challenge/challenges/challenge_IoT.entity';
+import { ChallengeIoT as ChallengeIoTModel } from '../../Models/Challenge/challenges/challenge_iot.entity';
 import IoTProject from '../IoT/IoTProject/IoTProject';
 import { useNavigate } from 'react-router-dom';
 import FormInput from '../../Components/UtilsComponents/FormInput/FormInput';

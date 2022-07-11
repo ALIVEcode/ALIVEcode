@@ -7,7 +7,7 @@ import {
 import { ChallengeAI } from '../challenges/challenge_ai.entity';
 import { ChallengeCode } from '../challenges/challenge_code.entity';
 import { ChallengeAlive } from '../challenges/challenge_alive.entity';
-import { ChallengeIoT } from '../challenges/challenge_IoT.entity';
+import { ChallengeIoT } from '../challenges/challenge_iot.entity';
 
 /**
  * DTO transformer for transforming to instance a generic Resource object

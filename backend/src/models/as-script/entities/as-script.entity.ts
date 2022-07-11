@@ -17,7 +17,7 @@ export class AsScriptEntity extends CreatedByUser {
   @Column()
   content: string;
 
-  @ManyToOne(() => IoTProjectEntity, { nullable: true, onDelete: 'SET NULL' })
+  @ManyToOne(() => IoTProjectEntity, { nullable: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'iotProjectId' })
   @IsEmpty()
   iotProject?: IoTProjectEntity;

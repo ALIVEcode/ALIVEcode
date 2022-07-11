@@ -21,7 +21,6 @@ import {
 import { validUUID } from '../../../utils/types/validation.types';
 import { AsScriptEntity } from '../../as-script/entities/as-script.entity';
 import { AsScriptService } from '../../as-script/as-script.service';
-import { ChallengeService } from '../../challenge/challenge.service';
 import { ChallengeProgressionEntity } from '../../challenge/entities/challenge_progression.entity';
 import { IoTProjectUpdateDTO } from './dto/updateProject.dto';
 import { IoTUpdateLayoutRequestToWatcher, ObjectClient } from '../../../socket/iotSocket/iotSocket.types';
@@ -38,7 +37,6 @@ export class IoTProjectService {
     @InjectRepository(ChallengeProgressionEntity) private progressionRepo: Repository<ChallengeProgressionEntity>,
     @InjectRepository(IoTObjectEntity) private objRepo: Repository<IoTObjectEntity>,
     @InjectRepository(IoTProjectObjectEntity) private projectObjRepo: Repository<IoTProjectObjectEntity>,
-    private challengeService: ChallengeService,
     @Inject(forwardRef(() => AsScriptService)) private asScriptService: AsScriptService,
     @Inject(forwardRef(() => IoTObjectService)) private objService: IoTObjectService,
   ) {}
@@ -128,14 +126,16 @@ export class IoTProjectService {
     const newScriptIds: { [oldScriptId: string]: string } = {};
 
     // Cloning scripts
-    project.scripts.forEach(async asScript => {
+    for (let i = 0; i < project.scripts.length; i++) {
+      const asScript = project.scripts[i];
       const clonedScript = await this.asScriptService.cloneAsScript(asScript.id, user, clonedProject.id);
       newScriptIds[asScript.id] = clonedScript.id;
       clonedProject.scripts.push(clonedScript);
-    });
+    }
 
     // Cloning IoTProjectObjects
-    project.iotProjectObjects.forEach(async projectObject => {
+    for (let i = 0; i < project.iotProjectObjects.length; i++) {
+      const projectObject = project.iotProjectObjects[i];
       const clonedProjectObject = await this.projectObjRepo.save({
         iotProjectId: clonedProject.id,
         currentTarget: PROJECT_OBJECT_TARGET.OBJECT,
@@ -144,10 +144,11 @@ export class IoTProjectService {
         scriptId: newScriptIds[projectObject.scriptId],
       });
       clonedProject.iotProjectObjects.push(clonedProjectObject);
-    });
+    }
 
     // Cloning routes
-    project.routes.forEach(async route => {
+    for (let i = 0; i < project.routes.length; i++) {
+      const route = project.routes[i];
       const clonedRoute = await this.routeRepository.save({
         name: route.name,
         path: route.path,
@@ -155,7 +156,7 @@ export class IoTProjectService {
         asScriptId: newScriptIds[route.asScriptId],
       });
       project.routes.push(clonedRoute);
-    });
+    }
 
     return clonedProject;
   }

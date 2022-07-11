@@ -1,12 +1,8 @@
 import { ChallengeEntity, CHALLENGE_TYPE } from '../challenge.entity';
 import { ChildEntity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { IoTProjectEntity } from '../../../iot/IoTproject/entities/IoTproject.entity';
-import { IsEmpty, IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsEmpty, IsNotEmpty, IsString } from 'class-validator';
 
-export enum IOT_CHALLENGE_TYPE {
-  SCRIPTING = 'SC',
-  UPDATING = 'UP',
-}
 @ChildEntity(CHALLENGE_TYPE.IOT)
 export class ChallengeIoTEntity extends ChallengeEntity {
   @ManyToOne(() => IoTProjectEntity, { eager: true })
@@ -18,17 +14,4 @@ export class ChallengeIoTEntity extends ChallengeEntity {
   @IsString()
   @Column({ name: 'project_id' })
   project_id: string;
-
-  @Column({ nullable: true })
-  @IsOptional()
-  initialCode?: string;
-
-  @Column({ nullable: true })
-  @IsOptional()
-  solution?: string;
-
-  @Column({ type: 'enum', enum: IOT_CHALLENGE_TYPE, default: IOT_CHALLENGE_TYPE.UPDATING })
-  @IsNotEmpty()
-  @IsEnum(IOT_CHALLENGE_TYPE)
-  iotType: IOT_CHALLENGE_TYPE;
 }

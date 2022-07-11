@@ -106,7 +106,7 @@ export class CarGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     if (!payload.executionResult || !Array.isArray(payload.executionResult)) throw new WsException('Bad payload');
 
     const watcher = this.watchers.find(w => w.socket === socket);
-    if (!watcher) throw new WsException('Not authenticated');
+    if (!watcher) throw new WsException('Not Authenticated');
 
     const { bufArray, bufView } = convertExecutionToBytes(payload.executionResult);
 

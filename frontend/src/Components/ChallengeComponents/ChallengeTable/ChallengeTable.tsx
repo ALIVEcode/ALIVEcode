@@ -366,6 +366,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 		);
 	}
 
+	
 	/**
 	 * Returns the input fields associated with the hyperparameter.
 	 * @param key the hyperparameter

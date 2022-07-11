@@ -86,14 +86,13 @@ export const HyperparamID: any = {
 export const StyledChallengeTable = styled.div`
 	.body {
 		font-size: 11px;
-		border-style: none;
+		border-style: ;
 		color: #0066CC;
 		text-align: center;
-		margin-bottom: 0;
+		margin-bottom: 12px ;
 		width: 100%;
 		
-		
-
+	
 	}
 
 	.titles {
@@ -101,6 +100,7 @@ export const StyledChallengeTable = styled.div`
 		border-left: 0.1vh solid ;
 		border-right: 0.1vh solid ;
 		border-top: 0.1vh solid;
+		border-bottom: 0.1vh solid ;
 		padding: 5px;
 		position: sticky;
 		top: 0;
@@ -118,6 +118,8 @@ export const StyledChallengeTable = styled.div`
 		padding-bottom: 5px;
 		line-height: 15px;
 		font-weight: bolder;
+		color : #f0f6fc ; 
+		
 	}
 
 	
@@ -126,8 +128,8 @@ export const StyledChallengeTable = styled.div`
 		font-size: 20px;
 		font-weight: bolder;
 		color : white; 
+		border-color: #0066CC;
 		
-	
 	}
 
 	.data {
@@ -136,9 +138,10 @@ export const StyledChallengeTable = styled.div`
 		border-left: 0.1vh solid ;
 		border-right: 0.1vh solid ;
 		border-top: 0.1vh solid;
+		border-bottom : 0.1vh solid;
 		font-size: 12px;
 		max-width: 10vw;
-		border-color: #318ce7;
+		
 	}
 
 	.hyperparam-data {
@@ -148,6 +151,7 @@ export const StyledChallengeTable = styled.div`
 		border-right: 0.1vh solid ;
 		border-top: 0.1vh solid;
 		background-color: #f1f5f9;
+
 
 	}
 
@@ -166,7 +170,7 @@ export const StyledChallengeTable = styled.div`
 		text-align: center;
 		border: 2px solid white;
 		border-radius: 6px;
-		font-size: 12px;
+		font-size: 14px;
 		padding: 2px;
 	}
 	
@@ -174,13 +178,13 @@ export const StyledChallengeTable = styled.div`
 		padding: 6px;
 		text-align: center;
 		justify-content: center;
-		font-size: 14px;
+		font-size: 13px;
 		border: #0066CC;
 		
 	}
 
 	.input-header {
-		background-color: #b8e6bf/*a compléter*/ ;
+		background-color: #b8e6bf ;
 	}
 
 	.input-data {

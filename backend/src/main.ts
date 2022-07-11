@@ -7,9 +7,11 @@ import * as cookieParser from 'cookie-parser';
 import { WsAdapter } from '@nestjs/platform-ws';
 import * as bodyParser from 'body-parser';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.setGlobalPrefix('api');
 
@@ -40,6 +42,8 @@ async function bootstrap() {
 
   app.use(bodyParser.json({ limit: '50mb' }));
   app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+
+  app.useStaticAssets(join(__dirname, '..', 'public'), { prefix: '/api/public/' });
 
   app.useWebSocketAdapter(new WsAdapter(app));
 

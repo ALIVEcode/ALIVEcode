@@ -10,10 +10,12 @@ import { useTranslation } from 'react-i18next';
 import useView from '../../../state/hooks/useView';
 import { forwardRef, MutableRefObject, useRef } from 'react';
 import { classNames } from '../../../Types/utils';
-import FeaturedCourseContainer from '../../../Components/CourseComponents/CourseContainer/CourseContainer';
+import FeaturedCourseContainer from '../../../Components/CourseComponents/FeaturedCourseContainer/FeaturedCourseContainer';
 import { SUBJECTS } from '../../../Types/sharedTypes';
-import { HomeSection } from '../../../Components/MainComponents/HomeSection/HomeSection';
+import ShowcaseProjectGallery from '../../../Components/MainComponents/ShowcaseProjectGallery/ShowcaseProjectGallery';
+import ShowcaseProjectLargeCard from '../../../Components/MainComponents/ShowcaseProjectLargeCard/ShowcaseProjectLargeCard';
 import useRoutes from '../../../state/hooks/useRoutes';
+import Link from '../../../Components/UtilsComponents/Link/Link';
 
 const StyledHome = styled.div`
 	.tech-slideshow {
@@ -55,6 +57,7 @@ const StyledHome = styled.div`
  */
 const IoTHome = (props: iotHomeProps) => {
 	const getStartedRef = useRef<HTMLDivElement | null>(null);
+	const moreProjectsRef = useRef<HTMLDivElement | null>(null);
 	const view = useView();
 	const { t } = useTranslation();
 	const { routes } = useRoutes();
@@ -88,62 +91,61 @@ const IoTHome = (props: iotHomeProps) => {
 						<div className="text-2xl laptop:text-3xl desktop:text-4xl text-gray-200 font-extralight mb-10">
 							{t('home.iot.desc')}
 						</div>
-						<HomeButton onClick={() => goToElement(getStartedRef)}>
-							{t('home.get_started')}
+						<HomeButton
+							className="mb-2 block m-auto laptop:m-0 laptop:inline laptop:mr-4"
+							onClick={() => goToElement(getStartedRef)}
+						>
+							{t('home.iot.start_learning')}
 						</HomeButton>
+						<Link to={routes.auth.dashboard.path + '/iot'}>
+							{t('home.iot.to_dashboard')}
+						</Link>
 					</div>
 				</div>
 			</div>
 
 			<div className="text-gray-50 relative w-full h-full px-10 tablet:px-18 laptop:px-16 desktop:px-32">
-				<p className={paragraphClassName + ' mt-32'}>
-					ALIVEIoT est la branche d’ALIVEcode servant à l’apprentissage de
-					l’Internet des Objets, un domaine de l’informatique possédant très peu
-					de ressources au niveau collégial. La branche ALIVEIoT utilise des
-					outils novateurs et conçus dans le but de simplifier l’apprentissage
-					et la recherche scientifique. Ces outils permettent notamment:
-				</p>
+				<p className={paragraphClassName + ' mt-32'}>{t('home.iot.summary')}</p>
 				<ul className="text-center text-gray-300 mt-8 leading-loose tracking-wider mb-32">
-					<li>La visualisation de données en temps réel</li>
-					<li>Le partage de donneés entre objets connectés</li>
-					<li>
-						Le contrôle d’objets connectés à l’aide du langage AliveScript
-					</li>
+					<li>{t('home.iot.features_list.0')}</li>
+					<li>{t('home.iot.features_list.1')}</li>
+					<li>{t('home.iot.features_list.2')}</li>
 				</ul>
 
-				<IoTHomeSeparator title={'Projets en vedette'} />
+				<IoTHomeSeparator
+					title={t('home.iot.section.featured_projects.title')}
+				/>
 				<div className="px-0 tablet:px-4 laptop:px-10 desktop:px-28">
-					<IoTFeaturedProjectBig
-						title="Ville Intelligente"
-						youtubeVideoId="a-wLMgqOz9E"
-					/>
-					<IoTFeaturedProjectBig
-						title="Serre Connectée"
-						youtubeVideoId="a-wLMgqOz9E"
-					/>
+					<ShowcaseProjectLargeCard projectName="SmartCity"></ShowcaseProjectLargeCard>
+					<ShowcaseProjectLargeCard projectName="ALIVEmind"></ShowcaseProjectLargeCard>
+					<div className="mt-8 flex justify-center">
+						<HomeButton onClick={() => goToElement(moreProjectsRef)}>
+							{t('home.iot.to_more_projects')}
+						</HomeButton>
+					</div>
 				</div>
 
-				<IoTHomeSeparator ref={getStartedRef} title={'Commencer à apprendre'} />
+				<IoTHomeSeparator
+					ref={getStartedRef}
+					title={t('home.iot.section.learn.title')}
+				/>
 				<p
 					className={
 						paragraphClassName +
 						' mt-8 px-0 tablet:px-4 laptop:px-10 desktop:px-28'
 					}
 				>
-					Apprends la théorie et la pratique de l'IoT. Suis une ou plusieurs
-					formations complètes offertes par ALIVEcode qui t'apprendront tout ce
-					qui t'est requis afin de commencer à développer tes propres projets
-					IoT. L'électronique, les protocoles de communication, les bases de
-					données, l'IA, l'interfaçage, etc.
+					{t('home.iot.section.learn.desc')}
 				</p>
 
 				<FeaturedCourseContainer
-					className="mt-12"
-					title="Cours offerts par ALIVEcode"
+					className="my-12"
+					title={t('home.iot.section.learn.by_alivecode')}
 					featuring={SUBJECTS.IOT}
 					featuringFrom="alivecode"
 					dark
 				/>
+				{/*
 				<FeaturedCourseContainer
 					className="mt-12 mb-12"
 					title="Cours offerts par la communauté"
@@ -151,50 +153,40 @@ const IoTHome = (props: iotHomeProps) => {
 					featuringFrom="public"
 					dark
 				/>
-				<IoTHomeSeparator title={'Les étapes à suivre'} />
+				 */}
+				<IoTHomeSeparator title={t('home.iot.section.steps.title')} />
 				<IoTStepSection
-					title={'Conception des objets connectés*'}
-					text={t('home.iot.section.develop.desc')}
+					title={t('home.iot.section.steps.elements.0.title')}
+					text={t('home.iot.section.steps.elements.0.desc')}
 					img={ConstructionFeux}
 					imgAlt="ALIVEcode's internet of things interface"
 				/>
+				<div className="mt-2 text-gray-300">
+					{t('home.iot.section.steps.elements.0.optional')}
+				</div>
 				<IoTStepSection
-					title={'Connection et visualisation'}
-					text={t('home.iot.section.develop.desc')}
+					title={t('home.iot.section.steps.elements.1.title')}
+					text={t('home.iot.section.steps.elements.1.desc')}
 					img={VilleIntelligenteInterface}
 					imgAlt="ALIVEcode's internet of things interface"
 				/>
 				<IoTStepSection
-					title={'Contrôle de l’écosystème'}
-					text={t('home.iot.section.develop.desc')}
+					title={t('home.iot.section.steps.elements.2.title')}
+					text={t('home.iot.section.steps.elements.2.desc')}
 					img={CodeAS}
 					imgAlt="ALIVEcode's internet of things interface"
 				/>
-				<IoTHomeSeparator title={'Plus de projets'} className="mt-16" />
-				{/*
-				<HomeSection
-					ref={getStartedRef}
-					title={t('home.iot.section.develop.title')}
-					text={t('home.iot.section.develop.desc')}
-					img={VilleIntelligenteInterface}
-					imgAlt="ALIVEcode's internet of things interface"
-					button={t('home.iot.to_dashboard')}
-					to={routes.auth.dashboard.path + '/iot'}
-					imgOpacity={0.8}
+				<IoTHomeSeparator
+					title={t('home.iot.section.more_projects.title')}
+					ref={moreProjectsRef}
 				/>
-				<HomeSection
-					reverse
-					title={t('home.iot.section.learn.title')}
-					text={t('home.iot.section.learn.desc')}
-					img={ConstructionFeux}
-					imgAlt="ALIVEcode's internet of things interface"
-					button={t('home.iot.to_trainings')}
-					to={routes.auth.classroom_browse.path}
-					imgOpacity={0.8}
+				<ShowcaseProjectGallery
+					className="mt-12 mb-16"
+					nbItems={6}
+					subject={SUBJECTS.IOT}
 				/>
-				*/}
 			</div>
-			<Footer className="!mt-4"></Footer>
+			<Footer className="!mt-3"></Footer>
 		</StyledHome>
 	);
 };
@@ -206,36 +198,12 @@ const IoTHomeSeparator = forwardRef<
 	{ title: string; className?: string }
 >(({ title, className }, ref) => {
 	return (
-		<div className={'text-center ' + className} ref={ref}>
+		<div className={'text-center mt-32 ' + className} ref={ref}>
 			<label className="text-3xl tablet:text-5xl">{title}</label>
 			<div className="m-auto w-1/2 border-b-2 mt-4 border-[color:var(--fg-shade-two-color)]"></div>
 		</div>
 	);
 });
-
-const IoTFeaturedProjectBig = ({
-	title,
-	youtubeVideoId,
-}: {
-	title: string;
-	youtubeVideoId: string;
-}) => {
-	return (
-		<>
-			<div className="tracking-widest mt-8 mb-4 text-xl tablet:text-2xl">
-				{title}
-			</div>
-			<iframe
-				className="m-auto w-full aspect-video mb-16"
-				src={`https://youtube.com/embed/${youtubeVideoId}`}
-				title="YouTube video player"
-				frameBorder="0"
-				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-				allowFullScreen
-			/>
-		</>
-	);
-};
 
 export type HomeSectionProps = {
 	title: string;

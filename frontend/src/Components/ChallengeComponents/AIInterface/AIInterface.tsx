@@ -170,6 +170,7 @@ const AIInterface = ({
 				</div>
 				{tabs[0].open ? (
 					<div className="ai-display w-full overflow-auto">
+					
 						<ChallengeTable
 							data={data}
 							isData={true}

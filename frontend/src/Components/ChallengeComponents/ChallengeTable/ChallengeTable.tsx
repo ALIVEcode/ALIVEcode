@@ -403,14 +403,14 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 			inputArray.push(
 				<div className="input-container my-1">
 					<button
-						className="button1"
+						className="w-5/12 mx-0.5 rounded-full text-white text-base font-medium transition-colors hover:bg-[color:var(--contrast-color)] bg-[color:var(--primary-color)] btn-clearCmdLines"
 						onClick={e => layer(true, key)}
 					>
 						{' '}
 						+{' '}
 					</button>
 					<button
-						className="w-5/12 mx-0.5 rounded-md text-white text-base font-medium transition-colors hover:bg-[color:var(--contrast-color)] bg-[color:var(--primary-color)] btn-clearCmdLines"
+						className="w-5/12 mx-0.5 rounded-full text-white text-base font-medium transition-colors hover:bg-[color:var(--contrast-color)] bg-[color:var(--primary-color)] btn-clearCmdLines"
 						onClick={e => layer(false, key)}
 					>
 						{' '}

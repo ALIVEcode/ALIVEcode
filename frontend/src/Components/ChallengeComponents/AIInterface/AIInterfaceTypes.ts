@@ -66,21 +66,21 @@ export const StyledAIInterface = styled.div`
 			: 'color: var(--foreground-color)'}
 
 	.bg {
-		background-color: var(--bg-shade-one-color);
+		background-color: #f6f7f7 /*var(--bg-shade-one-color)*/;
 	}
 
 	.ai-tabs {
 		display: flex;
 		height: 12%;
 		max-height: 5.5vh;
-		background-color: var(--bg-shade-two-color);
+		background-color:  var(--bg-shade-two-color);
 	}
 
 	.ai-display {
 		height: 90%;
-		background-color: #2c75ff; /* color of the background */
-  		
-  
+		background-color: #f0f0f1; /* color of the background */
+		
+  	
 	}
 
 	.header {
@@ -88,7 +88,8 @@ export const StyledAIInterface = styled.div`
 		font-size: 25px;
 		padding: 10px;
 		font-weight: bold;
-		color: #2c75ff;
+		color: black /*#8c8f94*/;
+		text-decoration: underline; 
 	}
 	
 
@@ -97,17 +98,17 @@ export const StyledAIInterface = styled.div`
 		align-items: center;
 		height: max-content;
 		margin-right: 0.5vw;
-		color: var(--foreground-color);
+		color:  var(--foreground-color);
 	}
 
 	.dropdown {
 		font-size: 12px;
 		width: 100%;
 		border-width: 2px;
-		border-color: var(--bg-shade-four-color);
-		background-color: var(--bg-shade-one-color);
+		border-color: rgb(59 130 246 / 0.5);
+		background-color: rgb(59 130 246 / 0.5);
 		margin-top: 50%;
-		margin-bottom: 50%;
+		margin-bottom: 50%;	
 	}
 
 	.head-text {
@@ -120,5 +121,6 @@ export const StyledAIInterface = styled.div`
 		text-align: right;
 		display: inline-block;
 		font-weight: 700;
+		color: black ; 
 	}
 `;

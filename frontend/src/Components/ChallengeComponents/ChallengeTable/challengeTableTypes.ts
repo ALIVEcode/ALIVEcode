@@ -87,28 +87,30 @@ export const StyledChallengeTable = styled.div`
 	.body {
 		font-size: 11px;
 		border-style: none;
-		color: #318ce7;
+		color: #0066CC;
 		text-align: center;
 		margin-bottom: 0;
 		width: 100%;
+		
 		
 
 	}
 
 	.titles {
-		background-color: whitesmoke;
+		background-color: #2E75FF; 
 		border-left: 0.1vh solid ;
 		border-right: 0.1vh solid ;
 		border-top: 0.1vh solid;
 		padding: 5px;
 		position: sticky;
 		top: 0;
-		border-color: #318ce7;
+		border-color: #0066CC;
 		
 	}
 
 	.data-header {
 		height: 80px;
+	
 	}
 
 	.param-name {
@@ -118,18 +120,18 @@ export const StyledChallengeTable = styled.div`
 		font-weight: bolder;
 	}
 
-	.titles hyperparam-header {
-		color:#4EC5F1
-	}
+	
 	.hyperparam-header {
 		height: 40px;
 		font-size: 20px;
 		font-weight: bolder;
+		color : white; 
+		
 	
 	}
 
 	.data {
-		background-color: var(--tableback-color);
+		background-color: #f1f5f9;
 		/*border: 0.1vh solid var(--databack-color);*/
 		border-left: 0.1vh solid ;
 		border-right: 0.1vh solid ;
@@ -145,6 +147,8 @@ export const StyledChallengeTable = styled.div`
 		border-left: 0.1vh solid ;
 		border-right: 0.1vh solid ;
 		border-top: 0.1vh solid;
+		background-color: #f1f5f9;
+
 	}
 
 	.data-number {
@@ -154,36 +158,39 @@ export const StyledChallengeTable = styled.div`
 	.hyperparam-name {
 		font-weight: bold;
 		font-size: 14px;
+	
 	}
 
 	.inputs {
 		background-color: var(--tableback-color);
 		text-align: center;
-		border: 2px solid var(--secondary-color);
+		border: 2px solid white;
 		border-radius: 6px;
 		font-size: 12px;
 		padding: 2px;
 	}
-
+	
 	td {
 		padding: 6px;
 		text-align: center;
 		justify-content: center;
 		font-size: 14px;
+		border: #0066CC;
+		
 	}
 
 	.input-header {
-		background-color: cyan;
+		background-color: #b8e6bf/*a compléter*/ ;
 	}
 
 	.input-data {
-		background-color: var(--input-data-color);
+		background-color: #b8e6bf ;
 	}
 
 	.output-data {
 		background-color: var(--output-data-color);
 	}
-	.button1 {
+	/*.button1 {
 	width: 41.666667%;
 	border-radius: 15px 50px; 
  	font-size:  16px ;
@@ -197,7 +204,7 @@ export const StyledChallengeTable = styled.div`
 	background-color, border-color, text-decoration-color, fill, stroke;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
-	background-color: var(--contrast-color);
+	background-color: var(--contrast-color);*/
 
 	}
 	.output-header {

@@ -66,7 +66,7 @@ export const StyledAIInterface = styled.div`
 			: 'color: var(--foreground-color)'}
 
 	.bg {
-		background-color: #f6f7f7 /*var(--bg-shade-one-color)*/;
+		background-color: #2e75ff /*var(--bg-shade-one-color)*/;
 	}
 
 	.ai-tabs {
@@ -74,13 +74,14 @@ export const StyledAIInterface = styled.div`
 		height: 12%;
 		max-height: 5.5vh;
 		background-color:  var(--bg-shade-two-color);
+		
 	}
 
 	.ai-display {
 		height: 90%;
 		background-color: #f0f0f1; /* color of the background */
+		/*justify-content: space-between;*/
 		
-  	
 	}
 
 	.header {

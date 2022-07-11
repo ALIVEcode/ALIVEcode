@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { CourseContainerProps } from './courseContainerTypes';
+import { FeaturedCourseContainerProps } from './featuredCourseContainerTypes';
 import {
 	faArrowRight,
 	faTimes,
@@ -24,7 +24,7 @@ const FeaturedCourseContainer = ({
 	dismiss,
 	link,
 	...props
-}: CourseContainerProps) => {
+}: FeaturedCourseContainerProps) => {
 	const [fetchedCourses, setFetchedCourses] = useState<Course[]>();
 	const carouselRef = useRef<Carousel>(null);
 	const view = useView();
@@ -59,13 +59,13 @@ const FeaturedCourseContainer = ({
 	return (
 		<div
 			className={classNames(
-				'rounded-xl p-4 border border-[color:var(--bg-shade-four-color)] w-full overflow-x-auto',
+				'rounded-lg border border-[color:var(--bg-shade-four-color)] w-full overflow-x-auto',
 				dark ? 'bg-[color:#242424]' : 'bg-[color:var(--background-color)]',
 				className,
 			)}
 		>
-			<div className="flex justify-between mb-2">
-				<div className="text-lg">{title}</div>
+			<div className="flex p-4 justify-between border-b border-[color:var(--bg-shade-four-color)]">
+				<div>{title}</div>
 				<div className="flex flex-row items-center gap-4">
 					{link && <Link to={link.to}>{link.title}</Link>}
 					{dismiss && link && (
@@ -76,7 +76,7 @@ const FeaturedCourseContainer = ({
 					{dismiss && <FontAwesomeIcon icon={faTimes} />}
 				</div>
 			</div>
-			<div className="p-2">
+			<div className="p-4">
 				{courses ? (
 					<Carousel
 						ref={carouselRef}
@@ -129,7 +129,7 @@ const FeaturedCourseContainer = ({
 						))}
 					</Carousel>
 				) : (
-					<LoadingScreen></LoadingScreen>
+					<LoadingScreen relative></LoadingScreen>
 				)}
 			</div>
 		</div>

@@ -4,7 +4,7 @@ import { FeaturingQueryDTO } from '../../../Models/Course/dto/FeaturingQuery.dto
 
 export type FeaturingCoursesFrom = 'alivecode' | 'public' | 'both';
 
-export type CourseContainerProps = {
+export type FeaturedCourseContainerProps = {
 	title: string;
 	dark?: boolean;
 	className?: string;

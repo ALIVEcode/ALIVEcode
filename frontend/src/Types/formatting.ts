@@ -1,4 +1,4 @@
-import { TFunction } from "i18next";
+import { TFunction } from 'i18next';
 
 export const prettyField = (field: string) => {
 	return field
@@ -7,7 +7,16 @@ export const prettyField = (field: string) => {
 		.join(' ');
 };
 
-export const formatDate = (date: Date, t: TFunction) => {
+type formatDateOptions = {
+	hideTime?: boolean;
+	hideDay?: boolean;
+};
+
+export const formatDate = (
+	date: Date,
+	t: TFunction,
+	options?: formatDateOptions,
+) => {
 	const year = date.getFullYear();
 	const month = date.getMonth();
 	const dayOfWeek = date.getDay();
@@ -15,14 +24,21 @@ export const formatDate = (date: Date, t: TFunction) => {
 	const hour = date.getHours();
 	const minute = date.getMinutes();
 
-	return t('msg.time.format', {
+	const replaceObj = {
 		dayName: t(`msg.time.day.${dayOfWeek.toString()}`),
 		monthName: t(`msg.time.month.${month.toString()}`),
 		day,
 		hour,
 		minute: minute <= 9 ? `0${minute}` : minute,
 		year,
-	});
+	};
+
+	if (options?.hideTime && options?.hideDay)
+		return t('msg.time.format_no_time_and_day', replaceObj);
+	if (options?.hideTime) return t('msg.time.format_no_time', replaceObj);
+	if (options?.hideDay) return t('msg.time.format_no_day', replaceObj);
+
+	return t('msg.time.format', replaceObj);
 };
 
 export const formatTooLong = (text: string, maxLength: number = 20) => {

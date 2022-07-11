@@ -3,6 +3,7 @@ import { Column, ChildEntity, ManyToOne, JoinColumn } from 'typeorm';
 import { IsOptional } from 'class-validator';
 import { AIDatasetEntity } from '../../../ai/entities/ai_dataset.entity';
 import { MODEL_TYPES } from '../../../ai/entities/ai_model.entity';
+import { Exclude } from 'class-transformer';
 
 @ChildEntity(CHALLENGE_TYPE.AI)
 export class ChallengeAIEntity extends ChallengeEntity {
@@ -28,6 +29,7 @@ export class ChallengeAIEntity extends ChallengeEntity {
 
   @ManyToOne(() => AIDatasetEntity, { nullable: false })
   @JoinColumn({ name: 'datasetId' })
+  @Exclude({ toClassOnly: true })
   dataset: AIDatasetEntity;
 
   @Column({ name: 'datasetId', type: 'varchar', nullable: false })

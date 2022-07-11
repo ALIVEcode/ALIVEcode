@@ -13,7 +13,7 @@ import RichTextEditor from '../../RichTextComponents/RichTextEditor/RichTextEdit
 import { Descendant } from 'slate';
 import Button from '../../UtilsComponents/Buttons/Button';
 import { useTranslation } from 'react-i18next';
-import ActivityVideo, { parseVideoURL } from './ActivityVideo';
+import ActivityVideo from './ActivityVideo';
 import ActivityPdf from './ActivityPdf';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ActivityProps } from './activityTypes';
@@ -44,6 +44,7 @@ import Link from '../../UtilsComponents/Link/Link';
 import AlertConfirm from '../../UtilsComponents/Alert/AlertConfirm/AlertConfirm';
 import ActivityWord from './ActivityWord';
 import { ActivityWord as ActivityWordModel } from '../../../Models/Course/activities/activity_word.entity';
+import { parseVideoURL } from '../../UtilsComponents/EmbeddedVideo/EmbeddedVideo';
 
 /**
  * Shows the opened activity. Renders different component depending on the type of the activity opened.

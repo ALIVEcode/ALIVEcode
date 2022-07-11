@@ -12,14 +12,8 @@ export const StyledCourseCard = styled.div`
 	box-sizing: border-box;
 	width: 180px;
 	height: 145px;
-
-	background-color: ${({ theme }) =>
-		theme.name === 'light'
-			? 'var(--background-color);'
-			: 'var(--bg-shade-one-color);'};
+	background-color: white;
 	border-radius: 10px;
-	margin-left: auto;
-	margin-right: auto;
 	cursor: pointer;
 
 	.top-card {

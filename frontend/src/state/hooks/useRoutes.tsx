@@ -44,6 +44,7 @@ import Dashboard from '../../Pages/Dashboard/Dashboard';
 import ClassroomBrowse from '../../Components/ClassroomComponents/ClassroomBrowse/ClassroomBrowse';
 import { UnderDevelopment } from '../../Pages/Errors/UnderDevelopment/UnderDevelopment';
 import BundleBrowse from '../../Components/Bundles/BundleBrowse/BundleBrowse';
+import ShowcaseProjectPage from '../../Pages/ShowcaseProjectPage/ShowcaseProjectPage';
 
 export interface Route {
 	path: string;
@@ -227,6 +228,10 @@ const useRoutes = () => {
 			path: '/quiz/play/:id',
 			component: <QuizPlay></QuizPlay>,
 			adminOnly: true,
+		},
+		showcase_project: {
+			path: '/showcase/projects/:name',
+			component: <ShowcaseProjectPage></ShowcaseProjectPage>,
 		},
 	});
 

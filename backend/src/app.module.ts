@@ -44,6 +44,10 @@ import { TopicsModule } from './models/social/topics/topics.module';
 import { AdminModule } from '@adminjs/nestjs';
 import { ResourceModule } from './models/resource/resource.module';
 import { FeedbacksModule } from './models/feedbacks/feedbacks.module';
+import { AiController } from './models/ai/ai.controller';
+import { AiModule } from './models/ai/ai.module';
+import { AiService } from './models/ai/ai.service';
+import { ShowcaseProjectModule } from './models/showcase-project/showcase-project.module';
 
 adminjs.registerAdapter({ Database, Resource });
 
@@ -96,9 +100,11 @@ adminjs.registerAdapter({ Database, Resource });
     TopicsModule,
     ResourceModule,
     FeedbacksModule,
+    AiModule,
+    ShowcaseProjectModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, MaintenanceService, UserService],
+  controllers: [AppController, AiController],
+  providers: [AppService, MaintenanceService, UserService, AiService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer): void {

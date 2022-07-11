@@ -21,6 +21,7 @@ import AlertConfirm from '../../../Components/UtilsComponents/Alert/AlertConfirm
 import LoadingScreen from '../../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
 import FeaturedCourseContainer from '../../../Components/CourseComponents/FeaturedCourseContainer/FeaturedCourseContainer';
 import { SUBJECTS } from '../../../Types/sharedTypes';
+import ShowcaseProjectGallery from '../../../Components/MainComponents/ShowcaseProjectGallery/ShowcaseProjectGallery';
 
 /**
  * IoT dashboard page that contains all the projects, objects and stuff of the user
@@ -121,7 +122,7 @@ const IoTDashboard = (props: iotDashboardProps) => {
 			<div className="border-b w-1/3 border-[color:var(--bg-shade-four-color)]" />
 			<div className="w-full h-full py-4">
 				<div className="w-full mb-8 bg-[color:var(--background-color)] border rounded-lg border-[color:var(--bg-shade-four-color)]">
-					<div className="flex items-center justify-between px-4 py-2 border-b border-[color:var(--bg-shade-four-color)]">
+					<div className="flex items-center flex-col tablet:flex-row tablet:justify-between px-4 py-2 border-b border-[color:var(--bg-shade-four-color)]">
 						<div className="flex items-center">
 							{t('dashboard.iot.projects')}{' '}
 							<Info.Icon
@@ -133,7 +134,7 @@ const IoTDashboard = (props: iotDashboardProps) => {
 								<Info.Box useDefaultStyle text={t('help.iot.project')} />
 							</Info.Icon>
 						</div>
-						<div className="flex flex-row items-center tracking-wide gap-4">
+						<div className="flex flex-col tablet:flex-row items-center tracking-wide gap-2 tablet:gap-4">
 							<Link onClick={handleProjectCreation}>
 								{t('dashboard.iot.create_project')}
 							</Link>
@@ -156,9 +157,11 @@ const IoTDashboard = (props: iotDashboardProps) => {
 								/>
 							))
 						) : (
-							<div className="flex h-full justify-center items-center px-4 py-2 text-[color:var(--fg-shade-four-color)]">
+							<div className="flex h-full justify-center items-center px-4 py-2 text-[color:var(--fg-shade-four-color)] text-center">
 								<div>
-									{t('dashboard.iot.no_project')}.{' '}
+									<label className="block tablet:inline">
+										{t('dashboard.iot.no_project')}.{' '}
+									</label>
 									<Link onClick={handleProjectCreation}>
 										{t('dashboard.iot.create_project')}
 									</Link>
@@ -168,7 +171,7 @@ const IoTDashboard = (props: iotDashboardProps) => {
 					</div>
 				</div>
 				<div className="w-full overflow-y-auto mb-8 bg-[color:var(--background-color)] border rounded-lg border-[color:var(--bg-shade-four-color)]">
-					<div className="flex items-center justify-between px-4 py-2 border-b border-[color:var(--bg-shade-four-color)]">
+					<div className="flex items-center flex-col tablet:flex-row tablet:justify-between px-4 py-2 border-b border-[color:var(--bg-shade-four-color)]">
 						<div className="flex items-center">
 							{t('dashboard.iot.objects')}
 							<Info.Icon
@@ -180,7 +183,7 @@ const IoTDashboard = (props: iotDashboardProps) => {
 								<Info.Box useDefaultStyle text={t('help.iot.object')} />
 							</Info.Icon>
 						</div>
-						<div className="flex flex-row items-center tracking-wide gap-4">
+						<div className="flex flex-col tablet:flex-row items-center tracking-wide gap-2 tablet:gap-4">
 							<Link onClick={handleObjectCreation}>
 								{t('dashboard.iot.create_object')}
 							</Link>
@@ -205,9 +208,11 @@ const IoTDashboard = (props: iotDashboardProps) => {
 								/>
 							))
 						) : (
-							<div className="flex h-full justify-center items-center px-4 py-2 text-[color:var(--fg-shade-four-color)]">
+							<div className="flex h-full justify-center items-center px-4 py-2 text-[color:var(--fg-shade-four-color)] text-center">
 								<div>
-									{t('dashboard.iot.no_object')}.{' '}
+									<label className="block tablet:inline">
+										{t('dashboard.iot.no_object')}.{' '}
+									</label>
 									<Link onClick={handleObjectCreation}>
 										{t('dashboard.iot.create_object')}
 									</Link>
@@ -221,6 +226,15 @@ const IoTDashboard = (props: iotDashboardProps) => {
 					title={t('home.iot.section.learn.by_alivecode')}
 					featuring={SUBJECTS.IOT}
 					featuringFrom="alivecode"
+				/>
+				<div className="text-lg mt-6">
+					{t('dashboard.iot.showcase_projects')}
+				</div>
+				<div className="border-b w-1/3 border-[color:var(--bg-shade-four-color)]" />
+				<ShowcaseProjectGallery
+					className="mt-4"
+					nbItems={6}
+					subject={SUBJECTS.IOT}
 				/>
 				<div className="">&nbsp;</div>
 			</div>

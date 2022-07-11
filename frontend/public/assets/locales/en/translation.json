@@ -260,7 +260,8 @@
 			"no_object": "You have no IoT Object",
 			"no_project": "You have no IoT Projects",
 			"create_project": "Create a new IoT project",
-			"create_object": "Create a new IoT object"
+			"create_object": "Create a new IoT object",
+			"showcase_projects": "Showcased projects"
 		},
 		"classrooms": {
 			"title": "Classrooms",
@@ -478,8 +479,8 @@
 		"iot": {
 			"desc": "IoT has never been easier",
 			"start_learning": "Start learning!",
-			"to_home_page": "See more featured projects",
-			"to_more_projects": "See more featured projects",
+			"to_home_page": "See more showcased projects",
+			"to_more_projects": "See more showcased projects",
 			"to_dashboard": "Access your Dashboard",
 			"to_trainings": "To Trainings",
 			"summary": "ALIVEIoT is the branch of ALIVEcode created for the learning of the Internet of Things, an area of computer science that has little to no resources at a college level. The branch ALIVEIoT uses innovative tools and is designed in a way to simplify learning and scientific research. Those tools allow, among others:",

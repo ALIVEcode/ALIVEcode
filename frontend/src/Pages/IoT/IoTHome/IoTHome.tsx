@@ -180,7 +180,11 @@ const IoTHome = (props: iotHomeProps) => {
 					title={t('home.iot.section.more_projects.title')}
 					ref={moreProjectsRef}
 				/>
-				<ShowcaseProjectGallery nbItems={6} subject={SUBJECTS.IOT} />
+				<ShowcaseProjectGallery
+					className="mt-12 mb-16"
+					nbItems={6}
+					subject={SUBJECTS.IOT}
+				/>
 			</div>
 			<Footer className="!mt-3"></Footer>
 		</StyledHome>

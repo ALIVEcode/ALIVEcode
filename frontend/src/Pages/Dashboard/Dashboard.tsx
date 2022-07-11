@@ -350,7 +350,7 @@ const Dashboard = (props: DashboardProps) => {
 		<StyledDashboard>
 			<DashboardContext.Provider value={ctx}>
 				<div className="flex h-full overflow-auto">
-					<div className="sidebar overflow-y-auto break-words no-float w-1/2 tablet:w-1/4">
+					<div className="sidebar overflow-y-auto break-words no-float w-1/3 tablet:w-1/4">
 						<div
 							ref={recentCourseTabRef}
 							className={
@@ -511,7 +511,7 @@ const Dashboard = (props: DashboardProps) => {
 							</>
 						)}
 					</div>
-					<div className="w-1/2 tablet:w-3/4 h-full overflow-y-auto">
+					<div className="w-2/3 tablet:w-3/4 h-full overflow-y-auto">
 						{renderTabSelected()}
 					</div>
 				</div>

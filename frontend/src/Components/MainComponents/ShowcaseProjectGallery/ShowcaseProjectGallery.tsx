@@ -9,6 +9,7 @@ import ShowcaseProjectCard from '../ShowcaseProjectCard/ShowcaseProjectCard';
 const ShowcaseProjectGallery = ({
 	nbItems,
 	subject,
+	className,
 }: ShowcaseProjectGalleryProps) => {
 	const [projects, setProjects] = useState<ShowcaseProject[]>();
 
@@ -28,10 +29,11 @@ const ShowcaseProjectGallery = ({
 	return (
 		<div
 			className={classNames(
-				'grid gap-10 mt-12 place-items-center',
+				'grid gap-10 place-items-center',
 				'grid-cols-1',
 				'tablet:grid-cols-2',
 				'laptop:grid-cols-3',
+				className,
 			)}
 		>
 			{projects.map((p, idx) => (

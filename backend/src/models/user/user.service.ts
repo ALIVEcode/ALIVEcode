@@ -182,6 +182,7 @@ export class UserService {
   }
 
   async accessCourse(user: UserEntity, course: CourseEntity) {
+    console.log('Course accessed! ' + user.email);
     let courseHistory = await this.courseHistoryRepo
       .createQueryBuilder('course_history')
       .leftJoinAndSelect('course_history.course', 'course')

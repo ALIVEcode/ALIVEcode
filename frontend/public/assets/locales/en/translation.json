@@ -477,17 +477,50 @@
 		"news": "News",
 		"iot": {
 			"desc": "IoT has never been easier",
+			"start_learning": "Start learning!",
 			"to_home_page": "See more featured projects",
-			"to_dashboard": "To Dashboard",
+			"to_more_projects": "See more featured projects",
+			"to_dashboard": "Access your Dashboard",
 			"to_trainings": "To Trainings",
+			"summary": "ALIVEIoT is the branch of ALIVEcode created for the learning of the Internet of Things, an area of computer science that has little to no resources at a college level. The branch ALIVEIoT uses innovative tools and is designed in a way to simplify learning and scientific research. Those tools allow, among others:",
+			"features_list": [
+				"Real-time visualization of data",
+				"Sharing of data between connected objects",
+				"Control of the connected objects using the programming language AliveScript"
+			],
 			"section": {
+				"featured_projects": {
+					"title": "Featured Projects"
+				},
+				"learn": {
+					"title": "Start learning",
+					"desc": "$t(home.section.training_iot.desc)",
+					"by_alivecode": "Courses offered by ALIVEcode"
+				},
+				"steps": {
+					"title": "Steps to follow",
+					"elements": [
+						{
+							"title": "Design the connected objects",
+							"desc": "Build your own connected objects with your electronic knowledge. Design them in such a way that they fit you and the usage you will make of them. Add sensors, actuators, and many electronic components to your connected object.",
+							"optional": "*Optional — ALIVEcode can provide some connected objects"
+						},
+						{
+							"title": "Connection and visualization",
+							"desc": "Register and connect your connected object to ALIVEcode. Create protocols on your connected object that are set to execute a set of actions. Create a custom graphical user interface that updates real-time with the data of your connected object."
+						},
+						{
+							"title": "Control your ecosystem",
+							"desc": "Write scripts to control or automate some systems of your connected ecosystem. Make your connected objects communicate between each other and share data. Code multiple scenarios to execute in order to have many demonstrations."
+						}
+					]
+				},
+				"more_projects": {
+					"title": "More projects"
+				},
 				"develop": {
 					"title": "Start Developing",
 					"desc": "Practice your notions of the Internet of Things by developing IoT Projects. Register your IoT Objects. Create a network of connected devices and establish communications between them. Collect and share data between those objects. Show in real-time your data in a graphical user interface."
-				},
-				"learn": {
-					"title": "Start Learning",
-					"desc": "$t(home.section.training_iot.desc)"
 				}
 			}
 		},
@@ -788,6 +821,10 @@
 			"next": "Next",
 			"previous": "Previous"
 		},
+		"iot": {
+			"project": "IoTProjects are connected ecosystems in which IoTObjects are connected and where they can communicate between each other.",
+			"object": "IoTObjects are your connected objects registered on ALIVEcode. They have an id to identify them and you can connect them in an IoTProject to utilize them."
+		},
 		"activity": {
 			"TH": "Activity that displays some theory for the course in a styled text document.",
 			"PF": "Activity for viewing a pdf file.",
@@ -807,12 +844,14 @@
 				"recent_courses": "Here you can find the most recent courses you've been in",
 				"challenges": "Here you can find your created challenges",
 				"resources": "Here you can find, modify, delete and create your resources",
+				"iot": "Here you can find and manage everything IoT related.",
 				"create_classroom": "Here you can find your classrooms",
 				"create_course": "Here you can find all your created courses"
 			},
 			"views": {
 				"recent_courses": "This view lets you access quickly where you last left off. You can see your courses sorted by the last time you went inside of it.",
-				"challenges": "This view is where all your challenges are stored. You can see all your challenges here and also create new ones, modify existing ones and deleting the ones you don't want."
+				"challenges": "This view is where all your challenges are stored. You can see all your challenges here and also create new ones, modify existing ones and deleting the ones you don't want.",
+				"iot": "This view is where all your IoTObjects and IoTProjects are centralized. $t(help.iot.project)"
 			}
 		},
 		"course_layout": {

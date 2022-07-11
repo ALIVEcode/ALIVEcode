@@ -140,10 +140,8 @@ const Dashboard = (props: DashboardProps) => {
 	 */
 	const loadRecentCourses = async () => {
 		if (!user) return;
-		if (user.isProfessor()) {
-			await user.getRecentCourses();
-			forceUpdate();
-		}
+		await user.getRecentCourses();
+		forceUpdate();
 	};
 
 	/** Used to keep track of page state using the query parameters */
@@ -264,6 +262,7 @@ const Dashboard = (props: DashboardProps) => {
 					ref: iotTabRef.current,
 					infoBox: <Info.Box text={t('help.dashboard.tabs.iot')} />,
 					position: 'right center',
+					onEnter: openIoTDashboard,
 				},
 				{
 					ref: classroomsRef.current,

@@ -10,10 +10,12 @@ import { useTranslation } from 'react-i18next';
 import useView from '../../../state/hooks/useView';
 import { forwardRef, MutableRefObject, useRef } from 'react';
 import { classNames } from '../../../Types/utils';
-import FeaturedCourseContainer from '../../../Components/CourseComponents/CourseContainer/CourseContainer';
+import FeaturedCourseContainer from '../../../Components/CourseComponents/FeaturedCourseContainer/FeaturedCourseContainer';
 import { SUBJECTS } from '../../../Types/sharedTypes';
 import ShowcaseProjectGallery from '../../../Components/MainComponents/ShowcaseProjectGallery/ShowcaseProjectGallery';
 import ShowcaseProjectLargeCard from '../../../Components/MainComponents/ShowcaseProjectLargeCard/ShowcaseProjectLargeCard';
+import useRoutes from '../../../state/hooks/useRoutes';
+import Link from '../../../Components/UtilsComponents/Link/Link';
 
 const StyledHome = styled.div`
 	.tech-slideshow {
@@ -58,6 +60,7 @@ const IoTHome = (props: iotHomeProps) => {
 	const moreProjectsRef = useRef<HTMLDivElement | null>(null);
 	const view = useView();
 	const { t } = useTranslation();
+	const { routes } = useRoutes();
 
 	const paragraphClassName =
 		'text-center text-base tablet:text-lg leading-loose tracking-wider';
@@ -88,30 +91,30 @@ const IoTHome = (props: iotHomeProps) => {
 						<div className="text-2xl laptop:text-3xl desktop:text-4xl text-gray-200 font-extralight mb-10">
 							{t('home.iot.desc')}
 						</div>
-						<HomeButton onClick={() => goToElement(getStartedRef)}>
-							{t('home.get_started')}
+						<HomeButton
+							className="mb-2 block m-auto laptop:m-0 laptop:inline laptop:mr-4"
+							onClick={() => goToElement(getStartedRef)}
+						>
+							{t('home.iot.start_learning')}
 						</HomeButton>
+						<Link to={routes.auth.dashboard.path + '/iot'}>
+							{t('home.iot.to_dashboard')}
+						</Link>
 					</div>
 				</div>
 			</div>
 
 			<div className="text-gray-50 relative w-full h-full px-10 tablet:px-18 laptop:px-16 desktop:px-32">
-				<p className={paragraphClassName + ' mt-32'}>
-					ALIVEIoT est la branche d’ALIVEcode servant à l’apprentissage de
-					l’Internet des Objets, un domaine de l’informatique possédant très peu
-					de ressources au niveau collégial. La branche ALIVEIoT utilise des
-					outils novateurs et conçus dans le but de simplifier l’apprentissage
-					et la recherche scientifique. Ces outils permettent notamment:
-				</p>
+				<p className={paragraphClassName + ' mt-32'}>{t('home.iot.summary')}</p>
 				<ul className="text-center text-gray-300 mt-8 leading-loose tracking-wider mb-32">
-					<li>La visualisation de données en temps réel</li>
-					<li>Le partage de donneés entre objets connectés</li>
-					<li>
-						Le contrôle d’objets connectés à l’aide du langage AliveScript
-					</li>
+					<li>{t('home.iot.features_list.0')}</li>
+					<li>{t('home.iot.features_list.1')}</li>
+					<li>{t('home.iot.features_list.2')}</li>
 				</ul>
 
-				<IoTHomeSeparator title={'Projets en vedette'} />
+				<IoTHomeSeparator
+					title={t('home.iot.section.featured_projects.title')}
+				/>
 				<div className="px-0 tablet:px-4 laptop:px-10 desktop:px-28">
 					<ShowcaseProjectLargeCard projectName="SmartCity"></ShowcaseProjectLargeCard>
 					<ShowcaseProjectLargeCard projectName="ALIVEmind"></ShowcaseProjectLargeCard>
@@ -122,23 +125,22 @@ const IoTHome = (props: iotHomeProps) => {
 					</div>
 				</div>
 
-				<IoTHomeSeparator ref={getStartedRef} title={'Commencer à apprendre'} />
+				<IoTHomeSeparator
+					ref={getStartedRef}
+					title={t('home.iot.section.learn.title')}
+				/>
 				<p
 					className={
 						paragraphClassName +
 						' mt-8 px-0 tablet:px-4 laptop:px-10 desktop:px-28'
 					}
 				>
-					Apprends la théorie et la pratique de l'IoT. Suis une ou plusieurs
-					formations complètes offertes par ALIVEcode qui t'apprendront tout ce
-					qui t'est requis afin de commencer à développer tes propres projets
-					IoT. L'électronique, les protocoles de communication, les bases de
-					données, l'IA, l'interfaçage, etc.
+					{t('home.iot.section.learn.desc')}
 				</p>
 
 				<FeaturedCourseContainer
 					className="my-12"
-					title="Cours offerts par ALIVEcode"
+					title={t('home.iot.section.learn.by_alivecode')}
 					featuring={SUBJECTS.IOT}
 					featuringFrom="alivecode"
 					dark
@@ -152,29 +154,35 @@ const IoTHome = (props: iotHomeProps) => {
 					dark
 				/>
 				 */}
-				<IoTHomeSeparator title={'Les étapes à suivre'} />
+				<IoTHomeSeparator title={t('home.iot.section.steps.title')} />
 				<IoTStepSection
-					title={'Conception des objets connectés*'}
-					text={t('home.iot.section.develop.desc')}
+					title={t('home.iot.section.steps.elements.0.title')}
+					text={t('home.iot.section.steps.elements.0.desc')}
 					img={ConstructionFeux}
 					imgAlt="ALIVEcode's internet of things interface"
 				/>
+				<div className="mt-2 text-gray-300">
+					{t('home.iot.section.steps.elements.0.optional')}
+				</div>
 				<IoTStepSection
-					title={'Connection et visualisation'}
-					text={t('home.iot.section.develop.desc')}
+					title={t('home.iot.section.steps.elements.1.title')}
+					text={t('home.iot.section.steps.elements.1.desc')}
 					img={VilleIntelligenteInterface}
 					imgAlt="ALIVEcode's internet of things interface"
 				/>
 				<IoTStepSection
-					title={'Contrôle de l’écosystème'}
-					text={t('home.iot.section.develop.desc')}
+					title={t('home.iot.section.steps.elements.2.title')}
+					text={t('home.iot.section.steps.elements.2.desc')}
 					img={CodeAS}
 					imgAlt="ALIVEcode's internet of things interface"
 				/>
-				<IoTHomeSeparator title={'Plus de projets'} ref={moreProjectsRef} />
+				<IoTHomeSeparator
+					title={t('home.iot.section.more_projects.title')}
+					ref={moreProjectsRef}
+				/>
 				<ShowcaseProjectGallery nbItems={6} subject={SUBJECTS.IOT} />
 			</div>
-			<Footer className="!mt-4"></Footer>
+			<Footer className="!mt-3"></Footer>
 		</StyledHome>
 	);
 };

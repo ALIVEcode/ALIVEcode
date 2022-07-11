@@ -24,7 +24,7 @@ export class CourseAccess implements CanActivate {
     if (!courseId) throw new HttpException('Bad payload', HttpStatus.BAD_REQUEST);
 
     const user = this.req.user;
-    if (!user) throw new HttpException('You are not logged in', HttpStatus.UNAUTHORIZED);
+    if (!user) throw new HttpException('Not Authenticated', HttpStatus.UNAUTHORIZED);
 
     const course = await this.courseService.findOne(courseId);
 
@@ -77,7 +77,7 @@ export class CourseProfessor implements CanActivate {
     if (!courseId) throw new HttpException('Bad payload', HttpStatus.BAD_REQUEST);
 
     const user = this.req.user;
-    if (!user) throw new HttpException('You are not logged in', HttpStatus.UNAUTHORIZED);
+    if (!user) throw new HttpException('Not Authenticated', HttpStatus.UNAUTHORIZED);
 
     const course = await this.courseService.findOne(courseId);
 

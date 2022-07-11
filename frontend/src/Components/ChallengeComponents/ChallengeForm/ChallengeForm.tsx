@@ -13,10 +13,7 @@ import {
 import FormContainer from '../../UtilsComponents/FormContainer/FormContainer';
 import { ChallengeCode } from '../../../Models/Challenge/challenges/challenge_code.entity';
 import { ChallengeAI } from '../../../Models/Challenge/challenges/challenge_ai.entity';
-import {
-	IOT_CHALLENGE_TYPE,
-	ChallengeIoT,
-} from '../../../Models/Challenge/challenges/challenge_IoT.entity';
+import { ChallengeIoT } from '../../../Models/Challenge/challenges/challenge_iot.entity';
 import { FORM_ACTION, InputGroup } from '../../UtilsComponents/Form/formTypes';
 import { useState, useEffect, useContext } from 'react';
 import { IoTProject } from '../../../Models/Iot/IoTproject.entity';
@@ -333,13 +330,6 @@ const ChallengeForm = ({ type }: ChallengeFormProps) => {
 										display: p.name,
 									};
 								}),
-							},
-							{
-								name: 'iotType',
-								required: true,
-								inputType: 'select',
-								default: IOT_CHALLENGE_TYPE.UPDATING,
-								selectOptions: IOT_CHALLENGE_TYPE,
 							},
 							...sharedInputGroup,
 						]}

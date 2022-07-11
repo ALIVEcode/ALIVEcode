@@ -22,11 +22,11 @@ export type ChallengeTableProps = {
 	initData?: AIDataset;
 	isData: boolean;
 	ioCodes: number[];
-	activeIoCodes: number[]
+	activeIoCodes: number[];
 } & OneOf<
 	{
 		data: AIDataset;
-		handleIOChange: (activeNewIO: number[],newIO: number[]) => void;
+		handleIOChange: (activeNewIO: number[], newIO: number[]) => void;
 	},
 	{
 		hyperparams: Hyperparameters;
@@ -72,10 +72,10 @@ export const HyperparamID: any = {
 		name: 'Paramètres du modèle',
 		componant: 'input',
 	},
-	activation:{
+	activation: {
 		name: "Fonction d'activation",
 		componant: 'ACTIVATION_FUNCTIONS',
-	}
+	},
 };
 
 /**
@@ -86,31 +86,26 @@ export const HyperparamID: any = {
 export const StyledChallengeTable = styled.div`
 	.body {
 		font-size: 11px;
-		border-style: ;
-		color: #0066CC;
+		color: #0066cc;
 		text-align: center;
-		margin-bottom: 12px ;
+		margin-bottom: 12px;
 		width: 100%;
-		
-	
 	}
 
 	.titles {
-		background-color: #2E75FF; 
-		border-left: 0.1vh solid ;
-		border-right: 0.1vh solid ;
+		background-color: #2e75ff;
+		border-left: 0.1vh solid;
+		border-right: 0.1vh solid;
 		border-top: 0.1vh solid;
-		border-bottom: 0.1vh solid ;
+		border-bottom: 0.1vh solid;
 		padding: 5px;
 		position: sticky;
 		top: 0;
-		border-color: #0066CC;
-		
+		border-color: #0066cc;
 	}
 
 	.data-header {
 		height: 80px;
-	
 	}
 
 	.param-name {
@@ -118,41 +113,35 @@ export const StyledChallengeTable = styled.div`
 		padding-bottom: 5px;
 		line-height: 15px;
 		font-weight: bolder;
-		color : #f0f6fc ; 
-		
+		color: #f0f6fc;
 	}
 
-	
 	.hyperparam-header {
 		height: 40px;
 		font-size: 20px;
 		font-weight: bolder;
-		color : white; 
-		border-color: #0066CC;
-		
+		color: white;
+		border-color: #0066cc;
 	}
 
 	.data {
 		background-color: #f1f5f9;
 		/*border: 0.1vh solid var(--databack-color);*/
-		border-left: 0.1vh solid ;
-		border-right: 0.1vh solid ;
+		border-left: 0.1vh solid;
+		border-right: 0.1vh solid;
 		border-top: 0.1vh solid;
-		border-bottom : 0.1vh solid;
+		border-bottom: 0.1vh solid;
 		font-size: 12px;
 		max-width: 10vw;
-		
 	}
 
 	.hyperparam-data {
 		/*border-top: 0.1vh solid var(--databack-color);*/
 		border-color: #318ce7;
-		border-left: 0.1vh solid ;
-		border-right: 0.1vh solid ;
+		border-left: 0.1vh solid;
+		border-right: 0.1vh solid;
 		border-top: 0.1vh solid;
 		background-color: #f1f5f9;
-
-
 	}
 
 	.data-number {
@@ -162,7 +151,6 @@ export const StyledChallengeTable = styled.div`
 	.hyperparam-name {
 		font-weight: bold;
 		font-size: 14px;
-	
 	}
 
 	.inputs {
@@ -173,22 +161,21 @@ export const StyledChallengeTable = styled.div`
 		font-size: 14px;
 		padding: 2px;
 	}
-	
+
 	td {
 		padding: 6px;
 		text-align: center;
 		justify-content: center;
 		font-size: 13px;
-		border: #0066CC;
-		
+		border: #0066cc;
 	}
 
 	.input-header {
-		background-color: #b8e6bf ;
+		background-color: #b8e6bf;
 	}
 
 	.input-data {
-		background-color: #b8e6bf ;
+		background-color: #b8e6bf;
 	}
 
 	.output-data {
@@ -210,7 +197,6 @@ export const StyledChallengeTable = styled.div`
     transition-duration: 150ms;
 	background-color: var(--contrast-color);*/
 
-	}
 	.output-header {
 		background-color: var(--output-header-color);
 	}

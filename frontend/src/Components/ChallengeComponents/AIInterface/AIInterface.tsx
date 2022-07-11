@@ -141,7 +141,7 @@ const AIInterface = ({
 		>
 			<div className="bg w-full h-full">
 				{/*AIInterface tabs*/}
-				<div className="ai-tabs w-full items-center overflow-x-auto overflow-y-clip">
+				<div className="ai-tabs w-full items-center overflow-x-auto overflow-y-clip ai-scroll">
 					<div className="dropdown-menu w-full">
 						<h1 className="head-text">Modèle choisi :</h1>
 						<select
@@ -169,8 +169,7 @@ const AIInterface = ({
 					))}
 				</div>
 				{tabs[0].open ? (
-					<div className="ai-display w-full overflow-auto">
-					
+					<div className="ai-display w-full overflow-auto ai-scroll">
 						<ChallengeTable
 							data={data}
 							isData={true}

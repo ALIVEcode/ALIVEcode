@@ -1,0 +1,55 @@
+[
+	{
+		"nombre de pièces": 20,
+		"nombre de chambres": 5,
+		"nombre de salles de bain": 5,
+		"ville": "Montréal",
+		"prix total": 300
+	},
+	{
+		"nombre de pièces": 10,
+		"nombre de chambres": 2,
+		"ville": "Gatineau",
+		"prix total": 100
+	},
+	{
+		"nombre de pièces": 35,
+		"nombre de chambres": 6,
+		"nombre de salles de bain": 8,
+		"ville": "Québec",
+		"prix total": 600
+	},
+	{
+		"nombre de pièces": 6,
+		"nombre de chambres": 2,
+		"nombre de salles de bain": 1,
+		"ville": "Québec",
+		"prix total": 70
+	},
+	{
+		"nombre de pièces": 4,
+		"nombre de chambres": 1,
+		"nombre de salles de bain": 1,
+		"ville": "Montréal",
+		"prix total": 50
+	},
+	{
+		"nombre de pièces": 12,
+		"nombre de chambres": 3,
+		"ville": "Montréal",
+		"prix total": 150
+	},
+	{
+		"nombre de pièces": 40,
+		"nombre de salles de bain": 6,
+		"ville": "Gatineau",
+		"prix total": 500
+	},
+	{
+		"nombre de pièces": 22,
+		"nombre de chambres": 7,
+		"nombre de salles de bain": 3,
+		"ville": "Québec",
+		"prix total": 340
+	}
+]

@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 import { Challenge } from '../../Models/Challenge/challenge.entity';
-import { ChallengeProgression } from '../../Models/Challenge/challengeProgression';
+import { ChallengeProgression } from '../../Models/Challenge/challenge_progression.entity';
 import { typeAskForUserInput } from '../../Pages/Challenge/challengeTypes';
 import { ChallengeExecutor } from '../../Pages/Challenge/AbstractChallengeExecutor';
 

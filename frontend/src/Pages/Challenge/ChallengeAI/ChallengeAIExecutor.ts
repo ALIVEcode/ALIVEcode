@@ -1,6 +1,7 @@
 import ChallengeCodeExecutor from '../ChallengeCode/ChallengeCodeExecutor';
 import { typeAskForUserInput } from '../challengeTypes';
 import { AlertManager } from 'react-alert';
+import { Console } from 'console';
 
 // TODO: robotConnected
 
@@ -17,6 +18,7 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 
 		this.doBeforeRun(() => {
 			this.executableFuncs.resetGraph();
+			this.executableFuncs.initializeDataset();
 		});
 
 		this.doAfterStop(() => {
@@ -24,7 +26,6 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 		});
 
 		this.registerActions([
-			
 			{
 				actionId: 800,
 				action: {
@@ -78,24 +79,27 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					apply: (params, _, response) => {
 						if (typeof params[0] === 'number') {
 							response?.push(this.executableFuncs.evaluate(params[0]));
-							console.log("Response sent : " + this.executableFuncs.evaluate(params[0]));
+							console.log(
+								'Response sent : ' + this.executableFuncs.evaluate(params[0]),
+							);
 							//this.cmd?.print("Modèle évalué avec " + params[0] + " => " + this.executableFuncs.evaluate(params[0]));
 
 							this.perform_next();
 						}
-							
 					},
 				},
-			}, 
-			
+			},
+
 			{
 				actionId: 804,
 				action: {
 					label: 'Cost Function',
-					type: 'NORMAL',
-					apply: () => {
-						const out = this.executableFuncs.costMSE();
-						this.cmd?.print(out);
+					type: 'GET',
+					apply: (params, _, response) => {
+						console.log("Execute Cost Function")
+						const out = this.executableFuncs.costFunction();
+						response?.push(out)
+						this.perform_next();
 					},
 				},
 			},
@@ -106,9 +110,200 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					type: 'NORMAL',
 					apply: () => {
 						this.executableFuncs.testNeuralNetwork(this.cmd);
+					},
+				},
+			},
+			{
+				actionId: 806,
+				action: {
+					label: 'Valeurs Colonne',
+					type: 'GET',
+					apply: (params, _, response) => {
+						console.log('Execute Colonne Values');
+						if (typeof params[0] === 'string') {
+							response?.push('Creation of a list');
+							let objectList: any[] = this.executableFuncs.columnValues(
+								params[0],
+							);
+							objectList.forEach(e => response?.push(e));
+
+							this.perform_next();
+						}
+					},
+				},
+			},
+			{
+				actionId: 807,
+				action: {
+					label: 'Création Modèle',
+					type: 'NORMAL',
+					apply: () => {
+						console.log('Execute Création Modèle');
+						this.executableFuncs.modelCreation();
+					},
+				},
+			},
+			{
+				actionId: 808,
+				action: {
+					label: 'One Hot',
+					type: 'NORMAL',
+					apply: params => {
+						console.log('Execute One Hot');
+						if (
+							typeof params[0] === 'string' &&
+							typeof params[1] === 'object'&&
+							typeof params[2] === 'boolean'
+						) {
+							const out: string | undefined = this.executableFuncs.oneHot(
+								params[0],
+								params[1],
+								params[2]
+							);
+							if (out !== undefined) {
+								this.cmd?.print(out);
+							}
+						}
+					},
+				},
+			},
+			{
+				actionId: 809,
+				action: {
+					label: 'Normaliser Colonne',
+					type: 'NORMAL',
+					apply: params => {
+						console.log('Execute Column Normalize');
+						if (typeof params[0] === 'string') {
+							const out = this.executableFuncs.normalizeColumn(params[0]);
+							if (out != null) {
+								this.cmd?.print(out);
+							}
+						}
+					},
+				},
+			},
+			{
+				actionId: 810,
+				action: {
+					label: 'Normaliser',
+					type: 'GET',
+					apply: (params, _, response) => {
+						console.log('Execute Normalize');
+						if (
+							typeof params[0] === 'string' &&
+							typeof params[1] === 'number'
+						) {
+							const out = this.executableFuncs.normalize(params[0], params[1]);
+							if (typeof out === 'string') {
+								this.cmd?.print(out);
+							} else if (out) {
+								response?.push(out);
+								this.perform_next();
+							} else {
+								response?.push(null);
+							}
+						}
+					},
+				},
+			},
+			{
+				actionId: 811,
+				action: {
+					label: 'Predire',
+					type: 'GET',
+					apply: (params, _, response) => {
+						console.log('Execute Predire');
+						if (typeof params[0] === 'object') {
+							let objectList = this.executableFuncs.predict(params[0]);
+							if (typeof objectList !== 'string') {
+								response?.push('Creation of a list');
+								let objectList: number[][] = this.executableFuncs.predict(
+									params[0],
+								);
+								objectList[0].forEach(e => {
+									response?.push(e);
+								});
+							} else {
+								response?.push(objectList);
+							}
+							this.perform_next();
+						}
+					},
+				},
+			},{
+				actionId: 812,
+				action: {
+					label: 'Optimiser',
+					type: 'NORMAL',
+					apply: () => {
+						console.log('Execute Optimize');
+						let out = this.executableFuncs.optimize();
+
+						if (typeof out === 'string'){
+							this.cmd?.print(out)
+						}
+
 					}
 				}
-			}
+			},{
+				actionId: 813,
+				action: {
+					label: 'IO Names',
+					type: 'GET',
+					apply: (params, _, response) => {
+						console.log('IO Names');
+						let out:string[] = this.executableFuncs.getIONames();
+						console.log(out)
+						response?.push('Creation of a list');
+						out.forEach(e => response?.push(e))
+						this.perform_next();
+					},
+				}
+			},{
+				actionId: 814,
+				action: {
+					label: 'Delete Line',
+					type: 'NORMAL',
+					apply: (params) => {
+						console.log('Execute Delete Line');
+						if(typeof params[0] === 'number'){
+							let out = this.executableFuncs.deleteLine(params[0]);
+							if (typeof out === 'string'){
+								this.cmd?.print(out)
+							}
+						}
+					},
+				},
+			},{
+				actionId: 815,
+				action: {
+					label: 'Coefficient Correlation',
+					type: 'GET',
+					apply: (params, _, response) => {
+						console.log('Execute Coefficient Correlation');
+						if(typeof params[0] === 'object' && typeof params[1] === 'object'){
+							let out = this.executableFuncs.coefficientCorrelation(params[0], params[1]);
+							response?.push(out)
+							this.perform_next();
+						}
+					},
+				},
+			},{
+				actionId: 816,
+				action: {
+					label: 'Coefficient Dermination',
+					type: 'GET',
+					apply: (params, _ , response) => {
+						console.log('Execute Coefficient Correlation');
+						if(typeof params[0] === 'object' && typeof params[1] === 'object'){
+							let out = this.executableFuncs.coefficientDetermination(params[0], params[1]);
+							response?.push(out)
+							this.perform_next();
+						}
+					},
+				},
+			},
 		]);
 
 		this.executableFuncs = executables;

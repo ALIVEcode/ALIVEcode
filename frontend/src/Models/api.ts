@@ -31,7 +31,7 @@ import { ChallengeAI } from './Challenge/challenges/challenge_ai.entity';
 import { ChallengeAlive } from './Challenge/challenges/challenge_alive.entity';
 import { ChallengeCode } from './Challenge/challenges/challenge_code.entity';
 import { ChallengeIoT } from './Challenge/challenges/challenge_IoT.entity';
-import { ChallengeProgression } from './Challenge/challengeProgression';
+import { ChallengeProgression } from './Challenge/challenge_progression.entity';
 import { Maintenance } from './Maintenance/maintenance.entity';
 import { Answer } from './Quiz/answer.entity';
 import { Category } from './Quiz/categories-quiz.entity';
@@ -61,9 +61,13 @@ import { BundleQueryDTO } from './Course/bundles/dto/BundleQuery.dto';
 import { Bundle } from './Course/bundles/bundle.entity';
 import { ClaimBundleDTO } from './Course/bundles/dto/ClaimBundle.dto';
 import { GenericChallengeTransformer } from './Challenge/transformer/GenericChallengeTransformer';
+import { AIDataset } from './Ai/ai_dataset.entity';
 import { QueryIoTProjects } from './User/dto/query_iotprojects.dto';
 import { QueryIoTObjects } from './User/dto/query_iotobjects';
 import { FeaturingQueryDTO } from './Course/dto/FeaturingQuery.dto';
+import { ShowcaseProject } from './Showcase-Project/showcase-project.entity';
+import { SUBJECTS } from '../Types/sharedTypes';
+import { ShowcaseProjectGalleryGetDTO } from './Showcase-Project/dto/ShowcaseProjectGalleryGet.dto';
 
 export type ResultElementCreated = {
 	courseElement: CourseElement;
@@ -247,15 +251,17 @@ const api = {
 				Challenge,
 				true,
 				challenge => {
-					if (challenge.type === CHALLENGE_TYPE.ALIVE)
-						return plainToClass(ChallengeAlive, challenge);
-					if (challenge.type === CHALLENGE_TYPE.CODE)
-						return plainToClass(ChallengeCode, challenge);
-					if (challenge.type === CHALLENGE_TYPE.AI)
-						return plainToClass(ChallengeAI, challenge);
-					if (challenge.type === CHALLENGE_TYPE.IOT)
-						return plainToClass(ChallengeIoT, challenge);
-					return plainToClass(ChallengeCode, challenge);
+					switch (challenge.type) {
+						case CHALLENGE_TYPE.ALIVE:
+							return plainToInstance(ChallengeAlive, challenge);
+						case CHALLENGE_TYPE.CODE:
+							return plainToInstance(ChallengeCode, challenge);
+						case CHALLENGE_TYPE.AI:
+							return plainToInstance(ChallengeAI, challenge);
+						case CHALLENGE_TYPE.IOT:
+							return plainToInstance(ChallengeIoT, challenge);
+					}
+					return plainToInstance(ChallengeCode, challenge);
 				},
 			),
 			createProfessor: apiCreate('users/professors', Professor),
@@ -590,6 +596,15 @@ const api = {
 				);
 			},
 		},
+		ai: {
+			getDataset: async (id: string) => {
+				return plainToInstance(
+					AIDataset,
+					(await axios.get(`ai/datasets/${id}`)).data,
+				) as any as AIDataset;
+			},
+			getAllDatasets: apiGet('ai/datasets', AIDataset, true),
+		},
 		iot: {
 			projects: {
 				aliot: {
@@ -761,6 +776,19 @@ const api = {
 			create: apiCreate('results', Result),
 			delete: apiDelete('results/:id'),
 			getresultuser: apiGet('results/user', Result, true),
+		},
+		showcase_projects: {
+			get: apiGet('showcase-project/:name', ShowcaseProject, false),
+			async getGallery({ subject, nbItems }: ShowcaseProjectGalleryGetDTO) {
+				return plainToInstance(
+					ShowcaseProject,
+					(
+						await axios.get(
+							`showcase-project/gallery?subject=${subject}&nbItems=${nbItems}`,
+						)
+					).data,
+				) as any as ShowcaseProject[];
+			},
 		},
 	},
 	as: {

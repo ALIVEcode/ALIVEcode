@@ -22,7 +22,7 @@ import CourseCard from '../../CourseComponents/CourseCard/CourseCard';
 const CourseContainer = ({ courses }: CourseContainerProps) => {
 	return (
 		<div className="h-full mt-4 justify-start">
-			<div className="grid phone:grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4 big:grid-cols-5 gap-4">
+			<div className="grid place-items-start phone:grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4 big:grid-cols-5 gap-4">
 				{courses.map((c, idx) => (
 					<CourseCard key={idx} course={c}></CourseCard>
 				))}

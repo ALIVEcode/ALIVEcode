@@ -126,6 +126,10 @@
 	},
 	"msg": {
 		"language": "Langage",
+		"by": "Par",
+		"learn_more": "En savoir plus",
+		"continue_reading": "Continuer à lire",
+		"showcase_project": "Projet en vedette",
 		"courseTemplate": "modèle de cours",
 		"bundle": "trousse pédagogique",
 		"resource": "ressource",
@@ -159,8 +163,12 @@
 			"all": "Tout"
 		},
 		"time": {
+			"today": "Aujourd'hui",
 			"last_updated": "Dernière modification",
 			"format": "{{dayName}}, {{day}} {{monthName}} {{year}} - {{hour}}:{{minute}}",
+			"format_no_time": "{{dayName}}, {{day}} {{monthName}} {{year}}",
+			"format_no_day": "{{day}} {{monthName}} {{year}} - {{hour}}:{{minute}}",
+			"format_no_time_and_day": "{{day}} {{monthName}} {{year}}",
 			"day": {
 				"0": "Dimanche",
 				"1": "Lundi",
@@ -252,7 +260,8 @@
 			"no_object": "Vous ne possédez aucun objet IoT",
 			"no_project": "Vous ne possédez aucun projet IoT",
 			"create_project": "Créer un nouveau projet IoT",
-			"create_object": "Créer un nouvel objet IoT"
+			"create_object": "Créer un nouvel objet IoT",
+			"showcase_projects": "Projets mis en vedette"
 		},
 		"classrooms": {
 			"title": "Classes",
@@ -469,17 +478,50 @@
 		"news": "Nouvelles",
 		"iot": {
 			"desc": "L'IoT n'a jamais été aussi facile",
+			"start_learning": "Commencer à apprendre!",
 			"to_home_page": "Aller à la page d'accueil d'ALIVEIoT",
+			"to_more_projects": "Voir plus de projets mis en vedette",
 			"to_dashboard": "Accéder au Tableau de Bord",
 			"to_trainings": "Accéder aux Formations",
+			"summary": "ALIVEIoT est la branche d’ALIVEcode servant à l’apprentissage de l’Internet des Objets, un domaine de l’informatique possédant très peu de ressources au niveau collégial. La branche ALIVEIoT utilise des outils novateurs et conçus dans le but de simplifier l’apprentissage et la recherche scientifique. Ces outils permettent notamment:",
+			"features_list": [
+				"La visualisation de données en temps réel",
+				"Le partage de données entre objets connectés",
+				"Le contrôle d’objets connectés à l’aide du langage AliveScript"
+			],
 			"section": {
+				"featured_projects": {
+					"title": "Projets mis en vedette"
+				},
+				"learn": {
+					"title": "Commence à apprendre",
+					"desc": "$t(home.section.training_iot.desc)",
+					"by_alivecode": "Cours offerts par ALIVEcode"
+				},
+				"steps": {
+					"title": "Les étapes à suivre",
+					"elements": [
+						{
+							"title": "Conception des objets connectés*",
+							"desc": "Construis tes propres objets connectés avec tes connaissances en électronique. Fabrique les de la manière qui te correspond et qui est en accord avec tes objectifs. Ajoute des capteurs, des actionneurs, et beaucoup plus de composants électroniques à ton objet connecté.",
+							"optional": "Optionnel — ALIVEcode peut fournir certains objets connectés"
+						},
+						{
+							"title": "Connection et visualisation",
+							"desc": "Enregistre et connecte ton objet connecté à ALIVEcode. Crée des protocoles qui sont préprogrammés pour exécuter une liste d'actions. Crée une interface graphique personnalisée qui se modifie en temps réel à l'aide des données de ton objet connecté."
+						},
+						{
+							"title": "Contrôle ton écosystème",
+							"desc": "Écris des scripts afin de contrôler ou automatiser les systèmes de ton écosystème connecté. Fait communiquer tes objets connectés entre eux. Programme divers scénarios à exécuter afin d'avoir plusieurs démonstrations."
+						}
+					]
+				},
+				"more_projects": {
+					"title": "Plus de projets"
+				},
 				"develop": {
 					"title": "Commence à Développer",
 					"desc": "Pratique tes notions d'internet des objets en développant des projets IoT. Enregistre plusieurs objets connectés, crée un réseau d'objets connectés, établis des communications entre eux, collecte et partage des données entre les objets et affiche en temps réel les données dans une interface graphique."
-				},
-				"learn": {
-					"title": "Commence à Apprendre",
-					"desc": "$t(home.section.training_iot.desc)"
 				}
 			}
 		},
@@ -735,6 +777,12 @@
 			"logs": "Journaux de l'objet IoT \"{{name}}\""
 		}
 	},
+	"showcase": {
+		"project": {
+			"no_description": "Aucune description disponible.",
+			"no_name": "Erreur d'affichage du nom."
+		}
+	},
 	"user": {
 		"quiz": "Quiz : ",
 		"status": "Status : ",
@@ -774,6 +822,10 @@
 			"next": "Suivant",
 			"previous": "Précédent"
 		},
+		"iot": {
+			"project": "Les projets IoT sont des écosystèmes connectés dans lesquels sont connectés des objets IoT et où ils peuvent communiquer entre eux.",
+			"object": "Les objets IoT sont les objets connectés qui sont enregistrés sur ALIVEcode. Ils possèdent tous un identifiant unique et vous pouvez les connecter à un projet IoT pour les utiliser."
+		},
 		"activity": {
 			"TH": "Activité permettant l'affichage de matière théorique sous format d'un fichier texte stylisé.",
 			"PF": "Activité de visionnement d'un document pdf.",
@@ -793,12 +845,14 @@
 				"recent_courses": "Voici l'endroit où se retrouve vos cours récemment visité",
 				"challenges": "Voici l'endroit où se retrouve vos défis",
 				"resources": "Voici l'endroit où vous pouvez voir, modifier, supprimer et créer vos ressources",
+				"iot": "Voici l'endroit où vous pouvez gérer tout ce qui concerne l'IoT",
 				"create_classroom": "Voici l'endroit où se retrouve vos classes",
 				"create_course": "Voici l'endroit où se retrouve les cours que vous avez créés"
 			},
 			"views": {
 				"recent_courses": "Cette vue vous permet de reprendre rapidement là où vous vous êtes arrêté en classant vos cours du plus récemment ouverts au moins récemment ouverts.",
-				"challenges": "Cette vue représente votre bibliothèque de défis. En plus d'y retrouvez tous les défis que vous avez, c'est ici que vous pourrez en créer de nouveaux, éditer ceux qui existent déjà et supprimer ceux que vous ne voulez plus."
+				"challenges": "Cette vue représente votre bibliothèque de défis. En plus d'y retrouvez tous les défis que vous avez, c'est ici que vous pourrez en créer de nouveaux, éditer ceux qui existent déjà et supprimer ceux que vous ne voulez plus.",
+				"iot": "Cette vue est l'endroit où tous vos objets IoT et tous vos projets IoT sont centralisés. $t(help.iot.project)"
 			}
 		},
 		"course_layout": {

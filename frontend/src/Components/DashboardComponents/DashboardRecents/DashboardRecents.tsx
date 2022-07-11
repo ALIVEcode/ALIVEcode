@@ -7,13 +7,11 @@ import Button from '../../UtilsComponents/Buttons/Button';
 import { useNavigate } from 'react-router';
 import useRoutes from '../../../state/hooks/useRoutes';
 import Info from '../../HelpComponents';
+import FeaturedCourseContainer from '../../CourseComponents/FeaturedCourseContainer/FeaturedCourseContainer';
 
 export const DashboardRecents = () => {
-	const {
-		courses: recentCourses,
-		setFormJoinClassOpen,
-		setOpenFormCreateCourse,
-	} = useContext(DashboardContext);
+	const { recentCourses, setFormJoinClassOpen, setOpenFormCreateCourse } =
+		useContext(DashboardContext);
 	const { t } = useTranslation();
 	const { user } = useContext(UserContext);
 	const { routes } = useRoutes();
@@ -38,52 +36,59 @@ export const DashboardRecents = () => {
 				</Info.Icon>
 			</div>
 			<div className="border-b w-1/3 border-[color:var(--bg-shade-four-color)]" />
-			{recentCourses && recentCourses.length > 0 ? (
-				<>
-					{user?.isProfessor() && (
-						<Button
-							className="!text-sm mt-4"
-							variant="primary"
-							onClick={() => setOpenFormCreateCourse(true)}
-						>
-							{t('dashboard.courses.add')}
-						</Button>
-					)}
-					<CourseContainer courses={recentCourses} />
-				</>
-			) : (
-				<div className="w-full h-[calc(100%-2rem)] text-[color:var(--fg-shade-four-color)] text-center flex flex-col items-center justify-center">
-					<i>
-						{user?.isProfessor()
-							? t('dashboard.recents.empty.professor')
-							: t('dashboard.recents.empty.student')}
-					</i>
-					<div className="flex flex-row">
-						<Button
-							className="!text-xs mt-2"
-							variant="primary"
-							onClick={() =>
-								user?.isProfessor()
-									? navigate(routes.auth.create_classroom.path)
-									: setFormJoinClassOpen(true)
-							}
-						>
-							{user?.isProfessor()
-								? t('dashboard.classrooms.add.professor')
-								: t('dashboard.classrooms.add.student')}
-						</Button>
+			<div>
+				{recentCourses && recentCourses.length > 0 ? (
+					<>
 						{user?.isProfessor() && (
 							<Button
-								className="!text-xs mt-2 ml-4"
+								className="!text-sm mt-4"
 								variant="primary"
 								onClick={() => setOpenFormCreateCourse(true)}
 							>
 								{t('dashboard.courses.add')}
 							</Button>
 						)}
+						<CourseContainer courses={recentCourses} />
+					</>
+				) : (
+					<div className="w-full mt-4 py-20 h-[calc(100%-2rem)] text-[color:var(--fg-shade-four-color)] text-center flex flex-col items-center justify-center">
+						<i>
+							{user?.isProfessor()
+								? t('dashboard.recents.empty.professor')
+								: t('dashboard.recents.empty.student')}
+						</i>
+						<div className="flex flex-row">
+							<Button
+								className="!text-xs mt-2"
+								variant="primary"
+								onClick={() =>
+									user?.isProfessor()
+										? navigate(routes.auth.create_classroom.path)
+										: setFormJoinClassOpen(true)
+								}
+							>
+								{user?.isProfessor()
+									? t('dashboard.classrooms.add.professor')
+									: t('dashboard.classrooms.add.student')}
+							</Button>
+							{user?.isProfessor() && (
+								<Button
+									className="!text-xs mt-2 ml-4"
+									variant="primary"
+									onClick={() => setOpenFormCreateCourse(true)}
+								>
+									{t('dashboard.courses.add')}
+								</Button>
+							)}
+						</div>
 					</div>
-				</div>
-			)}
+				)}
+				<FeaturedCourseContainer
+					className="my-4"
+					title={t('home.iot.section.learn.by_alivecode')}
+					featuringFrom="alivecode"
+				/>
+			</div>
 			<Info.Slides
 				open={timelineOpen}
 				setOpen={setTimelineOpen}

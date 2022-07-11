@@ -26,7 +26,6 @@ import { IotRoute } from '../../../Models/Iot/IoTroute.entity';
 import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import { useParams } from 'react-router';
 import IoTProjectPage from '../IoTProjectPage/IoTProjectPage';
-import IoTChallenge from '../../Challenge/ChallengeIoT/ChallengeIoT';
 import { AsScript as AsScriptModel } from '../../../Models/AsScript/as-script.entity';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -49,8 +48,8 @@ import AliotASExecutor from '../../Challenge/ChallengeIoT/AliotASExecutor';
  *
  * @author Enric Soldevila
  */
-const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
-	const projectRef = useRef<ProjectModel | null>(challenge?.project ?? null);
+const IoTProject = ({ projectId: projectIdProp }: IoTProjectProps) => {
+	const projectRef = useRef<ProjectModel | null>(null);
 	const project = projectRef.current;
 
 	const navigate = useNavigate();
@@ -61,10 +60,9 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 	const objectsRunning = useRef<IoTProjectObject[]>([]);
 	const forceUpdate = useForceUpdate();
 
-	const id = challenge?.id ?? paramId;
+	const projectId = projectIdProp ?? paramId;
 
-	const isChallenge = challenge ? true : false;
-	const canEdit = user?.id === projectRef.current?.creator?.id && !isChallenge;
+	const canEdit = user?.id === project?.creator?.id;
 
 	const saveTimeout = useRef<any>(null);
 	const [lastSaved, setLastSaved] = useState<number>(Date.now() - 4000);
@@ -137,11 +135,11 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 	}, [socket, onRequestRender]);
 
 	useEffect(() => {
-		if (!id || challenge?.project) return;
+		if (!projectId) return;
 		const getProject = async () => {
 			try {
 				const project: ProjectModel = await api.db.iot.projects.get({
-					id,
+					id: projectId,
 				});
 				await project.getRoutes();
 				projectRef.current = project;
@@ -153,7 +151,7 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 		};
 		getProject();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [id, user]);
+	}, [projectId, user]);
 
 	useEffect(() => {
 		return () => {
@@ -324,8 +322,6 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 		return {
 			project: project ?? null,
 			canEdit,
-			updateId: updateId ? updateId : project ? project.id : '',
-			isChallenge,
 			socket: socket ?? null,
 			objectsRunning: objectsRunning.current,
 			addRunningObject,
@@ -349,8 +345,6 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 	}, [
 		project,
 		canEdit,
-		updateId,
-		isChallenge,
 		socket,
 		addRunningObject,
 		removeRunningObject,
@@ -375,11 +369,7 @@ const IoTProject = ({ challenge, initialCode, updateId }: IoTProjectProps) => {
 
 	return (
 		<IoTProjectContext.Provider value={providerValues}>
-			{challenge ? (
-				<IoTChallenge initialCode={initialCode ?? ''} />
-			) : (
-				<IoTProjectPage />
-			)}
+			<IoTProjectPage />
 			<Modal
 				title="Script"
 				open={scriptOpen !== undefined}

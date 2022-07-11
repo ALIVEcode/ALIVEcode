@@ -1,12 +1,9 @@
 import styled from 'styled-components';
 import FillContainer from '../../../Components/UtilsComponents/FillContainer/FillContainer';
-import { ChallengeIoT } from '../../../Models/Challenge/challenges/challenge_iot.entity';
 
 export type IoTProjectTabs = 'settings' | 'routes' | 'access';
 export interface IoTProjectProps {
-	challenge?: ChallengeIoT;
-	initialCode?: string;
-	updateId?: string;
+	projectId?: string;
 }
 
 export const StyledIoTProject = styled(FillContainer)`

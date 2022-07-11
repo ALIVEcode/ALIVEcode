@@ -1,6 +1,12 @@
 import { Injectable, HttpException, HttpStatus, Inject, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IoTProjectEntity, IoTProjectLayout, IoTProjectDocument, JsonObj } from './entities/IoTproject.entity';
+import {
+  IoTProjectEntity,
+  IoTProjectLayout,
+  IoTProjectDocument,
+  JsonObj,
+  IOTPROJECT_ACCESS,
+} from './entities/IoTproject.entity';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../../user/entities/user.entity';
 import { IoTRouteEntity } from '../IoTroute/entities/IoTroute.entity';
@@ -19,7 +25,7 @@ import { ChallengeService } from '../../challenge/challenge.service';
 import { ChallengeProgressionEntity } from '../../challenge/entities/challenge_progression.entity';
 import { IoTProjectUpdateDTO } from './dto/updateProject.dto';
 import { IoTUpdateLayoutRequestToWatcher, ObjectClient } from '../../../socket/iotSocket/iotSocket.types';
-import { IoTProjectObjectEntity } from './entities/IoTprojectObject.entity';
+import { IoTProjectObjectEntity, PROJECT_OBJECT_TARGET } from './entities/IoTprojectObject.entity';
 import { IoTObjectEntity } from '../IoTobject/entities/IoTobject.entity';
 import { IoTObjectService } from '../IoTobject/IoTobject.service';
 
@@ -92,6 +98,66 @@ export class IoTProjectService {
 
   async remove(id: string) {
     return await this.projectRepository.delete(id);
+  }
+
+  async cloneProject(projectId: string, user: UserEntity, fromCourse?: boolean) {
+    const project = await this.projectRepository.findOne(projectId, {
+      where: fromCourse
+        ? [{ access: IOTPROJECT_ACCESS.RESTRICTED }, { access: IOTPROJECT_ACCESS.PUBLIC }]
+        : { access: IOTPROJECT_ACCESS.PUBLIC },
+      relations: ['iotProjectObjects', 'scripts', 'routes'],
+    });
+
+    if (!project) throw new HttpException('Project to clone not found', HttpStatus.NOT_FOUND);
+
+    const clonedProject = await this.projectRepository.save({
+      access: IOTPROJECT_ACCESS.RESTRICTED,
+      collaborators: [],
+      creatorId: user.id,
+      originalId: project.id,
+      description: project.description,
+      document: project.document,
+      interactRights: project.interactRights,
+      layout: project.layout,
+      name: project.name,
+      routes: [],
+      scripts: [],
+      iotProjectObjects: [],
+    });
+
+    const newScriptIds: { [oldScriptId: string]: string } = {};
+
+    // Cloning scripts
+    project.scripts.forEach(async asScript => {
+      const clonedScript = await this.asScriptService.cloneAsScript(asScript.id, user, clonedProject.id);
+      newScriptIds[asScript.id] = clonedScript.id;
+      clonedProject.scripts.push(clonedScript);
+    });
+
+    // Cloning IoTProjectObjects
+    project.iotProjectObjects.forEach(async projectObject => {
+      const clonedProjectObject = await this.projectObjRepo.save({
+        iotProjectId: clonedProject.id,
+        currentTarget: PROJECT_OBJECT_TARGET.OBJECT,
+        iotObjectId: projectObject.iotObjectId,
+        iotTestObject: null,
+        scriptId: newScriptIds[projectObject.scriptId],
+      });
+      clonedProject.iotProjectObjects.push(clonedProjectObject);
+    });
+
+    // Cloning routes
+    project.routes.forEach(async route => {
+      const clonedRoute = await this.routeRepository.save({
+        name: route.name,
+        path: route.path,
+        projectId: clonedProject.id,
+        asScriptId: newScriptIds[route.asScriptId],
+      });
+      project.routes.push(clonedRoute);
+    });
+
+    return clonedProject;
   }
 
   async updateInterface(id: string, layout: IoTProjectLayout, issuer?: WatcherClient) {
@@ -210,21 +276,8 @@ export class IoTProjectService {
     return await this.projectObjRepo.save(object);
   }
 
-  async getProjectOrProgression(id: string): Promise<IoTProjectEntity | ChallengeProgressionEntity> {
+  async getProject(id: string): Promise<IoTProjectEntity> {
     return await this.findOne(id);
-
-    /*
-		if (id.includes('/')) {
-			const split = id.split('/');
-			if (split.length < 2) throw new HttpException('Bad Id', HttpStatus.BAD_REQUEST);
-			try {
-				return await this.challengeService.getIoTProgressionById(split[0], split[1]);
-			} catch {
-				throw new HttpException('Project id not found', HttpStatus.NOT_FOUND);
-			}
-		} else {
-			return await this.findOne(id);
-		}*/
   }
 
   async sendRoute(route: IoTRouteEntity, data: any) {
@@ -289,16 +342,12 @@ export class IoTProjectService {
     sendUpdate = true,
     issuer?: WatcherClient,
   ): Promise<void> {
-    const projectOrProgression = await this.getProjectOrProgression(id);
+    const project = await this.getProject(id);
 
-    const layoutManager = projectOrProgression.getLayoutManager();
+    const layoutManager = project.getLayoutManager();
     layoutManager.updateComponent(componentId, value);
 
-    if (projectOrProgression instanceof IoTProjectEntity) {
-      await this.projectRepository.save(projectOrProgression);
-    } else {
-      await this.progressionRepo.save(projectOrProgression);
-    }
+    await this.projectRepository.save(project);
 
     if (sendUpdate) {
       const watchers = issuer
@@ -343,9 +392,8 @@ export class IoTProjectService {
   }
 
   async getComponentValue(id: string, componentId: string) {
-    const projectOrProgression = await this.getProjectOrProgression(id);
-
-    const layoutManager = projectOrProgression.getLayoutManager();
+    const project = await this.getProject(id);
+    const layoutManager = project.getLayoutManager();
     return layoutManager.getComponentValue(componentId);
   }
 }

@@ -76,9 +76,9 @@ export class AsScriptService {
     return script;
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, creator?: UserEntity) {
     if (!id) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
-    const script = await this.asScriptRepo.findOne(id);
+    const script = await this.asScriptRepo.findOne(id, { where: creator ? { creatorId: creator.id } : {} });
     if (!script) throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     return script;
   }
@@ -92,7 +92,20 @@ export class AsScriptService {
     return await this.asScriptRepo.save({ ...dto, creator });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} asScript`;
+  async remove(id: string, user: UserEntity) {
+    return await this.asScriptRepo.remove(await this.findOne(id, user));
+  }
+
+  async cloneAsScript(id: string, user: UserEntity, iotProjectId?: string) {
+    const asScript = await this.findOne(id);
+    const clonedAsScript = await this.asScriptRepo.create({
+      content: asScript.content,
+      description: asScript.description,
+      creatorId: user.id,
+      name: asScript.name,
+      iotProjectId: iotProjectId,
+    });
+
+    return await this.asScriptRepo.save(clonedAsScript);
   }
 }

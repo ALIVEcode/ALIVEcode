@@ -6,8 +6,12 @@ import { IoTProjectEntity } from '../../iot/IoTproject/entities/IoTproject.entit
 
 @Entity()
 export class AsScriptEntity extends CreatedByUser {
-  @ManyToOne(() => UserEntity, user => user.asScripts, { eager: true, onDelete: 'CASCADE' })
+  @ManyToOne(() => UserEntity, user => user.asScripts, { eager: true, nullable: false, onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'creatorId' })
   creator: UserEntity;
+
+  @Column({ name: 'creatorId', nullable: false })
+  creatorId: string;
 
   @IsNotEmpty()
   @Column()

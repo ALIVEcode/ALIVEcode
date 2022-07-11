@@ -16,6 +16,12 @@ import { ChallengeAIEntity } from './entities/challenges/challenge_ai.entity';
 import { ChallengeIoTEntity } from './entities/challenges/challenge_iot.entity';
 import { CourseHistoryEntity } from '../course/entities/course_history.entity';
 import { ResourceEntity } from '../resource/entities/resource.entity';
+import { IoTProjectService } from '../iot/IoTproject/IoTproject.service';
+import { IoTRouteEntity } from '../iot/IoTroute/entities/IoTroute.entity';
+import { AsScriptEntity } from '../as-script/entities/as-script.entity';
+import { IoTProjectObjectEntity } from '../iot/IoTproject/entities/IoTprojectObject.entity';
+import { AsScriptService } from '../as-script/as-script.service';
+import { IoTObjectService } from '../iot/IoTobject/IoTobject.service';
 
 @Module({
   imports: [
@@ -34,11 +40,14 @@ import { ResourceEntity } from '../resource/entities/resource.entity';
       CourseEntity,
       IoTProjectEntity,
       IoTObjectEntity,
+      IoTRouteEntity,
+      AsScriptEntity,
+      IoTProjectObjectEntity,
       CourseHistoryEntity,
     ]),
   ],
   controllers: [ChallengeController],
-  providers: [ChallengeService, UserService],
+  providers: [ChallengeService, UserService, IoTProjectService, AsScriptService, IoTObjectService],
   exports: [TypeOrmModule],
 })
 export class ChallengeModule {}

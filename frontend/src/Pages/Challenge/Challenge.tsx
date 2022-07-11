@@ -26,7 +26,6 @@ import api from '../../Models/api';
 import { useParams } from 'react-router';
 import { UserContext } from '../../state/contexts/UserContext';
 import { ChallengeProgression } from '../../Models/Challenge/challenge_progression.entity';
-import { plainToClass } from 'class-transformer';
 import ChallengeAlive from './ChallengeAlive/ChallengeAlive';
 import { ChallengeAI as ChallengeAIModel } from '../../Models/Challenge/challenges/challenge_ai.entity';
 import ChallengeAI from './ChallengeAI/ChallengeAI';
@@ -130,18 +129,21 @@ const Challenge = ({
 				}
 			}
 
+			const currentChallenge = challengeProp ?? fetchedChallenge;
+
 			// If user, load or create progression
-			if (user && (challengeProp || fetchedChallenge)) {
+			if (currentChallenge) {
 				let progression: ChallengeProgression;
-				const currentChallenge = challengeProp ?? fetchedChallenge;
-				if (!currentChallenge) return;
+
+				// Check if user has a progression on this challenge
 				try {
+					// If yes, set it to the progression
 					progression = await api.db.challenges.progressions.get({
 						id: currentChallenge.id,
 						userId: user.id,
 					});
 				} catch (err) {
-					console.log(err);
+					// If no progression found, create a new one and set it to the progression
 					progression = await api.db.challenges.progressions.save(
 						{
 							id: currentChallenge.id,
@@ -150,16 +152,21 @@ const Challenge = ({
 						{},
 					);
 				}
-				// TODO: Keep an eye for bugs with the progression data saving
+
+				// Failsafe for progression data not being properly set
 				if (!progression.data) progression.data = {};
+
+				// If the progression includes code to save, set initial progression code
 				progression.data.code &&
 					setInitialProgressionCode(progression.data.code);
+				// Set progression fetched or created
 				setProgression(progression);
+				// Set challenge found
 				setChallenge(currentChallenge);
 			}
 
 			// If no challenge loaded create an non-saved empty one
-			if (!challenge && !fetchedChallenge && !challengeProp) {
+			/*if (!challenge && !fetchedChallenge && !challengeProp) {
 				fetchedChallenge = plainToClass(ChallengeModel, {
 					id: 'dummy',
 					name: 'New challenge',
@@ -174,7 +181,7 @@ const Challenge = ({
 					creationDate: new Date(),
 					updateDate: new Date(),
 				});
-			}
+			}*/
 			fetchedChallenge && setChallenge(fetchedChallenge);
 		};
 		loadChallenge();
@@ -297,6 +304,9 @@ const Challenge = ({
 
 	if (!challenge || !progression) return <LoadingScreen />;
 
+	console.log(challenge);
+	console.log(progression);
+
 	return (
 		<StyledChallenge editMode={editMode}>
 			<ChallengeContext.Provider value={challengeContextValues}>
@@ -322,14 +332,7 @@ const Challenge = ({
 						}
 					/>
 				) : challenge instanceof ChallengeIoTModel ? (
-					<IoTProject
-						initialCode={
-							initialProgressionCode ||
-							(challenge as ChallengeIoTModel).initialCode
-						}
-						challenge={challenge}
-						updateId={challenge.id + '/' + progression?.id}
-					/>
+					<IoTProject projectId={progression.iotProjectId} />
 				) : (
 					<LoadingScreen />
 				)}

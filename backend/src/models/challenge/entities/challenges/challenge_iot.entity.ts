@@ -5,7 +5,7 @@ import { IsEmpty, IsNotEmpty, IsString } from 'class-validator';
 
 @ChildEntity(CHALLENGE_TYPE.IOT)
 export class ChallengeIoTEntity extends ChallengeEntity {
-  @ManyToOne(() => IoTProjectEntity, { eager: true })
+  @ManyToOne(() => IoTProjectEntity)
   @JoinColumn({ name: 'project_id' })
   @IsEmpty()
   project?: IoTProjectEntity;

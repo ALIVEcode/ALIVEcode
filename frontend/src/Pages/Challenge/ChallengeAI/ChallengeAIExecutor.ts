@@ -171,14 +171,18 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 				actionId: 809,
 				action: {
 					label: 'Normaliser Colonne',
-					type: 'NORMAL',
-					apply: params => {
+					type: 'GET',
+					apply: (params, _, response) => {
 						console.log('Execute Column Normalize');
 						if (typeof params[0] === 'string') {
-							const out = this.executableFuncs.normalizeColumn(params[0]);
-							if (out != null) {
-								this.cmd?.print(out);
-							}
+							let out = this.executableFuncs.normalizeColumn(params[0]);
+							if (out) {
+								console.log(out)
+								response?.push(out)
+							}else(
+								response?.push(null)
+							)
+							this.perform_next();
 						}
 					},
 				},
@@ -195,14 +199,12 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 							typeof params[1] === 'number'
 						) {
 							const out = this.executableFuncs.normalize(params[0], params[1]);
-							if (typeof out === 'string') {
-								this.cmd?.print(out);
-							} else if (out) {
+							if (typeof out === 'string' || out) {
 								response?.push(out);
-								this.perform_next();
 							} else {
 								response?.push(null);
 							}
+							this.perform_next();
 						}
 					},
 				},
@@ -284,7 +286,7 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 						console.log('Execute Coefficient Correlation');
 						if(typeof params[0] === 'object' && typeof params[1] === 'object'){
 							let out = this.executableFuncs.coefficientCorrelation(params[0], params[1]);
-							response?.push(out)
+								response?.push(out)
 							this.perform_next();
 						}
 					},

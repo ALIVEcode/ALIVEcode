@@ -651,6 +651,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 				setActiveModel(MODEL_TYPES.PERCEPTRON);
 				break;
+			case MODEL_TYPES.POLY_REGRESSION:
+				setActiveModel(MODEL_TYPES.POLY_REGRESSION);
+				break;
 			default:
 				break;
 		}
@@ -704,14 +707,23 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @param column the parameter's name to replace.
 	 * @return error message
 	 */
-	function normalizeColumn(column: string): string | void {
+	function normalizeColumn(column: string): string | undefined {
 		if (activeDataset.current) {
 			let index = activeDataset.current.getParamNames().indexOf(column);
 			if (index !== -1) {
-				activeDataset.current.normalizeParam(column);
-				forceUpdate();
+				if(activeDataset.current.getDataAsArray()[index].includes(undefined)||
+				   activeDataset.current.getDataAsArray()[index].includes(null)){
+					return 'Erreur : Une colonne possède un ou des élément(s) nul(s) dans la base de données';
+				}else{
+					if (activeDataset.current.normalizeParam(column)){
+						forceUpdate();
+					}else{
+						return 'Erreur : Impossible à normaliser'
+					}
+				}
 			} else {
 				if (index !== -1)
+					
 					return 'Erreur : Une colonne possède des chaines de caractères comme donnée dans la base de données';
 				else
 					return 'Erreur : Le nom de la colonne entrée en paramètre est inexistante';
@@ -728,8 +740,14 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	function normalize(column: string, data: number): string | number {
 		if (activeDataset.current) {
 			let index = activeDataset.current.getParamNames().indexOf(column);
+			
 			try {
-				return activeDataset.current.normalizeValue(data, column);
+				let result = activeDataset.current.normalizeValue(data, column)
+				if (!isNaN(result)){
+					return activeDataset.current.normalizeValue(data, column);
+				}else{
+					return 'Erreur : Une colonne possède un ou des élément(s) nul(s) dans la base de données';
+				}
 			} catch (e) {
 				if (index !== -1)
 					return 'Erreur : Une colonne possède des chaines de caractères comme donnée dans la base de données';

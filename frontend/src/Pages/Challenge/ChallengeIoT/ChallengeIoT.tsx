@@ -7,7 +7,7 @@ import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
 import useCmd from '../../../state/hooks/useCmd';
 import { ChallengeContext } from '../../../state/contexts/ChallengeContext';
 import { UserContext } from '../../../state/contexts/UserContext';
-import { ChallengeIoT as ChallengeIoTModel } from '../../../Models/Challenge/challenges/challenge_IoT.entity';
+import { ChallengeIoT as ChallengeIoTModel } from '../../../Models/Challenge/challenges/challenge_iot.entity';
 import ChallengeToolsBar from '../../../Components/ChallengeComponents/ChallengeToolsBar/ChallengeToolsBar';
 import LineInterface from '../../../Components/ChallengeComponents/LineInterface/LineInterface';
 import Cmd from '../../../Components/ChallengeComponents/Cmd/Cmd';

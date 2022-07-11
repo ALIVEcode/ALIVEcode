@@ -139,12 +139,15 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	 * @returns If the dropdown is disable or not
 	 */
 	function disableDropdown(index: number) {
-		const header = props.data?.getParamNames().at(index);
-		if (props.initData!.getParamNames().indexOf(header!) === -1) {
-			return true;
-		} else {
-			return false;
+		if (props.data && props.initData) {
+			const header = props.data.getParamNames().at(index);
+			if (props.initData.getParamNames().indexOf(header!) === -1) {
+				return true;
+			} else {
+				return false;
+			}
 		}
+		return false;
 	}
 
 	/**

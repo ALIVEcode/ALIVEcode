@@ -47,6 +47,7 @@ import { FeedbacksModule } from './models/feedbacks/feedbacks.module';
 import { AiController } from './models/ai/ai.controller';
 import { AiModule } from './models/ai/ai.module';
 import { AiService } from './models/ai/ai.service';
+import { ShowcaseProjectModule } from './models/showcase-project/showcase-project.module';
 
 adminjs.registerAdapter({ Database, Resource });
 
@@ -100,6 +101,7 @@ adminjs.registerAdapter({ Database, Resource });
     ResourceModule,
     FeedbacksModule,
     AiModule,
+    ShowcaseProjectModule,
   ],
   controllers: [AppController, AiController],
   providers: [AppService, MaintenanceService, UserService, AiService],

@@ -150,18 +150,20 @@ const Classroom = ({ classroomProp, ...props }: ClassroomProps) => {
 					courses
 						.filter(c => !classroom.courses?.some(course => course.id === c.id))
 						.map((c, idx) => (
-							<CourseCard
-								key={idx}
-								onSelect={async () => {
-									await api.db.courses.addCourseInsideClassroom(
-										c,
-										classroom.id,
-									);
-									await classroom.addCourse(c);
-									setImportModalOpen(false);
-								}}
-								course={c}
-							/>
+							<div className="inline-block mr-3 mb-3">
+								<CourseCard
+									key={idx}
+									onSelect={async () => {
+										await api.db.courses.addCourseInsideClassroom(
+											c,
+											classroom.id,
+										);
+										await classroom.addCourse(c);
+										setImportModalOpen(false);
+									}}
+									course={c}
+								/>
+							</div>
 						))
 				) : (
 					<div>{t('dashboard.courses.empty')}</div>

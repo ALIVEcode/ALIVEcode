@@ -6,7 +6,7 @@ import { User, Professor, Student } from '../User/user.entity';
 import { ChallengeAI } from './challenges/challenge_ai.entity';
 import { ChallengeAlive } from './challenges/challenge_alive.entity';
 import { ChallengeCode } from './challenges/challenge_code.entity';
-import { ChallengeIoT } from './challenges/challenge_IoT.entity';
+import { ChallengeIoT } from './challenges/challenge_iot.entity';
 
 /** Typing for all different type of resources */
 export type DifferentChallenges =

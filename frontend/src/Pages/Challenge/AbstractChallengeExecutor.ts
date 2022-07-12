@@ -200,6 +200,9 @@ export class ChallengeExecutor {
 								idToken: this.idToken,
 								responseData: response,
 							});
+							if (data.status === 'failed') {
+								return this.cmd?.error('Internal Error', 0);
+							}
 							return this.execute(data.result);
 						}
 					}

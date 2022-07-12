@@ -33,15 +33,14 @@ export function AICanvas(props:NNProps) {
     const topology = [props.hyperparameters.nbInputs, ...props.hyperparameters.neuronsByLayer, props.hyperparameters.nbOutputs]
     const biggestLayer = Math.max(...topology)
 
-    if(props.hyperparameters.nbInputs !== 0) {
-
-    }
+    // if(props.hyperparameters.nbInputs !== 0) {
+    //
+    // }
 
     const hasInput = props.hyperparameters.nbInputs !== 0
     const hasOutput = props.hyperparameters.nbOutputs !== 0
 
     const divider = biggestLayer>props.maxNeuronPerLayer ? Math.floor(biggestLayer / props.maxNeuronPerLayer): 1;
-
 
     const spacing = props.spacing
 
@@ -53,24 +52,19 @@ export function AICanvas(props:NNProps) {
         actualTopology[i] = Math.ceil(actualTopology[i]);
         oldTopology[i] -= actualTopology[i]
     }
+
     let containerSize = 0;
 
     for(let i = 0; i < actualTopology.length-1; i++) {
         containerSize+=actualTopology[i];
         containerSize+= actualTopology[i]*actualTopology[i+1]
     }
+
     containerSize += actualTopology[actualTopology.length-1]
 
-    // console.log(actualTopology);
-    // console.log(containerSize)
-
-
-    //const clickedStates:boolean[] | ((value: any, index: number) => void) = test[0]
 
     const clickedStates = useRef(new Array(containerSize).fill(false))
     const hoveredStates = useRef(new Array(containerSize).fill(false))
-
-
 
     const currentPath = useRef("");
     const currentHoveredPath = useRef("");
@@ -86,14 +80,9 @@ export function AICanvas(props:NNProps) {
 
         const layerNum = parseInt(layerClicked) - 1;
 
-        const SpecificSelector = useRef(0);
 
-        let selections = []
-        if (divider !== 1) {
-            for (let i = 0; i < divider; i++) {
-                selections.push(<option value={i}>Neurone #{i+1}</option>)
-            }
-        }
+
+        const SpecificSelector = useRef(0);
 
         const index = (parseInt(currentPath.current.split(':')[1]) - 1) * divider + SpecificSelector.current
 
@@ -115,29 +104,51 @@ export function AICanvas(props:NNProps) {
         let layerHovered: string;
         layerHovered = ((+currentHoveredPath.current.split(':')[0]) - 1).toString();
 
-        // console.log(props.layerParams.layerParams)
+
+
+        let selections: any[] = []
+
+
+        // console.log((parseInt(currentPath.current.split(':')[1]) ) * divider)
+        // console.log(topology[layerNum+1])
+
+        let t = 0
+        for(let i = (parseInt(currentPath.current.split(':')[1]) - 1) * divider; i < topology[layerNum+1] && i < (parseInt(currentPath.current.split(':')[1]) ) * divider; i++) {
+            selections.push(
+                t === SpecificSelector.current || (i+1 < topology[layerNum+1] && i+1 < (parseInt(currentPath.current.split(':')[1])))?
+                <option value={t++} selected>
+                    {typeClicked} #{i+1}
+                </option> : <option value={t++}>
+                        {typeClicked} #{i+1}
+                    </option>
+            )
+        }
+
+
 
         // @ts-ignore
-        return (<>
-            {
+        return (<> {
                 divider > 1 ?
-                    <div className={"bg-gray-600 absolute top-[7%] left-[50.5%] p-2"}>
-                        {(typeClicked === "Neurone" ? "La neurone" : "Le poid")
+                    <div className={"bg-gray-600 absolute top-[7%] left-[50.5%] p-2 text-sm"}>
+
+
+                            {(typeClicked === "Neurone" ? "La neurone" : "Le poid")
                             + " sélectionné" + (typeClicked === "Neurone" ? "e " : "")
                             + " équivaut à " + divider + " " + typeClicked.toLocaleLowerCase() + "s"}
-                        <br/>
-                        <div>
-                            <select className={"p-2 p{r}-4 bg-gray-500 rounded-lg"} name={"Neurone choisi"} onChange={(e) => {
-                                // SpecificSelector.current = e.currentTarget.;
 
+
+                            <select className={"p-[1%] p{r}-4 bg-gray-500 rounded-lg text-sm"} name={"Neurone choisi"} onChange={(e) => {
+                                // SpecificSelector.current = e.currentTarget.;
+                                console.log(e.currentTarget.value)
                                 SpecificSelector.current = parseInt(e.currentTarget.value)
                                 forceUpdate()
-                            }}>
+                            }}
+                            >
                                 {
                                     selections
                                 }
                             </select>
-                        </div>
+
                     </div> : null
             }
 
@@ -194,15 +205,15 @@ export function AICanvas(props:NNProps) {
                                 }
 
 
-                                {/*{*/}
-                                {/*    currentHoveredPath.current === "" ? null :*/}
-                                {/*        <div className={"bg-gray-400 p-2 absolute text-right right-2 "}>*/}
-                                {/*            {*/}
-                                {/*                (currentHoveredPath.current.split(':').length === 3 ? "Poid " : "Neurone ")*/}
-                                {/*                + currentHoveredPath.current*/}
-                                {/*            }*/}
-                                {/*        </div>*/}
-                                {/*}*/}
+                                {
+                                    currentHoveredPath.current === "" ? null :
+                                        <div className={"bg-gray-400 p-2 absolute text-right right-2 "}>
+                                            {
+                                                (currentHoveredPath.current.split(':').length === 3 ? "Poid " : "Neurone ")
+                                                + currentHoveredPath.current
+                                            }
+                                        </div>
+                                }
 
                             </div>
                         }
@@ -237,6 +248,8 @@ export function AICanvas(props:NNProps) {
                 {/* hoveredStates={hoveredStates} index={0} path={""}*/}
                 {/* position={new Vector3(0, 0, spacing * ((topology.length-1) / 2))} radius={2}/>*/}
             </Canvas>
+
+
 
             {
                 AAAMenu()

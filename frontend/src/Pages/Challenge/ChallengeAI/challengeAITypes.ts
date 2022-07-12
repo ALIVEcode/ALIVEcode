@@ -5,24 +5,18 @@ export interface ChallengeAIProps {
 	initialCode?: string;
 }
 
-export const StyledAliveChallenge = styled(FillContainer)`
-	width: 100%;
-	height: 100%;
-	position: relative;
-
-	.data-section {
-		height: 60%;
-		background: var(--databack-color);
-		display: flex;
-		align-items: flex-start;
-		justify-content: space-around;
+export const StyledAIChallenge = styled.div`
+	.ai-scroll::-webkit-scrollbar {
+		width: 10px;
+		height: 10px;
 	}
 
-	.graph-container {
-		height: relative;
+	.ai-scroll::-webkit-scrollbar-thumb {
+		background: var(--bg-shade-three-color);
+		border-radius: 10px;
 	}
 
-	.command {
-		height: 40%;
+	.ai-scroll::-webkit-scrollbar-thumb:hover {
+		background: var(--primary-color);
 	}
 `;

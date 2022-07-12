@@ -22,11 +22,11 @@ export type ChallengeTableProps = {
 	initData?: AIDataset;
 	isData: boolean;
 	ioCodes: number[];
-	activeIoCodes: number[]
+	activeIoCodes: number[];
 } & OneOf<
 	{
 		data: AIDataset;
-		handleIOChange: (activeNewIO: number[],newIO: number[]) => void;
+		handleIOChange: (activeNewIO: number[], newIO: number[]) => void;
 	},
 	{
 		hyperparams: Hyperparameters;
@@ -72,7 +72,7 @@ export const HyperparamID: any = {
 		name: 'Paramètres du modèle',
 		component: 'multiple fields',
 	},
-	activation:{
+	activation: {
 		name: "Fonction d'activation",
 		component: 'ACTIVATION_FUNCTIONS',
 	}

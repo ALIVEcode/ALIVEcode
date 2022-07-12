@@ -204,16 +204,16 @@ const GradientDescentScheme = (props: GradientDescentSchemeProps) => {
   currentLayer = maxLayer;
 
   const J = makeRect(350, 30, COLOR_BLUE, "Fonction de coût", "$$J(W, B)$$")
-  const dJdZ = makeRect(350, 100, COLOR_BLUE, dZdJCommonText(currentLayer, "actuelle"), `$$\\frac{\\partial J}{\\partial W_${currentLayer}} = \\hat{Y} - Y$$`, 86, 2, "gradient-descent-scheme-dJdZ");
-  const dJdW = makeRect(250, 30, COLOR_GREEN, "Évaluer la dérivée de la fonction de coût par rapport aux poids", `$$J(W, B)$$`);
-  const dJdB = makeRect(250, 170, COLOR_ORANGE, "Évaluer la dérivée de la fonction de coût par rapport aux biais", `$$J(W, B)$$`);
-  const adjustW = makeRect(150, 30, COLOR_GREEN, "Ajustement des poids", `$$J(W, B)$$`);
-  const adjustB = makeRect(150, 170, COLOR_ORANGE, "Ajustement des biais", `$$J(W, B)$$`);
-  const dJdZMinus1 = makeRect(50, 100, COLOR_YELLOW, dZdJCommonText(currentLayer - 1, "précédente"), `$$J(W, B)$$`, 86, 2, "gradient-descent-scheme-dJdZMinus1");
+  const dJdZ = makeRect(350, 100, COLOR_BLUE, dZdJCommonText(currentLayer, "actuelle"), `$$\\frac{\\partial J}{\\partial Z_${currentLayer}} = \\hat{Y} - Y$$`, 86, 2, "gradient-descent-scheme-dJdZ");
+  const dJdW = makeRect(250, 30, COLOR_GREEN, "Évaluer la dérivée de la fonction de coût par rapport aux poids", `$$\\frac{\\partial J}{\\partial W_${currentLayer}} = \\frac{\\partial J}{\\partial Z_${currentLayer}} A_2^T \\frac{1}{m}$$`);
+  const dJdB = makeRect(250, 170, COLOR_ORANGE, "Évaluer la dérivée de la fonction de coût par rapport aux biais", `$$\\frac{\\partial J}{\\partial W_${currentLayer}} = $$besoin de clarifications`);
+  const adjustW = makeRect(150, 30, COLOR_GREEN, "Ajustement des poids", `$$W_3 = W_3 - \\alpha \\frac{\\partial J}{\\partial W_${currentLayer}}$$`);
+  const adjustB = makeRect(150, 170, COLOR_ORANGE, "Ajustement des biais", `$$B_3 = B_3 - \\alpha \\frac{\\partial J}{\\partial B_${currentLayer}}$$`);
+  const dJdZMinus1 = makeRect(50, 100, COLOR_YELLOW, dZdJCommonText(currentLayer - 1, "précédente"), `$$\\frac{\\partial J}{\\partial Z_${currentLayer - 1}} = W_3^T \\frac{\\partial J}{\\partial Z_${currentLayer}}g_1\\prime(Z_2)$$`, 86, 2, "gradient-descent-scheme-dJdZMinus1");
 
-  const alpha = makeRect(150, 100, COLOR_BLACK, "Taux d'apprentissage",`$$J(W, B)$$`, 50);
-  const aMinus1 = makeRect(250, 100, COLOR_BLACK, "Activations de la couche précédente",`$$J(W, B)$$`, 50);
-  const activationF = makeRect(50, 50, COLOR_BLACK, "Fonction d'activation",`$$J(W, B)$$`, 40);
+  const alpha = makeRect(150, 100, COLOR_BLACK, "Taux d'apprentissage","$$\\alpha$$", 50);
+  const aMinus1 = makeRect(250, 100, COLOR_BLACK, "Activations de la couche précédente",`$$A_${currentLayer - 1}$$`, 50);
+  const activationF = makeRect(50, 50, COLOR_BLACK, "Fonction d'activation","$$J$$", 40);
 
   const dJdZMinus1X = getRectProps(dJdZMinus1).x;
   const lowerButtonProps = getRectProps(adjustB)

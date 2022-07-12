@@ -6,6 +6,8 @@ import { ActivityChallenge as ActivityChallengeModel } from '../../../Models/Cou
 import api from '../../../Models/api';
 import { ActivityProps } from './activityTypes';
 import { CourseContext } from '../../../state/contexts/CourseContext';
+import { ACTIVITY_TYPE } from '../../../Models/Course/activity.entity';
+import { CHALLENGE_TYPE } from '../../../Models/Challenge/challenge.entity';
 
 /**
  * Shows an activity of type Challenge
@@ -37,7 +39,15 @@ const ActivityChallenge = ({ courseElement, editMode }: ActivityProps) => {
 
 	return (
 		activity && (
-			<div className="w-full h-[450px] relative">
+			<div
+				className="w-full relative"
+				style={{
+					height:
+						activity.resource.challenge?.type === CHALLENGE_TYPE.AI
+							? `600px`
+							: `450px`,
+				}}
+			>
 				{!activity.resource ? (
 					<div className="w-full h-full flex flex-col justify-center items-center" />
 				) : !activity.resource?.challenge ? (

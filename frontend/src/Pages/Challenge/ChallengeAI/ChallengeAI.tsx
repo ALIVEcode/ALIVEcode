@@ -1,4 +1,4 @@
-import { ChallengeAIProps, StyledAliveChallenge } from './challengeAITypes';
+import { ChallengeAIProps, StyledAIChallenge } from './challengeAITypes';
 import { useEffect, useState, useContext, useRef, useMemo } from 'react';
 import LineInterface from '../../../Components/ChallengeComponents/LineInterface/LineInterface';
 import { UserContext } from '../../../state/contexts/UserContext';
@@ -964,7 +964,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	// END OF TEST FUNCTION //
 	return (
-		<div className="relative h-full w-full">
+		<StyledAIChallenge className="relative h-full w-full">
 			<div className="h-full flex flex-row">
 				{/* Left Side of screen */}
 				<div className="w-1/2 h-full flex flex-col">
@@ -1069,7 +1069,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					</div>
 				</div>
 			</div>
-		</div>
+		</StyledAIChallenge>
 	);
 };
 

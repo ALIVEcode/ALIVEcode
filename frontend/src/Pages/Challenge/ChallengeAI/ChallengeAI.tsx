@@ -704,8 +704,18 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		if (activeDataset.current) {
 			let index = activeDataset.current.getParamNames().indexOf(column);
 			if (index !== -1) {
-				activeDataset.current.normalizeParam(column);
-				forceUpdate();
+				if (
+					activeDataset.current.getDataAsArray()[index].includes(undefined) ||
+					activeDataset.current.getDataAsArray()[index].includes(null)
+				) {
+					return 'Erreur : Une colonne possède un ou des élément(s) nul(s) dans la base de données';
+				} else {
+					if (activeDataset.current.normalizeParam(column)) {
+						forceUpdate();
+					} else {
+						return 'Erreur : Impossible à normaliser';
+					}
+				}
 			} else {
 				if (index !== -1)
 					return 'Erreur : Une colonne possède des chaines de caractères comme donnée dans la base de données';
@@ -724,8 +734,14 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	function normalize(column: string, data: number): string | number {
 		if (activeDataset.current) {
 			let index = activeDataset.current.getParamNames().indexOf(column);
+
 			try {
-				return activeDataset.current.normalizeValue(data, column);
+				let result = activeDataset.current.normalizeValue(data, column);
+				if (!isNaN(result)) {
+					return activeDataset.current.normalizeValue(data, column);
+				} else {
+					return 'Erreur : Une colonne possède un ou des élément(s) nul(s) dans la base de données';
+				}
 			} catch (e) {
 				if (index !== -1)
 					return 'Erreur : Une colonne possède des chaines de caractères comme donnée dans la base de données';
@@ -782,6 +798,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			createOptimizer();
 
 			try {
+				console.log(activeDataset.current);
 				model.current = optimizer.current?.optimize(input, real);
 			} catch (e) {
 				if (e instanceof Error) return e.message;

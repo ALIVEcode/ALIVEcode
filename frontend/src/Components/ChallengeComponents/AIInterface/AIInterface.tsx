@@ -14,6 +14,8 @@ import {
 	PERCHyperparameters,
 } from '../../../Pages/Challenge/ChallengeAI/artificial_intelligence/AIUtilsInterfaces';
 import GradientDescentScheme from './AIOptimizers/GradientDescent/GradientDescentScheme';
+import ChallengeGraph from '../ChallengeGraph/ChallengeGraph';
+import DataPoint from '../ChallengeGraph/DataTypes';
 import { GenHyperparameters } from '../../../../../backend/dist/src/models/ai/entities/AIUtilsInterfaces';
 /**
  * This component represents the visual interface in every ChallengeAI. It handles the
@@ -88,12 +90,15 @@ const AIInterface = ({
 	};
 
 	function showModel() {
-		if (activeModel && modelParams) {
+		if (activeModel) {
+			console.log("Show Model")
+
 			switch (activeModel) {
 				case MODEL_TYPES.NEURAL_NETWORK:
+
 					return (
 						<AICanvas
-							layerParams={modelParams}
+							layerParams={modelParams!}
 							filter={0}
 							maxNeuronPerLayer={10}
 							spacing={40}
@@ -114,24 +119,82 @@ const AIInterface = ({
 					};
 					return (
 						<AICanvas
-							layerParams={modelParams}
+							layerParams={modelParams!}
 							filter={0}
 							maxNeuronPerLayer={10}
 							spacing={40}
 							hyperparameters={nnHyperparam}
 						/>
 					);
+				case MODEL_TYPES.POLY_REGRESSION:
+					
 				default:
 					break;
 			}
+			
+			
 		}
-		//
-		// switch (activeModel) {
-		// 	case MODEL_TYPES.NEURAL_NETWORK:
-		// 		return <AICanvas filter={0} maxNeuronPerLayer={10} spacing={20} topology={[5, 6, 20, 60, 5]}/>;
-		// 	default:
-		// 		break;
-		// }
+		if(modelType === MODEL_TYPES.POLY_REGRESSION){
+			let initialDataset: DataPoint = Object.freeze({
+				type: 'scatter',
+				label: data.getName(),
+				data: [{}],
+				backgroundColor: 'var(--contrast-color)',
+				borderWidth: 1,
+			});
+		
+			let xAxisName = ""
+			let yAxisName = ""
+
+			let input = activeIoCodes.indexOf(1)
+			if(input != -1){
+				xAxisName = data.getParamNames()[input]
+			}
+
+			let output = activeIoCodes.indexOf(0)
+			if(output != -1){
+				yAxisName = data.getParamNames()[output]
+			}
+
+			if(output != -1 && input != -1 &&
+				data.getDataAsArray()[output] as number[] &&
+				data.getDataAsArray()[input] as number[]){
+
+					let arrayX = data.getDataAsArray()[input] as number[]
+					let arrayY = data.getDataAsArray()[output] as number[]
+					let dataset = arrayX.map((x,i) => {
+						const y = arrayY[i];
+						return {
+							id: i,
+							x: x,
+							y:y,
+						}
+					})
+
+					initialDataset = Object.freeze({
+						type: 'scatter',
+						label: data.getName(),
+						data: dataset,
+						backgroundColor: 'var(--contrast-color)',
+						borderWidth: 1,
+					});
+			}
+
+			const chartData = { datasets: [initialDataset] };
+
+
+			return(
+				<div className="w-full ">
+					<ChallengeGraph
+						data={chartData}
+						title={data.getName()}
+						xAxis={xAxisName}
+						yAxis={yAxisName}
+					/>
+				</div>
+			);
+		}
+		
 	}
 
 	return (

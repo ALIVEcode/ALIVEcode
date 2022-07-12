@@ -41,40 +41,40 @@ export type ChallengeTableProps = {
 export const HyperparamID: any = {
 	nbInputs: {
 		name: "Nombre de paramètres d'entrée",
-		componant: 'disable integer input',
+		component: 'disable integer field',
 	}, //
 	nbOutputs: {
 		name: 'Nombre de paramètres de sortie',
-		componant: 'disable integer input',
+		component: 'disable integer field',
 	}, //
 	neuronsByLayer: {
 		name: 'Nombre de neurones par couche',
-		componant: 'multiple inputs',
+		component: 'multiple fields / addButton',
 	},
 	activationsByLayer: {
 		name: "Fonction d'activation par couche",
-		componant: 'multiple ACTIVATION_FUNCTIONS',
+		component: 'multiple ACTIVATION_FUNCTIONS',
 	},
 	costFunction: {
 		name: 'Fonction de coût',
-		componant: 'COST_FUNCTIONS',
+		component: 'COST_FUNCTIONS',
 	},
 	learningRate: {
 		name: "Taux d'apprentissage",
-		componant: 'input',
+		component: 'field',
 	},
-	epochs: { name: "Nombre d'epochs", componant: 'integer input' }, //
+	epochs: { name: "Nombre d'epochs", component: 'integer field' }, //
 	type: {
 		name: "Type d'optimiseur",
-		componant: 'NN_OPTIMIZER_TYPES',
+		component: 'NN_OPTIMIZER_TYPES',
 	},
 	modelParams: {
 		name: 'Paramètres du modèle',
-		componant: 'input',
+		component: 'multiple fields',
 	},
 	activation:{
 		name: "Fonction d'activation",
-		componant: 'ACTIVATION_FUNCTIONS',
+		component: 'ACTIVATION_FUNCTIONS',
 	}
 };
 

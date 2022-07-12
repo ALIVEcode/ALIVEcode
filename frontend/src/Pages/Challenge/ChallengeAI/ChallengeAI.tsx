@@ -208,6 +208,12 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					currHyperparams.current.NN.nbOutputs;
 
 				activeIoCodes.current = [...currIoCodes.current];
+
+				if (challenge.modelType === MODEL_TYPES.POLY_REGRESSION){
+					const params = currHyperparams.current.POLY.modelParams['params']
+					createAndShowReg(params[0], params[1], params[2], params[3])
+				}
+
 			} else {
 				console.error("Erreur : la table ne s'est pas chargée correctement.");
 			}
@@ -305,6 +311,29 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	const aiInterfaceModelChange = (newModelType: MODEL_TYPES) => {
 		challenge.modelType = newModelType;
 		setActiveModel(undefined);
+
+		//Set IOcodes for a Regression
+		if (newModelType === MODEL_TYPES.POLY_REGRESSION){
+			let activeInput = activeIoCodes.current.indexOf(1);
+			let activeOutput = activeIoCodes.current.indexOf(0);
+
+			let input = currIoCodes.current.indexOf(1);
+			let output = currIoCodes.current.indexOf(0);
+			
+			activeIoCodes.current = activeIoCodes.current.map(e => -1);
+			currIoCodes.current = currIoCodes.current.map(e => -1);
+
+			if (input != -1){
+				activeIoCodes.current[activeInput] = 1
+				currIoCodes.current[input] = 1
+			}
+
+			if (output != -1){
+				currIoCodes.current[output] = 0
+				activeIoCodes.current[activeOutput] = 0
+			}
+		}
+
 		forceUpdate();
 		saveChallengeTimed();
 	};
@@ -318,6 +347,27 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		newActiveIOCodes: number[],
 		newIOCodes: number[],
 	) => {
+		//Set IOcodes for a Regression
+		if (challenge.modelType === MODEL_TYPES.POLY_REGRESSION){
+			let activeInput = activeIoCodes.current.indexOf(1);
+			let activeOutput = activeIoCodes.current.indexOf(0);
+
+			let input = currIoCodes.current.indexOf(1);
+			let output = currIoCodes.current.indexOf(0);
+			
+			if (newActiveIOCodes.filter(e => e==1).length ==2){
+				newActiveIOCodes[activeInput] = -1
+				newIOCodes[input] = -1
+			}
+
+			if (newActiveIOCodes.filter(e => e==0).length ==2){
+				newActiveIOCodes[activeOutput] = -1
+				newIOCodes[output] = -1
+			}
+			const params = currHyperparams.current.POLY.modelParams['params']
+			createAndShowReg(params[0], params[1], params[2], params[3])
+		}
+
 		currIoCodes.current = newIOCodes;
 
 		// TODO Progression part
@@ -328,6 +378,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		// 		challenge.ioCodes;
 		// }
 		activeIoCodes.current = newActiveIOCodes;
+
 		console.log('');
 		setHyperparams(currHyperparams.current);
 	};
@@ -481,7 +532,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			'1',
 			currHyperparams.current[challenge.modelType] as RegHyperparameters,
 		);
-		optimizer.current = new PolyOptimizer(regression.current);
+		//optimizer.current = new PolyOptimizer(regression.current);
 		model.current = regression.current;
 	}
 
@@ -652,6 +703,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				setActiveModel(MODEL_TYPES.PERCEPTRON);
 				break;
 			case MODEL_TYPES.POLY_REGRESSION:
+				//createRegression(1,2,3,4);
 				setActiveModel(MODEL_TYPES.POLY_REGRESSION);
 				break;
 			default:
@@ -990,7 +1042,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 						ioCodes={[...currIoCodes.current]}
 						activeModel={activeModel}
 						modelParams={
-							model.current
+							 model.current instanceof NeuralNetwork
 								? (model.current as NeuralNetwork).getModelParams()
 								: undefined
 						}

@@ -60,19 +60,29 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 
 		if (props.activeModelType) {
 			// Determine the type of the hyperparam
-			switch (HyperparamTranslator![key].componant) {
-				case 'integer input':
+			switch (HyperparamTranslator![key].component) {
+				case 'integer field':
 					newNumValue = parseInt(newValue);
 					(tempHyperparams[key] as number) = newNumValue;
 					break;
-				case 'input':
+				case 'field':
 					newNumValue = parseFloat(newValue);
 					(tempHyperparams[key] as number) = newNumValue;
 					break;
-				case 'multiple inputs':
+				case 'multiple fields':
 					newNumValue = parseInt(newValue);
 					const obj = tempHyperparams[key] as Object;
-					const array = obj as number[];
+					let array: number[] = [];
+
+					if(!Array.isArray(obj)){
+						Object.values(obj).forEach(e =>{
+							if(Array.isArray(e)){
+								array = e
+							}
+						})
+					}else{
+						array = obj as number[];
+					}
 					array[index!] = newNumValue;
 					break;
 				case 'multiple ACTIVATION_FUNCTIONS':
@@ -86,6 +96,8 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 			setCurrHyperparams(tempHyperparams);
 		}
 	};
+
+	
 
 	/**
 	 * Sets the IOCodes after a change on the interface.
@@ -129,7 +141,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	 * @returns the step of the hyperparameter
 	 */
 	function inputStep(key: string) {
-		if (HyperparamTranslator![key]['componant'] === 'input') return '0.01';
+		if (HyperparamTranslator![key]['component'] === 'field') return '0.01';
 		else return '1';
 	}
 
@@ -316,8 +328,8 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	 * @returns the component corresponding to the hyperparameter
 	 */
 	function addHypperparamInput(key: keyof Hyperparameters) {
-		const component = HyperparamTranslator![key]['componant'] as string;
-		if (component.includes('input')) {
+		const component = HyperparamTranslator![key]['component'] as string;
+		if (component.includes('field')) {
 			// Returned component if the hyperparam needs an input field
 			if (!component.includes('multiple')) {
 				return singleInputField(key);
@@ -334,7 +346,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 	 * @returns the field corresponding to the hyperparameter
 	 */
 	function singleInputField(key: keyof Hyperparameters) {
-		const component = HyperparamTranslator![key]['componant'] as string;
+		const component = HyperparamTranslator![key]['component'] as string;
 		return (
 			currHyperparams &&
 			props.handleHyperparamsChange && (
@@ -376,14 +388,29 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 		if (currHyperparams && props.handleHyperparamsChange) {
 			// Returned component if the hyperparam needs multiple input fields
 			const obj = currHyperparams[key] as Object;
-			const array = obj as number[];
-			const inputFieldNb: number = array.length;
+			let array : number[] = [];
 			let inputArray = [];
+			let title = "Couche"
+			 
 
+			const component = HyperparamTranslator![key]['component'] as string;
+			if(!Array.isArray(obj)){
+				Object.values(obj).forEach(e =>{
+					if(Array.isArray(e)){
+						array = e
+					}
+				})
+				title = "";
+			}else{
+				array = obj as number[];
+			}
+			let inputFieldNb: number = array.length;
+
+			
 			for (let i = 0; i < inputFieldNb; i++) {
 				inputArray.push(
 					<div className="input-container">
-						<label>Couche {i + 1} : </label>
+						<label> {title}{i + 1} : </label>
 						<input
 							className="inputs my-1"
 							type="number"
@@ -400,25 +427,26 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 					</div>,
 				);
 			}
-
-			inputArray.push(
-				<div className="input-container my-1">
-					<button
-						className="w-5/12 mx-0.5 rounded-md text-white text-base font-medium transition-colors hover:bg-[color:var(--contrast-color)] bg-[color:var(--primary-color)] btn-clearCmdLines"
-						onClick={e => layer(true, key)}
-					>
-						{' '}
-						+{' '}
-					</button>
-					<button
-						className="w-5/12 mx-0.5 rounded-md text-white text-base font-medium transition-colors hover:bg-[color:var(--contrast-color)] bg-[color:var(--primary-color)] btn-clearCmdLines"
-						onClick={e => layer(false, key)}
-					>
-						{' '}
-						-{' '}
-					</button>
-				</div>,
-			);
+			if (component.includes('addButton')) {
+				inputArray.push(
+					<div className="input-container my-1">
+						<button
+							className="w-5/12 mx-0.5 rounded-md text-white text-base font-medium transition-colors hover:bg-[color:var(--contrast-color)] bg-[color:var(--primary-color)] btn-clearCmdLines"
+							onClick={e => layer(true, key)}
+						>
+							{' '}
+							+{' '}
+						</button>
+						<button
+							className="w-5/12 mx-0.5 rounded-md text-white text-base font-medium transition-colors hover:bg-[color:var(--contrast-color)] bg-[color:var(--primary-color)] btn-clearCmdLines"
+							onClick={e => layer(false, key)}
+						>
+							{' '}
+							-{' '}
+						</button>
+					</div>,
+				);
+			}
 
 			return inputArray;
 		}
@@ -437,7 +465,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 		let array: number[] = [];
 		let dropboxdNb = undefined;
 
-		switch (HyperparamTranslator![key]['componant']) {
+		switch (HyperparamTranslator![key]['component']) {
 			case 'NN_OPTIMIZER_TYPES': {
 				values = Object.values(NN_OPTIMIZER_TYPES);
 				keys = Object.keys(NN_OPTIMIZER_TYPES);

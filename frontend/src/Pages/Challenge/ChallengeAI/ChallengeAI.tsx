@@ -105,8 +105,13 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	//Active dataset of this challenge
 	const activeDataset = useRef<AIDataset>();
 
+	//Current modet type to display
+	const currModelType = useRef<MODEL_TYPES>(setCurrentModelType());
+
 	//Active model type of this challenge
-	const [activeModel, setActiveModel] = useState<MODEL_TYPES | undefined>();
+	const [activeModel, setActiveModel] = useState<MODEL_TYPES | undefined>(
+		setCurrentModelType(),
+	);
 
 	// Initializing the LevelAIExecutor
 	executor.current = useMemo(() => {
@@ -170,6 +175,17 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 						...challenge.ioCodes,
 					];
 
+				// Initiate the model type of the challenge if not done yet
+				if (!challenge.modelType) challenge.modelType = defaultModelType;
+
+				// Initiate the model type of this progression if not done yet
+				if (!(progression?.data as ChallengeAIProgressionData).modelType) {
+					(progression?.data as ChallengeAIProgressionData).modelType =
+						challenge.modelType;
+				}
+
+				currModelType.current = setCurrentModelType();
+
 				// Initiate Hyperparams of this challenge if not done yet
 				if (Object.keys(challenge.hyperparams).length === 0) {
 					challenge.hyperparams = defaultHyperparams;
@@ -225,6 +241,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		currHyperparams.current = setCurrHyperparams();
 		currIoCodes.current = setCurrIoCodes();
 		activeIoCodes.current = [...currIoCodes.current];
+		currModelType.current = setCurrentModelType();
+
 		forceUpdate();
 	}, [editMode]);
 
@@ -310,7 +328,12 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 */
 	const aiInterfaceModelChange = (newModelType: MODEL_TYPES) => {
 		if (editMode) challenge.modelType = newModelType;
-		//setActiveModel(undefined);
+		else
+			(progression?.data as ChallengeAIProgressionData).modelType =
+				newModelType;
+
+		currModelType.current = setCurrentModelType();
+		setActiveModel(undefined);
 
 		//Set IOcodes for a Regression
 		if (newModelType === MODEL_TYPES.POLY_REGRESSION) {
@@ -335,7 +358,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		}
 
 		forceUpdate();
-		saveChallengeTimed();
+		if (editMode) saveChallengeTimed();
+		else saveProgressionTimed();
 	};
 
 	/**
@@ -379,7 +403,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		// }
 		activeIoCodes.current = newActiveIOCodes;
 
-		console.log('');
 		setHyperparams(currHyperparams.current);
 	};
 
@@ -422,6 +445,14 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			: (progression!.data as ChallengeAIProgressionData).hyperparams
 			? (progression!.data as ChallengeAIProgressionData).hyperparams
 			: challenge.hyperparams;
+	}
+
+	function setCurrentModelType(): MODEL_TYPES {
+		return editMode
+			? challenge.modelType
+			: (progression!.data as ChallengeAIProgressionData).modelType
+			? (progression!.data as ChallengeAIProgressionData).modelType
+			: challenge.modelType;
 	}
 
 	/**
@@ -576,7 +607,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					optimizer.current = new GradientDescent(modelPerc);
 					break;
 			}
-			console.log('Current Optimizer : ', optimizer.current);
 		}
 	}
 
@@ -668,11 +698,11 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * Creates an ai model
 	 */
 	function modelCreation(): void {
-		switch (challenge.modelType) {
+		switch (currModelType.current) {
 			case MODEL_TYPES.NEURAL_NETWORK:
 				model.current = new NeuralNetwork(
 					'Neural Network Model',
-					currHyperparams.current[challenge.modelType],
+					currHyperparams.current[MODEL_TYPES.NEURAL_NETWORK],
 					{
 						layerParams: [],
 					},
@@ -744,7 +774,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			}
 
 			activeIoCodes.current = [...newIOCodes];
-			console.log('Active iocodes', activeIoCodes.current);
 			setHyperparams(currHyperparams.current);
 		} else {
 			if (index !== -1)
@@ -857,7 +886,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			createOptimizer();
 
 			try {
-				console.log(activeDataset.current);
 				model.current = optimizer.current?.optimize(input, real);
 			} catch (e) {
 				if (e instanceof Error) return e.message;
@@ -1037,7 +1065,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 						]}
 						data={activeDataset.current}
 						initData={challenge.dataset}
-						modelType={challenge.modelType}
+						modelType={currModelType.current}
 						hyperparams={currHyperparams.current[challenge.modelType]}
 						activeIoCodes={[...activeIoCodes.current]}
 						ioCodes={[...currIoCodes.current]}

@@ -91,11 +91,10 @@ const AIInterface = ({
 
 	function showModel() {
 		if (activeModel) {
-			console.log("Show Model")
+			console.log('Show Model');
 
 			switch (activeModel) {
 				case MODEL_TYPES.NEURAL_NETWORK:
-
 					return (
 						<AICanvas
 							layerParams={modelParams!}
@@ -127,14 +126,12 @@ const AIInterface = ({
 						/>
 					);
 				case MODEL_TYPES.POLY_REGRESSION:
-					
+
 				default:
 					break;
 			}
-			
-			
 		}
-		if(modelType === MODEL_TYPES.POLY_REGRESSION){
+		if (modelType === MODEL_TYPES.POLY_REGRESSION) {
 			let initialDataset: DataPoint = Object.freeze({
 				type: 'scatter',
 				label: data.getName(),
@@ -142,48 +139,49 @@ const AIInterface = ({
 				backgroundColor: 'var(--contrast-color)',
 				borderWidth: 1,
 			});
-		
-			let xAxisName = ""
-			let yAxisName = ""
 
-			let input = activeIoCodes.indexOf(1)
-			if(input != -1){
-				xAxisName = data.getParamNames()[input]
+			let xAxisName = '';
+			let yAxisName = '';
+
+			let input = activeIoCodes.indexOf(1);
+			if (input !== -1) {
+				xAxisName = data.getParamNames()[input];
 			}
 
-			let output = activeIoCodes.indexOf(0)
-			if(output != -1){
-				yAxisName = data.getParamNames()[output]
+			let output = activeIoCodes.indexOf(0);
+			if (output !== -1) {
+				yAxisName = data.getParamNames()[output];
 			}
 
-			if(output != -1 && input != -1 &&
-				data.getDataAsArray()[output] as number[] &&
-				data.getDataAsArray()[input] as number[]){
+			if (
+				output !== -1 &&
+				input !== -1 &&
+				(data.getDataAsArray()[output] as number[]) &&
+				(data.getDataAsArray()[input] as number[])
+			) {
+				let arrayX = data.getDataAsArray()[input] as number[];
+				let arrayY = data.getDataAsArray()[output] as number[];
+				let dataset = arrayX.map((x, i) => {
+					const y = arrayY[i];
+					return {
+						id: i,
+						x: x,
+						y: y,
+					};
+				});
 
-					let arrayX = data.getDataAsArray()[input] as number[]
-					let arrayY = data.getDataAsArray()[output] as number[]
-					let dataset = arrayX.map((x,i) => {
-						const y = arrayY[i];
-						return {
-							id: i,
-							x: x,
-							y:y,
-						}
-					})
-
-					initialDataset = Object.freeze({
-						type: 'scatter',
-						label: data.getName(),
-						data: dataset,
-						backgroundColor: 'var(--contrast-color)',
-						borderWidth: 1,
-					});
+				initialDataset = Object.freeze({
+					type: 'scatter',
+					label: data.getName(),
+					data: dataset,
+					backgroundColor: 'var(--contrast-color)',
+					borderWidth: 1,
+				});
 			}
 
 			const chartData = { datasets: [initialDataset] };
 
-
-			return(
+			return (
 				<div className="w-full ">
 					<ChallengeGraph
 						data={chartData}
@@ -194,7 +192,6 @@ const AIInterface = ({
 				</div>
 			);
 		}
-		
 	}
 
 	return (
@@ -212,7 +209,7 @@ const AIInterface = ({
 							onChange={e => {
 								handleDropdownChange(e.target.value as MODEL_TYPES);
 							}}
-							defaultValue={modelType}
+							value={modelType}
 						>
 							<option value={MODEL_TYPES.NEURAL_NETWORK}>
 								Réseau de neurones

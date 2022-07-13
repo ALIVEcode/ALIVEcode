@@ -74,13 +74,13 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 					const obj = tempHyperparams[key] as Object;
 					let array: number[] = [];
 
-					if(!Array.isArray(obj)){
-						Object.values(obj).forEach(e =>{
-							if(Array.isArray(e)){
-								array = e
+					if (!Array.isArray(obj)) {
+						Object.values(obj).forEach(e => {
+							if (Array.isArray(e)) {
+								array = e;
 							}
-						})
-					}else{
+						});
+					} else {
 						array = obj as number[];
 					}
 					array[index!] = newNumValue;
@@ -96,8 +96,6 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 			setCurrHyperparams(tempHyperparams);
 		}
 	};
-
-	
 
 	/**
 	 * Sets the IOCodes after a change on the interface.
@@ -388,29 +386,31 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 		if (currHyperparams && props.handleHyperparamsChange) {
 			// Returned component if the hyperparam needs multiple input fields
 			const obj = currHyperparams[key] as Object;
-			let array : number[] = [];
+			let array: number[] = [];
 			let inputArray = [];
-			let title = "Couche"
-			 
+			let title = 'Couche';
 
 			const component = HyperparamTranslator![key]['component'] as string;
-			if(!Array.isArray(obj)){
-				Object.values(obj).forEach(e =>{
-					if(Array.isArray(e)){
-						array = e
+			if (!Array.isArray(obj)) {
+				Object.values(obj).forEach(e => {
+					if (Array.isArray(e)) {
+						array = e;
 					}
-				})
-				title = "";
-			}else{
+				});
+				title = '';
+			} else {
 				array = obj as number[];
 			}
 			let inputFieldNb: number = array.length;
 
-			
 			for (let i = 0; i < inputFieldNb; i++) {
 				inputArray.push(
 					<div className="input-container">
-						<label> {title}{i + 1} : </label>
+						<label>
+							{' '}
+							{title}
+							{i + 1} :{' '}
+						</label>
 						<input
 							className="inputs my-1"
 							type="number"

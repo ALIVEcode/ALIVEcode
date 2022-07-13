@@ -32,7 +32,7 @@ import {
 } from './artificial_intelligence/AIUtilsInterfaces';
 import { GenOptimizer } from './artificial_intelligence/AIUtilsInterfaces';
 import { RegHyperparameters } from './artificial_intelligence/AIUtilsInterfaces';
-import AIInterface from '../../../Components/ChallengeComponents/AIInterface/AIInterface';
+import { AIInterface } from '../../../Components/ChallengeComponents/AIInterface/AIInterface';
 import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
 import {
 	defaultHyperparams,
@@ -96,9 +96,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	//Active model object for this challenge
 	const model = useRef<GenAIModel>();
-
-	//Active model type for this challenge
-	const regression = useRef<PolyRegression>();
 
 	const optimizer = useRef<GenOptimizer>();
 
@@ -227,7 +224,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 				if (challenge.modelType === MODEL_TYPES.POLY_REGRESSION) {
 					const params = currHyperparams.current.POLY.modelParams['params'];
-					createAndShowReg(params[0], params[1], params[2], params[3]);
+					createRegression(params[0], params[1], params[2], params[3]);
+					setChartDataIOCode();
 				}
 			} else {
 				console.error("Erreur : la table ne s'est pas chargée correctement.");
@@ -389,10 +387,15 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				newIOCodes[output] = -1;
 			}
 			const params = currHyperparams.current.POLY.modelParams['params'];
-			createAndShowReg(params[0], params[1], params[2], params[3]);
-		}
+			currIoCodes.current = newIOCodes;
+			activeIoCodes.current = newActiveIOCodes;
 
-		currIoCodes.current = newIOCodes;
+			createAndShowReg(params[0], params[1], params[2], params[3]);
+			setChartDataIOCode();
+		} else {
+			currIoCodes.current = newIOCodes;
+			activeIoCodes.current = newActiveIOCodes;
+		}
 
 		// TODO Progression part
 		// if (editMode) {
@@ -494,27 +497,24 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	//-----------TODO change the followings when regressions are implemented---------//
 	//Set the data for the challenge
-	const [data] = useState(dataAI);
-
-	//The dataset of the prototype AI course
-	const mainDataset: DataPoint = {
-		type: 'scatter',
-		label: "Distance parcourue en fonction de l'énergie",
-		data: data,
-		backgroundColor: 'var(--contrast-color)',
-		borderWidth: 1,
-	};
+	const data = useRef([{}]);
 
 	//The initial dataset of any course, which is no data
 	const initialDataset: DataPoint = Object.freeze({
 		type: 'scatter',
-		label: "Distance parcourue en fonction de l'énergie",
+		label: '',
 		data: [{}],
 		backgroundColor: 'var(--contrast-color)',
 		borderWidth: 1,
 	});
+
+	//The dataset of the prototype AI course
+	let mainDataset = useRef({ ...initialDataset });
+
 	let datasets = useRef([initialDataset, initialDataset]);
-	const [chartData, setChartData] = useState({ datasets: [initialDataset] });
+	const [chartData, setChartData] = useState({
+		datasets: [initialDataset, initialDataset],
+	});
 
 	/**
 	 * Resets the dataset array and the data shown on the graph.
@@ -536,8 +536,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @param newData the new dataset to add.
 	 */
 	function setDataOnGraph(newData: DataPoint): void {
-		if (datasets.current[0] === initialDataset) {
-			datasets.current = [newData];
+		if (newData.type === 'line') {
+			datasets.current[0] = newData;
 		} else datasets.current[1] = newData;
 		setChart();
 	}
@@ -548,7 +548,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * Sets the data of the graph to the challenge's data and displays it on the screen
 	 */
 	function showDataCloud(): void {
-		setDataOnGraph(mainDataset);
+		setDataOnGraph(mainDataset.current);
 	}
 
 	/**
@@ -559,20 +559,51 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @param d the param d of a polynomial regression.
 	 */
 	function createRegression(a: number, b: number, c: number, d: number) {
-		regression.current = new PolyRegression(
+		model.current = new PolyRegression(
 			'1',
 			currHyperparams.current[challenge.modelType] as RegHyperparameters,
 		);
 		//optimizer.current = new PolyOptimizer(regression.current);
-		model.current = regression.current;
+	}
+
+	function setChartDataIOCode() {
+		let input = activeIoCodes.current!.indexOf(1);
+		let output = activeIoCodes.current!.indexOf(0);
+
+		if (
+			output != -1 &&
+			input != -1 &&
+			(activeDataset.current!.getDataAsArray()[output] as number[]) &&
+			(activeDataset.current!.getDataAsArray()[input] as number[])
+		) {
+			let arrayX = activeDataset.current!.getDataAsArray()[input] as number[];
+			let arrayY = activeDataset.current!.getDataAsArray()[output] as number[];
+
+			data.current = arrayX.map((x, i) => {
+				const y = arrayY[i];
+				return {
+					id: i,
+					x: x,
+					y: y,
+				};
+			});
+		} else {
+			data.current = [{}];
+		}
+
+		mainDataset.current.data = data.current;
+		resetGraph();
+		showDataCloud();
 	}
 
 	/**
 	 * Generates the latest regression's points and shows them on the graph.
 	 */
 	function showRegression() {
-		const points = regression.current!.generatePoints();
-		setDataOnGraph(points);
+		if (model.current instanceof PolyRegression) {
+			const points = model.current.generatePoints();
+			setDataOnGraph(points);
+		}
 	}
 
 	/**
@@ -599,12 +630,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					optimizer.current = new GradientDescent(modelTemp);
 					break;
 				case MODEL_TYPES.POLY_REGRESSION:
-					regression.current = model.current as PolyRegression;
-					optimizer.current = new PolyOptimizer(regression.current);
-					break;
-				case MODEL_TYPES.PERCEPTRON:
-					let modelPerc = model.current as NeuralNetwork;
-					optimizer.current = new GradientDescent(modelPerc);
+					const modelPoly = model.current as PolyRegression;
+					optimizer.current = new PolyOptimizer(modelPoly);
 					break;
 			}
 		}
@@ -668,7 +695,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @returns the output of the model.
 	 */
 	function evaluate(predInputs: number): number {
-		setDataOnGraph(mainDataset);
+		setDataOnGraph(mainDataset.current);
 		showRegression();
 		const matInputs: Matrix = new Matrix([[predInputs]]);
 		return model.current!.predict(matInputs.transpose()).getValue()[0][0];
@@ -733,7 +760,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				setActiveModel(MODEL_TYPES.PERCEPTRON);
 				break;
 			case MODEL_TYPES.POLY_REGRESSION:
-				//createRegression(1,2,3,4);
+				const params = currHyperparams.current.POLY.modelParams['params'];
+				createAndShowReg(params[0], params[1], params[2], params[3]);
 				setActiveModel(MODEL_TYPES.POLY_REGRESSION);
 				break;
 			default:
@@ -846,6 +874,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 */
 	function predict(input: number[]) {
 		let tab: number[][] = [];
+		let matInput = new Matrix(tab);
+		let respond;
 
 		//Column Matrix
 		input.forEach(e => {
@@ -853,18 +883,27 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			a.push(e);
 			tab.push(a);
 		});
-		let matInput = new Matrix(tab);
-		let respond;
+
 		//Prediction
 		if (model.current) {
-			try {
-				respond = model.current.predict(matInput).transpose();
-			} catch (e) {
-				if (e instanceof Error) {
-					return e.message;
+			//PolyRegression
+			if (model.current instanceof PolyRegression) {
+				if (input.length === 1) {
+					return [[evaluate(input[0])]];
+				} else {
+					return "Erreur predire() : la liste entrée ne contient pas autant de valeurs qu'il y a de paramètres d'entrée dans le modèle.";
 				}
+				//Perceptron et Neural Network
+			} else {
+				try {
+					respond = model.current.predict(matInput).transpose();
+				} catch (e) {
+					if (e instanceof Error) {
+						return e.message;
+					}
+				}
+				return respond?.getValue();
 			}
-			return respond?.getValue();
 		} else {
 			return "Error : Le modèle n'a pas encore été créé";
 		}
@@ -887,6 +926,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 			try {
 				model.current = optimizer.current?.optimize(input, real);
+				if (model.current instanceof PolyRegression) {
+					showRegression();
+				}
 			} catch (e) {
 				if (e instanceof Error) return e.message;
 			}
@@ -1075,6 +1117,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 								? (model.current as NeuralNetwork).getModelParams()
 								: undefined
 						}
+						chartData={chartData}
 					/>
 					{/* TODO Code for visual regression ************
 							<div className="w-1/3 h-full">

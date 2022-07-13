@@ -17,12 +17,12 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 		super(challengeName, askForUserInput, alert);
 
 		this.doBeforeRun(() => {
-			this.executableFuncs.resetGraph();
+			//this.executableFuncs.resetGraph();
 			this.executableFuncs.initializeDataset();
 		});
 
 		this.doAfterStop(() => {
-			this.executableFuncs.resetGraph();
+			//this.executableFuncs.resetGraph();
 		});
 
 		this.registerActions([

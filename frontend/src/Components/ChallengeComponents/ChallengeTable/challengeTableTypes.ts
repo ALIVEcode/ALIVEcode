@@ -69,7 +69,7 @@ export const HyperparamID: any = {
 		component: 'NN_OPTIMIZER_TYPES',
 	},
 	modelParams: {
-		name: 'Paramètres du modèle',
+		name: 'Paramètres du modèle par défaut',
 		component: 'multiple fields',
 	},
 	activation: {

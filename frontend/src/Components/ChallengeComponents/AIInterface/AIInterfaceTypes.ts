@@ -6,6 +6,8 @@ import {
 import { Theme } from '../../../state/contexts/ThemeContext';
 import { MODEL_TYPES } from '../../../Models/Ai/ai_model.entity';
 import { NNModelParams } from '../../../../../backend/dist/src/models/ai/entities/AIUtilsInterfaces';
+import DataPoint from '../ChallengeGraph/DataTypes';
+
 
 /**
  * This type describes all properties of an AIInterface.
@@ -38,6 +40,7 @@ export type AIInterfaceProps = {
 	modelType: MODEL_TYPES;
 	modelParams?: NNModelParams;
 	initData: any;
+	chartData: {datasets: DataPoint[]};
 };
 
 /**

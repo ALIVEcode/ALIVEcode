@@ -96,9 +96,9 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					label: 'Cost Function',
 					type: 'GET',
 					apply: (params, _, response) => {
-						console.log("Execute Cost Function")
+						console.log('Execute Cost Function');
 						const out = this.executableFuncs.costFunction();
-						response?.push(out)
+						response?.push(out);
 						this.perform_next();
 					},
 				},
@@ -152,13 +152,13 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 						console.log('Execute One Hot');
 						if (
 							typeof params[0] === 'string' &&
-							typeof params[1] === 'object'&&
+							typeof params[1] === 'object' &&
 							typeof params[2] === 'boolean'
 						) {
 							const out: string | undefined = this.executableFuncs.oneHot(
 								params[0],
 								params[1],
-								params[2]
+								params[2],
 							);
 							if (out !== undefined) {
 								this.cmd?.print(out);
@@ -177,11 +177,9 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 						if (typeof params[0] === 'string') {
 							let out = this.executableFuncs.normalizeColumn(params[0]);
 							if (out) {
-								console.log(out)
-								response?.push(out)
-							}else(
-								response?.push(null)
-							)
+								console.log(out);
+								response?.push(out);
+							} else response?.push(null);
 							this.perform_next();
 						}
 					},
@@ -233,7 +231,8 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 						}
 					},
 				},
-			},{
+			},
+			{
 				actionId: 812,
 				action: {
 					label: 'Optimiser',
@@ -242,65 +241,80 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 						console.log('Execute Optimize');
 						let out = this.executableFuncs.optimize();
 
-						if (typeof out === 'string'){
-							this.cmd?.print(out)
+						if (typeof out === 'string') {
+							this.cmd?.print(out);
 						}
-
-					}
-				}
-			},{
+					},
+				},
+			},
+			{
 				actionId: 813,
 				action: {
 					label: 'IO Names',
 					type: 'GET',
 					apply: (params, _, response) => {
 						console.log('IO Names');
-						let out:string[] = this.executableFuncs.getIONames();
-						console.log(out)
+						let out: string[] = this.executableFuncs.getIONames();
+						console.log(out);
 						response?.push('Creation of a list');
-						out.forEach(e => response?.push(e))
+						out.forEach(e => response?.push(e));
 						this.perform_next();
 					},
-				}
-			},{
+				},
+			},
+			{
 				actionId: 814,
 				action: {
 					label: 'Delete Line',
 					type: 'NORMAL',
-					apply: (params) => {
+					apply: params => {
 						console.log('Execute Delete Line');
-						if(typeof params[0] === 'number'){
+						if (typeof params[0] === 'number') {
 							let out = this.executableFuncs.deleteLine(params[0]);
-							if (typeof out === 'string'){
-								this.cmd?.print(out)
+							if (typeof out === 'string') {
+								this.cmd?.print(out);
 							}
 						}
 					},
 				},
-			},{
+			},
+			{
 				actionId: 815,
 				action: {
 					label: 'Coefficient Correlation',
 					type: 'GET',
 					apply: (params, _, response) => {
 						console.log('Execute Coefficient Correlation');
-						if(typeof params[0] === 'object' && typeof params[1] === 'object'){
-							let out = this.executableFuncs.coefficientCorrelation(params[0], params[1]);
-								response?.push(out)
+						if (
+							typeof params[0] === 'object' &&
+							typeof params[1] === 'object'
+						) {
+							let out = this.executableFuncs.coefficientCorrelation(
+								params[0],
+								params[1],
+							);
+							response?.push(out);
 							this.perform_next();
 						}
 					},
 				},
-			},{
+			},
+			{
 				actionId: 816,
 				action: {
 					label: 'Coefficient Dermination',
 					type: 'GET',
-					apply: (params, _ , response) => {
+					apply: (params, _, response) => {
 						console.log('Execute Coefficient Correlation');
-						if(typeof params[0] === 'object' && typeof params[1] === 'object'){
-							let out = this.executableFuncs.coefficientDetermination(params[0], params[1]);
-							response?.push(out)
+						if (
+							typeof params[0] === 'object' &&
+							typeof params[1] === 'object'
+						) {
+							let out = this.executableFuncs.coefficientDetermination(
+								params[0],
+								params[1],
+							);
+							response?.push(out);
 							this.perform_next();
 						}
 					},

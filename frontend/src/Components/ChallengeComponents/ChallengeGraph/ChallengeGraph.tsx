@@ -26,7 +26,7 @@ const ChallengeGraph = memo((props: ChallengeGraphProps) => {
 				data={props.data}
 				options={{
 					responsive: true,
-					aspectRatio: 1.3,
+					//aspectRatio: 1.3,
 					events: [],
 					layout: {
 						padding: {

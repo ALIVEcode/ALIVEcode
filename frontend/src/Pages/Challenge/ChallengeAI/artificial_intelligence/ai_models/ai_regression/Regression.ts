@@ -15,11 +15,11 @@ export abstract class Regression extends AIModel {
 		type: 'line',
 		label: 'Fonction polynomiale',
 		data: [{}],
-		borderColor: 'rgb(33, 87, 145)',
+		borderColor: 'blue',
 		borderWidth: 3,
 		pointRadius: 3,
 		pointBorderWidth: 0,
-		pointBackgroundColor: 'black',
+		pointBackgroundColor: 'cyan',
 	};
 	protected static NB_POINTS = 20;
 	protected static MIN_RANGE = 0;

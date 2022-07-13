@@ -1,0 +1,2702 @@
+[
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 246,
+		"Prix (k$)": 1247
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 245,
+		"Prix (k$)": 1123
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 3,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 302,
+		"Prix (k$)": 1035
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 157,
+		"Prix (k$)": 397
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 1,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 105,
+		"Prix (k$)": 371
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 201,
+		"Prix (k$)": 1197
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 224,
+		"Prix (k$)": 1219
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 326,
+		"Prix (k$)": 765
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 237,
+		"Prix (k$)": 710
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 175,
+		"Prix (k$)": 1209
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 1,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 233,
+		"Prix (k$)": 742
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 319,
+		"Prix (k$)": 859
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 171,
+		"Prix (k$)": 515
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 315,
+		"Prix (k$)": 1116
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 326,
+		"Prix (k$)": 1167
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 8,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 248,
+		"Prix (k$)": 527
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 223,
+		"Prix (k$)": 331
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 302,
+		"Prix (k$)": 891
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 1,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 138,
+		"Prix (k$)": 1089
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 1,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 188,
+		"Prix (k$)": 673
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 146,
+		"Prix (k$)": 1145
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 200,
+		"Prix (k$)": 813
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 289,
+		"Prix (k$)": 1111
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 8,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 170,
+		"Prix (k$)": 839
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 278,
+		"Prix (k$)": 711
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 304,
+		"Prix (k$)": 1176
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 316,
+		"Prix (k$)": 1184
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 102,
+		"Prix (k$)": 463
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 101,
+		"Prix (k$)": 833
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 182,
+		"Prix (k$)": 698
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 290,
+		"Prix (k$)": 818
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 321,
+		"Prix (k$)": 738
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 1,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 253,
+		"Prix (k$)": 716
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 312,
+		"Prix (k$)": 1183
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 276,
+		"Prix (k$)": 1115
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 231,
+		"Prix (k$)": 461
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 135,
+		"Prix (k$)": 815
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 308,
+		"Prix (k$)": 735
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 168,
+		"Prix (k$)": 1076
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 182,
+		"Prix (k$)": 443
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 185,
+		"Prix (k$)": 521
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 173,
+		"Prix (k$)": 1108
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 163,
+		"Prix (k$)": 675
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 199,
+		"Prix (k$)": 1201
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 313,
+		"Prix (k$)": 775
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 155,
+		"Prix (k$)": 1221
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 290,
+		"Prix (k$)": 1141
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 108,
+		"Prix (k$)": 871
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 250,
+		"Prix (k$)": 792
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 182,
+		"Prix (k$)": 851
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 8,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 249,
+		"Prix (k$)": 885
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 228,
+		"Prix (k$)": 739
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 173,
+		"Prix (k$)": 834
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 247,
+		"Prix (k$)": 814
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 206,
+		"Prix (k$)": 478
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 158,
+		"Prix (k$)": 798
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 8,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 108,
+		"Prix (k$)": 885
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 105,
+		"Prix (k$)": 773
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 242,
+		"Prix (k$)": 1161
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 1,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 144,
+		"Prix (k$)": 667
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 1,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 161,
+		"Prix (k$)": 735
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 8,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 220,
+		"Prix (k$)": 906
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 3,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 188,
+		"Prix (k$)": 687
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 138,
+		"Prix (k$)": 792
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 1,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 161,
+		"Prix (k$)": 739
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 192,
+		"Prix (k$)": 834
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 297,
+		"Prix (k$)": 1068
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 326,
+		"Prix (k$)": 742
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 99,
+		"Prix (k$)": 504
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 109,
+		"Prix (k$)": 851
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 288,
+		"Prix (k$)": 422
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 1,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 252,
+		"Prix (k$)": 386
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 1,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 126,
+		"Prix (k$)": 1070
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 277,
+		"Prix (k$)": 836
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 222,
+		"Prix (k$)": 1163
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 239,
+		"Prix (k$)": 752
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 1,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 307,
+		"Prix (k$)": 1068
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 1,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 306,
+		"Prix (k$)": 728
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 146,
+		"Prix (k$)": 1123
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 269,
+		"Prix (k$)": 1186
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 278,
+		"Prix (k$)": 811
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 280,
+		"Prix (k$)": 743
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 267,
+		"Prix (k$)": 386
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 256,
+		"Prix (k$)": 1188
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 226,
+		"Prix (k$)": 793
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 346,
+		"Prix (k$)": 1181
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 159,
+		"Prix (k$)": 478
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 243,
+		"Prix (k$)": 1145
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 1,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 316,
+		"Prix (k$)": 667
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 295,
+		"Prix (k$)": 809
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 92,
+		"Prix (k$)": 331
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 312,
+		"Prix (k$)": 832
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 1,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 229,
+		"Prix (k$)": 722
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 272,
+		"Prix (k$)": 1175
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 158,
+		"Prix (k$)": 849
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 325,
+		"Prix (k$)": 1072
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 116,
+		"Prix (k$)": 845
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 257,
+		"Prix (k$)": 807
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 227,
+		"Prix (k$)": 764
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 318,
+		"Prix (k$)": 1202
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 87,
+		"Prix (k$)": 403
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 1,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 205,
+		"Prix (k$)": 722
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 192,
+		"Prix (k$)": 1104
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 1,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 227,
+		"Prix (k$)": 743
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 1,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 262,
+		"Prix (k$)": 1023
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 188,
+		"Prix (k$)": 1185
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 161,
+		"Prix (k$)": 788
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 300,
+		"Prix (k$)": 874
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 118,
+		"Prix (k$)": 828
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 160,
+		"Prix (k$)": 1025
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 1,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 194,
+		"Prix (k$)": 723
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 132,
+		"Prix (k$)": 743
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 1,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 254,
+		"Prix (k$)": 367
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 6,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 250,
+		"Prix (k$)": 834
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 216,
+		"Prix (k$)": 834
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 311,
+		"Prix (k$)": 1179
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 262,
+		"Prix (k$)": 460
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 253,
+		"Prix (k$)": 1073
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 258,
+		"Prix (k$)": 811
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 8,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 165,
+		"Prix (k$)": 893
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 187,
+		"Prix (k$)": 897
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 8,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 245,
+		"Prix (k$)": 485
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 110,
+		"Prix (k$)": 829
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 141,
+		"Prix (k$)": 351
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 226,
+		"Prix (k$)": 475
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 247,
+		"Prix (k$)": 795
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 341,
+		"Prix (k$)": 1119
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 229,
+		"Prix (k$)": 807
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 318,
+		"Prix (k$)": 1095
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 110,
+		"Prix (k$)": 890
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 6,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 325,
+		"Prix (k$)": 1178
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 180,
+		"Prix (k$)": 808
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 131,
+		"Prix (k$)": 1155
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 260,
+		"Prix (k$)": 749
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 97,
+		"Prix (k$)": 403
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 6,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 195,
+		"Prix (k$)": 1238
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 163,
+		"Prix (k$)": 749
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 207,
+		"Prix (k$)": 851
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 8,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 290,
+		"Prix (k$)": 812
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 105,
+		"Prix (k$)": 461
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 293,
+		"Prix (k$)": 759
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 206,
+		"Prix (k$)": 443
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 212,
+		"Prix (k$)": 1208
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 168,
+		"Prix (k$)": 427
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 8,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 105,
+		"Prix (k$)": 838
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 195,
+		"Prix (k$)": 792
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 135,
+		"Prix (k$)": 535
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 232,
+		"Prix (k$)": 483
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 321,
+		"Prix (k$)": 911
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 196,
+		"Prix (k$)": 403
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 76,
+		"Prix (k$)": 463
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 204,
+		"Prix (k$)": 1168
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 3,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 75,
+		"Prix (k$)": 342
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 1,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 145,
+		"Prix (k$)": 317
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 235,
+		"Prix (k$)": 1066
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 297,
+		"Prix (k$)": 796
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 3,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 272,
+		"Prix (k$)": 688
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 228,
+		"Prix (k$)": 465
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 219,
+		"Prix (k$)": 476
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 249,
+		"Prix (k$)": 1257
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 152,
+		"Prix (k$)": 854
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 198,
+		"Prix (k$)": 1096
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 311,
+		"Prix (k$)": 827
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 309,
+		"Prix (k$)": 677
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 193,
+		"Prix (k$)": 1200
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 274,
+		"Prix (k$)": 1223
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 105,
+		"Prix (k$)": 810
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 171,
+		"Prix (k$)": 832
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 1,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 238,
+		"Prix (k$)": 1059
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 318,
+		"Prix (k$)": 1140
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 117,
+		"Prix (k$)": 346
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 212,
+		"Prix (k$)": 704
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 8,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 130,
+		"Prix (k$)": 527
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 8,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 244,
+		"Prix (k$)": 504
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 282,
+		"Prix (k$)": 1182
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 3,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 326,
+		"Prix (k$)": 1044
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 6,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 237,
+		"Prix (k$)": 1201
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 305,
+		"Prix (k$)": 878
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 160,
+		"Prix (k$)": 539
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 176,
+		"Prix (k$)": 816
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 167,
+		"Prix (k$)": 850
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 207,
+		"Prix (k$)": 528
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 8,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 154,
+		"Prix (k$)": 870
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 180,
+		"Prix (k$)": 750
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 115,
+		"Prix (k$)": 910
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 159,
+		"Prix (k$)": 770
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 1,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 98,
+		"Prix (k$)": 743
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 267,
+		"Prix (k$)": 409
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 243,
+		"Prix (k$)": 539
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 249,
+		"Prix (k$)": 754
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 257,
+		"Prix (k$)": 819
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 171,
+		"Prix (k$)": 854
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 6,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 296,
+		"Prix (k$)": 1175
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 204,
+		"Prix (k$)": 763
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 8,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 194,
+		"Prix (k$)": 867
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 6,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 233,
+		"Prix (k$)": 1180
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 298,
+		"Prix (k$)": 373
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 268,
+		"Prix (k$)": 812
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 74,
+		"Prix (k$)": 540
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 331,
+		"Prix (k$)": 1166
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 214,
+		"Prix (k$)": 1180
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 149,
+		"Prix (k$)": 505
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 8,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 229,
+		"Prix (k$)": 479
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 116,
+		"Prix (k$)": 793
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 131,
+		"Prix (k$)": 448
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 1,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 235,
+		"Prix (k$)": 315
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 155,
+		"Prix (k$)": 1112
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 305,
+		"Prix (k$)": 793
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 99,
+		"Prix (k$)": 871
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 250,
+		"Prix (k$)": 1222
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 208,
+		"Prix (k$)": 681
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 155,
+		"Prix (k$)": 789
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 295,
+		"Prix (k$)": 347
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 8,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 73,
+		"Prix (k$)": 501
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 151,
+		"Prix (k$)": 832
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 254,
+		"Prix (k$)": 401
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 276,
+		"Prix (k$)": 1077
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 328,
+		"Prix (k$)": 732
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 8,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 128,
+		"Prix (k$)": 872
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 132,
+		"Prix (k$)": 858
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 154,
+		"Prix (k$)": 1063
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 139,
+		"Prix (k$)": 516
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 116,
+		"Prix (k$)": 476
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 170,
+		"Prix (k$)": 733
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 308,
+		"Prix (k$)": 836
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 234,
+		"Prix (k$)": 836
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 236,
+		"Prix (k$)": 1093
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 227,
+		"Prix (k$)": 1095
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 136,
+		"Prix (k$)": 523
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 8,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 326,
+		"Prix (k$)": 885
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 183,
+		"Prix (k$)": 1261
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 322,
+		"Prix (k$)": 793
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 177,
+		"Prix (k$)": 1183
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 201,
+		"Prix (k$)": 403
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 3,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 234,
+		"Prix (k$)": 689
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 196,
+		"Prix (k$)": 380
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 169,
+		"Prix (k$)": 853
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 275,
+		"Prix (k$)": 775
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 170,
+		"Prix (k$)": 730
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 239,
+		"Prix (k$)": 523
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 186,
+		"Prix (k$)": 893
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 130,
+		"Prix (k$)": 850
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 274,
+		"Prix (k$)": 888
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 134,
+		"Prix (k$)": 790
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 6,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 127,
+		"Prix (k$)": 833
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 306,
+		"Prix (k$)": 1235
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 1,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 264,
+		"Prix (k$)": 385
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 172,
+		"Prix (k$)": 828
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 258,
+		"Prix (k$)": 1161
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 238,
+		"Prix (k$)": 778
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 273,
+		"Prix (k$)": 809
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 130,
+		"Prix (k$)": 508
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 3,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 307,
+		"Prix (k$)": 1040
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 160,
+		"Prix (k$)": 347
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 292,
+		"Prix (k$)": 1183
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 102,
+		"Prix (k$)": 715
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 150,
+		"Prix (k$)": 351
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 244,
+		"Prix (k$)": 1098
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 196,
+		"Prix (k$)": 1163
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 313,
+		"Prix (k$)": 874
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 286,
+		"Prix (k$)": 710
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 178,
+		"Prix (k$)": 1168
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 3,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 179,
+		"Prix (k$)": 1040
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 290,
+		"Prix (k$)": 1163
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 8,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 215,
+		"Prix (k$)": 537
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 6,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 123,
+		"Prix (k$)": 1199
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 8,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 82,
+		"Prix (k$)": 505
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 214,
+		"Prix (k$)": 838
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 3,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 193,
+		"Prix (k$)": 344
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 164,
+		"Prix (k$)": 1080
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 267,
+		"Prix (k$)": 1082
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 279,
+		"Prix (k$)": 700
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 265,
+		"Prix (k$)": 828
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 3,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 329,
+		"Prix (k$)": 692
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 6,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 151,
+		"Prix (k$)": 1177
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 3,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 329,
+		"Prix (k$)": 688
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 6,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 214,
+		"Prix (k$)": 523
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 236,
+		"Prix (k$)": 1246
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 203,
+		"Prix (k$)": 745
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 235,
+		"Prix (k$)": 486
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 267,
+		"Prix (k$)": 458
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 164,
+		"Prix (k$)": 399
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 231,
+		"Prix (k$)": 1164
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 8,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 226,
+		"Prix (k$)": 853
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 6,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 300,
+		"Prix (k$)": 1197
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 78,
+		"Prix (k$)": 403
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 342,
+		"Prix (k$)": 1050
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 176,
+		"Prix (k$)": 381
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 8,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 329,
+		"Prix (k$)": 1166
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 302,
+		"Prix (k$)": 1121
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 320,
+		"Prix (k$)": 1053
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 296,
+		"Prix (k$)": 812
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 1,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 275,
+		"Prix (k$)": 702
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 1,
+		"Garage": 1,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 242,
+		"Prix (k$)": 1075
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 4,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 134,
+		"Prix (k$)": 348
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Garage": 0,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 185,
+		"Prix (k$)": 379
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 143,
+		"Prix (k$)": 812
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 237,
+		"Prix (k$)": 753
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Garage": 0,
+		"Cour arrière": 1,
+		"Superficie du terrain (m^2)": 275,
+		"Prix (k$)": 816
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Garage": 1,
+		"Cour arrière": 0,
+		"Superficie du terrain (m^2)": 101,
+		"Prix (k$)": 773
+	}
+]

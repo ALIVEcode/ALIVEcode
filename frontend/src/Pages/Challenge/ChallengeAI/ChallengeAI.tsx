@@ -209,11 +209,10 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 				activeIoCodes.current = [...currIoCodes.current];
 
-				if (challenge.modelType === MODEL_TYPES.POLY_REGRESSION){
-					const params = currHyperparams.current.POLY.modelParams['params']
-					createAndShowReg(params[0], params[1], params[2], params[3])
+				if (challenge.modelType === MODEL_TYPES.POLY_REGRESSION) {
+					const params = currHyperparams.current.POLY.modelParams['params'];
+					createAndShowReg(params[0], params[1], params[2], params[3]);
 				}
-
 			} else {
 				console.error("Erreur : la table ne s'est pas chargée correctement.");
 			}
@@ -280,13 +279,14 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		if (editMode) {
 			challenge.hyperparams = { ...currHyperparams.current };
 			challenge.ioCodes = [...currIoCodes.current];
-			/* Resolve a corrupt iocodes in a challenge
-			if(challenge.ioCodes.length !== challenge.dataset!.getParamNames().length){
-				const array:number[] = []
-				activeDataset.current?.getParamNames().forEach(e=> array.push(-1))
+			// Resolve a corrupt iocodes in a challenge
+			if (
+				challenge.ioCodes.length !== challenge.dataset!.getParamNames().length
+			) {
+				const array: number[] = [];
+				activeDataset.current?.getParamNames().forEach(e => array.push(-1));
 				challenge.ioCodes = array;
-				console.log("Erreur avec le iocodes", challenge.ioCodes)
-			}*/
+			}
 		}
 
 		forceUpdate();
@@ -309,28 +309,28 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @param newModelType the new model type.
 	 */
 	const aiInterfaceModelChange = (newModelType: MODEL_TYPES) => {
-		challenge.modelType = newModelType;
-		setActiveModel(undefined);
+		if (editMode) challenge.modelType = newModelType;
+		//setActiveModel(undefined);
 
 		//Set IOcodes for a Regression
-		if (newModelType === MODEL_TYPES.POLY_REGRESSION){
+		if (newModelType === MODEL_TYPES.POLY_REGRESSION) {
 			let activeInput = activeIoCodes.current.indexOf(1);
 			let activeOutput = activeIoCodes.current.indexOf(0);
 
 			let input = currIoCodes.current.indexOf(1);
 			let output = currIoCodes.current.indexOf(0);
-			
+
 			activeIoCodes.current = activeIoCodes.current.map(e => -1);
 			currIoCodes.current = currIoCodes.current.map(e => -1);
 
-			if (input != -1){
-				activeIoCodes.current[activeInput] = 1
-				currIoCodes.current[input] = 1
+			if (input !== -1) {
+				activeIoCodes.current[activeInput] = 1;
+				currIoCodes.current[input] = 1;
 			}
 
-			if (output != -1){
-				currIoCodes.current[output] = 0
-				activeIoCodes.current[activeOutput] = 0
+			if (output !== -1) {
+				currIoCodes.current[output] = 0;
+				activeIoCodes.current[activeOutput] = 0;
 			}
 		}
 
@@ -348,24 +348,24 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		newIOCodes: number[],
 	) => {
 		//Set IOcodes for a Regression
-		if (challenge.modelType === MODEL_TYPES.POLY_REGRESSION){
+		if (challenge.modelType === MODEL_TYPES.POLY_REGRESSION) {
 			let activeInput = activeIoCodes.current.indexOf(1);
 			let activeOutput = activeIoCodes.current.indexOf(0);
 
 			let input = currIoCodes.current.indexOf(1);
 			let output = currIoCodes.current.indexOf(0);
-			
-			if (newActiveIOCodes.filter(e => e==1).length ==2){
-				newActiveIOCodes[activeInput] = -1
-				newIOCodes[input] = -1
+
+			if (newActiveIOCodes.filter(e => e === 1).length === 2) {
+				newActiveIOCodes[activeInput] = -1;
+				newIOCodes[input] = -1;
 			}
 
-			if (newActiveIOCodes.filter(e => e==0).length ==2){
-				newActiveIOCodes[activeOutput] = -1
-				newIOCodes[output] = -1
+			if (newActiveIOCodes.filter(e => e === 0).length === 2) {
+				newActiveIOCodes[activeOutput] = -1;
+				newIOCodes[output] = -1;
 			}
-			const params = currHyperparams.current.POLY.modelParams['params']
-			createAndShowReg(params[0], params[1], params[2], params[3])
+			const params = currHyperparams.current.POLY.modelParams['params'];
+			createAndShowReg(params[0], params[1], params[2], params[3]);
 		}
 
 		currIoCodes.current = newIOCodes;
@@ -763,19 +763,20 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		if (activeDataset.current) {
 			let index = activeDataset.current.getParamNames().indexOf(column);
 			if (index !== -1) {
-				if(activeDataset.current.getDataAsArray()[index].includes(undefined)||
-				   activeDataset.current.getDataAsArray()[index].includes(null)){
+				if (
+					activeDataset.current.getDataAsArray()[index].includes(undefined) ||
+					activeDataset.current.getDataAsArray()[index].includes(null)
+				) {
 					return 'Erreur : Une colonne possède un ou des élément(s) nul(s) dans la base de données';
-				}else{
-					if (activeDataset.current.normalizeParam(column)){
+				} else {
+					if (activeDataset.current.normalizeParam(column)) {
 						forceUpdate();
-					}else{
-						return 'Erreur : Impossible à normaliser'
+					} else {
+						return 'Erreur : Impossible à normaliser';
 					}
 				}
 			} else {
 				if (index !== -1)
-					
 					return 'Erreur : Une colonne possède des chaines de caractères comme donnée dans la base de données';
 				else
 					return 'Erreur : Le nom de la colonne entrée en paramètre est inexistante';
@@ -792,12 +793,12 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	function normalize(column: string, data: number): string | number {
 		if (activeDataset.current) {
 			let index = activeDataset.current.getParamNames().indexOf(column);
-			
+
 			try {
-				let result = activeDataset.current.normalizeValue(data, column)
-				if (!isNaN(result)){
+				let result = activeDataset.current.normalizeValue(data, column);
+				if (!isNaN(result)) {
 					return activeDataset.current.normalizeValue(data, column);
-				}else{
+				} else {
 					return 'Erreur : Une colonne possède un ou des élément(s) nul(s) dans la base de données';
 				}
 			} catch (e) {
@@ -856,7 +857,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			createOptimizer();
 
 			try {
-				console.log(activeDataset.current)
+				console.log(activeDataset.current);
 				model.current = optimizer.current?.optimize(input, real);
 			} catch (e) {
 				if (e instanceof Error) return e.message;
@@ -1042,7 +1043,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 						ioCodes={[...currIoCodes.current]}
 						activeModel={activeModel}
 						modelParams={
-							 model.current instanceof NeuralNetwork
+							model.current instanceof NeuralNetwork
 								? (model.current as NeuralNetwork).getModelParams()
 								: undefined
 						}

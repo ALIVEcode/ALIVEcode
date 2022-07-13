@@ -131,6 +131,9 @@ export class UserEntity extends BaseEntity {
 
   @Column({ type: 'bigint', default: 0 })
   storageUsed: number;
+
+  @Column({ type: 'uuid', unique: true, nullable: true })
+  ticket?: string;
 }
 
 @ChildEntity(USER_TYPES.STUDENT)

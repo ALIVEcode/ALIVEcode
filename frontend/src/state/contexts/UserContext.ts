@@ -1,16 +1,16 @@
 import { createContext } from 'react';
 import { User } from '../../Models/User/user.entity';
 import { Maintenance } from '../../Models/Maintenance/maintenance.entity';
-import { PlaySocket } from '../../Pages/Challenge/PlaySocket';
-import { Resource, RESOURCE_TYPE } from '../../Models/Resource/resource.entity';
+import { Resource } from '../../Models/Resource/resource.entity';
 import { MenuResourceCreationDTO } from '../../Components/Resources/MenuResourceCreation/menuResourceCreationTypes';
 import { ResourceMenuSubjects } from '../../Pages/ResourceMenu/resourceMenuTypes';
+import { UserSocket } from '../sockets/userSocket/userSocket';
 
 export type UserContextValues = {
 	user: User | null;
 	setUser: (user: User | null, doesForceUpdate?: boolean) => void;
 	maintenance: Maintenance | null;
-	playSocket: PlaySocket | null;
+	userSocket: UserSocket | null;
 	resources: Resource[];
 	setResourceCreationMenuOpen: (state: boolean) => void;
 	updateResource: <T>(
@@ -33,7 +33,7 @@ export const UserContext = createContext<UserContextValues>({
 	user: null,
 	setUser: () => {},
 	maintenance: null,
-	playSocket: null,
+	userSocket: null,
 	resources: [],
 	setResourceCreationMenuOpen: () => {},
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars

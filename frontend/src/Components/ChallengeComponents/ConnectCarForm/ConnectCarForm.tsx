@@ -13,7 +13,7 @@ import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
  */
 const ConnectCarForm = ({ setOpen }: ConnectCarFormProps) => {
 	const { t } = useTranslation();
-	const { playSocket } = useContext(UserContext);
+	const { userSocket: playSocket } = useContext(UserContext);
 	const {
 		register,
 		handleSubmit,

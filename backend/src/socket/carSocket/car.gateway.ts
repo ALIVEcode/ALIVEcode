@@ -19,7 +19,7 @@ import {
 } from './car.types';
 import { Server, WebSocket } from 'ws';
 
-@WebSocketGateway(8888, { cors: { origin: '*' } })
+@WebSocketGateway(8911, { cors: { origin: '*' } })
 export class CarGateway implements OnGatewayDisconnect, OnGatewayConnection, OnGatewayInit {
   private cars: CarClient[] = [];
   private watchers: WatcherClient[] = [];

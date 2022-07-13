@@ -1,61 +1,50 @@
-import { Logger, UseInterceptors, Controller, Body, HttpException, HttpStatus, Post, UseFilters } from '@nestjs/common';
+import { Controller, Get, Logger, Req, UseInterceptors } from '@nestjs/common';
 import {
   ConnectedSocket,
-  MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
   OnGatewayInit,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
-  WsException,
 } from '@nestjs/websockets';
 import { Server, WebSocket } from 'ws';
-import {
-  IoTActionRequestFromWatcher,
-  IoTUpdateRequestFromObject,
-  IoTRouteRequestFromObject,
-  IoTUpdateDocumentRequestFromObject,
-  IoTGetDocRequestFromObject,
-  IOT_EVENT,
-  Client,
-} from './userSocket.types';
-import { IoTObjectService } from '../../models/iot/IoTobject/IoTobject.service';
+import { Auth } from '../../utils/decorators/auth.decorator';
+import { User } from '../../utils/decorators/user.decorator';
 import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
-import { IoTObjectEntity } from '../../models/iot/IoTobject/entities/IoTobject.entity';
-import { IoTProjectService } from '../../models/iot/IoTproject/IoTproject.service';
-import {
-  WatcherClient,
-  WatcherClientConnectPayload,
-  ObjectClientConnectPayload,
-  ObjectClient,
-  IoTActionDoneRequestFromObject,
-  IoTActionDoneRequestToWatcher,
-} from './userSocket.types';
-import { IoTExceptionFilter } from './userSocket.exception';
-import {
-  IoTListenRequestFromObject,
-  IoTGetFieldRequestFromObject,
-  IoTBroadcastRequestFromBoth,
-} from './userSocket.types';
+import { IOT_EVENT, Client, UserSocketTicketPayload } from './userSocket.types';
+import { UserEntity } from '../../models/user/entities/user.entity';
+import { UserService } from '../../models/user/user.service';
+import { Request } from 'express';
+import { verify } from 'jsonwebtoken';
 
-const gatewayPort = Number(process.env.IOT_GATEWAY_PORT);
+const gatewayPort = Number(process.env.USER_SOCKET_GATEWAY_PORT);
 if (gatewayPort == NaN || !gatewayPort) {
-  throw new Error('IOT_GATEWAY_PORT was not set in .env (8881 should be the default)');
+  throw new Error(
+    'USER_SOCKET_GATEWAY_PORT was not set in .env. Copy the IOT_SOCKET_GATEWAY_PORT variable from .env.example inside your .env file.',
+  );
+}
+
+const cors = process.env.CORS_ORIGIN;
+if (!cors) {
+  throw new Error(
+    'CORS_ORIGIN was not set in .env. Copy the CORS_ORIGIN variable from .env.example inside your .env file.',
+  );
 }
 
 @UseInterceptors(DTOInterceptor)
-@WebSocketGateway(gatewayPort)
-@Controller('iot/aliot')
-export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnGatewayInit {
-  private logger: Logger = new Logger('IoTGateway');
+@WebSocketGateway(gatewayPort, { cors })
+@Controller('userSocket')
+export class UserSocketGateway implements OnGatewayDisconnect, OnGatewayConnection, OnGatewayInit {
+  private logger: Logger;
 
-  constructor(private iotObjectService: IoTObjectService, private iotProjectService: IoTProjectService) {}
+  constructor(private userService: UserService) {}
 
   @WebSocketServer()
   server: Server;
 
   afterInit() {
+    if (!this.logger) this.logger = new Logger('UserSocketGateway');
     this.logger.log(`Initialized`);
 
     // Set the ping interval to ping each connected object (each 15 seconds)
@@ -72,10 +61,49 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
         client.getSocket().ping();
         client.sendEvent(IOT_EVENT.PING, null);
       });
-    }, 15000); // Each 15 secondes
+    }, 60 * 1000); // Each 60 seconds
   }
 
-  handleConnection() {
+  async handleConnection(socket: WebSocket, data) {
+    console.log((socket as any)._socket);
+    const lst = data.url.split('?');
+    const clienta = new Client(socket);
+    clienta.register();
+    if (lst.length < 2) return socket.close();
+
+    // Grab ticket from the url
+    const params = new URLSearchParams(lst[1]);
+    const ticketRecv = params.get('ticket');
+    if (!ticketRecv) return socket.close();
+
+    // Verify the ticket (JWT)
+    let payload: UserSocketTicketPayload;
+    try {
+      const payloadUntyped = verify(ticketRecv, process.env.USER_SOCKET_TICKEY_SECRET_KEY) as any;
+      if (!payloadUntyped || !payloadUntyped.id || !payloadUntyped.email || !payloadUntyped.ip) return socket.close();
+      payload = payloadUntyped as UserSocketTicketPayload;
+    } catch {
+      socket.close();
+    }
+
+    // Finds the user related to the ticket, and at the same time checks if the user does exist
+    let user: UserEntity;
+    try {
+      user = await this.userService.findByIdAndEmail(payload.id, payload.email);
+    } catch {
+      return socket.close();
+    }
+
+    // Compare the saved ticket with the given ticket
+    const payloadSaved = verify(user.ticket, process.env.USER_SOCKET_TICKEY_SECRET_KEY) as UserSocketTicketPayload;
+    if (payloadSaved.ip !== payload.id) return socket.close();
+
+    // Disabling the ticket
+    await this.userService.disableTicket(user);
+
+    // Success, register the client
+    const client = new Client(socket);
+    client.register();
     this.logger.log(`Client connected`);
   }
 
@@ -86,11 +114,6 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
 
   async handleDisconnect(@ConnectedSocket() socket: WebSocket) {
     this.logger.log(`Client disconnected`);
-    const client = Client.getClientBySocket(socket);
-    if (client instanceof ObjectClient) {
-      const object = await this.iotObjectService.findOne(client.id);
-      await this.iotObjectService.addIoTObjectLog(object, IOT_EVENT.DISCONNECT_OBJECT, 'Disconnected from ALIVEcode');
-    }
     Client.removeClientBySocket(socket);
   }
 
@@ -99,242 +122,9 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     this.receivePong(socket);
   }
 
-  @UseFilters(new IoTExceptionFilter())
-  @SubscribeMessage(IOT_EVENT.CONNECT_WATCHER)
-  async connectWatcher(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: WatcherClientConnectPayload) {
-    if (!payload.iotProjectId || !payload.userId || !payload.iotProjectName) throw new WsException('Bad payload');
-    if (WatcherClient.isSocketAlreadyWatcher(socket)) throw new WsException('Already connected as a watcher');
-    const alreadyConnectedSocket = WatcherClient.getClientBySocket(socket);
-    if (alreadyConnectedSocket) alreadyConnectedSocket.getSocket().terminate();
-
-    // TODO : User token verification
-    const isCreator = await this.iotProjectService.isUserProjectCreator(payload.userId, payload.iotProjectId);
-
-    const client = new WatcherClient(socket, payload.userId, payload.iotProjectId, isCreator);
-    client.register();
-
-    this.logger.log(
-      `Watcher connected and listening on project : ${payload.iotProjectName} id : ${payload.iotProjectId}`,
-    );
-
-    client.sendEvent(IOT_EVENT.CONNECT_SUCCESS, 'Watcher connected');
-  }
-
-  @UseFilters(new IoTExceptionFilter())
-  @SubscribeMessage(IOT_EVENT.CONNECT_OBJECT)
-  async connectObject(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: ObjectClientConnectPayload) {
-    if (!payload.id) throw new WsException('Bad payload');
-    if (WatcherClient.isSocketAlreadyWatcher(socket)) throw new WsException('Already connected as a watcher');
-    const alreadyConnectedObj = ObjectClient.getClientById(payload.id);
-    if (alreadyConnectedObj) throw new WsException(`An IoTObject is already connected with the id "${payload.id}"`);
-
-    // Checks if the object exists in the database and checks for permissions for projects
-    let iotObject: IoTObjectEntity;
-    try {
-      iotObject = await this.iotObjectService.findOne(payload.id);
-    } catch (err) {
-      throw new WsException(`Objet with id "${payload.id}" is not registered on ALIVEcode`);
-    }
-
-    // Register client
-    const projectId = iotObject.currentIoTProjectId;
-    const client = new ObjectClient(socket, payload.id, projectId);
-    client.register();
-
-    // Logging
-    this.logger.log(`IoTObject connect with id : ${payload.id}`);
-
-    await this.iotObjectService.addIoTObjectLog(iotObject, IOT_EVENT.CONNECT_SUCCESS, 'Connected to ALIVEcode');
-
-    client.sendEvent(IOT_EVENT.CONNECT_SUCCESS, 'Object connected');
-  }
-
-  @UseFilters(new IoTExceptionFilter())
-  @SubscribeMessage(IOT_EVENT.UPDATE_COMPONENT)
-  async sendUpdate(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTUpdateRequestFromObject) {
-    if (!payload.id || payload.value == null) throw new WsException('Bad payload');
-    const client = ObjectClient.getClientBySocket(socket);
-    if (!client) throw new WsException('Forbidden');
-    if (!client.projectId)
-      throw new WsException(
-        'Your object is not connected to any project on ALIVEcode. Make sure to add the object inside one of your IoTProject and click the connect button.',
-      );
-
-    const object = await this.iotObjectService.findOne(client.id);
-    await this.iotObjectService.addIoTObjectLog(
-      object,
-      IOT_EVENT.UPDATE_COMPONENT,
-      `Updated interface component of id "${payload.id}" using "${JSON.stringify(payload.value)}"`,
-    );
-
-    await this.iotProjectService.updateComponent(client.projectId, payload.id, payload.value);
-  }
-
-  @UseFilters(new IoTExceptionFilter())
-  @SubscribeMessage(IOT_EVENT.UPDATE_DOC)
-  async update(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTUpdateDocumentRequestFromObject) {
-    if (payload.fields == null || typeof payload.fields !== 'object') throw new WsException('Bad payload');
-    const client = Client.getClientBySocket(socket);
-    if (!client) throw new WsException('Forbidden');
-    if (!client.projectId)
-      throw new WsException(
-        'Your object is not connected to any project on ALIVEcode. Make sure to add the object inside one of your IoTProject and click the connect button.',
-      );
-
-    if (client instanceof ObjectClient) {
-      const object = await this.iotObjectService.findOne(client.id);
-      await this.iotObjectService.addIoTObjectLog(
-        object,
-        IOT_EVENT.UPDATE_DOC,
-        `Updated document using "${JSON.stringify(payload.fields)}"`,
-      );
-    }
-
-    await this.iotProjectService.updateDocumentFields(client.projectId, payload.fields);
-  }
-
-  @UseFilters(new IoTExceptionFilter())
-  @SubscribeMessage(IOT_EVENT.SUBSCRIBE_LISTENER)
-  async listen(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTListenRequestFromObject) {
-    if (!Array.isArray(payload.fields)) throw new WsException('Bad payload');
-    const client = Client.getClientBySocket(socket);
-    if (!client) throw new WsException('Forbidden');
-
-    const fields = payload.fields.filter(f => typeof f === 'string');
-
-    if (client instanceof ObjectClient) {
-      const object = await this.iotObjectService.findOne(client.id);
-      await this.iotObjectService.subscribeListenerObject(object, fields);
-    } else if (client instanceof WatcherClient) {
-      await this.iotObjectService.subscribeListenerUser(client.id, fields);
-    }
-  }
-
-  @UseFilters(new IoTExceptionFilter())
-  @SubscribeMessage(IOT_EVENT.SEND_ACTION)
-  async sendObject(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTActionRequestFromWatcher) {
-    if (!payload.targetId || payload.actionId == null || payload.value == null) throw new WsException('Bad payload');
-    const client = Client.getClientBySocket(socket);
-    if (!client) throw new WsException('Forbidden');
-
-    const object = await this.iotObjectService.findOneWithLoadedProject(payload.targetId);
-    if (object.currentIotProject?.id !== client.projectId)
-      throw new WsException(`The targetted object with id "${payload.targetId}" is not connected to the same project`);
-
-    await this.iotObjectService.sendAction(object, payload.actionId, payload.value);
-  }
-
-  @UseFilters(new IoTExceptionFilter())
-  @SubscribeMessage(IOT_EVENT.SEND_ACTION_DONE)
-  async sendActionDone(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTActionDoneRequestFromObject) {
-    if (payload.actionId == null) throw new WsException('Bad payload');
-    const client = ObjectClient.getClientBySocket(socket);
-    if (!client) throw new WsException('Forbidden');
-
-    const object = await this.iotObjectService.findOne(client.id);
-
-    await this.iotObjectService.addIoTObjectLog(
-      object,
-      IOT_EVENT.SEND_ACTION_DONE,
-      `Object finished action with id "${payload.actionId}"${
-        payload.value == null ? '.' : ` with value "${JSON.stringify(payload.value)}".`
-      }`,
-    );
-
-    const data: IoTActionDoneRequestToWatcher = {
-      actionId: payload.actionId,
-      targetId: client.id,
-      value: payload.value,
-    };
-    WatcherClient.getClients().map(c => c.sendEvent(IOT_EVENT.RECEIVE_ACTION_DONE, data));
-  }
-
-  @UseFilters(new IoTExceptionFilter())
-  @SubscribeMessage(IOT_EVENT.SEND_ROUTE)
-  async sendRoute(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTRouteRequestFromObject) {
-    if (!payload.routePath || !payload.data) throw new WsException('Bad payload');
-    const client = ObjectClient.getClientBySocket(socket);
-    if (!client) throw new WsException('Forbidden');
-    if (!client.projectId)
-      throw new WsException(
-        'Your object is not connected to any project on ALIVEcode. Make sure to add the object inside one of your IoTProject and click the connect button.',
-      );
-
-    const { route } = await this.iotProjectService.findOneWithRoute(client.projectId, payload.routePath);
-
-    const object = await this.iotObjectService.findOne(client.id);
-    await this.iotObjectService.addIoTObjectLog(
-      object,
-      IOT_EVENT.SEND_ROUTE,
-      `Sent route execution request for route "${route.path}" with context "${JSON.stringify(payload.data)}"`,
-    );
-
-    await this.iotProjectService.sendRoute(route, payload.data);
-  }
-
-  @UseFilters(new IoTExceptionFilter())
-  @SubscribeMessage(IOT_EVENT.SEND_BROADCAST)
-  async broadcast(@ConnectedSocket() socket: WebSocket, @MessageBody() payload: IoTBroadcastRequestFromBoth) {
-    if (!payload.data) throw new WsException('Bad payload');
-    const client = ObjectClient.getClientBySocket(socket);
-    if (!client) throw new WsException('Forbidden');
-    if (!client.projectId)
-      throw new WsException(
-        'Your object is not connected to any project on ALIVEcode. Make sure to add the object inside one of your IoTProject and click the connect button.',
-      );
-
-    const object = await this.iotObjectService.findOne(client.id);
-    await this.iotObjectService.addIoTObjectLog(
-      object,
-      IOT_EVENT.SEND_BROADCAST,
-      `Sent broadcast using "${JSON.stringify(payload.data)}"`,
-    );
-
-    const project = await this.iotProjectService.findOne(client.projectId);
-    await this.iotProjectService.broadcast(project, payload.data);
-  }
-
-  /*****   HTTP PROTOCOLS   *****/
-
-  @Post(IOT_EVENT.GET_DOC)
-  async getAll(@Body() payload: IoTGetDocRequestFromObject) {
-    if (!payload.id) throw new HttpException('Bad payload', HttpStatus.BAD_REQUEST);
-    const client = Client.getClientById(payload.id);
-    if (!client) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-    if (!client.projectId)
-      throw new HttpException(
-        'Your object is not connected to any project on ALIVEcode. Make sure to add the object inside one of your IoTProject and click the connect button.',
-        HttpStatus.FORBIDDEN,
-      );
-
-    if (client instanceof ObjectClient) {
-      const object = await this.iotObjectService.findOne(client.id);
-      await this.iotObjectService.addIoTObjectLog(object, IOT_EVENT.SEND_BROADCAST, `Retrieved document of project`);
-    }
-
-    return await this.iotProjectService.getDocument(client.projectId);
-  }
-
-  @Post(IOT_EVENT.GET_FIELD)
-  async getField(@Body() payload: IoTGetFieldRequestFromObject) {
-    if (!payload.id || !payload.field) throw new HttpException('Bad payload', HttpStatus.BAD_REQUEST);
-    const client = Client.getClientById(payload.id);
-    if (!client) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-    if (!client.projectId)
-      throw new HttpException(
-        'Your object is not connected to any project on ALIVEcode. Make sure to add the object inside one of your IoTProject and click the connect button.',
-        HttpStatus.FORBIDDEN,
-      );
-
-    if (client instanceof ObjectClient) {
-      const object = await this.iotObjectService.findOne(client.id);
-      await this.iotObjectService.addIoTObjectLog(
-        object,
-        IOT_EVENT.GET_FIELD,
-        `Retrieved field "${payload.field}" from project`,
-      );
-    }
-
-    return await this.iotProjectService.getField(client.projectId, payload.field);
+  @Get('ticket')
+  @Auth()
+  async getTicket(@User() user: UserEntity, @Req() req: Request) {
+    return await this.userService.generateWebsocketTicket(user, req.ip);
   }
 }

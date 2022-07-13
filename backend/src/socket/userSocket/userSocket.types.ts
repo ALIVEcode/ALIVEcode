@@ -1,6 +1,11 @@
 import { WebSocket } from 'ws';
-import { IoTObjectService } from '../../models/iot/IoTobject/IoTobject.service';
 import { IoTProjectDocument, IoTProjectLayout, JsonObj } from '../../models/iot/IoTproject/entities/IoTproject.entity';
+
+export type UserSocketTicketPayload = {
+  id: string;
+  email: string;
+  ip: string;
+};
 
 export enum IOT_EVENT {
   /*---------- Connection events ----------*/
@@ -173,29 +178,17 @@ export type IoTUpdateLayoutRequestToWatcher = {
 
 export class Client {
   public isAlive: boolean;
-  private listeners: string[] = [];
+  static clients: Client[] = [];
 
-  constructor(private socket: WebSocket, private _id: string, private _projectId: string | null) {}
-
-  get id() {
-    return this._id;
-  }
-
-  get projectId() {
-    return this._projectId;
-  }
-
-  setProjectId(projectId: string) {
-    this._projectId = projectId;
-  }
+  constructor(private socket: WebSocket) {}
 
   static getClients() {
-    const clients: Array<ObjectClient | WatcherClient> = [];
-    return clients.concat(ObjectClient.getClients()).concat(WatcherClient.getClients());
+    return this.clients;
   }
 
   register() {
     this.isAlive = true;
+    Client.clients.push(this);
   }
 
   getSocket() {
@@ -207,150 +200,14 @@ export class Client {
   }
 
   static removeClientBySocket(socket: WebSocket) {
-    WatcherClient.watchers = WatcherClient.watchers.filter(w => w.socket !== socket);
-    ObjectClient.objects = ObjectClient.objects.filter(w => w.socket !== socket);
+    this.clients = this.getClients().filter(c => c.socket !== socket);
   }
 
   removeClient() {
-    if (this instanceof WatcherClient)
-      WatcherClient.watchers = WatcherClient.watchers.filter(w => w.socket !== this.socket);
-    else if (this instanceof ObjectClient)
-      ObjectClient.objects = ObjectClient.objects.filter(w => w.socket !== this.socket);
-  }
-
-  subscribeListener(fields: string[]) {
-    this.listeners.push(...fields);
-  }
-
-  static getClientById(id: string) {
-    return Client.getClients().find(o => {
-      return o.id === id;
-    });
-  }
-
-  static async sendToListeners(
-    projectId: string,
-    fieldsUpdated: { [key: string]: any },
-    iotObjectService: IoTObjectService,
-  ) {
-    Client.getClients().forEach(async client => {
-      if (client.projectId === projectId) {
-        const fieldsToSendNotification: { [key: string]: any } = {};
-        let nbFields = 0;
-        Object.entries(fieldsUpdated).forEach(entry => {
-          if (client.listeners.includes(entry[0])) {
-            fieldsToSendNotification[entry[0]] = entry[1];
-            nbFields++;
-          }
-        });
-
-        if (nbFields > 0) {
-          if (client instanceof ObjectClient) {
-            const object = await iotObjectService.findOne(client.id);
-            iotObjectService.addIoTObjectLog(
-              object,
-              IOT_EVENT.RECEIVE_LISTEN,
-              `Received listen callback because those fields were modified: "${JSON.stringify(fieldsUpdated)}"`,
-            );
-          }
-
-          const req: IoTListenRequestToObject = {
-            event: IOT_EVENT.RECEIVE_LISTEN,
-            data: {
-              fields: fieldsToSendNotification,
-            },
-          };
-          client.sendEvent(req.event, req.data);
-        }
-      }
-    });
+    Client.removeClientBySocket(this.socket);
   }
 
   static getClientBySocket(socket: WebSocket) {
     return this.getClients().find(c => c.socket === socket);
   }
 }
-
-export class WatcherClient extends Client {
-  static watchers: WatcherClient[] = [];
-  private _isCreator: boolean;
-
-  constructor(socket: WebSocket, id: string, projectId: string | null, isCreator = false) {
-    super(socket, id, projectId);
-    this._isCreator = isCreator;
-  }
-
-  register() {
-    super.register();
-    WatcherClient.watchers.push(this);
-  }
-
-  static getClients() {
-    return WatcherClient.watchers;
-  }
-
-  static getClientBySocket(socket: WebSocket) {
-    return WatcherClient.watchers.find(w => w.getSocket() === socket);
-  }
-
-  static getClientsByProject(projectId: string) {
-    return WatcherClient.watchers.filter(w => w.projectId === projectId);
-  }
-
-  static isSocketAlreadyWatcher(socket: WebSocket) {
-    return WatcherClient.watchers.find(w => w.getSocket() === socket) != null;
-  }
-
-  static getClientById(id: string) {
-    return WatcherClient.getClients().find(o => {
-      return o.id === id;
-    });
-  }
-}
-
-export class ObjectClient extends Client {
-  static objects: ObjectClient[] = [];
-
-  constructor(socket: WebSocket, id: string, projectId: string | null) {
-    super(socket, id, projectId);
-  }
-
-  register() {
-    super.register();
-    ObjectClient.objects.push(this);
-  }
-
-  static getClients() {
-    return ObjectClient.objects;
-  }
-
-  static getClientBySocket(socket: WebSocket) {
-    return ObjectClient.objects.find(w => {
-      return w.getSocket() === socket;
-    });
-  }
-
-  static getClientsByProject(projectId: string) {
-    return ObjectClient.objects.filter(o => o.projectId === projectId);
-  }
-
-  static isSocketAlreadyWatcher(socket: WebSocket) {
-    return ObjectClient.objects.find(w => w.getSocket() === socket) != null;
-  }
-
-  static getClientById(id: string) {
-    return ObjectClient.getClients().find(o => {
-      return o.id === id;
-    });
-  }
-}
-
-export type WatcherClientConnectPayload = {
-  userId: string;
-  iotProjectName: string;
-  iotProjectId: string;
-};
-
-export type ObjectClientConnectPayload = {
-  id: string;
-};

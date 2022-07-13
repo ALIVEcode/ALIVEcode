@@ -1,4 +1,4 @@
-import { ChallengeAIProps, StyledAliveChallenge } from './challengeAITypes';
+import { ChallengeAIProps } from './challengeAITypes';
 import { useEffect, useState, useContext, useRef, useMemo } from 'react';
 import LineInterface from '../../../Components/ChallengeComponents/LineInterface/LineInterface';
 import { UserContext } from '../../../state/contexts/UserContext';

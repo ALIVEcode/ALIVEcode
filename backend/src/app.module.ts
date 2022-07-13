@@ -27,7 +27,6 @@ import { compare } from 'bcryptjs';
 import { adminOptions } from './admin/admin.options';
 import { LoggerModule } from './admin/loger/loger.module';
 import { MyLogger } from './admin/loger/logger';
-import { CarModule } from './socket/carSocket/carSocket.module';
 import { IoTSocketModule } from './socket/iotSocket/iotSocket.module';
 import { QuizzesModule } from './models/social/quizzes/quizzes.module';
 import { CategoriesQuizModule } from './models/social/categories-quiz/categories-quiz.module';
@@ -48,6 +47,7 @@ import { AiController } from './models/ai/ai.controller';
 import { AiModule } from './models/ai/ai.module';
 import { AiService } from './models/ai/ai.service';
 import { ShowcaseProjectModule } from './models/showcase-project/showcase-project.module';
+import { UserSocketModule } from './socket/userSocket/userSocket.module';
 
 adminjs.registerAdapter({ Database, Resource });
 
@@ -85,7 +85,6 @@ adminjs.registerAdapter({ Database, Resource });
     IoTSocketModule,
     MaintenanceModule,
     AsScriptModule,
-    CarModule,
     QuizzesModule,
     CategoriesQuizModule,
     QuestionsModule,
@@ -102,6 +101,7 @@ adminjs.registerAdapter({ Database, Resource });
     FeedbacksModule,
     AiModule,
     ShowcaseProjectModule,
+    UserSocketModule,
   ],
   controllers: [AppController, AiController],
   providers: [AppService, MaintenanceService, UserService, AiService],

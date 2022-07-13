@@ -23,8 +23,6 @@ import background_image_dark from './assets/images/backgroundImageDark4.png';
 import api from './Models/api';
 import MaintenanceBar from './Components/SiteStatusComponents/MaintenanceBar/MaintenanceBar';
 import { Maintenance } from './Models/Maintenance/maintenance.entity';
-import openPlaySocket from './Pages/Challenge/PlaySocket';
-import { PlaySocket } from './Pages/Challenge/PlaySocket';
 import Navbar from './Components/MainComponents/Navbar/Navbar';
 import { useLocation } from 'react-router';
 import { hot } from 'react-hot-loader/root';
@@ -40,6 +38,7 @@ import MenuResourceCreation from './Components/Resources/MenuResourceCreation/Me
 import { ResourceMenuSubjects } from './Pages/ResourceMenu/resourceMenuTypes';
 import { MenuResourceCreationDTO } from './Components/Resources/MenuResourceCreation/menuResourceCreationTypes';
 import { ResourceFilters } from './Pages/ResourceMenu/ResourceMenu';
+import { UserSocket } from './state/sockets/userSocket/userSocket';
 
 type GlobalStyleProps = {
 	theme: Theme;
@@ -101,7 +100,7 @@ const GlobalStyle = createGlobalStyle`
 
 const App = () => {
 	const [user, setUser] = useState<User | null>(null);
-	const [playSocket, setPlaySocket] = useState<PlaySocket | null>(null);
+	const [userSocket, setUserSocket] = useState<UserSocket | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [theme, setTheme] = useState(themes.light);
 	const [maintenance, setMaintenance] = useState<Maintenance | null>(null);
@@ -209,7 +208,7 @@ const App = () => {
 			user,
 			setUser: handleSetUser,
 			maintenance,
-			playSocket,
+			userSocket,
 			resources: resources ?? [],
 			createResource,
 			deleteResource,
@@ -221,7 +220,7 @@ const App = () => {
 			user,
 			handleSetUser,
 			maintenance,
-			playSocket,
+			userSocket,
 			resources,
 			createResource,
 			deleteResource,
@@ -287,7 +286,6 @@ const App = () => {
 					if (user) await logout();
 					return Promise.reject(error);
 				}
-				console.log(error.response);
 				if (
 					error.response &&
 					error.response.data.message === 'Not Authenticated' &&
@@ -325,8 +323,9 @@ const App = () => {
 		};
 		getUpcomingMaintenance();
 
-		const playSocket = openPlaySocket();
-		setPlaySocket(playSocket);
+		const userSocket = new UserSocket();
+		userSocket.open('TEST');
+		setUserSocket(userSocket);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

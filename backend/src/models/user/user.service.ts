@@ -6,7 +6,7 @@ import { UserEntity } from './entities/user.entity';
 import { compare, hash } from 'bcryptjs';
 import { Response } from 'express';
 import { createAccessToken, setRefreshToken, createRefreshToken } from './auth';
-import { verify } from 'jsonwebtoken';
+import { sign, verify } from 'jsonwebtoken';
 import { AuthPayload } from '../../utils/types/auth.payload';
 import { REQUEST } from '@nestjs/core';
 import { ClassroomEntity } from '../classroom/entities/classroom.entity';
@@ -28,7 +28,6 @@ import { QueryIoTObjects } from './dto/query_iotobjects';
  */
 @Injectable({ scope: Scope.REQUEST })
 export class UserService {
-  [x: string]: any;
   constructor(
     @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>,
     @InjectRepository(ProfessorEntity)
@@ -70,10 +69,6 @@ export class UserService {
 
   async login(email: string, password: string, res: Response) {
     const user = await this.findByEmail(email);
-
-    if (!user) {
-      throw 'Error';
-    }
 
     const valid = await compare(password, user.password);
     if (!valid) {
@@ -117,25 +112,35 @@ export class UserService {
     };
   }
 
-  findAll() {
-    return this.userRepository.find({ relations: ['classrooms'] });
+  async findAll() {
+    return await this.userRepository.find({ relations: ['classrooms'] });
   }
 
-  findAllProfs() {
-    return this.professorRepository.find();
+  async findAllProfs() {
+    return await this.professorRepository.find();
   }
 
-  findAllStudents() {
-    return this.studentRepository.find();
+  async findAllStudents() {
+    return await this.studentRepository.find();
   }
 
   async findByEmail(email: string) {
-    return await this.userRepository.findOne({ where: { email: email } });
+    if (!email) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+    const user = await this.userRepository.findOne({ where: { email } });
+    if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    return user;
   }
 
   async findById(id: string) {
     if (!id) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     const user = await this.userRepository.findOne(id);
+    if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    return user;
+  }
+
+  async findByIdAndEmail(id: string, email: string) {
+    if (!email || !id) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+    const user = await this.userRepository.findOne({ where: { id, email } });
     if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     return user;
   }
@@ -148,8 +153,8 @@ export class UserService {
     return await this.userRepository.save({ ...updateUserDto, id: userId });
   }
 
-  remove(user: UserEntity) {
-    return this.userRepository.remove(user);
+  async remove(user: UserEntity) {
+    return await this.userRepository.remove(user);
   }
 
   async getClassrooms(user: UserEntity) {
@@ -292,5 +297,35 @@ export class UserService {
     if (userStorage < userStorageUsed + alterValue)
       throw new HttpException('Exceeded maximum storage capacity for this user', HttpStatus.FORBIDDEN);
     return await this.userRepository.save({ ...user, storageUsed: userStorageUsed + alterValue });
+  }
+
+  /**
+   * Generates a json webtoken containing informations about
+   * the credentials used for connecting to the backend using the
+   * UserSocketGateway
+   * @param user User to generate the ticket for
+   * @param ipAddress Ip address that wants to use the ticket
+   */
+  async generateWebsocketTicket(user: UserEntity, ipAddress: string) {
+    const ticket = sign(
+      {
+        id: user.id,
+        email: user.email,
+        ip: ipAddress,
+      },
+      process.env.USER_SOCKET_TICKET_SECRET_KEY,
+      { expiresIn: process.env.USER_SOCKET_TICKET_DURATION },
+    );
+    await this.userRepository.save({ ...user, ticket });
+    return ticket;
+  }
+
+  /**
+   * Disables the ticket used for the UserSocket for a certain
+   * user
+   * @param user User to disable the ticket of
+   */
+  async disableTicket(user: UserEntity) {
+    await this.userRepository.save({ ...user, ticket: null });
   }
 }

@@ -71,7 +71,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 					break;
 				case 'multiple fields':
 					newNumValue = parseInt(newValue);
-					const obj = tempHyperparams[key] as Object;
+					let obj = tempHyperparams[key] as Object;
 					let array: number[] = [];
 
 					if(!Array.isArray(obj)){
@@ -80,9 +80,17 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 								array = e
 							}
 						})
+
 					}else{
 						array = obj as number[];
 					}
+					array[index!] = newNumValue;
+					break;
+				case 'multiple fields / addButton':
+					newNumValue = parseInt(newValue);
+					let obj3 = tempHyperparams[key] as Object;
+					let array3: number[] = [];
+					array = obj3 as number[];
 					array[index!] = newNumValue;
 					break;
 				case 'multiple ACTIVATION_FUNCTIONS':

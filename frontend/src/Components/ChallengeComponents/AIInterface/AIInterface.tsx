@@ -92,8 +92,6 @@ const AIInterface = ({
 
 	function showModel() {
 		if (activeModel) {
-			console.log("Show Model")
-
 			switch (activeModel) {
 				case MODEL_TYPES.NEURAL_NETWORK:
 
@@ -157,7 +155,6 @@ const AIInterface = ({
 		if(output != -1){
 			yAxisName = data.getParamNames()[output]
 		}
-		console.log(chartData)
 		return(
 				<ChallengeGraph
 					data={chartData}

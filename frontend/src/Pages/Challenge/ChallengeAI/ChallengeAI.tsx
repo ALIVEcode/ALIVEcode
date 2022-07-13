@@ -485,7 +485,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * Resets the dataset array and the data shown on the graph.
 	 */
 	function resetGraph() {
-		console.log("reset")
 		datasets.current = [initialDataset, initialDataset];
 		setChart();
 	}

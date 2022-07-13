@@ -855,7 +855,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			//PolyRegression
 			if(model.current instanceof PolyRegression){
 				if(input.length ===1){
-					return evaluate(input[0]);
+					return [[evaluate(input[0])]];
 				}else{
 					return 	"Erreur predire() : la liste entrée ne contient pas autant de valeurs qu'il y a de paramètres d'entrée dans le modèle.";
 				}

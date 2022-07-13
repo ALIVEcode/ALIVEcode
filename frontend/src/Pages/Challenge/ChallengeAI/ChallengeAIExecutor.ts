@@ -173,16 +173,6 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					label: 'Normaliser Colonne',
 					type: 'GET',
 					apply: (params, _, response) => {
-						console.log('TEST');
-					},
-				},
-			},
-			{
-				actionId: 809,
-				action: {
-					label: 'Normaliser Colonne',
-					type: 'GET',
-					apply: (params, _, response) => {
 						console.log('Execute Column Normalize');
 						if (typeof params[0] === 'string') {
 							let out = this.executableFuncs.normalizeColumn(params[0]);

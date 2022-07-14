@@ -36,15 +36,18 @@ export class PolyRegression extends Regression {
 		let points = [];
 		// Generate points
 		const jump =
-			(Regression.MAX_RANGE - Regression.MIN_RANGE) / Regression.NB_POINTS;
+			(super.getMaxXDisplay()- super.getMinXDisplay()) / Regression.NB_POINTS;
+
 		for (let i = 0; i < Regression.NB_POINTS; i++) {
-			const x = Regression.MIN_RANGE + i * jump;
+			const x = super.getMinXDisplay() + i * jump;
 			const y = this.a * Math.pow(x, 3) + this.b * x * x + this.c * x + this.d;
-			points.push({
-				id: i * this.a * this.b * this.c * this.d * jump,
-				x: x,
-				y: Math.round(y * Regression.ROUNDING) / Regression.ROUNDING,
-			});
+			if(y <= super.getMaxYDisplay() && y >= super.getMinYDisplay()){
+				points.push({
+					id: i * this.a * this.b * this.c * this.d * jump,
+					x: x,
+					y: Math.round(y * Regression.ROUNDING) / Regression.ROUNDING,
+				});
+			}
 		}
 		const data: DataPoint = Regression.DATA_FORMATTING;
 		data.data = points;

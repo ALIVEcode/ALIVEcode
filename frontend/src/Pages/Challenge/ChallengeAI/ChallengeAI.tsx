@@ -33,6 +33,7 @@ import {
 import { GenOptimizer } from './artificial_intelligence/AIUtilsInterfaces';
 import { RegHyperparameters } from './artificial_intelligence/AIUtilsInterfaces';
 import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
+import AIInterface from '../../../Components/ChallengeComponents/AIInterface/AIInterface';
 import {
 	defaultHyperparams,
 	defaultModelType,
@@ -225,7 +226,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				if (challenge.modelType === MODEL_TYPES.POLY_REGRESSION) {
 					const params = currHyperparams.current.POLY.modelParams['params'];
 					createRegression(params[0], params[1], params[2], params[3]);
-					setChartDataIOCode();
 				}
 			} else {
 				console.error("Erreur : la table ne s'est pas chargée correctement.");
@@ -391,7 +391,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			activeIoCodes.current = newActiveIOCodes;
 
 			createAndShowReg(params[0], params[1], params[2], params[3]);
-			setChartDataIOCode();
 		} else {
 			currIoCodes.current = newIOCodes;
 			activeIoCodes.current = newActiveIOCodes;
@@ -563,12 +562,20 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			'1',
 			currHyperparams.current[challenge.modelType] as RegHyperparameters,
 		);
+		setChartDataIOCode()
 		//optimizer.current = new PolyOptimizer(regression.current);
 	}
 
+	/**
+	 * Create the chart for the regressions
+	 */
 	function setChartDataIOCode() {
 		let input = activeIoCodes.current!.indexOf(1);
 		let output = activeIoCodes.current!.indexOf(0);
+		let minX=0;
+		let maxX=0;
+		let minY=0;
+		let maxY=0;
 
 		if (
 			output != -1 &&
@@ -579,6 +586,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			let arrayX = activeDataset.current!.getDataAsArray()[input] as number[];
 			let arrayY = activeDataset.current!.getDataAsArray()[output] as number[];
 
+			//Create dataPoint
 			data.current = arrayX.map((x, i) => {
 				const y = arrayY[i];
 				return {
@@ -587,13 +595,28 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 					y: y,
 				};
 			});
+
+			//Set max/min on the graphic
+			if(activeDataset.current){
+				minX = activeDataset.current!.getMinOfParam(activeDataset.current.getParamNames()[input]);
+				maxX = activeDataset.current!.getMaxOfParam(activeDataset.current.getParamNames()[input]);
+				minY = activeDataset.current!.getMinOfParam(activeDataset.current.getParamNames()[output]);
+				maxY = activeDataset.current!.getMaxOfParam(activeDataset.current.getParamNames()[output]);	
+
+			}
 		} else {
 			data.current = [{}];
 		}
 
+		//Create de new graph
 		mainDataset.current.data = data.current;
 		resetGraph();
+		(model.current as PolyRegression).setMaxXDisplay(maxX===NaN? 0: maxX);
+		(model.current as PolyRegression).setMinXDisplay(minX===NaN? 0: minX);
+		(model.current as PolyRegression).setMaxYDisplay(maxY===NaN? 0: maxY);
+		(model.current as PolyRegression).setMinYDisplay(minY===NaN? 0: minY);
 		showDataCloud();
+		
 	}
 
 	/**

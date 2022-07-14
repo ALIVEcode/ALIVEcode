@@ -70,7 +70,7 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 					(tempHyperparams[key] as number) = newNumValue;
 					break;
 				case 'multiple fields':
-					newNumValue = parseInt(newValue);
+					newNumValue = parseFloat(newValue);
 					let obj = tempHyperparams[key] as Object;
 					let array: number[] = [];
 

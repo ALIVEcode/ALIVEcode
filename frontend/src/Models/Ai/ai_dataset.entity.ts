@@ -510,7 +510,44 @@ export class AIDataset {
 		return true;
 	}
 
+	/**
+	 * Delete a line of the dataset
+	 * @param index the indexe of the line to delete
+	 */
 	public deleteLine(index: number) {
 		this.data.splice(index, 1);
+	}
+
+	/**
+	 * Returns the maximum of a param's name data
+	 * @param paramName The name of the param's data
+	 * @returns the maximum or Nan if the data is nor a number our the paramName doesn't existe
+	 */
+	public getMaxOfParam(paramName: string):number{
+		const index = this.paramNames.indexOf(paramName)
+		if (index === -1) 
+			return NaN
+		if (typeof this.getDataAsArray()[index][0] !== 'number') 
+			return NaN
+
+		const numberArray = this.getDataAsArray()[index] as number[]
+		return Math.max(...numberArray)
+	}
+
+	/**
+	 * Returns the minimum of a param's name data
+	 * @param paramName The name of the param's data
+	 * @returns the minimum or Nan if the data is nor a number our the paramName doesn't existe
+	 */
+	 public getMinOfParam(paramName: string):number{
+		const index = this.paramNames.indexOf(paramName)
+
+		if (index === -1) 
+			return NaN
+		if (typeof this.getDataAsArray()[index][0] !== 'number') 
+			return NaN
+
+		const numberArray = this.getDataAsArray()[index] as number[]
+		return Math.min(...numberArray)
 	}
 }

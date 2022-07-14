@@ -24,6 +24,7 @@ export type ChallengeAIProgressionData = {
 	code?: string;
 	hyperparams: GenHyperparameters;
 	ioCodes: number[];
+	modelType : MODEL_TYPES;
 };
 
 export type ChallengeProgressionData =

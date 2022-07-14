@@ -22,8 +22,10 @@ export abstract class Regression extends AIModel {
 		pointBackgroundColor: 'cyan',
 	};
 	protected static NB_POINTS = 20;
-	protected static MIN_RANGE = 0;
-	protected static MAX_RANGE = 100;
+	private  minXDisplay = 0;
+	private  maxXDisplay = 100;
+	private  minYDisplay = 0;
+	private  maxYDisplay = 100;
 
 	protected nbParams: number;
 	protected hyperparameters: RegHyperparameters;
@@ -112,6 +114,69 @@ export abstract class Regression extends AIModel {
 	public getHyperparameters() {
 		return this.hyperparameters;
 	}
+
+	/**
+	 * Sets a new minumum on the X axe to the model
+	 * @param newMin the new minimum on the X axe of the model
+	 */
+	public setMinXDisplay(newMin : number){
+		this.minXDisplay = newMin
+	}
+	/**
+	 * Sets a new maximum on the X axe to the model
+	 * @param newMax the new maximum on the X axe of the model
+	 */
+	public setMaxXDisplay(newMax : number){
+		this.maxXDisplay = newMax
+	}
+
+	/**
+	 * Returns the minimum on the X axe of this model.
+	 * @returns the minimum on the X axe
+	 */
+	public getMinXDisplay(){
+		return this.minXDisplay
+	}
+
+	/**
+	 * Returns the maximum of this model.
+	 * @returns the maximum on the X axe
+	 */
+	public getMaxXDisplay(){
+		return this.maxXDisplay
+	}
+
+	/**
+	 * Sets a new minumum on the X axe to the model
+	 * @param newMin the new minimum on the X axe of the model
+	 */
+	 public setMinYDisplay(newMin : number){
+		this.minYDisplay = newMin
+	}
+	/**
+	 * Sets a new maximum on the Y axe to the model
+	 * @param newMax the new maximum on the Y axe of the model
+	 */
+	public setMaxYDisplay(newMax : number){
+		this.maxYDisplay = newMax
+	}
+
+	/**
+	 * Returns the minimum on the Y axe of this model.
+	 * @returns the minimum on the Y axe
+	 */
+	public getMinYDisplay(){
+		return this.minYDisplay
+	}
+
+	/**
+	 * Returns the maximum of this model.
+	 * @returns the maximum on the Y axe
+	 */
+	public getMaxYDisplay(){
+		return this.maxYDisplay
+	}
+
 
 	/**
 	 * Computes the output of the Regression for one input and returns this output.

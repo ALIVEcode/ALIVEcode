@@ -32,7 +32,6 @@ import {
 } from './artificial_intelligence/AIUtilsInterfaces';
 import { GenOptimizer } from './artificial_intelligence/AIUtilsInterfaces';
 import { RegHyperparameters } from './artificial_intelligence/AIUtilsInterfaces';
-import { AIInterface } from '../../../Components/ChallengeComponents/AIInterface/AIInterface';
 import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
 import {
 	defaultHyperparams,
@@ -48,6 +47,7 @@ import {
 	ChallengeAIProgressionData,
 	ChallengeProgression,
 } from '../../../Models/Challenge/challenge_progression.entity';
+import AIInterface from '../../../Components/ChallengeComponents/AIInterface/AIInterface';
 
 /**
  * Ai challenge page. Contains all the components to display and make the ai challenge functionnal.

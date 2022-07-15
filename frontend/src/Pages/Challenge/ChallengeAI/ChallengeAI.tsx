@@ -897,16 +897,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * @return the prediction
 	 */
 	function predict(input: number[]) {
-		let tab: number[][] = [];
-		let matInput = new Matrix(tab);
+		let matInput = new Matrix([input]);
 		let respond;
-
-		//Column Matrix
-		input.forEach(e => {
-			let a = [];
-			a.push(e);
-			tab.push(a);
-		});
 
 		//Prediction
 		if (model.current) {
@@ -920,7 +912,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				//Perceptron et Neural Network
 			} else {
 				try {
-					respond = model.current.predict(matInput).transpose();
+					console.log(matInput.transpose());
+					console.log(input);
+					respond = model.current.predict(matInput.transpose());
 				} catch (e) {
 					if (e instanceof Error) {
 						return e.message;

@@ -65,7 +65,6 @@ export class NeuralNetwork extends AIModel {
 		else this.loadModel();
 	}
 
-
 	protected loadModel() {
 		let nbLayers: number = this.hyperparameters.neuronsByLayer.length + 1;
 
@@ -145,6 +144,8 @@ export class NeuralNetwork extends AIModel {
 	//---- PREDICTION METHODS ----//
 
 	public predict(inputs: Matrix): Matrix {
+		console.log(this.hyperparameters.nbInputs);
+		console.log(inputs.getRows());
 		if (inputs.getRows() !== this.hyperparameters.nbInputs)
 			throw new Error(
 				"Erreur predire() : la liste entrée ne contient pas autant de valeurs qu'il y a de paramètres d'entrée dans le modèle.",

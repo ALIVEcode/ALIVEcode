@@ -15,8 +15,8 @@ export class AIDataset {
 	private name: string;
 	private data: any[];
 	private initialData: any[];
-	private means: number[];
-	private deviations: number[];
+	private mins: number[];
+	private maxes: number[];
 
 	@Type(() => Date)
 	private creationDate: Date;
@@ -118,7 +118,6 @@ export class AIDataset {
 		let iterator: number = 0;
 		let allValue: string[] = [];
 		let autre = 0;
-		let autre2 = false;
 
 		// Check if the given name is a parameter in the database
 		while (this.paramNames[iterator] !== param) {
@@ -156,9 +155,9 @@ export class AIDataset {
 		}
 
 		//Remove the parameter to replace of the array of parameters
-		iterator = this.paramNames.indexOf(param)
+		iterator = this.paramNames.indexOf(param);
 		this.paramNames.forEach((value, index) => {
-			if (value == param) this.paramNames.splice(index, 1);
+			if (value === param) this.paramNames.splice(index, 1);
 		});
 
 		//Addind the new prarameter to the array of parameters
@@ -166,7 +165,7 @@ export class AIDataset {
 			this.paramNames.splice(iterator, 0, e);
 			iterator++;
 		});
-		console.log(this.getParamNames(), "test")
+		console.log(this.getParamNames(), 'test');
 
 		return true;
 	}
@@ -302,15 +301,15 @@ export class AIDataset {
 	}
 
 	/**
-	 * Sets the means and deviations for each parameter in the dataset.
+	 * Sets the minimums and the maximums for each parameter in the dataset.
 	 */
-	public setMeansAndDeviations(): void {
+	public setMinsAndMaxes(): void {
 		const dataArray: number[][] = this.getDataAsArray();
-		this.means = [];
-		this.deviations = [];
-		for (let param: number = 0; param < dataArray.length; param++) {
-			this.means.push(mean(dataArray[param]));
-			this.deviations.push(stdDev(dataArray[param]));
+		this.mins = [];
+		this.maxes = [];
+		for (let param: number = 0; param < this.paramNames.length; param++) {
+			this.mins.push(this.getMinOfParam(this.paramNames[param]));
+			this.maxes.push(this.getMaxOfParam(this.paramNames[param]));
 		}
 	}
 
@@ -353,8 +352,8 @@ export class AIDataset {
 			return false;
 		}
 
-		// Setting means and deviations for each parameter
-		if (!this.means || !this.deviations) this.setMeansAndDeviations();
+		// Setting mins and maxes for each parameter
+		if (!this.mins || !this.maxes) this.setMinsAndMaxes();
 		if (!this._paramNames) this.loadParamNames();
 
 		return true;
@@ -366,12 +365,12 @@ export class AIDataset {
 	 * for a data that is going to be passed as an input but was not part
 	 * of the original Dataset.
 	 * @param data the data to normalize.
-	 * @param mean the mean of the parameter related to this data.
-	 * @param deviation the standard deviation of the parameter related to this data.
+	 * @param min the mean of the parameter related to this data.
+	 * @param max the standard deviation of the parameter related to this data.
 	 * @returns the normalized data.
 	 */
-	public normalize(data: number, mean: number, deviation: number): number {
-		return (data - mean) / deviation;
+	public normalize(data: number, min: number, max: number): number {
+		return (data - min) / (max - min);
 	}
 
 	/**
@@ -406,7 +405,7 @@ export class AIDataset {
 			throw new Error('Error in normalization');
 
 		const index: number = this._paramNames!.indexOf(paramName);
-		return this.normalize(value, this.means[index], this.deviations[index]);
+		return this.normalize(value, this.mins[index], this.maxes[index]);
 	}
 
 	/**
@@ -424,8 +423,8 @@ export class AIDataset {
 
 		const newData: number[] = this.normalizeArray(
 			this.getDataAsArray()[index],
-			this.means[index],
-			this.deviations[index],
+			this.mins[index],
+			this.maxes[index],
 		);
 
 		this.replaceColumn(paramName, newData);
@@ -452,16 +451,16 @@ export class AIDataset {
 	 * Returns the array of means for this dataset.
 	 * @returns the array of means.
 	 */
-	public getMeans(): number[] {
-		return this.means;
+	public getMins(): number[] {
+		return this.mins;
 	}
 
 	/**
 	 * Returns the array of standard deviations for this dataset.
 	 * @returns the array of deviations.
 	 */
-	public getDeviations(): number[] {
-		return this.deviations;
+	public getMaxes(): number[] {
+		return this.maxes;
 	}
 
 	/**
@@ -519,19 +518,17 @@ export class AIDataset {
 	}
 
 	/**
-	 * Returns the maximum of a param's name data
-	 * @param paramName The name of the param's data
+	 * Returns the maximum of a param's name data.
+	 * @param paramName The name of the param's data.
 	 * @returns the maximum or Nan if the data is nor a number our the paramName doesn't existe
 	 */
-	public getMaxOfParam(paramName: string):number{
-		const index = this.paramNames.indexOf(paramName)
-		if (index === -1) 
-			return NaN
-		if (typeof this.getDataAsArray()[index][0] !== 'number') 
-			return NaN
+	public getMaxOfParam(paramName: string): number {
+		const index = this.paramNames.indexOf(paramName);
+		if (index === -1) return NaN;
+		if (typeof this.getDataAsArray()[index][0] !== 'number') return NaN;
 
-		const numberArray = this.getDataAsArray()[index] as number[]
-		return Math.max(...numberArray)
+		const numberArray = this.getDataAsArray()[index] as number[];
+		return Math.max(...numberArray);
 	}
 
 	/**
@@ -539,15 +536,13 @@ export class AIDataset {
 	 * @param paramName The name of the param's data
 	 * @returns the minimum or Nan if the data is nor a number our the paramName doesn't existe
 	 */
-	 public getMinOfParam(paramName: string):number{
-		const index = this.paramNames.indexOf(paramName)
+	public getMinOfParam(paramName: string): number {
+		const index = this.paramNames.indexOf(paramName);
 
-		if (index === -1) 
-			return NaN
-		if (typeof this.getDataAsArray()[index][0] !== 'number') 
-			return NaN
+		if (index === -1) return NaN;
+		if (typeof this.getDataAsArray()[index][0] !== 'number') return NaN;
 
-		const numberArray = this.getDataAsArray()[index] as number[]
-		return Math.min(...numberArray)
+		const numberArray = this.getDataAsArray()[index] as number[];
+		return Math.min(...numberArray);
 	}
 }

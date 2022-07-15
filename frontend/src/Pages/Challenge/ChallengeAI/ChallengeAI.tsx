@@ -6,7 +6,6 @@ import Cmd from '../../../Components/ChallengeComponents/Cmd/Cmd';
 import ChallengeAIExecutor from './ChallengeAIExecutor';
 import useCmd from '../../../state/hooks/useCmd';
 import { ChallengeAI as ChallengeAIModel } from '../../../Models/Challenge/challenges/challenge_ai.entity';
-import dataAI from './dataAI.json';
 import PolyOptimizer from './artificial_intelligence/ai_optimizers/ai_reg_optimizers/PolyOptmizer';
 import DataPoint from '../../../Components/ChallengeComponents/ChallengeGraph/DataTypes';
 import { ChallengeContext } from '../../../state/contexts/ChallengeContext';
@@ -33,7 +32,6 @@ import {
 import { GenOptimizer } from './artificial_intelligence/AIUtilsInterfaces';
 import { RegHyperparameters } from './artificial_intelligence/AIUtilsInterfaces';
 import { AIDataset } from '../../../Models/Ai/ai_dataset.entity';
-import AIInterface from '../../../Components/ChallengeComponents/AIInterface/AIInterface';
 import {
 	defaultHyperparams,
 	defaultModelType,
@@ -44,10 +42,7 @@ import {
 	determinationCoeff,
 } from './artificial_intelligence/AIUtils';
 import { GradientDescent } from './artificial_intelligence/ai_optimizers/ai_nn_optimizers/GradientDescent';
-import {
-	ChallengeAIProgressionData,
-	ChallengeProgression,
-} from '../../../Models/Challenge/challenge_progression.entity';
+import { ChallengeAIProgressionData } from '../../../Models/Challenge/challenge_progression.entity';
 import AIInterface from '../../../Components/ChallengeComponents/AIInterface/AIInterface';
 
 /**
@@ -562,7 +557,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			'1',
 			currHyperparams.current[challenge.modelType] as RegHyperparameters,
 		);
-		setChartDataIOCode()
+		setChartDataIOCode();
 		//optimizer.current = new PolyOptimizer(regression.current);
 	}
 
@@ -572,14 +567,14 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	function setChartDataIOCode() {
 		let input = activeIoCodes.current!.indexOf(1);
 		let output = activeIoCodes.current!.indexOf(0);
-		let minX=0;
-		let maxX=0;
-		let minY=0;
-		let maxY=0;
+		let minX = 0;
+		let maxX = 0;
+		let minY = 0;
+		let maxY = 0;
 
 		if (
-			output != -1 &&
-			input != -1 &&
+			output !== -1 &&
+			input !== -1 &&
 			(activeDataset.current!.getDataAsArray()[output] as number[]) &&
 			(activeDataset.current!.getDataAsArray()[input] as number[])
 		) {
@@ -597,12 +592,19 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			});
 
 			//Set max/min on the graphic
-			if(activeDataset.current){
-				minX = activeDataset.current!.getMinOfParam(activeDataset.current.getParamNames()[input]);
-				maxX = activeDataset.current!.getMaxOfParam(activeDataset.current.getParamNames()[input]);
-				minY = activeDataset.current!.getMinOfParam(activeDataset.current.getParamNames()[output]);
-				maxY = activeDataset.current!.getMaxOfParam(activeDataset.current.getParamNames()[output]);	
-
+			if (activeDataset.current) {
+				minX = activeDataset.current!.getMinOfParam(
+					activeDataset.current.getParamNames()[input],
+				);
+				maxX = activeDataset.current!.getMaxOfParam(
+					activeDataset.current.getParamNames()[input],
+				);
+				minY = activeDataset.current!.getMinOfParam(
+					activeDataset.current.getParamNames()[output],
+				);
+				maxY = activeDataset.current!.getMaxOfParam(
+					activeDataset.current.getParamNames()[output],
+				);
 			}
 		} else {
 			data.current = [{}];
@@ -611,12 +613,11 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		//Create de new graph
 		mainDataset.current.data = data.current;
 		resetGraph();
-		(model.current as PolyRegression).setMaxXDisplay(maxX===NaN? 0: maxX);
-		(model.current as PolyRegression).setMinXDisplay(minX===NaN? 0: minX);
-		(model.current as PolyRegression).setMaxYDisplay(maxY===NaN? 0: maxY);
-		(model.current as PolyRegression).setMinYDisplay(minY===NaN? 0: minY);
+		(model.current as PolyRegression).setMaxXDisplay(isNaN(maxX) ? 0 : maxX);
+		(model.current as PolyRegression).setMinXDisplay(isNaN(minX) ? 0 : minX);
+		(model.current as PolyRegression).setMaxYDisplay(isNaN(maxY) ? 0 : maxY);
+		(model.current as PolyRegression).setMinYDisplay(isNaN(minY) ? 0 : minY);
 		showDataCloud();
-		
 	}
 
 	/**

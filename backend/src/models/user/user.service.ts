@@ -1,20 +1,15 @@
-import { Injectable, HttpException, HttpStatus, Scope, Inject } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ILike, Repository } from 'typeorm';
 import { StudentEntity, ProfessorEntity } from './entities/user.entity';
 import { UserEntity } from './entities/user.entity';
-import { compare, hash } from 'bcryptjs';
-import { Response } from 'express';
-import { createAccessToken, setRefreshToken, createRefreshToken } from './auth';
-import { sign, verify } from 'jsonwebtoken';
-import { AuthPayload } from '../../utils/types/auth.payload';
-import { REQUEST } from '@nestjs/core';
+import { hash } from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
 import { ClassroomEntity } from '../classroom/entities/classroom.entity';
 import { IoTProjectEntity } from '../iot/IoTproject/entities/IoTproject.entity';
 import { IoTObjectEntity } from '../iot/IoTobject/entities/IoTobject.entity';
 import { ChallengeEntity } from '../challenge/entities/challenge.entity';
 import { CourseEntity } from '../course/entities/course.entity';
-import { MyRequest } from '../../utils/guards/auth.guard';
 import { CourseHistoryEntity } from '../course/entities/course_history.entity';
 import { NameMigrationDTO } from './dto/name_migration.dto';
 import { QueryResources } from './dto/query_resources.dto';
@@ -26,7 +21,7 @@ import { QueryIoTObjects } from './dto/query_iotobjects';
  * All the methods to communicate to the database regarding users.
  * @author Enric Soldevila
  */
-@Injectable({ scope: Scope.REQUEST })
+@Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>,
@@ -40,8 +35,8 @@ export class UserService {
     @InjectRepository(IoTProjectEntity) private iotProjectRepository: Repository<IoTProjectEntity>,
     @InjectRepository(IoTObjectEntity) private iotObjectRepository: Repository<IoTObjectEntity>,
     @InjectRepository(ChallengeEntity) private challengeRepo: Repository<ChallengeEntity>,
-    @Inject(REQUEST) private req: MyRequest,
   ) {}
+
   async createStudent(createStudentDto: UserEntity) {
     const hashedPassword = await hash(createStudentDto.password, 12);
     createStudentDto.password = hashedPassword;
@@ -65,51 +60,6 @@ export class UserService {
       if ((err as any).detail.includes('Key (email)='))
         throw new HttpException('This email is already in use', HttpStatus.CONFLICT);
     }
-  }
-
-  async login(email: string, password: string, res: Response) {
-    const user = await this.findByEmail(email);
-
-    const valid = await compare(password, user.password);
-    if (!valid) {
-      throw 'Error';
-    }
-
-    setRefreshToken(res, createRefreshToken(user));
-
-    return {
-      accessToken: createAccessToken(user),
-    };
-  }
-
-  logout(res: Response) {
-    setRefreshToken(res, '');
-    return {};
-  }
-
-  async refreshToken(res: Response) {
-    const req = this.req;
-
-    const refreshToken = req.cookies.wif;
-    if (!refreshToken) throw new HttpException('No credentials were provided', HttpStatus.UNAUTHORIZED);
-
-    let payload: AuthPayload;
-
-    try {
-      payload = verify(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY) as AuthPayload;
-    } catch {
-      throw new HttpException('Invalid Credentials', HttpStatus.UNAUTHORIZED);
-    }
-    if (!payload) throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
-
-    const user = await this.findById(payload.id);
-    if (!user) throw new HttpException('No user found with given id', HttpStatus.UNAUTHORIZED);
-
-    setRefreshToken(res, createRefreshToken(user));
-
-    return {
-      accessToken: createAccessToken(user),
-    };
   }
 
   async findAll() {

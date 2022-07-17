@@ -22,11 +22,7 @@ export interface MyRequest extends Request {
 
 @Injectable({ scope: Scope.REQUEST })
 export class RolesGuard implements CanActivate {
-  constructor(
-    private reflector: Reflector,
-    @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>,
-    @Inject(REQUEST) private req: MyRequest,
-  ) {}
+  constructor(private reflector: Reflector, @Inject(REQUEST) private req: MyRequest) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     try {

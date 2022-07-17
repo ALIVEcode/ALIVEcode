@@ -1,4 +1,4 @@
-import { Controller, Get, Logger, Req, UseInterceptors } from '@nestjs/common';
+import { Controller, Logger, UseInterceptors, Injectable } from '@nestjs/common';
 import {
   ConnectedSocket,
   OnGatewayConnection,
@@ -9,13 +9,10 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, WebSocket } from 'ws';
-import { Auth } from '../../utils/decorators/auth.decorator';
-import { User } from '../../utils/decorators/user.decorator';
 import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
 import { IOT_EVENT, Client, UserSocketTicketPayload } from './userSocket.types';
 import { UserEntity } from '../../models/user/entities/user.entity';
 import { UserService } from '../../models/user/user.service';
-import { Request } from 'express';
 import { verify } from 'jsonwebtoken';
 
 const gatewayPort = Number(process.env.USER_SOCKET_GATEWAY_PORT);
@@ -35,8 +32,9 @@ if (!cors) {
 @UseInterceptors(DTOInterceptor)
 @WebSocketGateway(gatewayPort, { cors })
 @Controller('userSocket')
+@Injectable()
 export class UserSocketGateway implements OnGatewayDisconnect, OnGatewayConnection, OnGatewayInit {
-  private logger: Logger;
+  private logger: Logger = new Logger('UserSocketGateway');
 
   constructor(private userService: UserService) {}
 
@@ -44,7 +42,6 @@ export class UserSocketGateway implements OnGatewayDisconnect, OnGatewayConnecti
   server: Server;
 
   afterInit() {
-    if (!this.logger) this.logger = new Logger('UserSocketGateway');
     this.logger.log(`Initialized`);
 
     // Set the ping interval to ping each connected object (each 15 seconds)
@@ -65,10 +62,7 @@ export class UserSocketGateway implements OnGatewayDisconnect, OnGatewayConnecti
   }
 
   async handleConnection(socket: WebSocket, data) {
-    console.log((socket as any)._socket);
     const lst = data.url.split('?');
-    const clienta = new Client(socket);
-    clienta.register();
     if (lst.length < 2) return socket.close();
 
     // Grab ticket from the url
@@ -79,7 +73,7 @@ export class UserSocketGateway implements OnGatewayDisconnect, OnGatewayConnecti
     // Verify the ticket (JWT)
     let payload: UserSocketTicketPayload;
     try {
-      const payloadUntyped = verify(ticketRecv, process.env.USER_SOCKET_TICKEY_SECRET_KEY) as any;
+      const payloadUntyped = verify(ticketRecv, process.env.USER_SOCKET_TICKET_SECRET_KEY) as any;
       if (!payloadUntyped || !payloadUntyped.id || !payloadUntyped.email || !payloadUntyped.ip) return socket.close();
       payload = payloadUntyped as UserSocketTicketPayload;
     } catch {
@@ -90,13 +84,13 @@ export class UserSocketGateway implements OnGatewayDisconnect, OnGatewayConnecti
     let user: UserEntity;
     try {
       user = await this.userService.findByIdAndEmail(payload.id, payload.email);
-    } catch {
+    } catch (err) {
+      console.log(err);
       return socket.close();
     }
 
     // Compare the saved ticket with the given ticket
-    const payloadSaved = verify(user.ticket, process.env.USER_SOCKET_TICKEY_SECRET_KEY) as UserSocketTicketPayload;
-    if (payloadSaved.ip !== payload.id) return socket.close();
+    if (user.ticket !== ticketRecv) return socket.close();
 
     // Disabling the ticket
     await this.userService.disableTicket(user);
@@ -120,11 +114,5 @@ export class UserSocketGateway implements OnGatewayDisconnect, OnGatewayConnecti
   @SubscribeMessage(IOT_EVENT.PONG)
   pong(@ConnectedSocket() socket: WebSocket) {
     this.receivePong(socket);
-  }
-
-  @Get('ticket')
-  @Auth()
-  async getTicket(@User() user: UserEntity, @Req() req: Request) {
-    return await this.userService.generateWebsocketTicket(user, req.ip);
   }
 }

@@ -323,9 +323,13 @@ const App = () => {
 		};
 		getUpcomingMaintenance();
 
-		const userSocket = new UserSocket();
-		userSocket.open('TEST');
-		setUserSocket(userSocket);
+		const connectUserSocket = async () => {
+			const userSocket = new UserSocket();
+			const ticket = await api.db.userSocket.getTicket();
+			userSocket.open(ticket);
+			setUserSocket(userSocket);
+		};
+		connectUserSocket();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

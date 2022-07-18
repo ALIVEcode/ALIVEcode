@@ -1,4 +1,4 @@
-import { ChildEntity } from 'typeorm';
+import { ChildEntity, Column } from 'typeorm';
 import { ACTIVITY_TYPE, ActivityEntity } from '../activity.entity';
 import { RESOURCE_TYPE } from '../../../resource/entities/resource.entity';
 
@@ -13,4 +13,10 @@ export class ActivityPdfEntity extends ActivityEntity {
 
   /** Mime types allowed as a resource inside the activity */
   acceptedMimeTypes = ['application/pdf', 'application/vnd.ms-excel'];
+
+  @Column({ nullable: true })
+  startPage?: number;
+
+  @Column({ nullable: true })
+  finishPage?: number;
 }

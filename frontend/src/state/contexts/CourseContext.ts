@@ -20,6 +20,7 @@ export type CourseContextValues = {
 	setCourseElementNotNew: (element: CourseElement) => void;
 	isNavigationOpen: boolean;
 	tab: CourseTabState;
+	editMode: boolean;
 	setTab: React.Dispatch<SwitchCourseTabActions>;
 	setTitle: (newTitle: string) => Promise<void>;
 	loadSectionElements: (section: Section) => Promise<any>;
@@ -60,6 +61,7 @@ export type CourseContextValues = {
 export const CourseContext = createContext<CourseContextValues>({
 	isNavigationOpen: true,
 	tab: { tab: 'view', openedSections: [] },
+	editMode: false,
 	setCourseElementNotNew: () => {},
 	isNewCourseElement: () => false,
 	setTab: () => {},

@@ -3,7 +3,7 @@ import LoadingScreen from '../../../Components/UtilsComponents/LoadingScreen/Loa
 import { IoTProjectContext } from '../../../state/contexts/IoTProjectContext';
 import { ChallengeContext } from '../../../state/contexts/ChallengeContext';
 import IoTProject from '../../IoT/IoTProject/IoTProject';
-import { ChallengeIoT } from '../../../Models/Challenge/challenges/challenge_iota.entity';
+import { ChallengeIoT } from '../../../Models/Challenge/challenges/challenge_iot.entity';
 
 /**
  * IoTProject. On this page are all the components essential in the functionning of an IoTProject.

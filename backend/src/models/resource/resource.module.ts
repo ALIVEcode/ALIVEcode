@@ -21,6 +21,7 @@ import { createMulterOptions } from 'src/utils/upload/MulterConfig.service';
 import { CurrentRequestModule } from 'src/utils/upload/CurrentRequest.module';
 import { FileService } from '../file/file.service';
 import { FileEntity } from '../file/entities/file.entity';
+import { AuthService } from '../user/auth.service';
 
 /**
  * Module for the resource nestjs resource
@@ -48,10 +49,10 @@ import { FileEntity } from '../file/entities/file.entity';
     MulterModule.registerAsync({
       imports: [UserModule, CurrentRequestModule],
       useFactory: createMulterOptions,
-      inject: [UserService, 'CURRENT_REQUEST'],
+      inject: [AuthService, 'CURRENT_REQUEST'],
     }),
   ],
   controllers: [ResourceController],
-  providers: [ResourceService, UserService, FileService],
+  providers: [ResourceService, UserService, AuthService, FileService],
 })
 export class ResourceModule {}

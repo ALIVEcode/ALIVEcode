@@ -45,7 +45,7 @@ const IoTProjectPage = () => {
 			type: 'interface',
 		},
 		{
-			name: t('iot.project.documents.name'),
+			name: t('iot.project.document.name'),
 			type: 'documents',
 		},
 		{
@@ -88,7 +88,7 @@ const IoTProjectPage = () => {
 			as={StyledIoTProject}
 			className="w-full h-full flex flex-col tablet:flex-row"
 		>
-			{({ open }) => (
+			{({ open }: { open: boolean }) => (
 				<>
 					<div
 						className={classNames(

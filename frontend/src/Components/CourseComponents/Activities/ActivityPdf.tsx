@@ -19,7 +19,13 @@ import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
  *
  * @author Maxime Gazzé
  */
-const ActivityPdf = ({ activity }: { activity: ActivityPdfModel }) => {
+const ActivityPdf = ({
+	activity,
+	updateActivity,
+}: {
+	activity: ActivityPdfModel;
+	updateActivity: (data: any) => void;
+}) => {
 	const [loaded, setLoaded] = useState(false);
 	const [numPages, setNumPages] = useState<number>(0);
 	const [pageNumber, setPageNumber] = useState<number>(activity.startPage ?? 1);
@@ -51,7 +57,7 @@ const ActivityPdf = ({ activity }: { activity: ActivityPdfModel }) => {
 		getSrc(setPdfSrc);
 	}, [activity]);
 
-	const saveActivity = async () => {
+	/*const saveActivity = async () => {
 		if (!course) return;
 		await api.db.courses.updateActivity(
 			{ courseId: course.id, activityId: activity.id.toString() },
@@ -60,7 +66,7 @@ const ActivityPdf = ({ activity }: { activity: ActivityPdfModel }) => {
 				finishPage: activity.finishPage,
 			},
 		);
-	};
+	};*/
 
 	const handlePageChange = (newPageNumber: number) => {
 		// Boundaries
@@ -79,7 +85,7 @@ const ActivityPdf = ({ activity }: { activity: ActivityPdfModel }) => {
 	};
 
 	const onDocumentLoadSuccess = ({ numPages }: any) => {
-		setNumPages(activity.finishPage ?? numPages);
+		setNumPages(editMode ? numPages : activity.finishPage ?? numPages);
 		setLoaded(true);
 	};
 
@@ -100,10 +106,10 @@ const ActivityPdf = ({ activity }: { activity: ActivityPdfModel }) => {
 		let nb = startPage;
 		if (nb < 1) nb = 1;
 		if (nb > (finishPage ?? numPages)) nb = finishPage ?? numPages;
-		setStartPage(startPage);
+		setStartPage(nb);
 
 		activity.startPage = nb;
-		saveActivity();
+		updateActivity({ startPage: activity.startPage });
 	};
 
 	const handleChangeFinishPage = () => {
@@ -114,7 +120,7 @@ const ActivityPdf = ({ activity }: { activity: ActivityPdfModel }) => {
 		setFinishPage(nb);
 
 		activity.finishPage = nb;
-		saveActivity();
+		updateActivity({ finishPage: activity.finishPage });
 	};
 
 	return (
@@ -125,7 +131,8 @@ const ActivityPdf = ({ activity }: { activity: ActivityPdfModel }) => {
 				editMode && (
 					<div className="flex flex-col tablet:flex-row gap-0 tablet:gap-4">
 						<InputGroup
-							label="Start at page"
+							label={t('course.activity.PF.start_page')}
+							info={t('course.activity.PF.start_page_info')}
 							type="number"
 							value={startPage}
 							min={1}
@@ -137,7 +144,8 @@ const ActivityPdf = ({ activity }: { activity: ActivityPdfModel }) => {
 							}
 						/>
 						<InputGroup
-							label="Finish at page"
+							label={t('course.activity.PF.finish_page')}
+							info={t('course.activity.PF.finish_page_info')}
 							type="number"
 							value={finishPage}
 							min={startPage ?? 1}
@@ -158,7 +166,10 @@ const ActivityPdf = ({ activity }: { activity: ActivityPdfModel }) => {
 					onLoadSuccess={onDocumentLoadSuccess}
 					ref={ref}
 				>
-					<Page className="inline-block relative" pageNumber={pageNumber}>
+					<Page
+						className="inline-block relative border border-[color:var(--bg-shade-four-color)]"
+						pageNumber={pageNumber}
+					>
 						<div
 							className="absolute left-0 top-0 z-1 h-full w-[50%]"
 							onClick={gotoPrev}

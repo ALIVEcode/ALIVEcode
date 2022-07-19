@@ -1,7 +1,10 @@
 import React from 'react';
 import { classNames } from '../../../Types/utils';
+import Info from '../../HelpComponents';
 
-type CustomProps = {};
+type CustomProps = {
+	info?: string;
+};
 
 type LabelProps = CustomProps &
 	React.DetailedHTMLProps<
@@ -14,9 +17,22 @@ type LabelProps = CustomProps &
  *
  * @author Enric Soldevila
  */
-const FormLabel: React.FC<LabelProps> = ({ className, ...props }) => {
+const FormLabel: React.FC<LabelProps> = ({ className, info, ...props }) => {
 	return (
-		<label className={classNames('block text-lg mb-2', className)} {...props} />
+		<div className={classNames('block text-lg mb-2 relative', className)}>
+			<label {...props} />
+			{info && (
+				<Info.Icon
+					className="absolute right-0 top-0"
+					// onClick={() => setTimelineOpen(true)}
+					hoverPopup={{
+						position: 'right center',
+					}}
+				>
+					<Info.Box useDefaultStyle text={info} />
+				</Info.Icon>
+			)}
+		</div>
 	);
 };
 

@@ -8,6 +8,7 @@ import { IoTComponentManager } from './IoTComponentManager';
 import { IoTComponent } from './IoTComponent';
 import { IoTProjectLayout, parseIoTProjectLayout } from '../IoTproject.entity';
 import { IOT_EVENT } from './IoTTypes';
+import { AlertManager } from 'react-alert';
 
 export type IoTActionDoneRequestToWatcher = {
 	actionId: string;
@@ -35,6 +36,7 @@ export class IoTSocket {
 	private project: IoTProject;
 	private name: string;
 	private iotComponentManager: IoTComponentManager;
+	private alert: AlertManager;
 	private openedOnce: boolean = false;
 
 	constructor(
@@ -42,6 +44,7 @@ export class IoTSocket {
 		userId: string,
 		project: IoTProject,
 		name: string,
+		alert: AlertManager,
 		private onRender: (saveLayout: boolean) => void,
 		private onReceiveListen: (fields: { [key: string]: any }) => void,
 		private onReceiveActionDone: (data: IoTActionDoneRequestToWatcher) => void,
@@ -50,6 +53,7 @@ export class IoTSocket {
 		this.userId = userId;
 		this.project = project;
 		this.name = name;
+		this.alert = alert;
 		this.onRender = onRender;
 		this.onReceiveListen = onReceiveListen;
 
@@ -115,6 +119,9 @@ export class IoTSocket {
 					break;
 				case IOT_EVENT.RECEIVE_ACTION_DONE:
 					this.onReceiveActionDone(req.data);
+					break;
+				case IOT_EVENT.ERROR:
+					this.alert.error(String(req.data));
 					break;
 				default:
 					// console.log('Unknown event', req);

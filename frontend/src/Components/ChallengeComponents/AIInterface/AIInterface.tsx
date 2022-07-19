@@ -197,7 +197,9 @@ const AIInterface = ({
 						/>
 					</div>
 				) : (
-					<GradientDescentScheme />
+					<div className="ai-display flex flex-col">
+						<GradientDescentScheme layerCount={5} epochCount={100} />
+					</div>
 				)}
 			</div>
 		</StyledAIInterface>

@@ -108,7 +108,7 @@ export class AsScriptController {
 
   @Delete(':id')
   @Auth()
-  remove(@Param('id') id: string) {
-    return this.asScriptService.remove(+id);
+  remove(@User() user: UserEntity, @Param('id') id: string) {
+    return this.asScriptService.remove(id, user);
   }
 }

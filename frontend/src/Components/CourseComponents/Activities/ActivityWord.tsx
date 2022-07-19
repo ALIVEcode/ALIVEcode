@@ -34,7 +34,7 @@ const ActivityWord = ({ activity }: { activity: ActivityWordModel }) => {
 	}, [activity]);
 
 	return (
-		<div className="w-full">
+		<div className="w-full" style={{ color: 'initial' }}>
 			{url && (
 				<>
 					<FileViewer

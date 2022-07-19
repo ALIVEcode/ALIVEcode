@@ -23,4 +23,7 @@ export class ActivityPdf extends Activity {
 
 	/** Mime types allowed as a resource inside the activity */
 	acceptedMimeTypes = pdfMimeTypes;
+
+	startPage?: number;
+	finishPage?: number;
 }

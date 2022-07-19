@@ -4,6 +4,7 @@ jdk-15.0.2
 .vscode
 static_grab
 *.cmd
+.env.example
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -30,7 +30,7 @@ import {
 import { ChallengeAI } from './Challenge/challenges/challenge_ai.entity';
 import { ChallengeAlive } from './Challenge/challenges/challenge_alive.entity';
 import { ChallengeCode } from './Challenge/challenges/challenge_code.entity';
-import { ChallengeIoT } from './Challenge/challenges/challenge_IoT.entity';
+import { ChallengeIoT } from './Challenge/challenges/challenge_iot.entity';
 import { ChallengeProgression } from './Challenge/challenge_progression.entity';
 import { Maintenance } from './Maintenance/maintenance.entity';
 import { Answer } from './Quiz/answer.entity';
@@ -788,6 +788,11 @@ const api = {
 						)
 					).data,
 				) as any as ShowcaseProject[];
+			},
+		},
+		userSocket: {
+			async getTicket() {
+				return (await axios.get('users/socket/ticket')).data;
 			},
 		},
 	},

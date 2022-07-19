@@ -43,7 +43,7 @@ async function bootstrap() {
   app.use(bodyParser.json({ limit: '50mb' }));
   app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
-  app.useStaticAssets(join(__dirname, '..', 'public'), { prefix: '/public/' });
+  app.useStaticAssets(join(__dirname, '..', 'public'), { prefix: '/api/public/' });
 
   app.useWebSocketAdapter(new WsAdapter(app));
 

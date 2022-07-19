@@ -1,13 +1,39 @@
-.scheme {
+.gradient-descent-scheme {
   width: 100%;
   height: 100%;
 }
 
-.rectText {
-  display: table-cell;
-  padding: 2px;
-  text-align: center;
-  vertical-align: middle;
+.gradient-descent-scheme-text {
   font-size: 6px;
+  text-align: center;
+  padding: 2px;
+}
+
+.gradient-descent-scheme-p {
+  width: inherit;
+  height: inherit;
+  display: table-cell;
+  vertical-align: middle;
   border-spacing: 2px;
+}
+
+.gradient-descent-scheme-eq {
+  width: inherit;
+  height: inherit;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 10px;
+  text-align: center;
+  padding: 2px;
+}
+
+.gradient-descent-scheme-button {
+  height: 15px;
+  vertical-align: top;
+  color: black;
+  border: 1px solid black;
+  background-color: white;
+  border-radius: 5px;
+  flex-flow: column;
 }

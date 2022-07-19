@@ -22,7 +22,7 @@ export class IoTProjectCreator implements CanActivate {
     if (!projectId) throw new HttpException('Bad payload', HttpStatus.BAD_REQUEST);
 
     const user = this.req.user;
-    if (!user) throw new HttpException('You are not logged in', HttpStatus.UNAUTHORIZED);
+    if (!user) throw new HttpException('Not Authenticated', HttpStatus.UNAUTHORIZED);
 
     const project = await this.projectService.findOne(projectId);
 

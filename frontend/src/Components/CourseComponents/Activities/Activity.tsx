@@ -59,7 +59,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 		course,
 		tab,
 		setTab,
-		updateActivity,
+		updateActivity: updateActivityRequest,
 		setOpenModalImportResource,
 		renameElement,
 		removeResourceFromActivity,
@@ -78,6 +78,10 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 	const { t } = useTranslation();
 	const { createResource } = useContext(UserContext);
 	const [isRenaming, setIsRenaming] = useState(false);
+	const [saving, setSaving] = useState(false);
+	const [doneSaving, setDoneSaving] = useState(true);
+	const saveTimeout = useRef<NodeJS.Timeout | null>(null);
+
 	const [loading, setLoading] = useState(!activity.resource);
 	const [selectedFile, setSelectedFile] = useState<File>();
 	const [videoUrl, setVideoUrl] = useState<string | undefined | null>(
@@ -111,14 +115,36 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 	}, [activity]);
 
 	/**
+	 * Handler to update an activity. Adds the saving... and saved
+	 * label
+	 */
+	const handleUpdateActivity = useCallback(
+		async (data: any) => {
+			if (saveTimeout.current) clearTimeout(saveTimeout.current);
+			setDoneSaving(false);
+			setSaving(true);
+			await updateActivityRequest(activity, data);
+			setTimeout(() => {
+				setDoneSaving(true);
+				saveTimeout.current = setTimeout(() => {
+					setSaving(false);
+					setDoneSaving(false);
+					saveTimeout.current = null;
+				}, 2000);
+			}, 300);
+		},
+		[activity, updateActivityRequest],
+	);
+
+	/**
 	 * Updates the header or footer of the activity
 	 * @author Mathis Laroche
 	 */
-	const update = useCallback(
+	const updateHeaderOrFooter = useCallback(
 		(what: 'header' | 'footer') => {
 			return async (value: Descendant[]) => {
 				if (!courseElement) return;
-				await updateActivity(activity, { [what]: value });
+				await handleUpdateActivity({ [what]: value });
 			};
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -231,7 +257,12 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 			case ACTIVITY_TYPE.VIDEO:
 				return <ActivityVideo activity={activity as ActivityVideoModel} />;
 			case ACTIVITY_TYPE.PDF:
-				return <ActivityPdf activity={activity as ActivityPdfModel} />;
+				return (
+					<ActivityPdf
+						updateActivity={handleUpdateActivity}
+						activity={activity as ActivityPdfModel}
+					/>
+				);
 			case ACTIVITY_TYPE.ASSIGNMENT:
 				return (
 					<ActivityAssignment activity={activity as ActivityAssignmentModel} />
@@ -360,13 +391,20 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 						)}
 					</div>
 				</div>
+				{editMode && (
+					<div className="flex w-full justify-end opacity-50">
+						<span style={{ opacity: saving ? 1 : 0 }}>
+							{!doneSaving ? t('msg.saving') : t('msg.saved')}
+						</span>
+					</div>
+				)}
 				{activity.header ? (
 					<div className="flex justify-center items-center pb-5">
 						<div className="flex flex-row gap-2 text-sm w-full">
 							<div className="w-full">
 								<RichTextEditor
 									readOnly={!editMode}
-									onChange={update('header')}
+									onChange={updateHeaderOrFooter('header')}
 									defaultText={activity.header}
 								/>
 							</div>
@@ -400,7 +438,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 											],
 										},
 									];
-									await updateActivity(activity, { header: value });
+									await handleUpdateActivity({ header: value });
 								}}
 							>
 								<Link className="mb-5 opacity-70 w-full pl-3 !text-[color:var(--fg-shade-four-color)]">
@@ -497,7 +535,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 							<div className="w-full">
 								<RichTextEditor
 									readOnly={!editMode}
-									onChange={update('footer')}
+									onChange={updateHeaderOrFooter('footer')}
 									defaultText={activity.footer}
 								/>
 							</div>
@@ -531,7 +569,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 											],
 										},
 									];
-									await updateActivity(activity, { footer: value });
+									await handleUpdateActivity({ footer: value });
 								}}
 							>
 								<Link className="mb-5 opacity-70 w-full pl-3 !text-[color:var(--fg-shade-four-color)]">
@@ -598,7 +636,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					}
 					onConfirm={async () => {
 						if (!confirmDelete) return;
-						await updateActivity(activity, { [confirmDelete]: null });
+						await handleUpdateActivity({ [confirmDelete]: null });
 					}}
 					irreversibleText
 				/>

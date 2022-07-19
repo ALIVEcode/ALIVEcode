@@ -2,9 +2,11 @@ import LineInterface from '../../ChallengeComponents/LineInterface/LineInterface
 import { useState, useRef, useEffect } from 'react';
 import api from '../../../Models/api';
 import { AsScriptProps } from './asScriptTypes';
+import { useTranslation } from 'react-i18next';
 
 export const AsScript = ({ asScript, onSave }: AsScriptProps) => {
 	const [saving, setSaving] = useState(false);
+	const { t } = useTranslation();
 	const content = useRef<string>(asScript.content);
 	const saveTimeout = useRef<any>(null);
 
@@ -46,7 +48,7 @@ export const AsScript = ({ asScript, onSave }: AsScriptProps) => {
 					initialContent={asScript.content}
 				/>
 			</div>
-			{saving ? 'Saving...' : 'Saved'}
+			{saving ? t('msg.saving') : t('msg.saved')}
 		</>
 	);
 };

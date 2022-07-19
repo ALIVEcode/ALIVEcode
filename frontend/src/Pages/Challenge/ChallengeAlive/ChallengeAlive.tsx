@@ -27,7 +27,7 @@ import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
  * @author Enric Soldevila
  */
 const ChallengeAlive = ({ initialCode }: ChallengeAliveProps) => {
-	const { user, playSocket } = useContext(UserContext);
+	const { user } = useContext(UserContext);
 	const {
 		challenge: challengeUntyped,
 		executor: executorUntyped,
@@ -52,7 +52,6 @@ const ChallengeAlive = ({ initialCode }: ChallengeAliveProps) => {
 			(executor.current = new ChallengeAliveExecutor(
 				challenge.name,
 				editMode,
-				playSocket,
 				askForUserInput,
 				alert,
 			)),

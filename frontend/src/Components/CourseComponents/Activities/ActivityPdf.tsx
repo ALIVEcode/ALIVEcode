@@ -10,6 +10,8 @@ import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { downloadBlob } from '../../../Types/files.type';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import { useAlert } from 'react-alert';
+import InputGroup from '../../UtilsComponents/InputGroup/InputGroup';
+import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 
 /**
  * Shows an activity of type Pdf
@@ -17,16 +19,29 @@ import { useAlert } from 'react-alert';
  *
  * @author Maxime Gazzé
  */
-const ActivityPdf = ({ activity }: { activity: ActivityPdfModel }) => {
+const ActivityPdf = ({
+	activity,
+	updateActivity,
+}: {
+	activity: ActivityPdfModel;
+	updateActivity: (data: any) => void;
+}) => {
+	const [loaded, setLoaded] = useState(false);
 	const [numPages, setNumPages] = useState<number>(0);
-	const [pageNumber, setPageNumber] = useState<number>(1);
+	const [pageNumber, setPageNumber] = useState<number>(activity.startPage ?? 1);
+	const [startPage, setStartPage] = useState<number | undefined>(
+		activity.startPage,
+	);
+	const [finishPage, setFinishPage] = useState<number | undefined>(
+		activity.finishPage,
+	);
 	const [pdfSrc, setPdfSrc] = useState('');
 	const [downloading, setDownloading] = useState(false);
 	const inputNumberRef = useRef<HTMLInputElement>(null);
 	const pdfRefBox = useRef<HTMLDivElement>(null);
 	const ref = useRef<any>(null);
 	const { t } = useTranslation();
-	const { course } = useContext(CourseContext);
+	const { course, editMode } = useContext(CourseContext);
 	const alert = useAlert();
 
 	useEffect(() => {
@@ -41,6 +56,17 @@ const ActivityPdf = ({ activity }: { activity: ActivityPdfModel }) => {
 		};
 		getSrc(setPdfSrc);
 	}, [activity]);
+
+	/*const saveActivity = async () => {
+		if (!course) return;
+		await api.db.courses.updateActivity(
+			{ courseId: course.id, activityId: activity.id.toString() },
+			{
+				startPage: activity.startPage,
+				finishPage: activity.finishPage,
+			},
+		);
+	};*/
 
 	const handlePageChange = (newPageNumber: number) => {
 		// Boundaries
@@ -59,7 +85,8 @@ const ActivityPdf = ({ activity }: { activity: ActivityPdfModel }) => {
 	};
 
 	const onDocumentLoadSuccess = ({ numPages }: any) => {
-		setNumPages(numPages);
+		setNumPages(editMode ? numPages : activity.finishPage ?? numPages);
+		setLoaded(true);
 	};
 
 	const gotoPrev = () => {
@@ -74,8 +101,64 @@ const ActivityPdf = ({ activity }: { activity: ActivityPdfModel }) => {
 		handlePageChange(index);
 	};
 
+	const handleChangeStartPage = () => {
+		if (!startPage) return;
+		let nb = startPage;
+		if (nb < 1) nb = 1;
+		if (nb > (finishPage ?? numPages)) nb = finishPage ?? numPages;
+		setStartPage(nb);
+
+		activity.startPage = nb;
+		updateActivity({ startPage: activity.startPage });
+	};
+
+	const handleChangeFinishPage = () => {
+		if (!finishPage) return;
+		let nb = finishPage;
+		if (nb < (startPage ?? 1)) nb = startPage ?? 1;
+		if (nb > numPages) nb = numPages;
+		setFinishPage(nb);
+
+		activity.finishPage = nb;
+		updateActivity({ finishPage: activity.finishPage });
+	};
+
 	return (
 		<div className="w-full desktop:px-16">
+			{!loaded ? (
+				<LoadingScreen relative />
+			) : (
+				editMode && (
+					<div className="flex flex-col tablet:flex-row gap-0 tablet:gap-4">
+						<InputGroup
+							label={t('course.activity.PF.start_page')}
+							info={t('course.activity.PF.start_page_info')}
+							type="number"
+							value={startPage}
+							min={1}
+							max={finishPage ?? numPages}
+							onChange={(e: any) => setStartPage(e.target.value)}
+							onBlur={handleChangeStartPage}
+							onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
+								e.keyCode === 13 && handleChangeStartPage()
+							}
+						/>
+						<InputGroup
+							label={t('course.activity.PF.finish_page')}
+							info={t('course.activity.PF.finish_page_info')}
+							type="number"
+							value={finishPage}
+							min={startPage ?? 1}
+							max={numPages}
+							onChange={(e: any) => setFinishPage(e.target.value)}
+							onBlur={handleChangeFinishPage}
+							onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
+								e.keyCode === 13 && handleChangeFinishPage()
+							}
+						/>
+					</div>
+				)
+			)}
 			<div ref={pdfRefBox}>
 				<Document
 					className="w-full flex justify-center"
@@ -83,7 +166,10 @@ const ActivityPdf = ({ activity }: { activity: ActivityPdfModel }) => {
 					onLoadSuccess={onDocumentLoadSuccess}
 					ref={ref}
 				>
-					<Page className="inline-block relative" pageNumber={pageNumber}>
+					<Page
+						className="inline-block relative border border-[color:var(--bg-shade-four-color)]"
+						pageNumber={pageNumber}
+					>
 						<div
 							className="absolute left-0 top-0 z-1 h-full w-[50%]"
 							onClick={gotoPrev}

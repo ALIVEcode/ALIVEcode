@@ -18,8 +18,8 @@ const StyledButton = styled.button`
 	align-items: center;
 	justify-content: center;
 
-	${({ loading }: { loading: boolean }) => {
-		if (loading)
+	${({ loading }: { loading: string }) => {
+		if (loading === 'true')
 			return `
 		@-webkit-keyframes rotating /* Safari and Chrome */ {
 		from {
@@ -84,7 +84,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
 				}}
 				title={other.title}
 				className="icon-button"
-				loading={loading ?? false}
+				loading={loading ? 'true' : 'false'}
 				ref={ref}
 			>
 				{props.children && (

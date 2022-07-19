@@ -33,7 +33,6 @@ class ChallengeAliveExecutor extends ChallengeCodeExecutor {
 	constructor(
 		challengelName: string,
 		private editMode: boolean,
-		playSocket: PlaySocket | null,
 		askForUserInput: typeAskForUserInput,
 		alert?: AlertManager,
 	) {
@@ -264,8 +263,6 @@ class ChallengeAliveExecutor extends ChallengeCodeExecutor {
 			// Reset focus
 			if (s.canvasCamera != null) s.canvasCamera.setTarget(null);
 		});
-
-		this.playSocket = playSocket;
 	}
 
 	public loadChallengeLayout(layout: BaseLayoutObj[] | {}) {

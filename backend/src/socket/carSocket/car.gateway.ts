@@ -19,7 +19,7 @@ import {
 } from './car.types';
 import { Server, WebSocket } from 'ws';
 
-@WebSocketGateway(8888, { cors: { origin: '*' } })
+@WebSocketGateway(8911, { cors: { origin: '*' } })
 export class CarGateway implements OnGatewayDisconnect, OnGatewayConnection, OnGatewayInit {
   private cars: CarClient[] = [];
   private watchers: WatcherClient[] = [];
@@ -106,7 +106,7 @@ export class CarGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
     if (!payload.executionResult || !Array.isArray(payload.executionResult)) throw new WsException('Bad payload');
 
     const watcher = this.watchers.find(w => w.socket === socket);
-    if (!watcher) throw new WsException('Not authenticated');
+    if (!watcher) throw new WsException('Not Authenticated');
 
     const { bufArray, bufView } = convertExecutionToBytes(payload.executionResult);
 

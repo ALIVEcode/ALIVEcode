@@ -11,6 +11,7 @@ import {
   Res,
   UseInterceptors,
   Query,
+  Req,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Response } from 'express';
@@ -24,6 +25,8 @@ import { Role } from '../../utils/types/roles.types';
 import { NameMigrationDTO } from './dto/name_migration.dto';
 import { QueryResources } from './dto/query_resources.dto';
 import { QueryIoTProjects } from './dto/query_iotprojects.dto';
+import { AuthService } from './auth.service';
+import { Request as ExpressReq } from 'express';
 
 /**
  * All the routes of the api regarding operations on users.
@@ -32,7 +35,7 @@ import { QueryIoTProjects } from './dto/query_iotprojects.dto';
 @Controller('users')
 @UseInterceptors(DTOInterceptor)
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService, private readonly authService: AuthService) {}
 
   @Post('students')
   async createStudent(@Body() createStudent: StudentEntity) {
@@ -61,7 +64,7 @@ export class UserController {
     @Res({ passthrough: true }) res: Response,
   ) {
     try {
-      return await this.userService.login(email, password, res);
+      return await this.authService.login(email, password, res);
     } catch (err) {
       throw new HttpException('Could not login ' + err, HttpStatus.BAD_REQUEST);
     }
@@ -70,13 +73,19 @@ export class UserController {
   @Get('logout')
   @Auth()
   async logout(@Res() res: Response) {
-    this.userService.logout(res);
+    this.authService.logout(res);
     res.status(200).end();
   }
 
   @Post('refreshToken')
   async refreshToken(@Res({ passthrough: true }) res: Response) {
-    return await this.userService.refreshToken(res);
+    return await this.authService.refreshToken(res);
+  }
+
+  @Get('socket/ticket')
+  @Auth()
+  async getTicket(@User() user: UserEntity, @Req() req: ExpressReq) {
+    return await this.userService.generateWebsocketTicket(user, req.ip);
   }
 
   @Get()

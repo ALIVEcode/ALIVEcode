@@ -11,6 +11,7 @@ import {
 	AlertProviderProps,
 } from 'react-alert';
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 import AlertTemplate from 'react-alert-template-basic';
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
@@ -19,9 +20,11 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import LoadingScreen from './Components/UtilsComponents/LoadingScreen/LoadingScreen';
 import { BrowserRouter as Router } from 'react-router-dom';
 
+axiosRetry(axios, { retryDelay: axiosRetry.exponentialDelay });
+
 axios.defaults.baseURL = process.env.BACKEND_URL;
 axios.defaults.withCredentials = true;
-axios.defaults.timeout = 5000;
+axios.defaults.timeout = 30000;
 axios.defaults.headers.common = {
 	'Content-Type': 'application/json',
 	accept: 'application/json',

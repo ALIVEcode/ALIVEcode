@@ -122,6 +122,7 @@ const IoTProject = ({ projectId: projectIdProp }: IoTProjectProps) => {
 			user.id,
 			project,
 			project.name,
+			alert,
 			onRequestRender,
 			handleOnReceiveListen,
 			handleOnReceiveActionDone,

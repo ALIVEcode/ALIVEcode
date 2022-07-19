@@ -1,2384 +1,2380 @@
 [
 	{
-		"Nombre de pièces": 15,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 3,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 87,
-		"Prix (k$)": 714
-	},
-	{
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 3,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 89,
-		"Prix (k$)": 731
-	},
-	{
-		"Nombre de pièces": 18,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 3,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 72,
-		"Prix (k$)": 888
-	},
-	{
-		"Nombre de pièces": 17,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 50,
-		"Prix (k$)": 1128
-	},
-	{
-		"Nombre de pièces": 9,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 2,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 46,
-		"Prix (k$)": 566
-	},
-	{
-		"Nombre de pièces": 11,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 26,
-		"Prix (k$)": 1099
-	},
-	{
-		"Nombre de pièces": 20,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 5,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 115,
-		"Prix (k$)": 560
-	},
-	{
-		"Nombre de pièces": 10,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 31,
-		"Prix (k$)": 885
-	},
-	{
-		"Nombre de pièces": 16,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 4,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 115,
-		"Prix (k$)": 559
-	},
-	{
-		"Nombre de pièces": 14,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 3,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 172,
-		"Prix (k$)": 414
-	},
-	{
-		"Nombre de pièces": 14,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 2,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 102,
-		"Prix (k$)": 496
-	},
-	{
-		"Nombre de pièces": 17,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 5,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 381,
-		"Prix (k$)": 458
-	},
-	{
-		"Nombre de pièces": 9,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 35,
-		"Prix (k$)": 996
-	},
-	{
-		"Nombre de pièces": 20,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 42,
-		"Prix (k$)": 1479
-	},
-	{
-		"Nombre de pièces": 12,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 2,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 68,
-		"Prix (k$)": 558
-	},
-	{
-		"Nombre de pièces": 13,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 51,
-		"Prix (k$)": 873
-	},
-	{
-		"Nombre de pièces": 18,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 50,
-		"Prix (k$)": 1129
-	},
-	{
-		"Nombre de pièces": 15,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 34,
-		"Prix (k$)": 1436
-	},
-	{
-		"Nombre de pièces": 12,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 31,
-		"Prix (k$)": 1307
-	},
-	{
-		"Nombre de pièces": 14,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 2,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 321,
-		"Prix (k$)": 386
-	},
-	{
-		"Nombre de pièces": 15,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 4,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 298,
-		"Prix (k$)": 358
-	},
-	{
-		"Nombre de pièces": 10,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 4,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 61,
-		"Prix (k$)": 501
-	},
-	{
-		"Nombre de pièces": 9,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 4,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 286,
-		"Prix (k$)": 343
-	},
-	{
-		"Nombre de pièces": 18,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Prix (k$)": 1442
-	},
-	{
-		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 36,
-		"Prix (k$)": 616
-	},
-	{
-		"Nombre de pièces": 11,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 3,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 284,
-		"Prix (k$)": 341
-	},
-	{
-		"Nombre de pièces": 20,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 4,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 124,
-		"Prix (k$)": 603
-	},
-	{
-		"Nombre de pièces": 10,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 2,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 73,
-		"Prix (k$)": 598
-	},
-	{
-		"Nombre de pièces": 11,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 28,
-		"Prix (k$)": 1182
-	},
-	{
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 35,
-		"Prix (k$)": 999
-	},
-	{
-		"Nombre de pièces": 17,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 5,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 344,
-		"Prix (k$)": 413
-	},
-	{
-		"Nombre de pièces": 13,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 3,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 66,
-		"Prix (k$)": 813
-	},
-	{
-		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 44,
-		"Prix (k$)": 752
-	},
-	{
-		"Nombre de pièces": 16,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Prix (k$)": 1336
-	},
-	{
-		"Nombre de pièces": 20,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 59,
-		"Prix (k$)": 1013
-	},
-	{
-		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 5,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 60,
-		"Prix (k$)": 492
-	},
-	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 41,
-		"Prix (k$)": 1175
-	},
-	{
-		"Nombre de pièces": 17,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 35,
-		"Prix (k$)": 1480
-	},
-	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 5,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 85,
-		"Prix (k$)": 699
-	},
-	{
-		"Nombre de pièces": 18,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 44,
-		"Prix (k$)": 1260
-	},
-	{
-		"Nombre de pièces": 18,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 4,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 75,
-		"Prix (k$)": 925
-	},
-	{
-		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 30,
-		"Prix (k$)": 855
-	},
-	{
-		"Nombre de pièces": 12,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 31,
-		"Prix (k$)": 1308
-	},
-	{
-		"Nombre de pièces": 12,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 26,
-		"Prix (k$)": 1100
-	},
-	{
-		"Nombre de pièces": 16,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 4,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 66,
-		"Prix (k$)": 814
-	},
-	{
-		"Nombre de pièces": 9,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 5,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 53
-	},
-	{
-		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 32,
-		"Prix (k$)": 911
-	},
-	{
-		"Nombre de pièces": 13,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 35,
-		"Prix (k$)": 1001
-	},
-	{
-		"Nombre de pièces": 16,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 4,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 109,
-		"Prix (k$)": 530
-	},
-	{
-		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 3,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 63,
-		"Prix (k$)": 517
-	},
-	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 40,
-		"Prix (k$)": 1409
-	},
-	{
-		"Nombre de pièces": 12,
-		"Nombre de salles de bain": 3,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 320,
-		"Prix (k$)": 384
-	},
-	{
-		"Nombre de pièces": 13,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 41,
-		"Prix (k$)": 925
-	},
-	{
-		"Nombre de pièces": 17,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 3,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 158,
-		"Prix (k$)": 380
-	},
-	{
-		"Nombre de pièces": 15,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 30,
-		"Prix (k$)": 1270
-	},
-	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 5,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 121,
-		"Prix (k$)": 589
-	},
-	{
-		"Nombre de pièces": 14,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 2,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 84,
-		"Prix (k$)": 689
-	},
-	{
-		"Nombre de pièces": 14,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 5,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 171,
-		"Prix (k$)": 411
-	},
-	{
-		"Nombre de pièces": 14,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 2,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 152,
-		"Prix (k$)": 366
-	},
-	{
-		"Nombre de pièces": 16,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 3,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 163,
-		"Prix (k$)": 392
-	},
-	{
-		"Nombre de pièces": 10,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 40,
-		"Prix (k$)": 900
-	},
-	{
-		"Nombre de pièces": 18,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 49,
-		"Prix (k$)": 1106
-	},
-	{
-		"Nombre de pièces": 20,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 40,
-		"Prix (k$)": 1411
-	},
-	{
-		"Nombre de pièces": 10,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 31,
-		"Prix (k$)": 886
-	},
-	{
-		"Nombre de pièces": 13,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 45,
-		"Prix (k$)": 771
-	},
-	{
-		"Nombre de pièces": 10,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 24,
-		"Prix (k$)": 1014
-	},
-	{
-		"Nombre de pièces": 14,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 3,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 100,
-		"Prix (k$)": 486
-	},
-	{
-		"Nombre de pièces": 13,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 4,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 164,
-		"Prix (k$)": 395
-	},
-	{
-		"Nombre de pièces": 10,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 5,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 279,
-		"Prix (k$)": 335
-	},
-	{
-		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 5,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 265,
-		"Prix (k$)": 318
-	},
-	{
-		"Nombre de pièces": 9,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 26,
-		"Prix (k$)": 1095
-	},
-	{
-		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 3,
-		"Superficie du terrain (m^2)": 32,
-		"Prix (k$)": 721
-	},
-	{
-		"Nombre de pièces": 14,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 44,
-		"Prix (k$)": 992
-	},
-	{
-		"Nombre de pièces": 12,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 3,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 66,
-		"Prix (k$)": 542
-	},
-	{
-		"Nombre de pièces": 17,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 2,
-		"Superficie du terrain (m^2)": 172,
-		"Prix (k$)": 414
-	},
-	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 63,
-		"Prix (k$)": 1080
-	},
-	{
-		"Nombre de pièces": 13,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 30,
-		"Prix (k$)": 1055
-	},
-	{
 		"Nombre de pièces": 10,
 		"Nombre de salles de bain": 3,
 		"Nombre de chambres": 3,
 		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 26,
-		"Prix (k$)": 914
-	},
-	{
-		"Nombre de pièces": 16,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 5,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 167,
-		"Prix (k$)": 402
-	},
-	{
-		"Nombre de pièces": 17,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 53,
-		"Prix (k$)": 1196
-	},
-	{
-		"Nombre de pièces": 12,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 38,
-		"Prix (k$)": 857
-	},
-	{
-		"Nombre de pièces": 17,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 41,
-		"Prix (k$)": 1441
-	},
-	{
-		"Nombre de pièces": 9,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 5,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 258,
-		"Prix (k$)": 310
-	},
-	{
-		"Nombre de pièces": 15,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 2,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 64,
-		"Prix (k$)": 789
-	},
-	{
-		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 2,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 241,
-		"Prix (k$)": 289
-	},
-	{
-		"Nombre de pièces": 11,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 35,
-		"Prix (k$)": 789
-	},
-	{
-		"Nombre de pièces": 11,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 38,
-		"Prix (k$)": 857
-	},
-	{
-		"Nombre de pièces": 11,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 4,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 144,
-		"Prix (k$)": 346
-	},
-	{
-		"Nombre de pièces": 20,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 37,
-		"Prix (k$)": 1567
-	},
-	{
-		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 2,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 48,
-		"Prix (k$)": 591
-	},
-	{
-		"Nombre de pièces": 15,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 44,
-		"Prix (k$)": 1256
-	},
-	{
-		"Nombre de pièces": 13,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 2,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 149,
-		"Prix (k$)": 359
-	},
-	{
-		"Nombre de pièces": 18,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 3,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 106,
-		"Prix (k$)": 516
-	},
-	{
-		"Nombre de pièces": 9,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 2,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 271,
-		"Prix (k$)": 325
-	},
-	{
-		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 30,
-		"Prix (k$)": 854
-	},
-	{
-		"Nombre de pièces": 14,
-		"Nombre de salles de bain": 3,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 107,
-		"Prix (k$)": 520
-	},
-	{
-		"Nombre de pièces": 9,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 2,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 58,
-		"Prix (k$)": 476
-	},
-	{
-		"Nombre de pièces": 14,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 38,
-		"Prix (k$)": 1086
-	},
-	{
-		"Nombre de pièces": 16,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 4,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 340,
-		"Prix (k$)": 409
-	},
-	{
-		"Nombre de pièces": 13,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 5,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 106,
-		"Prix (k$)": 515
-	},
-	{
-		"Nombre de pièces": 14,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 37,
-		"Prix (k$)": 1299
-	},
-	{
-		"Nombre de pièces": 20,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 52,
-		"Prix (k$)": 1176
-	},
-	{
-		"Nombre de pièces": 20,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 39,
-		"Prix (k$)": 1375
-	},
-	{
-		"Nombre de pièces": 18,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 40,
-		"Prix (k$)": 1407
-	},
-	{
-		"Nombre de pièces": 18,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 35,
-		"Prix (k$)": 1481
-	},
-	{
-		"Nombre de pièces": 16,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 36,
-		"Prix (k$)": 1521
-	},
-	{
-		"Nombre de pièces": 13,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 2,
-		"Ville": "Longueuil",
-		"Prix (k$)": 752
-	},
-	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 5,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 184,
-		"Prix (k$)": 443
+		"Superficie du terrain (m^2)": 96,
+		"Prix (k$)": 1088
 	},
 	{
 		"Nombre de pièces": 9,
 		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 4,
 		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 34,
-		"Prix (k$)": 969
-	},
-	{
-		"Nombre de pièces": 12,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 2,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 71,
-		"Prix (k$)": 583
-	},
-	{
-		"Nombre de pièces": 11,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 32,
-		"Prix (k$)": 914
-	},
-	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 40,
-		"Prix (k$)": 1409
-	},
-	{
-		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 2,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 51,
-		"Prix (k$)": 627
-	},
-	{
-		"Nombre de pièces": 9,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 5,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 49,
-		"Prix (k$)": 603
-	},
-	{
-		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 5,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 114,
-		"Prix (k$)": 274
-	},
-	{
-		"Nombre de pièces": 15,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 29,
-		"Prix (k$)": 1228
-	},
-	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 5,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 403,
-		"Prix (k$)": 484
-	},
-	{
-		"Nombre de pièces": 16,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 4,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 67,
-		"Prix (k$)": 826
-	},
-	{
-		"Nombre de pièces": 18,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 48,
-		"Prix (k$)": 1372
-	},
-	{
-		"Nombre de pièces": 12,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 5,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 262,
-		"Prix (k$)": 315
-	},
-	{
-		"Nombre de pièces": 15,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 3,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 113,
-		"Prix (k$)": 549
-	},
-	{
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 5,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 193,
-		"Prix (k$)": 465
-	},
-	{
-		"Nombre de pièces": 15,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 3,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 149,
-		"Prix (k$)": 359
-	},
-	{
-		"Nombre de pièces": 18,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 44,
-		"Prix (k$)": 1259
-	},
-	{
-		"Nombre de pièces": 13,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 2,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 305,
-		"Prix (k$)": 366
-	},
-	{
-		"Nombre de pièces": 18,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 5,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 78,
-		"Prix (k$)": 962
-	},
-	{
-		"Nombre de pièces": 17,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 4,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 86,
-		"Prix (k$)": 707
-	},
-	{
-		"Nombre de pièces": 14,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 38,
-		"Prix (k$)": 1086
-	},
-	{
-		"Nombre de pièces": 15,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 4,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 109,
-		"Prix (k$)": 530
-	},
-	{
-		"Nombre de pièces": 14,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 33,
-		"Prix (k$)": 1160
-	},
-	{
-		"Nombre de pièces": 11,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 4,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 63,
-		"Prix (k$)": 517
-	},
-	{
-		"Nombre de pièces": 18,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 5,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 93,
-		"Prix (k$)": 764
-	},
-	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 4,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 400,
-		"Prix (k$)": 481
-	},
-	{
-		"Nombre de pièces": 9,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 5,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 46,
-		"Prix (k$)": 567
-	},
-	{
-		"Nombre de pièces": 9,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 4,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 278,
-		"Prix (k$)": 334
-	},
-	{
-		"Nombre de pièces": 12,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 2,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 107,
-		"Prix (k$)": 520
-	},
-	{
-		"Nombre de pièces": 14,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 34,
-		"Prix (k$)": 1195
-	},
-	{
-		"Nombre de pièces": 18,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 5,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 187,
-		"Prix (k$)": 450
-	},
-	{
-		"Nombre de pièces": 20,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 59,
-		"Prix (k$)": 1013
-	},
-	{
-		"Nombre de pièces": 13,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 4,
-		"Ville": "Longueuil",
 		"Superficie du terrain (m^2)": 70,
-		"Prix (k$)": 575
-	},
-	{
-		"Nombre de pièces": 18,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 32,
-		"Prix (k$)": 1357
-	},
-	{
-		"Nombre de pièces": 12,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 5,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 103,
-		"Prix (k$)": 500
-	},
-	{
-		"Nombre de pièces": 10,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 36,
-		"Prix (k$)": 811
-	},
-	{
-		"Nombre de pièces": 15,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 33,
-		"Prix (k$)": 1394
+		"Prix (k$)": 1320
 	},
 	{
 		"Nombre de pièces": 12,
 		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 3,
+		"Nombre de chambres": 4,
 		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 137,
-		"Prix (k$)": 330
+		"Superficie du terrain (m^2)": 210,
+		"Prix (k$)": 678
 	},
 	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 33,
-		"Prix (k$)": 1401
-	},
-	{
-		"Nombre de pièces": 14,
+		"Nombre de pièces": 7,
 		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 4,
-		"Superficie du terrain (m^2)": 74,
-		"Prix (k$)": 608
-	},
-	{
-		"Nombre de pièces": 9,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 38,
-		"Prix (k$)": 855
-	},
-	{
-		"Nombre de pièces": 17,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 56,
-		"Prix (k$)": 960
-	},
-	{
-		"Nombre de pièces": 15,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 4,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 72,
-		"Prix (k$)": 592
-	},
-	{
-		"Nombre de pièces": 10,
-		"Nombre de salles de bain": 2,
 		"Nombre de chambres": 2,
 		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 30,
-		"Prix (k$)": 856
-	},
-	{
-		"Nombre de pièces": 9,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 3,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 62,
-		"Prix (k$)": 509
-	},
-	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 56,
-		"Prix (k$)": 1263
-	},
-	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 48,
-		"Prix (k$)": 1372
-	},
-	{
-		"Nombre de pièces": 13,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 28,
-		"Prix (k$)": 1185
-	},
-	{
-		"Nombre de pièces": 14,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 2,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 172,
-		"Prix (k$)": 414
-	},
-	{
-		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 3,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 47,
-		"Prix (k$)": 578
-	},
-	{
-		"Nombre de pièces": 18,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 5,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 109,
-		"Prix (k$)": 530
-	},
-	{
-		"Nombre de pièces": 18,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 5,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 98,
-		"Prix (k$)": 805
-	},
-	{
-		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 5,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 62,
-		"Prix (k$)": 508
-	},
-	{
-		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 4,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 134,
-		"Prix (k$)": 322
-	},
-	{
-		"Nombre de pièces": 18,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 33,
-		"Prix (k$)": 1398
-	},
-	{
-		"Nombre de pièces": 12,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 4,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 91,
-		"Prix (k$)": 442
-	},
-	{
-		"Nombre de pièces": 14,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 5,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 61,
-		"Prix (k$)": 752
-	},
-	{
-		"Nombre de pièces": 17,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 47,
+		"Superficie du terrain (m^2)": 58,
 		"Prix (k$)": 1343
 	},
 	{
-		"Nombre de pièces": 10,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 4,
-		"Ville": "Longueuil",
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
 		"Superficie du terrain (m^2)": 63,
-		"Prix (k$)": 517
+		"Prix (k$)": 1460
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 71,
+		"Prix (k$)": 1647
 	},
 	{
 		"Nombre de pièces": 12,
 		"Nombre de salles de bain": 3,
 		"Nombre de chambres": 4,
 		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 38,
-		"Prix (k$)": 1084
-	},
-	{
-		"Nombre de pièces": 18,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 2,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 88,
-		"Prix (k$)": 723
-	},
-	{
-		"Nombre de pièces": 20,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 5,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 129,
-		"Prix (k$)": 627
-	},
-	{
-		"Nombre de pièces": 20,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 2,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 99,
-		"Prix (k$)": 813
-	},
-	{
-		"Nombre de pièces": 16,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 4,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 123,
-		"Prix (k$)": 598
-	},
-	{
-		"Nombre de pièces": 15,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 5,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 114,
-		"Prix (k$)": 554
-	},
-	{
-		"Nombre de pièces": 14,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 28,
-		"Prix (k$)": 1185
-	},
-	{
-		"Nombre de pièces": 15,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 3,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 302,
-		"Prix (k$)": 363
-	},
-	{
-		"Nombre de pièces": 20,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 5,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 174,
-		"Prix (k$)": 419
-	},
-	{
-		"Nombre de pièces": 18,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 36,
-		"Prix (k$)": 1269
-	},
-	{
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 4,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 58,
-		"Prix (k$)": 716
+		"Superficie du terrain (m^2)": 69,
+		"Prix (k$)": 1600
 	},
 	{
 		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 4,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 45,
-		"Prix (k$)": 554
-	},
-	{
-		"Nombre de pièces": 10,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 3,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
 		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 137,
-		"Prix (k$)": 330
-	},
-	{
-		"Nombre de pièces": 20,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 57,
-		"Prix (k$)": 978
-	},
-	{
-		"Nombre de pièces": 20,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 5,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 76,
-		"Prix (k$)": 938
-	},
-	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 4,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 362,
-		"Prix (k$)": 435
+		"Superficie du terrain (m^2)": 270,
+		"Prix (k$)": 432
 	},
 	{
 		"Nombre de pièces": 11,
-		"Nombre de salles de bain": 1,
+		"Nombre de salles de bain": 2,
 		"Nombre de chambres": 3,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 55,
-		"Prix (k$)": 677
-	},
-	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 45,
-		"Prix (k$)": 1289
-	},
-	{
-		"Nombre de pièces": 9,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 30,
-		"Prix (k$)": 856
-	},
-	{
-		"Nombre de pièces": 16,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 4,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 100,
-		"Prix (k$)": 486
-	},
-	{
-		"Nombre de pièces": 9,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 31,
-		"Prix (k$)": 1085
-	},
-	{
-		"Nombre de pièces": 16,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 58,
-		"Prix (k$)": 993
-	},
-	{
-		"Nombre de pièces": 20,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 5,
 		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 346,
-		"Prix (k$)": 416
-	},
-	{
-		"Nombre de pièces": 10,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 27,
-		"Prix (k$)": 1138
-	},
-	{
-		"Nombre de pièces": 20,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 41,
-		"Prix (k$)": 1444
-	},
-	{
-		"Nombre de pièces": 17,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 3,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 172,
-		"Prix (k$)": 414
+		"Superficie du terrain (m^2)": 610,
+		"Prix (k$)": 488
 	},
 	{
 		"Nombre de pièces": 9,
 		"Nombre de salles de bain": 2,
 		"Nombre de chambres": 3,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 93,
-		"Prix (k$)": 451
-	},
-	{
-		"Nombre de pièces": 17,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 5,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 169,
-		"Prix (k$)": 407
-	},
-	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 5,
 		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 40,
-		"Prix (k$)": 1409
-	},
-	{
-		"Nombre de pièces": 14,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 42,
-		"Prix (k$)": 1199
-	},
-	{
-		"Nombre de pièces": 10,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 28,
-		"Prix (k$)": 983
+		"Prix (k$)": 1065
 	},
 	{
 		"Nombre de pièces": 11,
 		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 27,
-		"Prix (k$)": 1140
-	},
-	{
-		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 4,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 242,
-		"Prix (k$)": 291
-	},
-	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 44,
-		"Prix (k$)": 1260
-	},
-	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 3,
 		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 47,
-		"Prix (k$)": 1063
-	},
-	{
-		"Nombre de pièces": 17,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 4,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 81
-	},
-	{
-		"Nombre de pièces": 14,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 36,
-		"Prix (k$)": 1264
-	},
-	{
-		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 27,
-		"Prix (k$)": 947
-	},
-	{
-		"Nombre de pièces": 17,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 4,
 		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 116,
-		"Prix (k$)": 564
-	},
-	{
-		"Nombre de pièces": 10,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 2,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 290,
-		"Prix (k$)": 348
-	},
-	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 67,
-		"Prix (k$)": 1148
-	},
-	{
-		"Nombre de pièces": 15,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 38,
-		"Prix (k$)": 1335
-	},
-	{
-		"Nombre de pièces": 16,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 4,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 68,
-		"Prix (k$)": 838
-	},
-	{
-		"Nombre de pièces": 12,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 32,
-		"Prix (k$)": 1124
-	},
-	{
-		"Nombre de pièces": 12,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 32,
-		"Prix (k$)": 915
-	},
-	{
-		"Nombre de pièces": 15,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 4,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 333,
-		"Prix (k$)": 400
-	},
-	{
-		"Nombre de pièces": 20,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 51,
-		"Prix (k$)": 1459
-	},
-	{
-		"Nombre de pièces": 16,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 35,
-		"Prix (k$)": 1479
-	},
-	{
-		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 4,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 91,
-		"Prix (k$)": 442
-	},
-	{
-		"Nombre de pièces": 20,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 5,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 200,
+		"Superficie du terrain (m^2)": 301,
 		"Prix (k$)": 482
 	},
 	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 4,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 129,
-		"Prix (k$)": 627
-	},
-	{
-		"Nombre de pièces": 11,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 33,
-		"Prix (k$)": 942
-	},
-	{
-		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 4,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 67,
-		"Prix (k$)": 549
-	},
-	{
-		"Nombre de pièces": 20,
+		"Nombre de pièces": 9,
 		"Nombre de salles de bain": 3,
 		"Nombre de chambres": 3,
 		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 49,
-		"Prix (k$)": 1402
-	},
-	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 4,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 176,
-		"Prix (k$)": 424
-	},
-	{
-		"Nombre de pièces": 18,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 34,
-		"Prix (k$)": 1441
-	},
-	{
-		"Nombre de pièces": 11,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 33,
-		"Prix (k$)": 1158
-	},
-	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 38,
-		"Prix (k$)": 1339
-	},
-	{
-		"Nombre de pièces": 9,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 3,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 51,
-		"Prix (k$)": 627
-	},
-	{
-		"Nombre de pièces": 10,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 35,
-		"Prix (k$)": 998
-	},
-	{
-		"Nombre de pièces": 9,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 2,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 53,
-		"Prix (k$)": 652
-	},
-	{
-		"Nombre de pièces": 15,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 5,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 114,
-		"Prix (k$)": 554
-	},
-	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 47,
-		"Prix (k$)": 1345
-	},
-	{
-		"Nombre de pièces": 10,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 40,
-		"Prix (k$)": 684
-	},
-	{
-		"Nombre de pièces": 9,
-		"Nombre de chambres": 3,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 91,
-		"Prix (k$)": 442
-	},
-	{
-		"Nombre de pièces": 11,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 25,
-		"Prix (k$)": 1056
-	},
-	{
-		"Nombre de pièces": 17,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 2,
-		"Ville": "Longueuil",
 		"Superficie du terrain (m^2)": 93,
-		"Prix (k$)": 764
+		"Prix (k$)": 1054
 	},
 	{
-		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 26,
-		"Prix (k$)": 1094
-	},
-	{
-		"Nombre de pièces": 9,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 2,
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
 		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 135,
-		"Prix (k$)": 325
+		"Superficie du terrain (m^2)": 204,
+		"Prix (k$)": 659
 	},
 	{
-		"Nombre de pièces": 15,
-		"Nombre de salles de bain": 1,
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 116,
+		"Prix (k$)": 948
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 293,
+		"Prix (k$)": 469
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 306,
+		"Prix (k$)": 490
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
 		"Nombre de chambres": 4,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 166,
-		"Prix (k$)": 399
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 67,
+		"Prix (k$)": 1866
 	},
 	{
-		"Nombre de pièces": 16,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 2,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 76,
-		"Prix (k$)": 625
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 74,
+		"Prix (k$)": 1717
 	},
 	{
-		"Nombre de pièces": 19,
+		"Nombre de pièces": 13,
 		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 108,
+		"Prix (k$)": 1225
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
 		"Nombre de chambres": 2,
-		"Ville": "Longueuil",
+		"Ville": "Montréal",
 		"Superficie du terrain (m^2)": 89,
-		"Prix (k$)": 731
+		"Prix (k$)": 1008
 	},
 	{
-		"Nombre de pièces": 13,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 3,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 77,
-		"Prix (k$)": 632
-	},
-	{
-		"Nombre de pièces": 15,
+		"Nombre de pièces": 10,
 		"Nombre de salles de bain": 3,
 		"Nombre de chambres": 3,
 		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 41,
-		"Prix (k$)": 1172
+		"Superficie du terrain (m^2)": 59,
+		"Prix (k$)": 1642
 	},
 	{
-		"Nombre de pièces": 12,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 3,
-		"Ville": "Gatineau",
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 66,
+		"Prix (k$)": 1838
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de chambres": 2,
+		"Ville": "Québec",
 		"Superficie du terrain (m^2)": 261,
-		"Prix (k$)": 314
+		"Prix (k$)": 418
 	},
 	{
-		"Nombre de pièces": 17,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 2,
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
 		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 37,
-		"Prix (k$)": 1563
+		"Superficie du terrain (m^2)": 62,
+		"Prix (k$)": 1437
 	},
 	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 2,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 391,
-		"Prix (k$)": 470
-	},
-	{
-		"Nombre de pièces": 16,
+		"Nombre de pièces": 10,
 		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 53,
-		"Prix (k$)": 909
+		"Nombre de chambres": 3,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 146,
+		"Prix (k$)": 795
 	},
 	{
-		"Nombre de pièces": 15,
+		"Nombre de pièces": 11,
 		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 50,
-		"Prix (k$)": 857
+		"Nombre de chambres": 3,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 300,
+		"Prix (k$)": 480
 	},
 	{
 		"Nombre de pièces": 12,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 5,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
 		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 27,
-		"Prix (k$)": 1141
+		"Superficie du terrain (m^2)": 89,
+		"Prix (k$)": 1328
 	},
 	{
 		"Nombre de pièces": 13,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 31,
-		"Prix (k$)": 1091
-	},
-	{
-		"Nombre de pièces": 20,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 5,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 186,
-		"Prix (k$)": 448
-	},
-	{
-		"Nombre de pièces": 14,
-		"Nombre de salles de bain": 4,
+		"Nombre de salles de bain": 2,
 		"Nombre de chambres": 4,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 97,
-		"Prix (k$)": 472
-	},
-	{
-		"Nombre de pièces": 9,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 2,
 		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 32,
-		"Prix (k$)": 912
+		"Superficie du terrain (m^2)": 108,
+		"Prix (k$)": 1225
 	},
 	{
 		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 597,
+		"Prix (k$)": 478
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 90,
+		"Prix (k$)": 1020
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 150,
+		"Prix (k$)": 817
+	},
+	{
+		"Nombre de pièces": 7,
 		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 4,
+		"Nombre de chambres": 2,
 		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 178,
+		"Prix (k$)": 574
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 91,
+		"Prix (k$)": 1358
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Longueuil",
+		"Prix (k$)": 1087
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 543,
+		"Prix (k$)": 434
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
 		"Superficie du terrain (m^2)": 82,
-		"Prix (k$)": 398
-	},
-	{
-		"Nombre de pièces": 10,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 32,
-		"Prix (k$)": 913
-	},
-	{
-		"Nombre de pièces": 17,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 32,
-		"Prix (k$)": 1356
+		"Prix (k$)": 1223
 	},
 	{
 		"Nombre de pièces": 13,
 		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 5,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 62,
-		"Prix (k$)": 764
-	},
-	{
-		"Nombre de pièces": 11,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 42,
-		"Prix (k$)": 720
-	},
-	{
-		"Nombre de pièces": 11,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 5,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 154,
-		"Prix (k$)": 370
-	},
-	{
-		"Nombre de pièces": 13,
-		"Nombre de salles de bain": 4,
 		"Nombre de chambres": 4,
 		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 58,
-		"Prix (k$)": 715
-	},
-	{
-		"Nombre de pièces": 14,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 2,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 106,
-		"Prix (k$)": 515
-	},
-	{
-		"Nombre de pièces": 13,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 2,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 68,
-		"Prix (k$)": 558
-	},
-	{
-		"Nombre de pièces": 16,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 39,
-		"Prix (k$)": 1115
-	},
-	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 34,
-		"Prix (k$)": 1441
-	},
-	{
-		"Nombre de pièces": 14,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 2,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 97,
-		"Prix (k$)": 472
-	},
-	{
-		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 23,
-		"Prix (k$)": 970
-	},
-	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 4,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 126,
-		"Prix (k$)": 613
-	},
-	{
-		"Nombre de pièces": 20,
-		"Nombre de chambres": 5,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 396,
-		"Prix (k$)": 476
-	},
-	{
-		"Nombre de pièces": 11,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 28,
-		"Prix (k$)": 1182
-	},
-	{
-		"Nombre de pièces": 17,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 5,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 332,
-		"Prix (k$)": 399
-	},
-	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 57,
-		"Prix (k$)": 1286
-	},
-	{
-		"Nombre de pièces": 16,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 2,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 161,
-		"Prix (k$)": 388
-	},
-	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 46,
-		"Prix (k$)": 1317
-	},
-	{
-		"Nombre de pièces": 16,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 35,
-		"Prix (k$)": 1232
-	},
-	{
-		"Nombre de pièces": 15,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 58,
-		"Prix (k$)": 993
-	},
-	{
-		"Nombre de pièces": 9,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 4,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 68,
-		"Prix (k$)": 558
-	},
-	{
-		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 5,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 86,
-		"Prix (k$)": 417
-	},
-	{
-		"Nombre de pièces": 18,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 5,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 84,
-		"Prix (k$)": 691
-	},
-	{
-		"Nombre de pièces": 20,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 64,
-		"Prix (k$)": 1098
-	},
-	{
-		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 43,
-		"Prix (k$)": 734
-	},
-	{
-		"Nombre de pièces": 20,
-		"Nombre de salles de bain": 3,
-		"Nombre de chambres": 5,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 120,
-		"Prix (k$)": 584
-	},
-	{
-		"Nombre de pièces": 13,
-		"Nombre de salles de bain": 2,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 100,
-		"Prix (k$)": 486
-	},
-	{
-		"Nombre de pièces": 13,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 5,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 58,
-		"Prix (k$)": 715
+		"Superficie du terrain (m^2)": 160,
+		"Prix (k$)": 872
 	},
 	{
 		"Nombre de pièces": 9,
 		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 4,
+		"Nombre de chambres": 3,
 		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 25,
-		"Prix (k$)": 878
+		"Superficie du terrain (m^2)": 95,
+		"Prix (k$)": 1077
 	},
 	{
 		"Nombre de pièces": 8,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 3,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 274,
-		"Prix (k$)": 329
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 60,
+		"Prix (k$)": 1390
 	},
 	{
 		"Nombre de pièces": 11,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 4,
-		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 51,
-		"Prix (k$)": 629
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 308,
+		"Prix (k$)": 493
 	},
 	{
-		"Nombre de pièces": 20,
-		"Nombre de salles de bain": 4,
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 266,
+		"Prix (k$)": 426
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 78,
+		"Prix (k$)": 1162
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 207,
+		"Prix (k$)": 668
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
 		"Nombre de chambres": 3,
-		"Ville": "Gatineau",
-		"Superficie du terrain (m^2)": 379,
+		"Ville": "Québec",
 		"Prix (k$)": 455
 	},
 	{
-		"Nombre de pièces": 15,
-		"Nombre de salles de bain": 4,
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 76,
+		"Prix (k$)": 1132
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
 		"Nombre de chambres": 3,
 		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 58,
-		"Prix (k$)": 993
+		"Superficie du terrain (m^2)": 74,
+		"Prix (k$)": 1396
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 137,
+		"Prix (k$)": 746
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 105,
+		"Prix (k$)": 857
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 187,
+		"Prix (k$)": 604
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 289,
+		"Prix (k$)": 463
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 285,
+		"Prix (k$)": 456
+	},
+	{
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 103,
+		"Prix (k$)": 1168
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 114,
+		"Prix (k$)": 931
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 537,
+		"Prix (k$)": 430
 	},
 	{
 		"Nombre de pièces": 10,
 		"Nombre de salles de bain": 3,
 		"Nombre de chambres": 3,
 		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 144,
-		"Prix (k$)": 346
-	},
-	{
-		"Nombre de pièces": 15,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 30,
-		"Prix (k$)": 1269
-	},
-	{
-		"Nombre de pièces": 11,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 4,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 39,
-		"Prix (k$)": 879
-	},
-	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 5,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 43,
-		"Prix (k$)": 1233
+		"Superficie du terrain (m^2)": 293,
+		"Prix (k$)": 469
 	},
 	{
 		"Nombre de pièces": 13,
 		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 3,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 30,
-		"Prix (k$)": 1055
-	},
-	{
-		"Nombre de pièces": 11,
-		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 29,
-		"Prix (k$)": 1018
-	},
-	{
-		"Nombre de pièces": 10,
-		"Nombre de salles de bain": 4,
 		"Nombre de chambres": 4,
 		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 32,
-		"Prix (k$)": 914
+		"Superficie du terrain (m^2)": 108,
+		"Prix (k$)": 1225
 	},
 	{
-		"Nombre de pièces": 17,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 2,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 109,
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 88,
+		"Prix (k$)": 1313
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 662,
 		"Prix (k$)": 530
 	},
 	{
 		"Nombre de pièces": 11,
 		"Nombre de salles de bain": 2,
-		"Nombre de chambres": 2,
+		"Nombre de chambres": 3,
 		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 29,
-		"Prix (k$)": 1222
+		"Superficie du terrain (m^2)": 102,
+		"Prix (k$)": 1156
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 66,
+		"Prix (k$)": 1530
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 105
 	},
 	{
 		"Nombre de pièces": 9,
-		"Nombre de salles de bain": 4,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 140,
+		"Prix (k$)": 763
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 81,
+		"Prix (k$)": 1207
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 532,
+		"Prix (k$)": 426
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
 		"Nombre de chambres": 4,
 		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 39,
-		"Prix (k$)": 878
+		"Superficie du terrain (m^2)": 104,
+		"Prix (k$)": 1179
 	},
 	{
-		"Nombre de pièces": 16,
-		"Nombre de salles de bain": 1,
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
 		"Nombre de chambres": 3,
 		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 113,
-		"Prix (k$)": 549
+		"Superficie du terrain (m^2)": 189,
+		"Prix (k$)": 610
 	},
 	{
-		"Nombre de pièces": 18,
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 63,
+		"Prix (k$)": 1460
+	},
+	{
+		"Nombre de pièces": 8,
 		"Nombre de salles de bain": 2,
 		"Nombre de chambres": 2,
-		"Ville": "Québec",
-		"Superficie du terrain (m^2)": 188,
-		"Prix (k$)": 453
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 60,
+		"Prix (k$)": 1390
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 65,
+		"Prix (k$)": 1507
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 73,
+		"Prix (k$)": 1693
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 68,
+		"Prix (k$)": 1282
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 102,
+		"Prix (k$)": 1156
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 62,
+		"Prix (k$)": 1437
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 111,
+		"Prix (k$)": 1259
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de chambres": 3,
+		"Superficie du terrain (m^2)": 195,
+		"Prix (k$)": 630
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 62,
+		"Prix (k$)": 1726
 	},
 	{
 		"Nombre de pièces": 13,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Superficie du terrain (m^2)": 53,
-		"Prix (k$)": 907
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 160,
+		"Prix (k$)": 872
 	},
 	{
-		"Nombre de pièces": 19,
-		"Nombre de salles de bain": 1,
-		"Nombre de chambres": 2,
-		"Ville": "Montréal",
-		"Prix (k$)": 944
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 219,
+		"Prix (k$)": 707
 	},
 	{
 		"Nombre de pièces": 9,
-		"Nombre de salles de bain": 4,
-		"Nombre de chambres": 5,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 81,
+		"Prix (k$)": 1208
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
 		"Ville": "Longueuil",
-		"Superficie du terrain (m^2)": 49,
-		"Prix (k$)": 604
+		"Superficie du terrain (m^2)": 134,
+		"Prix (k$)": 1095
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 576,
+		"Prix (k$)": 461
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 61,
+		"Prix (k$)": 1413
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 78,
+		"Prix (k$)": 1162
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 204,
+		"Prix (k$)": 659
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 138,
+		"Prix (k$)": 752
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 79,
+		"Prix (k$)": 1177
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Prix (k$)": 1445
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 296,
+		"Prix (k$)": 474
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 111,
+		"Prix (k$)": 1259
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 115,
+		"Prix (k$)": 939
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 157,
+		"Prix (k$)": 855
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 635,
+		"Prix (k$)": 508
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 90,
+		"Prix (k$)": 1342
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 529,
+		"Prix (k$)": 423
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 79,
+		"Prix (k$)": 1491
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 225,
+		"Prix (k$)": 727
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 218,
+		"Prix (k$)": 704
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 261,
+		"Prix (k$)": 418
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 79,
+		"Prix (k$)": 1491
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 164,
+		"Prix (k$)": 894
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 204,
+		"Prix (k$)": 659
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 202,
+		"Prix (k$)": 652
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 62,
+		"Prix (k$)": 1727
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 202,
+		"Prix (k$)": 652
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 94,
+		"Prix (k$)": 1402
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 87,
+		"Prix (k$)": 1297
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 56,
+		"Prix (k$)": 1558
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 70,
+		"Prix (k$)": 1320
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 528,
+		"Prix (k$)": 422
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 86,
+		"Prix (k$)": 1282
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 269,
+		"Prix (k$)": 430
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Superficie du terrain (m^2)": 301,
+		"Prix (k$)": 482
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 185,
+		"Prix (k$)": 597
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 64,
+		"Prix (k$)": 1782
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 71,
+		"Prix (k$)": 1647
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 130,
+		"Prix (k$)": 708
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 225,
+		"Prix (k$)": 727
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 112,
+		"Prix (k$)": 1270
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 59,
+		"Prix (k$)": 1642
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 80,
+		"Prix (k$)": 1193
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 529,
+		"Prix (k$)": 423
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 301,
+		"Prix (k$)": 482
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 72,
+		"Prix (k$)": 1670
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 168,
+		"Prix (k$)": 916
+	},
+	{
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 104,
+		"Prix (k$)": 849
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 165,
+		"Prix (k$)": 899
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 115,
+		"Prix (k$)": 939
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 111,
+		"Prix (k$)": 1259
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 555,
+		"Prix (k$)": 444
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 186,
+		"Prix (k$)": 600
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 88,
+		"Prix (k$)": 997
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 121,
+		"Prix (k$)": 989
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 65,
+		"Prix (k$)": 1225
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 96,
+		"Prix (k$)": 1432
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 109,
+		"Prix (k$)": 1236
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 118,
+		"Prix (k$)": 964
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 82,
+		"Prix (k$)": 1548
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 58
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 83,
+		"Prix (k$)": 1567
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 122,
+		"Prix (k$)": 997
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 66,
+		"Prix (k$)": 1530
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 67,
+		"Prix (k$)": 1866
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 108,
+		"Prix (k$)": 1225
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 123,
+		"Prix (k$)": 1005
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 337,
+		"Prix (k$)": 540
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 121,
+		"Prix (k$)": 988
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 123,
+		"Prix (k$)": 1005
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 66,
+		"Prix (k$)": 1530
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 116,
+		"Prix (k$)": 948
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 75,
+		"Prix (k$)": 1117
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 79,
+		"Prix (k$)": 1491
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 150,
+		"Prix (k$)": 817
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 64,
+		"Prix (k$)": 1483
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 210,
+		"Prix (k$)": 678
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 83,
+		"Prix (k$)": 1237
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 78,
+		"Prix (k$)": 1472
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 86,
+		"Prix (k$)": 974
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 536,
+		"Prix (k$)": 429
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 325,
+		"Prix (k$)": 520
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 309,
+		"Prix (k$)": 495
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 142,
+		"Prix (k$)": 774
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 95,
+		"Prix (k$)": 1417
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 266,
+		"Prix (k$)": 426
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Superficie du terrain (m^2)": 80,
+		"Prix (k$)": 1193
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 94,
+		"Prix (k$)": 1402
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 82,
+		"Prix (k$)": 1223
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 74,
+		"Prix (k$)": 1396
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 65,
+		"Prix (k$)": 1225
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 91,
+		"Prix (k$)": 1031
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 68,
+		"Prix (k$)": 1282
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 547,
+		"Prix (k$)": 438
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 130,
+		"Prix (k$)": 708
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 169,
+		"Prix (k$)": 921
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 144,
+		"Prix (k$)": 784
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 84,
+		"Prix (k$)": 1253
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 315,
+		"Prix (k$)": 504
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 64,
+		"Prix (k$)": 1783
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 63,
+		"Prix (k$)": 1460
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 282,
+		"Prix (k$)": 451
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 72,
+		"Prix (k$)": 1670
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 78,
+		"Prix (k$)": 1472
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 66,
+		"Prix (k$)": 1838
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 62,
+		"Prix (k$)": 1437
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 614,
+		"Prix (k$)": 491
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 82,
+		"Prix (k$)": 1548
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 55,
+		"Prix (k$)": 1530
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 78,
+		"Prix (k$)": 1472
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 336,
+		"Prix (k$)": 538
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 168,
+		"Prix (k$)": 916
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 183,
+		"Prix (k$)": 591
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 210,
+		"Prix (k$)": 678
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 97,
+		"Prix (k$)": 1100
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 561,
+		"Prix (k$)": 449
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 81,
+		"Prix (k$)": 1529
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 184,
+		"Prix (k$)": 594
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 54,
+		"Prix (k$)": 1502
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 126,
+		"Prix (k$)": 1029
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 89,
+		"Prix (k$)": 1008
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 268,
+		"Prix (k$)": 429
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 218,
+		"Prix (k$)": 704
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 316,
+		"Prix (k$)": 506
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 190,
+		"Prix (k$)": 613
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 60,
+		"Prix (k$)": 1670
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 539,
+		"Prix (k$)": 431
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 95,
+		"Prix (k$)": 1417
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 66,
+		"Prix (k$)": 1838
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 274,
+		"Prix (k$)": 439
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 58,
+		"Prix (k$)": 1343
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 80,
+		"Prix (k$)": 1510
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 62,
+		"Prix (k$)": 1437
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 131,
+		"Prix (k$)": 713
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 94,
+		"Prix (k$)": 1402
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 73,
+		"Prix (k$)": 1377
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 62,
+		"Prix (k$)": 1437
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 135,
+		"Prix (k$)": 735
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 289,
+		"Prix (k$)": 463
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 561,
+		"Prix (k$)": 449
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 581,
+		"Prix (k$)": 465
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Prix (k$)": 1553
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 61,
+		"Prix (k$)": 1413
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 163,
+		"Prix (k$)": 888
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 201,
+		"Prix (k$)": 649
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 66,
+		"Prix (k$)": 1838
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 69,
+		"Prix (k$)": 1301
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 131,
+		"Prix (k$)": 1070
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 95,
+		"Prix (k$)": 1417
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 669,
+		"Prix (k$)": 535
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 59,
+		"Prix (k$)": 1366
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 113,
+		"Prix (k$)": 923
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 53,
+		"Prix (k$)": 1473
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 134,
+		"Prix (k$)": 730
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 152,
+		"Prix (k$)": 828
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 560,
+		"Prix (k$)": 448
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 79,
+		"Prix (k$)": 1491
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 132,
+		"Prix (k$)": 1079
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 96
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 677,
+		"Prix (k$)": 542
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 61,
+		"Prix (k$)": 1413
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 283,
+		"Prix (k$)": 453
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 89,
+		"Prix (k$)": 1008
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 122,
+		"Prix (k$)": 997
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 308,
+		"Prix (k$)": 493
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 110,
+		"Prix (k$)": 1248
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 69,
+		"Prix (k$)": 1301
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 66,
+		"Prix (k$)": 1244
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 552,
+		"Prix (k$)": 442
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 161,
+		"Prix (k$)": 877
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 63,
+		"Prix (k$)": 1460
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 73,
+		"Prix (k$)": 1693
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 72,
+		"Prix (k$)": 1670
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 60,
+		"Prix (k$)": 1390
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 52,
+		"Prix (k$)": 1445
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 63,
+		"Prix (k$)": 1460
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 87,
+		"Prix (k$)": 1297
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 99,
+		"Prix (k$)": 1122
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 86,
+		"Prix (k$)": 1282
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 548,
+		"Prix (k$)": 438
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 138,
+		"Prix (k$)": 752
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 644,
+		"Prix (k$)": 515
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 69,
+		"Prix (k$)": 1301
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 88
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 75,
+		"Prix (k$)": 1117
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 131,
+		"Prix (k$)": 1070
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 61,
+		"Prix (k$)": 1698
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 85,
+		"Prix (k$)": 1268
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 336,
+		"Prix (k$)": 538
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 60,
+		"Prix (k$)": 1670
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 110,
+		"Prix (k$)": 898
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 107,
+		"Prix (k$)": 873
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 108,
+		"Prix (k$)": 882
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 528,
+		"Prix (k$)": 422
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 90,
+		"Prix (k$)": 1342
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 70,
+		"Prix (k$)": 1321
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 73,
+		"Prix (k$)": 1693
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 544,
+		"Prix (k$)": 435
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 169,
+		"Prix (k$)": 921
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 73,
+		"Prix (k$)": 1693
+	},
+	{
+		"Nombre de pièces": 12,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 103,
+		"Prix (k$)": 1168
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 81,
+		"Prix (k$)": 1529
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 330,
+		"Prix (k$)": 528
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 114,
+		"Prix (k$)": 931
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 90,
+		"Prix (k$)": 1020
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 263,
+		"Prix (k$)": 421
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 53,
+		"Prix (k$)": 1473
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 135,
+		"Prix (k$)": 1103
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 143,
+		"Prix (k$)": 779
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 142,
+		"Prix (k$)": 774
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 304,
+		"Prix (k$)": 487
+	},
+	{
+		"Nombre de pièces": 10,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Gatineau",
+		"Superficie du terrain (m^2)": 598,
+		"Prix (k$)": 478
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 82,
+		"Prix (k$)": 1548
+	},
+	{
+		"Nombre de pièces": 11,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 100,
+		"Prix (k$)": 1134
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 176,
+		"Prix (k$)": 568
+	},
+	{
+		"Nombre de pièces": 8,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 2,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 136,
+		"Prix (k$)": 741
+	},
+	{
+		"Nombre de pièces": 14,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Longueuil",
+		"Superficie du terrain (m^2)": 169,
+		"Prix (k$)": 921
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 62,
+		"Prix (k$)": 1437
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 329,
+		"Prix (k$)": 527
+	},
+	{
+		"Nombre de pièces": 13,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 4,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 217,
+		"Prix (k$)": 701
+	},
+	{
+		"Nombre de pièces": 9,
+		"Nombre de salles de bain": 3,
+		"Nombre de chambres": 3,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 56,
+		"Prix (k$)": 1558
+	},
+	{
+		"Nombre de salles de bain": 2,
+		"Nombre de chambres": 4,
+		"Ville": "Montréal",
+		"Superficie du terrain (m^2)": 95,
+		"Prix (k$)": 1417
+	},
+	{
+		"Nombre de pièces": 7,
+		"Nombre de salles de bain": 1,
+		"Nombre de chambres": 2,
+		"Ville": "Québec",
+		"Superficie du terrain (m^2)": 260,
+		"Prix (k$)": 416
 	}
 ]

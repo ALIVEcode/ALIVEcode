@@ -152,9 +152,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		const getDataset = async () => {
 			if (!challenge.dataset)
 				challenge.dataset = await api.db.ai.getDataset(challenge.datasetId);
-
 			// If the dataset is found
-			if (challenge.dataset) {
+			if (challenge.dataset && !activeDataset.current) {
 				// Update active dataset
 				activeDataset.current = challenge.dataset.clone();
 
@@ -226,8 +225,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				console.error("Erreur : la table ne s'est pas chargée correctement.");
 			}
 		};
-		getDataset();
-	}, []);
+		if (!challenge.dataset) getDataset();
+	}, [challenge]);
 
 	// Updates the current hyperparams and IOCodes when the edit mode is triggered on and off.
 	useEffect(() => {
@@ -287,16 +286,19 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				...currIoCodes.current,
 			];
 		}
+
 		if (editMode) {
 			challenge.hyperparams = { ...currHyperparams.current };
 			challenge.ioCodes = [...currIoCodes.current];
 			// Resolve a corrupt iocodes in a challenge
-			if (
-				challenge.ioCodes.length !== challenge.dataset!.getParamNames().length
-			) {
-				const array: number[] = [];
-				activeDataset.current?.getParamNames().forEach(e => array.push(-1));
-				challenge.ioCodes = array;
+			if (challenge.dataset) {
+				if (
+					challenge.ioCodes.length !== challenge.dataset!.getParamNames().length
+				) {
+					const array: number[] = [];
+					activeDataset.current?.getParamNames().forEach(e => array.push(-1));
+					challenge.ioCodes = array;
+				}
 			}
 		}
 
@@ -459,9 +461,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		//Initialize the ioCodes according to the table
 		console.log('--- User click on run ---');
 
-		// challenge.ioCodes = (
-		// 	progression?.data as ChallengeAIProgressionData
-		// ).ioCodes;
 		//If the dataset is loaded
 		if (activeDataset.current) {
 			//Set IOCodes
@@ -482,7 +481,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			});
 
 			//Cloning the initial data
-			activeDataset.current = challenge.dataset!.clone();
+			if (challenge.dataset) activeDataset.current = challenge.dataset.clone();
 			optimizer.current = undefined;
 			model.current = undefined;
 			setActiveModel(undefined);
@@ -665,25 +664,28 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	 * Calculates the cost for the current model compared to the dataset of the challenge.
 	 * @returns the calculated cost or error message
 	 */
-	function costFunction() {
+	function costFunction(): number | string {
 		if (!model.current) {
 			return "Erreur : aucun modèle n'a été créé jusqu'à présent. Veuillez créer un modèle afin de calculer son erreur.";
 		}
 
 		if (activeDataset.current) {
-			let input = activeDataset.current.getInputsOutputs(
-				activeIoCodes.current,
-			)[0];
-			let real = activeDataset.current.getInputsOutputs(
-				activeIoCodes.current,
-			)[1];
-
-			createOptimizer();
 			try {
+				let input = activeDataset.current.getInputsOutputs(
+					activeIoCodes.current,
+				)[0];
+				let real = activeDataset.current.getInputsOutputs(
+					activeIoCodes.current,
+				)[1];
+
+				createOptimizer();
+
 				if (optimizer.current)
 					return optimizer.current.computeCost(input, real);
 			} catch (e) {
-				if (e instanceof Error) return e.message;
+				console.log(e);
+				if (e instanceof Error)
+					return "Erreur : l'ensemble de données contient des données incompatibles avec le calcul de la fonction de coût (texte ou valeurs nulles).";
 			}
 		}
 		return "Erreur : aucune donnée n'a été créé";
@@ -912,8 +914,6 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 				//Perceptron et Neural Network
 			} else {
 				try {
-					console.log(matInput.transpose());
-					console.log(input);
 					respond = model.current.predict(matInput.transpose());
 				} catch (e) {
 					if (e instanceof Error) {

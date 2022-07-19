@@ -15,6 +15,7 @@ import {
 	Challenge as ChallengeModel,
 	CHALLENGE_ACCESS,
 	CHALLENGE_DIFFICULTY,
+	CHALLENGE_TYPE,
 	SUPPORTED_LANG,
 } from '../../Models/Challenge/challenge.entity';
 import { useAlert } from 'react-alert';
@@ -182,7 +183,11 @@ const Challenge = ({
 	}, [challengeId, challengeProp, user]);
 
 	const saveChallenge = useCallback(async () => {
-		(challenge as any).project = undefined;
+		const untyped = challenge as any;
+		const oldDataset = untyped.dataset;
+		untyped.dataset = undefined;
+		untyped.project = undefined;
+
 		if (saveTimeout.current) clearTimeout(saveTimeout.current);
 		if (messageTimeout.current) clearTimeout(messageTimeout.current);
 		setSaving(true);
@@ -196,6 +201,8 @@ const Challenge = ({
 			},
 			challenge,
 		)) as ChallengeModel;
+
+		(updatedChallenge as any).dataset = oldDataset;
 
 		messageTimeout.current = setTimeout(() => {
 			setSaving(false);

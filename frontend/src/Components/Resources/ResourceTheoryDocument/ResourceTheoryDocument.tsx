@@ -3,7 +3,8 @@ import api from '../../../Models/api';
 import { ResourceTheory } from '../../../Models/Resource/resources/resource_theory.entity';
 import useWaitBeforeUpdate from '../../../state/hooks/useWaitBeforeUpdate';
 import RichTextDocument from '../../RichTextComponents/RichTextDocument/RichTextDocument';
-import { inspect } from 'util';
+// import { inspect } from 'util';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Component that renders a theory document from a resource
@@ -20,7 +21,7 @@ const ResourceTheoryDocument = ({
 		{
 			wait: 1000,
 			onUpdate: async () => {
-				console.log(inspect(value, false, null));
+				// console.log(inspect(value, false, null));
 				const updatedResource = (await api.db.resources.update<ResourceTheory>(
 					resource,
 					{
@@ -34,12 +35,17 @@ const ResourceTheoryDocument = ({
 		},
 		resource.document ?? [],
 	);
+	const { t } = useTranslation();
 
 	return (
 		<div>
 			{editMode && (
 				<div className="flex w-full justify-end opacity-50">
-					{saving ? <span>Saving...</span> : <span>Saved</span>}
+					{saving ? (
+						<span>{t('msg.saving')}</span>
+					) : (
+						<span>{t('msg.saved')}</span>
+					)}
 				</div>
 			)}
 			<RichTextDocument

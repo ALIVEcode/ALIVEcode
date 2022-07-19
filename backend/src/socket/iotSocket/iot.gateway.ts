@@ -41,7 +41,9 @@ import {
 
 const gatewayPort = Number(process.env.IOT_GATEWAY_PORT);
 if (gatewayPort == NaN || !gatewayPort) {
-  throw new Error('IOT_GATEWAY_PORT was not set in .env (8881 should be the default)');
+  throw new Error(
+    'IOT_GATEWAY_PORT was not set in .env. Copy the IOT_GATEWAY_PORT variable from .env.example inside your .env file.',
+  );
 }
 
 @UseInterceptors(DTOInterceptor)
@@ -72,7 +74,7 @@ export class IoTGateway implements OnGatewayDisconnect, OnGatewayConnection, OnG
         client.getSocket().ping();
         client.sendEvent(IOT_EVENT.PING, null);
       });
-    }, 15000); // Each 15 secondes
+    }, 15 * 1000); // Each 15 seconds
   }
 
   handleConnection() {

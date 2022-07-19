@@ -126,6 +126,8 @@
 	},
 	"msg": {
 		"language": "Langage",
+		"saving": "Sauvegarde en cours...",
+		"saved": "Sauvegardé ✔",
 		"by": "Par",
 		"learn_more": "En savoir plus",
 		"continue_reading": "Continuer à lire",
@@ -427,7 +429,11 @@
 			"delete": "Êtes-vous sûr de vouloir supprimer cette activité? Les ressources comprises à l'intérieur de celle-ci ne seront pas supprimées.",
 			"PF": {
 				"download_file": "Télécharger le PDF",
-				"page_of": "sur"
+				"page_of": "sur",
+				"start_page": "Commencer à la page",
+				"start_page_info": "Choisi le premier numéro de page que les étudiants verront en ouvrant l'activité.",
+				"finish_page": "Bloquer à la page",
+				"finish_page_info": "Choisi le dernier numéro de page que les étudiants pourront voir."
 			},
 			"WO": {
 				"download_file": "Télécharger le Word"
@@ -760,6 +766,12 @@
 						}
 					}
 				}
+			},
+			"document": {
+				"name": "Document",
+				"update_mode": "Mode de modification",
+				"live": "EN DIRECT",
+				"error": "Impossible de sauvegarder, il y a une erreur dans le document"
 			},
 			"objects": {
 				"name": "Objets"

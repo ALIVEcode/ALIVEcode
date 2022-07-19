@@ -790,6 +790,11 @@ const api = {
 				) as any as ShowcaseProject[];
 			},
 		},
+		userSocket: {
+			async getTicket() {
+				return (await axios.get('users/socket/ticket')).data;
+			},
+		},
 	},
 	as: {
 		async compile(data: CompileDTO, lang?: SupportedLanguagesAS) {

@@ -14,8 +14,6 @@ import { IoTObject } from '../../Models/Iot/IoTobject.entity';
 export type IoTProjectContextValues = {
 	project: IoTProject | null;
 	canEdit: boolean;
-	updateId: string;
-	isChallenge: boolean;
 	socket: IoTSocket | null;
 	objectsRunning: IoTProjectObject[];
 	addRunningObject: (obj: IoTProjectObject) => void;
@@ -48,8 +46,6 @@ export type IoTProjectContextValues = {
 export const IoTProjectContext = createContext<IoTProjectContextValues>({
 	canEdit: false,
 	project: null,
-	updateId: '',
-	isChallenge: false,
 	socket: null,
 	objectsRunning: [],
 	addRoute: () => {},

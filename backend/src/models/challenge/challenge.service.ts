@@ -1,5 +1,5 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { ChallengeEntity, CHALLENGE_ACCESS } from './entities/challenge.entity';
+import { Injectable, HttpException, HttpStatus, Inject, forwardRef } from '@nestjs/common';
+import { ChallengeEntity, CHALLENGE_ACCESS, CHALLENGE_TYPE } from './entities/challenge.entity';
 import { ILike, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ChallengeAliveEntity } from './entities/challenges/challenge_alive.entity';
@@ -9,6 +9,7 @@ import { ChallengeProgressionEntity } from './entities/challenge_progression.ent
 import { QueryDTO } from './dto/query.dto';
 import { ChallengeAIEntity } from './entities/challenges/challenge_ai.entity';
 import { ChallengeIoTEntity } from './entities/challenges/challenge_iot.entity';
+import { IoTProjectService } from '../iot/IoTproject/IoTproject.service';
 
 @Injectable()
 export class ChallengeService {
@@ -20,6 +21,7 @@ export class ChallengeService {
     @InjectRepository(ChallengeIoTEntity) private challengeIoTRepo: Repository<ChallengeIoTEntity>,
     @InjectRepository(ChallengeProgressionEntity)
     private challengeProgressionRepo: Repository<ChallengeProgressionEntity>,
+    @Inject(forwardRef(() => IoTProjectService)) private iotProjectService: IoTProjectService,
   ) {}
 
   async createChallengeAlive(creator: UserEntity, createChallengeDto: ChallengeAliveEntity) {
@@ -100,20 +102,26 @@ export class ChallengeService {
   }
 
   async updateProgression(challengeId: string, user: UserEntity, updateProgressionDto: ChallengeProgressionEntity) {
-    const challenge = await this.challengeRepo.findOne(challengeId, { relations: ['project'] });
-    if (!challenge) throw new HttpException('Invalid challenge', HttpStatus.BAD_REQUEST);
+    const challenge = await this.challengeRepo.findOne(challengeId);
+    if (!challenge) throw new HttpException('Challenge not found', HttpStatus.NOT_FOUND);
 
     let progression: ChallengeProgressionEntity;
+    // Tries to find existing progression
     try {
       progression = await this.getProgression(challengeId, user);
     } catch {
       // First time saving progression
       progression = this.challengeProgressionRepo.create(updateProgressionDto);
-      /*if (challenge.type === CHALLENGE_TYPE.IOT) {
-        updateProgressionDto.data = {
-          layout: (challenge as ChallengeIoTEntity).project.layout,
-        };
-      }*/
+      if (challenge.type === CHALLENGE_TYPE.IOT) {
+        const projectId = (challenge as ChallengeIoTEntity).project_id;
+        const clonedProject = await this.iotProjectService.cloneProject(projectId, user, true);
+        progression.iotProjectId = clonedProject.id;
+        return await this.challengeProgressionRepo.save({
+          challengeId,
+          user,
+          iotProjectId: clonedProject.id,
+        });
+      }
     }
     return await this.challengeProgressionRepo.save({
       ...updateProgressionDto,

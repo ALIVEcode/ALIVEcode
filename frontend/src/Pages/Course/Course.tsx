@@ -621,6 +621,7 @@ const Course = () => {
 		isNewCourseElement,
 		isNavigationOpen,
 		tab,
+		editMode: tab.tab === 'layout',
 		setTab,
 		renameElement,
 		setIsElementVisible,

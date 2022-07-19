@@ -43,6 +43,7 @@ type Props = FullSelectProps | FullInputProps;
 const InputGroup = React.forwardRef<any, InputGroupProps>(
 	(
 		{
+			info,
 			errors,
 			progress,
 			messages,
@@ -78,7 +79,7 @@ const InputGroup = React.forwardRef<any, InputGroupProps>(
 
 		return (
 			<div className={`mb-2 w-full ${className ?? ''}`}>
-				<FormLabel htmlFor={name} className={labelClassName}>
+				<FormLabel htmlFor={name} className={labelClassName} info={info}>
 					{label}
 				</FormLabel>
 				<FormInput

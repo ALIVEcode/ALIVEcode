@@ -17,7 +17,6 @@ import ClassroomForm from '../../Components/ClassroomComponents/ClassroomForm/Cl
 import IoTHome from '../../Pages/IoT/IoTHome/IoTHome';
 import IoTProject from '../../Pages/IoT/IoTProject/IoTProject';
 import IoTProjectCreate from '../../Components/IoTComponents/IoTProject/IotProjectForm/IoTProjectCreate';
-import IoTDashboard from '../../Pages/IoT/IoTDashboard/IoTDashboard';
 import ChallengeForm from '../../Components/ChallengeComponents/ChallengeForm/ChallengeForm';
 import ChallengeBrowse from '../../Pages/Challenge/ChallengeBrowse/ChallengeBrowse';
 import ChallengeList from '../../Pages/Challenge/ChallengeList/ChallengeList';
@@ -275,11 +274,6 @@ const useRoutes = () => {
 			exact: true,
 			component: <Chat></Chat>,
 			adminOnly: true,
-		},
-		iot_dashboard: {
-			path: '/iot/dashboard',
-			component: <IoTDashboard></IoTDashboard>,
-			//adminOnly: true,
 		},
 		create_iot_project: {
 			path: '/iot/projects/create',

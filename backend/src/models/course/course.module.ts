@@ -40,6 +40,12 @@ import { ChallengeAIEntity } from '../challenge/entities/challenges/challenge_ai
 import { ChallengeIoTEntity } from '../challenge/entities/challenges/challenge_iot.entity';
 import { ActivityWordEntity } from './entities/activities/activity_word.entity';
 import { ActivityPowerPointEntity } from './entities/activities/activity_powerpoint.entity';
+import { IoTProjectService } from '../iot/IoTproject/IoTproject.service';
+import { IoTRouteEntity } from '../iot/IoTroute/entities/IoTroute.entity';
+import { AsScriptEntity } from '../as-script/entities/as-script.entity';
+import { IoTProjectObjectEntity } from '../iot/IoTproject/entities/IoTprojectObject.entity';
+import { AsScriptService } from '../as-script/as-script.service';
+import { IoTObjectService } from '../iot/IoTobject/IoTobject.service';
 
 /**
  * Module for the course nestjs resource
@@ -67,6 +73,9 @@ import { ActivityPowerPointEntity } from './entities/activities/activity_powerpo
       ProfessorEntity,
       IoTProjectEntity,
       IoTObjectEntity,
+      IoTRouteEntity,
+      AsScriptEntity,
+      IoTProjectObjectEntity,
       ChallengeEntity,
       ResourceChallengeEntity,
       ResourceVideoEntity,
@@ -83,6 +92,16 @@ import { ActivityPowerPointEntity } from './entities/activities/activity_powerpo
     ]),
   ],
   controllers: [CourseController, BundleController],
-  providers: [CourseService, UserService, ChallengeService, ResourceService, FileService, BundleService],
+  providers: [
+    CourseService,
+    UserService,
+    ChallengeService,
+    ResourceService,
+    FileService,
+    BundleService,
+    IoTProjectService,
+    AsScriptService,
+    IoTObjectService,
+  ],
 })
 export class CourseModule {}

@@ -13,6 +13,7 @@ import { CourseHistoryEntity } from '../course/entities/course_history.entity';
 import { Quiz } from '../social/quizzes/entities/quiz.entity';
 import { Result } from '../social/results/entities/result.entity';
 import { ResourceEntity } from '../resource/entities/resource.entity';
+import { AuthService } from './auth.service';
 
 @Module({
   imports: [
@@ -34,6 +35,6 @@ import { ResourceEntity } from '../resource/entities/resource.entity';
   ],
   exports: [TypeOrmModule, UserService],
   controllers: [UserController],
-  providers: [UserService],
+  providers: [UserService, AuthService],
 })
 export class UserModule {}

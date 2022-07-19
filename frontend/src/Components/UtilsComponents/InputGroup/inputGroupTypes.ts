@@ -7,4 +7,5 @@ export type InputGroupProps = FormInputProps & {
 	label: string;
 	labelClassName: string;
 	inputClassName: string;
+	info?: string;
 };

@@ -41,7 +41,6 @@ export class ShowcaseProject {
 	ongoing?: boolean;
 
 	@Transform(({ value }) => {
-		console.log(value);
 		if (typeof value !== 'string') {
 			throw new Error(
 				'Start date from showcase project is not set or is invalid',

@@ -79,7 +79,7 @@ export const IoTProjectSettings = () => {
 				onConfirm={async () => {
 					if (!project) return;
 					await api.db.iot.projects.delete({ id: project.id });
-					goTo(routes.auth.iot_dashboard.path);
+					goTo(routes.auth.dashboard.path + '/iot');
 					alert.success('Iot Project Deleted');
 				}}
 			/>

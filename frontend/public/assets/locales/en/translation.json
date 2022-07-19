@@ -126,6 +126,8 @@
 	},
 	"msg": {
 		"language": "Language",
+		"saving": "Saving...",
+		"saved": "Saved ✔",
 		"by": "By",
 		"learn_more": "Learn more",
 		"continue_reading": "Continue reading",
@@ -427,7 +429,11 @@
 			"delete": "Are you sure you want to delete this activity? The resources contained inside it will not be deleted.",
 			"PF": {
 				"download_file": "Download the PDF",
-				"page_of": "of"
+				"page_of": "of",
+				"start_page": "Start at page",
+				"start_page_info": "Choose the first page number that the students will view when opening the activity.",
+				"finish_page": "Block at page",
+				"finish_page_info": "Choose the last page number that the student will be able to view."
 			},
 			"WO": {
 				"download_file": "Download the Word"
@@ -622,9 +628,6 @@
 			"delete": "Are you sure you want to delete your IoT project?",
 			"delete_test": "Write the name of your IoT project to confirm its deletion.",
 			"delete_success": "IoT project deleted",
-			"documents": {
-				"name": "Documents"
-			},
 			"interface": {
 				"name": "Interface",
 				"add_component": "Add a component",
@@ -760,6 +763,12 @@
 						}
 					}
 				}
+			},
+			"document": {
+				"name": "Document",
+				"update_mode": "Update mode",
+				"live": "LIVE",
+				"error": "Cannot save, there is an error in the document"
 			},
 			"objects": {
 				"name": "Objects"

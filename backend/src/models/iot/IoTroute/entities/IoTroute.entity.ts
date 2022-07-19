@@ -1,4 +1,4 @@
-import { Column, Entity, JoinTable, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { IsNotEmpty, IsOptional, Length } from 'class-validator';
 import { IoTProjectEntity } from '../../IoTproject/entities/IoTproject.entity';
@@ -20,8 +20,12 @@ export class IoTRouteEntity {
   @Length(2, 50)
   path: string;
 
-  @ManyToOne(() => IoTProjectEntity, project => project.routes, { onDelete: 'CASCADE' })
+  @ManyToOne(() => IoTProjectEntity, project => project.routes, { nullable: false, onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'projectId' })
   project: IoTProjectEntity;
+
+  @Column({ name: 'projectId', nullable: false })
+  projectId: string;
 
   @ManyToOne(() => AsScriptEntity, { eager: true })
   @JoinTable({ name: 'asScriptId' })

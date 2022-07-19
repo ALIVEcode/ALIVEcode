@@ -31,7 +31,7 @@ const RichTextDocument = ({
 	const { t } = useTranslation();
 
 	return (
-		<div className={`flex bg-[color:var(--background-color)] `}>
+		<div className={`flex bg-white`}>
 			<Slate
 				editor={editor}
 				value={value}
@@ -40,7 +40,7 @@ const RichTextDocument = ({
 				}}
 			>
 				{/*page*/}
-				<div className="rounded-sm pl-2 bg-[color:var(--background-color)] cursor-text border border-[color:var(--bg-shade-two-color)] py-3 w-full h-full drop-shadow-md">
+				<div className="rounded-sm pl-2 bg-white cursor-text border border-gray-300 py-3 w-full h-full drop-shadow-md">
 					{!readOnly && <RichTextDocumentToolBar />}
 					<Editable
 						placeholder={t('course.start_writing')}

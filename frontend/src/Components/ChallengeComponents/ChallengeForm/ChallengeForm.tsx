@@ -13,7 +13,7 @@ import {
 import FormContainer from '../../UtilsComponents/FormContainer/FormContainer';
 import { ChallengeCode } from '../../../Models/Challenge/challenges/challenge_code.entity';
 import { ChallengeAI } from '../../../Models/Challenge/challenges/challenge_ai.entity';
-import { ChallengeIoT } from '../../../Models/Challenge/challenges/challenge_iot.entity';
+import { ChallengeIoT } from '../../../Models/Challenge/challenges/challenge_iota.entity';
 import { FORM_ACTION, InputGroup } from '../../UtilsComponents/Form/formTypes';
 import { useState, useEffect, useContext } from 'react';
 import { IoTProject } from '../../../Models/Iot/IoTproject.entity';

@@ -101,10 +101,10 @@ const CourseLayout = () => {
 				<div className="text-center text-2xl mb-4" ref={titleRef}>
 					{t('course.layout')}
 				</div>
-				<QuickDropMenu
+				{/* <QuickDropMenu
 					setOpen={setQuickDropMenuOpen}
 					open={quickDropMenuOpen}
-				/>
+				/> */}
 				{!courseElements?.current ? (
 					<LoadingScreen />
 				) : Object.keys(courseElements.current).length === 0 ? (

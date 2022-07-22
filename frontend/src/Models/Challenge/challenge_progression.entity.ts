@@ -60,10 +60,10 @@ export class ChallengeProgression {
 		return undefined;
 	})
 	aiModel?: GenAIModel;
-	aiModelId: string;
+	aiModelId?: string;
 
 	@Type(() => IoTProject)
-	iotProject: IoTProject;
+	iotProject?: IoTProject;
 
-	iotProjectId: string;
+	iotProjectId?: string;
 }

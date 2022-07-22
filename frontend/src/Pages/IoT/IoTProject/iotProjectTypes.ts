@@ -4,6 +4,7 @@ import FillContainer from '../../../Components/UtilsComponents/FillContainer/Fil
 export type IoTProjectTabs = 'settings' | 'routes' | 'access';
 export interface IoTProjectProps {
 	projectId?: string;
+	className?: string;
 }
 
 export const StyledIoTProject = styled(FillContainer)`

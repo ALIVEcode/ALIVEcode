@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { LinkProps, StyledLinkProps } from './linkTypes';
 import { Link as RouterLink } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Link component with different variants
@@ -31,13 +33,6 @@ const Link = ({
 	download,
 	onClick,
 }: LinkProps) => {
-	if (to && !outsideLink)
-		return (
-			<RouterLink className={className} style={style} to={to ?? '#'}>
-				{children}
-			</RouterLink>
-		);
-
 	if (to && openInNewTab)
 		return (
 			<a
@@ -47,24 +42,40 @@ const Link = ({
 				style={style}
 				className={className}
 				download={download}
+				onClick={onClick}
+			>
+				<>
+					{children}
+					<FontAwesomeIcon
+						className="ml-1"
+						size="sm"
+						icon={faExternalLinkAlt}
+					/>
+				</>
+			</a>
+		);
+
+	if (to && !outsideLink)
+		return (
+			<RouterLink
+				className={className}
+				style={style}
+				to={to ?? '#'}
+				onClick={onClick}
 			>
 				{children}
-			</a>
+			</RouterLink>
 		);
 
 	if (to && !openInNewTab)
 		return (
-			<a href={to} style={style} className={className}>
+			<a href={to} style={style} className={className} onClick={onClick}>
 				{children}
 			</a>
 		);
 
 	return (
-		<label
-			className={className}
-			style={style}
-			onClick={() => onClick && onClick()}
-		>
+		<label className={className} style={style} onClick={onClick}>
 			{children}
 		</label>
 	);

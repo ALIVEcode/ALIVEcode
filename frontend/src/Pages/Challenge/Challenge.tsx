@@ -15,6 +15,7 @@ import {
 	Challenge as ChallengeModel,
 	CHALLENGE_ACCESS,
 	CHALLENGE_DIFFICULTY,
+	CHALLENGE_TYPE,
 	SUPPORTED_LANG,
 } from '../../Models/Challenge/challenge.entity';
 import { useAlert } from 'react-alert';
@@ -64,6 +65,7 @@ const Challenge = ({
 	challenge: challengeProp,
 	type,
 	showTerminal = true,
+	onProgressionLoad,
 	...props
 }: ChallengeProps) => {
 	const { challengeId } = useParams<{ challengeId: string }>();
@@ -131,26 +133,39 @@ const Challenge = ({
 
 			const currentChallenge = challengeProp ?? fetchedChallenge;
 
-			// If user, load or create progression
+			// load or create progression
 			if (currentChallenge) {
 				let progression: ChallengeProgression;
 
-				// Check if user has a progression on this challenge
-				try {
-					// If yes, set it to the progression
-					progression = await api.db.challenges.progressions.get({
-						id: currentChallenge.id,
-						userId: user.id,
-					});
-				} catch (err) {
-					// If no progression found, create a new one and set it to the progression
-					progression = await api.db.challenges.progressions.save(
-						{
+				// Special case for an IoTChallenge, never create a progression for the creator
+				if (
+					currentChallenge.type === CHALLENGE_TYPE.IOT &&
+					currentChallenge.creator.id === user.id
+				) {
+					progression = {
+						id: '',
+						data: {},
+						challengeId: currentChallenge.id,
+						iotProjectId: (currentChallenge as ChallengeIoTModel).project_id,
+					};
+				} else {
+					// Check if user has a progression on this challenge
+					try {
+						// If yes, set it to the progression
+						progression = await api.db.challenges.progressions.get({
 							id: currentChallenge.id,
 							userId: user.id,
-						},
-						{},
-					);
+						});
+					} catch (err) {
+						// If no progression found, create a new one and set it to the progression
+						progression = await api.db.challenges.progressions.save(
+							{
+								id: currentChallenge.id,
+								userId: user.id,
+							},
+							{},
+						);
+					}
 				}
 
 				// Failsafe for progression data not being properly set
@@ -161,6 +176,8 @@ const Challenge = ({
 					setInitialProgressionCode(progression.data.code);
 				// Set progression fetched or created
 				setProgression(progression);
+				// Callback when progression is loaded (used for challenges in an activity)
+				onProgressionLoad && onProgressionLoad(progression);
 				// Set challenge found
 				setChallenge(currentChallenge);
 			}
@@ -304,9 +321,6 @@ const Challenge = ({
 
 	if (!challenge || !progression) return <LoadingScreen />;
 
-	console.log(challenge);
-	console.log(progression);
-
 	return (
 		<StyledChallenge editMode={editMode}>
 			<ChallengeContext.Provider value={challengeContextValues}>
@@ -332,7 +346,10 @@ const Challenge = ({
 						}
 					/>
 				) : challenge instanceof ChallengeIoTModel ? (
-					<IoTProject projectId={progression.iotProjectId} />
+					<IoTProject
+						className="border border-[color:var(--bg-shade-four-color)]"
+						projectId={progression.iotProjectId}
+					/>
 				) : (
 					<LoadingScreen />
 				)}

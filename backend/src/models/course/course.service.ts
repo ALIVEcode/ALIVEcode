@@ -655,7 +655,11 @@ export class CourseService {
     }
 
     // Checks if the file resource is of the correct Mime type
-    if (resource.type === RESOURCE_TYPE.FILE && !activity.acceptedMimeTypes.includes(resource.file.mimetype)) {
+    if (
+      resource.type === RESOURCE_TYPE.FILE &&
+      activity.acceptedMimeTypes &&
+      !activity.acceptedMimeTypes.includes(resource.file.mimetype)
+    ) {
       throw new HttpException(
         `Mime type ${resource.file.mimetype} not accepted. ${activity.acceptedMimeTypes.join(
           ', ',

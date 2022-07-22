@@ -21,7 +21,9 @@ const IoTChallenge = ({ initialCode }: { initialCode: string }) => {
 
 	if (!challenge || !project) return <LoadingScreen />;
 
-	return <IoTProject></IoTProject>;
+	return (
+		<IoTProject className="border border-[color:var(--bg-shade-four-color)]"></IoTProject>
+	);
 };
 
 export default IoTChallenge;

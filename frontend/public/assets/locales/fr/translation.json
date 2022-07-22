@@ -628,6 +628,7 @@
 			"delete": "Êtes-vous sûr de vouloir supprimer votre projet IoT?",
 			"delete_test": "Écrivez le nom de votre projet IoT pour confirmer sa suppresion.",
 			"delete_success": "Projet IoT supprimé",
+			"cloned_from": "Cloné depuis",
 			"documents": {
 				"name": "Documents"
 			},
@@ -777,7 +778,9 @@
 				"name": "Objets"
 			},
 			"scripts": {
-				"name": "Scripts"
+				"name": "Scripts",
+				"running_scripts": "Scripts en cours d'exécution",
+				"no_running_scripts": "Aucun script en cours d'exécution"
 			}
 		},
 		"object": {

@@ -9,7 +9,7 @@ export type LinkProps = {
 	children?: React.ReactChildren | React.ReactElement | string;
 	className?: string;
 	to?: string;
-	onClick?: () => void;
+	onClick?: (e: React.MouseEvent) => void;
 	style?: any;
 	dark?: boolean;
 	bold?: boolean;

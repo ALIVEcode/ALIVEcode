@@ -344,7 +344,9 @@ const Home = (props: HomeProps) => {
 					</Link>
 				</div>
 				<div className="mt-2">
-					<Link to={routes.public.about.path}>{t('msg.section.about')}</Link>
+					<Link openInNewTab to={routes.public.about.path}>
+						{t('msg.section.about')}
+					</Link>
 				</div>
 			</Modal>
 		</StyledHome>

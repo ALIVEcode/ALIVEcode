@@ -628,6 +628,7 @@
 			"delete": "Are you sure you want to delete your IoT project?",
 			"delete_test": "Write the name of your IoT project to confirm its deletion.",
 			"delete_success": "IoT project deleted",
+			"cloned_from": "Cloned from",
 			"interface": {
 				"name": "Interface",
 				"add_component": "Add a component",
@@ -774,7 +775,9 @@
 				"name": "Objects"
 			},
 			"scripts": {
-				"name": "Scripts"
+				"name": "Scripts",
+				"running_scripts": "Running scripts",
+				"no_running_scripts": "No running scripts"
 			}
 		},
 		"object": {

@@ -48,7 +48,10 @@ import AliotASExecutor from '../../Challenge/ChallengeIoT/AliotASExecutor';
  *
  * @author Enric Soldevila
  */
-const IoTProject = ({ projectId: projectIdProp }: IoTProjectProps) => {
+const IoTProject = ({
+	projectId: projectIdProp,
+	className,
+}: IoTProjectProps) => {
 	const projectRef = useRef<ProjectModel | null>(null);
 	const project = projectRef.current;
 
@@ -370,7 +373,7 @@ const IoTProject = ({ projectId: projectIdProp }: IoTProjectProps) => {
 
 	return (
 		<IoTProjectContext.Provider value={providerValues}>
-			<IoTProjectPage />
+			<IoTProjectPage className={className} />
 			<Modal
 				title="Script"
 				open={scriptOpen !== undefined}

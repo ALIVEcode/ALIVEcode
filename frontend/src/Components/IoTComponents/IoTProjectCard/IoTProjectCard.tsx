@@ -7,6 +7,7 @@ import { classNames } from '../../../Types/utils';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { useNavigate } from 'react-router';
 import { useAlert } from 'react-alert';
+import Link from '../../UtilsComponents/Link/Link';
 
 const IoTProjectCard = ({
 	project,
@@ -35,6 +36,22 @@ const IoTProjectCard = ({
 				<div className="text-sm text-[color:var(--fg-shade-four-color)]">
 					{t('msg.time.last_updated')}: {formatDate(project.updateDate, t)}
 				</div>
+				{project.originalId && (
+					<div className="text-xs text-[color:var(--fg-shade-four-color)]">
+						{t('iot.project.cloned_from')}:{' '}
+						<Link
+							onClick={e => e.stopPropagation()}
+							to={routes.auth.iot_project.path.replace(
+								':id',
+								project.originalId,
+							)}
+							openInNewTab
+							outsideLink
+						>
+							{project.originalId}
+						</Link>
+					</div>
+				)}
 			</div>
 			<div>
 				<FontAwesomeIcon

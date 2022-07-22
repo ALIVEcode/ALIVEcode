@@ -3,12 +3,14 @@ import {
 	CHALLENGE_TYPE,
 } from '../../Models/Challenge/challenge.entity';
 import styled from 'styled-components';
+import { ChallengeProgression } from '../../Models/Challenge/challenge_progression.entity';
 
 export interface ChallengeProps {
 	editMode: boolean;
 	challenge?: Challenge;
 	type?: CHALLENGE_TYPE;
 	showTerminal?: boolean;
+	onProgressionLoad?: (progression: ChallengeProgression) => any;
 }
 
 export type typeAskForUserInput = (

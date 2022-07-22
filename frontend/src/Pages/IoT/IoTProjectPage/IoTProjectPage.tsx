@@ -36,7 +36,7 @@ import useRoutes from '../../../state/hooks/useRoutes';
  *
  * @author Enric Soldevila
  */
-const IoTProjectPage = () => {
+const IoTProjectPage = ({ className }: { className?: string }) => {
 	const { project, objectsRunning } = useContext(IoTProjectContext);
 	const { t } = useTranslation();
 	const { routes } = useRoutes();
@@ -96,7 +96,10 @@ const IoTProjectPage = () => {
 	return (
 		<Disclosure
 			as={StyledIoTProject}
-			className="w-full h-full flex flex-col tablet:flex-row"
+			className={classNames(
+				'w-full h-full flex flex-col tablet:flex-row',
+				className,
+			)}
 			defaultOpen={!isPhoneView()}
 		>
 			{({ open }: { open: boolean }) => (

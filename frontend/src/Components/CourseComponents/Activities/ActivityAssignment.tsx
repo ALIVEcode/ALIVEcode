@@ -28,25 +28,27 @@ const ActivityAssignment = ({
 		if (!course || !activity.resource) return;
 
 		setDownloading(true);
-		console.log('Started');
-		const response = await api.db.courses.downloadResourceFileInActivity(
-			course,
-			activity,
-			activity.resource.extension,
-		);
-
-		if (!response) {
-			alert.error('Unsupported file type');
-		} else {
-			if (response.status === 200) {
-				downloadBlob(
-					response.data,
-					activity.resource?.name,
-					activity.resource?.extension,
-				);
-				console.log('Done');
-			} else alert.error(t('error.unknown'));
+		try {
+			const response = await api.db.courses.downloadResourceFileInActivity(
+				course,
+				activity,
+				activity.resource.extension,
+			);
+			if (!response) {
+				alert.error('Unsupported file type');
+			} else {
+				if (response.status === 200) {
+					downloadBlob(
+						response.data,
+						activity.resource?.name,
+						activity.resource?.extension,
+					);
+				} else alert.error(t('error.unknown'));
+			}
+		} catch {
+			alert.error(t('error.unknown'));
 		}
+
 		setDownloading(false);
 	};
 

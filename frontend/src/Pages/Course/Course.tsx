@@ -559,6 +559,7 @@ const Course = () => {
 			activityId: activity.id.toString(),
 		});
 		activity.resource = undefined;
+		activity.resourceId = undefined;
 		forceUpdate();
 	};
 
@@ -599,6 +600,13 @@ const Course = () => {
 
 		element.parent.elementsOrder = oldOrder;
 		newParent.elementsOrder = newOrder;
+		if (element.parent !== newParent) {
+			element.parent.elements = element.parent.elements.filter(
+				el => el.id !== element.id,
+			);
+			newParent.elements.push(element);
+			element.parent = newParent;
+		}
 
 		// if (element.parent instanceof Section) {
 		// 	courseElements.current[element.parent.courseElement.id] =
@@ -885,8 +893,9 @@ const Course = () => {
 							tab.openedActivity.activity,
 							modalChallengePrivateOpen,
 						);
-						(tab.openedActivity.activity as ActivityModel).resource =
-							modalChallengePrivateOpen;
+						tab.openedActivity.activity.resource = modalChallengePrivateOpen;
+						tab.openedActivity.activity.resourceId =
+							modalChallengePrivateOpen.id;
 						setOpenModalImportResource(false);
 					}}
 				>
@@ -916,7 +925,8 @@ const Course = () => {
 							tab.openedActivity.activity,
 							resource,
 						);
-						(tab.openedActivity.activity as ActivityModel).resource = resource;
+						tab.openedActivity.activity.resource = resource;
+						tab.openedActivity.activity.resourceId = resource.id;
 						setOpenModalImportResource(false);
 					}}
 				/>

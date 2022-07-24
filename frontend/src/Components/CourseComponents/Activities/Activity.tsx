@@ -173,6 +173,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 			const createResourceWithFile = async () => {
 				const resourceType = activity.allowedResources[0];
 				let createdRes;
+				setLoading(true);
 				switch (activity.type) {
 					case ACTIVITY_TYPE.PDF:
 					case ACTIVITY_TYPE.VIDEO:
@@ -184,13 +185,18 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 							resource: { name: selectedFile.name, subject: course?.subject },
 						});
 				}
-				if (!createdRes) return;
-				activity.resource = createdRes;
+				if (!createdRes) {
+					setLoading(false);
+					return;
+				}
 				await api.db.courses.addResourceInActivity(
 					course,
 					activity,
-					activity.resource,
+					createdRes,
 				);
+				activity.resource = createdRes;
+				activity.resourceId = createdRes.id;
+				setLoading(false);
 				forceUpdateCourse();
 			};
 			createResourceWithFile();
@@ -210,7 +216,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 			if (!matches) return setIsInvalidURL(true);
 
 			const createResourceWithURL = async () => {
-				activity.resource = await createResource({
+				const resource = await createResource({
 					file: null,
 					type: resourceType,
 					resource: {
@@ -219,11 +225,9 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 						url: videoUrl,
 					},
 				});
-				await api.db.courses.addResourceInActivity(
-					course,
-					activity,
-					activity.resource,
-				);
+				await api.db.courses.addResourceInActivity(course, activity, resource);
+				activity.resource = resource;
+				activity.resourceId = resource.id;
 				setVideoUrl(undefined);
 				forceUpdateCourse();
 			};
@@ -296,6 +300,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 				} else inputFileRef.current?.click();
 				break;
 			case RESOURCE_TYPE.THEORY:
+				setLoading(true);
 				const createdRes = await createResource({
 					file: null,
 					type: resourceType,
@@ -304,12 +309,14 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 						subject: course?.subject,
 					},
 				});
-				activity.resource = createdRes;
 				await api.db.courses.addResourceInActivity(
 					course,
 					activity,
-					activity.resource,
+					createdRes,
 				);
+				activity.resource = createdRes;
+				activity.resourceId = createdRes.id;
+				setLoading(false);
 				forceUpdateCourse();
 				break;
 		}
@@ -334,6 +341,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 						updateMode
 						defaultResource={resource}
 						afterSubmit={() => forceUpdateCourse()}
+						noResourcePreview
 					/>
 				</div>
 			</Popup>
@@ -404,7 +412,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 							<div className="w-full">
 								<RichTextEditor
 									readOnly={!editMode}
-									onChange={updateHeaderOrFooter('header')}
+									onEditorBlur={updateHeaderOrFooter('header')}
 									defaultText={activity.header}
 								/>
 							</div>
@@ -449,10 +457,11 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 					)
 				)}
 				<div>
-					{activity.resource ? (
+					{/* Activity has a resource */}
+					{activity.resourceId ? (
 						<div className="flex flex-col items-end gap-2">
 							{loading ? <LoadingScreen relative /> : renderSpecificActivity()}
-							{editMode && (
+							{editMode && !loading && activity.resource && (
 								<div className="flex flex-row items-end gap-2">
 									<EditResource resource={activity.resource} />
 									<Button
@@ -466,63 +475,74 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 						</div>
 					) : (
 						<div className="flex flex-col items-center gap-4">
+							{/* Activity has no resource */}
 							{editMode ? (
-								<>
-									<Button
-										variant="primary"
-										onClick={() => {
-											setVideoUrl(undefined);
-											setOpenModalImportResource(true);
-										}}
-									>
-										{t(`course.activity.import_resource.${activity.type}`)}
-									</Button>
-									{activity.type !== ACTIVITY_TYPE.CHALLENGE &&
-										activity.type !== ACTIVITY_TYPE.VIDEO && (
-											<Button
-												variant="secondary"
-												onClick={() => createSpecificResource()}
-											>
-												{t(`course.activity.create_resource.${activity.type}`)}
-											</Button>
-										)}
-									{activity.type === ACTIVITY_TYPE.VIDEO &&
-										(videoUrl === undefined ? (
-											<>
+								loading ? (
+									<LoadingScreen relative />
+								) : (
+									<>
+										<Button
+											variant="primary"
+											onClick={() => {
+												setVideoUrl(undefined);
+												setOpenModalImportResource(true);
+											}}
+										>
+											{t(`course.activity.import_resource.${activity.type}`)}
+										</Button>
+										{activity.type !== ACTIVITY_TYPE.CHALLENGE &&
+											activity.type !== ACTIVITY_TYPE.VIDEO && (
 												<Button
 													variant="secondary"
 													onClick={() => createSpecificResource()}
 												>
 													{t(
-														`course.activity.create_resource.${activity.type}.upload`,
+														`course.activity.create_resource.${activity.type}`,
 													)}
 												</Button>
-												<Button
-													variant="secondary"
-													onClick={() => createSpecificResource(true)}
-												>
-													{t(
-														`course.activity.create_resource.${activity.type}.url`,
-													)}
-												</Button>
-											</>
-										) : (
-											<InputGroup
-												label="Video URL"
-												onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
-													setVideoUrl(e.target.value);
-												}}
-												onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
-													e.key.toLowerCase() === 'enter' &&
-													setVideoUrl(e.currentTarget.value)
-												}
-												errors={isInvalidURL ? { type: 'pattern' } : undefined}
-												messages={{
-													pattern: t('resources.VI.form.invalid_url'),
-												}}
-											/>
-										))}
-								</>
+											)}
+										{activity.type === ACTIVITY_TYPE.VIDEO &&
+											(videoUrl === undefined ? (
+												<>
+													<Button
+														variant="secondary"
+														onClick={() => createSpecificResource()}
+													>
+														{t(
+															`course.activity.create_resource.${activity.type}.upload`,
+														)}
+													</Button>
+													<Button
+														variant="secondary"
+														onClick={() => createSpecificResource(true)}
+													>
+														{t(
+															`course.activity.create_resource.${activity.type}.url`,
+														)}
+													</Button>
+												</>
+											) : (
+												<InputGroup
+													label="Video URL"
+													onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
+														setVideoUrl(e.target.value);
+													}}
+													onKeyDown={(
+														e: React.KeyboardEvent<HTMLInputElement>,
+													) =>
+														e.key.toLowerCase() === 'enter' &&
+														setVideoUrl(e.currentTarget.value)
+													}
+													errors={
+														isInvalidURL ? { type: 'pattern' } : undefined
+													}
+													messages={{
+														pattern: t('resources.VI.form.invalid_url'),
+													}}
+												/>
+											))}
+									</>
+								)
 							) : (
 								<div>{t('course.activity.empty')}</div>
 							)}
@@ -535,7 +555,7 @@ const Activity = ({ courseElement, editMode }: ActivityProps) => {
 							<div className="w-full">
 								<RichTextEditor
 									readOnly={!editMode}
-									onChange={updateHeaderOrFooter('footer')}
+									onEditorBlur={updateHeaderOrFooter('footer')}
 									defaultText={activity.footer}
 								/>
 							</div>

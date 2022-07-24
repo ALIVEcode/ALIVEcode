@@ -23,8 +23,11 @@ import {
  */
 const RichTextEditor = ({
 	defaultText,
-	onChange,
+	onEditorChange,
 	readOnly,
+	onBlur,
+	onEditorBlur,
+	...other
 }: RichTextEditorProps) => {
 	// @ts-ignore
 	const editor = useMemo(() => withReact(withHistory(createEditor())), []);
@@ -46,13 +49,20 @@ const RichTextEditor = ({
 	);
 
 	return (
-		<div className={`flex bg-[color:var(--background-color)] `}>
+		<div
+			className={`flex bg-[color:var(--background-color)] `}
+			onBlur={e => {
+				onBlur && onBlur(e);
+				onEditorBlur && onEditorBlur(value);
+			}}
+			{...other}
+		>
 			<Slate
 				editor={editor}
 				value={value}
 				onChange={value => {
 					setValue(value);
-					onChange(value);
+					onEditorChange && onEditorChange(value);
 				}}
 			>
 				<RichTextToolBar />

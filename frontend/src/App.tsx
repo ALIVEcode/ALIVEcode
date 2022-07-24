@@ -288,8 +288,12 @@ const App = () => {
 				}
 				if (
 					error.response &&
-					error.response.data.message === 'Not Authenticated' &&
-					error.response.data.statusCode === 401
+					// Normal request retry
+					((error.response.data.statusCode === 401 &&
+						error.response.data.message === 'Not Authenticated') ||
+						// Blob retry
+						(error.response.status === 401 &&
+							error.response.request.responseType === 'arraybuffer'))
 				) {
 					try {
 						const { accessToken } = (await axios.post('/users/refreshToken'))

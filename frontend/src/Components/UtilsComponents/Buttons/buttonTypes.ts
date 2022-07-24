@@ -19,6 +19,7 @@ export type ButtonProps = {
 	variant: ButtonVariants;
 	icon?: IconProp;
 	noHoverColor?: boolean;
+	loading?: boolean;
 };
 
 export const StyledButton = styled.button`

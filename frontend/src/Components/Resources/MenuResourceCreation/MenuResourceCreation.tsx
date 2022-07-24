@@ -46,6 +46,7 @@ const MenuResourceCreation = ({
 	afterSubmit,
 	updateMode,
 	defaultResource,
+	noResourcePreview,
 }: MenuResourceCreationProps) => {
 	const [type, setType] = useState<RESOURCE_TYPE | undefined>(
 		defaultResource?.type ?? undefined,
@@ -191,7 +192,7 @@ const MenuResourceCreation = ({
 					</>
 				);
 			case RESOURCE_TYPE.THEORY:
-				if (updateMode && defaultResource)
+				if (updateMode && defaultResource && !noResourcePreview)
 					return (
 						<ResourceTheoryDocument
 							resource={defaultResource}

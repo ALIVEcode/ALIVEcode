@@ -1,5 +1,4 @@
 import { WebSocket } from 'ws';
-import { IoTProjectDocument, IoTProjectLayout, JsonObj } from '../../models/iot/IoTproject/entities/IoTproject.entity';
 
 export type UserSocketTicketPayload = {
   id: string;
@@ -7,7 +6,7 @@ export type UserSocketTicketPayload = {
   ip: string;
 };
 
-export enum IOT_EVENT {
+export enum USER_SOCKET_EVENT {
   /*---------- Connection events ----------*/
 
   /** Connect as watcher (web view) */
@@ -85,97 +84,6 @@ export enum IOT_EVENT {
   GET_FIELD = 'get_field',
 }
 
-// REQUESTS FROM OBJECT
-
-export type IoTUpdateDocumentRequestFromObject = {
-  fields: JsonObj;
-};
-
-export type IoTGetDocRequestFromObject = {
-  id: string;
-};
-
-export type IoTGetFieldRequestFromObject = {
-  id: string;
-  field: string;
-};
-
-export type IoTListenRequestFromObject = {
-  fields: string[];
-};
-
-export type IoTUpdateRequestFromObject = {
-  id: string;
-  value: any;
-};
-
-export type IoTRouteRequestFromObject = {
-  routePath: string;
-  data: any;
-};
-
-export type IoTBroadcastRequestFromBoth = {
-  data: any;
-};
-
-export type IoTActionDoneRequestFromObject = {
-  actionId: string;
-  value: any;
-};
-
-export type IoTActionDoneRequestToWatcher = {
-  actionId: string;
-  targetId: string;
-  value: any;
-};
-
-// REQUESTS TO OBJECTS
-
-export type IoTSendActionRequestToObject = {
-  event: IOT_EVENT.RECEIVE_ACTION;
-  data: {
-    id: string;
-    value: any;
-  };
-};
-
-export type IoTListenRequestToObject = {
-  event: IOT_EVENT.RECEIVE_LISTEN;
-  data: {
-    fields: { [key: string]: any };
-  };
-};
-
-export type IoTBroadcastRequestToObject = {
-  event: IOT_EVENT.RECEIVE_BROADCAST;
-  data: {
-    data: any;
-  };
-};
-
-// REQUESTS FROM WATCHER
-
-export type IoTActionRequestFromWatcher = {
-  targetId: string;
-  actionId: string;
-  value: any;
-};
-
-// REQUESTS TO THE WATCHER
-
-export type IoTUpdateRequestToWatcher = {
-  id: string;
-  value: any;
-};
-
-export type IoTUpdateDocumentRequestToWatcher = {
-  doc: IoTProjectDocument;
-};
-
-export type IoTUpdateLayoutRequestToWatcher = {
-  layout: IoTProjectLayout;
-};
-
 export class Client {
   public isAlive: boolean;
   static clients: Client[] = [];
@@ -195,7 +103,7 @@ export class Client {
     return this.socket;
   }
 
-  sendEvent(event: IOT_EVENT, data: any) {
+  sendEvent(event: USER_SOCKET_EVENT, data: any) {
     this.socket.send(JSON.stringify({ event, data }));
   }
 

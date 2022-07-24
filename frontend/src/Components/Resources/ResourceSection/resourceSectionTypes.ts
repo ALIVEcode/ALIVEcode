@@ -5,4 +5,5 @@ export type ResourceSectionProps = {
 	name: string;
 	icon: IconDefinition;
 	section: ResourceMenuSubjects;
+	color?: string;
 };

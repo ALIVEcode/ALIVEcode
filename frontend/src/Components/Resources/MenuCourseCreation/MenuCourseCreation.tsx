@@ -5,7 +5,11 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserContext } from '../../../state/contexts/UserContext';
 import TypeCard from '../../UtilsComponents/Cards/TypeCard/TypeCard';
-import { getSubjectIcon, SUBJECTS } from '../../../Types/sharedTypes';
+import {
+	getSubjectColor,
+	getSubjectIcon,
+	SUBJECTS,
+} from '../../../Types/sharedTypes';
 import useRoutes from '../../../state/hooks/useRoutes';
 import { instanceToPlain } from 'class-transformer';
 import { useNavigate } from 'react-router-dom';
@@ -127,6 +131,7 @@ const MenuCourseCreation = ({
 						key={idx}
 						title={t(`msg.subjects.${entry[0].toLowerCase()}`)}
 						icon={getSubjectIcon(entry[1])}
+						color={getSubjectColor(entry[1])}
 						onClick={() => onSelectSubject(entry[1])}
 						selected={subject === entry[1]}
 					/>
@@ -160,27 +165,30 @@ const MenuCourseCreation = ({
 	const renderPageCourseTemplate = () => {
 		return (
 			<div className="tablet:px-8 laptop:px-16 desktop:px-36 flex flex-row text-center">
-					{selectedTemplate ? (
-						<div className="flex flex-col w-11/12">
-							<div className="m-auto mb-4 w-full">
-								<CourseTemplateCard template={selectedTemplate} className="!w-full" />
-							</div>
-							<Button
-								variant="danger"
-								onClick={() => setSelectedTemplate(undefined)}
-							>
-								{t('course.template.remove')}
-							</Button>
+				{selectedTemplate ? (
+					<div className="flex flex-col w-11/12">
+						<div className="m-auto mb-4 w-full">
+							<CourseTemplateCard
+								template={selectedTemplate}
+								className="!w-full"
+							/>
 						</div>
-					) : (
 						<Button
-							variant="primary"
-							onClick={() => setCourseTemplateOpen(true)}
-							className="w-11/12"
+							variant="danger"
+							onClick={() => setSelectedTemplate(undefined)}
 						>
-							{t('course.template.add')}
+							{t('course.template.remove')}
 						</Button>
-					)}
+					</div>
+				) : (
+					<Button
+						variant="primary"
+						onClick={() => setCourseTemplateOpen(true)}
+						className="w-11/12"
+					>
+						{t('course.template.add')}
+					</Button>
+				)}
 				<Info.Icon
 					className="!inline w-1/12"
 					hoverPopup={{

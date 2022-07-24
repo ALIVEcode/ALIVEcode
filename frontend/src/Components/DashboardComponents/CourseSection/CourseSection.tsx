@@ -1,8 +1,8 @@
 import { CourseSectionProps } from './courseSectionTypes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useRoutes from '../../../state/hooks/useRoutes';
-import { formatTooLong } from '../../../Types/formatting';
 import { classNames } from '../../../Types/utils';
+import { getSubjectColor } from '../../../Types/sharedTypes';
 
 const CourseSection = ({ course, className }: CourseSectionProps) => {
 	const { routes, goTo } = useRoutes();
@@ -21,6 +21,7 @@ const CourseSection = ({ course, className }: CourseSectionProps) => {
 			<FontAwesomeIcon
 				className="sidebar-icon"
 				icon={course.getSubjectIcon()}
+				color={getSubjectColor(course.subject)}
 			/>
 			<label className="sidebar-course-text">{course.name}</label>
 		</div>

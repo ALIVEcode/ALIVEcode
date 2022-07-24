@@ -6,7 +6,6 @@ import { ActivityAssignment as ActivityAssignmentModel } from '../../../Models/C
 import { downloadBlob } from '../../../Types/files.type';
 import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
-import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 
 /**
  * Shows an activity of type Video

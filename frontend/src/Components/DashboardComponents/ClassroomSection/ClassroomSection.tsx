@@ -9,6 +9,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { useQuery } from '../../../state/hooks/useQuery';
 import { useTranslation } from 'react-i18next';
 import { classNames } from '../../../Types/utils';
+import { getSubjectColor } from '../../../Types/sharedTypes';
 
 const ClassroomSection = ({
 	classroom,
@@ -77,6 +78,7 @@ const ClassroomSection = ({
 				<FontAwesomeIcon
 					className="sidebar-icon"
 					icon={classroom.getSubjectIcon()}
+					color={getSubjectColor(classroom.subject)}
 				/>
 				<label className="sidebar-classroom-text">
 					{formatTooLong(classroom.name, 25)}

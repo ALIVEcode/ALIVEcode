@@ -2,6 +2,7 @@ import {
 	faBars,
 	faEye,
 	faEyeSlash,
+	faFolderOpen,
 	faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -24,6 +25,9 @@ import {
 	CourseElementSection,
 } from '../../../Models/Course/course_element.entity';
 import { classNames } from '../../../Types/utils';
+import { faFolder } from '@fortawesome/free-solid-svg-icons';
+import { useForceUpdate } from '../../../state/hooks/useForceUpdate';
+import useView from '../../../state/hooks/useView';
 
 /**
  * Component that wraps a CourseElement to show it properly on the layout view
@@ -50,8 +54,10 @@ const CourseLayoutElement = React.forwardRef(
 		const { t } = useTranslation();
 		const [confirmDelete, setConfirmDelete] = useState(false);
 		const [isRenaming, setIsRenaming] = useState(false);
+		const view = useView();
 		const inputRef = useRef<HTMLInputElement>();
 		const courseLayoutElementRef = useRef<HTMLDivElement>(null);
+		const forceUpdate = useForceUpdate();
 
 		/**
 		 * Handles the renaming of an element
@@ -141,7 +147,7 @@ const CourseLayoutElement = React.forwardRef(
 		return (
 			<div
 				className={classNames(
-					'py-2 pl-2 laptop:pl-3 desktop:pl-4',
+					'py-1 pl-2 laptop:pl-3 desktop:pl-4',
 					!element.isVisible && 'opacity-50',
 				)}
 				ref={courseLayoutElementRef}
@@ -155,7 +161,7 @@ const CourseLayoutElement = React.forwardRef(
 				onDragOver={e => onDragOver(e)}
 				onDragEnd={e => onDragEnd(e)}
 			>
-				<div className="group text-base flex items-center" onClick={() => {}}>
+				<div className="group text-xs tablet:text-sm tracking-wide flex items-center">
 					<div draggable onDragStart={e => onDragStart(e)}>
 						<FontAwesomeIcon
 							icon={faBars}
@@ -165,21 +171,29 @@ const CourseLayoutElement = React.forwardRef(
 						/>
 					</div>
 					<div
-						className="ml-2 py-3 rounded-sm border p-[0.2rem]
+						className="ml-1 tablet:ml-2 py-[0.6rem] tablet:py-3 rounded-md border p-[0.2rem]
 				border-[color:var(--bg-shade-four-color)] text-[color:var(--foreground-color)]
 				flex items-center w-full justify-between"
 					>
-						<div className="flex flex-row">
+						<div className="flex flex-row items-center">
 							{element?.activity && element?.icon ? (
 								<FontAwesomeIcon
 									icon={element.icon}
 									style={{
 										color: element.activity.color,
+										fontSize: view.screenType === 'phone' ? '1.2em' : '1.5em',
 									}}
-									className="mr-3 ml-2 mt-1"
+									title={t(`help.activity.${element.activity.type}`)}
+									className="mx-2 tablet:mx-3"
 								/>
 							) : (
-								<span className="invisible pl-3" />
+								<FontAwesomeIcon
+									icon={element.section?.opened ? faFolderOpen : faFolder}
+									style={{
+										fontSize: '1.5em',
+									}}
+									className="mx-2 tablet:mx-3"
+								/>
 							)}
 							{isRenaming || isNewCourseElement(element) ? (
 								<FormInput
@@ -219,18 +233,18 @@ const CourseLayoutElement = React.forwardRef(
 								</div>
 							)}
 						</div>
-						<div className="flex flex-row">
+						<div className="flex flex-row gap-2 mr-2">
 							<FontAwesomeIcon
 								icon={element.isVisible ? faEye : faEyeSlash}
 								size="lg"
-								className="[color:var(--bg-shade-four-color)] mr-4 hover:[color:var(--fg-shade-one-color)]
+								className="[color:var(--bg-shade-four-color)] hover:[color:var(--fg-shade-one-color)]
 							cursor-pointer invisible group-hover:visible transition-all duration-75 ease-in"
 								onClick={() => setIsElementVisible(element, !element.isVisible)}
 							/>
 							<FontAwesomeIcon
 								icon={faTrash}
 								size="lg"
-								className="[color:var(--bg-shade-four-color)] mr-2 hover:[color:red]
+								className="[color:var(--bg-shade-four-color)] hover:[color:red]
 							cursor-pointer invisible group-hover:visible transition-all duration-75 ease-in"
 								onClick={() => setConfirmDelete(true)}
 							/>
@@ -241,6 +255,7 @@ const CourseLayoutElement = React.forwardRef(
 					<CourseLayoutSection
 						ref={openedActivityRef}
 						courseElement={element as CourseElementSection}
+						forceUpdateLayoutElement={forceUpdate}
 					/>
 				)}
 

@@ -1,6 +1,6 @@
 import { faUserGraduate } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useContext, useLayoutEffect, useRef, useState } from 'react';
+import { useContext, useLayoutEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CourseContext } from '../../../state/contexts/CourseContext';
 import useRoutes from '../../../state/hooks/useRoutes';
@@ -11,7 +11,7 @@ import { plainToClass } from 'class-transformer';
 import LoadingScreen from '../../UtilsComponents/LoadingScreen/LoadingScreen';
 import Info from '../../HelpComponents';
 import { TutorialContext } from '../../../state/contexts/TutorialContext';
-import QuickDropMenu from './QuickDrop/QuickDropMenu';
+// import QuickDropMenu from './QuickDrop/QuickDropMenu';
 
 /**
  * Component that handles the layout view of a course
@@ -33,7 +33,7 @@ const CourseLayout = () => {
 	const goToStudentViewRef = useRef<HTMLDivElement>(null);
 	const { registerTutorial } = useContext(TutorialContext);
 	const openedActivityRef = useRef<HTMLDivElement>(null);
-	const [quickDropMenuOpen, setQuickDropMenuOpen] = useState(false);
+	// const [quickDropMenuOpen, setQuickDropMenuOpen] = useState(false);
 
 	useLayoutEffect(() => {
 		if (openedActivityRef.current) openedActivityRef.current.scrollIntoView();
@@ -70,7 +70,7 @@ const CourseLayout = () => {
 	}
 
 	return (
-		<div className="w-full h-full overflow-y-auto relative p-6">
+		<div className="w-full h-full overflow-y-auto relative py-6 px-0 tablet:px-6">
 			<div className="absolute l-0">
 				{/*
 				courseElements?.current &&
@@ -97,7 +97,7 @@ const CourseLayout = () => {
 					onClick={() => setTab({ tab: 'view' })}
 				/>
 			</div>
-			<div className="flex flex-col justify-center md:px-52 pl-3 pr-12 min-w-fit w-[100%] whitespace-nowrap">
+			<div className="flex flex-col justify-center pl-3 pr-12 tablet:px-24 laptop:px-52 min-w-fit w-[100%] whitespace-nowrap">
 				<div className="text-center text-2xl mb-4" ref={titleRef}>
 					{t('course.layout')}
 				</div>
@@ -140,22 +140,7 @@ const CourseLayout = () => {
 					</>
 				) : (
 					<>
-						<div
-							className="text-left "
-							/*onDragEnter={event => {
-								const target = event.target as HTMLDivElement;
-								if (target?.className === 'course-layout-element') {
-									target.style.borderBottom = '2 solid cyan';
-									console.log(event);
-								}
-							}}
-							onDragExit={event => {
-								const target = event.target as HTMLDivElement;
-								if (target?.className === 'course-layout-element') {
-									target.style.borderBottom = '';
-								}
-							}}*/
-						>
+						<div className="text-left ">
 							{courseElements?.current &&
 								course.elementsOrder.map(
 									id =>

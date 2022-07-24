@@ -18,7 +18,11 @@ import DraggedCourseLayoutElement from './DraggedCourseLayoutElement';
  */
 const CourseLayoutSection = forwardRef(
 	(
-		{ courseElement, isDragged }: CourseLayoutSectionProps,
+		{
+			courseElement,
+			isDragged,
+			forceUpdateLayoutElement,
+		}: CourseLayoutSectionProps,
 		openedActivityRef: ForwardedRef<HTMLDivElement>,
 	) => {
 		const section = courseElement.section as Section;
@@ -32,10 +36,14 @@ const CourseLayoutSection = forwardRef(
 							<FontAwesomeIcon
 								icon={open ? faCaretDown : faCaretUp}
 								size="lg"
-								className="pb-1 ml-6 [color:grey]"
+								className="pb-1 ml-6 [color:var(--bg-shade-four-color)]"
+								onClick={() => {
+									courseElement.section.opened = !open;
+									forceUpdateLayoutElement && forceUpdateLayoutElement();
+								}}
 							/>
 						</Disclosure.Button>
-						<Disclosure.Panel className="border-opacity-20 border-[color:grey] border-l ml-7 text-sm border-b pb-2">
+						<Disclosure.Panel className="border-opacity-20 border-[color:var(--bg-shade-four-color)] border-l ml-7 text-sm border-b pb-2">
 							<div id={`section-${section.name}`}>
 								{section.elementsOrder === undefined ? (
 									<LoadingScreen size="3x" relative />

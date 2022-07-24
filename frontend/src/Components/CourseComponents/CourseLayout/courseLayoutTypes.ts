@@ -9,6 +9,7 @@ import { themes } from '../../../state/contexts/ThemeContext';
 
 export type CourseLayoutElementProps = {
 	element: CourseElement;
+	className?: string;
 };
 
 type NavigationOptions = {
@@ -19,6 +20,7 @@ type NavigationOptions = {
 export type CourseLayoutSectionProps = {
 	courseElement: CourseElementSection;
 	isDragged?: boolean;
+	forceUpdateLayoutElement?: () => void;
 };
 
 export type CourseLayoutActivityProps = {

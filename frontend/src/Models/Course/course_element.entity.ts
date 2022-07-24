@@ -15,7 +15,6 @@ import { ActivityChallenge } from './activities/activity_challenge.entity';
 import { ActivityAssignment } from './activities/activity_assignment.entity';
 import { ActivityPdf } from './activities/activity_pdf.entity';
 import { ActivityWord } from './activities/activity_word.entity';
-import { ActivityPowerPoint } from './activities/activity_powerpoint.entity';
 
 /** Types of contents of a course (activity or section) */
 export type CourseContent = Activity | Section;

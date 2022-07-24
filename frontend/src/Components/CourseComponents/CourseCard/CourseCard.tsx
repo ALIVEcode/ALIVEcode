@@ -32,9 +32,9 @@ const CourseCard = ({ course, onSelect, className }: CourseCardProps) => {
 			theme={theme}
 		>
 			<div className="top-card">
-				<FontAwesomeIcon icon={course.getSubjectIcon()} />
+				<FontAwesomeIcon icon={course.getSubjectIcon()} color="black" />
 			</div>
-			<div className="bottom-card">{formatTooLong(course.name, 30)}</div>
+			<div className="bottom-card">{formatTooLong(course.name, 40)}</div>
 		</StyledCourseCard>
 	);
 };

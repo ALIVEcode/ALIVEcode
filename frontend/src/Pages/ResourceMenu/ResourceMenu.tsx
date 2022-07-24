@@ -11,7 +11,11 @@ import ResourceCard from '../../Components/Resources/ResourceCard/ResourceCard';
 import Button from '../../Components/UtilsComponents/Buttons/Button';
 import { UserContext } from '../../state/contexts/UserContext';
 import { useTranslation } from 'react-i18next';
-import { SUBJECTS, getSubjectIcon } from '../../Types/sharedTypes';
+import {
+	SUBJECTS,
+	getSubjectIcon,
+	getSubjectColor,
+} from '../../Types/sharedTypes';
 import LoadingScreen from '../../Components/UtilsComponents/LoadingScreen/LoadingScreen';
 import { ResourceSection } from '../../Components/Resources/ResourceSection/ResourceSection';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
@@ -209,6 +213,7 @@ const ResourceMenu = ({
 							<ResourceSection
 								key={entry[0]}
 								icon={getSubjectIcon(entry[1])}
+								color={getSubjectColor(entry[1])}
 								name={t(`msg.subjects.${entry[0].toLowerCase()}`)}
 								section={entry[1]}
 							/>

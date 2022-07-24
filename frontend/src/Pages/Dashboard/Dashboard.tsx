@@ -24,10 +24,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
 	faBook,
 	faHistory,
-	faStar,
 	faPlus,
 	faTasks,
 	faTrash,
+	faTrophy,
 } from '@fortawesome/free-solid-svg-icons';
 import ClassroomSection from '../../Components/DashboardComponents/ClassroomSection/ClassroomSection';
 import Classroom from '../Classroom/Classroom';
@@ -53,7 +53,11 @@ import Info from '../../Components/HelpComponents';
 import { TutorialContext } from '../../state/contexts/TutorialContext';
 import { useForceUpdate } from '../../state/hooks/useForceUpdate';
 import IoTDashboard from '../IoT/IoTDashboard/IoTDashboard';
-import { faCloudsmith } from '@fortawesome/free-brands-svg-icons';
+import {
+	getSubjectIcon,
+	SUBJECTS,
+	getSubjectColor,
+} from '../../Types/sharedTypes';
 
 /**
  * State reducer to change the state of the selected tab
@@ -359,7 +363,11 @@ const Dashboard = (props: DashboardProps) => {
 							}
 							onClick={openRecents}
 						>
-							<FontAwesomeIcon className="sidebar-icon" icon={faHistory} />
+							<FontAwesomeIcon
+								className="sidebar-icon"
+								icon={faHistory}
+								color={tabSelected.tab === 'recents' ? 'white' : '#13d433'}
+							/>
 							<label className="sidebar-btn-text">
 								{t('dashboard.recents.title')}
 							</label>
@@ -372,7 +380,11 @@ const Dashboard = (props: DashboardProps) => {
 							}
 							onClick={openChallenges}
 						>
-							<FontAwesomeIcon className="sidebar-icon" icon={faStar} />
+							<FontAwesomeIcon
+								className="sidebar-icon"
+								icon={faTrophy}
+								color={tabSelected.tab === 'challenges' ? 'white' : '#edb72f'}
+							/>
 							<label className="sidebar-btn-text">
 								{t('dashboard.challenges.title')}
 							</label>
@@ -386,7 +398,11 @@ const Dashboard = (props: DashboardProps) => {
 								}
 								onClick={openResources}
 							>
-								<FontAwesomeIcon className="sidebar-icon" icon={faFile} />
+								<FontAwesomeIcon
+									className="sidebar-icon"
+									icon={faFile}
+									color={tabSelected.tab === 'resources' ? 'white' : 'gray'}
+								/>
 								<label className="sidebar-btn-text">
 									{t('dashboard.resources.title')}
 								</label>
@@ -400,7 +416,15 @@ const Dashboard = (props: DashboardProps) => {
 							}
 							onClick={openIoTDashboard}
 						>
-							<FontAwesomeIcon className="sidebar-icon" icon={faCloudsmith} />
+							<FontAwesomeIcon
+								className="sidebar-icon"
+								icon={getSubjectIcon(SUBJECTS.IOT)}
+								color={
+									tabSelected.tab === 'iot'
+										? 'white'
+										: getSubjectColor(SUBJECTS.IOT)
+								}
+							/>
 							<label className="sidebar-btn-text">
 								{t('dashboard.iot.title')}
 							</label>

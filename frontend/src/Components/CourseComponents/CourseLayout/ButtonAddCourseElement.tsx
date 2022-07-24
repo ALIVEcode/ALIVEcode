@@ -23,12 +23,7 @@ const ButtonAddCourseElement = ({ section }: ButtonAddCourseElementProps) => {
 		<Popup
 			trigger={
 				<div
-					className="border p-2 ml-10 desktop:ml-11 border-[color:var(--bg-shade-four-color)] text-[color:var(--foreground-color)] mt-2 border-opacity-25 w-24 hover:cursor-pointer"
-					style={{
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'center',
-					}}
+					className="flex items-center justify-center p-2 ml-9 desktop:ml-11 border border-[color:var(--bg-shade-four-color)] text-[color:var(--foreground-color)] mt-1 border-opacity-25 w-20 hover:cursor-pointer rounded-md"
 					// onDrop={async event => {
 					// 	event.preventDefault();
 					// 	const data = event.dataTransfer.getData('text/plain');

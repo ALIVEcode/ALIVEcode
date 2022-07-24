@@ -31,4 +31,7 @@ export class Section {
 	get icon() {
 		return faFolder;
 	}
+
+	@Exclude()
+	opened?: boolean = true;
 }

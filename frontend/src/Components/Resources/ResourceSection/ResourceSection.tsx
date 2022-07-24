@@ -8,6 +8,7 @@ export const ResourceSection = ({
 	icon,
 	name,
 	section,
+	color,
 }: ResourceSectionProps) => {
 	const { selectedSubject, setSelectedSubject } =
 		useContext(ResourceMenuContext);
@@ -23,7 +24,7 @@ export const ResourceSection = ({
 			onClick={() => setSelectedSubject(section)}
 		>
 			<div>
-				<FontAwesomeIcon size="2x" icon={icon}></FontAwesomeIcon>
+				<FontAwesomeIcon size="2x" icon={icon} color={color}></FontAwesomeIcon>
 			</div>
 			<div className="text-center text-xs">{name}</div>
 		</div>

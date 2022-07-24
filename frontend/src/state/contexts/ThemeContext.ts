@@ -138,6 +138,7 @@ export const commonColors = {
 	almost_black: '#23272A',
 	dark_gray: '#616161',
 	logo: '#2E75FF',
+	logo_rgb: hexToRGB('#2E75FF'),
 	danger: '#dc2626',
 	pdf: '#ff3814',
 	challenge: '#2E75FF',
@@ -145,6 +146,9 @@ export const commonColors = {
 	theory: '#92B7FF',
 	word: '#1451B5',
 	powerpoint: '#EA3C00',
+	iot: '#92B7FF',
+	ai: '#682fed',
+	code: '#2E75FF',
 };
 /*
 

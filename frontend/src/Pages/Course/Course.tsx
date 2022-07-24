@@ -53,6 +53,7 @@ import AlertConfirm from '../../Components/UtilsComponents/Alert/AlertConfirm/Al
 import { Resource, RESOURCE_TYPE } from '../../Models/Resource/resource.entity';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AxiosError } from 'axios';
+import { getSubjectColor } from '../../Types/sharedTypes';
 
 /**
  * Course page that shows the content of a course
@@ -778,6 +779,7 @@ const Course = () => {
 									<FontAwesomeIcon
 										className="mr-3"
 										icon={course.current.getSubjectIcon()}
+										color={getSubjectColor(course.current.subject)}
 									/>
 									<div className="inline" id="course-title">
 										{editTitle ? (
@@ -824,6 +826,7 @@ const Course = () => {
 								<FontAwesomeIcon
 									className="mr-3"
 									icon={course.current.getSubjectIcon()}
+									color={getSubjectColor(course.current.subject)}
 								/>
 								<div className="inline" id="course-title">
 									{courseTitle}

@@ -2,6 +2,7 @@ import ChallengeCodeExecutor from '../ChallengeCode/ChallengeCodeExecutor';
 import { typeAskForUserInput } from '../challengeTypes';
 import { AlertManager } from 'react-alert';
 import { Console } from 'console';
+import { SupportedLanguagesAS } from '../../../Models/ASModels';
 
 // TODO: robotConnected
 
@@ -13,11 +14,16 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 		challengeName: string,
 		askForUserInput: typeAskForUserInput,
 		alert?: AlertManager,
+		lang?: SupportedLanguagesAS,
 	) {
-		super(challengeName, askForUserInput, alert);
+		super(challengeName, askForUserInput, alert, lang);
 
 		this.doBeforeRun(() => {
 			//this.executableFuncs.resetGraph();
+			this.executableFuncs.initializeDataset();
+		});
+
+		this.doBeforeInterrupt(() => {
 			this.executableFuncs.initializeDataset();
 		});
 
@@ -96,7 +102,6 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					label: 'Cost Function',
 					type: 'GET',
 					apply: (params, _, response) => {
-						console.log('Execute Cost Function');
 						const out = this.executableFuncs.costFunction();
 						response?.push(out);
 						this.perform_next();
@@ -119,7 +124,6 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					label: 'Valeurs Colonne',
 					type: 'GET',
 					apply: (params, _, response) => {
-						console.log('Execute Colonne Values');
 						if (typeof params[0] === 'string') {
 							response?.push('Creation of a list');
 							let objectList: any[] = this.executableFuncs.columnValues(
@@ -138,7 +142,6 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					label: 'Création Modèle',
 					type: 'NORMAL',
 					apply: () => {
-						console.log('Execute Création Modèle');
 						this.executableFuncs.modelCreation();
 					},
 				},
@@ -149,7 +152,6 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					label: 'One Hot',
 					type: 'NORMAL',
 					apply: params => {
-						console.log('Execute One Hot');
 						if (
 							typeof params[0] === 'string' &&
 							typeof params[1] === 'object' &&
@@ -173,7 +175,6 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					label: 'Normaliser Colonne',
 					type: 'GET',
 					apply: (params, _, response) => {
-						console.log('Execute Column Normalize');
 						if (typeof params[0] === 'string') {
 							let out = this.executableFuncs.normalizeColumn(params[0]);
 							if (out) {
@@ -191,7 +192,6 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					label: 'Normaliser',
 					type: 'GET',
 					apply: (params, _, response) => {
-						console.log('Execute Normalize');
 						if (
 							typeof params[0] === 'string' &&
 							typeof params[1] === 'number'
@@ -213,7 +213,6 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					label: 'Predire',
 					type: 'GET',
 					apply: (params, _, response) => {
-						console.log('Execute Predire');
 						if (typeof params[0] === 'object') {
 							let objectList = this.executableFuncs.predict(params[0]);
 							if (typeof objectList !== 'string') {
@@ -238,7 +237,6 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					label: 'Optimiser',
 					type: 'NORMAL',
 					apply: () => {
-						console.log('Execute Optimize');
 						let out = this.executableFuncs.optimize();
 
 						if (typeof out === 'string') {
@@ -253,7 +251,6 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					label: 'IO Names',
 					type: 'GET',
 					apply: (params, _, response) => {
-						console.log('IO Names');
 						let out: string[] = this.executableFuncs.getIONames();
 						console.log(out);
 						response?.push('Creation of a list');
@@ -268,7 +265,6 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					label: 'Delete Line',
 					type: 'NORMAL',
 					apply: params => {
-						console.log('Execute Delete Line');
 						if (typeof params[0] === 'number') {
 							let out = this.executableFuncs.deleteLine(params[0]);
 							if (typeof out === 'string') {
@@ -284,7 +280,6 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					label: 'Coefficient Correlation',
 					type: 'GET',
 					apply: (params, _, response) => {
-						console.log('Execute Coefficient Correlation');
 						if (
 							typeof params[0] === 'object' &&
 							typeof params[1] === 'object'
@@ -305,7 +300,6 @@ class ChallengeAIExecutor extends ChallengeCodeExecutor {
 					label: 'Coefficient Dermination',
 					type: 'GET',
 					apply: (params, _, response) => {
-						console.log('Execute Coefficient Correlation');
 						if (
 							typeof params[0] === 'object' &&
 							typeof params[1] === 'object'

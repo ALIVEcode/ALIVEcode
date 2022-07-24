@@ -95,6 +95,8 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 
 	const optimizer = useRef<GenOptimizer>();
 
+	const currDataset = useRef<AIDataset>();
+
 	//Active dataset of this challenge
 	const activeDataset = useRef<AIDataset>();
 
@@ -134,17 +136,11 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			challenge.name,
 			askForUserInput,
 			alert,
+			challenge.lang,
 		);
 		exec.lineInterfaceContent = currCode.current ?? '';
 		return exec;
-	}, [
-		challenge?.id,
-		user,
-		activeDataset,
-		challenge.hyperparams,
-		challenge.ioCodes,
-		activeIoCodes,
-	]);
+	}, [challenge?.id, user]);
 
 	//--------UseEffects-------//
 	// Loading the dataset when first renders
@@ -153,9 +149,10 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			if (!challenge.dataset)
 				challenge.dataset = await api.db.ai.getDataset(challenge.datasetId);
 			// If the dataset is found
-			if (challenge.dataset && !activeDataset.current) {
-				// Update active dataset
-				activeDataset.current = challenge.dataset.clone();
+			if (challenge.dataset && !currDataset.current) {
+				// Update current and active dataset
+				currDataset.current = challenge.dataset;
+				activeDataset.current = currDataset.current.clone();
 
 				// Initiate IOCodes of this challenge if not done yet
 				if (challenge.ioCodes.length === 0)
@@ -226,7 +223,9 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			}
 		};
 		if (!challenge.dataset) getDataset();
-	}, [challenge]);
+	}, [challenge.dataset, editMode]);
+
+	console.log(currDataset.current);
 
 	// Updates the current hyperparams and IOCodes when the edit mode is triggered on and off.
 	useEffect(() => {
@@ -241,7 +240,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 	useEffect(() => {
 		if (!cmd) return forceUpdate();
 		if (executor.current) executor.current.cmd = cmd;
-	}, [cmd, executor, forceUpdate]);
+	}, [cmd, forceUpdate]);
 
 	//-----CALLBACK FUNCTIONS-------//
 
@@ -462,7 +461,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 		console.log('--- User click on run ---');
 
 		//If the dataset is loaded
-		if (activeDataset.current) {
+		if (currDataset.current) {
 			//Set IOCodes
 			activeIoCodes.current = [...currIoCodes.current];
 			console.log('current iocodes : ', activeIoCodes);
@@ -481,11 +480,14 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 			});
 
 			//Cloning the initial data
-			if (challenge.dataset) activeDataset.current = challenge.dataset.clone();
+			console.log(challenge.dataset);
+			if (currDataset.current)
+				activeDataset.current = currDataset.current.clone();
 			optimizer.current = undefined;
 			model.current = undefined;
 			setActiveModel(undefined);
 		}
+		forceUpdate();
 	}
 
 	//-----------TODO change the followings when regressions are implemented---------//
@@ -1124,7 +1126,7 @@ const ChallengeAI = ({ initialCode }: ChallengeAIProps) => {
 							},
 						]}
 						data={activeDataset.current}
-						initData={challenge.dataset}
+						initData={currDataset.current}
 						modelType={currModelType.current}
 						hyperparams={currHyperparams.current[challenge.modelType]}
 						activeIoCodes={[...activeIoCodes.current]}

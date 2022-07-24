@@ -114,28 +114,29 @@ const ChallengeTable = (props: ChallengeTableProps) => {
 			let activeArray: number[] = props.activeIoCodes!;
 
 			//Set up to change the initial iocodes
-			let initParams: string[] = props.initData!.getParamNames();
-			let currentParams: string[] = props.data!.getParamNames();
-			let columnName: string = currentParams[index];
-			let i: number = initParams.indexOf(columnName);
-			let initArray: number[] = props.ioCodes!;
+			if (props.initData && props.data && props.ioCodes) {
+				let initParams: string[] = props.initData.getParamNames();
+				let currentParams: string[] = props.data.getParamNames();
+				let columnName: string = currentParams[index];
+				let i: number = initParams.indexOf(columnName);
+				let initArray: number[] = props.ioCodes!;
 
-			//Change the iocodes
-			switch (value) {
-				case '1':
-					activeArray[index] = 1;
-					initArray[i] = 1;
-					break;
-				case '0':
-					activeArray[index] = 0;
-					initArray[i] = 0;
-					break;
-				default:
-					activeArray[index] = -1;
-					initArray[i] = -1;
+				//Change the iocodes
+				switch (value) {
+					case '1':
+						activeArray[index] = 1;
+						initArray[i] = 1;
+						break;
+					case '0':
+						activeArray[index] = 0;
+						initArray[i] = 0;
+						break;
+					default:
+						activeArray[index] = -1;
+						initArray[i] = -1;
+				}
+				props.handleIOChange && props.handleIOChange(activeArray, initArray);
 			}
-
-			props.handleIOChange && props.handleIOChange(activeArray, initArray);
 		},
 		[props],
 	);

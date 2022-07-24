@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import React, { forwardRef } from 'react';
 import { classNames } from '../../../Types/utils';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Styled button with different premade variants
@@ -27,7 +28,17 @@ const Button = forwardRef<
 		>
 >(
 	(
-		{ variant, onClick, to, children, className, icon, noHoverColor, ...props },
+		{
+			variant,
+			onClick,
+			to,
+			children,
+			className,
+			icon,
+			noHoverColor,
+			loading,
+			...props
+		},
 		ref,
 	) => {
 		const navigate = useNavigate();
@@ -55,17 +66,25 @@ const Button = forwardRef<
 		if (icon) {
 			return (
 				<button ref={ref} {...defaultInputOptions} {...props}>
-					<>
-						{children}
-						<FontAwesomeIcon className="ml-2" icon={icon} />
-					</>
+					{loading ? (
+						<FontAwesomeIcon className="rotating" fixedWidth icon={faSpinner} />
+					) : (
+						<>
+							{children}
+							<FontAwesomeIcon className="ml-2" icon={icon} />
+						</>
+					)}
 				</button>
 			);
 		}
 
 		return (
 			<button ref={ref} {...defaultInputOptions} {...props}>
-				{children}
+				{loading ? (
+					<FontAwesomeIcon className="rotating" fixedWidth icon={faSpinner} />
+				) : (
+					children
+				)}
 			</button>
 		);
 	},

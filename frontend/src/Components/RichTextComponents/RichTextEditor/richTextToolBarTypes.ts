@@ -1,14 +1,13 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { Descendant } from 'slate';
-import { RichTextLeafType, RichTextBlockStyles } from '../RichTextElements/richTextStyleTypes';
 
-export type RichTextEditorProps = {
-	onChange: (value: Descendant[]) => void;
+export type RichTextEditorProps = React.DetailedHTMLProps<
+	React.InputHTMLAttributes<HTMLDivElement>,
+	HTMLDivElement
+> & {
+	onEditorChange?: (value: Descendant[]) => void;
+	onEditorBlur?: (value: Descendant[]) => void;
 	defaultText?: Descendant[];
 	readOnly?: boolean;
 };
 
 export type RichTextToolBarProps = {};
-
-
-

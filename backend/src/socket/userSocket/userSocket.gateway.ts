@@ -10,7 +10,7 @@ import {
 } from '@nestjs/websockets';
 import { Server, WebSocket } from 'ws';
 import { DTOInterceptor } from '../../utils/interceptors/dto.interceptor';
-import { IOT_EVENT, Client, UserSocketTicketPayload } from './userSocket.types';
+import { USER_SOCKET_EVENT, Client, UserSocketTicketPayload } from './userSocket.types';
 import { UserEntity } from '../../models/user/entities/user.entity';
 import { UserService } from '../../models/user/user.service';
 import { verify } from 'jsonwebtoken';
@@ -56,7 +56,7 @@ export class UserSocketGateway implements OnGatewayDisconnect, OnGatewayConnecti
         // Client is ping to see if it is still alive
         client.isAlive = false;
         client.getSocket().ping();
-        client.sendEvent(IOT_EVENT.PING, null);
+        client.sendEvent(USER_SOCKET_EVENT.PING, null);
       });
     }, 60 * 1000); // Each 60 seconds
   }
@@ -111,7 +111,7 @@ export class UserSocketGateway implements OnGatewayDisconnect, OnGatewayConnecti
     Client.removeClientBySocket(socket);
   }
 
-  @SubscribeMessage(IOT_EVENT.PONG)
+  @SubscribeMessage(USER_SOCKET_EVENT.PONG)
   pong(@ConnectedSocket() socket: WebSocket) {
     this.receivePong(socket);
   }

@@ -20,6 +20,7 @@ export type MenuResourceCreationProps = {
 	afterSubmit?: () => void;
 	updateMode?: boolean;
 	defaultResource?: Resource;
+	noResourcePreview?: boolean;
 } & OneOf<
 	{ mode?: 'modal'; open: boolean; setOpen: (state: boolean) => void },
 	{ mode?: 'form' }

@@ -559,6 +559,7 @@ const Course = () => {
 			activityId: activity.id.toString(),
 		});
 		activity.resource = undefined;
+		activity.resourceId = undefined;
 		forceUpdate();
 	};
 
@@ -885,8 +886,9 @@ const Course = () => {
 							tab.openedActivity.activity,
 							modalChallengePrivateOpen,
 						);
-						(tab.openedActivity.activity as ActivityModel).resource =
-							modalChallengePrivateOpen;
+						tab.openedActivity.activity.resource = modalChallengePrivateOpen;
+						tab.openedActivity.activity.resourceId =
+							modalChallengePrivateOpen.id;
 						setOpenModalImportResource(false);
 					}}
 				>
@@ -916,7 +918,8 @@ const Course = () => {
 							tab.openedActivity.activity,
 							resource,
 						);
-						(tab.openedActivity.activity as ActivityModel).resource = resource;
+						tab.openedActivity.activity.resource = resource;
+						tab.openedActivity.activity.resourceId = resource.id;
 						setOpenModalImportResource(false);
 					}}
 				/>

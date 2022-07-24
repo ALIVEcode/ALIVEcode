@@ -88,6 +88,9 @@ export abstract class Activity {
 	/** Resource inside the activity */
 	abstract resource?: Resource;
 
+	/** Resource inside the activity */
+	abstract resourceId?: string;
+
 	/** Allowed resources types in the activity for the ResourceMenu filters */
 	abstract readonly allowedResources: [RESOURCE_TYPE, ...Array<string>];
 

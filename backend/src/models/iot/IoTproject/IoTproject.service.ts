@@ -155,7 +155,7 @@ export class IoTProjectService {
         projectId: clonedProject.id,
         asScriptId: newScriptIds[route.asScriptId],
       });
-      project.routes.push(clonedRoute);
+      clonedProject.routes.push(clonedRoute);
     }
 
     return clonedProject;

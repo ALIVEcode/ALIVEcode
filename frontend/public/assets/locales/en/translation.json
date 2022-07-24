@@ -402,7 +402,7 @@
 			"import_resource": {
 				"generic": "Add an exisiting resource",
 				"PF": "Add an existing pdf",
-				"TH": "Add a text document",
+				"TH": "Add an existing text document",
 				"VI": "Add an existing video",
 				"AS": "Add an existing file",
 				"CH": "Add a challenge",

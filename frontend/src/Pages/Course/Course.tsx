@@ -600,6 +600,13 @@ const Course = () => {
 
 		element.parent.elementsOrder = oldOrder;
 		newParent.elementsOrder = newOrder;
+		if (element.parent !== newParent) {
+			element.parent.elements = element.parent.elements.filter(
+				el => el.id !== element.id,
+			);
+			newParent.elements.push(element);
+			element.parent = newParent;
+		}
 
 		// if (element.parent instanceof Section) {
 		// 	courseElements.current[element.parent.courseElement.id] =
